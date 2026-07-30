@@ -1,0 +1,322 @@
+\appendix
+
+\section{Notation and Configuration Crosswalk}
+\label{app:notation}
+
+\begin{longtable}{@{}p{0.08\textwidth}p{0.25\textwidth}
+  p{0.28\textwidth}p{0.29\textwidth}@{}}
+\caption{Mathematical notation and public configuration names.}
+\label{tab:notation}\\
+\toprule
+Symbol & Configuration field & Meaning & Primary effect \\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Configuration field & Meaning & Primary effect \\
+\midrule
+\endhead
+\(B\) & \texttt{batch\_size} & Batch size & All persistent tensor payloads
+scale linearly \\
+\(T\) & call input length & Tokens processed in one call & Scan work and
+training activations \\
+\(d\) & \texttt{d\_model} & Model width & Projection, FFN, and every lane \\
+\(L\) & \texttt{n\_layers} & Block count & Parameters, compute, recurrent
+state \\
+\(H\) & Gated Delta \texttt{n\_heads} & Recurrent head count & Fast-weight
+partition \\
+\(d_k\) & \texttt{head\_key\_dim} & Recurrent key width & Fast-weight rows \\
+\(d_v\) & \texttt{head\_value\_dim} & Recurrent value width & Fast-weight
+columns \\
+\(W\) & \texttt{local\_window} & Exact recent window & \(2dW\) state per
+local lane \\
+\(C_x\) & exact-cache \texttt{capacity} & Selected projected KV records &
+Cache state and read cost \\
+\(S\) & \texttt{segment\_size} & Tokens per episodic segment & Exact factors
+and seal frequency \\
+\(K\) & \texttt{live\_segments} & Exact completed segments & Recent exact
+factor budget \\
+\(C\) & \texttt{archive\_slots} & Compressed capsules & Temporal archive
+granularity \\
+\(A\) & \path{archive_segments_per_slot} & Segments per capsule &
+Retention versus compression depth \\
+\(r\) & \texttt{archive\_rank} & Retained numerator rank & Archive error,
+state, read, and SVD cost \\
+\(d_r\) & \texttt{router\_dim} & Route-vector width & Route state and
+degree-one score \\
+\(p\) & \texttt{router\_degree} & Polynomial degree & TensorSketch cost and
+similarity sharpness \\
+\(m\) & \texttt{sketch\_dim} & Sketch width & Collision/variance budget \\
+\(J\) & \texttt{n\_sketches} & Independent sketches & Median robustness and
+cost \\
+\(\kappa_g\) & Gated Delta \texttt{conv\_kernel} & Recurrent stem width &
+Short causal filtering \\
+\(\kappa_e\) & episodic \texttt{conv\_kernel} & Episodic stem width & Memory
+write preprocessing \\
+\bottomrule
+\end{longtable}
+
+\section{Persistent State Shapes}
+\label{app:state-shapes}
+
+For one scheduled block and batch \(B\), the logical tensors are:
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.31\textwidth}p{0.32\textwidth}@{}}
+\caption{State tensors and semantics.}
+\label{tab:state-shapes}\\
+\toprule
+Field & Shape & Meaning \\
+\midrule
+\endfirsthead
+\toprule
+Field & Shape & Meaning \\
+\midrule
+\endhead
+Gated Delta history & \(B\times(\kappa_g-1)\times d\) & Causal depthwise
+convolution context \\
+Gated Delta fast weight & \(B\times H\times d_k\times d_v\) & fp32 recurrent
+associative matrix \\
+Local key/value & each \(B\times H_l\times W\times(d/H_l)\) & Last \(W\)
+projected records \\
+Exact-cache key/value & each \(B\times H_x\times C_x\times(d/H_x)\) &
+Selected projected records \\
+Exact-cache priority & \(B\times C_x\) & Detached write-residual RMS \\
+Exact-cache valid & \(B\times C_x\) & Occupancy mask \\
+Episodic current/live factor & each side
+\(B\times S\times d\) per slot & Exact numerator factor rows \\
+Archive factor & each side \(B\times r\times d\) per capsule & Truncated
+numerator factors \\
+Slot denominator & \(B\times d\) & Exact sum of positive keys \\
+Slot route sum & \(B\times d_r\) & Sum of normalized route vectors \\
+Slot sketch sum & \(B\times J\times m\) & Sum of TensorSketch features \\
+Slot count/error & each \(B\) & Token count and Frobenius error ledger \\
+\bottomrule
+\end{longtable}
+
+The archive/current/live tuples carry Python metadata in addition to tensors.
+The byte formulas in the main text count logical tensor payload and exclude
+those objects, allocator bookkeeping, backing-storage slack, and temporary
+workspaces.
+
+\section{Operational Pseudocode}
+\label{app:pseudocode}
+
+\subsection{One block step}
+
+\begin{lstlisting}[caption={Semantic order of a single block step.}]
+function ALUCLU_BLOCK_STEP(x, state):
+    h = RMSNorm_mix(x)
+
+    gdn_out, surprise, gdn_state =
+        GATED_DELTA_WRITE_THEN_READ(h, state.gdn)
+
+    branches = [gdn_out]
+    if local lane exists:
+        local_out, local_state =
+            LOCAL_APPEND_THEN_ATTEND(h, state.local)
+        branches.append(local_out)
+
+    if episodic lane exists:
+        epi_out, epi_state =
+            EPISODIC_WRITE_TRANSITION_THEN_READ(h, state.episodic)
+        branches.append(epi_out)
+
+    if exact-cache lane exists:
+        cache_out, cache_state =
+            CACHE_SELECT_WRITE_THEN_ATTEND(h, surprise, state.cache)
+        branches.append(cache_out)
+
+    normalized = [
+        scale[j] * RMSNorm_branch[j](branches[j])
+        for j in active_branches
+    ]
+    alpha = softmax(fusion_projection(h))
+    mixed = weighted_sum(alpha, normalized)
+
+    x1 = x + dropout(mixed)
+    x2 = x1 + dropout(SwiGLU(RMSNorm_ffn(x1)))
+    return x2, assembled_new_state
+\end{lstlisting}
+
+\subsection{Exact-cache insertion}
+
+\begin{lstlisting}[caption={Deterministic strict replacement for one batch
+item.}]
+function INSERT(cache, key, value, incoming_priority):
+    p = stop_gradient(incoming_priority)
+    if any slot is invalid:
+        j = first invalid slot
+        should_write = true
+    else:
+        j = argmin(cache.priority)
+        should_write = p > cache.priority[j]
+
+    if should_write:
+        cache.key[:, j, :] = key
+        cache.value[:, j, :] = value
+        cache.priority[j] = p
+        cache.valid[j] = true
+    return cache
+\end{lstlisting}
+
+\subsection{Episodic transition}
+
+\begin{lstlisting}[caption={Current, live, and archive life cycle.}]
+function WRITE_EPISODIC(token_slot, state):
+    state.current = concatenate_factors(state.current, token_slot)
+    if state.current.factor_count < segment_size:
+        return state
+
+    sealed = state.current
+    state.current = empty
+    append sealed to state.live
+
+    if len(state.live) <= live_segments:
+        return state
+
+    oldest = pop_front(state.live)
+    if archive_slots == 0:
+        return state
+
+    if active capsule has fewer than A segments:
+        active = TRUNCATE_TO_RANK(active + oldest)
+    else:
+        advance ring cursor
+        active = TRUNCATE_TO_RANK(oldest)
+    update capsule segment count
+    return state
+\end{lstlisting}
+
+\section{Reproduction Commands}
+\label{app:commands}
+
+\subsection{Environment and editable install}
+
+\begin{lstlisting}[language=bash]
+python -m venv .venv
+python -m pip install --upgrade pip
+python -m pip install -e ".[test,lint]"
+\end{lstlisting}
+
+On Windows PowerShell, use \texttt{.venv\textbackslash
+Scripts\textbackslash python.exe}; on Linux or macOS use
+\texttt{.venv/bin/python}.
+
+\subsection{Complete portable release gate}
+
+\begin{lstlisting}[language=bash]
+python scripts/validate_release.py
+\end{lstlisting}
+
+The gate compiles source, runs tests, executes both training smoke paths, runs
+the timing smoke path, hashes the declared source set, and writes
+\texttt{results/release\_validation.json}.
+
+\subsection{Recorded diagnostic}
+
+\begin{lstlisting}[language=bash]
+python scripts/train_mqar.py \
+  --steps 300 --batch-size 32 \
+  --n-pairs 2 --n-queries 2 \
+  --key-vocab-size 4 --value-vocab-size 4 \
+  --d-model 16 --n-layers 2 \
+  --learning-rate 0.003 --eval-batches 16 \
+  --device cpu \
+  --output results/diagnostic_learned_cpu.json
+\end{lstlisting}
+
+\subsection{Recorded saturated reference benchmark}
+
+\begin{lstlisting}[language=bash]
+python scripts/benchmark_stream.py \
+  --d-model 32 --n-layers 4 --vocab-size 8192 \
+  --warmup-tokens 560 --measure-tokens 32 \
+  --prefill-tokens 128 --repeats 3 \
+  --torch-threads 1 --device cpu \
+  --output results/reference_cpu_saturated.json
+\end{lstlisting}
+
+The benchmark excludes random-token generation from timed regions and records
+whether the required state horizon was reached before decode.
+
+\section{Test-to-Claim Traceability}
+\label{app:test-trace}
+
+\begin{longtable}{@{}p{0.32\textwidth}p{0.27\textwidth}p{0.32\textwidth}@{}}
+\caption{Representative invariant families and the claims they constrain.}
+\label{tab:test-trace}\\
+\toprule
+Invariant family & Primary test module & Claim constrained \\
+\midrule
+\endfirsthead
+\toprule
+Invariant family & Primary test module & Claim constrained \\
+\midrule
+\endhead
+Thin-core dense equivalence and tail error &
+\texttt{test\_compression.py} & Compression implements the specified
+factor product and error metric \\
+Exact denominator and routing mass &
+\texttt{test\_episodic.py} & Archive \(z\) is independent of SVD factors;
+router normalization follows its contract \\
+Episodic segmentation and eviction &
+\texttt{test\_episodic.py} & Current/live/archive counts remain bounded and
+transitions are causal \\
+Gated Delta scan/step equality &
+\path{test_recurrent_and_local.py} & Recurrent API matches full
+evaluation scan \\
+Local horizon and causality &
+\path{test_recurrent_and_local.py} & Local state retains at most \(W\)
+records and does not read future tokens \\
+Strict top-priority retention &
+\path{test_exact_cache.py} & Cache policy keeps the configured number of
+highest distinct priorities \\
+Exact-cache shape saturation &
+\path{test_exact_cache.py} & Cache allocation is length independent after
+initialization \\
+Hybrid full/chunk/step equality &
+\texttt{test\_model.py} & Integrated lane ordering and state carriage agree \\
+Zoology target placement &
+\texttt{test\_zoology\_mqar.py} & Same-position labels are not shifted a
+second time \\
+\bottomrule
+\end{longtable}
+
+\section{Suggested Citation and License}
+\label{app:citation}
+
+\begin{lstlisting}
+@software{aluclu2026,
+  author  = {Kaan Kadir Aluclu},
+  title   = {ALUCLU: Adaptive Layered Unified Context
+             with Learned Updates},
+  year    = {2026},
+  version = {0.1.0},
+  url     = {https://github.com/kaannsaydamm/ALUCLU},
+  license = {MIT}
+}
+\end{lstlisting}
+
+The source code, paper source, and distributed artifacts are released under
+the MIT License. The spelling in machine-readable ASCII identifiers is
+\texttt{ALUCLU}; the author's family name is Aluçlu.
+
+\section{Release Checklist}
+\label{app:release-checklist}
+
+The following checklist is used before publishing a new evidence-bearing
+revision:
+
+\begin{enumerate}
+  \item no placeholder implementation or unresolved document marker remains;
+  \item formatter, linter, bytecode compilation, and all tests pass;
+  \item every benchmark records protocol ID, full configuration, environment,
+  samples, and output path;
+  \item state saturation is reported rather than inferred;
+  \item generated distributions contain package data and MIT metadata;
+  \item multilingual README files agree on architecture and license;
+  \item the paper compiles without undefined references or citations;
+  \item rendered PDF pages are visually inspected for clipping and overlap;
+  \item source archives and user-facing files have SHA-256 checksums;
+  \item the Git commit and pull request describe measured evidence without
+  extending its claim scope.
+\end{enumerate}

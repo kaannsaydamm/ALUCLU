@@ -1,0 +1,142 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Long-context sequence modeling is constrained by three resources that cannot
+be optimized independently: representational capacity, memory traffic, and
+arithmetic work. Full causal self-attention preserves direct token-to-token
+access, but its key-value state grows with the processed sequence and its
+prefill attention matrix grows quadratically without additional structure.
+Recurrent and linear-attention models replace that growing state with a
+fixed-size summary, but any finite summary must eventually merge, overwrite,
+or discard independent information. Sparse caches preserve selected records
+exactly, yet a selection rule can retain the wrong records. Compressed
+episodic representations extend the age horizon, but compression creates a
+measurable approximation error.
+
+\ALUCLU starts from the premise that these are not four implementations of one
+memory abstraction. They are four different physical memory regimes:
+
+\begin{table}[h]
+\centering
+\caption{The four memory regimes used by \ALUCLU. ``Exact'' is local to the
+stored representation and never means unbounded exact recall.}
+\label{tab:memory-regimes}
+\begin{tabularx}{\textwidth}{@{}p{0.18\textwidth}p{0.21\textwidth}
+  p{0.23\textwidth}X@{}}
+\toprule
+Regime & Primary role & Physical budget & Principal failure mode \\
+\midrule
+Dense recurrence & Continuous global statistics & Fixed fast-weight matrix
+per layer & Interference and decay \\
+Local softmax & Precise recent interactions & Last \(W\) projected keys and
+values & Hard recency horizon \\
+Surprise cache & Sparse exceptional records & Highest-priority \(C_x\)
+projected KV records & Selection mismatch and cache freezing \\
+Episodic capsules & Longer temporal organization & Current segment, \(K\)
+live segments, \(C\) rank-\(r\) archive capsules & Compression and overwrite \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The architecture places these regimes in parallel inside selected transformer-
+like residual blocks. Every layer has a Gated Delta Rule-2 recurrent lane.
+Local, exact-cache, and episodic lanes are scheduled at configurable layer
+intervals. They all consume the same normalized token representation rather
+than forming a serial chain. Their outputs are independently normalized and
+combined with learned token-wise coefficients. This arrangement gives the
+model an explicit choice between a dense recurrent estimate, exact recent
+evidence, a sparse set of high-write-residual events, and temporally segmented
+compressed evidence.
+
+\subsection{Design question}
+
+The project asks a deliberately narrower and more testable question than
+``What is the universally best language-model architecture?'':
+
+\begin{quote}
+Can one build an executable causal reference architecture whose persistent
+decode state is bounded by configuration, whose heterogeneous memory losses
+are visible in state and metrics, and whose interfaces permit exact
+token-by-token auditing before specialized kernels or large-scale training?
+\end{quote}
+
+This question matters because algorithmic asymptotics alone do not determine
+real performance. A theoretically constant-state recurrence can be slower than
+optimized attention if implemented as a Python token loop. A low-rank archive
+can have a long nominal horizon but poor task recall. A small cache can be
+``exact'' for accepted keys while missing the one key a future query needs.
+Consequently, \ALUCLU treats equations, code semantics, state bytes, benchmark
+protocols, and claim boundaries as parts of one engineering object.
+
+\subsection{Contributions}
+
+The present release makes the following concrete contributions.
+
+\begin{enumerate}
+  \item It specifies and implements a four-lane decoder block with explicit
+  scan, chunk, and recurrent-step interfaces and immutable external state
+  containers.
+
+  \item It couples a Gated Delta Rule-2 write residual to a fixed-capacity
+  exact KV cache. The cache retains the highest observed scalar residual
+  priorities under a deterministic strict-replacement policy.
+
+  \item It implements a bounded episodic hierarchy with exact current/live
+  factor sums, low-rank archive capsules, exact positive denominator
+  statistics, a TensorSketch-assisted router, and a Frobenius error ledger.
+
+  \item It derives the persistent payload, retained temporal budget, and
+  token-cost terms from the actual state fields instead of using an informal
+  ``constant memory'' label.
+
+  \item It provides a mass-normalized routing construction that preserves the
+  unweighted denominator mass in exact arithmetic when numerical safety
+  clamps are inactive, while making the clamp qualification explicit.
+
+  \item It supplies an MIT-licensed Python package, command-line tools,
+  protocol manifests, multilingual documentation, reproducible JSON evidence,
+  and an automated release gate with 50 tests.
+
+  \item It defines a staged evaluation program that separates small
+  correctness and learnability diagnostics from model-quality, accelerator,
+  energy, and long-context claims.
+\end{enumerate}
+
+\subsection{Evidence contract}
+\label{sec:evidence-contract-intro}
+
+The strongest conclusions supported by the current artifact are mechanical:
+the code executes, its configured state is bounded, tested causal paths agree
+between full scans and recurrent stepping in evaluation mode, and the recorded
+small CPU experiments are reproducible under their declared protocols. The
+artifact does \emph{not} establish frontier language-model quality, universal
+speed superiority, an optimal memory allocation, or a production GPU kernel.
+
+We use three labels throughout the paper:
+
+\begin{description}
+  \item[Implemented] The behavior exists in the released source code and is
+  connected to the public model path.
+  \item[Measured] A result file records the protocol, configuration,
+  environment, and numerical outcome.
+  \item[Proposed] The experiment or optimization is fully specified but has
+  not been executed as evidence for this release.
+\end{description}
+
+This vocabulary is intentionally conservative. It prevents a common category
+error in architecture research: presenting a promising mechanism, a Python
+prototype, or an asymptotic argument as though it were already an end-to-end
+systems result.
+
+\subsection{Paper organization}
+
+\Cref{sec:related-work} positions the design among recurrent, attention,
+hybrid, and long-context evaluation work. \Cref{sec:problem-contract} defines
+the causal interface and measurable Pareto contract. \Cref{sec:architecture}
+describes the block and execution order. \Cref{sec:memory-lanes} gives the
+implemented equations, while \Cref{sec:theory} derives state, complexity, and
+error properties. \Cref{sec:implementation} maps the specification to code.
+\Cref{sec:evaluation,sec:results} separate the planned evaluation matrix from
+the measurements already available. \Cref{sec:limitations} lists failure
+modes and physical limits. The appendices provide configuration, state, test,
+and reproduction details.

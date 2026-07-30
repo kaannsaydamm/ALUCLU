@@ -1,0 +1,6 @@
+include README.tr.md
+include README.es.md
+include README.ru.md
+include README.fr.md
+include README.de.md
+include README.ar.md

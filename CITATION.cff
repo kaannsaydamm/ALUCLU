@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "ALUCLU kullanıyorsanız lütfen bu yazılımı atıflayın."
+title: "ALUCLU: Adaptive Layered Unified Context with Learned Updates"
+type: software
+authors:
+  - family-names: "Aluçlu"
+    given-names: "Kaan Kadir"
+version: 0.1.0
+date-released: 2026-07-30
+license: MIT

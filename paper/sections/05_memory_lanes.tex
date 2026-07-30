@@ -1,0 +1,1279 @@
+\section{Memory Lanes and Theoretical Properties}
+\label{sec:memory-lanes}
+\label{sec:theory}
+
+This section specifies the mathematical object implemented by the current
+\ALUCLU reference backend.  The specification is intentionally narrower than
+an abstract family of possible models: every state variable, update order, and
+stabilizer below has a direct counterpart in
+\texttt{src/aluclu}.  The implementation is token recurrent and uses explicit
+caller-owned state.  It is therefore useful to distinguish three kinds of
+statement throughout the section:
+\begin{enumerate}
+  \item algebraic identities of the real-arithmetic recurrence;
+  \item conditional identities whose hypotheses state when numerical clamps
+        are inactive; and
+  \item empirical invariants exercised by the finite-precision test suite.
+\end{enumerate}
+In particular, ``exact'' denotes the absence of rank truncation for a retained
+projected key--value record or live factor.  It does not denote unbounded,
+lossless recall.
+
+\subsection{Notation and block-level execution}
+\label{subsec:notation-execution}
+
+Let \(B\) be the batch size, \(T\) the number of tokens processed by one
+call, \(d\) the model width, and \(L\) the number of residual blocks.
+Table~\ref{tab:mathematical-symbols} maps the remaining symbols to the
+configuration fields used by the implementation.
+
+\begin{longtable}{@{}p{0.13\textwidth}p{0.36\textwidth}
+  p{0.43\textwidth}@{}}
+\caption{Symbols and their implementation counterparts.}
+\label{tab:mathematical-symbols}\\
+\toprule
+Symbol & Code field & Meaning \\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Code field & Meaning \\
+\midrule
+\endhead
+\(H,d_k,d_v\)
+  & \texttt{n\_heads}, \texttt{head\_key\_dim},
+    \texttt{head\_value\_dim}
+  & Number of Gated Delta heads and per-head key/value widths. \\
+\(W\) & \texttt{local\_window}
+  & Capacity of each local-attention rolling key--value window. \\
+\(H_x,d_x,C_x\)
+  & \texttt{ExactCacheConfig.n\_heads}, \(d/H_x\),
+    \texttt{capacity}
+  & Exact-cache head count, head width, and number of retained records. \\
+\(S,K,C,A,r\)
+  & \texttt{segment\_size}, \texttt{live\_segments},
+    \texttt{archive\_slots}, \texttt{archive\_segments\_per\_slot},
+    \texttt{archive\_rank}
+  & Episodic segment length, exact-live count, archive-capsule count,
+    segments per capsule, and archive rank. \\
+\(d_r,p,m,J\)
+  & \texttt{router\_dimension}, \texttt{router\_degree},
+    \texttt{sketch\_dim}, \texttt{n\_sketches}
+  & Route width, TensorSketch degree, sketch width, and number of sketches. \\
+\(\kappa_g,\kappa_e\)
+  & \path{GatedDeltaConfig.conv_kernel},
+    \path{EpisodicMemoryConfig.conv_kernel}
+  & Causal depthwise-stem kernel sizes. \\
+\(f_{\min},f_{\max},\varepsilon\)
+  & \texttt{feature\_floor}, \texttt{feature\_ceiling}, \texttt{eps}
+  & Episodic feature bounds and numerical lower clamp. \\
+\(b_x\) & \texttt{x.element\_size()}
+  & Bytes per model-state scalar. \\
+\bottomrule
+\end{longtable}
+
+For block \(\ell\), let \(x_{\ell,t}\in\R^d\) denote its input at token
+\(t\), and define
+\begin{equation}
+  h_{\ell,t}=\RMSNorm(x_{\ell,t}).
+  \label{eq:block-normalized-input}
+\end{equation}
+Every block contains a Gated Delta lane.  The local, episodic, and
+residual-surprise lanes are present when, respectively,
+\begin{align}
+  \ell &\equiv 0
+  \pmod{\texttt{local\_attention\_every}}, \\
+  \ell &\equiv 0
+  \pmod{\texttt{episodic\_every}}, \\
+  \ell &\equiv 0
+  \pmod{\texttt{exact\_cache\_every}},
+\end{align}
+using one-based layer indices, with the additional requirement that the
+episodic or exact-cache configuration exists.  Consequently,
+\begin{align}
+  N_{\mathrm{local}}
+    &=\left\lfloor
+        \frac{L}{\texttt{local\_attention\_every}}
+      \right\rfloor, \\
+  N_{\mathrm{epi}}
+    &=\mathbf{1}_{\{\text{episodic configured}\}}
+      \left\lfloor
+        \frac{L}{\texttt{episodic\_every}}
+      \right\rfloor, \\
+  N_{\mathrm{exact}}
+    &=\mathbf{1}_{\{\text{exact cache configured}\}}
+      \left\lfloor
+        \frac{L}{\texttt{exact\_cache\_every}}
+      \right\rfloor .
+  \label{eq:scheduled-lane-counts}
+\end{align}
+
+All active lanes read the same \(h_{\ell,t}\); their outputs are not chained.
+The Gated Delta lane additionally emits one scalar write-surprise value per
+batch item and token.  The exact-cache lane consumes this scalar for its hard
+insertion decision, but it computes its own query, key, and value projections.
+Each memory lane performs its state update before reading at the same token.
+Thus, the implemented convention is inclusive causal, \(j\leq t\).
+
+\subsection{Causal depthwise streaming stems}
+\label{subsec:streaming-stem}
+
+The Gated Delta and episodic lanes each own an independent
+\texttt{StreamingDepthwiseConv1d}.  For kernel width \(\kappa\), input chunk
+\(x_{1:T}\), and incoming history \(c\in\R^{B\times(\kappa-1)\times d}\),
+the operation is
+\begin{align}
+  \bar x &= [c;x_{1:T}], \\
+  \widetilde x_{1:T}
+    &=\operatorname{DepthwiseConv1d}_{\kappa}(\bar x), \\
+  c'&=\bar x_{-(\kappa-1):}.
+  \label{eq:streaming-convolution}
+\end{align}
+The history therefore stores exactly \(B(\kappa-1)d\) model-dtype elements.
+The convolution is initialized as an identity map: all weights are zero
+except the most recent causal tap, which is one, and the bias is zero.
+
+\begin{proposition}[Chunk compositionality of the causal stem]
+\label{prop:stem-compositionality}
+In exact arithmetic, processing a sequence by
+\eqref{eq:streaming-convolution} in any ordered partition produces the same
+output sequence and terminal history as processing it in one call.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+At every boundary the state \(c'\) is exactly the suffix of length
+\(\kappa-1\) required by the next causal convolution.  Each output at time
+\(t\) is therefore evaluated on the same ordered \(\kappa\)-token context
+under every partition.  Induction over chunk boundaries proves equality.
+\hfill\(\square\)
+
+\subsection{Gated Delta Rule-2 lane}
+\label{subsec:gated-delta}
+
+Suppress the block, batch, and head indices temporarily.  The lane applies its
+own streaming stem to \(h_t\), producing \(\widetilde h_t\), and then forms
+\begin{align}
+  q_t
+    &=\frac{W_q\widetilde h_t}
+            {\max(\norm{W_q\widetilde h_t}_2,\varepsilon)}
+      \in\R^{d_k}, \\
+  k_t
+    &=\frac{W_k\widetilde h_t}
+            {\max(\norm{W_k\widetilde h_t}_2,\varepsilon)}
+      \in\R^{d_k}, \\
+  v_t&=W_v\widetilde h_t\in\R^{d_v}, \\
+  e_t&=\sigmoid(W_e\widetilde h_t+b_e)\in(0,1)^{d_k}, \\
+  w_t&=\sigmoid(W_w\widetilde h_t+b_w)\in(0,1)^{d_v}.
+  \label{eq:gdr-projections}
+\end{align}
+Here \(e_t\) is the erase gate and \(w_t\) is the write gate.  Let
+\(a=\exp(\texttt{decay\_log\_scale})>0\).  The token-dependent decay is
+\begin{align}
+  \log\gamma_t
+    &=-a\odot
+      \softplus\!\left(
+        W_\gamma\widetilde h_t+\texttt{decay\_offset}
+      \right), \\
+  \gamma_t
+    &=\max\!\left\{
+        \exp(\log\gamma_t),\texttt{decay\_min}
+      \right\},
+  \label{eq:gdr-decay}
+\end{align}
+where the maximum is elementwise.  In real arithmetic,
+\(\texttt{decay\_min}\leq\gamma_{t,j}<1\).
+
+For each head, the persistent fast-weight matrix is
+\(F_{t-1}\in\R^{d_k\times d_v}\).  The implemented recurrence is
+\begin{align}
+  \bar F_t
+    &=\diag(\gamma_t)F_{t-1}, \\
+  a_t&=e_t\odot k_t, \\
+  \widehat v_t
+    &=\bar F_t^\top a_t, \\
+  v_t^{\mathrm{target}}
+    &=w_t\odot v_t, \\
+  \Delta v_t
+    &=v_t^{\mathrm{target}}-\widehat v_t, \\
+  F_t
+    &=\bar F_t+k_t(\Delta v_t)^\top, \\
+  o_t&=F_t^\top q_t.
+  \label{eq:gdr-recurrence}
+\end{align}
+The outer-product update and read use the newly written \(F_t\), rather than
+\(F_{t-1}\).  With head indices restored, the write-surprise scalar is
+\begin{equation}
+  \xi_t
+  =
+  \frac{
+    \left(
+      \sum_{h=1}^{H}\sum_{j=1}^{d_v}
+      (\Delta v_{t,h,j})^2
+    \right)^{1/2}
+  }{\sqrt{Hd_v}}
+  =
+  \sqrt{
+    \operatorname{mean}_{h,j}
+    [(\Delta v_{t,h,j})^2]
+  }.
+  \label{eq:write-surprise}
+\end{equation}
+Thus \(\xi_t\) is an RMS write residual, not an unnormalized Euclidean norm.
+The per-head output is gated and projected:
+\begin{equation}
+  g_t
+  =
+  W_{\mathrm{out}}
+  \operatorname{concat}_{h=1}^{H}
+  \left[
+    o_{t,h}\odot
+    \SiLU(W_o\widetilde h_t)_h
+  \right].
+  \label{eq:gdr-output}
+\end{equation}
+The implementation evaluates the fast-weight state, decay path, and recurrence
+in fp32 even under mixed precision, then casts the stacked recurrent output
+back to the model dtype before the output projection.
+
+\begin{proposition}[Fixed recurrent state and inclusive causality]
+\label{prop:gdr-state-causality}
+For fixed \(H,d_k,d_v,\kappa_g,d\), the Gated Delta lane carries
+\begin{equation}
+  (\kappa_g-1)d
+  \quad\text{model-dtype elements and}\quad
+  Hd_kd_v
+  \quad\text{fp32 elements}
+  \label{eq:gdr-state-elements}
+\end{equation}
+per batch item, independently of the number of previously processed tokens.
+Its output at \(t\) is a function only of inputs through \(t\), and it includes
+the update induced by token \(t\).
+\end{proposition}
+\noindent\emph{Proof sketch.}
+The only persistent tensors are the bounded convolution history and one
+\(d_k\times d_v\) fast-weight matrix per head.  Every quantity on the
+right-hand side of \eqref{eq:gdr-recurrence} depends on \(F_{t-1}\) and the
+current stem output.  The read uses \(F_t\), establishing write-then-read
+causality. \hfill\(\square\)
+
+\subsection{Exact bounded local attention}
+\label{subsec:local-attention}
+
+Let \(H_\ell\) be the number of local-attention heads and
+\(d_h=d/H_\ell\).  At token \(t\), projected \(k_t,v_t\) are appended before
+the read and the cache is truncated to its last \(W\) entries:
+\begin{equation}
+  K_t=[K_{t-1};k_t]_{-W:},
+  \qquad
+  V_t=[V_{t-1};v_t]_{-W:}.
+  \label{eq:local-window-update}
+\end{equation}
+For a retained position \(j\) and head \(h\),
+\begin{equation}
+  s_{t,j,h}
+  =
+  \frac{q_{t,h}^{\top}k_{j,h}}{\sqrt{d_h}}
+  -
+  \softplus(\texttt{slope\_raw}_h)(t-j),
+  \label{eq:local-score}
+\end{equation}
+where the implementation constructs \(t-j\) as the reverse distance within
+the rolling window.  It then computes
+\begin{align}
+  \alpha_{t,:,h}
+    &=\softmax(s_{t,:,h}), \\
+  \ell_{t,h}
+    &=\sum_{j\in\mathcal W_t}\alpha_{t,j,h}v_{j,h},
+  \qquad
+  \mathcal W_t=\{\max(1,t-W+1),\ldots,t\}.
+  \label{eq:local-read}
+\end{align}
+The softmax is explicitly evaluated in fp32 and cast back to the model dtype.
+Attention-weight dropout is applied only in training mode.
+
+\begin{proposition}[Local exactness and bound]
+\label{prop:local-exactness}
+The local lane computes ordinary causal softmax attention, with the learned
+linear recency bias in \eqref{eq:local-score}, over exactly the retained
+window \(\mathcal W_t\).  At saturation its persistent key--value payload is
+\begin{equation}
+  F_{\mathrm{local}}=2dW
+  \label{eq:local-state-elements}
+\end{equation}
+model-dtype elements per batch item, and its attention read costs
+\(\bigO(dW)\) per token, excluding dense projections.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Equation~\eqref{eq:local-window-update} retains no index earlier than
+\(t-W+1\), and it inserts the current key and value before
+\eqref{eq:local-read}.  The softmax is not kernelized or low-rank
+approximated.  Two tensors of shape \(H_\ell\times W\times d_h\) yield
+\(2dW\) elements. \hfill\(\square\)
+
+\subsection{Residual-surprise exact key--value cache}
+\label{subsec:exact-cache}
+
+The exact cache has independent projections
+\begin{equation}
+  q_t^x=W_q^x h_t,\qquad
+  k_t^x=W_k^x h_t,\qquad
+  v_t^x=W_v^x h_t,
+  \label{eq:exact-cache-projections}
+\end{equation}
+split into \(H_x\) heads of width \(d_x=d/H_x\).  It receives the scalar
+\(\xi_t\) from \eqref{eq:write-surprise}; no separate learned priority
+projection is present.
+
+\subsubsection{Hard insertion rule}
+
+For each batch item, the state contains \(C_x\) key slots, value slots,
+priorities, and valid bits.  Let
+\begin{equation}
+  \mathcal E_t
+  =
+  \{j:\neg\texttt{valid}_{t-1,j}\}.
+\end{equation}
+If \(\mathcal E_t\neq\varnothing\), the implementation selects the first
+invalid slot.  Otherwise it selects
+\begin{equation}
+  j_{\min}
+  =
+  \arg\min_{1\leq j\leq C_x}
+  \texttt{priority}_{t-1,j}.
+\end{equation}
+The comparison priority is detached from autograd and converted to the
+priority dtype:
+\begin{equation}
+  \widehat\xi_t=\stopgrad(\xi_t).
+\end{equation}
+The write predicate is
+\begin{equation}
+  \operatorname{write}_t
+  =
+  \mathbf{1}\{\mathcal E_t\neq\varnothing\}
+  \lor
+  \mathbf{1}\{
+    \widehat\xi_t>
+    \texttt{priority}_{t-1,j_{\min}}
+  \}.
+  \label{eq:exact-cache-write}
+\end{equation}
+The inequality is strict: an equal-priority arrival does not replace the
+older retained record.  All heads write the current projected key and value to
+the same selected slot.
+
+\begin{proposition}[Stable top-\(C_x\) priority invariant]
+\label{prop:top-cx}
+Assume finite priorities and process one batch item in temporal order.  After
+\(t\) updates, the cache contains \(\min(C_x,t)\) records whose priorities are
+the largest priorities seen so far, with earlier records retained at the
+cutoff when priorities tie.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Before saturation every arrival occupies one empty position.  After
+saturation, an arrival below or equal to the current minimum cannot belong to
+a strictly better top-\(C_x\) set and is rejected.  An arrival above the
+minimum replaces exactly one minimum.  Induction on \(t\) gives the invariant;
+strict comparison yields stable earlier-tie retention. \hfill\(\square\)
+
+\subsubsection{Write-then-read exact softmax}
+
+Insertion precedes the current read.  For valid slot \(j\),
+\begin{align}
+  s_{t,h,j}^x
+    &=
+    \frac{(q_{t,h}^x)^\top k_{j,h}^x}{\sqrt{d_x}}, \\
+  \alpha_{t,h,:}^x
+    &=\softmax(s_{t,h,:}^x), \\
+  o_{t,h}^x
+    &=\sum_{j:\mathrm{valid}_j}
+      \alpha_{t,h,j}^x v_{j,h}^x.
+  \label{eq:exact-cache-read}
+\end{align}
+Invalid positions are masked with the minimum finite value of the score dtype.
+The first token is always inserted because capacity is positive and an empty
+slot exists, so every read has at least one valid entry.  Half and bfloat16
+scores use fp32 softmax; float32 and float64 scores retain their score dtype.
+The current record participates in its read if accepted.  If rejected, its
+query still reads the retained past, but its key and value are absent.
+
+The selection path is deliberately non-differentiable:
+\(\widehat\xi_t\) is detached, and integer indexing plus one-hot selection
+implements the replacement.  Accepted key/value projections receive gradient
+through \eqref{eq:exact-cache-read}; the cache loss does not backpropagate
+through the discrete ranking decision into \(\xi_t\).
+
+\begin{remark}[Meaning of exactness]
+The cache stores the projected \(k_t^x,v_t^x\) of accepted records without
+rank truncation or averaging.  It does not store all tokens, raw hidden states,
+token identifiers, or any record rejected or later evicted by
+\eqref{eq:exact-cache-write}.
+\end{remark}
+
+Its logical state size per batch item is
+\begin{equation}
+  F_{\mathrm{exact}}
+  =
+  2C_xd+2C_x.
+  \label{eq:exact-cache-state-elements}
+\end{equation}
+For ordinary fp16, bfloat16, or fp32 model state, priority is fp32 and valid is
+Boolean, so the byte payload is
+\begin{equation}
+  \operatorname{bytes}_{\mathrm{exact},B=1}
+  =
+  2b_xC_xd+5C_x.
+  \label{eq:exact-cache-state-bytes}
+\end{equation}
+In the float64 validation path priority is also float64, replacing \(5C_x\)
+by \(9C_x\).  Full-shape \texttt{torch.where} updates and the softmax read
+both cost \(\bigO(C_xd)\) per token, excluding dense projections.
+
+\subsection{Bounded episodic associative memory}
+\label{subsec:episodic-memory}
+
+The episodic lane applies its own causal stem to \(h_t\), yielding
+\(\widetilde h_t^e\), and uses a bounded positive feature map
+\begin{equation}
+  \phi(a)
+  =
+  f_{\min}+(f_{\max}-f_{\min})\sigmoid(a),
+  \qquad
+  0<f_{\min}<f_{\max}.
+  \label{eq:positive-feature-map}
+\end{equation}
+The implementation computes
+\begin{align}
+  q_t^+&=\phi(W_q^e\widetilde h_t^e), \\
+  k_t^+&=\phi(W_k^e\widetilde h_t^e), \\
+  v_t^e&=W_v^e\widetilde h_t^e.
+  \label{eq:episodic-projections}
+\end{align}
+Componentwise,
+\begin{equation}
+  f_{\min}\leq \phi(a)_j\leq f_{\max},
+  \label{eq:feature-bounds}
+\end{equation}
+where equality can occur through floating-point sigmoid saturation.
+
+\subsubsection{Separate numerator and denominator summaries}
+
+For a retained token set \(\mathcal I_i\), slot \(i\) represents
+\begin{align}
+  M_i
+    &=\sum_{t\in\mathcal I_i}
+      v_t^e(k_t^+)^\top, \\
+  z_i
+    &=\sum_{t\in\mathcal I_i}k_t^+.
+  \label{eq:slot-moments}
+\end{align}
+The numerator is stored in factors
+\begin{equation}
+  M_i
+  =
+  L_i^\top R_i,
+  \qquad
+  L_i,R_i\in\R^{f_i\times d},
+  \label{eq:slot-factorization}
+\end{equation}
+corresponding to the code fields \texttt{left} and \texttt{right}.  For an
+exact current or live segment, one factor row corresponds to one token.  The
+slot read is
+\begin{align}
+  n_i(q_t^+)
+    &=M_iq_t^+
+      =L_i^\top(R_iq_t^+), \\
+  d_i(q_t^+)
+    &=z_i^\top q_t^+.
+  \label{eq:slot-read}
+\end{align}
+The denominator is never reconstructed from \(R_i\).  After SVD truncation,
+\(R_i\) is a signed low-rank factor and is not a collection of positive keys.
+The independent \(z_i\) is therefore the sole valid denominator summary.
+
+\begin{proposition}[Positive denominator and compression separation]
+\label{prop:positive-denominator}
+Every nonempty retained slot satisfies
+\begin{equation}
+  d_i(q_t^+)>0
+\end{equation}
+in real arithmetic.  Rank truncation of \(M_i\) changes only the numerator in
+\eqref{eq:slot-read}; it does not change \(z_i\) or \(d_i\).
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Every component of every retained \(k_t^+\) and of \(q_t^+\) is positive by
+\eqref{eq:positive-feature-map}.  Hence \(z_i\) is componentwise positive and
+its inner product with \(q_t^+\) is positive.  The compression routines replace
+only \texttt{left} and \texttt{right}; they copy or add \(z_i\) directly.
+\hfill\(\square\)
+
+\subsubsection{Route features and TensorSketch}
+
+The route vector is
+\begin{equation}
+  u_t
+  =
+  \frac{W_r\widetilde h_t^e}
+       {\max(\norm{W_r\widetilde h_t^e}_2,\varepsilon)}
+  \in\R^{d_r}.
+  \label{eq:route-vector}
+\end{equation}
+Thus \(\norm{u_t}_2=1\) when the pre-normalization norm is at least
+\(\varepsilon\), and \(\norm{u_t}_2\leq 1\) otherwise.
+
+For sketch \(j\in\{1,\ldots,J\}\), degree factor
+\(a\in\{1,\ldots,p\}\), bucket \(b\in\{0,\ldots,m-1\}\), fixed hash
+\(h_{j,a}\), and fixed sign map \(s_{j,a}\), define
+\begin{equation}
+  \operatorname{CS}_{j,a}(u)[b]
+  =
+  \sum_{\ell:h_{j,a}(\ell)=b}
+  s_{j,a}(\ell)u_\ell .
+  \label{eq:count-sketch}
+\end{equation}
+The implemented TensorSketch feature is
+\begin{equation}
+  \psi_j(u)
+  =
+  \operatorname{IFFT}\!\left(
+    \prod_{a=1}^{p}
+    \operatorname{FFT}(
+      \operatorname{CS}_{j,a}(u)
+    )
+  \right)
+  \in\R^m.
+  \label{eq:tensor-sketch}
+\end{equation}
+Hashes and signs are generated once from \texttt{router\_seed} and registered
+as persistent buffers.  A slot stores additive summaries
+\begin{align}
+  r_i&=\sum_{t\in\mathcal I_i}u_t, \\
+  \Psi_{i,j}
+    &=\sum_{t\in\mathcal I_i}\psi_j(u_t), \\
+  c_i&=\abs{\mathcal I_i}.
+  \label{eq:route-summaries}
+\end{align}
+The sketch is used only to score slots.  Finite \(m\) and \(J\) permit
+collisions, and the implementation does not claim a collision-free identity
+store.  Configuration validation requires odd \(J\), making the median below
+unambiguous.
+
+\subsubsection{Mass-weighted routing and its clamp condition}
+
+For route query \(u_q\) and slot \(i\), the linear and polynomial scores are
+\begin{align}
+  \ell_i
+    &=
+    \frac{u_q^\top r_i}{\sqrt{\max(c_i,1)}}, \\
+  \rho_i
+    &=
+    \frac{
+      \median_{j=1,\ldots,J}
+      [\psi_j(u_q)^\top\Psi_{i,j}]
+    }{\sqrt{\max(c_i,1)}}.
+  \label{eq:route-component-scores}
+\end{align}
+Let
+\begin{equation}
+  (\pi_1,\pi_p)=\softmax(\texttt{mix\_logits}),
+  \qquad
+  s_i=\pi_1\ell_i+\pi_p\rho_i.
+  \label{eq:mixed-route-score}
+\end{equation}
+The signed, bounded temperature is
+\begin{equation}
+  \theta
+  =
+  \texttt{max\_temperature}
+  \tanh(\texttt{temperature\_raw}).
+  \label{eq:router-temperature}
+\end{equation}
+The implementation does not constrain \(\theta\) to be positive.
+
+It is important to state the numerical stabilizers exactly.  With
+\begin{align}
+  D_0&=\sum_i d_i, \\
+  D_\varepsilon&=\max(D_0,\varepsilon), \\
+  \bar s
+    &=\frac{\sum_i s_i d_i}{D_\varepsilon}, \\
+  \eta_i
+    &=\clip\!\left(
+       \theta(s_i-\bar s),-L_w,L_w
+      \right), \\
+  \widetilde w_i&=\exp(\eta_i)>0, \\
+  c_\varepsilon
+    &=\max\!\left(
+      \frac{\sum_i\widetilde w_i d_i}{D_\varepsilon},
+      \varepsilon
+    \right), \\
+  w_i&=\frac{\widetilde w_i}{c_\varepsilon},
+  \qquad
+  L_w=\texttt{max\_log\_weight},
+  \label{eq:implemented-router}
+\end{align}
+the routed numerator and returned denominator are
+\begin{align}
+  N_{\mathrm{route}}
+    &=\sum_iw_i n_i, \\
+  D_{\mathrm{returned}}
+    &=D_0, \\
+  y_t^e
+    &=\frac{N_{\mathrm{route}}}
+            {\max(D_{\mathrm{returned}},\varepsilon)}.
+  \label{eq:episodic-output}
+\end{align}
+The code intentionally does not multiply the returned denominator by \(w_i\).
+
+\begin{proposition}[Conditional denominator-mass conservation]
+\label{prop:conditional-mass}
+If both lower clamps in \eqref{eq:implemented-router} are inactive, namely
+\begin{equation}
+  D_0\geq\varepsilon
+  \quad\text{and}\quad
+  \frac{\sum_i\widetilde w_i d_i}{D_0}
+  \geq\varepsilon,
+  \label{eq:mass-conservation-conditions}
+\end{equation}
+then
+\begin{equation}
+  w_i>0,
+  \qquad
+  \sum_iw_id_i=D_0.
+  \label{eq:mass-conservation}
+\end{equation}
+If additionally \(\theta=0\), then \(w_i=1\) for every slot.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Under \eqref{eq:mass-conservation-conditions},
+\[
+  c_\varepsilon
+  =
+  \frac{\sum_i\widetilde w_i d_i}{D_0}.
+\]
+Substitution into \(w_i=\widetilde w_i/c_\varepsilon\) yields
+\(\sum_iw_id_i=D_0\); positivity follows from the exponential and positive
+normalizer.  When \(\theta=0\), every \(\eta_i=0\), hence
+\(\widetilde w_i=1\) and \(c_\varepsilon=1\). \hfill\(\square\)
+
+\begin{remark}[Active-clamp behavior]
+\label{rem:active-clamp}
+When either condition in \eqref{eq:mass-conservation-conditions} fails, the
+implemented stabilized formula remains \eqref{eq:implemented-router}, but
+\eqref{eq:mass-conservation} is not an unconditional identity.  For example,
+if only the first clamp is active and the second is inactive, then
+\(\sum_iw_id_i=D_\varepsilon\), not necessarily \(D_0\).  This distinction is
+why all exact mass-conservation claims in this paper carry the inactive-clamp
+hypothesis.  The unit test exercises positive masses well above
+\(\varepsilon\) and verifies the equality to floating-point tolerance.
+\end{remark}
+
+\subsubsection{Current, live, and archive lifecycle}
+
+Each token first creates a one-row slot and is appended to
+\texttt{current}.  When the current factor count reaches \(S\), the completed
+slot moves to the end of the exact \texttt{live} tuple and
+\texttt{current} becomes empty.  If this produces more than \(K\) live
+segments, the oldest live segment is evicted.  When \(C=0\), that segment is
+forgotten.  Otherwise it enters a temporal archive ring:
+\begin{enumerate}
+  \item the first segment of a capsule is compressed to rank \(r\);
+  \item further incoming segments are merged into the active capsule until it
+        contains \(A\) segments;
+  \item the cursor then advances to the next capsule; and
+  \item once all \(C\) positions exist, advancing overwrites the next capsule
+        and erases its former contents.
+\end{enumerate}
+The physical tuple order is not required to be chronological; the cursor
+identifies the active ring position.
+
+The method \texttt{maximum\_retained\_tokens()} returns the conservative
+allocation-style horizon
+\begin{equation}
+  H_{\max}
+  =
+  S(1+K+CA)
+  =
+  \underbrace{S}_{\text{current budget}}
+  +
+  \underbrace{KS}_{\text{exact live}}
+  +
+  \underbrace{CAS}_{\text{compressed archive}}.
+  \label{eq:retained-horizon}
+\end{equation}
+Because a current segment is sealed immediately at \(S\),
+\begin{equation}
+  0\leq\abs{\texttt{current}}<S,
+  \qquad
+  N_{\mathrm{retained}}\leq H_{\max}-1
+  \label{eq:reachable-retained-horizon}
+\end{equation}
+for an actually reachable state.  After a full-ring overwrite, the number of
+archived segments falls from \(CA\) to \((C-1)A+1\), then rises as the new
+active capsule fills.  Hence the age horizon has a sawtooth variation of up to
+\(A-1\) archived segments.
+
+\begin{proposition}[Bounded episodic lifecycle]
+\label{prop:bounded-episodic-lifecycle}
+For every stream length,
+\begin{equation}
+  \abs{\texttt{live}}\leq K,\qquad
+  \abs{\texttt{archive}}\leq C,\qquad
+  \texttt{archive\_cursor\_segments}\leq A,
+  \label{eq:episodic-container-bounds}
+\end{equation}
+and \eqref{eq:reachable-retained-horizon} holds.  Current and live numerator
+factors are algebraically exact sums for their retained tokens; archive
+numerators have rank at most \(r\); overwritten capsules have no remaining
+representation.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Sealing resets current before it can exceed \(S-1\).  Live overflow immediately
+evicts its oldest element, maintaining \(K\).  Archive insertion either merges
+into the current capsule, appends while fewer than \(C\) capsules exist, or
+overwrites one existing capsule.  The cursor advances after \(A\) segments.
+These transitions establish \eqref{eq:episodic-container-bounds} by induction;
+counting their maximum represented tokens yields
+\eqref{eq:reachable-retained-horizon}. \hfill\(\square\)
+
+\subsection{Thin-QR, small-core SVD compression}
+\label{subsec:small-core-svd}
+
+The archive compresses a factor pair without materializing a dense
+\(d\times d\) numerator.  Suppress the batch index and let
+\begin{equation}
+  L=\texttt{left}^{\top}\in\R^{d\times F},
+  \qquad
+  R=\texttt{right}^{\top}\in\R^{d\times F},
+  \qquad
+  M=LR^\top.
+  \label{eq:compression-input}
+\end{equation}
+Reduced QR decompositions give
+\begin{equation}
+  L=Q_LR_L,\qquad
+  R=Q_RR_R.
+\end{equation}
+The code performs an SVD only on
+\begin{equation}
+  C_{\mathrm{core}}
+  =
+  R_LR_R^\top
+  =
+  U_c\Sigma V_c^\top.
+  \label{eq:small-core}
+\end{equation}
+If \(p_c=\min(d,F)\), then \(C_{\mathrm{core}}\in\R^{p_c\times p_c}\).
+Let
+\begin{equation}
+  r_{\mathrm{eff}}
+  =
+  \min(r,\operatorname{len}(\Sigma)).
+\end{equation}
+The returned factors are
+\begin{align}
+  \widehat L_{\mathrm{rows}}
+    &=
+    \left(
+      Q_LU_{c,:r_{\mathrm{eff}}}
+      \Sigma_{:r_{\mathrm{eff}}}^{1/2}
+    \right)^\top, \\
+  \widehat R_{\mathrm{rows}}
+    &=
+    \left(
+      Q_RV_{c,:r_{\mathrm{eff}}}
+      \Sigma_{:r_{\mathrm{eff}}}^{1/2}
+    \right)^\top.
+  \label{eq:compressed-factors}
+\end{align}
+Zero rows pad each factor to exactly \(r\), keeping archive shapes static.
+For half or bfloat16 input the QR and SVD work in fp32 before results are cast
+back; float32 and float64 retain their input work dtype.
+
+\begin{proposition}[Best rank-\(r\) numerator in exact arithmetic]
+\label{prop:best-rank}
+Ignoring finite-precision QR/SVD and the final dtype cast, the reconstructed
+\begin{equation}
+  \widehat M
+  =
+  \widehat L_{\mathrm{rows}}^\top
+  \widehat R_{\mathrm{rows}}
+\end{equation}
+is a best rank-\(r_{\mathrm{eff}}\) approximation to \(M\) in Frobenius norm,
+and
+\begin{equation}
+  \norm{M-\widehat M}_F
+  =
+  \delta
+  =
+  \left(
+    \sum_{j>r_{\mathrm{eff}}}\sigma_j(C_{\mathrm{core}})^2
+  \right)^{1/2}.
+  \label{eq:discarded-tail}
+\end{equation}
+If \(r\geq\rank(M)\), the compression is algebraically exact.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Reduced QR factors have orthonormal columns, so left and right multiplication
+by \(Q_L,Q_R^\top\) preserves all nonzero singular values and Frobenius norms.
+Truncating the SVD of \(C_{\mathrm{core}}\) therefore gives the
+Eckart--Young best-rank approximation to \(M\).  Splitting
+\(\Sigma^{1/2}\) symmetrically reconstructs that truncation.
+\hfill\(\square\)
+
+In a typical merge, an existing rank-\(r\) capsule is concatenated with an
+exact \(S\)-row live segment, so \(F\leq r+S\) and
+\begin{equation}
+  p_c=\min(d,F)\leq\min(d,r+S).
+\end{equation}
+One merge costs approximately
+\begin{equation}
+  \bigO(dFp_c+p_c^3).
+  \label{eq:compression-merge-cost}
+\end{equation}
+Since a live overflow occurs at most once every \(S\) tokens, its steady-state
+amortized cost is
+\begin{equation}
+  \bigO\!\left(
+    \frac{d(r+S)p_c+p_c^3}{S}
+  \right)
+  \quad\text{per token}.
+  \label{eq:compression-amortized-cost}
+\end{equation}
+The core is genuinely small only when \(r+S\ll d\).  Configuration validation
+enforces \(r\leq d\), but does not enforce \(r+S<d\); the core can therefore
+grow to \(d\times d\).
+
+\subsection{Compression error ledger}
+\label{subsec:error-ledger}
+
+For one archive capsule, let \(M_1,\ldots,M_u\) be exact incoming segment
+numerators and
+\begin{equation}
+  M_u^\star=\sum_{j=1}^{u}M_j
+\end{equation}
+the ideal retained numerator.  At merge \(u\), the implementation truncates
+\begin{equation}
+  A_u=\widehat M_{u-1}+M_u,
+  \qquad
+  \widehat M_u=P_r(A_u),
+\end{equation}
+and reports
+\begin{equation}
+  \delta_u
+  =
+  \norm{A_u-P_r(A_u)}_F
+  =
+  \left(
+    \sum_{j>r}\sigma_j(A_u)^2
+  \right)^{1/2}.
+  \label{eq:merge-tail}
+\end{equation}
+The slot field \texttt{error\_bound} is updated linearly:
+\begin{equation}
+  E_u
+  =
+  E_{u-1}+E_{\mathrm{incoming}}+\delta_u.
+  \label{eq:error-ledger-update}
+\end{equation}
+For a freshly evicted exact live segment,
+\(E_{\mathrm{incoming}}=0\).
+
+\begin{proposition}[Retained-capsule error bound]
+\label{prop:error-ledger}
+In exact arithmetic, the ledger satisfies
+\begin{equation}
+  \norm{M_u^\star-\widehat M_u}_F\leq E_u.
+  \label{eq:ledger-frobenius-bound}
+\end{equation}
+Consequently, for any query \(q\),
+\begin{equation}
+  \norm{(M_u^\star-\widehat M_u)q}_2
+  \leq E_u\norm{q}_2.
+  \label{eq:ledger-query-bound}
+\end{equation}
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Write
+\[
+  M_u^\star-\widehat M_u
+  =
+  (M_{u-1}^\star-\widehat M_{u-1})
+  +(M_u-\widehat M_{\mathrm{incoming}})
+  +(A_u-P_r(A_u)).
+\]
+The triangle inequality and the inductive bounds on the first two terms yield
+\eqref{eq:ledger-frobenius-bound} with the additive update
+\eqref{eq:error-ledger-update}.  Submultiplicativity,
+\(\norm{Eq}_2\leq\norm{E}_F\norm{q}_2\), yields
+\eqref{eq:ledger-query-bound}. \hfill\(\square\)
+
+Because \(z_i\), route sums, sketch sums, and counts are accumulated separately
+from numerator compression, the ideal and compressed reads use the same
+denominator and router weights when compared at the same retained segmentation.
+For positive \(w_i\),
+\begin{equation}
+  \norm{y^\star-\widehat y}_2
+  \leq
+  \frac{
+    \norm{q}_2
+    \sum_{i\in\mathrm{archive}}w_iE_i
+  }{D_0},
+  \label{eq:routed-output-error-bound}
+\end{equation}
+provided the mathematical denominator is \(D_0>0\).  This bound covers only
+currently retained capsules.  It excludes overwritten history, finite-precision
+QR/SVD error, rounding from casting factors back to a lower dtype, and any task
+accuracy or recall guarantee.
+
+\subsection{Token-wise branch fusion and SwiGLU}
+\label{subsec:fusion}
+
+Let \(b_{t,j}\in\R^d\) denote active branch \(j\)'s output.  Each branch has an
+independent RMS normalization and an unconstrained learned scalar:
+\begin{equation}
+  \widetilde b_{t,j}
+  =
+  \beta_j\RMSNorm_j(b_{t,j}),
+  \qquad
+  \beta_j=\texttt{branch\_scale}_j.
+  \label{eq:branch-normalization}
+\end{equation}
+When more than one branch is active,
+\begin{align}
+  \alpha_t
+    &=\softmax(W_fh_t+b_f), \\
+  f_t
+    &=\sum_j\alpha_{t,j}\widetilde b_{t,j},
+  \qquad
+  \alpha_{t,j}>0,\quad
+  \sum_j\alpha_{t,j}=1.
+  \label{eq:convex-fusion}
+\end{align}
+With a single branch, the fusion projection is absent and the normalized,
+scaled branch is returned directly.  For a multi-branch block, \(W_f,b_f\)
+are initialized to zero and every \(\beta_j\) to one, giving a uniform mixture
+at initialization.
+
+\begin{proposition}[Precise convexity statement]
+\label{prop:fusion-convexity}
+For each token, \(f_t\) lies in the convex hull of the scaled normalized
+vectors \(\{\widetilde b_{t,j}\}_j\).  It is not generally constrained to the
+convex hull of the raw branch outputs \(\{b_{t,j}\}_j\).
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Softmax gives positive coefficients summing to one, proving the first claim.
+The second follows because each \(\beta_j\) is unconstrained and each branch
+has a distinct nonlinear RMS normalization. \hfill\(\square\)
+
+The first residual update is
+\begin{equation}
+  x'_t
+  =
+  x_t+\operatorname{Dropout}(f_t).
+\end{equation}
+Writing
+\begin{equation}
+  (g_t^{\mathrm{ffn}},v_t^{\mathrm{ffn}})
+  =
+  \operatorname{split}\!\left(
+    W_{\mathrm{in}}\RMSNorm(x'_t)
+  \right),
+\end{equation}
+the feed-forward output and second residual are
+\begin{align}
+  \operatorname{SwiGLU}(x'_t)
+    &=
+    W_{\mathrm{out}}^{\mathrm{ffn}}
+    \left[
+      \SiLU(g_t^{\mathrm{ffn}})
+      \odot v_t^{\mathrm{ffn}}
+    \right], \\
+  x_{t,\mathrm{out}}
+    &=
+    x'_t+
+    \operatorname{Dropout}(
+      \operatorname{SwiGLU}(x'_t)
+    ).
+  \label{eq:block-output}
+\end{align}
+
+\subsection{Global causality and chunk/step equivalence}
+\label{subsec:causality-chunking}
+
+Let a lane state transition be written
+\[
+  (y_t,\state_t)=\mathcal T(x_t,\state_{t-1}).
+\]
+The concrete \(\state_t\) is the tuple of convolution histories, Gated Delta
+fast weights, local key--value windows, exact-cache tensors and metadata, and
+episodic current/live/archive state.
+
+\begin{proposition}[Inclusive causal block semantics]
+\label{prop:global-causality}
+With fixed parameters and incoming state, the output at token \(t\) depends
+only on the incoming state and tokens through \(t\).  No future token can
+change an earlier output.  The current token can influence its own memory
+read in every memory lane.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+The streaming stems are causal by
+\eqref{eq:streaming-convolution}.  The Gated Delta lane updates \(F_t\) before
+reading it; local attention appends \((k_t,v_t)\) before softmax; the exact
+cache decides insertion before reading; and the episodic lane writes and
+performs any seal, eviction, merge, or overwrite before aggregating its slots.
+Fusion and SwiGLU are token local.  Composition over layers preserves
+causality. \hfill\(\square\)
+
+The language-model loss uses
+\(\texttt{logits[:, :-1]}\) against \(\texttt{labels[:, 1:]}\), so the
+inclusive memory read is compatible with next-token prediction.
+
+\begin{proposition}[Chunk and step equivalence]
+\label{prop:chunk-step}
+Assume evaluation mode, fixed parameters, identical initial state, exact
+arithmetic, and the same token order.  For any ordered partition of a sequence,
+concatenating chunk outputs yields the same outputs and terminal state as one
+full call or repeated one-token \texttt{step} calls.
+\end{proposition}
+\noindent\emph{Proof sketch.}
+Each forward method applies the same token transition in temporal order.
+Proposition~\ref{prop:stem-compositionality} handles both convolutional stems.
+All other state updates are functions solely of the previous explicit state
+and current projected token.  Associating the composition
+\(\mathcal T_T\circ\cdots\circ\mathcal T_1\) according to chunk boundaries
+does not change it. \hfill\(\square\)
+
+\begin{remark}[Finite precision and training mode]
+The implementation tests chunk/step equality in evaluation mode with numerical
+tolerances, because vectorized linear projections and convolution kernels may
+have shape-dependent floating-point reduction order.  In training mode,
+different partitioning can also consume dropout random numbers differently.
+Therefore Proposition~\ref{prop:chunk-step} is not stated as bitwise equality
+for arbitrary training executions.
+\end{remark}
+
+\subsection{Persistent-state and compute bounds}
+\label{subsec:state-compute}
+
+Define the full conservative current/live slot size
+\begin{equation}
+  F_{\mathrm{live}}
+  =
+  2Sd+d+d_r+Jm+2,
+  \label{eq:live-slot-size}
+\end{equation}
+and archive slot size
+\begin{equation}
+  F_{\mathrm{archive}}
+  =
+  2rd+d+d_r+Jm+2.
+  \label{eq:archive-slot-size}
+\end{equation}
+The terms are the two numerator factors, exact \(z\), route sum, \(J\) sketch
+sums, count, and error ledger.  The episodic state bound per batch item is
+\begin{equation}
+  F_{\mathrm{epi}}
+  =
+  (K+1)F_{\mathrm{live}}
+  +CF_{\mathrm{archive}}
+  +(\kappa_e-1)d.
+  \label{eq:episodic-state-bound}
+\end{equation}
+This is conservative because a reachable current slot has fewer than \(S\)
+rows.  The temporary fp32 QR/SVD workspace is not persistent state.
+
+Combining all scheduled lanes gives the following logical tensor-byte bound
+per batch item for ordinary non-float64 execution:
+\begin{align}
+  \operatorname{bytes}_{B=1}
+  \leq{}&
+  L\left[
+    b_x(\kappa_g-1)d
+    +4Hd_kd_v
+  \right]
+  +
+  N_{\mathrm{local}}(2b_xdW)
+  \nonumber\\
+  &+
+  N_{\mathrm{epi}}(b_xF_{\mathrm{epi}})
+  +
+  N_{\mathrm{exact}}
+  \left(
+    2b_xC_xd+5C_x
+  \right).
+  \label{eq:model-state-byte-bound}
+\end{align}
+Batch size \(B\) multiplies the tensor payload by \(B\).  This accounting
+excludes parameters, optimizer state, autograd activations, QR/SVD workspace,
+Python metadata, allocator fragmentation, and excess backing-storage
+capacity.  In particular, bounded inference state does not imply bounded
+training activation memory when the entire computation graph is retained.
+
+Table~\ref{tab:lane-complexity} summarizes token costs.  Dense projection costs
+are shown separately because the persistent-memory terms are the quantities
+that distinguish the four lanes.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Per-token time and persistent state for fixed configuration.}
+\label{tab:lane-complexity}
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+Lane & Per-token time beyond or including stated projections
+     & Persistent elements per batch item \\
+\midrule
+Gated Delta
+  & \(\bigO(Hd_kd_v+\kappa_gd)\) recurrence/stem, plus its dense
+    query/key/value/gate projections
+  & \(Hd_kd_v\) fp32 plus \((\kappa_g-1)d\) model-dtype \\
+Local exact
+  & \(\bigO(dW)\) attention plus \(\bigO(d^2)\) QKV/output projections
+  & \(2dW\) model-dtype \\
+Residual-surprise exact
+  & \(\bigO(C_xd)\) selection, full-shape update, and read, plus
+    \(\bigO(d^2)\) projections
+  & \(2C_xd\) model-dtype plus \(C_x\) priority and \(C_x\) valid entries \\
+Episodic
+  & Factor read, routing, sketching, dense projections, and amortized
+    compression as in \eqref{eq:episodic-token-cost}
+  & At most \(F_{\mathrm{epi}}\) model-dtype elements \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+At most \(1+K+C\) episodic slots participate in a read.  Their factor-read
+cost is
+\begin{equation}
+  \bigO\!\left(
+    d[S(K+1)+Cr]
+  \right).
+\end{equation}
+Route comparisons cost
+\begin{equation}
+  \bigO\!\left(
+    (K+C+1)(d_r+Jm)
+  \right),
+\end{equation}
+and the current FFT implementation constructs a token sketch in
+\begin{equation}
+  \bigO\!\left(
+    Jp[d_r+m\log m]
+  \right).
+\end{equation}
+Including amortized compression but suppressing dense projection constants,
+\begin{equation}
+  \begin{split}
+  \operatorname{cost}_{\mathrm{epi/token}}
+  =\bigO\bigg(
+    &d[S(K+1)+Cr]
+    +(K+C+1)(d_r+Jm)\\
+    &+Jp[d_r+m\log m]
+    +\frac{d(r+S)p_c+p_c^3}{S}
+  \bigg).
+  \end{split}
+  \label{eq:episodic-token-cost}
+\end{equation}
+For a fixed configuration, recurrent-decode cost and persistent state are
+independent of total context length.  A \(T\)-token scan nevertheless costs
+\(\bigO(T)\) times the fixed per-token work.  The current Python backend uses
+token loops, tuple concatenation, full-cache \texttt{torch.where}, and
+occasional QR/SVD; these asymptotic state bounds do not imply fused-kernel
+throughput.
+
+\subsection{Finite-capacity boundary}
+\label{subsec:finite-capacity}
+
+Every persistent lane is explicitly bounded:
+\begin{itemize}
+  \item Gated Delta has \(Hd_kd_v\) fp32 fast-weight elements;
+  \item local attention stores only the last \(W\) projected key--value pairs;
+  \item the residual-surprise cache stores at most \(C_x\) selected projected
+        key--value pairs; and
+  \item episodic memory stores one partial segment, at most \(K\) exact live
+        segments, and at most \(C\) rank-\(r\) archive capsules.
+\end{itemize}
+For every capsule,
+\begin{equation}
+  \rank(\widehat M_i)\leq r.
+\end{equation}
+Exact \(z_i\), route, sketch, and count summaries cannot reconstruct numerator
+directions discarded by rank truncation.
+
+\begin{proposition}[Finite-state impossibility of arbitrary unbounded recall]
+\label{prop:finite-state-impossibility}
+Fix model parameters and a persistent state representation with at most
+\(Q\) physical bits.  Suppose query keys are supplied externally and each of
+\(N\) independent associated values belongs to an alphabet
+\(\mathcal V\), with \(\abs{\mathcal V}\geq2\).  A system that recalls every
+possible assignment without error must satisfy
+\begin{equation}
+  Q\geq N\log_2\abs{\mathcal V},
+  \qquad\text{equivalently}\qquad
+  N\leq\frac{Q}{\log_2\abs{\mathcal V}}.
+  \label{eq:finite-state-bound}
+\end{equation}
+\end{proposition}
+\noindent\emph{Proof sketch.}
+There are \(\abs{\mathcal V}^N\) possible independent value assignments.
+Perfect recall requires that assignments needing different answers not collapse
+to the same persistent state.  A \(Q\)-bit state has at most \(2^Q\) distinct
+physical encodings, so injectivity requires
+\(2^Q\geq\abs{\mathcal V}^N\).  Taking base-two logarithms yields
+\eqref{eq:finite-state-bound}. \hfill\(\square\)
+
+This counting bound is deliberately optimistic: it ignores floating-point
+noise, hash collisions, readout interference, rank limits, replacement, and
+optimization error.  The implemented consequences are concrete.  Exact-cache
+records outside the stable top-\(C_x\) set are absent from that lane;
+local-attention records older than \(W\) are absent from that lane; an
+overwritten episodic capsule is absent entirely; and retained archive
+numerators are generally lossy.  Increasing \(A\) extends
+\eqref{eq:retained-horizon} without adding archive slots, but forces more
+segments through the same rank-\(r\) capsule and can only increase the
+opportunity for approximation and interference.  No equation in this section
+supports exact recall over an unbounded stream.
+
+\subsection{Code correspondence and validation boundary}
+\label{subsec:code-correspondence}
+
+The equations above were cross-checked against the following implementation
+sites:
+\begin{itemize}
+  \item \texttt{gated\_delta.py}: decay, erase/write recurrence, RMS surprise,
+        fp32 fast weights, and write-then-read order;
+  \item \texttt{local\_attention.py}: append/truncate/read order, learned
+        recency slope, fp32 softmax, and \(W\)-bounded state;
+  \item \texttt{exact\_cache.py}: detached strict replacement, batch-local
+        first-empty/minimum selection, exact softmax read, and mixed-dtype
+        state accounting;
+  \item \texttt{episodic.py}: positive feature map, separate \(M\) and \(z\),
+        TensorSketch routing, stabilized mass normalization, ring lifecycle,
+        retained horizon, and state formula;
+  \item \texttt{compression.py}: reduced QR, small-core SVD, symmetric singular
+        split, discarded tail, and additive error ledger;
+  \item \texttt{model.py}: parallel branch execution, token-wise softmax
+        fusion, residual ordering, and SwiGLU; and
+  \item \texttt{state.py}: the exact persistent tensor fields counted in
+        \eqref{eq:model-state-byte-bound}.
+\end{itemize}
+
+The corresponding tests check Gated Delta scan/step equality and fixed state;
+local scan/step equality, window capping, and causality; exact-cache top-priority
+retention, strict ties, scan/step equality, causality, dtype handling, and
+constant allocation; episodic denominator separation, conditional routing
+mass conservation, chunk equivalence through archive eviction, causality, and
+bounded state; dense-versus-small-core compression and the error ledger; and
+full-model chunk/step equality in evaluation mode.  The shipped release record
+\texttt{results/release\_validation.json} reports fifty passing tests for the
+audited snapshot.
+
+Two measured artifacts are useful only as implementation anchors, not as
+theorems.  The protocol
+\texttt{aluclu\_diagnostic\_next\_token\_mqar\_v1} records \(90.43\%\)
+answer accuracy and \(9{,}200\) bytes of batch-one state for its small learned
+CPU diagnostic.  The protocol
+\texttt{aluclu\_reference\_performance\_v2} records \(164{,}576\) bytes after
+a saturated batch-one stream, a required warmup horizon of \(528\) tokens, and
+a median \(143.71\) recurrent tokens/s in its reported single-thread CPU
+environment.  These values establish that the specified mechanics executed
+under those exact configurations; they do not prove large-scale language-model
+quality, hardware-independent speed, or superiority over another architecture.

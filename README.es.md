@@ -161,6 +161,8 @@ presupuestos de window, cache, rank y archive.
 - `docs/EXECUTION_PLAN_TR.md`: puertas completadas, orden de escalado/fusión en
   kernels y criterios de detención.
 - `docs/BRAND.md`: nomenclatura de ALUCLU, mensaje técnico y formato de cita.
+- `paper/ALUCLU_paper.pdf`: artículo técnico compilado de 47 páginas; el
+  código LaTeX y la bibliografía están en `paper/`.
 - `CHANGELOG.md`: cambios de las versiones.
 
 ## Licencia y cita

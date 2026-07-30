@@ -1,0 +1,143 @@
+\section{Problem Formulation and Claim Contract}
+\label{sec:problem-contract}
+
+\subsection{Causal streaming interface}
+
+Let \(x_{1:T}\) be a token sequence and let \(f_\theta\) be a decoder-only
+model. At token \(t\), the recurrent interface computes
+\begin{equation}
+  (y_t,\state_t)=f_\theta(x_t,\state_{t-1}),
+  \label{eq:stream-interface}
+\end{equation}
+where \(y_t\) denotes logits or a hidden representation and \(\state_t\) is
+the complete persistent state. Causality requires that \(y_t\) and
+\(\state_t\) be functions only of \(x_{1:t}\). For a fixed configuration
+\(\mathcal{C}\), bounded persistent state means that there exists a finite
+quantity \(M(\mathcal{C},B)\) such that
+\begin{equation}
+  \operatorname{bytes}(\state_t)\le M(\mathcal{C},B)
+  \qquad \text{for every }t,
+  \label{eq:bounded-state}
+\end{equation}
+for batch size \(B\). The bound may depend on width, layers, cache capacities,
+window size, ranks, data types, and batch size, but not on the number of
+already processed tokens.
+
+Equation~\eqref{eq:bounded-state} concerns inference payload. It does not imply
+that training activation memory is independent of \(T\): a naive autograd
+scan retains a graph whose size grows with the number of untruncated steps.
+Likewise, bounded logical tensor payload does not imply bounded allocator
+workspace or constant wall-clock latency at archive compression boundaries.
+
+\subsection{Inclusive write-then-read semantics}
+
+The implemented memory lanes use inclusive causal semantics. At time \(t\),
+the current token is first admitted to, or used to update, the relevant state;
+the read then uses that updated state. Symbolically,
+\begin{equation}
+  \state_t=\operatorname{write}(x_t,\state_{t-1}),\qquad
+  y_t=\operatorname{read}(x_t,\state_t).
+  \label{eq:write-read}
+\end{equation}
+For language modeling, loss is computed between
+\(\mathrm{logits}_{1:T-1}\) and labels \(x_{2:T}\), so inclusive internal
+memory is compatible with next-token prediction. The ordering is important at
+local-window boundaries, exact-cache replacement events, and episodic segment
+seals; a read-before-write implementation would define a different model.
+
+\subsection{Pareto objective}
+
+No single scalar called ``performance'' captures the intended design target.
+For model and hardware configuration \(\mathcal{C}\), define
+\begin{equation}
+  \mathbf{J}(\mathcal{C}) =
+  \left(
+  Q_{\mathrm{task}},
+  R_{\mathrm{recall}},
+  \tau_{\mathrm{prefill}},
+  \tau_{\mathrm{decode}},
+  M_{\mathrm{peak}},
+  M_{\mathrm{state}},
+  E_{\mathrm{token}}
+  \right),
+  \label{eq:pareto-vector}
+\end{equation}
+where \(Q_{\mathrm{task}}\) is downstream quality,
+\(R_{\mathrm{recall}}\) is controlled retrieval accuracy,
+\(\tau_{\mathrm{prefill}}\) and \(\tau_{\mathrm{decode}}\) are throughput,
+\(M_{\mathrm{peak}}\) is peak runtime memory, \(M_{\mathrm{state}}\) is
+persistent state payload, and \(E_{\mathrm{token}}\) is energy per generated
+token. An architecture is interesting only if it shifts a relevant Pareto
+front under matched parameters, tokens, optimizer, precision, compiler,
+hardware, and quality constraints.
+
+For this reason, the current release does not optimize
+Equation~\eqref{eq:pareto-vector} into one headline score. It exposes the
+budgets and protocols needed to measure each coordinate independently.
+
+\subsection{Information-capacity lower bound}
+
+Suppose a finite state contains at most \(Q\) bits and a task asks the model to
+recover \(N\) independent values drawn uniformly from an alphabet
+\(\mathcal{V}\), with query keys known externally. The values alone have
+\(N\log_2\abs{\mathcal{V}}\) bits of entropy. Lossless recovery for all
+possible assignments therefore requires
+\begin{equation}
+  Q\ge N\log_2\abs{\mathcal{V}},
+  \qquad\text{or equivalently}\qquad
+  N\le \frac{Q}{\log_2\abs{\mathcal{V}}}.
+  \label{eq:counting-bound}
+\end{equation}
+The bound is optimistic: it ignores floating-point noise, query ambiguity,
+router collisions, rank constraints, and the computational limits of the
+readout. It nevertheless rules out unbounded exact arbitrary recall from a
+fixed-precision state. \ALUCLU therefore treats forgetting and approximation
+as explicit budgeted operations rather than hiding them behind an unlimited
+context-length label.
+
+\subsection{Fair-comparison requirements}
+\label{sec:fair-comparison}
+
+An end-to-end comparison is valid only when the following conditions are
+reported and, where relevant, matched:
+
+\begin{itemize}
+  \item training data, tokenizer, token count, data order, and contamination
+  controls;
+  \item parameter count, effective depth and width, optimizer, schedule,
+  batch tokens, and gradient clipping;
+  \item inference precision, quantization, batch size, prompt length,
+  generation length, and sampling policy;
+  \item software versions, compiler flags, kernel implementation, device,
+  power mode, and thermal state;
+  \item whether model loading, random-token generation, compilation,
+  synchronization, and state allocation occur inside the timed region;
+  \item accuracy or loss at the throughput operating point;
+  \item median and dispersion across repeated runs, not only a best sample.
+\end{itemize}
+
+The portable reference backend is primarily a semantic oracle. It should be
+compared with optimized systems only after the same recurrence has a
+specialized implementation, and both semantic equality and numerical drift
+have been tested against the oracle.
+
+\subsection{Progression gates}
+
+The project uses four evidence gates.
+
+\begin{enumerate}
+  \item \textbf{Mechanics gate:} unit invariants, causality, scan/step
+  equivalence, state saturation, serialization policy, and finite gradients.
+  \item \textbf{Learnability gate:} multiple seeds and controlled synthetic
+  tasks, including MQAR protocols whose target alignment is frozen.
+  \item \textbf{Quality gate:} matched-token pretraining and long-context
+  downstream evaluation against serious recurrent, attention, and hybrid
+  baselines.
+  \item \textbf{Systems gate:} fused kernels, profiler evidence, peak memory,
+  decode and prefill throughput, energy, and quality-matched comparisons on
+  target accelerators.
+\end{enumerate}
+
+The present v0.1.0 artifact passes the mechanics gate for its tested domain and
+contains one small learnability diagnostic. The larger quality and systems
+gates remain proposed work.

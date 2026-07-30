@@ -152,6 +152,8 @@ bütçelerini API'de görünür kılar.
 - `docs/EXECUTION_PLAN_TR.md`: tamamlanan kapılar, ölçek/kernelleşme sırası ve
   durdurma ölçütleri.
 - `docs/BRAND.md`: ALUCLU adlandırması, teknik mesaj ve atıf biçimi.
+- `paper/ALUCLU_paper.pdf`: derlenmiş 47 sayfalık teknik makale; LaTeX kaynağı
+  ve bibliyografya `paper/` altındadır.
 - `CHANGELOG.md`: sürüm değişiklikleri.
 
 ## Lisans ve atıf

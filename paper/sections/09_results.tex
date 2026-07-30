@@ -1,0 +1,112 @@
+\section{Current Measured Evidence}
+\label{sec:results}
+
+\subsection{Evidence boundary}
+
+This section contains every numerical result used to characterize v0.1.0.
+There is no hidden large-model result and no accelerator benchmark. The
+measurements fall into three categories: invariant tests, a small learnability
+diagnostic, and a saturated-state CPU timing run.
+
+\subsection{Automated release gate}
+
+The recorded release gate ran on Windows, Python 3.11.15, PyTorch
+2.13.0+cpu. It completed bytecode compilation, 50 tests, two training smoke
+runs, and one performance smoke run with zero non-zero return codes.
+
+\begin{table}[h]
+\centering
+\caption{Recorded release-gate outcomes. Smoke runs check executable paths;
+their accuracy is not a trained-model result.}
+\label{tab:release-gate}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Gate & Elapsed (s) & Return code & Interpretation \\
+\midrule
+Compile source, scripts, tests & 0.152 & 0 & Syntax/import compilation \\
+Pytest suite & 5.815 & 0 & 50 tests passed \\
+Diagnostic MQAR smoke & 3.368 & 0 & Two optimizer steps completed \\
+Zoology-aligned MQAR smoke & 3.164 & 0 & One tiny epoch completed \\
+Stream benchmark smoke & 1.971 & 0 & Timing/state path completed \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The two-step and one-epoch smoke tasks report zero evaluation accuracy on
+their tiny held-out samples. That is expected to be possible after almost no
+optimization and is preserved in the JSON rather than filtered out. The
+release criterion for those jobs is numerical and operational completion, not
+task mastery.
+
+\subsection{Small MQAR learnability diagnostic}
+
+A separate diagnostic trained a 14,288-parameter, two-layer model for 300
+steps on the ALUCLU-specific next-token MQAR generator. The setup used
+\(d=16\), batch size 32, two key-value pairs, two queries, four key classes,
+four value classes, learning rate \(3\times10^{-3}\), and seed zero. Sixteen
+evaluation batches produced:
+
+\begin{align}
+  \text{answer accuracy} &= 0.904296875,\\
+  \text{evaluation loss} &= 0.1969321771,\\
+  \text{elapsed time} &= 29.9342\ \mathrm{s},\\
+  \text{training throughput} &= 2886.33\ \mathrm{tokens/s},\\
+  \text{batch-1 terminal state} &= 9200\ \mathrm{bytes}.
+\end{align}
+
+This is evidence that the integrated model can learn one deliberately easy
+associative-recall distribution. It is not an estimate of long-context
+capacity: the vocabularies are tiny, only one seed was run, the relevant
+sequence lengths are short, and no baseline comparison is attached.
+
+\subsection{Saturated-state CPU reference timing}
+
+The reference timing configuration used \(d=32\), four layers, vocabulary
+8192, 363,385 parameters, one PyTorch CPU thread, 128-token prefill, 560
+warm-up tokens, and three repeated 32-token decode measurements. The 560-token
+warm-up exceeds the reported 528-token state-saturation requirement, so decode
+started with every configured episodic capacity allocated.
+
+\begin{table}[h]
+\centering
+\caption{Saturated reference-backend timing. Random token generation is
+outside timed regions. Values are descriptive for this machine and code path,
+not baseline comparisons.}
+\label{tab:cpu-results}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Metric & Minimum & Median & Maximum \\
+\midrule
+Decode throughput (tokens/s) & 127.96 & 143.71 & 180.28 \\
+Decode latency (ms/token) & -- & 6.9586 & -- \\
+Prefill throughput (tokens/s) & 500.30 & 587.36 & 916.27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The saturated logical state payload for batch one was 164,576 bytes. The wide
+range across only three samples illustrates why this result cannot support a
+systems-leadership claim. The benchmark is nevertheless useful as a
+regression anchor because it records thread count, environment, model
+configuration, timed-region policy, samples, and saturation status.
+
+\subsection{What can be concluded}
+
+The combined evidence supports four statements.
+
+\begin{enumerate}
+  \item The released code paths compile and execute in the recorded CPU
+  environment.
+  \item The tested causal, state, compression, routing, and equivalence
+  invariants hold for the test domain.
+  \item The full four-lane model is trainable on a small diagnostic and can
+  exceed chance substantially under that protocol.
+  \item A fully allocated recurrent state can decode indefinitely without
+  persistent tensor payload growing with the number of processed tokens.
+\end{enumerate}
+
+It does not yet answer whether the lane allocation is Pareto efficient, whether
+the surprise policy predicts future utility, whether the archive improves
+language modeling, whether training remains stable at scale, or whether a
+specialized implementation outperforms optimized attention or state-space
+baselines.

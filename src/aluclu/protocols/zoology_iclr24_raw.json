@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "protocol_id": "aluclu_zoology_mqar_iclr24_raw_v1",
+  "title": "Zoology ICLR-2024 Figure 2 MQAR — tagged raw source record",
+  "kind": "historical_raw_provenance",
+  "execution_status": "source_snapshot_not_uniformly_executable",
+  "provenance": {
+    "repository": "https://github.com/HazyResearch/zoology",
+    "release": "https://github.com/HazyResearch/zoology/releases/tag/iclr24",
+    "tag": "iclr24",
+    "commit_sha": "de4e258784224e09909c257ff3ea040f089ed660",
+    "figure_config": "zoology/experiments/paper/figure2.py",
+    "data_generator": "zoology/data/associative_recall.py::multiquery_ar",
+    "trainer": "zoology/train.py",
+    "hybrid_mixer": "zoology/mixers/hybrid.py::Hybrid"
+  },
+  "data": {
+    "vocab_size": 8192,
+    "num_train_examples": 100000,
+    "num_test_examples": 3000,
+    "data_seed": 0,
+    "test_seed_offset": 10,
+    "train_power_a": 0.01,
+    "test_power_a": 0.01,
+    "random_non_queries": false,
+    "points": [
+      {
+        "input_seq_len": 64,
+        "num_kv_pairs": 4,
+        "batch_size": 512
+      },
+      {
+        "input_seq_len": 128,
+        "num_kv_pairs": 8,
+        "batch_size": 512
+      },
+      {
+        "input_seq_len": 256,
+        "num_kv_pairs": 16,
+        "batch_size": 256
+      },
+      {
+        "input_seq_len": 512,
+        "num_kv_pairs": 64,
+        "batch_size": 128
+      }
+    ],
+    "sampling": {
+      "keys": "without_replacement_from_[1,vocab_size//2)",
+      "values": "without_replacement_from_[vocab_size//2,vocab_size)",
+      "queries_per_example": "all_num_kv_pairs_once",
+      "query_slot_distribution": "normalized power_a * arange(1, space + 1) ** (power_a - 1)",
+      "query_slots": "without_replacement"
+    }
+  },
+  "labels": {
+    "ignore_index": -100,
+    "alignment": "same_position_as_query_token",
+    "additional_causal_shift": false,
+    "loss": "CrossEntropyLoss_on_flattened_logits_and_targets",
+    "metric": "accuracy_only_where_target_is_not_ignore_index"
+  },
+  "training": {
+    "model_seed": 123,
+    "seed_count": 1,
+    "d_model_grid": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "learning_rate_grid": [
+      0.0001,
+      0.00046415888336127773,
+      0.002154434690031882,
+      0.01
+    ],
+    "optimizer": "AdamW",
+    "weight_decay": 0.1,
+    "scheduler": {
+      "name": "CosineAnnealingLR",
+      "t_max": 64,
+      "eta_min": 0.0
+    },
+    "max_epochs": 64,
+    "early_stopping": {
+      "metric": "valid/accuracy",
+      "comparison": ">",
+      "threshold": 0.99
+    },
+    "loader": {
+      "train_shuffle": true,
+      "test_shuffle": true,
+      "num_workers": 0
+    },
+    "learning_rate_selection": "maximum_reported_result_across_the_four_learning_rates"
+  },
+  "models": {
+    "architecture_names": [
+      "attention",
+      "hyena",
+      "rwkv",
+      "base_conv",
+      "h3",
+      "based",
+      "mamba"
+    ],
+    "tagged_depth_policy": {
+      "attention": 2,
+      "all_non_attention": 4
+    },
+    "based_hybrid": {
+      "requested_layers": 4,
+      "mixer_config_count": 2,
+      "mixer_schedule_as_written": [
+        "base_conv",
+        "based"
+      ],
+      "selection_rule": "configs[layer_idx]"
+    }
+  },
+  "known_defects": [
+    {
+      "id": "based_hybrid_depth_config_mismatch",
+      "severity": "blocking_for_based_runs",
+      "scope": "based architecture entries",
+      "cause": "Figure 2 requests four non-attention layers, supplies two Based hybrid configs, and Hybrid selects configs[layer_idx] without cycling.",
+      "effect": "Construction reaches an out-of-range mixer config at layer_idx 2, so the tagged Based sweep is not runnable as written.",
+      "raw_policy": "Preserve the mismatch and do not present any silent correction as the historical raw protocol."
+    }
+  ],
+  "claim_policy": "This file records the tagged source configuration. It is provenance, not a claim that every tagged architecture entry executes successfully."
+}

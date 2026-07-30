@@ -1,0 +1,134 @@
+\section{Limitations, Failure Modes, and Risk Controls}
+\label{sec:limitations}
+
+\subsection{Memory is bounded because information is lost}
+
+Every lane has an explicit loss mechanism. Gated Delta mixes information into
+a finite fast-weight matrix and applies learned decay. Local attention drops
+tokens older than \(W\). The exact cache rejects all but \(C_x\) priorities.
+The episodic hierarchy truncates archive numerators to rank \(r\) and
+eventually overwrites capsules. Bounded state is therefore not a free
+optimization; it is a controlled forgetting policy.
+
+\subsection{Archive approximation}
+
+When the singular tail does not fit rank \(r\), the archive loses numerator
+directions. The error ledger makes a conservative algebraic bound visible, but
+the bound is not a recall guarantee and can become loose after many merges.
+It excludes expired capsules and does not explicitly include finite-precision
+factorization error. Exact denominator accumulation can also create a semantic
+asymmetry: the normalization mass still represents all retained keys while
+the numerator may no longer represent all corresponding value directions.
+
+\subsection{Abrupt ring eviction}
+
+Once the archive ring is full, advancing to a new capsule overwrites an entire
+old capsule. The retained age horizon therefore changes in a sawtooth pattern
+rather than one token at a time. Increasing the number of segments \(A\) per
+capsule extends nominal retention without adding capsule state, but also makes
+each overwrite larger and forces more heterogeneous information into the same
+rank.
+
+\subsection{Router error and conditioning}
+
+Finite TensorSketch features can collide. The degree-one and polynomial
+scores can prefer the wrong slot, and the learned bounded temperature can be
+negative, inverting the score preference. Mass normalization preserves a
+global denominator quantity under its stated arithmetic conditions; it does
+not make routing semantically correct. Large log-weight bounds can amplify a
+wrong slot and worsen numerical conditioning.
+
+\subsection{Surprise is not future utility}
+
+The exact cache ranks tokens by the RMS residual of the Gated Delta write
+target. A large residual means the recurrent lane had difficulty writing that
+token under its current state and parameters. It does not imply that a future
+query will need the token. Conversely, a low-residual token can be crucial
+later. Because priority has no age decay, early outliers can occupy the cache
+for a long time. The local lane provides recency independently, but does not
+solve global cache-selection mismatch.
+
+\subsection{Hard selection limits learning}
+
+The detached priority and discrete replacement index block end-to-end credit
+from cache utility into the surprise ranking. This avoids unstable gradients
+through sorting and makes semantics auditable, but may leave performance on
+the table. Differentiable relaxations, learned admission heads, or
+straight-through estimators are possible research variants; they must be
+evaluated as different models and should not replace the deterministic oracle
+without evidence.
+
+\subsection{Training and numerical stability}
+
+Long recurrent scans retain autograd history unless callers detach state or
+use checkpointing/truncated backpropagation. QR/SVD gradients can be unstable
+near repeated singular values. fp32 promotion protects selected operations but
+does not prevent all mixed-precision drift. The current tests cover small
+random gradients, not large-scale distributed training, optimizer-state
+sharding, quantization, or adversarial numerical cases.
+
+\subsection{Serving gaps}
+
+The public API lacks per-example reset masks for continuously regrouped
+batches, a versioned state serialization format, schema migration, and a
+production cache allocator. Python tuples and per-token loops are unsuitable
+for high-throughput serving. State-byte accounting measures logical tensor
+payload, not allocator fragmentation, reserved device memory, or temporary
+factorization workspace.
+
+\subsection{Evaluation gaps}
+
+The available learnability result uses one seed and one small synthetic
+distribution. There is no matched pretraining, no perplexity result, no RULER
+or HELMET evaluation, no multi-GPU training study, no energy measurement, no
+quality-matched throughput comparison, and no fused accelerator kernel.
+Accordingly, this release cannot support claims of state of the art,
+production readiness, universal efficiency, or the ``world's fastest''
+architecture.
+
+\subsection{Risk register}
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.36\textwidth}p{0.32\textwidth}@{}}
+\caption{Principal engineering risks and observable controls.}
+\label{tab:risk-register}\\
+\toprule
+Risk & Mechanism & Current control or measurement \\
+\midrule
+\endfirsthead
+\toprule
+Risk & Mechanism & Current control or measurement \\
+\midrule
+\endhead
+Archive information loss & Singular tail exceeds rank budget &
+\texttt{error\_bound}, rank and \(A\) sweeps \\
+Temporal cliff & Capsule ring overwrite & Archive cursor, segment count,
+retained-horizon accounting \\
+Wrong slot amplification & Router collision or temperature sign &
+Positive bounded weights, mass check, router ablations \\
+Cache freezing & No priority aging & Priority histogram, retention age,
+local-lane comparison \\
+Missed critical token & Residual is not utility & Oracle admission and random/
+recency baselines \\
+Nondifferentiable admission & Detached priority and hard index & Explicit
+gradient-boundary tests \\
+Factorization instability & Repeated singular values & fp32 promotion,
+finite-gradient tests, conditioning metrics \\
+Mixed-precision drift & Low-precision persistent statistics & fp32 oracle
+comparison and dtype sweeps \\
+State leakage between streams & Missing reset mask & Explicit caller-owned
+state; serving feature required \\
+Misleading speed result & Python reference vs fused baseline & Backend label,
+timed-region manifest, no superiority claim \\
+\bottomrule
+\end{longtable}
+
+\subsection{Responsible claim policy}
+
+Future reports should attach each headline to a protocol ID and evidence file.
+``Bounded state'' must name the configuration and payload definition.
+``Exact'' must identify which selected projected records are exact.
+``Long context'' must report the age distribution and approximation regime.
+``Faster'' must name hardware, precision, batch, sequence lengths, compiler,
+kernel, and achieved quality. This policy is part of the architecture because
+an optimization that cannot be measured honestly cannot be engineered
+reliably.

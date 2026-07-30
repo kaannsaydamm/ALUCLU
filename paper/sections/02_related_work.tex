@@ -1,0 +1,167 @@
+\section{Related Work}
+\label{sec:related-work}
+
+\subsection{Linear attention and fast-weight memory}
+
+Kernelized linear attention rewrites causal attention as a recurrent
+accumulation of key-value statistics, replacing a context-length-dependent KV
+cache with a state whose size is fixed once feature and value dimensions are
+fixed \citep{katharopoulos2020transformers}. This view exposes both the appeal
+and the limitation of the method: decode state stops growing, but many
+associations must share one finite matrix. \citet{schlag2021linear} interpreted
+the matrix as fast weights and introduced a delta update that reads the value
+currently associated with a key and writes a residual rather than adding an
+unconditional outer product.
+
+DeltaNet made this update practical at language-model scale through a
+chunkwise sequence-parallel algorithm and studied mixtures with
+sliding-window or sparse global attention \citep{yang2024parallelizing}. Gated
+Delta Networks combined targeted correction with adaptive forgetting
+\citep{yang2025gated}. The Gated DeltaNet-2 technical report further separates
+channel-wise erase and write gates while retaining adaptive channel decay
+\citep{hatamizadeh2026gated}. Because the last work is a 2026 preprint, its
+architectural and empirical findings are attributed to its authors rather than
+treated as independently established.
+
+\ALUCLU uses an independently written token-recurrent update in this
+erase/write-separated design class. It is not a reproduction of the official
+chunkwise kernel and its CPU measurements do not inherit any reported
+accelerator performance.
+
+\subsection{Selective state-space models}
+
+Mamba demonstrated that input-dependent selective state-space parameters can
+provide content-sensitive sequence processing with a fixed recurrent state and
+a hardware-aware training form \citep{gu2024mamba}. Structured State Space
+Duality connected semiseparable state-space operators to attention-like
+matrices and led to Mamba-2 \citep{dao2024transformers}. Mamba-3 extends this
+line with richer discretization, complex-valued dynamics, and SISO/MIMO
+formulations; the current official record identifies it as an ICLR 2026 oral
+paper \citep{lahoti2026mamba3}.
+
+These models are essential bounded-state comparators, but \ALUCLU makes a
+different decomposition. Its recurrent lane is a matrix-valued delta memory;
+exact recent context, selected exact records, and segmented compressed history
+remain explicit separate states. State-space dualities may inform
+kernelization and comparisons, but do not make the four lanes algebraically
+equivalent to Mamba-family layers.
+
+\subsection{Recall limits and local/global hybrids}
+
+Zoology introduced MQAR and showed that associative recall explains a
+substantial part of the gap observed between attention and efficient
+gated/convolutional models in its experiments \citep{arora2024zoology}. Based
+framed a recurrent-state-size/recall trade-off and combined linear attention
+with exact sliding-window attention, supported by IO-aware kernels
+\citep{arora2024based}. These results motivate \ALUCLU's exact local lane:
+recent interactions retain direct softmax access while the recurrent lane
+spends fixed state on compressed global structure.
+
+Recent hybrids allocate memory differently. Kimi Linear combines a
+fine-grained delta recurrence with Multi-Head Latent Attention layers
+\citep{kimiteam2025kimi}; because those attention layers retain a growing
+cache, the whole hybrid does not satisfy \ALUCLU's strict saturated-state
+contract. Native Hybrid Attention places recurrent long-term KV slots and
+recent sliding-window tokens in a shared softmax read
+\citep{du2026native}. Infini-attention combines masked local attention with a
+bounded compressive memory \citep{munkhdalai2024infini}. \ALUCLU instead keeps
+four reads semantically separate, normalizes them separately, and mixes their
+outputs. This avoids treating a positive-linear denominator as a softmax
+partition function and makes every lane independently ablatable.
+
+\subsection{Residual-selected exact memory}
+
+HOLA provides the closest direct precedent for an exact complement to delta
+memory: it retains a bounded set of KV pairs whose writes have large residual
+relative to the compressive state \citep{cui2026hippocampus}. \ALUCLU's cache
+is motivated by the same high-level idea but defines its own policy. It uses
+the RMS of its Gated Delta Rule-2 write residual, detaches the scalar priority,
+applies deterministic strict top-capacity admission, and reads retained
+projected KV pairs with exact softmax. ``Exact'' therefore describes the
+attention over retained records, not the selection of arbitrary history. HOLA
+is a recent single-author preprint, so comparative conclusions require a
+matched replication.
+
+Growing and sparse memories clarify the fixed-state boundary. Memory Caching
+stores recurrent checkpoints, so its usable memory grows with the sequence
+\citep{behrouz2026memory}. Sparse Delta Memory spends a fixed but much larger
+state on sparse explicit addressing \citep{cabannes2026sparse}. Both are useful
+controls: one tests the benefit of relaxing bounded state; the other tests a
+different allocation of a fixed state budget.
+
+\subsection{Exact attention systems}
+
+FlashAttention computes exact softmax attention with IO-aware tiling, reducing
+high-bandwidth memory traffic without changing attention semantics
+\citep{dao2022flashattention}. FlashAttention-2 improves work partitioning and
+parallelism \citep{dao2024flashattention2}. These works define the systems
+standard for implementing \ALUCLU's local and cache reads, but address a
+different axis from architectural state growth. An IO-efficient full-attention
+kernel still carries context-dependent KV state, while an asymptotically
+bounded recurrence can still be slow if implemented as a Python token loop.
+
+\subsection{Bounded low-rank compression}
+
+\ALUCLU's episodic lane keeps current and recent segments as exact factor sums
+for a positive linear-attention numerator, then merges older segments into a
+finite ring of rank-bounded capsules. Householder triangularization supplies
+the numerical basis for thin QR \citep{householder1958unitary}. The SVD of the
+resulting small core represents the same factor product before truncation, and
+the Eckart--Young result characterizes the retained best-rank approximation
+for the local matrix \citep{eckart1936approximation}. Thin-SVD modification
+methods provide a streaming numerical precedent \citep{brand2006fast};
+Frequent Directions is a principled deterministic alternative with different
+covariance guarantees \citep{ghashami2016frequent}.
+
+This background supports a narrow claim: the discarded singular tail is an
+algebraic Frobenius error for the matrix being compressed. It is not a bound on
+task loss or arbitrary recall. \ALUCLU keeps the positive denominator summary
+outside the truncated factors and records a conservative cumulative error
+ledger. When the finite ring wraps, overwritten history is unavailable.
+
+\subsection{Sketch-based routing}
+
+TensorSketch gives an explicit randomized feature map for polynomial kernels
+through compressed tensor-product features
+\citep{pham2013fast}. PolySketchFormer demonstrates polynomial sketching in
+causal sequence models \citep{kacham2024polysketchformer}. \ALUCLU uses the
+method more narrowly: it estimates polynomial similarity only among a finite
+set of current/live/archive slots, alongside a degree-one route.
+
+A 2025 TensorSketch manuscript explicitly corrects the variance bound
+associated with the original account \citep{pham2025tensor}; consequently this
+paper does not repeat the earlier variance expression. Finite sketch width and
+replica count create routing error. Sketching neither reconstructs
+rank-truncated numerator information nor recovers an overwritten capsule.
+
+\subsection{Capacity and long-context evaluation}
+
+Task-specific separations show that some lookup problems require recurrent
+state growing linearly with input size even where relatively small
+Transformers suffice \citep{bhattamishra2024separations}. These results do not
+directly prove a task-accuracy bound for \ALUCLU, but they reinforce the need
+for an honest finite-capacity contract.
+
+Evaluation must also extend beyond one synthetic needle. RULER adds
+multi-needle retrieval, multi-hop tracing, and aggregation across controlled
+lengths \citep{hsieh2024ruler}. NoLiMa removes easy literal overlap between
+questions and evidence \citep{modarressi2025nolima}. BABILong distributes
+facts required for multi-step reasoning through long natural-text distractors
+\citep{kuratov2024babilong}. HELMET shows why synthetic retrieval alone cannot
+stand in for diverse application-centric long-context performance
+\citep{yen2025helmet}. \ALUCLU evaluation should therefore report length and
+capacity curves for synthetic recall together with language-model loss and
+application-oriented task categories.
+
+\subsection{Positioning}
+
+Prior work supports three premises, not an \ALUCLU performance conclusion.
+First, recurrent delta and state-space mechanisms provide bounded global state
+but face finite-capacity interference. Second, exact local or selected memory
+can complement a compressive state at an explicit cost in bytes and reads.
+Third, low-rank and sketching methods make compression measurable but cannot
+defeat information limits. \ALUCLU's contribution is the particular bounded
+four-lane allocation, its independently testable execution semantics, and its
+claim-and-measurement contract. Whether that composition improves a
+quality--latency--traffic--energy Pareto frontier remains an empirical
+question.

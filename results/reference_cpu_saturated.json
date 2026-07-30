@@ -1,0 +1,53 @@
+{
+  "config": {
+    "d_model": 32,
+    "device": "cpu",
+    "measure_tokens": 32,
+    "n_layers": 4,
+    "output": "results\\reference_cpu_saturated.json",
+    "prefill_tokens": 128,
+    "repeats": 3,
+    "torch_threads": 1,
+    "vocab_size": 8192,
+    "warmup_tokens": 560
+  },
+  "decode": {
+    "median_milliseconds_per_token": 6.958596874937939,
+    "tokens_per_second": {
+      "max": 180.27610411720067,
+      "median": 143.7071320515199,
+      "min": 127.95542031982036,
+      "samples": [
+        127.95542031982036,
+        143.7071320515199,
+        180.27610411720067
+      ]
+    }
+  },
+  "environment": {
+    "cuda": null,
+    "device": "cpu",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "torch": "2.13.0+cpu",
+    "torch_threads": 1
+  },
+  "note": "Random token generation is outside timed regions. State is fully allocated before decode only when decode_started_saturated is true. This measures the portable recurrent correctness backend, not fused GPU kernels.",
+  "parameters": 363385,
+  "prefill_tokens_per_second": {
+    "max": 916.2707493921682,
+    "median": 587.364774135121,
+    "min": 500.30291776864664,
+    "samples": [
+      500.30291776864664,
+      587.364774135121,
+      916.2707493921682
+    ]
+  },
+  "protocol_id": "aluclu_reference_performance_v2",
+  "state_bytes_batch1_after_stream": 164576,
+  "state_saturation": {
+    "decode_started_saturated": true,
+    "required_warmup_tokens": 528
+  }
+}

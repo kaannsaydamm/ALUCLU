@@ -1,0 +1,193 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,array,longtable,multirow,tabularx}
+\usepackage{graphicx}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{enumitem}
+\usepackage{caption,subcaption}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{
+  arrows.meta,
+  backgrounds,
+  calc,
+  fit,
+  matrix,
+  positioning,
+  shapes.geometric
+}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{xspace}
+
+\definecolor{AlucluNavy}{HTML}{172A46}
+\definecolor{AlucluBlue}{HTML}{246BCE}
+\definecolor{AlucluCyan}{HTML}{12A8A8}
+\definecolor{AlucluGold}{HTML}{D59A24}
+\definecolor{AlucluRed}{HTML}{B64242}
+\definecolor{AlucluLight}{HTML}{F2F6FA}
+\definecolor{AlucluGray}{HTML}{5C6773}
+\definecolor{CodeBackground}{HTML}{F7F8FA}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AlucluBlue,
+  citecolor=AlucluCyan,
+  urlcolor=AlucluBlue,
+  pdftitle={ALUCLU: A Bounded Multi-Lane Streaming Memory Architecture},
+  pdfauthor={Kaan Kadir Aluçlu},
+  pdfsubject={Bounded-state recurrent language-model memory},
+  pdfkeywords={ALUCLU, recurrent language model, bounded state, linear attention,
+    episodic memory, exact cache, long context}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{ALUCLU Technical Paper}}
+\fancyhead[R]{\small Kaan Kadir Aluçlu}
+\fancyfoot[C]{\thepage}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist{nosep,leftmargin=*}
+\captionsetup{font=small,labelfont=bf}
+\renewcommand{\arraystretch}{1.16}
+\emergencystretch=2em
+
+\lstset{
+  backgroundcolor=\color{CodeBackground},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{AlucluGray},
+  keywordstyle=\color{AlucluBlue}\bfseries,
+  commentstyle=\color{AlucluGray}\itshape,
+  stringstyle=\color{AlucluCyan},
+  showstringspaces=false,
+  tabsize=2
+}
+
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\ALUCLU}{\textsc{Aluclu}\xspace}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\softmax}{\operatorname{softmax}}
+\newcommand{\softplus}{\operatorname{softplus}}
+\newcommand{\sigmoid}{\operatorname{sigmoid}}
+\newcommand{\RMSNorm}{\operatorname{RMSNorm}}
+\newcommand{\SiLU}{\operatorname{SiLU}}
+\newcommand{\LtwoNorm}{\operatorname{L2Normalize}}
+\newcommand{\stopgrad}{\operatorname{stopgrad}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\median}{\operatorname{median}}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\state}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+
+\title{
+  \vspace{-1.2cm}
+  {\color{AlucluNavy}\bfseries
+  ALUCLU: A Bounded Multi-Lane Streaming Memory Architecture}\\[0.35em]
+  \large Adaptive Layered Unified Context with Learned Updates
+}
+\author{Kaan Kadir Aluçlu\\
+\small Independent Researcher and Software Engineer\\
+\small \href{https://github.com/kaannsaydamm/ALUCLU}{github.com/kaannsaydamm/ALUCLU}}
+\date{Version 0.1.0 -- 30 July 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\ALUCLU is a decoder-only research architecture for causal sequence modeling
+that places four physically different, explicitly bounded memory lanes inside
+a single residual block: a dense recurrent fast-weight lane based on a
+Gated Delta Rule-2 update, exact sliding-window softmax attention, a
+fixed-capacity residual-surprise exact key-value cache, and a segmented
+episodic lane with exact recent factors and low-rank archived capsules.
+All active branches read the same normalized token representation and are
+combined by learned token-wise mixture coefficients before a SwiGLU
+feed-forward stage. The design is motivated by a simple systems observation:
+recency, dense statistical continuity, sparse exceptional events, and
+compressed temporal episodes impose different storage and access
+requirements, so forcing all four into one state representation creates
+avoidable trade-offs.
+
+This paper specifies the implemented recurrence, cache replacement policy,
+episodic life cycle, mass-conserving router, thin-QR small-core SVD
+compression, persistent-state accounting, and causal execution semantics. It
+also states what the current evidence does and does not establish. The
+reference implementation is a portable token-recurrent correctness backend,
+not a fused accelerator kernel and not a trained frontier model. Fifty
+automated tests validate causality, scan/step equivalence in evaluation mode,
+bounded state, compression error accounting, priority retention, routing mass
+conservation, and finite gradients on small cases. A deliberately small CPU
+learnability diagnostic reaches \(90.43\%\) answer accuracy on its own MQAR
+protocol, while a saturated-state CPU benchmark reports a median recurrent
+decode rate of \(143.71\) tokens/s for a \(363{,}385\)-parameter configuration.
+These measurements demonstrate executable mechanics and reproducible
+instrumentation only; broad quality or speed superiority requires the
+larger controlled evaluation program defined here.
+\end{abstract}
+
+\begin{center}
+\begin{minipage}{0.94\textwidth}
+\small
+\textbf{Türkçe özet.}
+\ALUCLU, nedensel dizi modelleme için dört farklı ve açıkça sınırlı bellek
+yolunu aynı residual blokta birleştiren decoder-only bir araştırma
+mimarisidir: Gated Delta Rule-2 tabanlı yoğun recurrent fast-weight belleği,
+sabit pencereli exact softmax attention, sabit kapasiteli residual-surprise
+exact key-value cache ve yakın geçmişi exact factor, eski bölümleri düşük
+ranklı kapsül olarak tutan episodic bellek. Yollar aynı normalize edilmiş token
+temsilini okur ve SwiGLU katmanından önce token bazında öğrenilen katsayılarla
+birleştirilir. Makale, çalışan referans kodun denklemlerini, nedensellik
+sırasını, state ve hesap maliyetini, sıkıştırma hata defterini, bilinen
+başarısızlık kiplerini ve adil deney protokolünü ayrıntılı biçimde verir.
+Mevcut sonuçlar bir dünya rekoru veya SOTA iddiası değildir; uygulamanın
+çalıştığını, sınırlarının ölçülebildiğini ve daha büyük deneylere hazır bir
+doğruluk oracle'ı sunduğunu gösterir.
+\end{minipage}
+\end{center}
+
+\vspace{0.5em}
+\noindent\textbf{Keywords:}
+bounded-state sequence modeling; recurrent language models; linear attention;
+associative memory; exact cache; episodic compression; long-context evaluation.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_problem_contract}
+\input{sections/04_architecture}
+\input{sections/05_memory_lanes}
+\input{sections/07_implementation}
+\input{sections/08_evaluation}
+\input{sections/09_results}
+\input{sections/10_limitations}
+\input{sections/11_conclusion}
+\input{sections/12_appendices}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

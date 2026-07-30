@@ -163,6 +163,8 @@ son API les budgets de window, cache, rank et archive.
   de fusion en kernels, ainsi que critères d'arrêt.
 - `docs/BRAND.md` : dénomination d'ALUCLU, message technique et format de
   citation.
+- `paper/ALUCLU_paper.pdf` : article technique compilé de 47 pages ; la source
+  LaTeX et la bibliographie se trouvent dans `paper/`.
 - `CHANGELOG.md` : modifications des versions.
 
 ## Licence et citation

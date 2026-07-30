@@ -1,0 +1,37 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+\ALUCLU is an attempt to make memory trade-offs architectural objects rather
+than footnotes. Dense recurrence, exact recency, sparse exceptional records,
+and compressed episodes are assigned separate bounded states, update rules,
+and failure modes. Learned fusion lets the model combine those states at each
+token, while the public recurrent interface keeps state ownership explicit.
+
+The reference implementation establishes a precise baseline for the idea. It
+defines inclusive write-then-read causality, deterministic cache replacement,
+an auditable episodic life cycle, small-core factor compression, a
+compression-error ledger, conditional mass conservation, and concrete
+persistent-byte formulas. The automated tests and small CPU measurements show
+that these mechanisms are executable and internally consistent within the
+tested domain.
+
+The work is intentionally unfinished at the level where strong empirical
+claims begin. The central research questions now have measurable forms:
+whether residual surprise selects useful long-range evidence, whether the
+episodic lane improves quality per state byte, whether token-wise fusion
+specializes by dependency type, and whether faithful fused kernels move the
+quality-throughput-memory Pareto frontier. The evaluation program in
+\Cref{sec:evaluation} is designed to answer those questions without confusing
+mechanical correctness with model quality or reference code with optimized
+systems.
+
+The practical thesis is simple:
+\begin{quote}
+\centering
+\emph{Layer the context, bound the memory, expose the loss, and measure the
+result.}
+\end{quote}
+If later experiments reject a lane or a routing rule, the architecture's
+modularity makes that a useful result rather than an untraceable failure. If
+they validate the composition, the same specification provides the semantic
+oracle required to engineer it aggressively without losing correctness.

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "protocol_id": "aluclu_zoology_mqar_iclr24_repaired_v1",
+  "title": "Zoology ICLR-2024 Figure 2 MQAR — explicit Based depth repair v1",
+  "kind": "derived_repaired_protocol",
+  "execution_status": "specification_ready",
+  "derived_from": {
+    "protocol_id": "aluclu_zoology_mqar_iclr24_raw_v1",
+    "manifest": "zoology_iclr24_raw.json",
+    "repository": "https://github.com/HazyResearch/zoology",
+    "tag": "iclr24",
+    "commit_sha": "de4e258784224e09909c257ff3ea040f089ed660"
+  },
+  "unchanged_sections": [
+    "data",
+    "label_alignment",
+    "loss_and_metric",
+    "optimizer_and_scheduler",
+    "learning_rate_grid",
+    "training_seed",
+    "early_stopping",
+    "all_non_based_model_configs"
+  ],
+  "repair": {
+    "repair_id": "based_hybrid_depth_config_mismatch_v1",
+    "scope": "based architecture entries only",
+    "before": {
+      "requested_layers": 4,
+      "mixer_config_count": 2,
+      "mixer_schedule": [
+        "base_conv",
+        "based"
+      ],
+      "selection_rule": "configs[layer_idx]",
+      "result": "out_of_range_at_layer_idx_2"
+    },
+    "after": {
+      "requested_layers": 2,
+      "mixer_config_count": 2,
+      "resolved_layer_schedule": [
+        "base_conv",
+        "based"
+      ],
+      "selection_rule": "configs[layer_idx]",
+      "result": "all_layer_indices_resolve"
+    },
+    "rationale": "Use exactly the two explicitly supplied hybrid mixer configs once each. This is the smallest executable repair and does not invent a cycling policy absent from the tagged source.",
+    "methodological_consequence": "Based depth changes from four to two. Results from this manifest are repaired-protocol results and must not be labeled as unmodified historical Figure 2 results."
+  },
+  "resolved_depth_policy": {
+    "attention": 2,
+    "based": 2,
+    "hyena": 4,
+    "rwkv": 4,
+    "base_conv": 4,
+    "h3": 4,
+    "mamba": 4
+  },
+  "labels": {
+    "ignore_index": -100,
+    "alignment": "same_position_as_query_token",
+    "additional_causal_shift": false
+  },
+  "data_identity": {
+    "vocab_size": 8192,
+    "num_train_examples": 100000,
+    "num_test_examples": 3000,
+    "data_seed": 0,
+    "test_seed_offset": 10,
+    "power_a": 0.01,
+    "random_non_queries": false,
+    "sequence_and_pair_grid": [
+      [
+        64,
+        4
+      ],
+      [
+        128,
+        8
+      ],
+      [
+        256,
+        16
+      ],
+      [
+        512,
+        64
+      ]
+    ]
+  },
+  "training_identity": {
+    "model_seed": 123,
+    "seed_count": 1,
+    "max_epochs": 64,
+    "optimizer": "AdamW",
+    "weight_decay": 0.1,
+    "learning_rate_grid": [
+      0.0001,
+      0.00046415888336127773,
+      0.002154434690031882,
+      0.01
+    ],
+    "scheduler": "CosineAnnealingLR",
+    "early_stopping_valid_accuracy_strictly_above": 0.99
+  },
+  "claim_policy": "Always report this protocol_id and repair_id with results; never collapse it into the raw historical protocol."
+}
