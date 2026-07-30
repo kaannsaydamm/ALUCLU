@@ -167,8 +167,8 @@ sondern legt die Budgets für Window, Cache, Rank und Archive in der API offen.
 
 ## Lizenz und Zitation
 
-Die Nutzungsbedingungen für den Code sind in der Datei [LICENSE](LICENSE)
-dieses Repositorys festgelegt. Empfohlene Zitierweise:
+Der Code wird unter der [MIT-Lizenz](LICENSE) bereitgestellt. Empfohlene
+Zitierweise:
 
 > ALUCLU Memory Architecture, Kaan Kadir Aluçlu, 2026.
 

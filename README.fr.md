@@ -167,8 +167,7 @@ son API les budgets de window, cache, rank et archive.
 
 ## Licence et citation
 
-Les conditions d'utilisation du code sont précisées dans le fichier
-[LICENSE](LICENSE) de ce dépôt. Citation recommandée :
+Le code est distribué sous [licence MIT](LICENSE). Citation recommandée :
 
 > ALUCLU Memory Architecture, Kaan Kadir Aluçlu, 2026.
 

@@ -165,8 +165,7 @@ presupuestos de window, cache, rank y archive.
 
 ## Licencia y cita
 
-Las condiciones de uso del código se especifican en el archivo
-[LICENSE](LICENSE) de este repositorio. Cita recomendada:
+El código se distribuye bajo la [licencia MIT](LICENSE). Cita recomendada:
 
 > ALUCLU Memory Architecture, Kaan Kadir Aluçlu, 2026.
 

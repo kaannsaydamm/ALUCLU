@@ -157,8 +157,7 @@ limit, ALUCLU exposes the window, cache, rank, and archive budgets in the API.
 
 ## License and citation
 
-The terms governing use of the code are specified in the [LICENSE](LICENSE)
-file in this repository. Suggested citation:
+The code is available under the [MIT License](LICENSE). Suggested citation:
 
 > ALUCLU Memory Architecture, Kaan Kadir Aluçlu, 2026.
 

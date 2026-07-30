@@ -158,8 +158,7 @@ T_{\mathrm{retained}}
 
 ## الترخيص والاستشهاد
 
-تُحدَّد شروط استخدام الشيفرة في ملف [LICENSE](LICENSE) الموجود في هذا
-المستودع. الاستشهاد المقترح:
+تُتاح الشيفرة بموجب [ترخيص MIT](LICENSE). الاستشهاد المقترح:
 
 > ALUCLU Memory Architecture, Kaan Kadir Aluçlu, 2026.
 

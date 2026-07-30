@@ -156,8 +156,7 @@ bütçelerini API'de görünür kılar.
 
 ## Lisans ve atıf
 
-Kodun kullanım koşulları bu depodaki [LICENSE](LICENSE) dosyasında belirtilir.
-Önerilen atıf:
+Kod [MIT Lisansı](LICENSE) ile sunulur. Önerilen atıf:
 
 > ALUCLU Memory Architecture, Kaan Kadir Aluçlu, 2026.
 
