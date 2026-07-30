@@ -1,0 +1,304 @@
+\section{Evaluation Methodology}
+\label{sec:evaluation}
+
+\subsection{Two non-interchangeable MQAR protocols}
+\label{sec:mqar-protocols}
+
+Multi-query associative recall (MQAR) reveals whether a model can bind keys to
+values and retrieve several bindings later in a sequence. It is also easy to
+mis-measure by shifting targets twice or comparing different generators.
+\ALUCLU therefore ships two separately identified protocols.
+
+\begin{table}[h]
+\centering
+\small
+\caption{MQAR paths in the reference implementation.}
+\label{tab:mqar-protocols}
+\begin{tabularx}{\textwidth}{@{}p{0.19\textwidth}XX@{}}
+\toprule
+Property & Diagnostic next-token MQAR & Zoology-aligned MQAR \\
+\midrule
+Implementation &
+\texttt{generate\_mqar\_batch}, \texttt{mqar\_accuracy} &
+\texttt{generate\_zoology\_mqar\_batch},
+\texttt{zoology\_mqar\_loss/accuracy} \\
+Target meaning &
+Predict the value after a query; normal LM shifting applies &
+Targets are already placed at the query position; no extra shift is allowed \\
+Purpose &
+Compact developer learnability and regression diagnostic &
+Protocol-compatible study of historical Zoology data semantics \\
+Claim ceiling &
+Local evidence for the exact declared distribution &
+Comparable only after full dataset, grid, seed, and selection policy are run \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The historical raw manifest records vocabulary 8192, training and test sizes
+100,000 and 3,000, data seed zero, test-seed offset 10, power parameter 0.01,
+model seed 123, weight decay 0.1, and up to 64 epochs. It records four
+\((\text{length},\text{pairs},\text{batch})\) points:
+\((64,4,512)\), \((128,8,512)\), \((256,16,256)\), and
+\((512,64,128)\). A mismatch between a historical four-layer description and
+two configuration entries is preserved in the raw manifest. The repository's
+smallest runnable interpretation has a different protocol identity; it is not
+silently presented as the original experiment.
+
+\subsection{P0: correctness and small-scale decision gate}
+
+The tests cover deterministic invariants, but the architecture should not
+scale merely because those tests pass. The proposed P0 matrix in
+\Cref{tab:p0} determines whether each lane earns its state and latency cost.
+
+\begin{longtable}{@{}p{0.18\textwidth}p{0.27\textwidth}
+  p{0.27\textwidth}p{0.20\textwidth}@{}}
+\caption{Proposed P0 experiments. These sweeps are protocols, not current
+results.}
+\label{tab:p0}\\
+\toprule
+Experiment & Variants and sweep & Metrics & Decision rule \\
+\midrule
+\endfirsthead
+\toprule
+Experiment & Variants and sweep & Metrics & Decision rule \\
+\midrule
+\endhead
+Partition equivalence &
+All lanes and full model; token, prime-sized, random, adversarial chunks &
+Maximum/mean error in output, state, and gradients &
+Remain within dtype-specific preregistered tolerance \\
+Causal prefix &
+Replace future suffixes across seeds &
+Maximum error on unchanged prefix &
+No future-dependent change beyond tolerance \\
+State saturation &
+Streams below and far beyond retained horizon &
+Logical bytes, allocated/reserved memory, post-saturation slope &
+Logical persistent slope equals zero after allocation \\
+Archive wrap &
+Multiple ring wraps and rank sweep &
+Counts, cursor, denominator minimum, reconstruction error, ledger &
+No bound violation; ledger never under-reports algebraic tail \\
+Cache semantics &
+Increasing, decreasing, tied, outlier, duplicate, heterogeneous priorities &
+Retained K/V, priorities, scan/step outputs &
+Strict greater-than, batch-local policy matches oracle \\
+Recall curves &
+Lane subsets across distance, pair count, overwrites, capacity ratios &
+Accuracy/NLL by distance and \(T/H_{\max}\) &
+Complete seed distributions and curves, not selected points \\
+Numerical stress &
+fp32/bfloat16, long carried state, repeated compression &
+NaN/Inf, norms, denominator, ledger, first failure index &
+All declared paths finite or failure fully localized \\
+CPU reference &
+Batch 1/4/16, short and saturated streams &
+Token/s, p50/p95/p99 latency, logical/resident memory &
+Descriptive cost curves only \\
+\bottomrule
+\end{longtable}
+
+Quality comparisons should use at least five seeds and retain all runs.
+Accuracy differences should use paired bootstrap intervals or an appropriate
+interval for paired proportions. Scale-up is justified only if the full model
+or a simpler ablation is nondominated on a quality--state--latency frontier. A
+lane that supplies no reproducible Pareto point should be removed rather than
+retained for visual symmetry.
+
+\subsection{P1: model quality and long-context transfer}
+
+P1 begins with a matched-token 100--200M-parameter pilot. A 1B-class run is
+permitted only if the pilot effect survives multiple seeds. This staged design
+reduces the risk of spending scale to conceal an architectural weakness.
+
+\begin{table}[p]
+\centering
+\small
+\caption{Proposed model-quality matrix.}
+\label{tab:quality-matrix}
+\begin{tabularx}{\textwidth}{@{}p{0.19\textwidth}p{0.25\textwidth}
+  p{0.27\textwidth}X@{}}
+\toprule
+Evaluation & Question & Sweep & Required report \\
+\midrule
+Held-out text NLL &
+Does the memory design improve language modeling? &
+Training length and controlled extrapolation &
+Token-weighted NLL, perplexity, intervals, all seeds \\
+Zoology MQAR &
+Where does associative recall fail relative to budgets? &
+Full grid, learning rates, distances, overwrites, capacity ratios &
+Accuracy by point and \(T/H_{\max}\), protocol identity \\
+RULER \citep{hsieh2024ruler} &
+Can the model retrieve, trace, and aggregate? &
+4K through 128K where supported &
+Task-by-length curves, not only macro average \\
+NoLiMa \citep{modarressi2025nolima} &
+Does retrieval survive weak lexical overlap? &
+Supported lengths, stratified overlap &
+Absolute score and degradation from short-context score \\
+HELMET \citep{yen2025helmet} &
+Does synthetic recall transfer to application tasks? &
+All supported categories and lengths &
+Per-category uncertainty; synthetic kept separate \\
+BABILong \citep{kuratov2024babilong} &
+Does carried memory support multi-step reasoning? &
+Supported long lengths and declared fine-tuning &
+Task scores, training regime, confidence intervals \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Baseline contract}
+
+The minimum rerun baseline set is:
+
+\begin{enumerate}
+  \item a causal Transformer with a mature exact-attention kernel and a
+  fixed-window Transformer;
+  \item Based \citep{arora2024based};
+  \item pure Gated Delta and Gated DeltaNet-2
+  \citep{yang2025gated,hatamizadeh2026gated};
+  \item Mamba and current maintained Mamba-family controls
+  \citep{gu2024mamba,dao2024transformers,lahoti2026mamba3};
+  \item a reproducible residual-selected bounded-cache control, including HOLA
+  if its released protocol and implementation are suitable
+  \citep{cui2026hippocampus};
+  \item full \ALUCLU and every principal lane subset.
+\end{enumerate}
+
+External paper numbers provide context but do not enter a comparative result
+table unless rerun under the shared data, token, parameter, precision, and
+hardware contract. A baseline with growing global KV state may be a valuable
+quality control, but must not be labeled context-independent.
+
+\subsection{Ablation program}
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.35\textwidth}
+  p{0.27\textwidth}@{}}
+\caption{Minimum proposed ablations.}
+\label{tab:ablations}\\
+\toprule
+Ablation & Hypothesis isolated & Primary measurements \\
+\midrule
+\endfirsthead
+\toprule
+Ablation & Hypothesis isolated & Primary measurements \\
+\midrule
+\endhead
+Gated Delta only &
+Dense recurrent baseline &
+NLL, recall by distance, state, throughput \\
+Local only; recurrent + local &
+Exact recency and complementarity &
+Near/far recall, state, latency \\
+Episodic combinations &
+Exact segments and compressed archives &
+Recall around eviction, ledger, compression-tail latency \\
+Exact-cache combinations &
+Residual-selected events versus recency &
+Recall by retained age, turnover, state and read cost \\
+Archive off; \(K,C,A\) sweep &
+Exact-live versus compressed allocation &
+Capacity-boundary recall, error and bytes \\
+Routing off; degree one; sketch router &
+Incremental value of routing and polynomial features &
+Quality, wall time, bytes, calibration \\
+\(p,m,J\) sweep &
+Sketch collision and compute budget &
+Recall, score variance, FFT cost, stability \\
+Rank \(r\) sweep &
+Compression capacity &
+Dense reconstruction error, ledger, p99 latency \\
+Window \(W\) and cache \(C_x\) sweeps &
+Exact memory allocation &
+Age curves, bytes, latency, traffic \\
+Uniform, fixed, learned fusion &
+Token-conditional lane selection &
+Quality, entropy, branch collapse, gradients \\
+Residual, FIFO, recency, random, reservoir admission &
+Specific value of write-residual priority &
+Recall, age, diversity, turnover, runtime \\
+Priority aging and diversity controls &
+Cache freezing and duplicate retention &
+New-information recall and unique clusters \\
+fp32 versus bfloat16 state &
+Precision versus traffic &
+Drift, finite values, bytes and quality \\
+\bottomrule
+\end{longtable}
+
+\subsection{Systems scenarios}
+\label{sec:systems-evaluation}
+
+Reference code and optimized kernels must be reported separately. The proposed
+systems matrix includes interactive short prompts, interactive 16K--128K
+prompts, batched throughput, saturated streaming across multiple archive
+wraps, prefill scaling, and decode-only runs from saturated snapshots.
+Required metrics include time to first token, p50/p95/p99 time per output
+token, aggregate token/s, logical and allocated state, peak resident memory,
+DRAM bytes/token, and joules/token.
+
+Archive-boundary tokens must be tagged separately because QR/SVD can create a
+tail-latency mode that the median hides. Random input generation, compilation,
+autotuning, model loading, and state construction are reported as separate
+regions. Warm-up, device synchronization, clock policy, and raw samples are
+preserved.
+
+\subsection{Fused-kernel correctness gate}
+
+No fused CUDA or Triton implementation is part of the current evidence. A
+future accelerator path must agree with the recurrent oracle on:
+
+\begin{itemize}
+  \item forward outputs and every carried-state tensor;
+  \item input and parameter gradients;
+  \item fp32, bfloat16, and declared mixed-precision tolerances;
+  \item masking, variable lengths, random chunking, and state carry;
+  \item cache ties/replacement, segment sealing, live eviction, archive merge,
+  and ring wrap;
+  \item numerical stress without silent NaN, Inf, or denominator failure.
+\end{itemize}
+
+Only after this gate should kernel profiling drive fusion: recurrence scan,
+production sliding-window attention, indexed cache insertion/read, packed
+episodic reads and routing, and finally compression scheduling.
+
+\subsection{Memory traffic and energy}
+
+DRAM bytes/token must come from hardware counters rather than shape
+multiplication. Reports should include DRAM reads/writes, cache hit rates,
+achieved bandwidth, occupancy, matrix-unit utilization, launch counts, and the
+time share of FFT, QR, and SVD operations.
+
+For sampled device power \(P(t)\), idle power \(P_{\mathrm{idle}}\), and \(N\)
+generated tokens, define
+\begin{equation}
+  E_{\mathrm{token}}=
+  \frac{1}{N}\int_{t_0}^{t_1}
+  \max\!\left(P(t)-P_{\mathrm{idle}},0\right)\,dt.
+  \label{eq:energy}
+\end{equation}
+The measurement must report sampling interval, integration rule, idle
+procedure, power/clock policy, workload duration, and uncertainty. Short
+workloads are repeated long enough to exceed sensor resolution.
+
+\subsection{Result-artifact schema}
+
+Every future result artifact should contain:
+
+\begin{itemize}
+  \item a versioned protocol ID and source commit or archive hash;
+  \item full model, data, optimizer, schedule, precision, and seed
+  configuration;
+  \item raw per-seed and per-repeat samples;
+  \item software, hardware, driver/runtime, thread count, and kernel mode;
+  \item parameter count, logical state bytes, allocated peak, and saturation
+  test;
+  \item explicit classification as smoke, diagnostic, model-only, or
+  end-to-end evidence.
+\end{itemize}
+
+The shipped CLIs write JSON atomically, reducing the chance that an interrupted
+process leaves a partial result that looks complete.

@@ -153,6 +153,8 @@ limit, ALUCLU exposes the window, cache, rank, and archive budgets in the API.
 - `docs/EXECUTION_PLAN_TR.md`: completed gates, scaling/kernelization order,
   and stopping criteria.
 - `docs/BRAND.md`: ALUCLU naming, technical message, and citation format.
+- `paper/ALUCLU_paper.pdf`: the compiled 47-page technical paper; LaTeX
+  source and bibliography are in `paper/`.
 - `CHANGELOG.md`: release changes.
 
 ## License and citation

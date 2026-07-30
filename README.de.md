@@ -163,6 +163,8 @@ sondern legt die Budgets für Window, Cache, Rank und Archive in der API offen.
 - `docs/EXECUTION_PLAN_TR.md`: abgeschlossene Gates, Reihenfolge der Skalierung
   und Kernel-Implementierung sowie Abbruchkriterien.
 - `docs/BRAND.md`: Benennung von ALUCLU, technische Botschaft und Zitierweise.
+- `paper/ALUCLU_paper.pdf`: kompilierter 47-seitiger technischer Artikel;
+  LaTeX-Quelltext und Bibliografie befinden sich unter `paper/`.
 - `CHANGELOG.md`: Versionsänderungen.
 
 ## Lizenz und Zitation

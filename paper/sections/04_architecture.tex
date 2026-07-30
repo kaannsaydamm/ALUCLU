@@ -1,0 +1,209 @@
+\section{Architecture}
+\label{sec:architecture}
+
+\subsection{Name and structural principle}
+
+\textbf{ALUCLU} expands to \textbf{Adaptive Layered Unified Context with
+Learned Updates}. ``Layered'' denotes scheduled placement across depth and the
+separation of physical memory regimes. ``Unified context'' denotes a single
+token representation assembled from all active lanes. ``Learned updates''
+refers both to recurrent write dynamics and token-wise fusion. The name is
+written with ASCII \texttt{C} in code, package names, and URLs.
+
+The unit of composition is \texttt{AlucluBlock}. Given input \(x_t^{(\ell)}\),
+the block first computes
+\begin{equation}
+  h_t^{(\ell)}=\RMSNorm_{\mathrm{mix}}\!\left(x_t^{(\ell)}\right).
+\end{equation}
+Every active memory lane reads \(h_t^{(\ell)}\) in parallel. A lane never
+consumes another lane's output as its input. This keeps lane semantics
+separable and lets each state transition be audited against the same token.
+
+\subsection{Layer scheduling}
+
+Every one of the \(L\) layers contains a Gated Delta lane. The other lanes are
+periodic:
+\begin{align}
+  N_{\mathrm{local}}
+  &=\left\lfloor\frac{L}{e_{\mathrm{local}}}\right\rfloor,\\
+  N_{\mathrm{epi}}
+  &=\left\lfloor\frac{L}{e_{\mathrm{epi}}}\right\rfloor,\\
+  N_{\mathrm{exact}}
+  &=\left\lfloor\frac{L}{e_{\mathrm{exact}}}\right\rfloor,
+  \label{eq:branch-counts}
+\end{align}
+when the corresponding configuration exists. Here each \(e\) is the
+``every'' interval. This schedule permits a recurrent backbone at every depth
+while concentrating higher-state or higher-latency lanes at selected blocks.
+
+\subsection{Block data flow}
+
+\Cref{fig:block} shows the implemented data flow. The residual-surprise cache
+receives its scalar insertion priority from the Gated Delta write residual,
+but its query, key, and value projections still read \(h_t^{(\ell)}\).
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=6mm and 8mm,
+  every node/.style={font=\small},
+  box/.style={draw=AlucluNavy,rounded corners=2pt,thick,fill=white,
+    align=center,minimum height=9mm},
+  lane/.style={box,text width=35mm},
+  norm/.style={box,fill=AlucluLight,text width=25mm},
+  sum/.style={circle,draw=AlucluNavy,thick,fill=AlucluLight,
+    minimum size=8mm,inner sep=0pt},
+  arrow/.style={-{Latex[length=2.2mm]},thick,color=AlucluNavy},
+  signal/.style={-{Latex[length=2mm]},dashed,color=AlucluGold,thick}
+]
+\node[box,text width=28mm] (input) {\(x_t^{(\ell)}\)};
+\node[norm,right=of input] (mixnorm) {Mixer\\RMSNorm};
+
+\node[lane,above right=10mm and 17mm of mixnorm] (gdn)
+  {Gated Delta Rule-2\\every layer};
+\node[lane,below=of gdn] (local)
+  {Exact local attention\\last \(W\) tokens};
+\node[lane,below=of local] (cache)
+  {Residual-surprise cache\\top \(C_x\) projected KV};
+\node[lane,below=of cache] (epi)
+  {Episodic hierarchy\\current + live + archive};
+
+\node[norm,right=12mm of gdn] (ng) {Branch norm\\and scale};
+\node[norm,right=12mm of local] (nl) {Branch norm\\and scale};
+\node[norm,right=12mm of cache] (nc) {Branch norm\\and scale};
+\node[norm,right=12mm of epi] (ne) {Branch norm\\and scale};
+
+\node[box,fill=AlucluLight,text width=29mm,right=13mm of nl,
+  yshift=-9mm] (fusion) {Token-wise softmax\\fusion};
+\node[sum,right=10mm of fusion] (add1) {\(+\)};
+\node[norm,right=8mm of add1] (ffnnorm) {FFN\\RMSNorm};
+\node[box,text width=22mm,right=8mm of ffnnorm] (swiglu) {SwiGLU};
+\node[sum,right=8mm of swiglu] (add2) {\(+\)};
+\node[box,text width=28mm,right=8mm of add2] (output)
+  {\(x_t^{(\ell+1)}\)};
+
+\draw[arrow] (input) -- (mixnorm);
+\draw[arrow] (mixnorm) |- (gdn);
+\draw[arrow] (mixnorm) |- (local);
+\draw[arrow] (mixnorm) |- (cache);
+\draw[arrow] (mixnorm) |- (epi);
+\draw[signal] (gdn) -- node[above,text=AlucluGold]
+  {\(\xi_t\)} (cache);
+
+\draw[arrow] (gdn) -- (ng);
+\draw[arrow] (local) -- (nl);
+\draw[arrow] (cache) -- (nc);
+\draw[arrow] (epi) -- (ne);
+\draw[arrow] (ng) -| (fusion);
+\draw[arrow] (nl) -- (fusion);
+\draw[arrow] (nc) -- (fusion);
+\draw[arrow] (ne) -| (fusion);
+\draw[arrow] (mixnorm) -- ++(0,-36mm) -| node[pos=0.82,below]
+  {fusion logits} (fusion);
+\draw[arrow] (fusion) -- (add1);
+\draw[arrow] (add1) -- (ffnnorm);
+\draw[arrow] (ffnnorm) -- (swiglu);
+\draw[arrow] (swiglu) -- (add2);
+\draw[arrow] (add2) -- (output);
+\draw[arrow] (input) to[out=90,in=90,looseness=1.45] (add1);
+\draw[arrow] (add1) to[out=-90,in=-90,looseness=1.35] (add2);
+\end{tikzpicture}
+}
+\captionof{figure}{\ALUCLU block. Solid arrows carry vectors. The dashed arrow carries
+the scalar Gated Delta write-surprise signal used by the exact-cache
+replacement policy. Every memory lane otherwise reads the same normalized
+token.}
+\label{fig:block}
+\end{center}
+
+\subsection{Streaming causal stems}
+
+The Gated Delta and episodic lanes each begin with an independent causal
+depthwise convolution of kernel width \(\kappa\). For an input chunk,
+\begin{align}
+  c &= [h_{\mathrm{history}};x_{1:T}],\\
+  \widetilde h_{1:T} &= \operatorname{DWConv1D}(c),\\
+  h_{\mathrm{history}}' &= c_{-(\kappa-1):}.
+  \label{eq:stream-conv}
+\end{align}
+The persistent history has \(B(\kappa-1)d\) elements. Kernels are initialized
+to identity by setting all weights to zero except the final causal tap, which
+is one, with zero bias. Thus adding the stem does not perturb the initial
+token path while allowing training to learn short causal filtering.
+
+\subsection{Token-wise branch fusion}
+\label{sec:fusion}
+
+Let \(b_{t,j}\) be active branch \(j\)'s output. Each branch has a separate
+normalizer and learned scalar:
+\begin{equation}
+  \widetilde b_{t,j}
+  =s_j\,\RMSNorm_j(b_{t,j}).
+\end{equation}
+For more than one branch, the mixture is
+\begin{align}
+  \alpha_t &= \softmax(W_fh_t+b_f),\\
+  f_t &= \sum_j\alpha_{t,j}\widetilde b_{t,j},
+  \qquad \alpha_{t,j}>0,\quad\sum_j\alpha_{t,j}=1.
+  \label{eq:fusion}
+\end{align}
+The coefficients form a convex combination of the \emph{scaled normalized}
+branches. Because \(s_j\) is unconstrained, \(f_t\) is not necessarily in the
+convex hull of the raw \(b_{t,j}\). The projection is initialized to zero, so
+the initial coefficients are uniform; all branch scales begin at one.
+
+The residual and feed-forward path is
+\begin{align}
+  x_t' &= x_t+\operatorname{Dropout}(f_t),\\
+  (g_t,v_t) &=
+  \operatorname{split}\!\left(W_{\mathrm{in}}\RMSNorm(x_t')\right),\\
+  u_t &= W_{\mathrm{out}}\!\left(\SiLU(g_t)\odot v_t\right),\\
+  x_t^{\mathrm{out}} &= x_t'+\operatorname{Dropout}(u_t).
+  \label{eq:swiglu}
+\end{align}
+
+\subsection{State hierarchy}
+
+The public model state is a tuple of per-block states. A block state contains
+the always-present Gated Delta state and optional local, episodic, and
+exact-cache states. The state is returned explicitly by \texttt{forward} and
+\texttt{step}; it is never hidden inside the module or reset implicitly.
+
+\begin{center}
+\begin{tikzpicture}[
+  level distance=11mm,
+  sibling distance=37mm,
+  every node/.style={font=\small,draw=AlucluNavy,rounded corners,
+    fill=AlucluLight,align=center,inner sep=3pt},
+  edge from parent/.style={draw=AlucluNavy,-{Latex[length=1.5mm]}}
+]
+\node {LanguageModelState}
+  child {node {BlockState \(\times L\)}
+    child {node {GatedDeltaState\\history, fast weight}}
+    child {node {LocalAttentionState\\rolling K/V}}
+    child {node {ExactCacheState\\K/V, priority, valid}}
+    child {node {EpisodicState\\current, live, archive}}};
+\end{tikzpicture}
+\captionof{figure}{Logical persistent-state ownership. Optional branches appear only in
+scheduled layers.}
+\label{fig:state-tree}
+\end{center}
+
+\subsection{Sequence, chunk, and step paths}
+
+The same token recurrence backs three interfaces:
+
+\begin{description}
+  \item[Full sequence.] Consume a complete \(B\times T\) tensor from an
+  optional incoming state and return outputs plus final state.
+  \item[Chunk.] Invoke the full-sequence path repeatedly while carrying the
+  returned state. This is useful for truncated backpropagation or streaming
+  prefill.
+  \item[Step.] Consume one token per batch item and return one-token logits and
+  state.
+\end{description}
+
+In evaluation mode, the tests require these partitions to produce equivalent
+outputs and terminal state within the declared numerical tolerance. Training
+mode with dropout is not partition invariant because different partitions
+consume random numbers in a different order.

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=78"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aluclu-memory"
+version = "0.1.0"
+description = "ALUCLU bounded-state four-lane sequence memory architecture"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Kaan Kadir Aluçlu" }]
+keywords = [
+    "sequence-modeling",
+    "linear-attention",
+    "associative-memory",
+    "bounded-state",
+]
+dependencies = ["numpy>=2.0", "torch>=2.10"]
+
+[project.scripts]
+aluclu-train-mqar = "aluclu.cli.train_mqar:main"
+aluclu-train-zoology-mqar = "aluclu.cli.train_zoology_mqar:main"
+aluclu-benchmark = "aluclu.cli.benchmark_stream:main"
+
+[project.optional-dependencies]
+test = ["pytest>=8.3"]
+lint = ["ruff>=0.16,<0.17"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+aluclu = ["protocols/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "RUF022"]

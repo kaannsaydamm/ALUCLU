@@ -1,0 +1,203 @@
+\section{Reference Implementation}
+\label{sec:implementation}
+
+\subsection{Package layout}
+
+The MIT-licensed reference implementation targets Python 3.10 or later and
+PyTorch 2.10 or later. \Cref{tab:module-map} maps the specification to the
+released modules.
+
+\begin{longtable}{@{}p{0.32\textwidth}p{0.61\textwidth}@{}}
+\caption{Implementation map.}
+\label{tab:module-map}\\
+\toprule
+Module & Responsibility \\
+\midrule
+\endfirsthead
+\toprule
+Module & Responsibility \\
+\midrule
+\endhead
+\texttt{config.py} & Validated immutable configuration objects and branch
+schedules. \\
+\texttt{state.py} & External state dataclasses, detach utilities, and logical
+tensor-payload accounting. \\
+\texttt{gated\_delta.py} & Causal stem, Gated Delta Rule-2 token recurrence,
+write-surprise signal, sequence and step paths. \\
+\texttt{local\_attention.py} & Rolling exact local KV state and causal
+softmax read. \\
+\texttt{exact\_cache.py} & Deterministic fixed-capacity priority insertion
+and exact projected-KV attention. \\
+\texttt{episodic.py} & Current/live/archive life cycle, slot aggregation,
+router, and archive ring. \\
+\texttt{compression.py} & Thin-QR small-core SVD factor truncation and
+discarded-tail accounting. \\
+\texttt{sketch.py} & Reproducible signed CountSketch maps and TensorSketch
+features. \\
+\texttt{model.py} & Block scheduling, branch fusion, residual path, language
+model head, loss, and recurrent API. \\
+\texttt{mqar.py} & Small ALUCLU diagnostic MQAR generator and metric. \\
+\texttt{zoology\_mqar.py} & Historically aligned Zoology MQAR semantics and
+masked loss. \\
+\texttt{protocols/*.json} & Immutable protocol manifests, including the
+historical mismatch record and a separately identified repair. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Configuration validation}
+
+External dimensions and capacity budgets are validated before tensor
+allocation. The configuration rejects non-positive dimensions, incompatible
+head splits, invalid feature bounds, even sketch-replica counts where a median
+requires an odd count, and inconsistent scheduling values. These checks are
+not cosmetic: a silently truncated head dimension or non-positive feature
+floor would invalidate the equations in \Cref{sec:memory-lanes}.
+
+The implementation intentionally does not force \(r+S<d\). Configurations
+with \(r+S\ge d\) remain mathematically valid, but the small SVD core can grow
+to \(d\times d\), losing the intended compression-time advantage. This is
+reported as a performance condition rather than prohibited as a semantic
+error.
+
+\subsection{Numerical precision}
+
+The recurrent fast-weight matrix, token-dependent decay, and Gated Delta
+update execute in fp32 even when the surrounding model uses fp16 or bfloat16.
+Local and exact-cache softmax probabilities are computed in fp32 before being
+cast back to the query dtype. QR and SVD promote fp16 or bfloat16 inputs to
+fp32, then cast retained factors and the reported discarded tail back to the
+input dtype.
+
+These promotions protect the most sensitive reductions, but they do not make
+the whole architecture numerically exact. Episodic persistent factors,
+\(z\), route sums, sketches, and the error ledger remain in model dtype.
+Furthermore, the ledger covers algebraic rank-truncation tails; it does not
+add an explicit term for floating-point QR/SVD error or down-cast rounding.
+
+\subsection{State ownership and graph control}
+
+State dataclasses are treated as values at the public boundary. Each call
+returns a new logical state rather than mutating a hidden global cache. This
+supports interleaved streams and makes state transfer visible to callers. It
+also means the caller owns lifecycle decisions:
+
+\begin{itemize}
+  \item pass \texttt{None} to begin a new stream;
+  \item carry returned state to continue a stream;
+  \item call \texttt{model.detach\_state(state)} at a training boundary when
+  the old autograd graph must be released;
+  \item do not reuse one sample's state for an unrelated sample.
+\end{itemize}
+
+The v0.1.0 API does not include a per-example reset mask for ragged batches and
+does not define a versioned state serializer. Production serving would need
+both before arbitrary stream regrouping or durable cache persistence.
+
+\subsection{Determinism and discrete cache selection}
+
+Exact-cache priority selection is batch-local and deterministic for a fixed
+input. Empty slots are filled in index order. Once full, the first minimum
+selected by the tensor reduction is replaced only if the incoming priority is
+strictly greater. Equal priorities preserve the older record.
+
+The priority is detached before discrete selection. Therefore cache-read loss
+does not differentiate through the ranking decision into the Gated Delta
+write residual. Accepted key/value projections can receive gradient through
+the read; rejected records do not receive a key/value write contribution from
+that step. This boundary is an intentional implementation fact, not a claim
+that hard selection is optimal.
+
+\subsection{Protocol provenance}
+
+MQAR is particularly sensitive to target placement and next-token shifting.
+The repository therefore assigns distinct protocol identifiers to:
+
+\begin{enumerate}
+  \item the small ALUCLU next-token diagnostic generator;
+  \item the target semantics reconstructed from the historical Zoology
+  generator;
+  \item the historical raw manifest with its documented layer/config-count
+  mismatch;
+  \item the smallest runnable repair, under a new identity.
+\end{enumerate}
+
+This prevents a repaired configuration from silently inheriting the identity
+of a non-runnable historical command and prevents two different target
+alignments from being reported as the same benchmark.
+
+\subsection{Testing strategy}
+\label{sec:test-strategy}
+
+The 50-test suite emphasizes invariants that can detect semantic drift:
+
+\begin{itemize}
+  \item dense equivalence of factor compression at sufficient rank;
+  \item agreement between discarded singular tail and best-rank Frobenius
+  error in float64 tests;
+  \item error-ledger accumulation across repeated merges;
+  \item exact \(z\) denominator preservation after factor compression;
+  \item router identity at zero temperature and denominator-mass conservation;
+  \item local, episodic, and exact-cache causality;
+  \item full scan, multiple chunkings, and token-step equivalence;
+  \item strict top-\(C_x\) cache retention and fixed initialized cache shape;
+  \item state saturation after sufficient streaming tokens;
+  \item archive capacity, compression depth, and ring eviction behavior;
+  \item finite outputs, losses, and gradients on small random examples.
+\end{itemize}
+
+Tests establish implementation invariants, not model intelligence. In
+particular, a passing cache-retention test proves that the policy keeps the
+largest priorities, not that priority predicts future utility.
+
+\subsection{Reference-backend performance characteristics}
+
+The current backend uses a Python loop over tokens. Exact-cache updates employ
+full-shape \texttt{torch.where}; episodic transitions create tuples and
+concatenate factors; archive boundaries invoke library QR/SVD routines. These
+choices favor clarity and direct comparison with the specification. They
+should be treated as a correctness oracle and CPU fallback.
+
+A production accelerator path should preserve the same externally tested
+semantics while introducing:
+
+\begin{enumerate}
+  \item chunk-parallel or scan kernels for Gated Delta recurrence;
+  \item fused causal stems, projections, recurrence, and output gating;
+  \item ring-buffer local KV storage without repeated concatenation;
+  \item in-place indexed cache writes with a compact selection reduction;
+  \item packed episodic tensors with explicit masks instead of Python tuples;
+  \item asynchronous or scheduled capsule compression;
+  \item profiler-guided fusion constrained by numerical parity tests.
+\end{enumerate}
+
+Kernelization is a separate engineering phase because a fast kernel that
+changes replacement ties, write-then-read order, fp32 accumulation, or
+segment-boundary transitions would implement a different model.
+
+\subsection{Minimal recurrent use}
+
+\begin{lstlisting}[language=Python,caption={One-token recurrent inference.},
+label={lst:minimal-step}]
+import torch
+from aluclu import AlucluLanguageModel, build_research_config
+
+config = build_research_config(
+    d_model=64,
+    n_layers=4,
+    local_window=64,
+    segment_size=16,
+    live_segments=16,
+    archive_slots=4,
+    archive_segments_per_slot=4,
+    archive_rank=8,
+    exact_cache_capacity=64,
+)
+model = AlucluLanguageModel(vocab_size=8192, config=config).eval()
+
+state = None
+token = torch.tensor([7])
+logits, state = model.step(token, state)
+\end{lstlisting}
+
+The explicit \texttt{state} variable in \Cref{lst:minimal-step} is essential:
+dropping it converts every call into a one-token independent sequence.

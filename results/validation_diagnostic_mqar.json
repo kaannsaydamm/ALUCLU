@@ -1,0 +1,39 @@
+{
+  "config": {
+    "batch_size": 2,
+    "d_model": 8,
+    "device": "cpu",
+    "eval_batches": 1,
+    "key_vocab_size": 16,
+    "learning_rate": 0.0003,
+    "n_layers": 1,
+    "n_pairs": 3,
+    "n_queries": 2,
+    "output": "results\\validation_diagnostic_mqar.json",
+    "seed": 0,
+    "steps": 2,
+    "value_vocab_size": 16,
+    "weight_decay": 0.01
+  },
+  "environment": {
+    "cuda": null,
+    "device": "cpu",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "torch": "2.13.0+cpu"
+  },
+  "model": {
+    "architecture": "AlucluConfig(d_model=8, n_layers=1, ffn_multiplier=4, dropout=0.0, local_window=32, local_heads=4, local_attention_every=1, episodic_every=1, exact_cache_every=1, gated_delta=GatedDeltaConfig(d_model=8, n_heads=4, head_key_dim=2, head_value_dim=2, conv_kernel=3, decay_min=0.0001, eps=1e-06), episodic=EpisodicMemoryConfig(d_model=8, segment_size=8, live_segments=8, archive_slots=4, archive_segments_per_slot=4, archive_rank=8, router_dim=8, router_degree=3, sketch_dim=64, n_sketches=3, router_seed=0, routing=True, max_temperature=4.0, max_log_weight=8.0, conv_kernel=3, feature_floor=0.0001, feature_ceiling=2.0, eps=1e-06), exact_cache=ExactCacheConfig(d_model=8, n_heads=4, capacity=32, dropout=0.0))",
+    "parameters": 2583,
+    "trainable_parameters": 2583
+  },
+  "protocol_id": "aluclu_diagnostic_next_token_mqar_v1",
+  "result": {
+    "elapsed_seconds": 0.09381479999865405,
+    "eval_answer_accuracy": 0.0,
+    "eval_loss": 3.5209150314331055,
+    "first_train_loss": 3.4964280128479004,
+    "state_bytes_batch1": 5488,
+    "train_tokens_per_second": 469.009154212675
+  }
+}

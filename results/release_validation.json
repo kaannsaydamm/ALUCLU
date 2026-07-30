@@ -1,0 +1,141 @@
+{
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "torch": "2.13.0+cpu"
+  },
+  "gates": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "src",
+        "scripts",
+        "tests"
+      ],
+      "elapsed_seconds": 0.08185839999350719,
+      "name": "compileall",
+      "return_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "elapsed_seconds": 5.852612200018484,
+      "name": "pytest",
+      "return_code": 0,
+      "stderr": "",
+      "stdout": "..................................................                       [100%]\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/train_mqar.py",
+        "--steps",
+        "2",
+        "--batch-size",
+        "2",
+        "--n-pairs",
+        "3",
+        "--n-queries",
+        "2",
+        "--key-vocab-size",
+        "16",
+        "--value-vocab-size",
+        "16",
+        "--d-model",
+        "8",
+        "--n-layers",
+        "1",
+        "--eval-batches",
+        "1",
+        "--device",
+        "cpu",
+        "--output",
+        "results/validation_diagnostic_mqar.json"
+      ],
+      "elapsed_seconds": 3.669943399989279,
+      "name": "diagnostic_mqar_smoke",
+      "return_code": 0,
+      "stderr": "",
+      "stdout": "step=00001 loss=3.49643 answer_accuracy=0.0000\nstep=00002 loss=3.50667 answer_accuracy=0.2500\neval_loss=3.52092 eval_answer_accuracy=0.0000 result=results\\validation_diagnostic_mqar.json\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/train_zoology_mqar.py",
+        "--input-seq-len",
+        "16",
+        "--num-kv-pairs",
+        "3",
+        "--vocab-size",
+        "64",
+        "--train-examples",
+        "8",
+        "--eval-examples",
+        "4",
+        "--batch-size",
+        "4",
+        "--epochs",
+        "1",
+        "--d-model",
+        "8",
+        "--n-layers",
+        "1",
+        "--device",
+        "cpu",
+        "--output",
+        "results/validation_zoology_mqar.json"
+      ],
+      "elapsed_seconds": 3.0493187999818474,
+      "name": "zoology_mqar_smoke",
+      "return_code": 0,
+      "stderr": "",
+      "stdout": "epoch=001 train_loss=4.15234 eval_loss=4.18710 eval_accuracy=0.0000\nresult=results\\validation_zoology_mqar.json\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/benchmark_stream.py",
+        "--d-model",
+        "8",
+        "--n-layers",
+        "1",
+        "--vocab-size",
+        "64",
+        "--warmup-tokens",
+        "16",
+        "--measure-tokens",
+        "8",
+        "--prefill-tokens",
+        "16",
+        "--repeats",
+        "2",
+        "--torch-threads",
+        "1",
+        "--device",
+        "cpu",
+        "--output",
+        "results/validation_performance.json"
+      ],
+      "elapsed_seconds": 1.997524300008081,
+      "name": "stream_performance_smoke",
+      "return_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"config\": {\n    \"d_model\": 8,\n    \"device\": \"cpu\",\n    \"measure_tokens\": 8,\n    \"n_layers\": 1,\n    \"output\": \"results\\\\validation_performance.json\",\n    \"prefill_tokens\": 16,\n    \"repeats\": 2,\n    \"torch_threads\": 1,\n    \"vocab_size\": 64,\n    \"warmup_tokens\": 16\n  },\n  \"decode\": {\n    \"median_milliseconds_per_token\": 1.9941874998039566,\n    \"tokens_per_second\": {\n      \"max\": 501.45736050311586,\n      \"median\": 501.45736050311586,\n      \"min\": 484.96899241885785,\n      \"samples\": [\n        484.96899241885785,\n        501.45736050311586\n      ]\n    }\n  },\n  \"environment\": {\n    \"cuda\": null,\n    \"device\": \"cpu\",\n    \"platform\": \"Windows-10-10.0.26200-SP0\",\n    \"python\": \"3.11.15\",\n    \"torch\": \"2.13.0+cpu\",\n    \"torch_threads\": 1\n  },\n  \"note\": \"Random token generation is outside timed regions. State is fully allocated before decode only when decode_started_saturated is true. This measures the portable recurrent correctness backend, not fused GPU kernels.\",\n  \"parameters\": 2823,\n  \"prefill_tokens_per_second\": {\n    \"max\": 1720.8001739418694,\n    \"median\": 1720.8001739418694,\n    \"min\": 1655.3036969548712,\n    \"samples\": [\n      1655.3036969548712,\n      1720.8001739418694\n    ]\n  },\n  \"protocol_id\": \"aluclu_reference_performance_v2\",\n  \"state_bytes_batch1_after_stream\": 10896,\n  \"state_saturation\": {\n    \"decode_started_saturated\": false,\n    \"required_warmup_tokens\": 528\n  }\n}\n"
+    }
+  ],
+  "passed": true,
+  "protocol_id": "aluclu_portable_release_gate_v1",
+  "source": {
+    "file_count": 63,
+    "sha256": "f530380b0acceadbc09510b82b89c7cd9dcb458b010076d05598579485d9dacb"
+  }
+}

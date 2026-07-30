@@ -1,0 +1,52 @@
+{
+  "claim_policy": "This trains ALUCLU on tagged data/loss semantics. It is not an unmodified historical Zoology model result or a four-LR sweep.",
+  "config": {
+    "batch_size": 4,
+    "d_model": 8,
+    "data_seed": 0,
+    "device": "cpu",
+    "epochs": 1,
+    "eval_examples": 4,
+    "input_seq_len": 16,
+    "learning_rate": 0.0001,
+    "model_seed": 123,
+    "n_layers": 1,
+    "num_kv_pairs": 3,
+    "output": "results\\validation_zoology_mqar.json",
+    "power_a": 0.01,
+    "random_non_queries": false,
+    "train_examples": 8,
+    "vocab_size": 64,
+    "weight_decay": 0.1
+  },
+  "conformance": {
+    "additional_causal_shift": false,
+    "default_figure2_grid_point": false,
+    "full_historical_dataset_sizes": false,
+    "historical_epoch_count": false,
+    "same_position_labels": true,
+    "single_learning_rate_run": true
+  },
+  "environment": {
+    "cuda": null,
+    "device": "cpu",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "torch": "2.13.0+cpu"
+  },
+  "model": {
+    "architecture": "AlucluConfig(d_model=8, n_layers=1, ffn_multiplier=4, dropout=0.0, local_window=16, local_heads=4, local_attention_every=1, episodic_every=1, exact_cache_every=1, gated_delta=GatedDeltaConfig(d_model=8, n_heads=4, head_key_dim=2, head_value_dim=2, conv_kernel=3, decay_min=0.0001, eps=1e-06), episodic=EpisodicMemoryConfig(d_model=8, segment_size=16, live_segments=16, archive_slots=4, archive_segments_per_slot=4, archive_rank=8, router_dim=8, router_degree=3, sketch_dim=128, n_sketches=3, router_seed=0, routing=True, max_temperature=4.0, max_log_weight=8.0, conv_kernel=3, feature_floor=0.0001, feature_ceiling=2.0, eps=1e-06), exact_cache=ExactCacheConfig(d_model=8, n_heads=4, capacity=64, dropout=0.0))",
+    "parameters": 2823
+  },
+  "protocol_id": "aluclu_zoology_mqar_training_v1",
+  "result": {
+    "completed_epochs": 1,
+    "elapsed_seconds": 0.16153749998193234,
+    "eval_accuracy": 0.0,
+    "eval_loss": 4.187100887298584,
+    "first_train_loss": 4.134146213531494,
+    "last_train_loss": 4.152335166931152,
+    "state_bytes_batch1": 8264
+  },
+  "source_data_protocol_id": "aluclu_zoology_mqar_iclr24_raw_v1"
+}
