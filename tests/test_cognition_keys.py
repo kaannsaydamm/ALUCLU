@@ -98,6 +98,70 @@ def test_file_key_provider_posix_create_uses_exclusive_0600_open(
     assert captured["mode"] == 0o600
 
 
+def test_file_key_provider_posix_short_write_completes_secret(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "master.key"
+    real_open = os.open
+    real_write = os.write
+    monkeypatch.setattr(keys_module, "_POSIX_MODE_CHECKS", True, raising=False)
+    monkeypatch.setattr(
+        keys_module.FileKeyProvider,
+        "_validate_existing_secret",
+        lambda self: None,
+    )
+
+    def short_write(fd: int, data: bytes) -> int:
+        return real_write(fd, data[:8])
+
+    monkeypatch.setattr(keys_module.os, "open", real_open)
+    monkeypatch.setattr(keys_module.os, "write", short_write)
+
+    key = FileKeyProvider(path, create=True).get_key()
+
+    assert len(key) == 32
+    assert path.stat().st_size == 32
+
+
+def test_file_key_provider_posix_zero_write_cleans_partial_secret(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "master.key"
+    real_open = os.open
+    monkeypatch.setattr(keys_module, "_POSIX_MODE_CHECKS", True, raising=False)
+
+    def zero_write(fd: int, data: bytes) -> int:
+        return 0
+
+    monkeypatch.setattr(keys_module.os, "open", real_open)
+    monkeypatch.setattr(keys_module.os, "write", zero_write)
+
+    with pytest.raises(KeyProviderUnavailable):
+        FileKeyProvider(path, create=True).get_key()
+    assert not path.exists()
+
+
+def test_file_key_provider_posix_write_error_cleans_partial_secret(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "master.key"
+    real_open = os.open
+    monkeypatch.setattr(keys_module, "_POSIX_MODE_CHECKS", True, raising=False)
+
+    def failing_write(fd: int, data: bytes) -> int:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(keys_module.os, "open", real_open)
+    monkeypatch.setattr(keys_module.os, "write", failing_write)
+
+    with pytest.raises(KeyProviderUnavailable):
+        FileKeyProvider(path, create=True).get_key()
+    assert not path.exists()
+
+
 def test_file_key_provider_rejects_path_replaced_by_symlink_after_construction(
     tmp_path: Path,
 ) -> None:
@@ -214,6 +278,72 @@ def test_keyring_provider_accepts_secure_fake_backend(
     assert KeyringKeyProvider("svc", "user").get_key() == b"k" * 32
 
 
+def test_keyring_provider_accepts_chainer_with_all_secure_backends(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    encoded = base64.b64encode(b"k" * 32).decode("ascii")
+
+    class SecureBackend:
+        priority = 1
+
+    SecureBackend.__module__ = "keyring.backends.SecretService"
+
+    class ChainerBackend:
+        priority = 10
+        backends = [SecureBackend(), SecureBackend()]
+
+    ChainerBackend.__module__ = "keyring.backends.chainer"
+
+    class FakeKeyring:
+        @staticmethod
+        def get_keyring() -> object:
+            return ChainerBackend()
+
+        @staticmethod
+        def get_password(service: str, username: str) -> str:
+            return encoded
+
+    monkeypatch.setitem(sys.modules, "keyring", FakeKeyring)
+
+    assert KeyringKeyProvider("svc", "user").get_key() == b"k" * 32
+
+
+def test_keyring_provider_rejects_chainer_with_mixed_insecure_backend(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    encoded = base64.b64encode(b"k" * 32).decode("ascii")
+
+    class SecureBackend:
+        priority = 1
+
+    SecureBackend.__module__ = "keyring.backends.SecretService"
+
+    class PlaintextBackend:
+        priority = 1
+
+    PlaintextBackend.__module__ = "keyrings.alt.file"
+
+    class ChainerBackend:
+        priority = 10
+        backends = [SecureBackend(), PlaintextBackend()]
+
+    ChainerBackend.__module__ = "keyring.backends.chainer"
+
+    class FakeKeyring:
+        @staticmethod
+        def get_keyring() -> object:
+            return ChainerBackend()
+
+        @staticmethod
+        def get_password(service: str, username: str) -> str:
+            return encoded
+
+    monkeypatch.setitem(sys.modules, "keyring", FakeKeyring)
+
+    with pytest.raises(KeyProviderUnavailable):
+        KeyringKeyProvider("svc", "user").get_key()
+
+
 def test_file_record_key_store_repairs_pending_only_with_exact_hash(tmp_path: Path) -> None:
     store = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
 
@@ -304,6 +434,69 @@ def test_file_record_key_store_rejects_renamed_state_copy(tmp_path: Path) -> Non
 
     with pytest.raises(LedgerIntegrityError):
         FileRecordKeyStore(second, b"m" * 32, ledger_id="ledger-1")
+
+
+def test_file_record_key_store_rejects_non_json_suffix_before_artifacts(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "keys.txt"
+
+    with pytest.raises(InputBoundaryError):
+        FileRecordKeyStore(path, b"m" * 32, ledger_id="ledger-1")
+
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_file_record_key_store_valid_distinct_names_coexist_and_reopen(
+    tmp_path: Path,
+) -> None:
+    first = FileRecordKeyStore(tmp_path / "one.json", b"m" * 32, ledger_id="ledger-1")
+    second = FileRecordKeyStore(tmp_path / "two.json", b"m" * 32, ledger_id="ledger-2")
+    first.put_pending("evt_1", b"a" * 32)
+    second.put_pending("evt_2", b"b" * 32)
+
+    reopened_first = FileRecordKeyStore(tmp_path / "one.json", b"m" * 32, ledger_id="ledger-1")
+    reopened_second = FileRecordKeyStore(tmp_path / "two.json", b"m" * 32, ledger_id="ledger-2")
+
+    assert reopened_first.get("evt_1") == b"a" * 32
+    assert reopened_first.get("evt_2") is None
+    assert reopened_second.get("evt_2") == b"b" * 32
+    assert reopened_second.get("evt_1") is None
+    assert (tmp_path / "one.json.lock").exists()
+    assert (tmp_path / "two.json.lock").exists()
+
+
+def test_file_record_key_store_shred_reopen_prunes_after_pointer_commit(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    encoded_dek = base64.b64encode(b"d" * 32)
+    store = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
+    store.put_pending("evt_1", b"d" * 32)
+    store.mark_committed("evt_1", "ab" * 32)
+    original_prune = keys_module.FileRecordKeyStore._prune_old_manifests
+
+    def fail_prune_once(self: FileRecordKeyStore, current_generation: int) -> None:
+        if self.is_tombstoned("evt_1"):
+            raise OSError("prune interrupted")
+        original_prune(self, current_generation)
+
+    monkeypatch.setattr(keys_module.FileRecordKeyStore, "_prune_old_manifests", fail_prune_once)
+    with pytest.raises(LedgerIntegrityError):
+        store.shred("evt_1", "ab" * 32)
+
+    monkeypatch.setattr(
+        keys_module.FileRecordKeyStore,
+        "_prune_old_manifests",
+        original_prune,
+    )
+    reopened = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
+
+    assert reopened.is_tombstoned("evt_1")
+    assert reopened.get("evt_1") is None
+    for state_file in tmp_path.glob("keys*"):
+        if state_file.is_file():
+            assert encoded_dek not in state_file.read_bytes()
 
 
 def test_file_record_key_store_unknown_partial_state_fails_closed(tmp_path: Path) -> None:
