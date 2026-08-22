@@ -16,7 +16,7 @@ keywords = [
     "associative-memory",
     "bounded-state",
 ]
-dependencies = ["numpy>=2.0", "torch>=2.10"]
+dependencies = ["numpy>=2.0", "torch>=2.10", "cryptography>=43"]
 
 [project.scripts]
 aluclu-train-mqar = "aluclu.cli.train_mqar:main"
