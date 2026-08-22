@@ -6,6 +6,7 @@ import json
 import math
 import os
 import re
+import uuid
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any, TypeAlias, cast
@@ -112,7 +113,7 @@ class SafeStateCodec:
         manifest_bytes = canonical_json_bytes(cast(JsonValue, manifest))
         manifest_mac = self._mac_hex(b"manifest", manifest_bytes)
         manifest_envelope = {"mac": manifest_mac, "payload": manifest}
-        self._replace_bytes(self._root / manifest_name, canonical_json_bytes(manifest_envelope))
+        _durable_replace(self._root / manifest_name, canonical_json_bytes(manifest_envelope))
 
         pointer = {
             "generation": generation,
@@ -126,34 +127,13 @@ class SafeStateCodec:
             "mac": self._mac_hex(b"pointer", pointer_bytes),
             "payload": pointer,
         }
-        self._replace_bytes(self._pointer_path(safe_name), canonical_json_bytes(pointer_envelope))
-        _fsync_directory(self._root)
+        _durable_replace(self._pointer_path(safe_name), canonical_json_bytes(pointer_envelope))
         return generation
 
     def load(self, name: str) -> tuple[JsonValue, dict[str, JsonValue]]:
         safe_name = _validate_state_name(name)
-        pointer = self._read_envelope(self._pointer_path(safe_name), b"pointer")
-        if pointer.get("version") != 1 or pointer.get("name") != safe_name:
-            raise StateIntegrityError("state pointer does not match requested name")
-        manifest_name = pointer.get("manifest")
-        generation = pointer.get("generation")
-        manifest_mac = pointer.get("manifest_mac")
-        if (
-            type(manifest_name) is not str
-            or type(generation) is not int
-            or type(manifest_mac) is not str
-            or Path(manifest_name).name != manifest_name
-        ):
-            raise StateIntegrityError("state pointer is malformed")
-
-        manifest_path = self._root / manifest_name
-        manifest = self._read_envelope(manifest_path, b"manifest", expected_mac=manifest_mac)
-        if (
-            manifest.get("version") != 1
-            or manifest.get("name") != safe_name
-            or manifest.get("generation") != generation
-        ):
-            raise StateIntegrityError("state manifest does not match pointer")
+        pointer = self._read_pointer(safe_name)
+        manifest = self._read_manifest(safe_name, pointer)
         state = manifest.get("state")
         metadata = manifest.get("metadata")
         if type(metadata) is not dict:
@@ -166,17 +146,52 @@ class SafeStateCodec:
         pointer_path = self._pointer_path(safe_name)
         if not pointer_path.exists():
             return 1
-        pointer = self._read_envelope(pointer_path, b"pointer")
+        pointer = self._read_pointer(safe_name)
+        self._read_manifest(safe_name, pointer)
         generation = pointer.get("generation")
-        if type(generation) is not int or generation < 1:
-            raise StateIntegrityError("state pointer generation is malformed")
-        return generation + 1
+        return cast(int, generation) + 1
 
     def _pointer_path(self, safe_name: str) -> Path:
         return self._root / f"{safe_name}.json"
 
     def _mac_hex(self, domain: bytes, payload: bytes) -> str:
         return hmac.new(self._key, domain + b"\0" + payload, hashlib.sha256).hexdigest()
+
+    def _read_pointer(self, safe_name: str) -> dict[str, JsonValue]:
+        pointer = self._read_envelope(self._pointer_path(safe_name), b"pointer")
+        if pointer.get("version") != 1 or pointer.get("name") != safe_name:
+            raise StateIntegrityError("state pointer does not match requested name")
+        manifest_name = pointer.get("manifest")
+        generation = pointer.get("generation")
+        manifest_mac = pointer.get("manifest_mac")
+        if (
+            type(manifest_name) is not str
+            or type(generation) is not int
+            or generation < 1
+            or type(manifest_mac) is not str
+            or Path(manifest_name).name != manifest_name
+            or not manifest_name.startswith(f"{safe_name}.")
+        ):
+            raise StateIntegrityError("state pointer is malformed")
+        return pointer
+
+    def _read_manifest(
+        self,
+        safe_name: str,
+        pointer: Mapping[str, JsonValue],
+    ) -> dict[str, JsonValue]:
+        manifest_name = cast(str, pointer["manifest"])
+        generation = cast(int, pointer["generation"])
+        manifest_mac = cast(str, pointer["manifest_mac"])
+        manifest_path = self._root / manifest_name
+        manifest = self._read_envelope(manifest_path, b"manifest", expected_mac=manifest_mac)
+        if (
+            manifest.get("version") != 1
+            or manifest.get("name") != safe_name
+            or manifest.get("generation") != generation
+        ):
+            raise StateIntegrityError("state manifest does not match pointer")
+        return manifest
 
     def _read_envelope(
         self,
@@ -202,21 +217,6 @@ class SafeStateCodec:
         if expected_mac is not None and not hmac.compare_digest(mac, expected_mac):
             raise StateIntegrityError("state manifest MAC does not match pointer")
         return payload
-
-    def _replace_bytes(self, path: Path, data: bytes) -> None:
-        temp_path = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-        try:
-            with temp_path.open("xb") as handle:
-                handle.write(data)
-                handle.flush()
-                os.fsync(handle.fileno())
-            os.replace(temp_path, path)
-        finally:
-            try:
-                temp_path.unlink()
-            except FileNotFoundError:
-                pass
-
 
 def _validate_state_name(name: str) -> str:
     if type(name) is not str or STATE_NAME_PATTERN.fullmatch(name) is None:
@@ -289,6 +289,44 @@ def _validate_string(value: str) -> None:
         value.encode("utf-8")
     except UnicodeEncodeError as exc:
         raise InputBoundaryError("lone Unicode surrogates are not canonical JSON") from exc
+
+
+def _durable_replace(path: Path, data: bytes) -> None:
+    """Atomically replace a file after flushing bytes and the replace operation.
+
+    Windows cannot fsync a directory handle through Python's portable APIs, so
+    the replace step uses MoveFileExW with MOVEFILE_WRITE_THROUGH. POSIX uses
+    os.replace followed by parent directory fsync.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = path.with_name(f".{path.name}.{os.getpid()}.{uuid.uuid4().hex}.tmp")
+    try:
+        with temp_path.open("xb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        if os.name == "nt":
+            _windows_replace_write_through(temp_path, path)
+        else:
+            os.replace(temp_path, path)
+            _fsync_directory(path.parent)
+    finally:
+        try:
+            temp_path.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def _windows_replace_write_through(source: Path, target: Path) -> None:
+    import ctypes
+
+    movefile_replace_existing = 0x1
+    movefile_write_through = 0x8
+    flags = movefile_replace_existing | movefile_write_through
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    if not kernel32.MoveFileExW(str(source), str(target), flags):
+        error = ctypes.get_last_error()
+        raise OSError(error, "MoveFileExW failed", str(target))
 
 
 def _fsync_directory(path: Path) -> None:
