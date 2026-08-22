@@ -205,9 +205,9 @@ class EncryptedLedger:
         return self._append(event_id, payload, idempotent=True)
 
     def read(self, event_id: str) -> LedgerRecord | None:
-        safe_event_id = validate_event_id(event_id)
         with self._object_lock:
             self._require_open()
+            safe_event_id = validate_event_id(event_id)
             with exclusive_file_lock(self._lock_path):
                 connection = self._connection_required()
                 connection.execute("BEGIN")
@@ -325,10 +325,10 @@ class EncryptedLedger:
         *,
         idempotent: bool,
     ) -> AppendOutcome:
-        safe_event_id = validate_event_id(event_id)
-        payload_bytes = canonical_json_bytes(payload)
         with self._object_lock:
             self._require_open()
+            safe_event_id = validate_event_id(event_id)
+            payload_bytes = canonical_json_bytes(payload)
             with exclusive_file_lock(self._lock_path):
                 connection = self._connection_required()
                 store = self._record_store_required()
@@ -819,11 +819,29 @@ class EncryptedLedger:
             check_same_thread=False,
             timeout=30.0,
         )
-        connection.execute("PRAGMA foreign_keys = ON")
-        connection.execute("PRAGMA busy_timeout = 30000")
-        if configure:
-            self._configure_connection(connection)
-        return connection
+        try:
+            connection.execute("PRAGMA trusted_schema = OFF")
+            trusted_schema = cast(
+                int, connection.execute("PRAGMA trusted_schema").fetchone()[0]
+            )
+            if trusted_schema != 0:
+                raise LedgerCapabilityUnavailable("SQLite trusted_schema=OFF is unavailable")
+
+            connection.execute("PRAGMA cell_size_check = ON")
+            cell_size_check = cast(
+                int, connection.execute("PRAGMA cell_size_check").fetchone()[0]
+            )
+            if cell_size_check != 1:
+                raise LedgerCapabilityUnavailable("SQLite cell_size_check=ON is unavailable")
+
+            connection.execute("PRAGMA foreign_keys = ON")
+            connection.execute("PRAGMA busy_timeout = 30000")
+            if configure:
+                self._configure_connection(connection)
+            return connection
+        except Exception:
+            connection.close()
+            raise
 
     def _configure_connection(self, connection: sqlite3.Connection) -> None:
         journal_mode = cast(str, connection.execute("PRAGMA journal_mode = WAL").fetchone()[0])

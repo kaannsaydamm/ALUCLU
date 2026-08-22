@@ -25,15 +25,41 @@ def test_construction_is_side_effect_free_and_lifecycle_is_typed(tmp_path: Path)
     ledger = EncryptedLedger(path, StaticKeyProvider(MASTER_KEY))
 
     assert list(tmp_path.iterdir()) == []
-    with pytest.raises(LedgerLifecycleError):
-        ledger.event_count()
+    for operation in (
+        ledger.event_count,
+        lambda: ledger.read(""),
+        lambda: ledger.append("", {"value": 1}),
+        lambda: ledger.append_once("", {"value": 1}),
+    ):
+        with pytest.raises(LedgerLifecycleError):
+            operation()
 
     ledger.unlock()
     ledger.unlock()
     ledger.close()
     ledger.close()
-    with pytest.raises(LedgerLifecycleError):
-        ledger.event_count()
+    for operation in (
+        ledger.event_count,
+        lambda: ledger.read(""),
+        lambda: ledger.append("", {"value": 1}),
+        lambda: ledger.append_once("", {"value": 1}),
+    ):
+        with pytest.raises(LedgerLifecycleError):
+            operation()
+
+
+def test_every_ledger_connection_enables_required_security_pragmas(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as ledger:
+        connection = ledger._connection_required()
+        assert connection.execute("PRAGMA trusted_schema").fetchone() == (0,)
+        assert connection.execute("PRAGMA cell_size_check").fetchone() == (1,)
+
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as ledger:
+        connection = ledger._connection_required()
+        assert connection.execute("PRAGMA trusted_schema").fetchone() == (0,)
+        assert connection.execute("PRAGMA cell_size_check").fetchone() == (1,)
 
 
 def test_append_round_trip_is_encrypted_and_idempotent(tmp_path: Path) -> None:
