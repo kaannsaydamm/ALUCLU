@@ -506,6 +506,7 @@ class EncryptedLedger:
 
     def _verify_integrity_locked(self) -> tuple[_LedgerState, bool]:
         state = self._scan_history_locked()
+        anchor_lagging = self._verify_anchor_locked(state)
         if self._recover_external_state_locked(state):
             state = self._scan_history_locked()
         self._verify_external_state_locked(state)
