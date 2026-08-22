@@ -13,7 +13,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Protocol, cast
 
-from .codec import SafeStateCodec, validate_event_id
+from .codec import STATE_NAME_PATTERN, SafeStateCodec, validate_event_id
 from .contracts import (
     InputBoundaryError,
     JsonValue,
@@ -92,21 +92,20 @@ class FileKeyProvider:
                 return
             except OSError as exc:
                 raise KeyProviderUnavailable("file key cannot be created") from exc
-            created = True
+            opened_stat = os.fstat(fd)
+            failure: OSError | None = None
             try:
                 _write_all(fd, secrets.token_bytes(32))
                 os.fsync(fd)
             except OSError as exc:
-                raise KeyProviderUnavailable("file key cannot be written") from exc
-            finally:
+                failure = exc
+            try:
                 os.close(fd)
-                if created and self._path.exists():
-                    try:
-                        stat_result = self._path.lstat()
-                        if stat_result.st_size != 32:
-                            self._path.unlink()
-                    except OSError:
-                        pass
+            except OSError as exc:
+                failure = failure or exc
+            if failure is not None:
+                _unlink_if_same_file(self._path, opened_stat)
+                raise KeyProviderUnavailable("file key cannot be written") from failure
             return
         try:
             with self._path.open("xb") as handle:
@@ -376,13 +375,7 @@ class FileRecordKeyStore:
             manifest.unlink()
 
     def _load_generation(self) -> int:
-        self._load()
-        try:
-            state, _metadata = self._codec.load(self._state_name)
-        except (InputBoundaryError, StateIntegrityError) as exc:
-            raise LedgerIntegrityError("record key store is unreadable") from exc
-        if type(state) is not dict or type(state.get("revision")) is not int:
-            raise LedgerIntegrityError("record key store state is invalid")
+        state = self._load()
         return cast(int, state["revision"]) + 1
 
     def _metadata(self) -> dict[str, JsonValue]:
@@ -487,8 +480,8 @@ def _validate_ledger_id(value: str) -> str:
 def _state_name_for_path(path: Path) -> str:
     _validate_json_store_path(path)
     name = path.stem
-    if not name:
-        raise InputBoundaryError("record key store path must have a stable name")
+    if STATE_NAME_PATTERN.fullmatch(name) is None:
+        raise InputBoundaryError("record key store path must have a canonical state name")
     return name
 
 
@@ -504,6 +497,19 @@ def _write_all(fd: int, data: bytes) -> None:
         if written <= 0:
             raise OSError("short file key write")
         offset += written
+
+
+def _unlink_if_same_file(path: Path, opened_stat: os.stat_result) -> None:
+    try:
+        current_stat = path.lstat()
+        if (
+            stat.S_ISREG(current_stat.st_mode)
+            and current_stat.st_dev == opened_stat.st_dev
+            and current_stat.st_ino == opened_stat.st_ino
+        ):
+            path.unlink()
+    except OSError:
+        pass
 
 
 def _has_partial_state(root: Path, state_name: str) -> bool:

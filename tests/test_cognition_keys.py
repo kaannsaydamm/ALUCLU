@@ -162,6 +162,23 @@ def test_file_key_provider_posix_write_error_cleans_partial_secret(
     assert not path.exists()
 
 
+def test_file_key_provider_posix_fsync_error_cleans_complete_secret(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "master.key"
+    monkeypatch.setattr(keys_module, "_POSIX_MODE_CHECKS", True, raising=False)
+
+    def failing_fsync(fd: int) -> None:
+        raise OSError("flush failed")
+
+    monkeypatch.setattr(keys_module.os, "fsync", failing_fsync)
+
+    with pytest.raises(KeyProviderUnavailable):
+        FileKeyProvider(path, create=True).get_key()
+    assert not path.exists()
+
+
 def test_file_key_provider_rejects_path_replaced_by_symlink_after_construction(
     tmp_path: Path,
 ) -> None:
@@ -447,6 +464,17 @@ def test_file_record_key_store_rejects_non_json_suffix_before_artifacts(
     assert list(tmp_path.iterdir()) == []
 
 
+@pytest.mark.parametrize("name", ["bad name.json", f"{'a' * 129}.json"])
+def test_file_record_key_store_rejects_invalid_state_name_before_artifacts(
+    tmp_path: Path,
+    name: str,
+) -> None:
+    with pytest.raises(InputBoundaryError):
+        FileRecordKeyStore(tmp_path / name, b"m" * 32, ledger_id="ledger-1")
+
+    assert list(tmp_path.iterdir()) == []
+
+
 def test_file_record_key_store_valid_distinct_names_coexist_and_reopen(
     tmp_path: Path,
 ) -> None:
@@ -497,6 +525,28 @@ def test_file_record_key_store_shred_reopen_prunes_after_pointer_commit(
     for state_file in tmp_path.glob("keys*"):
         if state_file.is_file():
             assert encoded_dek not in state_file.read_bytes()
+
+
+def test_file_record_key_store_recovery_uses_one_authenticated_snapshot(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "keys.json"
+    FileRecordKeyStore(path, b"m" * 32, ledger_id="ledger-1")
+    original_load = keys_module.SafeStateCodec.load
+    calls = 0
+
+    def load_once(codec: object, name: str) -> object:
+        nonlocal calls
+        calls += 1
+        if calls > 1:
+            raise AssertionError("recovery reloaded a different state snapshot")
+        return original_load(codec, name)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(keys_module.SafeStateCodec, "load", load_once)
+
+    FileRecordKeyStore(path, b"m" * 32, ledger_id="ledger-1")
+    assert calls == 1
 
 
 def test_file_record_key_store_unknown_partial_state_fails_closed(tmp_path: Path) -> None:
