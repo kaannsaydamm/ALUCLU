@@ -6,13 +6,14 @@ import hashlib
 import hmac
 import os
 import secrets
+import stat
 from collections.abc import Iterator
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Protocol, cast
 
-from .codec import canonical_json_bytes, strict_json_loads, validate_event_id
+from .codec import SafeStateCodec, validate_event_id
 from .contracts import (
     InputBoundaryError,
     JsonValue,
@@ -23,7 +24,12 @@ from .contracts import (
     StateIntegrityError,
     UnsafePathError,
 )
-from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
+from .persistence import exclusive_file_lock, resolve_ledger_path
+
+_POSIX_MODE_CHECKS = os.name != "nt"
+_INSECURE_KEYRING_BACKEND_TOKENS = (
+    "plaintext",
+)
 
 __all__ = [
     "FileKeyProvider",
@@ -67,6 +73,7 @@ class FileKeyProvider:
             if not self._create:
                 raise KeyProviderUnavailable("file key is missing")
             self._create_secret()
+        self._validate_existing_secret()
         try:
             data = self._path.read_bytes()
         except OSError as exc:
@@ -75,6 +82,22 @@ class FileKeyProvider:
 
     def _create_secret(self) -> None:
         self._path.parent.mkdir(parents=True, exist_ok=True)
+        if _POSIX_MODE_CHECKS:
+            flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+            if hasattr(os, "O_BINARY"):
+                flags |= os.O_BINARY
+            try:
+                fd = os.open(str(self._path), flags, 0o600)
+            except FileExistsError:
+                return
+            except OSError as exc:
+                raise KeyProviderUnavailable("file key cannot be created") from exc
+            try:
+                os.write(fd, secrets.token_bytes(32))
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+            return
         try:
             with self._path.open("xb") as handle:
                 handle.write(secrets.token_bytes(32))
@@ -82,13 +105,16 @@ class FileKeyProvider:
                 os.fsync(handle.fileno())
         except FileExistsError:
             return
-        if os.name != "nt":
-            mode = self._path.stat().st_mode & 0o777
-            if mode & 0o077:
-                try:
-                    self._path.chmod(0o600)
-                except OSError as exc:
-                    raise KeyProviderUnavailable("file key mode is too permissive") from exc
+
+    def _validate_existing_secret(self) -> None:
+        try:
+            stat_result = self._path.lstat()
+        except OSError as exc:
+            raise KeyProviderUnavailable("file key is unavailable") from exc
+        if not stat.S_ISREG(stat_result.st_mode):
+            raise KeyProviderUnavailable("file key path is not a regular file")
+        if _POSIX_MODE_CHECKS and stat_result.st_mode & 0o077:
+            raise KeyProviderUnavailable("file key mode is too permissive")
 
 
 class KeyringKeyProvider:
@@ -116,6 +142,7 @@ class KeyringKeyProvider:
             import keyring  # type: ignore[import-not-found]
         except Exception as exc:
             raise KeyProviderUnavailable("keyring backend is unavailable") from exc
+        _validate_keyring_backend(keyring)
         try:
             encoded = keyring.get_password(self._service, self._username)
             if encoded is None and self._create:
@@ -176,11 +203,16 @@ class FileRecordKeyStore:
         self._lock_path = self._path.with_suffix(self._path.suffix + ".lock")
         self._key = _key_bytes(integrity_key, label="integrity_key")
         self._ledger_id = _validate_ledger_id(ledger_id)
-        if not self._path.exists():
-            if not create:
-                raise LedgerIntegrityError("record key store is missing")
-            self._save(_initial_state(self._ledger_id))
-        self.verify_integrity()
+        self._state_name = _state_name_for_path(self._path)
+        self._codec = SafeStateCodec(self._path.parent, integrity_key=self._key)
+        with exclusive_file_lock(self._lock_path):
+            if not self._path.exists():
+                if _has_partial_state(self._path.parent, self._state_name):
+                    raise LedgerIntegrityError("record key store is partial")
+                if not create:
+                    raise LedgerIntegrityError("record key store is missing")
+                self._save(_initial_state(self._ledger_id))
+            self.verify_integrity()
 
     @property
     def ledger_id(self) -> str:
@@ -305,36 +337,43 @@ class FileRecordKeyStore:
     def _load(self) -> dict[str, JsonValue]:
         try:
             resolve_ledger_path(self._path)
-            envelope = strict_json_loads(self._path.read_bytes())
-        except (OSError, InputBoundaryError, UnsafePathError) as exc:
+            state, metadata = self._codec.load(self._state_name)
+        except (OSError, InputBoundaryError, StateIntegrityError, UnsafePathError) as exc:
             raise LedgerIntegrityError("record key store is unreadable") from exc
-        if type(envelope) is not dict:
-            raise LedgerIntegrityError("record key store envelope is malformed")
-        payload = envelope.get("payload")
-        mac = envelope.get("mac")
-        if type(payload) is not dict or type(mac) is not str:
-            raise LedgerIntegrityError("record key store envelope is malformed")
-        payload_bytes = canonical_json_bytes(payload)
-        expected = self._mac(payload_bytes)
-        if not hmac.compare_digest(mac, expected):
-            raise LedgerIntegrityError("record key store MAC does not verify")
         try:
-            self._validate_state(payload)
+            self._validate_metadata(metadata)
+            if type(state) is not dict:
+                raise StateIntegrityError("record key store state is malformed")
+            self._validate_state(state)
         except (InputBoundaryError, StateIntegrityError) as exc:
             raise LedgerIntegrityError("record key store state is invalid") from exc
-        return cast(dict[str, JsonValue], payload)
+        return cast(dict[str, JsonValue], state)
 
     def _save(self, state: dict[str, JsonValue]) -> None:
-        payload_bytes = canonical_json_bytes(state)
-        envelope = {"mac": self._mac(payload_bytes), "payload": state}
-        atomic_write_bytes(self._path, canonical_json_bytes(cast(JsonValue, envelope)))
+        try:
+            generation = self._codec.save(self._state_name, state, self._metadata())
+            self._prune_old_manifests(generation)
+        except (InputBoundaryError, OSError) as exc:
+            raise LedgerIntegrityError("record key store cannot be saved") from exc
 
-    def _mac(self, payload: bytes) -> str:
-        return hmac.new(
-            self._key,
-            b"aluclu/v2/file-record-key-store\0" + payload,
-            hashlib.sha256,
-        ).hexdigest()
+    def _prune_old_manifests(self, current_generation: int) -> None:
+        current_name = f"{self._state_name}.{current_generation:020d}.manifest.json"
+        for manifest in self._path.parent.glob(f"{self._state_name}.*.manifest.json"):
+            if manifest.name == current_name:
+                continue
+            manifest.unlink()
+
+    def _metadata(self) -> dict[str, JsonValue]:
+        return {
+            "ledger_id": self._ledger_id,
+            "store_name": self._state_name,
+            "store_path_name": self._path.name,
+            "version": 1,
+        }
+
+    def _validate_metadata(self, metadata: dict[str, JsonValue]) -> None:
+        if metadata != self._metadata():
+            raise StateIntegrityError("record key store metadata mismatch")
 
     def _validate_state(self, state: dict[str, JsonValue]) -> None:
         if state.get("version") != 1 or state.get("ledger_id") != self._ledger_id:
@@ -421,6 +460,66 @@ def _validate_ledger_id(value: str) -> str:
     if type(value) is not str or not value or len(value.encode("utf-8")) > 256:
         raise InputBoundaryError("ledger_id is outside canonical boundary")
     return value
+
+
+def _state_name_for_path(path: Path) -> str:
+    name = path.stem
+    if not name:
+        raise InputBoundaryError("record key store path must have a stable name")
+    return name
+
+
+def _has_partial_state(root: Path, state_name: str) -> bool:
+    return any(root.glob(f"{state_name}.*.manifest.json"))
+
+
+def _validate_keyring_backend(keyring_module: object) -> None:
+    get_keyring = getattr(keyring_module, "get_keyring", None)
+    if not callable(get_keyring):
+        raise KeyProviderUnavailable("keyring backend is unavailable")
+    try:
+        backend = get_keyring()
+    except Exception as exc:
+        raise KeyProviderUnavailable("keyring backend is unavailable") from exc
+    if backend is None:
+        raise KeyProviderUnavailable("keyring backend is unavailable")
+    if not _is_secure_keyring_backend(backend):
+        raise KeyProviderUnavailable("keyring backend is not secure")
+
+
+def _is_secure_keyring_backend(backend: object) -> bool:
+    backend_type = type(backend)
+    module = getattr(backend_type, "__module__", "").lower()
+    if module in {"keyring.backends.fail", "keyring.backends.null"}:
+        return False
+    try:
+        priority = getattr(backend, "priority")
+    except Exception:
+        return False
+    try:
+        if float(priority) < 1:
+            return False
+    except (TypeError, ValueError):
+        return False
+    backend_name = _backend_name(backend)
+    if module.startswith("keyrings.alt"):
+        return False
+    if any(token in backend_name for token in _INSECURE_KEYRING_BACKEND_TOKENS):
+        return False
+    if module == "keyring.backends.chainer":
+        candidate_backends = getattr(backend, "backends", None)
+        if not candidate_backends:
+            return False
+        return all(_is_secure_keyring_backend(candidate) for candidate in candidate_backends)
+    return True
+
+
+def _backend_name(backend: object) -> str:
+    backend_type = type(backend)
+    module = getattr(backend_type, "__module__", "")
+    qualname = getattr(backend_type, "__qualname__", backend_type.__name__)
+    name = getattr(backend_type, "__name__", backend_type.__name__)
+    return f"{module}.{qualname}.{name}".lower()
 
 
 def _b64(value: bytes) -> str:
