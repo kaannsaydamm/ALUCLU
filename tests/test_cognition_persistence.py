@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from aluclu.cognition import UnsafePathError
+from aluclu.cognition import PersistenceError, UnsafePathError
 from aluclu.cognition.persistence import (
     atomic_write_bytes,
     exclusive_file_lock,
@@ -92,3 +92,29 @@ def test_exclusive_file_lock_creates_lock_file(tmp_path: Path) -> None:
     with exclusive_file_lock(path):
         assert path.exists()
         assert path.stat().st_size >= 1
+
+
+def test_exclusive_file_lock_is_reentrant_for_the_same_thread(tmp_path: Path) -> None:
+    path = tmp_path / "ledger.lock"
+
+    with exclusive_file_lock(path):
+        with exclusive_file_lock(path):
+            assert path.exists()
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Win32 lock error translation")
+def test_exclusive_file_lock_translates_windows_acquisition_error(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import msvcrt
+
+    def fail_lock(_fd: int, mode: int, _size: int) -> None:
+        assert mode == msvcrt.LK_LOCK
+        raise OSError(36, "simulated lock timeout")
+
+    monkeypatch.setattr(msvcrt, "locking", fail_lock)
+
+    with pytest.raises(PersistenceError, match="exclusive file lock is unavailable"):
+        with exclusive_file_lock(tmp_path / "ledger.lock"):
+            pytest.fail("the lock body must not run")

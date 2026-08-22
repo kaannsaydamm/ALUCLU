@@ -1,14 +1,30 @@
 from __future__ import annotations
 
 import os
+import threading
 import uuid
+import weakref
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 
-from .contracts import UnsafePathError
+from .contracts import PersistenceError, UnsafePathError
 
 _WINDOWS_REPARSE_POINT = 0x400
+
+
+class _ProcessPathLock:
+    __slots__ = ("lock", "__weakref__")
+
+    def __init__(self) -> None:
+        self.lock = threading.RLock()
+
+
+_PROCESS_PATH_LOCKS_GUARD = threading.Lock()
+_PROCESS_PATH_LOCKS: weakref.WeakValueDictionary[str, _ProcessPathLock] = (
+    weakref.WeakValueDictionary()
+)
+_HELD_PROCESS_PATHS = threading.local()
 
 
 def resolve_ledger_path(path: str | Path) -> Path:
@@ -54,29 +70,64 @@ def exclusive_file_lock(path: str | Path) -> Iterator[None]:
     if _is_link_or_reparse(lock_path):
         raise UnsafePathError(f"unsafe link/reparse path: {lock_path}")
     lock_path.parent.mkdir(parents=True, exist_ok=True)
-    with lock_path.open("a+b", buffering=0) as handle:
-        handle.seek(0, os.SEEK_END)
-        if handle.tell() == 0:
-            handle.write(b"\0")
-            handle.flush()
-            os.fsync(handle.fileno())
-        handle.seek(0)
-        if os.name == "nt":
-            import msvcrt
-
-            msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
-        else:
-            import fcntl
-
-            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
-        try:
+    lock_key, process_lock = _process_path_lock(lock_path)
+    with process_lock.lock:
+        held_paths = _held_process_paths()
+        if lock_key in held_paths:
             yield
+            return
+        held_paths.add(lock_key)
+        try:
+            with lock_path.open("a+b", buffering=0) as handle:
+                handle.seek(0, os.SEEK_END)
+                if handle.tell() == 0:
+                    handle.write(b"\0")
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                handle.seek(0)
+                try:
+                    if os.name == "nt":
+                        import msvcrt
+
+                        msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+                    else:
+                        import fcntl
+
+                        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+                except OSError as exc:
+                    raise PersistenceError(
+                        f"exclusive file lock is unavailable: {lock_path}"
+                    ) from exc
+                try:
+                    yield
+                finally:
+                    handle.seek(0)
+                    if os.name == "nt":
+                        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                    else:
+                        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
         finally:
-            handle.seek(0)
-            if os.name == "nt":
-                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
-            else:
-                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+            held_paths.remove(lock_key)
+            if not held_paths:
+                del _HELD_PROCESS_PATHS.paths
+
+
+def _process_path_lock(path: Path) -> tuple[str, _ProcessPathLock]:
+    key = os.path.normcase(os.path.normpath(str(path)))
+    with _PROCESS_PATH_LOCKS_GUARD:
+        process_lock = _PROCESS_PATH_LOCKS.get(key)
+        if process_lock is None:
+            process_lock = _ProcessPathLock()
+            _PROCESS_PATH_LOCKS[key] = process_lock
+    return key, process_lock
+
+
+def _held_process_paths() -> set[str]:
+    paths = getattr(_HELD_PROCESS_PATHS, "paths", None)
+    if paths is None:
+        paths = set()
+        _HELD_PROCESS_PATHS.paths = paths
+    return paths
 
 
 def _safe_existing_parent(path: Path) -> Path:

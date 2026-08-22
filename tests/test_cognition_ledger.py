@@ -492,3 +492,34 @@ def test_two_ledger_objects_cannot_fork_history(tmp_path: Path) -> None:
     finally:
         for ledger in ledgers:
             ledger.close()
+
+
+def test_two_ledger_objects_sustain_concurrent_append_streams(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    ledgers = [
+        EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)),
+        EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)),
+    ]
+    for ledger in ledgers:
+        ledger.unlock()
+
+    def append_stream(ledger: EncryptedLedger, stream: int) -> list[int]:
+        return [
+            ledger.append(f"stream_{stream}_{index}", {"index": index}).record.sequence
+            for index in range(32)
+        ]
+
+    try:
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            futures = [
+                pool.submit(append_stream, ledger, stream)
+                for stream, ledger in enumerate(ledgers)
+            ]
+            sequences = [sequence for future in futures for sequence in future.result()]
+
+        assert sorted(sequences) == list(range(1, 65))
+        assert ledgers[0].event_count() == 64
+        ledgers[0].verify_integrity()
+    finally:
+        for ledger in ledgers:
+            ledger.close()
