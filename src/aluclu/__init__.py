@@ -1,6 +1,7 @@
 from .cognition import (
     AppendOutcome,
     CognitionError,
+    EncryptedLedger,
     InputBoundaryError,
     LedgerCursorCheckpoint,
     LedgerRecord,
@@ -74,6 +75,7 @@ __all__ = [
     "BoundedEpisodicMemory",
     "BoundedLocalAttention",
     "CognitionError",
+    "EncryptedLedger",
     "EpisodicMemoryConfig",
     "EpisodicState",
     "ExactCacheConfig",

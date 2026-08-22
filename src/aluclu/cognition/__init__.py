@@ -36,11 +36,13 @@ from .keys import (
     RecordKeyStore,
     StaticKeyProvider,
 )
+from .ledger import EncryptedLedger
 from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
 
 __all__ = [
     "AppendOutcome",
     "CognitionError",
+    "EncryptedLedger",
     "FileKeyProvider",
     "FileRecordKeyStore",
     "InputBoundaryError",
