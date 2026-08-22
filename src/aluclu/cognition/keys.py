@@ -194,8 +194,11 @@ class RecordKeyStore(Protocol):
     def reference(self, event_id: str) -> RecordKeyReference | None: ...
     def mark_committed(self, event_id: str, record_hash: str) -> RecordKeyReference: ...
     def shred(self, event_id: str, record_hash: str) -> bool: ...
+    def discard_pending(self, event_id: str) -> bool: ...
     def is_tombstoned(self, event_id: str) -> bool: ...
+    def tombstone_hash(self, event_id: str) -> str | None: ...
     def iter_references(self) -> Iterator[RecordKeyReference]: ...
+    def iter_tombstones(self) -> Iterator[tuple[str, str]]: ...
     def verify_integrity(self) -> None: ...
 
 
@@ -282,7 +285,7 @@ class FileRecordKeyStore:
             entry = _entry_dict(cast(dict[str, JsonValue], state["entries"]).get(safe_event_id))
             current_hash = entry.get("record_hash")
             if entry.get("state") == RecordKeyState.COMMITTED.value:
-                if current_hash == safe_hash:
+                if type(current_hash) is str and hmac.compare_digest(current_hash, safe_hash):
                     return _reference(safe_event_id, entry)
                 raise LedgerIntegrityError("committed record hash mismatch")
             if entry.get("state") != RecordKeyState.PENDING.value:
@@ -309,7 +312,8 @@ class FileRecordKeyStore:
             entry_dict = _entry_dict(entry)
             if entry_dict.get("state") != RecordKeyState.COMMITTED.value:
                 raise LedgerIntegrityError("only committed record keys can be shredded")
-            if entry_dict.get("record_hash") != safe_hash:
+            current_hash = cast(str, entry_dict.get("record_hash"))
+            if not hmac.compare_digest(current_hash, safe_hash):
                 raise LedgerIntegrityError("shred record hash mismatch")
             del entries[safe_event_id]
             tombstones[safe_event_id] = {"record_hash": safe_hash}
@@ -337,10 +341,27 @@ class FileRecordKeyStore:
         safe_event_id = validate_event_id(event_id)
         return safe_event_id in cast(dict[str, JsonValue], self._load()["tombstones"])
 
+    def tombstone_hash(self, event_id: str) -> str | None:
+        safe_event_id = validate_event_id(event_id)
+        state = self._load()
+        tombstone = cast(dict[str, JsonValue], state["tombstones"]).get(safe_event_id)
+        if tombstone is None:
+            return None
+        return _tombstone_record_hash(tombstone)
+
     def iter_references(self) -> Iterator[RecordKeyReference]:
         entries = cast(dict[str, JsonValue], self._load()["entries"])
         for event_id in sorted(entries):
             yield _reference(event_id, _entry_dict(entries[event_id]))
+
+    def iter_tombstones(self) -> Iterator[tuple[str, str]]:
+        state = self._load()
+        tombstones = cast(dict[str, JsonValue], state["tombstones"])
+        snapshot = tuple(
+            (event_id, _tombstone_record_hash(tombstones[event_id]))
+            for event_id in sorted(tombstones)
+        )
+        return iter(snapshot)
 
     def verify_integrity(self) -> None:
         self._load()
@@ -450,6 +471,12 @@ def _entry_dict(value: JsonValue | None) -> dict[str, JsonValue]:
     if value.get("record_hash") is not None and type(value.get("record_hash")) is not str:
         raise LedgerIntegrityError("record key hash is malformed")
     return cast(dict[str, JsonValue], value)
+
+
+def _tombstone_record_hash(value: JsonValue) -> str:
+    if type(value) is not dict:
+        raise LedgerIntegrityError("tombstone is malformed")
+    return _record_hash(cast(str, value.get("record_hash")))
 
 
 def _key_bytes(value: bytes | bytearray | memoryview, *, label: str) -> bytes:

@@ -8,7 +8,8 @@ import secrets
 import sqlite3
 import threading
 import time
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
 
@@ -39,7 +40,7 @@ from .contracts import (
     LedgerVerificationStats,
     UnsafePathError,
 )
-from .keys import FileRecordKeyStore, RecordKeyState, RecordKeyStore
+from .keys import FileRecordKeyStore, RecordKeyReference, RecordKeyState, RecordKeyStore
 from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
 
 SCHEMA_VERSION = 2
@@ -126,6 +127,18 @@ _SCHEMA = (
 _SCHEMA_TABLES = ("metadata", "history", "records", "tombstones")
 
 
+@dataclass(frozen=True)
+class _LedgerState:
+    metadata: dict[str, bytes]
+    records: dict[str, tuple[int, bytes]]
+    tombstones: dict[str, tuple[int, bytes]]
+    live_rows: dict[str, HistoryRow]
+    append_hashes: dict[str, bytes]
+    key_references: dict[str, str]
+    head_sequence: int
+    head_hash: bytes
+
+
 class EncryptedLedger:
     def __init__(
         self,
@@ -133,6 +146,7 @@ class EncryptedLedger:
         key_provider: KeyProvider,
         *,
         record_key_store: RecordKeyStore | None = None,
+        _fault_injector: Callable[[str], None] | None = None,
     ) -> None:
         self._path = resolve_ledger_path(path)
         self._lock_path = self._path.with_suffix(self._path.suffix + ".lock")
@@ -142,6 +156,7 @@ class EncryptedLedger:
         )
         self._provider = key_provider
         self._provided_store = record_key_store
+        self._fault_injector = _fault_injector
         self._record_store: RecordKeyStore | None = None
         self._connection: sqlite3.Connection | None = None
         self._ledger_id: str | None = None
@@ -210,46 +225,107 @@ class EncryptedLedger:
             safe_event_id = validate_event_id(event_id)
             with exclusive_file_lock(self._lock_path):
                 connection = self._connection_required()
-                connection.execute("BEGIN")
+                connection.execute("BEGIN IMMEDIATE")
                 try:
-                    self._verify_integrity_locked()
+                    verification = self._verify_integrity_locked()
                     record = self._read_record_locked(safe_event_id)
                     connection.execute("COMMIT")
-                    return record
                 except Exception:
-                    connection.execute("ROLLBACK")
+                    if connection.in_transaction:
+                        connection.execute("ROLLBACK")
                     raise
+                self._advance_verified_anchor(verification)
+                return record
+
+    def shred(self, event_id: str) -> bool:
+        with self._object_lock:
+            self._require_open()
+            safe_event_id = validate_event_id(event_id)
+            with exclusive_file_lock(self._lock_path):
+                connection = self._connection_required()
+                store = self._record_store_required()
+                connection.execute("BEGIN IMMEDIATE")
+                try:
+                    verification = self._verify_integrity_locked()
+                    lineage = self._lineage(safe_event_id)
+                    if lineage is None or lineage[0] == "tombstone":
+                        connection.execute("COMMIT")
+                        self._advance_verified_anchor(verification)
+                        return False
+
+                    row = verification[0].live_rows.get(safe_event_id)
+                    if row is None:
+                        raise LedgerIntegrityError("live record history is missing")
+                    append_hash = row[8]
+                    if not store.shred(safe_event_id, append_hash.hex()):
+                        raise LedgerIntegrityError("record key could not be shredded")
+                    self._inject_fault("after_store_tombstone_before_sqlite_shred")
+                    sequence, record_hash = self._append_shred_history_locked(
+                        safe_event_id,
+                        append_hash,
+                    )
+                    connection.execute("COMMIT")
+                except Exception:
+                    if connection.in_transaction:
+                        connection.execute("ROLLBACK")
+                    raise
+                self._inject_fault("after_sqlite_shred_before_anchor")
+                self._write_anchor(sequence, record_hash)
+                return True
+
+    def is_tombstoned(self, event_id: str) -> bool:
+        with self._object_lock:
+            self._require_open()
+            safe_event_id = validate_event_id(event_id)
+            with exclusive_file_lock(self._lock_path):
+                connection = self._connection_required()
+                connection.execute("BEGIN IMMEDIATE")
+                try:
+                    verification = self._verify_integrity_locked()
+                    found = self._lineage(safe_event_id)
+                    result = found is not None and found[0] == "tombstone"
+                    connection.execute("COMMIT")
+                except Exception:
+                    if connection.in_transaction:
+                        connection.execute("ROLLBACK")
+                    raise
+                self._advance_verified_anchor(verification)
+                return result
 
     def event_count(self) -> int:
         with self._object_lock:
             self._require_open()
             with exclusive_file_lock(self._lock_path):
                 connection = self._connection_required()
-                connection.execute("BEGIN")
+                connection.execute("BEGIN IMMEDIATE")
                 try:
-                    self._verify_integrity_locked()
+                    verification = self._verify_integrity_locked()
                     count = cast(
                         int,
                         connection.execute("SELECT COUNT(*) FROM history").fetchone()[0],
                     )
                     connection.execute("COMMIT")
-                    return count
                 except Exception:
-                    connection.execute("ROLLBACK")
+                    if connection.in_transaction:
+                        connection.execute("ROLLBACK")
                     raise
+                self._advance_verified_anchor(verification)
+                return count
 
     def verify_integrity(self) -> None:
         with self._object_lock:
             self._require_open()
             with exclusive_file_lock(self._lock_path):
                 connection = self._connection_required()
-                connection.execute("BEGIN")
+                connection.execute("BEGIN IMMEDIATE")
                 try:
-                    self._verify_integrity_locked()
+                    verification = self._verify_integrity_locked()
                     connection.execute("COMMIT")
                 except Exception:
-                    connection.execute("ROLLBACK")
+                    if connection.in_transaction:
+                        connection.execute("ROLLBACK")
                     raise
+                self._advance_verified_anchor(verification)
 
     def _unlock_new(self, master_key: bytes) -> None:
         if self._anchor_path.exists() or self._record_state_exists():
@@ -310,13 +386,15 @@ class EncryptedLedger:
             raise LedgerKeyError("master key does not match ledger")
         self._configure_connection(connection)
         self._record_store = self._open_record_store(create=False)
-        connection.execute("BEGIN")
+        connection.execute("BEGIN IMMEDIATE")
         try:
-            self._verify_integrity_locked()
+            verification = self._verify_integrity_locked()
             connection.execute("COMMIT")
         except Exception:
-            connection.execute("ROLLBACK")
+            if connection.in_transaction:
+                connection.execute("ROLLBACK")
             raise
+        self._advance_verified_anchor(verification)
 
     def _append(
         self,
@@ -334,9 +412,9 @@ class EncryptedLedger:
                 store = self._record_store_required()
                 connection.execute("BEGIN IMMEDIATE")
                 pending_created = False
-                committed = False
+                sqlite_committed = False
                 try:
-                    self._verify_integrity_locked()
+                    verification = self._verify_integrity_locked()
                     existing = self._lineage(safe_event_id)
                     if existing is not None:
                         operation = existing[0]
@@ -345,6 +423,8 @@ class EncryptedLedger:
                             if record is None or canonical_json_bytes(record.payload) != payload_bytes:
                                 raise LedgerConflictError("event payload conflicts with live record")
                             connection.execute("COMMIT")
+                            sqlite_committed = True
+                            self._advance_verified_anchor(verification)
                             return AppendOutcome(record=record, created=False)
                         raise LedgerConflictError("event ID already has ledger lineage")
 
@@ -356,6 +436,7 @@ class EncryptedLedger:
                     before = store.reference(safe_event_id)
                     reference = store.put_pending(safe_event_id, record_key)
                     pending_created = before is None
+                    self._inject_fault("after_pending_key_before_sqlite_insert")
                     nonce = secrets.token_bytes(12)
                     aad = self._aad(
                         operation="append",
@@ -400,8 +481,10 @@ class EncryptedLedger:
                     )
                     self._set_head(connection, sequence, record_hash)
                     connection.execute("COMMIT")
-                    committed = True
+                    sqlite_committed = True
+                    self._inject_fault("after_sqlite_commit_before_key_committed")
                     store.mark_committed(safe_event_id, record_hash.hex())
+                    self._inject_fault("after_key_committed_before_anchor")
                     self._write_anchor(sequence, record_hash)
                     decoded = strict_json_loads(payload_bytes)
                     return AppendOutcome(
@@ -415,13 +498,22 @@ class EncryptedLedger:
                         created=True,
                     )
                 except Exception:
-                    if not committed:
+                    if connection.in_transaction:
                         connection.execute("ROLLBACK")
-                        if pending_created:
-                            store.discard_pending(safe_event_id)
+                    if not sqlite_committed and pending_created:
+                        store.discard_pending(safe_event_id)
                     raise
 
-    def _verify_integrity_locked(self) -> None:
+    def _verify_integrity_locked(self) -> tuple[_LedgerState, bool]:
+        state = self._scan_history_locked()
+        if self._recover_external_state_locked(state):
+            state = self._scan_history_locked()
+        self._verify_external_state_locked(state)
+        anchor_lagging = self._verify_anchor_locked(state)
+        self._full_verifications += 1
+        return state, anchor_lagging
+
+    def _scan_history_locked(self) -> _LedgerState:
         connection = self._connection_required()
         store = self._record_store_required()
         self._verify_schema(connection)
@@ -442,6 +534,8 @@ class EncryptedLedger:
 
         expected_records: dict[str, tuple[int, bytes]] = {}
         expected_tombstones: dict[str, tuple[int, bytes]] = {}
+        live_rows: dict[str, HistoryRow] = {}
+        append_hashes: dict[str, bytes] = {}
         expected_key_references: dict[str, str] = {}
         previous_hash = ZERO_HASH
         expected_sequence = 1
@@ -455,7 +549,10 @@ class EncryptedLedger:
         for raw_row in rows:
             row = _history_row(raw_row)
             sequence = row[0]
-            if sequence != expected_sequence or row[7] != previous_hash:
+            if sequence != expected_sequence or not hmac.compare_digest(
+                row[7],
+                previous_hash,
+            ):
                 raise LedgerIntegrityError("history chain sequence is broken")
             try:
                 validate_event_id(row[2])
@@ -477,13 +574,15 @@ class EncryptedLedger:
             if not hmac.compare_digest(row[8], computed_hash):
                 raise LedgerIntegrityError("history record hash does not verify")
             if row[1] == "append":
-                if row[2] in expected_records or row[2] in expected_tombstones:
+                if row[2] in append_hashes:
                     raise LedgerIntegrityError("event lineage is duplicated")
-                self._decrypt_row(row)
                 expected_records[row[2]] = (sequence, row[8])
+                live_rows[row[2]] = row
+                append_hashes[row[2]] = row[8]
                 expected_key_references[row[2]] = cast(str, row[3])
             elif row[1] == "shred":
                 live = expected_records.pop(row[2], None)
+                live_rows.pop(row[2], None)
                 expected_key_references.pop(row[2], None)
                 if live is None or row[2] in expected_tombstones:
                     raise LedgerIntegrityError("shred lineage has no live record")
@@ -498,35 +597,230 @@ class EncryptedLedger:
             raise LedgerIntegrityError("metadata head sequence does not verify")
         if not hmac.compare_digest(_metadata_hash(metadata, "head_hash"), previous_hash):
             raise LedgerIntegrityError("metadata head hash does not verify")
-        if _projection(connection, "records") != expected_records:
+        if not _projections_match(_projection(connection, "records"), expected_records):
             raise LedgerIntegrityError("live record projection does not verify")
-        if _projection(connection, "tombstones") != expected_tombstones:
+        if not _projections_match(
+            _projection(connection, "tombstones"),
+            expected_tombstones,
+        ):
             raise LedgerIntegrityError("tombstone projection does not verify")
 
-        references = {item.event_id: item for item in store.iter_references()}
-        if set(references) != set(expected_records):
-            raise LedgerIntegrityError("record key projection does not verify")
-        for event_id, (_sequence, record_hash) in expected_records.items():
+        return _LedgerState(
+            metadata=metadata,
+            records=expected_records,
+            tombstones=expected_tombstones,
+            live_rows=live_rows,
+            append_hashes=append_hashes,
+            key_references=expected_key_references,
+            head_sequence=actual_head_sequence,
+            head_hash=previous_hash,
+        )
+
+    def _recover_external_state_locked(self, state: _LedgerState) -> bool:
+        store = self._record_store_required()
+        references, tombstones = self._external_state_snapshot()
+        pending_commits: list[tuple[str, str]] = []
+        pending_discards: list[str] = []
+        forward_shreds: list[tuple[str, bytes]] = []
+
+        for event_id, (_sequence, record_hash) in state.records.items():
+            reference = references.get(event_id)
+            tombstone_hash = tombstones.get(event_id)
+            if reference is None:
+                if tombstone_hash is None:
+                    raise LedgerKeyError("live record has no key or tombstone")
+                if not hmac.compare_digest(tombstone_hash, record_hash.hex()):
+                    raise LedgerIntegrityError("record key tombstone hash does not verify")
+                forward_shreds.append((event_id, record_hash))
+                continue
+            if tombstone_hash is not None:
+                raise LedgerIntegrityError("record key is both live and tombstoned")
+            if not hmac.compare_digest(
+                reference.reference,
+                state.key_references[event_id],
+            ):
+                raise LedgerIntegrityError("record key reference does not verify")
+            if reference.state is RecordKeyState.PENDING:
+                if reference.record_hash is not None:
+                    raise LedgerIntegrityError("pending record key has a receipt")
+                pending_commits.append((event_id, record_hash.hex()))
+            elif reference.state is not RecordKeyState.COMMITTED or (
+                reference.record_hash is None
+                or not hmac.compare_digest(reference.record_hash, record_hash.hex())
+            ):
+                raise LedgerIntegrityError("committed record key receipt does not verify")
+
+        for event_id in state.tombstones:
+            if event_id in references:
+                raise LedgerIntegrityError("shredded lineage still has a record key")
+            tombstone_hash = tombstones.get(event_id)
+            if tombstone_hash is None:
+                raise LedgerKeyError("shredded lineage has no external tombstone")
+            if not hmac.compare_digest(
+                tombstone_hash,
+                state.append_hashes[event_id].hex(),
+            ):
+                raise LedgerIntegrityError("record key tombstone hash does not verify")
+
+        for event_id, reference in references.items():
+            if event_id in state.records:
+                continue
+            if reference.state is RecordKeyState.COMMITTED:
+                raise LedgerRollbackError("committed record key is absent from database")
+            if reference.state is not RecordKeyState.PENDING:
+                raise LedgerIntegrityError("record key state is invalid")
+            pending_discards.append(event_id)
+
+        for event_id, tombstone_hash in tombstones.items():
+            append_hash = state.append_hashes.get(event_id)
+            if append_hash is None:
+                raise LedgerIntegrityError("external tombstone has no database lineage")
+            if not hmac.compare_digest(tombstone_hash, append_hash.hex()):
+                raise LedgerIntegrityError("external tombstone hash does not verify")
+            if event_id not in state.records and event_id not in state.tombstones:
+                raise LedgerIntegrityError("external tombstone lineage is incomplete")
+
+        for event_id, row in state.live_rows.items():
+            if event_id in references:
+                self._decrypt_row(row)
+
+        for event_id in sorted(pending_discards):
+            if not store.discard_pending(event_id):
+                raise LedgerIntegrityError("unreferenced pending key could not be discarded")
+        for event_id, record_hash in sorted(pending_commits):
+            store.mark_committed(event_id, record_hash)
+        for event_id, append_hash in sorted(forward_shreds):
+            self._append_shred_history_locked(event_id, append_hash)
+
+        return bool(pending_discards or pending_commits or forward_shreds)
+
+    def _verify_external_state_locked(self, state: _LedgerState) -> None:
+        references, tombstones = self._external_state_snapshot()
+        extra_references = set(references) - set(state.records)
+        for event_id in extra_references:
+            if references[event_id].state is RecordKeyState.COMMITTED:
+                raise LedgerRollbackError("committed record key is absent from database")
+        if extra_references or set(state.records) - set(references):
+            raise LedgerKeyError("record key projection does not verify")
+        if set(tombstones) != set(state.tombstones):
+            raise LedgerIntegrityError("record key tombstone projection does not verify")
+
+        for event_id, (_sequence, record_hash) in state.records.items():
             reference = references[event_id]
             if (
                 reference.state is not RecordKeyState.COMMITTED
-                or reference.record_hash != record_hash.hex()
-                or reference.reference != expected_key_references[event_id]
+                or reference.record_hash is None
+                or not hmac.compare_digest(reference.record_hash, record_hash.hex())
+                or not hmac.compare_digest(
+                    reference.reference,
+                    state.key_references[event_id],
+                )
             ):
                 raise LedgerIntegrityError("record key state does not verify")
-        for event_id in expected_tombstones:
-            if not store.is_tombstoned(event_id):
-                raise LedgerIntegrityError("record key tombstone is missing")
+            self._decrypt_row(state.live_rows[event_id])
+        for event_id, tombstone_hash in tombstones.items():
+            if not hmac.compare_digest(
+                tombstone_hash,
+                state.append_hashes[event_id].hex(),
+            ):
+                raise LedgerIntegrityError("record key tombstone does not verify")
 
+    def _external_state_snapshot(
+        self,
+    ) -> tuple[dict[str, RecordKeyReference], dict[str, str]]:
+        store = self._record_store_required()
+        revision_before = store.revision
+        references: dict[str, RecordKeyReference] = {}
+        for reference in store.iter_references():
+            if reference.event_id in references:
+                raise LedgerIntegrityError("record key reference is duplicated")
+            references[reference.event_id] = reference
+        tombstones: dict[str, str] = {}
+        for event_id, record_hash in store.iter_tombstones():
+            if event_id in tombstones:
+                raise LedgerIntegrityError("record key tombstone is duplicated")
+            tombstones[event_id] = record_hash
+        revision_after = store.revision
+        if revision_before != revision_after:
+            raise LedgerIntegrityError("record key store changed during verification")
+        if set(references) & set(tombstones):
+            raise LedgerIntegrityError("record key store state overlaps")
+        return references, tombstones
+
+    def _verify_anchor_locked(self, state: _LedgerState) -> bool:
         anchor_sequence, anchor_hash = self._load_anchor()
-        if anchor_sequence > actual_head_sequence:
+        if anchor_sequence > state.head_sequence:
             raise LedgerRollbackError("ledger anchor is ahead of database")
-        if anchor_sequence == actual_head_sequence:
-            if not hmac.compare_digest(anchor_hash, previous_hash):
+        if anchor_sequence == state.head_sequence:
+            if not hmac.compare_digest(anchor_hash, state.head_hash):
                 raise LedgerIntegrityError("ledger anchor head does not verify")
+            return False
+        if anchor_sequence == 0:
+            expected_anchor_hash = ZERO_HASH
         else:
-            self._write_anchor(actual_head_sequence, previous_hash)
-        self._full_verifications += 1
+            row = self._connection_required().execute(
+                "SELECT record_hash FROM history WHERE sequence = ?",
+                (anchor_sequence,),
+            ).fetchone()
+            if row is None or type(row[0]) is not bytes:
+                raise LedgerRollbackError("ledger anchor lineage is absent from database")
+            expected_anchor_hash = cast(bytes, row[0])
+        if not hmac.compare_digest(anchor_hash, expected_anchor_hash):
+            raise LedgerRollbackError("ledger anchor is not a database ancestor")
+        return True
+
+    def _advance_verified_anchor(self, verification: tuple[_LedgerState, bool]) -> None:
+        state, anchor_lagging = verification
+        if anchor_lagging:
+            self._write_anchor(state.head_sequence, state.head_hash)
+
+    def _append_shred_history_locked(
+        self,
+        event_id: str,
+        append_hash: bytes,
+    ) -> tuple[int, bytes]:
+        connection = self._connection_required()
+        metadata = self._metadata(connection)
+        sequence = _metadata_int(metadata, "head_sequence") + 1
+        previous_hash = _metadata_hash(metadata, "head_hash")
+        created_ns = max(1, time.time_ns())
+        record_hash = self._history_hash(
+            sequence=sequence,
+            operation="shred",
+            event_id=event_id,
+            key_reference=None,
+            nonce=None,
+            ciphertext=None,
+            created_ns=created_ns,
+            previous_hash=previous_hash,
+        )
+        connection.execute(
+            """
+            INSERT INTO history(
+                sequence, operation, event_id, key_reference, nonce,
+                ciphertext, created_ns, previous_hash, record_hash
+            ) VALUES (?, 'shred', ?, NULL, NULL, NULL, ?, ?, ?)
+            """,
+            (
+                sequence,
+                event_id,
+                created_ns,
+                sqlite3.Binary(previous_hash),
+                sqlite3.Binary(record_hash),
+            ),
+        )
+        deleted = connection.execute(
+            "DELETE FROM records WHERE event_id = ? AND record_hash = ?",
+            (event_id, sqlite3.Binary(append_hash)),
+        )
+        if deleted.rowcount != 1:
+            raise LedgerIntegrityError("live record projection changed during shred")
+        connection.execute(
+            "INSERT INTO tombstones(event_id, history_sequence, record_hash) VALUES (?, ?, ?)",
+            (event_id, sequence, sqlite3.Binary(record_hash)),
+        )
+        self._set_head(connection, sequence, record_hash)
+        return sequence, record_hash
 
     def _read_record_locked(self, event_id: str) -> LedgerRecord | None:
         connection = self._connection_required()
@@ -877,6 +1171,10 @@ class EncryptedLedger:
             raise LedgerLifecycleError("record key store is not open")
         return self._record_store
 
+    def _inject_fault(self, boundary: str) -> None:
+        if self._fault_injector is not None:
+            self._fault_injector(boundary)
+
     def _require_open_or_unlocking(self) -> None:
         if self._connection is None:
             raise LedgerLifecycleError("ledger connection is not open")
@@ -1001,6 +1299,19 @@ def _projection(connection: sqlite3.Connection, table: str) -> dict[str, tuple[i
             raise LedgerIntegrityError("ledger projection row is malformed")
         result[event_id] = (sequence, record_hash)
     return result
+
+
+def _projections_match(
+    actual: Mapping[str, tuple[int, bytes]],
+    expected: Mapping[str, tuple[int, bytes]],
+) -> bool:
+    if set(actual) != set(expected):
+        return False
+    return all(
+        actual[event_id][0] == sequence
+        and hmac.compare_digest(actual[event_id][1], record_hash)
+        for event_id, (sequence, record_hash) in expected.items()
+    )
 
 
 def _normalize_schema_sql(value: str) -> str:

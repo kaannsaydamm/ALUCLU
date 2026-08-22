@@ -386,6 +386,71 @@ def test_file_record_key_store_shred_removes_dek_and_keeps_tombstone(
     assert store.is_tombstoned("evt_1")
 
 
+def test_file_record_key_store_tombstone_hash_is_exact_and_absent_is_none(
+    tmp_path: Path,
+) -> None:
+    store = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
+    store.put_pending("evt_1", b"d" * 32)
+    store.mark_committed("evt_1", "ab" * 32)
+    store.shred("evt_1", "ab" * 32)
+
+    assert store.tombstone_hash("evt_1") == "ab" * 32
+    assert store.tombstone_hash("evt_missing") is None
+
+
+def test_file_record_key_store_tombstone_enumeration_is_sorted_and_snapshot_stable(
+    tmp_path: Path,
+) -> None:
+    store = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
+    for event_id, key, record_hash in (
+        ("evt_z", b"z" * 32, "cd" * 32),
+        ("evt_a", b"a" * 32, "ab" * 32),
+    ):
+        store.put_pending(event_id, key)
+        store.mark_committed(event_id, record_hash)
+        store.shred(event_id, record_hash)
+
+    snapshot = store.iter_tombstones()
+
+    store.put_pending("evt_m", b"m" * 32)
+    store.mark_committed("evt_m", "ef" * 32)
+    store.shred("evt_m", "ef" * 32)
+
+    assert list(snapshot) == [("evt_a", "ab" * 32), ("evt_z", "cd" * 32)]
+    assert list(store.iter_tombstones()) == [
+        ("evt_a", "ab" * 32),
+        ("evt_m", "ef" * 32),
+        ("evt_z", "cd" * 32),
+    ]
+
+
+def test_file_record_key_store_tombstone_queries_each_load_one_snapshot(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    store = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
+    store.put_pending("evt_1", b"d" * 32)
+    store.mark_committed("evt_1", "ab" * 32)
+    store.shred("evt_1", "ab" * 32)
+    original_load = store._load
+    calls = 0
+
+    def load_once() -> dict[str, object]:
+        nonlocal calls
+        calls += 1
+        return original_load()  # type: ignore[return-value]
+
+    monkeypatch.setattr(store, "_load", load_once)
+
+    assert store.tombstone_hash("evt_1") == "ab" * 32
+    assert calls == 1
+
+    iterator = store.iter_tombstones()
+    assert calls == 2
+    assert list(iterator) == [("evt_1", "ab" * 32)]
+    assert calls == 2
+
+
 def test_file_record_key_store_shred_removes_dek_from_all_state_files(
     tmp_path: Path,
 ) -> None:

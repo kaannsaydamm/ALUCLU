@@ -30,6 +30,8 @@ def test_construction_is_side_effect_free_and_lifecycle_is_typed(tmp_path: Path)
         lambda: ledger.read(""),
         lambda: ledger.append("", {"value": 1}),
         lambda: ledger.append_once("", {"value": 1}),
+        lambda: ledger.shred(""),
+        lambda: ledger.is_tombstoned(""),
     ):
         with pytest.raises(LedgerLifecycleError):
             operation()
@@ -43,6 +45,8 @@ def test_construction_is_side_effect_free_and_lifecycle_is_typed(tmp_path: Path)
         lambda: ledger.read(""),
         lambda: ledger.append("", {"value": 1}),
         lambda: ledger.append_once("", {"value": 1}),
+        lambda: ledger.shred(""),
+        lambda: ledger.is_tombstoned(""),
     ):
         with pytest.raises(LedgerLifecycleError):
             operation()
@@ -89,6 +93,59 @@ def test_append_and_append_once_reject_conflicting_lineage(tmp_path: Path) -> No
             ledger.append_once("evt_1", {"value": 2})
 
 
+def test_shred_destroys_key_but_preserves_authenticated_lineage(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    store = FileRecordKeyStore(
+        tmp_path / "keys.json",
+        b"s" * 32,
+        ledger_id="ledger-1",
+    )
+
+    with EncryptedLedger(
+        path,
+        StaticKeyProvider(MASTER_KEY),
+        record_key_store=store,
+    ) as ledger:
+        outcome = ledger.append("evt_1", {"secret": "never-resurrect"})
+
+        assert ledger.is_tombstoned("evt_1") is False
+        assert ledger.shred("evt_1") is True
+        assert ledger.shred("evt_1") is False
+        assert ledger.read("evt_1") is None
+        assert ledger.is_tombstoned("evt_1") is True
+        assert ledger.event_count() == 2
+        assert store.get("evt_1") is None
+        assert store.tombstone_hash("evt_1") == outcome.record.record_hash
+        ledger.verify_integrity()
+
+    with EncryptedLedger(
+        path,
+        StaticKeyProvider(MASTER_KEY),
+        record_key_store=store,
+    ) as ledger:
+        assert ledger.read("evt_1") is None
+        assert ledger.is_tombstoned("evt_1") is True
+        ledger.verify_integrity()
+
+
+def test_shred_absent_event_is_a_noop_and_event_id_never_resurrects(tmp_path: Path) -> None:
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3",
+        StaticKeyProvider(MASTER_KEY),
+    ) as ledger:
+        assert ledger.shred("evt_missing") is False
+        assert ledger.is_tombstoned("evt_missing") is False
+        assert ledger.event_count() == 0
+
+        ledger.append("evt_1", {"value": 1})
+        assert ledger.shred("evt_1") is True
+
+        with pytest.raises(LedgerConflictError):
+            ledger.append("evt_1", {"value": 2})
+        with pytest.raises(LedgerConflictError):
+            ledger.append_once("evt_1", {"value": 2})
+
+
 def test_wrong_master_key_cannot_claim_existing_empty_ledger(tmp_path: Path) -> None:
     path = tmp_path / "memory.sqlite3"
     with EncryptedLedger(path, StaticKeyProvider(b"a" * 32)):
@@ -126,6 +183,25 @@ def test_existing_incomplete_database_is_never_initialized(tmp_path: Path) -> No
         connection.close()
 
 
+def test_relative_ledger_path_does_not_follow_later_chdir(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    first.mkdir()
+    second.mkdir()
+    monkeypatch.chdir(first)
+    ledger = EncryptedLedger("memory.sqlite3", StaticKeyProvider(MASTER_KEY))
+
+    monkeypatch.chdir(second)
+    with ledger:
+        ledger.append("evt_1", {"value": 1})
+
+    assert (first / "memory.sqlite3").is_file()
+    assert not (second / "memory.sqlite3").exists()
+
+
 def test_schema_v2_and_exact_metadata_keys_are_created(tmp_path: Path) -> None:
     path = tmp_path / "memory.sqlite3"
     with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)):
@@ -160,6 +236,39 @@ def test_schema_column_drift_fails_closed(tmp_path: Path) -> None:
 
     with pytest.raises(LedgerIntegrityError):
         EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
+
+
+def test_missing_identity_metadata_fails_closed(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)):
+        pass
+    connection = sqlite3.connect(path)
+    try:
+        connection.execute("DELETE FROM metadata WHERE key = 'identity_root'")
+        connection.commit()
+    finally:
+        connection.close()
+
+    with pytest.raises(LedgerIntegrityError):
+        EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
+
+
+def test_existing_ledger_rejects_record_store_identity_mismatch(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)):
+        pass
+    wrong_store = FileRecordKeyStore(
+        tmp_path / "wrong-keys.json",
+        b"s" * 32,
+        ledger_id="wrong-ledger",
+    )
+
+    with pytest.raises(LedgerIntegrityError):
+        EncryptedLedger(
+            path,
+            StaticKeyProvider(MASTER_KEY),
+            record_key_store=wrong_store,
+        ).unlock()
 
 
 def test_new_ledger_accepts_explicit_matching_record_store(tmp_path: Path) -> None:
@@ -279,6 +388,21 @@ def test_missing_anchor_fails_closed(tmp_path: Path) -> None:
 
     with pytest.raises(LedgerIntegrityError):
         EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
+
+
+def test_invalid_utf8_and_duplicate_json_anchor_fail_closed(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    anchor = path.with_suffix(path.suffix + ".anchor.json")
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)):
+        pass
+
+    for invalid in (
+        b"\xff",
+        b'{"mac":"00","mac":"11","payload":{}}',
+    ):
+        anchor.write_bytes(invalid)
+        with pytest.raises(LedgerIntegrityError):
+            EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
 
 
 def test_valid_lagging_anchor_advances_only_after_full_verification(tmp_path: Path) -> None:
