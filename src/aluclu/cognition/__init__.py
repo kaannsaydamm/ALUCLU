@@ -27,13 +27,26 @@ from .contracts import (
     StateIntegrityError,
     UnsafePathError,
 )
+from .keys import (
+    FileKeyProvider,
+    FileRecordKeyStore,
+    KeyringKeyProvider,
+    RecordKeyReference,
+    RecordKeyState,
+    RecordKeyStore,
+    StaticKeyProvider,
+)
+from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
 
 __all__ = [
     "AppendOutcome",
     "CognitionError",
+    "FileKeyProvider",
+    "FileRecordKeyStore",
     "InputBoundaryError",
     "KeyProvider",
     "KeyProviderUnavailable",
+    "KeyringKeyProvider",
     "LedgerCapabilityUnavailable",
     "LedgerConflictError",
     "LedgerCursorCheckpoint",
@@ -48,10 +61,17 @@ __all__ = [
     "LedgerSnapshotChanged",
     "LedgerVerificationStats",
     "PersistenceError",
+    "RecordKeyReference",
+    "RecordKeyState",
+    "RecordKeyStore",
     "SafeStateCodec",
     "StateIntegrityError",
+    "StaticKeyProvider",
     "UnsafePathError",
+    "atomic_write_bytes",
     "canonical_json_bytes",
+    "exclusive_file_lock",
+    "resolve_ledger_path",
     "strict_json_loads",
     "validate_event_id",
 ]
