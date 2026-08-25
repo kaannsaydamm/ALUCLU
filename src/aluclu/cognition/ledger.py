@@ -37,10 +37,16 @@ from .contracts import (
     LedgerMigrationRequired,
     LedgerRecord,
     LedgerRollbackError,
+    LedgerSecurityScope,
     LedgerVerificationStats,
     UnsafePathError,
 )
-from .keys import FileRecordKeyStore, RecordKeyReference, RecordKeyState, RecordKeyStore
+from .keys import (
+    DirectoryRecordKeyStore,
+    RecordKeyReference,
+    RecordKeyState,
+    RecordKeyStore,
+)
 from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
 
 SCHEMA_VERSION = 2
@@ -151,7 +157,8 @@ class EncryptedLedger:
         self._path = resolve_ledger_path(path)
         self._lock_path = self._path.with_suffix(self._path.suffix + ".lock")
         self._anchor_path = self._path.with_suffix(self._path.suffix + ".anchor.json")
-        self._record_store_path = self._path.with_suffix(
+        self._record_store_path = self._path.with_suffix(self._path.suffix + ".record-keys")
+        self._legacy_record_store_path = self._path.with_suffix(
             self._path.suffix + ".record-keys.json"
         )
         self._provider = key_provider
@@ -192,6 +199,7 @@ class EncryptedLedger:
         with self._object_lock:
             if self._open:
                 return
+            self._preflight_record_store()
             master_key = self._master_key()
             try:
                 resolve_ledger_path(self._path)
@@ -947,7 +955,7 @@ class EncryptedLedger:
         self._identity_root = identity_root
         self._chain_key = _derive(master_key, identity_root, ledger_id, b"chain-mac")
         self._anchor_key = _derive(master_key, identity_root, ledger_id, b"anchor-auth")
-        self._store_key = _derive(master_key, identity_root, ledger_id, b"file-store")
+        self._store_key = _derive(master_key, identity_root, ledger_id, b"record-store-root")
         self._expected_key_check = self._key_check(master_key)
 
     def _key_check(self, master_key: bytes) -> bytes:
@@ -968,7 +976,7 @@ class EncryptedLedger:
                 raise LedgerIntegrityError("record key store ledger identity mismatch")
             self._provided_store.verify_integrity()
             return self._provided_store
-        return FileRecordKeyStore(
+        return DirectoryRecordKeyStore(
             self._record_store_path,
             cast(bytes, self._store_key),
             ledger_id=cast(str, self._ledger_id),
@@ -1154,10 +1162,37 @@ class EncryptedLedger:
         return bytes(key)
 
     def _record_state_exists(self) -> bool:
-        if self._record_store_path.exists():
+        if self._record_store_path.exists() or self._legacy_record_store_path.exists():
             return True
-        state_name = self._record_store_path.stem
-        return any(self._record_store_path.parent.glob(f"{state_name}.*.manifest.json"))
+        state_name = self._legacy_record_store_path.stem
+        return any(
+            self._legacy_record_store_path.parent.glob(f"{state_name}.*.manifest.json")
+        )
+
+    def _preflight_record_store(self) -> None:
+        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
+            raise LedgerCapabilityUnavailable(
+                "OS-keyring record storage is unavailable until its capability profile is active"
+            )
+        try:
+            resolve_ledger_path(self._record_store_path)
+            resolve_ledger_path(self._legacy_record_store_path)
+        except UnsafePathError as exc:
+            raise LedgerMigrationRequired("record key sidecar path is unsafe") from exc
+        if self._legacy_record_store_path.exists() or any(
+            self._legacy_record_store_path.parent.glob(
+                f"{self._legacy_record_store_path.stem}.*.manifest.json"
+            )
+        ):
+            raise LedgerMigrationRequired(
+                "legacy monolithic record key state requires explicit migration"
+            )
+        if self._record_store_path.exists() and not self._record_store_path.is_dir():
+            raise LedgerMigrationRequired("directory record key path is not a directory")
+        if not self._path.exists() and self._record_store_path.exists():
+            raise LedgerMigrationRequired(
+                "record key directory exists without its ledger database"
+            )
 
     def _require_open(self) -> None:
         if not self._open or self._connection is None:

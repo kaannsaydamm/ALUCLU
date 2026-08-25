@@ -28,6 +28,7 @@ from .contracts import (
     UnsafePathError,
 )
 from .keys import (
+    DirectoryRecordKeyStore,
     FileKeyProvider,
     FileRecordKeyStore,
     KeyringKeyProvider,
@@ -42,6 +43,7 @@ from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger
 __all__ = [
     "AppendOutcome",
     "CognitionError",
+    "DirectoryRecordKeyStore",
     "EncryptedLedger",
     "FileKeyProvider",
     "FileRecordKeyStore",

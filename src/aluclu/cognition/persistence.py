@@ -21,6 +21,8 @@ class _ProcessPathLock:
 
 
 _PROCESS_PATH_LOCKS_GUARD = threading.Lock()
+# Callers retain a strong reference while waiting/holding; weak entries avoid
+# retaining every persistence path ever observed by a long-lived process.
 _PROCESS_PATH_LOCKS: weakref.WeakValueDictionary[str, _ProcessPathLock] = (
     weakref.WeakValueDictionary()
 )
@@ -74,6 +76,8 @@ def exclusive_file_lock(path: str | Path) -> Iterator[None]:
     with process_lock.lock:
         held_paths = _held_process_paths()
         if lock_key in held_paths:
+            # The outer context still owns the OS lock; reacquiring that byte
+            # lock through another handle can self-deadlock on Windows.
             yield
             return
         held_paths.add(lock_key)
@@ -131,17 +135,14 @@ def _held_process_paths() -> set[str]:
 
 
 def _safe_existing_parent(path: Path) -> Path:
-    parent = path if path.exists() and path.is_dir() else path.parent
+    parent = path.parent
     probe = parent if parent != Path("") else Path.cwd()
-    existing: list[Path] = []
     while not probe.exists():
         if probe == probe.parent:
             break
         probe = probe.parent
-    for candidate in probe.resolve(strict=True).parents:
-        existing.append(candidate)
-    existing.append(probe)
-    for candidate in existing:
+    lexical_probe = Path(os.path.abspath(probe))
+    for candidate in (lexical_probe, *lexical_probe.parents):
         if _is_link_or_reparse(candidate):
             raise UnsafePathError(f"unsafe link/reparse parent: {candidate}")
     return parent.resolve(strict=False)

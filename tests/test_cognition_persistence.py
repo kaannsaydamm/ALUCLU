@@ -27,6 +27,13 @@ def test_resolved_relative_path_does_not_follow_later_chdir(
     assert resolved == (first / "memory.sqlite3").resolve()
 
 
+def test_resolve_existing_directory_does_not_duplicate_its_name(tmp_path: Path) -> None:
+    root = tmp_path / "record-keys"
+    root.mkdir()
+
+    assert resolve_ledger_path(root) == root.resolve()
+
+
 @pytest.mark.skipif(os.name != "nt", reason="Win32 alias rule")
 @pytest.mark.parametrize("name", ["memory.sqlite3.", "memory.sqlite3 "])
 def test_windows_trailing_dot_or_space_path_fails_closed(
@@ -61,6 +68,22 @@ def test_resolve_ledger_path_rejects_symlink_parent(tmp_path: Path) -> None:
 
     with pytest.raises(UnsafePathError):
         resolve_ledger_path(link / "memory.sqlite3")
+
+
+def test_resolve_ledger_path_rejects_deep_path_below_symlink_parent(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "target"
+    nested = target / "nested"
+    link = tmp_path / "link"
+    nested.mkdir(parents=True)
+    try:
+        link.symlink_to(target, target_is_directory=True)
+    except (OSError, NotImplementedError):
+        pytest.skip("directory symlinks are unavailable on this platform")
+
+    with pytest.raises(UnsafePathError):
+        resolve_ledger_path(link / "nested" / "memory.sqlite3")
 
 
 def test_atomic_write_bytes_rejects_symlink_target(tmp_path: Path) -> None:

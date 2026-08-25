@@ -5,13 +5,17 @@ from pathlib import Path
 import pytest
 
 from aluclu.cognition import (
+    DirectoryRecordKeyStore,
     EncryptedLedger,
+    FileKeyProvider,
     FileRecordKeyStore,
+    LedgerCapabilityUnavailable,
     LedgerConflictError,
     LedgerIntegrityError,
     LedgerKeyError,
     LedgerLifecycleError,
     LedgerMigrationRequired,
+    LedgerSecurityScope,
     StaticKeyProvider,
 )
 from aluclu.cognition import ledger as ledger_module
@@ -294,8 +298,10 @@ def test_history_hash_matches_independent_literal_fixture(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     path = tmp_path / "memory.sqlite3"
-    random_values = iter([b"i" * 32, b"d" * 32, b"n" * 12])
-    monkeypatch.setattr(ledger_module.secrets, "token_hex", lambda size: "11" * 16)
+    random_values = iter(
+        [b"i" * 32, b"d" * 32, b"w" * 12, b"n" * 12, b"c" * 12]
+    )
+    monkeypatch.setattr(ledger_module.secrets, "token_hex", lambda size: "11" * size)
     monkeypatch.setattr(
         ledger_module.secrets,
         "token_bytes",
@@ -314,9 +320,9 @@ def test_history_hash_matches_independent_literal_fixture(
     finally:
         connection.close()
 
-    assert ciphertext.hex() == "8fc5417fe8025043d55f040debbc155821c5e4df2e73f8c2cd71df"
+    assert ciphertext.hex() == "8fc5417fe8025043d55f044315ba791e56ff5a537db7090577525c"
     assert outcome.record.record_hash == (
-        "3043a85acd76d0b475e7719b035e22ebd415840967246a8dfa611743f9d7bf18"
+        "dfd836e27cd9830968da021a8e2e222269f5b52b13e79cc4b79df13abb8479be"
     )
     assert record_hash.hex() == outcome.record.record_hash
 
@@ -421,6 +427,73 @@ def test_valid_lagging_anchor_advances_only_after_full_verification(tmp_path: Pa
         assert anchor.read_bytes() == current_anchor
     finally:
         ledger.close()
+
+
+def test_static_provider_uses_directory_record_store_by_default(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    expected_root = path.with_suffix(path.suffix + ".record-keys")
+
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as ledger:
+        ledger.append("evt_1", {"value": 1})
+        store = ledger._record_store_required()
+        assert isinstance(store, DirectoryRecordKeyStore)
+
+    assert expected_root.is_dir()
+    assert (expected_root / "identity.json").is_file()
+    assert not path.with_suffix(path.suffix + ".record-keys.json").exists()
+
+
+def test_local_file_provider_uses_directory_record_store_by_default(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    key_path = tmp_path / "master.key"
+
+    with EncryptedLedger(path, FileKeyProvider(key_path, create=True)) as ledger:
+        ledger.append("evt_1", {"value": 1})
+        assert isinstance(ledger._record_store_required(), DirectoryRecordKeyStore)
+
+    assert key_path.is_file()
+    assert path.with_suffix(path.suffix + ".record-keys").is_dir()
+    assert not path.with_suffix(path.suffix + ".record-keys.json").exists()
+
+
+def test_os_keyring_scope_fails_before_provider_or_persistence_mutation(
+    tmp_path: Path,
+) -> None:
+    class OsScopeProvider:
+        @property
+        def security_scope(self) -> LedgerSecurityScope:
+            return LedgerSecurityScope.OS_KEYRING
+
+        def get_key(self) -> bytes:
+            raise AssertionError("Task 5 capability gate must run before get_key")
+
+    path = tmp_path / "memory.sqlite3"
+    ledger = EncryptedLedger(path, OsScopeProvider())
+
+    with pytest.raises(LedgerCapabilityUnavailable):
+        ledger.unlock()
+
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize("legacy_kind", ["monolithic", "file_at_directory_root"])
+def test_default_directory_store_rejects_legacy_or_file_state_without_mutation(
+    tmp_path: Path,
+    legacy_kind: str,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    if legacy_kind == "monolithic":
+        legacy = path.with_suffix(path.suffix + ".record-keys.json")
+    else:
+        legacy = path.with_suffix(path.suffix + ".record-keys")
+    legacy.write_bytes(b"legacy-state")
+    before = {item.name: item.read_bytes() for item in tmp_path.iterdir()}
+
+    with pytest.raises(LedgerMigrationRequired):
+        EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
+
+    after = {item.name: item.read_bytes() for item in tmp_path.iterdir()}
+    assert after == before
 
 
 def test_open_ledger_detects_external_key_check_mutation(tmp_path: Path) -> None:
