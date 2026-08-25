@@ -4,8 +4,10 @@ import base64
 import hashlib
 import hmac
 import json
+import os
 import secrets
 import sqlite3
+import stat
 import threading
 import time
 from collections.abc import Callable, Mapping
@@ -39,6 +41,7 @@ from .contracts import (
     LedgerRollbackError,
     LedgerSecurityScope,
     LedgerVerificationStats,
+    PersistenceError,
     UnsafePathError,
 )
 from .keys import (
@@ -47,10 +50,19 @@ from .keys import (
     RecordKeyState,
     RecordKeyStore,
 )
-from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
+from .persistence import (
+    atomic_publish_path,
+    atomic_write_bytes,
+    durable_unlink,
+    exclusive_file_lock,
+    resolve_ledger_path,
+)
 
 SCHEMA_VERSION = 2
 ZERO_HASH = b"\0" * 32
+_BOOTSTRAP_VERSION = 1
+_BOOTSTRAP_MAX_BYTES = 16 * 1024
+_HEX_DIGITS = frozenset("0123456789abcdef")
 _METADATA_KEYS = {
     "schema_version",
     "ledger_id",
@@ -145,6 +157,16 @@ class _LedgerState:
     head_hash: bytes
 
 
+@dataclass(frozen=True)
+class _LedgerBootstrap:
+    bootstrap_id: str
+    database_path: str
+    identity_root: bytes
+    ledger_id: str
+    provider_scope: LedgerSecurityScope
+    store_mode: str
+
+
 class EncryptedLedger:
     def __init__(
         self,
@@ -157,6 +179,12 @@ class EncryptedLedger:
         self._path = resolve_ledger_path(path)
         self._lock_path = self._path.with_suffix(self._path.suffix + ".lock")
         self._anchor_path = self._path.with_suffix(self._path.suffix + ".anchor.json")
+        self._bootstrap_pending_path = self._path.with_suffix(
+            self._path.suffix + ".bootstrap.pending.json"
+        )
+        self._bootstrap_complete_path = self._path.with_suffix(
+            self._path.suffix + ".bootstrap.complete.json"
+        )
         self._record_store_path = self._path.with_suffix(self._path.suffix + ".record-keys")
         self._legacy_record_store_path = self._path.with_suffix(
             self._path.suffix + ".record-keys.json"
@@ -204,7 +232,10 @@ class EncryptedLedger:
             try:
                 resolve_ledger_path(self._path)
                 with exclusive_file_lock(self._lock_path):
-                    if self._path.exists():
+                    bootstrap_phase = self._bootstrap_phase()
+                    if bootstrap_phase is not None:
+                        self._resume_bootstrap(master_key, phase=bootstrap_phase)
+                    elif self._path.exists():
                         self._unlock_existing(master_key)
                     else:
                         self._unlock_new(master_key)
@@ -338,6 +369,8 @@ class EncryptedLedger:
     def _unlock_new(self, master_key: bytes) -> None:
         if self._anchor_path.exists() or self._record_state_exists():
             raise LedgerIntegrityError("new ledger has pre-existing sidecar state")
+        if self._provided_store is not None:
+            self._require_empty_bootstrap_store(self._provided_store)
         ledger_id = (
             self._provided_store.ledger_id
             if self._provided_store is not None
@@ -345,18 +378,118 @@ class EncryptedLedger:
         )
         identity_root = secrets.token_bytes(32)
         self._install_identity(master_key, ledger_id, identity_root)
-        connection = self._connect(configure=True)
-        self._connection = connection
-        connection.execute("BEGIN IMMEDIATE")
+        bootstrap = _LedgerBootstrap(
+            bootstrap_id=secrets.token_hex(32),
+            database_path=self._database_path_identity(),
+            identity_root=identity_root,
+            ledger_id=ledger_id,
+            provider_scope=self._provider.security_scope,
+            store_mode="provided" if self._provided_store is not None else "directory",
+        )
+        self._write_bootstrap_marker(bootstrap, self._bootstrap_pending_path, master_key)
+        self._inject_fault("after_ledger_bootstrap_marker")
+        self._resume_bootstrap(master_key, phase="pending")
+
+    def _resume_bootstrap(self, master_key: bytes, *, phase: str) -> None:
+        marker_path = (
+            self._bootstrap_pending_path
+            if phase == "pending"
+            else self._bootstrap_complete_path
+        )
+        bootstrap = self._load_bootstrap_marker(marker_path, master_key)
+        self._validate_bootstrap_binding(bootstrap)
+        self._install_identity(
+            master_key,
+            bootstrap.ledger_id,
+            bootstrap.identity_root,
+        )
+        bootstrap_key_check = self._bootstrap_key_check(master_key, bootstrap)
+        if self._provided_store is not None:
+            self._require_empty_bootstrap_store(self._provided_store)
+
+        if not self._path.exists():
+            if phase != "pending":
+                raise LedgerIntegrityError("completed bootstrap database is missing")
+            if self._anchor_path.exists() or (
+                self._provided_store is None and self._record_store_path.exists()
+            ):
+                raise LedgerIntegrityError(
+                    "bootstrap sidecars exist before the database publish"
+                )
+            self._cleanup_bootstrap_scratch(bootstrap)
+            self._build_bootstrap_database(bootstrap, bootstrap_key_check)
+            self._inject_fault("after_ledger_bootstrap_database")
+
         try:
+            connection = self._connect(configure=False)
+        except sqlite3.DatabaseError as exc:
+            raise LedgerIntegrityError("bootstrap database is invalid") from exc
+        self._connection = connection
+        try:
+            stored_key_check = self._verify_bootstrap_database(
+                connection,
+                bootstrap,
+                bootstrap_key_check,
+                phase=phase,
+            )
+        except sqlite3.DatabaseError as exc:
+            raise LedgerIntegrityError("bootstrap database is invalid") from exc
+        self._configure_connection(connection)
+        self._cleanup_bootstrap_scratch(bootstrap)
+
+        store_exists = (
+            self._provided_store is not None or self._record_store_path.exists()
+        )
+        if phase == "complete" and not store_exists:
+            raise LedgerIntegrityError("completed bootstrap record store is missing")
+        if self._anchor_path.exists() and not store_exists:
+            raise LedgerIntegrityError("bootstrap anchor exists before the record store")
+        self._record_store = self._open_record_store(
+            create=phase == "pending" and not store_exists
+        )
+        self._verify_empty_bootstrap_store()
+        if phase == "pending":
+            self._inject_fault("after_ledger_bootstrap_store")
+
+        if self._anchor_path.exists():
+            self._verify_zero_bootstrap_anchor()
+        elif phase == "pending":
+            self._write_anchor(0, ZERO_HASH)
+            self._inject_fault("after_ledger_bootstrap_anchor")
+        else:
+            raise LedgerIntegrityError("completed bootstrap anchor is missing")
+
+        if phase == "pending":
+            atomic_publish_path(
+                self._bootstrap_pending_path,
+                self._bootstrap_complete_path,
+            )
+            self._inject_fault("after_ledger_bootstrap_complete_marker")
+        if hmac.compare_digest(stored_key_check, bootstrap_key_check):
+            self._finalize_bootstrap_key_check(connection, bootstrap_key_check)
+            self._inject_fault("after_ledger_bootstrap_key_check")
+
+        self._verify_integrity_locked()
+        self._inject_fault("after_ledger_bootstrap_verified")
+        durable_unlink(self._bootstrap_complete_path)
+
+    def _build_bootstrap_database(
+        self,
+        bootstrap: _LedgerBootstrap,
+        bootstrap_key_check: bytes,
+    ) -> None:
+        staging = self._bootstrap_staging_path(bootstrap)
+        connection = self._connect(configure=True, path=staging)
+        try:
+            connection.execute("BEGIN IMMEDIATE")
             for statement in _SCHEMA:
                 connection.execute(statement)
             connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
             metadata = {
                 "schema_version": str(SCHEMA_VERSION).encode("ascii"),
-                "ledger_id": ledger_id.encode("utf-8"),
-                "identity_root": identity_root,
-                "key_check": cast(bytes, self._expected_key_check),
+                "ledger_id": bootstrap.ledger_id.encode("utf-8"),
+                "identity_root": bootstrap.identity_root,
+                "key_check": bootstrap_key_check,
                 "head_sequence": b"0",
                 "head_hash": ZERO_HASH,
             }
@@ -365,12 +498,322 @@ class EncryptedLedger:
                 [(key, sqlite3.Binary(value)) for key, value in metadata.items()],
             )
             connection.execute("COMMIT")
+            self._inject_fault("after_ledger_bootstrap_staging_commit")
+            checkpoint = connection.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()
+            if checkpoint is None or tuple(checkpoint) != (0, 0, 0):
+                raise LedgerCapabilityUnavailable(
+                    "bootstrap SQLite WAL cannot be checkpointed"
+                )
+            journal_mode = cast(
+                str,
+                connection.execute("PRAGMA journal_mode = DELETE").fetchone()[0],
+            )
+            if journal_mode.casefold() != "delete":
+                raise LedgerCapabilityUnavailable(
+                    "bootstrap SQLite journal cannot be made self-contained"
+                )
         except Exception:
-            connection.execute("ROLLBACK")
+            if connection.in_transaction:
+                connection.execute("ROLLBACK")
             raise
-        self._record_store = self._open_record_store(create=True)
-        self._write_anchor(0, ZERO_HASH)
-        self._verify_integrity_locked()
+        finally:
+            connection.close()
+        self._inject_fault("after_ledger_bootstrap_staging_database")
+
+        verification = self._connect(configure=False, path=staging)
+        try:
+            self._verify_bootstrap_database(
+                verification,
+                bootstrap,
+                bootstrap_key_check,
+                phase="pending",
+            )
+        finally:
+            verification.close()
+        atomic_publish_path(staging, self._path)
+        self._cleanup_bootstrap_scratch(bootstrap)
+
+    def _verify_bootstrap_database(
+        self,
+        connection: sqlite3.Connection,
+        bootstrap: _LedgerBootstrap,
+        bootstrap_key_check: bytes,
+        *,
+        phase: str,
+    ) -> bytes:
+        self._verify_schema(connection)
+        metadata = self._metadata(connection)
+        if (
+            metadata["ledger_id"] != bootstrap.ledger_id.encode("utf-8")
+            or metadata["identity_root"] != bootstrap.identity_root
+            or metadata["head_sequence"] != b"0"
+            or not hmac.compare_digest(metadata["head_hash"], ZERO_HASH)
+        ):
+            raise LedgerIntegrityError("bootstrap database identity is invalid")
+        stored_key_check = metadata["key_check"]
+        final_key_check = cast(bytes, self._expected_key_check)
+        is_bootstrap = hmac.compare_digest(stored_key_check, bootstrap_key_check)
+        is_final = hmac.compare_digest(stored_key_check, final_key_check)
+        if not is_bootstrap and not is_final:
+            raise LedgerKeyError("master key does not match bootstrap database")
+        if phase == "pending" and not is_bootstrap:
+            raise LedgerIntegrityError("pending bootstrap marker was replayed")
+        counts = tuple(
+            cast(int, connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0])
+            for table in ("history", "records", "tombstones")
+        )
+        if counts != (0, 0, 0):
+            raise LedgerIntegrityError("bootstrap database is not empty")
+        return stored_key_check
+
+    def _verify_empty_bootstrap_store(self) -> None:
+        self._require_empty_bootstrap_store(self._record_store_required())
+
+    def _require_empty_bootstrap_store(self, store: RecordKeyStore) -> None:
+        store.verify_integrity()
+        if (
+            store.revision != 0
+            or tuple(store.iter_references())
+            or tuple(store.iter_tombstones())
+        ):
+            raise LedgerIntegrityError("bootstrap record store is not empty")
+
+    def _verify_zero_bootstrap_anchor(self) -> None:
+        sequence, record_hash = self._load_anchor()
+        if sequence != 0 or not hmac.compare_digest(record_hash, ZERO_HASH):
+            raise LedgerIntegrityError("bootstrap anchor is not empty")
+
+    def _finalize_bootstrap_key_check(
+        self,
+        connection: sqlite3.Connection,
+        bootstrap_key_check: bytes,
+    ) -> None:
+        connection.execute("BEGIN IMMEDIATE")
+        try:
+            cursor = connection.execute(
+                "UPDATE metadata SET value = ? WHERE key = 'key_check' AND value = ?",
+                (
+                    sqlite3.Binary(cast(bytes, self._expected_key_check)),
+                    sqlite3.Binary(bootstrap_key_check),
+                ),
+            )
+            if cursor.rowcount != 1:
+                raise LedgerIntegrityError("bootstrap key check changed unexpectedly")
+            connection.execute("COMMIT")
+        except Exception:
+            if connection.in_transaction:
+                connection.execute("ROLLBACK")
+            raise
+
+    def _bootstrap_phase(self) -> str | None:
+        try:
+            resolve_ledger_path(self._bootstrap_pending_path)
+            resolve_ledger_path(self._bootstrap_complete_path)
+        except UnsafePathError as exc:
+            raise LedgerIntegrityError("ledger bootstrap marker path is unsafe") from exc
+        pending = self._bootstrap_pending_path.exists()
+        complete = self._bootstrap_complete_path.exists()
+        if pending and complete:
+            raise LedgerIntegrityError("ledger bootstrap phases conflict")
+        if pending:
+            return "pending"
+        if complete:
+            return "complete"
+        return None
+
+    def _write_bootstrap_marker(
+        self,
+        bootstrap: _LedgerBootstrap,
+        path: Path,
+        master_key: bytes,
+    ) -> None:
+        body: JsonValue = {
+            "bootstrap_id": bootstrap.bootstrap_id,
+            "database_path": bootstrap.database_path,
+            "identity_root": base64.b64encode(bootstrap.identity_root).decode("ascii"),
+            "kind": "ledger-bootstrap",
+            "ledger_id": bootstrap.ledger_id,
+            "provider_scope": bootstrap.provider_scope.value,
+            "store_mode": bootstrap.store_mode,
+            "version": _BOOTSTRAP_VERSION,
+        }
+        body_bytes = canonical_json_bytes(body)
+        key = _derive(
+            master_key,
+            bootstrap.identity_root,
+            bootstrap.ledger_id,
+            b"bootstrap-marker-auth",
+        )
+        envelope: JsonValue = {
+            "body": body,
+            "mac": hmac.new(
+                key,
+                b"aluclu/v2/bootstrap-marker\0" + body_bytes,
+                hashlib.sha256,
+            ).hexdigest(),
+        }
+        atomic_write_bytes(path, canonical_json_bytes(envelope))
+
+    def _load_bootstrap_marker(
+        self,
+        path: Path,
+        master_key: bytes,
+    ) -> _LedgerBootstrap:
+        encoded = _read_bootstrap_file(path)
+        try:
+            decoded = strict_json_loads(encoded)
+            if canonical_json_bytes(decoded) != encoded:
+                raise LedgerIntegrityError("ledger bootstrap marker is not canonical")
+        except InputBoundaryError as exc:
+            raise LedgerIntegrityError("ledger bootstrap marker is malformed") from exc
+        if type(decoded) is not dict or set(decoded) != {"body", "mac"}:
+            raise LedgerIntegrityError("ledger bootstrap envelope is malformed")
+        body = decoded.get("body")
+        supplied_mac = decoded.get("mac")
+        if type(body) is not dict or type(supplied_mac) is not str:
+            raise LedgerIntegrityError("ledger bootstrap envelope is malformed")
+        if set(body) != {
+            "bootstrap_id",
+            "database_path",
+            "identity_root",
+            "kind",
+            "ledger_id",
+            "provider_scope",
+            "store_mode",
+            "version",
+        }:
+            raise LedgerIntegrityError("ledger bootstrap fields are invalid")
+        if body.get("kind") != "ledger-bootstrap" or body.get("version") != 1:
+            raise LedgerMigrationRequired("ledger bootstrap version is unsupported")
+
+        bootstrap_id = body.get("bootstrap_id")
+        database_path = body.get("database_path")
+        ledger_id = body.get("ledger_id")
+        encoded_identity = body.get("identity_root")
+        scope_value = body.get("provider_scope")
+        store_mode = body.get("store_mode")
+        if (
+            type(bootstrap_id) is not str
+            or not _is_lower_hex(bootstrap_id, length=64)
+            or type(database_path) is not str
+            or not database_path
+            or type(ledger_id) is not str
+            or not ledger_id
+            or len(ledger_id.encode("utf-8")) > 256
+            or type(encoded_identity) is not str
+            or type(scope_value) is not str
+            or type(store_mode) is not str
+            or store_mode not in {"directory", "provided"}
+            or not _is_lower_hex(supplied_mac, length=64)
+        ):
+            raise LedgerIntegrityError("ledger bootstrap value is malformed")
+        try:
+            identity_root = base64.b64decode(
+                encoded_identity.encode("ascii"),
+                validate=True,
+            )
+            provider_scope = LedgerSecurityScope(scope_value)
+        except (UnicodeEncodeError, ValueError) as exc:
+            raise LedgerIntegrityError("ledger bootstrap value is malformed") from exc
+        if len(identity_root) != 32:
+            raise LedgerIntegrityError("ledger bootstrap identity root is malformed")
+
+        bootstrap = _LedgerBootstrap(
+            bootstrap_id=bootstrap_id,
+            database_path=database_path,
+            identity_root=identity_root,
+            ledger_id=ledger_id,
+            provider_scope=provider_scope,
+            store_mode=store_mode,
+        )
+        key = _derive(
+            master_key,
+            bootstrap.identity_root,
+            bootstrap.ledger_id,
+            b"bootstrap-marker-auth",
+        )
+        expected_mac = hmac.new(
+            key,
+            b"aluclu/v2/bootstrap-marker\0" + canonical_json_bytes(body),
+            hashlib.sha256,
+        ).hexdigest()
+        if not hmac.compare_digest(supplied_mac, expected_mac):
+            raise LedgerKeyError("master key does not match ledger bootstrap")
+        return bootstrap
+
+    def _validate_bootstrap_binding(self, bootstrap: _LedgerBootstrap) -> None:
+        if bootstrap.database_path != self._database_path_identity():
+            raise LedgerIntegrityError("ledger bootstrap database path changed")
+        if bootstrap.provider_scope is not self._provider.security_scope:
+            raise LedgerIntegrityError("ledger bootstrap provider scope changed")
+        expected_mode = "provided" if self._provided_store is not None else "directory"
+        if bootstrap.store_mode != expected_mode:
+            raise LedgerIntegrityError("ledger bootstrap record-store mode changed")
+        if (
+            self._provided_store is not None
+            and self._provided_store.ledger_id != bootstrap.ledger_id
+        ):
+            raise LedgerIntegrityError("ledger bootstrap record-store identity changed")
+
+    def _bootstrap_key_check(
+        self,
+        master_key: bytes,
+        bootstrap: _LedgerBootstrap,
+    ) -> bytes:
+        key = _derive(
+            master_key,
+            bootstrap.identity_root,
+            bootstrap.ledger_id,
+            b"bootstrap-key-check",
+        )
+        message = b"\0".join(
+            (
+                b"aluclu/v2/bootstrap-key-check",
+                bootstrap.bootstrap_id.encode("ascii"),
+                bootstrap.database_path.encode("utf-8"),
+            )
+        )
+        return hmac.new(key, message, hashlib.sha256).digest()
+
+    def _database_path_identity(self) -> str:
+        return os.path.normcase(os.path.normpath(str(self._path)))
+
+    def _bootstrap_staging_path(self, bootstrap: _LedgerBootstrap) -> Path:
+        return self._path.parent / (
+            f".{bootstrap.bootstrap_id}.aluclu-bootstrap.sqlite3"
+        )
+
+    def _cleanup_bootstrap_scratch(self, bootstrap: _LedgerBootstrap) -> None:
+        staging = self._bootstrap_staging_path(bootstrap)
+        paths = (
+            staging,
+            Path(f"{staging}-wal"),
+            Path(f"{staging}-shm"),
+            Path(f"{staging}-journal"),
+        )
+        existing: list[Path] = []
+        for path in paths:
+            try:
+                resolved = resolve_ledger_path(path)
+                path_stat = resolved.lstat()
+            except FileNotFoundError:
+                continue
+            except (OSError, UnsafePathError) as exc:
+                raise LedgerIntegrityError("ledger bootstrap scratch is unsafe") from exc
+            if (
+                os.path.normcase(str(resolved.parent))
+                != os.path.normcase(str(self._path.parent))
+                or not stat.S_ISREG(path_stat.st_mode)
+            ):
+                raise LedgerIntegrityError("ledger bootstrap scratch is malformed")
+            existing.append(resolved)
+        for path in existing:
+            try:
+                durable_unlink(path)
+            except PersistenceError as exc:
+                raise LedgerIntegrityError(
+                    "ledger bootstrap scratch cannot be cleaned"
+                ) from exc
 
     def _unlock_existing(self, master_key: bytes) -> None:
         connection = self._connect(configure=False)
@@ -981,6 +1424,7 @@ class EncryptedLedger:
             cast(bytes, self._store_key),
             ledger_id=cast(str, self._ledger_id),
             create=create,
+            _fault_injector=self._fault_injector,
         )
 
     def _write_anchor(self, head_sequence: int, head_hash: bytes) -> None:
@@ -1115,9 +1559,14 @@ class EncryptedLedger:
             raise LedgerIntegrityError("ledger key check is malformed")
         return metadata
 
-    def _connect(self, *, configure: bool) -> sqlite3.Connection:
+    def _connect(
+        self,
+        *,
+        configure: bool,
+        path: Path | None = None,
+    ) -> sqlite3.Connection:
         connection = sqlite3.connect(
-            self._path,
+            self._path if path is None else path,
             isolation_level=None,
             check_same_thread=False,
             timeout=30.0,
@@ -1162,6 +1611,8 @@ class EncryptedLedger:
         return bytes(key)
 
     def _record_state_exists(self) -> bool:
+        if self._provided_store is not None:
+            return False
         if self._record_store_path.exists() or self._legacy_record_store_path.exists():
             return True
         state_name = self._legacy_record_store_path.stem
@@ -1175,10 +1626,18 @@ class EncryptedLedger:
                 "OS-keyring record storage is unavailable until its capability profile is active"
             )
         try:
+            resolve_ledger_path(self._bootstrap_pending_path)
+            resolve_ledger_path(self._bootstrap_complete_path)
             resolve_ledger_path(self._record_store_path)
             resolve_ledger_path(self._legacy_record_store_path)
         except UnsafePathError as exc:
             raise LedgerMigrationRequired("record key sidecar path is unsafe") from exc
+        pending_bootstrap = self._bootstrap_pending_path.exists()
+        complete_bootstrap = self._bootstrap_complete_path.exists()
+        if pending_bootstrap and complete_bootstrap:
+            raise LedgerIntegrityError("ledger bootstrap phases conflict")
+        if self._provided_store is not None:
+            return
         if self._legacy_record_store_path.exists() or any(
             self._legacy_record_store_path.parent.glob(
                 f"{self._legacy_record_store_path.stem}.*.manifest.json"
@@ -1189,7 +1648,12 @@ class EncryptedLedger:
             )
         if self._record_store_path.exists() and not self._record_store_path.is_dir():
             raise LedgerMigrationRequired("directory record key path is not a directory")
-        if not self._path.exists() and self._record_store_path.exists():
+        if (
+            not self._path.exists()
+            and self._record_store_path.exists()
+            and not pending_bootstrap
+            and not complete_bootstrap
+        ):
             raise LedgerMigrationRequired(
                 "record key directory exists without its ledger database"
             )
@@ -1240,6 +1704,29 @@ HistoryRow = tuple[
     bytes,
     bytes,
 ]
+
+
+def _read_bootstrap_file(path: Path) -> bytes:
+    try:
+        resolved = resolve_ledger_path(path)
+        before = resolved.lstat()
+        if not resolved.is_file() or before.st_size > _BOOTSTRAP_MAX_BYTES:
+            raise LedgerIntegrityError("ledger bootstrap marker is not a regular file")
+        encoded = resolved.read_bytes()
+        after = resolved.lstat()
+    except LedgerIntegrityError:
+        raise
+    except (OSError, UnsafePathError) as exc:
+        raise LedgerIntegrityError("ledger bootstrap marker is unavailable") from exc
+    if (
+        before.st_dev != after.st_dev
+        or before.st_ino != after.st_ino
+        or before.st_size != after.st_size
+        or len(encoded) != after.st_size
+    ):
+        raise LedgerIntegrityError("ledger bootstrap marker changed while being read")
+    resolve_ledger_path(resolved)
+    return encoded
 
 
 def _history_row(row: tuple[Any, ...]) -> HistoryRow:

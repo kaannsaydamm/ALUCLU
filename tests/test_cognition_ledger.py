@@ -293,6 +293,37 @@ def test_new_ledger_accepts_explicit_matching_record_store(tmp_path: Path) -> No
         assert ledger.read("evt_1") is not None
 
 
+def test_explicit_file_record_store_at_default_legacy_path_remains_supported(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    legacy_path = path.with_suffix(path.suffix + ".record-keys.json")
+    store = FileRecordKeyStore(
+        legacy_path,
+        b"s" * 32,
+        ledger_id="explicit-ledger",
+    )
+
+    with EncryptedLedger(
+        path,
+        StaticKeyProvider(MASTER_KEY),
+        record_key_store=store,
+    ) as ledger:
+        ledger.append("evt_1", {"value": 1})
+        assert ledger.read("evt_1") is not None
+
+    with EncryptedLedger(
+        path,
+        StaticKeyProvider(MASTER_KEY),
+        record_key_store=store,
+    ) as reopened:
+        assert reopened.read("evt_1") is not None
+        reopened.verify_integrity()
+
+    assert legacy_path.is_file()
+    assert not path.with_suffix(path.suffix + ".record-keys").exists()
+
+
 def test_history_hash_matches_independent_literal_fixture(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

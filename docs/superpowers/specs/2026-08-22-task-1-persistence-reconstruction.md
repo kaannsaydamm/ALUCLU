@@ -258,9 +258,11 @@ typed lifecycle/integrity exception.
 
 Construction resolves the database and sidecar paths but does not create or
 open persistence. `unlock()` creates a brand-new ledger only when every target
-path was absent, or opens and verifies an existing complete ledger. It is
-idempotent while open. `close()` is idempotent. Context entry calls `unlock()`;
-all data methods before unlock or after close raise `LedgerLifecycleError`.
+path was absent, resumes only an exact authenticated bootstrap marker created
+before the first persistence mutation, or opens and verifies an existing
+complete ledger. It is idempotent while open. `close()` is idempotent. Context
+entry calls `unlock()`; all data methods before unlock or after close raise
+`LedgerLifecycleError`.
 
 `append()` rejects an event ID that already has live or tombstoned lineage.
 `append_once()` returns the existing live record with `created=False` only when
@@ -380,6 +382,22 @@ schema version, ledger ID, head sequence, and head hash. A missing or
 ahead-of-database anchor fails closed. A lagging anchor advances only after the
 database chain, projections, and exact external key state verify; it is never
 used to truncate a database.
+
+First-run bootstrap uses authenticated
+`<database>.bootstrap.pending.json` and
+`<database>.bootstrap.complete.json` phases. The marker binds the canonical
+database path, ledger identity/root, provider scope, record-store mode, and a
+random bootstrap ID. SQLite is first committed and checkpointed in the exact
+bootstrap-ID-bound sibling scratch path, switched out of WAL, closed, verified,
+and atomically published. The empty record store and zero anchor are then
+verified before pending atomically becomes complete. Database `key_check`
+changes from the bootstrap-ID-bound value to the normal ledger value only in
+the complete phase; full verification precedes deletion of the complete marker.
+Without one of these authenticated markers, a missing anchor still fails
+closed. Pending-marker replay against a normally completed database, moved
+markers, conflicting phases, nonempty bootstrap state, and missing complete-
+phase components fail without repair or deletion. Only exact regular scratch
+files named by an authenticated marker may be removed.
 
 ## External key-state contract
 

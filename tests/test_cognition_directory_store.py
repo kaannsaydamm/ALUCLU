@@ -55,6 +55,67 @@ _CRASH_SCRIPT = textwrap.dedent(
     """
 )
 
+_ATOMIC_WRITE_CRASH_SCRIPT = textwrap.dedent(
+    """
+    import os
+    import sys
+    import uuid
+    from pathlib import Path
+
+    import aluclu.cognition.keys as keys_module
+    from aluclu.cognition import DirectoryRecordKeyStore
+
+    root = Path(sys.argv[1]).resolve()
+    crash_target = sys.argv[2]
+    original_atomic_write = keys_module.atomic_write_bytes
+
+    def terminate_mid_write(path: str | Path, data: bytes) -> None:
+        target = Path(path).resolve()
+        is_member = target.parent.parent == root / "events"
+        if (crash_target == "member" and is_member) or target.name == crash_target:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            temp = target.with_name(
+                f".{target.name}.{os.getpid()}.{uuid.uuid4().hex}.tmp"
+            )
+            with temp.open("xb") as handle:
+                handle.write(data)
+                handle.flush()
+                os.fsync(handle.fileno())
+            os._exit(74)
+        original_atomic_write(target, data)
+
+    keys_module.atomic_write_bytes = terminate_mid_write
+    store = DirectoryRecordKeyStore(root, b"m" * 32, ledger_id="ledger-1")
+    store.put_pending("evt_atomic_crash", b"a" * 32)
+    raise SystemExit(75)
+    """
+)
+
+_INITIALIZATION_CRASH_SCRIPT = textwrap.dedent(
+    """
+    import os
+    import sys
+    from pathlib import Path
+
+    from aluclu.cognition import DirectoryRecordKeyStore
+
+    root = Path(sys.argv[1])
+    boundary = sys.argv[2]
+
+    def terminate_at(candidate: str) -> None:
+        if candidate == boundary:
+            os._exit(74)
+
+    DirectoryRecordKeyStore(
+        root,
+        b"m" * 32,
+        ledger_id="ledger-1",
+        _fault_injector=terminate_at,
+    )
+    raise SystemExit(75)
+    """
+)
+
 
 def _file_fingerprint(root: Path) -> dict[str, str]:
     return {
@@ -458,6 +519,156 @@ def test_directory_store_real_process_shred_crash_never_resurrects(
     assert reopened.is_tombstoned("evt_target") is committed
     assert not (root / "prepare.json").exists()
     assert not (root / "staged.bin").exists()
+
+
+@pytest.mark.parametrize(
+    ("crash_target", "committed"),
+    [
+        ("staged.bin", False),
+        ("prepare.json", False),
+        ("member", True),
+        ("head.json", True),
+    ],
+)
+def test_directory_store_real_process_mid_atomic_write_crash_recovers(
+    tmp_path: Path,
+    crash_target: str,
+    committed: bool,
+) -> None:
+    root = tmp_path / "keys"
+    DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            _ATOMIC_WRITE_CRASH_SCRIPT,
+            str(root),
+            crash_target,
+        ],
+        cwd=Path(__file__).resolve().parents[1],
+        capture_output=True,
+        text=True,
+        timeout=20,
+        check=False,
+    )
+    assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
+    assert len(list(root.rglob(".*.tmp"))) == 1
+
+    store = DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    assert store.get("evt_atomic_crash") == (b"a" * 32 if committed else None)
+    assert store.revision == int(committed)
+    store.verify_integrity()
+    assert list(root.rglob(".*.tmp")) == []
+
+    reopened = DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    assert reopened.get("evt_atomic_crash") == (
+        b"a" * 32 if committed else None
+    )
+    assert reopened.revision == int(committed)
+
+
+@pytest.mark.parametrize(
+    ("boundary", "published"),
+    [
+        ("after_directory_initialize_identity", False),
+        ("after_directory_initialize_head", False),
+        ("after_directory_initialize_publish", True),
+    ],
+)
+def test_directory_store_real_process_initialization_crash_recovers(
+    tmp_path: Path,
+    boundary: str,
+    published: bool,
+) -> None:
+    root = tmp_path / "keys"
+
+    completed = subprocess.run(
+        [sys.executable, "-c", _INITIALIZATION_CRASH_SCRIPT, str(root), boundary],
+        cwd=Path(__file__).resolve().parents[1],
+        capture_output=True,
+        text=True,
+        timeout=20,
+        check=False,
+    )
+    assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
+    assert root.exists() is published
+
+    store = DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    assert store.revision == 0
+    store.verify_integrity()
+    assert {path.name for path in root.iterdir()} == {
+        "events",
+        "head.json",
+        "identity.json",
+        "tombstones",
+    }
+    assert not any(
+        path.name.startswith(f".{root.name}.")
+        and path.name.endswith(".init.tmp")
+        for path in tmp_path.iterdir()
+    )
+
+    reopened = DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    assert reopened.revision == 0
+
+
+def test_directory_store_does_not_clean_unrecognized_temp_artifact(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "keys"
+    store = DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    reference = store.put_pending("evt_1", b"d" * 32)
+    fanout = root / "events" / reference.reference[:2]
+    unknown = fanout / ".unrecognized.tmp"
+    unknown.write_bytes(b"must-not-be-silently-deleted")
+
+    with pytest.raises(LedgerIntegrityError):
+        DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+
+    assert unknown.read_bytes() == b"must-not-be-silently-deleted"
+
+
+def test_directory_store_does_not_clean_helper_shaped_unauthorized_target(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "keys"
+    DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    unknown = root / f".unknown.json.1234.{'a' * 32}.tmp"
+    unknown.write_bytes(b"must-not-be-silently-deleted")
+
+    with pytest.raises(LedgerIntegrityError):
+        DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+
+    assert unknown.read_bytes() == b"must-not-be-silently-deleted"
+
+
+def test_directory_store_does_not_clean_non_file_helper_temp(tmp_path: Path) -> None:
+    root = tmp_path / "keys"
+    DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+    invalid = root / f".head.json.1234.{'a' * 32}.tmp"
+    invalid.mkdir()
+
+    with pytest.raises(LedgerIntegrityError):
+        DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+
+    assert invalid.is_dir()
+
+
+def test_directory_store_does_not_recursively_clean_unknown_init_state(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "keys"
+    staging = tmp_path / f".{root.name}.1234.{'a' * 32}.init.tmp"
+    staging.mkdir()
+    unknown = staging / "user-data.bin"
+    unknown.write_bytes(b"must-not-be-recursively-deleted")
+
+    with pytest.raises(LedgerIntegrityError):
+        DirectoryRecordKeyStore(root, INTEGRITY_KEY, ledger_id=LEDGER_ID)
+
+    assert unknown.read_bytes() == b"must-not-be-recursively-deleted"
+    assert not root.exists()
 
 
 def test_directory_store_missing_open_is_side_effect_free(tmp_path: Path) -> None:

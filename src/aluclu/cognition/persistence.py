@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import stat
 import threading
 import uuid
 import weakref
@@ -64,6 +65,47 @@ def atomic_write_bytes(path: str | Path, data: bytes) -> None:
             temp.unlink()
         except FileNotFoundError:
             pass
+
+
+def atomic_publish_path(source: str | Path, target: str | Path) -> None:
+    source_path = resolve_ledger_path(source)
+    target_path = resolve_ledger_path(target)
+    if os.path.normcase(str(source_path.parent)) != os.path.normcase(
+        str(target_path.parent)
+    ):
+        raise UnsafePathError("atomic publish paths must share one parent")
+    try:
+        source_stat = source_path.lstat()
+    except OSError as exc:
+        raise PersistenceError(f"atomic publish source is unavailable: {source_path}") from exc
+    if not (stat.S_ISREG(source_stat.st_mode) or stat.S_ISDIR(source_stat.st_mode)):
+        raise UnsafePathError(f"atomic publish source is unsafe: {source_path}")
+    if target_path.exists():
+        raise FileExistsError(f"atomic publish target already exists: {target_path}")
+    if os.name == "nt":
+        _windows_replace_write_through(source_path, target_path)
+    else:
+        os.replace(source_path, target_path)
+        _fsync_directory(target_path.parent)
+
+
+def durable_unlink(path: str | Path, *, missing_ok: bool = False) -> None:
+    target = resolve_ledger_path(path)
+    try:
+        target_stat = target.lstat()
+    except FileNotFoundError:
+        if missing_ok:
+            return
+        raise
+    except OSError as exc:
+        raise PersistenceError(f"durable unlink target is unavailable: {target}") from exc
+    if not stat.S_ISREG(target_stat.st_mode):
+        raise UnsafePathError(f"durable unlink target is not a regular file: {target}")
+    try:
+        target.unlink()
+    except OSError as exc:
+        raise PersistenceError(f"durable unlink failed: {target}") from exc
+    _fsync_directory(target.parent)
 
 
 @contextmanager

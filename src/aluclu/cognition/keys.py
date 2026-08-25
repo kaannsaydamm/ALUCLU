@@ -7,6 +7,7 @@ import hmac
 import os
 import secrets
 import stat
+import uuid
 from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass
 from enum import Enum
@@ -33,10 +34,16 @@ from .contracts import (
     LedgerIntegrityError,
     LedgerMigrationRequired,
     LedgerSecurityScope,
+    PersistenceError,
     StateIntegrityError,
     UnsafePathError,
 )
-from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
+from .persistence import (
+    atomic_publish_path,
+    atomic_write_bytes,
+    exclusive_file_lock,
+    resolve_ledger_path,
+)
 
 _POSIX_MODE_CHECKS = os.name != "nt"
 _INSECURE_KEYRING_BACKEND_TOKENS = (
@@ -46,6 +53,10 @@ _DIRECTORY_STORE_VERSION = 2
 _DIRECTORY_STORE_MAX_ENVELOPE_BYTES = 64 * 1024
 _EMPTY_ACCUMULATOR = bytes(32)
 _HEX_DIGITS = frozenset("0123456789abcdef")
+_INITIALIZATION_TEMP_SUFFIX = ".init.tmp"
+_ROOT_ATOMIC_TARGETS = frozenset(
+    {"head.json", "identity.json", "prepare.json", "staged.bin"}
+)
 
 __all__ = [
     "DirectoryRecordKeyStore",
@@ -546,6 +557,7 @@ class DirectoryRecordKeyStore:
             else:
                 self._preflight_existing_root()
                 self._load_identity()
+            self._cleanup_root_atomic_write_temps_locked()
             self._recover_locked()
             self._verify_integrity_locked()
 
@@ -771,23 +783,36 @@ class DirectoryRecordKeyStore:
             self._verify_integrity_locked()
 
     def _initialize(self) -> None:
+        self._cleanup_initialization_directories_locked()
+        staging = self._root.parent / (
+            f".{self._root.name}.{os.getpid()}.{uuid.uuid4().hex}"
+            f"{_INITIALIZATION_TEMP_SUFFIX}"
+        )
         try:
-            self._root.mkdir(parents=False, exist_ok=False)
-            self._events_root.mkdir()
-            self._tombstones_root.mkdir()
+            staging.mkdir(parents=False, exist_ok=False)
+            (staging / "events").mkdir()
+            (staging / "tombstones").mkdir()
         except OSError as exc:
             raise LedgerIntegrityError("record key directory cannot be created") from exc
-        self._set_identity(secrets.token_hex(32))
-        identity = self._identity_body()
-        self._write_authenticated(self._identity_path, identity, self._identity_key)
-        initial_head = self._head_body(
-            revision=0,
-            event_count=0,
-            tombstone_count=0,
-            accumulator=_EMPTY_ACCUMULATOR,
-        )
-        self._write_authenticated(self._head_path, initial_head, self._auth_key)
-        _fsync_directory(self._root)
+        try:
+            self._set_identity(secrets.token_hex(32))
+            identity = self._identity_body()
+            self._write_authenticated(staging / "identity.json", identity, self._identity_key)
+            self._inject("after_directory_initialize_identity")
+            initial_head = self._head_body(
+                revision=0,
+                event_count=0,
+                tombstone_count=0,
+                accumulator=_EMPTY_ACCUMULATOR,
+            )
+            self._write_authenticated(staging / "head.json", initial_head, self._auth_key)
+            self._inject("after_directory_initialize_head")
+            _fsync_directory(staging)
+            self._publish_initialization_directory(staging)
+            self._inject("after_directory_initialize_publish")
+        finally:
+            if staging.exists():
+                self._remove_initialization_directory(staging)
 
     def _preflight_existing_root(self) -> None:
         resolve_ledger_path(self._root)
@@ -799,6 +824,7 @@ class DirectoryRecordKeyStore:
     def _open_locked(self) -> _DirectoryHead:
         self._validate_root_locked()
         self._load_identity()
+        self._cleanup_root_atomic_write_temps_locked()
         self._recover_locked()
         head = self._read_head()
         head_digest = _sha256_hex(head.encoded)
@@ -818,6 +844,171 @@ class DirectoryRecordKeyStore:
             raise UnsafePathError("record key directory path changed")
         if not self._root.is_dir():
             raise LedgerIntegrityError("record key directory is unavailable")
+
+    def _cleanup_initialization_directories_locked(self) -> None:
+        try:
+            candidates = tuple(self._root.parent.iterdir())
+        except OSError as exc:
+            raise LedgerIntegrityError("record key directory parent is unreadable") from exc
+        for candidate in sorted(candidates, key=lambda path: path.name):
+            if _is_initialization_temp_name(candidate.name, self._root.name):
+                self._remove_initialization_directory(candidate)
+
+    def _remove_initialization_directory(self, path: Path) -> None:
+        try:
+            resolved = resolve_ledger_path(path)
+        except UnsafePathError as exc:
+            raise LedgerIntegrityError(
+                "record key initialization directory is unsafe"
+            ) from exc
+        if (
+            os.path.normcase(str(resolved.parent))
+            != os.path.normcase(str(self._root.parent))
+            or not _is_initialization_temp_name(resolved.name, self._root.name)
+        ):
+            raise LedgerIntegrityError("record key initialization directory is invalid")
+        try:
+            root_stat = resolved.lstat()
+            entries = tuple(resolved.iterdir())
+        except OSError as exc:
+            raise LedgerIntegrityError(
+                "record key initialization directory is unreadable"
+            ) from exc
+        if not stat.S_ISDIR(root_stat.st_mode):
+            raise LedgerIntegrityError("record key initialization path is not a directory")
+
+        files: list[Path] = []
+        directories: list[Path] = []
+        for entry in entries:
+            try:
+                resolve_ledger_path(entry)
+                entry_stat = entry.lstat()
+            except (OSError, UnsafePathError) as exc:
+                raise LedgerIntegrityError(
+                    "record key initialization state is unsafe"
+                ) from exc
+            if entry.name in {"events", "tombstones"}:
+                if not stat.S_ISDIR(entry_stat.st_mode):
+                    raise LedgerIntegrityError(
+                        "record key initialization fanout is malformed"
+                    )
+                try:
+                    if any(entry.iterdir()):
+                        raise LedgerIntegrityError(
+                            "record key initialization fanout is not empty"
+                        )
+                except OSError as exc:
+                    raise LedgerIntegrityError(
+                        "record key initialization fanout is unreadable"
+                    ) from exc
+                directories.append(entry)
+                continue
+
+            atomic_target = _atomic_temp_target(entry.name)
+            if entry.name not in {"identity.json", "head.json"} and atomic_target not in {
+                "identity.json",
+                "head.json",
+            }:
+                raise LedgerIntegrityError("record key initialization layout is invalid")
+            _validate_cleanup_file(entry_stat)
+            files.append(entry)
+
+        try:
+            for entry in files:
+                entry.unlink()
+            for entry in directories:
+                entry.rmdir()
+            resolved.rmdir()
+        except OSError as exc:
+            raise LedgerIntegrityError(
+                "record key initialization directory cannot be cleaned"
+            ) from exc
+        _fsync_directory(self._root.parent)
+
+    def _publish_initialization_directory(self, staging: Path) -> None:
+        try:
+            resolved_staging = resolve_ledger_path(staging)
+            resolved_root = resolve_ledger_path(self._root)
+        except UnsafePathError as exc:
+            raise LedgerIntegrityError(
+                "record key initialization directory is unsafe"
+            ) from exc
+        if (
+            os.path.normcase(str(resolved_staging.parent))
+            != os.path.normcase(str(self._root.parent))
+            or not _is_initialization_temp_name(resolved_staging.name, self._root.name)
+            or resolved_root.exists()
+        ):
+            raise LedgerIntegrityError("record key initialization publish is invalid")
+        try:
+            atomic_publish_path(resolved_staging, resolved_root)
+        except (OSError, PersistenceError) as exc:
+            raise LedgerIntegrityError(
+                "record key initialization directory cannot be published"
+            ) from exc
+        _fsync_directory(self._root.parent)
+
+    def _cleanup_root_atomic_write_temps_locked(self) -> None:
+        try:
+            entries = tuple(self._root.iterdir())
+        except OSError as exc:
+            raise LedgerIntegrityError("record key directory is unreadable") from exc
+        allowed = {
+            "events",
+            "head.json",
+            "identity.json",
+            "prepare.json",
+            "staged.bin",
+            "tombstones",
+        }
+        temps: list[Path] = []
+        for entry in entries:
+            if entry.name in allowed:
+                continue
+            if _atomic_temp_target(entry.name) not in _ROOT_ATOMIC_TARGETS:
+                raise LedgerIntegrityError("record key directory layout is invalid")
+            try:
+                entry_stat = entry.lstat()
+            except OSError as exc:
+                raise LedgerIntegrityError(
+                    "record key temporary state is unavailable"
+                ) from exc
+            _validate_cleanup_file(entry_stat)
+            temps.append(entry)
+        for temp in temps:
+            self._remove_file(temp)
+
+    def _cleanup_staged_target_atomic_write_temps_locked(
+        self,
+        stage_body: Mapping[str, JsonValue],
+    ) -> None:
+        token = cast(str, stage_body["token"])
+        temps: list[Path] = []
+        for target in (self._event_path(token), self._tombstone_path(token)):
+            if not target.parent.exists():
+                continue
+            try:
+                resolve_ledger_path(target.parent)
+                if not target.parent.is_dir():
+                    raise LedgerIntegrityError(
+                        "record key fanout path is not a directory"
+                    )
+                entries = tuple(target.parent.iterdir())
+            except OSError as exc:
+                raise LedgerIntegrityError("record key fanout is unreadable") from exc
+            for entry in entries:
+                if _atomic_temp_target(entry.name) != target.name:
+                    continue
+                try:
+                    entry_stat = entry.lstat()
+                except OSError as exc:
+                    raise LedgerIntegrityError(
+                        "record key temporary state is unavailable"
+                    ) from exc
+                _validate_cleanup_file(entry_stat)
+                temps.append(entry)
+        for temp in temps:
+            self._remove_file(temp)
 
     def _set_identity(self, store_id: str) -> None:
         _validate_store_id(store_id)
@@ -1432,16 +1623,19 @@ class DirectoryRecordKeyStore:
             label="staged head",
         )
         desired_digest = _sha256_hex(desired_head)
-        if hmac.compare_digest(current_digest, expected_digest):
+        current_is_expected = hmac.compare_digest(current_digest, expected_digest)
+        current_is_desired = hmac.compare_digest(current_digest, desired_digest)
+        if not current_is_expected and not current_is_desired:
+            raise LedgerIntegrityError("record key prepare does not match the store head")
+        self._cleanup_staged_target_atomic_write_temps_locked(stage_body)
+        if current_is_expected:
             self._apply_staged_target(stage_body, allow_expected=True)
             self._write_bytes(self._head_path, desired_head)
             decoded_head = self._decode_head_bytes(desired_head)
             self._highest_revision = decoded_head.revision
             self._highest_head_digest = _sha256_hex(decoded_head.encoded)
-        elif hmac.compare_digest(current_digest, desired_digest):
-            self._apply_staged_target(stage_body, allow_expected=False)
         else:
-            raise LedgerIntegrityError("record key prepare does not match the store head")
+            self._apply_staged_target(stage_body, allow_expected=False)
         self._cleanup_mutation_files()
 
     def _decode_staged(self, encoded: bytes) -> dict[str, JsonValue]:
@@ -1808,6 +2002,53 @@ class DirectoryRecordKeyStore:
                 if token[:2] != fanout.name:
                     raise LedgerIntegrityError("record key member fanout mismatch")
                 yield token, _read_regular_file(member)
+
+
+def _atomic_temp_target(name: str) -> str | None:
+    if not name.startswith(".") or not name.endswith(".tmp"):
+        return None
+    try:
+        target, process_id, nonce = name[1:-4].rsplit(".", 2)
+    except ValueError:
+        return None
+    if (
+        not target
+        or not _is_canonical_process_id(process_id)
+        or len(nonce) != 32
+        or nonce != nonce.lower()
+        or any(character not in _HEX_DIGITS for character in nonce)
+    ):
+        return None
+    return target
+
+
+def _is_initialization_temp_name(name: str, root_name: str) -> bool:
+    prefix = f".{root_name}."
+    if not name.startswith(prefix) or not name.endswith(_INITIALIZATION_TEMP_SUFFIX):
+        return False
+    middle = name[len(prefix) : -len(_INITIALIZATION_TEMP_SUFFIX)]
+    try:
+        process_id, nonce = middle.rsplit(".", 1)
+    except ValueError:
+        return False
+    return (
+        _is_canonical_process_id(process_id)
+        and len(nonce) == 32
+        and nonce == nonce.lower()
+        and all(character in _HEX_DIGITS for character in nonce)
+    )
+
+
+def _is_canonical_process_id(value: str) -> bool:
+    return value.isascii() and value.isdigit() and not value.startswith("0")
+
+
+def _validate_cleanup_file(path_stat: os.stat_result) -> None:
+    if (
+        not stat.S_ISREG(path_stat.st_mode)
+        or path_stat.st_size > _DIRECTORY_STORE_MAX_ENVELOPE_BYTES
+    ):
+        raise LedgerIntegrityError("record key temporary state is malformed")
 
 
 def _derive_store_key(master_key: bytes, salt_material: bytes, info: bytes) -> bytes:

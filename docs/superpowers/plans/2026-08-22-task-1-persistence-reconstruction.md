@@ -658,14 +658,21 @@ def test_directory_store_mutation_count_is_lifetime_independent(tmp_path) -> Non
 For each store boundary `staged`, `prepare`, `event-state`, `head`, and
 `cleanup`, terminate a subprocess and reopen. Before `prepare`, the old state
 must remain. At/after `prepare`, reopen must forward-complete the exact new
-state. Repeating recovery twice must not increment revision twice.
+state. Repeating recovery twice must not increment revision twice. Also kill
+inside the atomic write helper before replacement and during first-run
+identity/head/publish; narrowly recognized helper temps must recover while
+unknown or non-regular artifacts remain fail-closed.
 
 - [ ] **Step 3: Implement the exact on-disk protocol**
 
 Use the spec's `identity.json`, `head.json`, `prepare.json`, `staged.bin`, and
 two-level HMAC token layout. `prepare.json` authenticates the operation,
 expected previous revision, new revision, target token, staged digest, and
-target state. Recovery validates all fields before replacing files.
+target state. Recovery validates all fields before replacing files. Build a
+new directory store completely in an exact sibling staging directory and
+publish it atomically. Keep normal mutation/open cost independent of lifetime
+history: crash cleanup may scan only the authenticated prepare's one target
+fanout, never the complete event tree.
 
 - [ ] **Step 4: Make directory storage the default and fail closed on legacy state**
 
@@ -676,6 +683,15 @@ For `STATIC_TEST_KEY` and `LOCAL_FILE_KEY`,
 remains supported explicitly. If a file already occupies the directory path or
 an unknown store identity/version exists, raise `LedgerMigrationRequired`
 without mutation.
+
+Ledger bootstrap itself is a crash protocol: write an authenticated pending
+marker before SQLite/store/anchor mutation, build and checkpoint SQLite in a
+marker-bound scratch path, atomically publish it, verify the empty store and
+zero anchor, atomically transition pending to complete, finalize the database
+key check, full-verify, and remove complete last. Test every boundary with real
+process termination. Marker absence preserves the ordinary missing-anchor
+failure; marker replay, path/mode mismatch, nonempty state, and unsafe scratch
+must fail closed.
 
 - [ ] **Step 5: Verify, commit, and run the mandatory review loop**
 
