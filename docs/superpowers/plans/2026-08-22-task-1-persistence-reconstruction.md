@@ -727,24 +727,34 @@ Record a CLEAN independent review before Task 6.
 - Modify: `src/aluclu/cognition/__init__.py`
 - Modify: `pyproject.toml`
 - Create: `tests/test_cognition_keyring_store.py`
+- Create: `tests/_keyring_process_worker.py`
+- Create: `tests/test_cognition_keyring_process_recovery.py`
+- Create: `tests/_keyring_master_race_worker.py`
+- Create: `tests/test_cognition_keyring_master_process_race.py`
 - Modify: `tests/test_cognition_ledger.py`
 
 **Interfaces:**
 
 - Consumes: `RecordKeyStore`, the directory store's authenticated metadata
   journal, and `KeyringKeyProvider` namespace.
-- Produces: `KeyringRecordKeyStore`, `LedgerCapabilityUnavailable`, and exact
-  `create_record_key_store(database_path, key_provider, *, ledger_id, create)`
-  selection without disk fallback.
+- Produces: `KeyringRecordKeyStore`, `RecordKeyStoreProfile`,
+  `LedgerCapabilityUnavailable`, and exact
+  `create_record_key_store(database_path, key_provider, *, ledger_id,
+  integrity_key, create)` selection without disk fallback.
+  `RecordKeyStoreProfile` is an enum with exact values `FILE_COMPAT`,
+  `DIRECTORY`, and `OS_KEYRING`.
 
-- [ ] **Step 1: Write capability and selection RED tests**
+- [x] **Step 1: Write capability and selection RED tests**
 
 Use a deterministic in-memory keyring double only at the external keyring API
 boundary. Test that lazy import/backend failure raises
 `LedgerCapabilityUnavailable` before persistence mutation, `OS_KEYRING`
 selects `KeyringRecordKeyStore`, and static/file scopes select
 `DirectoryRecordKeyStore`. An explicitly passed valid store remains
-authoritative.
+authoritative only after its ledger ID matches, `verify_integrity()` proves its
+authenticated identity, and its `RecordKeyStoreProfile` is compatible with the
+provider security scope. Static/file scopes accept `FILE_COMPAT` or
+`DIRECTORY`; OS-keyring scope accepts only `OS_KEYRING`.
 
 ```python
 def test_keyring_capability_failure_never_falls_back_to_disk(tmp_path, monkeypatch) -> None:
@@ -755,48 +765,152 @@ def test_keyring_capability_failure_never_falls_back_to_disk(tmp_path, monkeypat
             tmp_path / "memory.sqlite3",
             provider,
             ledger_id="ledger-1",
+            integrity_key=b"m" * 32,
             create=True,
         )
     assert not (tmp_path / "memory.sqlite3.record-keys").exists()
 ```
 
-- [ ] **Step 2: Write DEK-placement and head-witness RED tests**
+Also assert that the capability probe performs an isolated set/get/delete round
+trip before any ledger path exists. A failing probe may leave only an inert
+non-ledger credential in the fake backend; it must leave no database, anchor,
+store root, event metadata, or disk head. Reject keyring chainer backends
+outright, even if all chained backends report a secure priority, because the
+record-key profile needs one unambiguous rollback witness.
+
+Before importing or probing a backend, reject service/master-username/
+username-prefix components outside the portable 1–191 byte lowercase ASCII
+grammar `[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?`. Test exact maxima, oversize,
+uppercase, Unicode, reserved separators, whitespace, and control characters.
+The direct store must reject invalid components without a credential or disk
+artifact.
+
+Capture that concrete backend exactly once per ledger unlock in one immutable
+plan that also binds the resolved database/store paths, service, namespace
+hash, and `store_binding`. The master-key credential, record-key credentials,
+store construction, and ledger binding validation must consume this same plan
+even if process-global keyring selection changes between calls. Reopen through
+a different concrete backend identity must fail closed without disk or vault
+mutation. For a new ledger, two real processes racing with
+`KeyringKeyProvider(create=True)` must serialize master-key read/create under
+the ledger file lock, produce exactly one master credential, and both reopen
+the same ledger successfully.
+
+- [x] **Step 2: Write DEK-placement and head-witness RED tests**
 
 Append one pending/committed key through a persistent fake keyring boundary.
 Assert the 32-byte DEK is present only in the fake credential store and nowhere
-under the disk root. Restore an earlier disk head after a later keyring-head
-credential and assert `LedgerRollbackError` rather than repair or fallback.
+under the disk root. Validate that credential usernames are fixed-size,
+HMAC-derived names under the configured namespace; raw event IDs, raw ledger
+paths, and unbounded username prefixes must not appear in service usernames.
+Restore an earlier disk head after a later keyring-head credential and assert
+`LedgerRollbackError` rather than repair or fallback. Restore an earlier
+keyring head after a later disk head and assert integrity failure unless an
+exact prepare proves a `(D,E)` forward-completion state. With prepare, allow
+only `(E,E)`, `(D,E)`, and `(D,D)` to move forward; `(E,D)` is always rollback.
+Without prepare, require exact disk/keyring head equality.
 
-- [ ] **Step 3: Write keyring crash-state RED tests**
+Credential values must be versioned ASCII base64 transports of authenticated
+canonical envelopes, not direct ASCII decoding of JSON. Test Unicode ledger IDs,
+Unicode root/database paths, strict rejection of unknown/noncanonical/oversized
+transports, and the Windows 2,560-byte UTF-16LE credential-blob limit. Compact
+raw Unicode identity fields into a fixed authenticated `identity_binding` so a
+bounded Unicode ledger/path remains portable instead of being rejected.
 
-Inject at `staging-credential`, `staged-metadata`, `prepare`,
+- [x] **Step 3: Write keyring crash-state RED tests**
+
+Inject during initialization while building the sibling root, after atomic root
+publish, after revision-0 keyring witness, and during cleanup. The sibling root
+contains authenticated identity, revision-0 disk head, and authenticated
+init-intent before it is published. Reopen may repair a missing revision-0
+keyring witness only with `create=True` plus an authenticated init intent whose
+backend ID, service, derived username-prefix namespace hash, path, mode, and
+provider scope exactly match; foreign or missing intent fails closed without
+cleanup.
+
+Pre-encode and size-check the revision-0 witness before root publication. Test
+the maximum canonical service/prefix at the post-publish crash boundary. Bound
+third-party backend IDs and reject any regular state envelope larger than the
+64 KiB reader boundary before writing it, so accepted input cannot publish state
+that its own recovery path refuses to read.
+
+For operations, inject at `staging-credential`, `staged-metadata`, `prepare`,
 `final-credential`, `event-state`, `disk-head`, `keyring-head`, and `cleanup`.
-Before prepare, reopen discards only the fixed staging credential and retains
-the old state. At/after prepare, reopen forward-completes the exact state when
-the staging or final credential matches its authenticated digest; otherwise it
-fails closed. Add the corresponding shred path with delete-before-tombstone
-and prove a shredded credential is never recreated.
+Before prepare, reopen discards only the fixed staging credential and staged
+metadata and retains the old state for every operation. At/after prepare,
+reopen forward-completes the exact state when the staged/final evidence matches
+its authenticated digest; otherwise it fails closed. Cover `put_pending`,
+`mark_committed`, `discard_pending`, and `shred` explicitly. `mark_committed`
+must validate the existing credential digest before committing metadata.
+`discard_pending` must forward-delete the exact pending credential/event and
+advance both heads. For shred, prove delete-before-tombstone never recreates a
+shredded credential.
 
-- [ ] **Step 4: Implement the keyring profile without secret disk bytes**
+The acceptance oracle uses a persistent fake vault in a separate SQLite file
+and terminates the worker with real `os._exit`, not an in-process exception.
+Immediately after each crash and before recovery, scan every non-vault file in
+the test workspace for raw/base64 DEK bytes. Reopen twice and assert the exact
+old/new logical state, revision, tombstone, and credential counts. A prepared
+append whose staging credential is missing must fail closed twice without
+changing any non-vault file or vault row.
+
+- [x] **Step 4: Implement the keyring profile without secret disk bytes**
 
 Reuse metadata canonicalization and prepare validation, not Directory store
-secret serialization. Credential usernames bind service, username prefix,
-ledger ID, purpose, and HMAC event token. Maintain one authenticated keyring
-head credential as a rollback witness. A capability probe performs an isolated
-set/get/delete round trip. `keyring` is imported only inside the adapter; add
-the `os-keyring` optional dependency group.
+secret serialization. Credential usernames bind service, a bounded hash of the
+username-prefix namespace, ledger ID, purpose, and HMAC event token. Maintain
+one authenticated keyring head credential as a rollback witness and require it
+to pair exactly with disk `head.json` at rest. The pre-creation
+`store_binding` is derived from backend ID, service, derived namespace hash,
+and canonical database path; it does not include `store_id`. Initialize by
+building a sibling root that already contains authenticated identity, revision-0
+disk head, and authenticated init intent; fsync it, atomically publish it, then
+write/verify the revision-0 keyring witness and delete the init intent. A
+capability probe performs an isolated set/get/delete round trip. `keyring` is
+imported only inside the adapter; add the `os-keyring` optional dependency
+group. One frozen captured plan owns the backend, resolved paths, namespace,
+and binding. The ledger retains that plan through unlock, reads or creates the
+master credential through its backend while holding `<database>.lock`, opens
+`KeyringRecordKeyStore` from the same plan, and validates the store against the
+same binding; it never performs a second process-global backend lookup in that
+path.
 
-- [ ] **Step 5: Integrate factory selection and explicit-store override**
+Use `aluclu-keyring-v1:<canonical-base64>` for event, staging, and head values;
+strictly decode and authenticate it. Credential envelopes carry a fixed
+identity binding over Unicode ledger/root identity rather than raw strings.
+Preflight each destination head credential before any corresponding disk/vault
+mutation, including initialization and forward recovery.
+
+- [x] **Step 5: Integrate factory selection and explicit-store override**
 
 `EncryptedLedger(record_key_store=None)` calls the exact factory after ledger
-identity is known. An explicit store is accepted only when its ledger ID and
-authenticated identity match. Generic providers claiming `OS_KEYRING` without
-the concrete namespace contract fail with `LedgerCapabilityUnavailable`.
+identity is known. An explicit store is accepted only when its ledger ID
+matches, `verify_integrity()` proves its authenticated identity, and its
+`RecordKeyStoreProfile` is compatible with the provider security scope. Do not
+require legacy `FILE_COMPAT` or `DIRECTORY` stores to match a default
+provider/database `store_binding` unless the store implements that binding.
+Keyring `store_binding` must match the provider namespace and canonical
+database path. Generic providers claiming `OS_KEYRING` without the concrete
+namespace contract fail with `LedgerCapabilityUnavailable`. Keep Task 5
+behavior intact: static and local file master-key providers still select
+`DirectoryRecordKeyStore`, and explicit `FileRecordKeyStore` remains a
+compatibility/test backend only.
 
-- [ ] **Step 6: Verify, commit, and run the mandatory review loop**
+- [x] **Step 6: Run real platform smoke checks**
+
+The persistent fake backend remains the crash oracle. In addition, run bounded
+real-backend smoke checks on the current host: probe, create/open empty store,
+one put/commit/read, one shred/read-missing, reopen, and cleanup. Record the
+platform backend ID and outcome. On a platform with no secure backend, the
+expected result is `LedgerCapabilityUnavailable` before ledger mutation. These
+smokes establish Windows/macOS/Linux capability boundaries; they are not a
+claim that arbitrary keyring providers, network filesystems, mobile OSes, or
+cloud-synced runtime directories are supported.
+
+- [x] **Step 7: Verify, commit, and run the mandatory review loop**
 
 ```powershell
-.\.venv313\Scripts\python.exe -m pytest tests/test_cognition_keyring_store.py tests/test_cognition_keys.py tests/test_cognition_ledger.py -q
+.\.venv313\Scripts\python.exe -m pytest tests/test_cognition_keyring_store.py tests/test_cognition_keyring_process_recovery.py tests/test_cognition_keyring_master_process_race.py tests/test_cognition_keys.py tests/test_cognition_ledger.py -q
 .\.venv313\Scripts\python.exe -m pytest -q
 .\.venv313\Scripts\ruff.exe check .
 git diff --check
@@ -810,7 +924,7 @@ Rejected: wrapping keyring DEKs into DirectoryRecordKeyStore | it changes the ac
 Confidence: high
 Scope-risk: broad
 Directive: Keep the keyring head as an independent rollback witness and fail closed on backend ambiguity
-Tested: capability, placement, crash, rollback, factory, full pytest, Ruff, diff-check, independent task review
+Tested: capability, placement, init/operation crash, rollback, factory, real platform smoke, full pytest, Ruff, diff-check, independent task review
 Not-tested: platform keyring quota at lifelong scale is reported as a runtime capability limit
 ```
 

@@ -26,6 +26,7 @@ aluclu-benchmark = "aluclu.cli.benchmark_stream:main"
 [project.optional-dependencies]
 test = ["pytest>=8.3"]
 lint = ["ruff>=0.16,<0.17"]
+os-keyring = ["keyring>=25.7,<26"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

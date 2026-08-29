@@ -46,9 +46,14 @@ from .contracts import (
 )
 from .keys import (
     DirectoryRecordKeyStore,
+    KeyringKeyProvider,
     RecordKeyReference,
     RecordKeyState,
     RecordKeyStore,
+    RecordKeyStoreProfile,
+    _capture_keyring_store_plan,
+    _CapturedKeyringStorePlan,
+    create_record_key_store,
 )
 from .persistence import (
     atomic_publish_path,
@@ -165,6 +170,8 @@ class _LedgerBootstrap:
     ledger_id: str
     provider_scope: LedgerSecurityScope
     store_mode: str
+    store_profile: RecordKeyStoreProfile
+    store_binding: str | None
 
 
 class EncryptedLedger:
@@ -185,7 +192,9 @@ class EncryptedLedger:
         self._bootstrap_complete_path = self._path.with_suffix(
             self._path.suffix + ".bootstrap.complete.json"
         )
-        self._record_store_path = self._path.with_suffix(self._path.suffix + ".record-keys")
+        self._record_store_path = self._path.with_suffix(
+            self._path.suffix + ".record-keys"
+        )
         self._legacy_record_store_path = self._path.with_suffix(
             self._path.suffix + ".record-keys.json"
         )
@@ -200,6 +209,7 @@ class EncryptedLedger:
         self._anchor_key: bytes | None = None
         self._store_key: bytes | None = None
         self._expected_key_check: bytes | None = None
+        self._keyring_plan: _CapturedKeyringStorePlan | None = None
         self._open = False
         self._object_lock = threading.RLock()
         self._full_verifications = 0
@@ -228,10 +238,10 @@ class EncryptedLedger:
             if self._open:
                 return
             self._preflight_record_store()
-            master_key = self._master_key()
             try:
                 resolve_ledger_path(self._path)
                 with exclusive_file_lock(self._lock_path):
+                    master_key = self._master_key()
                     bootstrap_phase = self._bootstrap_phase()
                     if bootstrap_phase is not None:
                         self._resume_bootstrap(master_key, phase=bootstrap_phase)
@@ -341,7 +351,9 @@ class EncryptedLedger:
                     verification = self._verify_integrity_locked()
                     count = cast(
                         int,
-                        connection.execute("SELECT COUNT(*) FROM history").fetchone()[0],
+                        connection.execute("SELECT COUNT(*) FROM history").fetchone()[
+                            0
+                        ],
                     )
                     connection.execute("COMMIT")
                 except Exception:
@@ -384,9 +396,13 @@ class EncryptedLedger:
             identity_root=identity_root,
             ledger_id=ledger_id,
             provider_scope=self._provider.security_scope,
-            store_mode="provided" if self._provided_store is not None else "directory",
+            store_mode=self._bootstrap_store_mode(),
+            store_profile=self._bootstrap_store_profile(),
+            store_binding=self._bootstrap_store_binding(),
         )
-        self._write_bootstrap_marker(bootstrap, self._bootstrap_pending_path, master_key)
+        self._write_bootstrap_marker(
+            bootstrap, self._bootstrap_pending_path, master_key
+        )
         self._inject_fault("after_ledger_bootstrap_marker")
         self._resume_bootstrap(master_key, phase="pending")
 
@@ -443,7 +459,9 @@ class EncryptedLedger:
         if phase == "complete" and not store_exists:
             raise LedgerIntegrityError("completed bootstrap record store is missing")
         if self._anchor_path.exists() and not store_exists:
-            raise LedgerIntegrityError("bootstrap anchor exists before the record store")
+            raise LedgerIntegrityError(
+                "bootstrap anchor exists before the record store"
+            )
         self._record_store = self._open_record_store(
             create=phase == "pending" and not store_exists
         )
@@ -499,7 +517,9 @@ class EncryptedLedger:
             )
             connection.execute("COMMIT")
             self._inject_fault("after_ledger_bootstrap_staging_commit")
-            checkpoint = connection.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()
+            checkpoint = connection.execute(
+                "PRAGMA wal_checkpoint(TRUNCATE)"
+            ).fetchone()
             if checkpoint is None or tuple(checkpoint) != (0, 0, 0):
                 raise LedgerCapabilityUnavailable(
                     "bootstrap SQLite WAL cannot be checkpointed"
@@ -610,7 +630,9 @@ class EncryptedLedger:
             resolve_ledger_path(self._bootstrap_pending_path)
             resolve_ledger_path(self._bootstrap_complete_path)
         except UnsafePathError as exc:
-            raise LedgerIntegrityError("ledger bootstrap marker path is unsafe") from exc
+            raise LedgerIntegrityError(
+                "ledger bootstrap marker path is unsafe"
+            ) from exc
         pending = self._bootstrap_pending_path.exists()
         complete = self._bootstrap_complete_path.exists()
         if pending and complete:
@@ -634,7 +656,9 @@ class EncryptedLedger:
             "kind": "ledger-bootstrap",
             "ledger_id": bootstrap.ledger_id,
             "provider_scope": bootstrap.provider_scope.value,
+            "store_binding": bootstrap.store_binding,
             "store_mode": bootstrap.store_mode,
+            "store_profile": bootstrap.store_profile.value,
             "version": _BOOTSTRAP_VERSION,
         }
         body_bytes = canonical_json_bytes(body)
@@ -679,7 +703,9 @@ class EncryptedLedger:
             "kind",
             "ledger_id",
             "provider_scope",
+            "store_binding",
             "store_mode",
+            "store_profile",
             "version",
         }:
             raise LedgerIntegrityError("ledger bootstrap fields are invalid")
@@ -691,7 +717,9 @@ class EncryptedLedger:
         ledger_id = body.get("ledger_id")
         encoded_identity = body.get("identity_root")
         scope_value = body.get("provider_scope")
+        store_binding = body.get("store_binding")
         store_mode = body.get("store_mode")
+        store_profile_value = body.get("store_profile")
         if (
             type(bootstrap_id) is not str
             or not _is_lower_hex(bootstrap_id, length=64)
@@ -703,7 +731,15 @@ class EncryptedLedger:
             or type(encoded_identity) is not str
             or type(scope_value) is not str
             or type(store_mode) is not str
-            or store_mode not in {"directory", "provided"}
+            or store_mode not in {"directory", "keyring", "provided"}
+            or type(store_profile_value) is not str
+            or (
+                store_binding is not None
+                and (
+                    type(store_binding) is not str
+                    or not _is_lower_hex(store_binding, length=64)
+                )
+            )
             or not _is_lower_hex(supplied_mac, length=64)
         ):
             raise LedgerIntegrityError("ledger bootstrap value is malformed")
@@ -713,6 +749,7 @@ class EncryptedLedger:
                 validate=True,
             )
             provider_scope = LedgerSecurityScope(scope_value)
+            store_profile = RecordKeyStoreProfile(store_profile_value)
         except (UnicodeEncodeError, ValueError) as exc:
             raise LedgerIntegrityError("ledger bootstrap value is malformed") from exc
         if len(identity_root) != 32:
@@ -725,6 +762,8 @@ class EncryptedLedger:
             ledger_id=ledger_id,
             provider_scope=provider_scope,
             store_mode=store_mode,
+            store_profile=store_profile,
+            store_binding=store_binding,
         )
         key = _derive(
             master_key,
@@ -746,9 +785,14 @@ class EncryptedLedger:
             raise LedgerIntegrityError("ledger bootstrap database path changed")
         if bootstrap.provider_scope is not self._provider.security_scope:
             raise LedgerIntegrityError("ledger bootstrap provider scope changed")
-        expected_mode = "provided" if self._provided_store is not None else "directory"
+        expected_mode = self._bootstrap_store_mode()
         if bootstrap.store_mode != expected_mode:
             raise LedgerIntegrityError("ledger bootstrap record-store mode changed")
+        if bootstrap.store_profile is not self._bootstrap_store_profile():
+            raise LedgerIntegrityError("ledger bootstrap record-store profile changed")
+        expected_binding = self._bootstrap_store_binding()
+        if not _optional_digest_matches(bootstrap.store_binding, expected_binding):
+            raise LedgerIntegrityError("ledger bootstrap record-store binding changed")
         if (
             self._provided_store is not None
             and self._provided_store.ledger_id != bootstrap.ledger_id
@@ -799,12 +843,12 @@ class EncryptedLedger:
             except FileNotFoundError:
                 continue
             except (OSError, UnsafePathError) as exc:
-                raise LedgerIntegrityError("ledger bootstrap scratch is unsafe") from exc
-            if (
-                os.path.normcase(str(resolved.parent))
-                != os.path.normcase(str(self._path.parent))
-                or not stat.S_ISREG(path_stat.st_mode)
-            ):
+                raise LedgerIntegrityError(
+                    "ledger bootstrap scratch is unsafe"
+                ) from exc
+            if os.path.normcase(str(resolved.parent)) != os.path.normcase(
+                str(self._path.parent)
+            ) or not stat.S_ISREG(path_stat.st_mode):
                 raise LedgerIntegrityError("ledger bootstrap scratch is malformed")
             existing.append(resolved)
         for path in existing:
@@ -818,7 +862,10 @@ class EncryptedLedger:
     def _unlock_existing(self, master_key: bytes) -> None:
         connection = self._connect(configure=False)
         self._connection = connection
-        if cast(int, connection.execute("PRAGMA user_version").fetchone()[0]) != SCHEMA_VERSION:
+        if (
+            cast(int, connection.execute("PRAGMA user_version").fetchone()[0])
+            != SCHEMA_VERSION
+        ):
             raise LedgerMigrationRequired("existing database is not schema v2")
         if not self._anchor_path.exists():
             raise LedgerIntegrityError("ledger anchor is missing")
@@ -828,7 +875,11 @@ class EncryptedLedger:
             identity_root = metadata["identity_root"]
         except (KeyError, UnicodeDecodeError) as exc:
             raise LedgerIntegrityError("ledger identity metadata is malformed") from exc
-        if not ledger_id or len(ledger_id.encode("utf-8")) > 256 or len(identity_root) != 32:
+        if (
+            not ledger_id
+            or len(ledger_id.encode("utf-8")) > 256
+            or len(identity_root) != 32
+        ):
             raise LedgerIntegrityError("ledger identity root is malformed")
         self._install_identity(master_key, ledger_id, identity_root)
         if not hmac.compare_digest(
@@ -871,8 +922,13 @@ class EncryptedLedger:
                         operation = existing[0]
                         if idempotent and operation == "record":
                             record = self._read_record_locked(safe_event_id)
-                            if record is None or canonical_json_bytes(record.payload) != payload_bytes:
-                                raise LedgerConflictError("event payload conflicts with live record")
+                            if (
+                                record is None
+                                or canonical_json_bytes(record.payload) != payload_bytes
+                            ):
+                                raise LedgerConflictError(
+                                    "event payload conflicts with live record"
+                                )
                             connection.execute("COMMIT")
                             sqlite_committed = True
                             self._advance_verified_anchor(verification)
@@ -1022,7 +1078,9 @@ class EncryptedLedger:
                     previous_hash=row[7],
                 )
             except (InputBoundaryError, UnicodeEncodeError) as exc:
-                raise LedgerIntegrityError("history authenticated bytes are invalid") from exc
+                raise LedgerIntegrityError(
+                    "history authenticated bytes are invalid"
+                ) from exc
             if not hmac.compare_digest(row[8], computed_hash):
                 raise LedgerIntegrityError("history record hash does not verify")
             if row[1] == "append":
@@ -1047,7 +1105,9 @@ class EncryptedLedger:
         actual_head_sequence = expected_sequence - 1
         if _metadata_int(metadata, "head_sequence") != actual_head_sequence:
             raise LedgerIntegrityError("metadata head sequence does not verify")
-        if not hmac.compare_digest(_metadata_hash(metadata, "head_hash"), previous_hash):
+        if not hmac.compare_digest(
+            _metadata_hash(metadata, "head_hash"), previous_hash
+        ):
             raise LedgerIntegrityError("metadata head hash does not verify")
         if not _projections_match(_projection(connection, "records"), expected_records):
             raise LedgerIntegrityError("live record projection does not verify")
@@ -1082,7 +1142,9 @@ class EncryptedLedger:
                 if tombstone_hash is None:
                     raise LedgerKeyError("live record has no key or tombstone")
                 if not hmac.compare_digest(tombstone_hash, record_hash.hex()):
-                    raise LedgerIntegrityError("record key tombstone hash does not verify")
+                    raise LedgerIntegrityError(
+                        "record key tombstone hash does not verify"
+                    )
                 forward_shreds.append((event_id, record_hash))
                 continue
             if tombstone_hash is not None:
@@ -1100,7 +1162,9 @@ class EncryptedLedger:
                 reference.record_hash is None
                 or not hmac.compare_digest(reference.record_hash, record_hash.hex())
             ):
-                raise LedgerIntegrityError("committed record key receipt does not verify")
+                raise LedgerIntegrityError(
+                    "committed record key receipt does not verify"
+                )
 
         for event_id in state.tombstones:
             if event_id in references:
@@ -1118,7 +1182,9 @@ class EncryptedLedger:
             if event_id in state.records:
                 continue
             if reference.state is RecordKeyState.COMMITTED:
-                raise LedgerRollbackError("committed record key is absent from database")
+                raise LedgerRollbackError(
+                    "committed record key is absent from database"
+                )
             if reference.state is not RecordKeyState.PENDING:
                 raise LedgerIntegrityError("record key state is invalid")
             pending_discards.append(event_id)
@@ -1138,7 +1204,9 @@ class EncryptedLedger:
 
         for event_id in sorted(pending_discards):
             if not store.discard_pending(event_id):
-                raise LedgerIntegrityError("unreferenced pending key could not be discarded")
+                raise LedgerIntegrityError(
+                    "unreferenced pending key could not be discarded"
+                )
         for event_id, record_hash in sorted(pending_commits):
             store.mark_committed(event_id, record_hash)
         for event_id, append_hash in sorted(forward_shreds):
@@ -1151,11 +1219,15 @@ class EncryptedLedger:
         extra_references = set(references) - set(state.records)
         for event_id in extra_references:
             if references[event_id].state is RecordKeyState.COMMITTED:
-                raise LedgerRollbackError("committed record key is absent from database")
+                raise LedgerRollbackError(
+                    "committed record key is absent from database"
+                )
         if extra_references or set(state.records) - set(references):
             raise LedgerKeyError("record key projection does not verify")
         if set(tombstones) != set(state.tombstones):
-            raise LedgerIntegrityError("record key tombstone projection does not verify")
+            raise LedgerIntegrityError(
+                "record key tombstone projection does not verify"
+            )
 
         for event_id, (_sequence, record_hash) in state.records.items():
             reference = references[event_id]
@@ -1210,12 +1282,18 @@ class EncryptedLedger:
         if anchor_sequence == 0:
             expected_anchor_hash = ZERO_HASH
         else:
-            row = self._connection_required().execute(
-                "SELECT record_hash FROM history WHERE sequence = ?",
-                (anchor_sequence,),
-            ).fetchone()
+            row = (
+                self._connection_required()
+                .execute(
+                    "SELECT record_hash FROM history WHERE sequence = ?",
+                    (anchor_sequence,),
+                )
+                .fetchone()
+            )
             if row is None or type(row[0]) is not bytes:
-                raise LedgerRollbackError("ledger anchor lineage is absent from database")
+                raise LedgerRollbackError(
+                    "ledger anchor lineage is absent from database"
+                )
             expected_anchor_hash = cast(bytes, row[0])
         if not hmac.compare_digest(anchor_hash, expected_anchor_hash):
             raise LedgerRollbackError("ledger anchor is not a database ancestor")
@@ -1383,7 +1461,9 @@ class EncryptedLedger:
             return None
         return cast(str, row[0]), cast(int, row[1])
 
-    def _set_head(self, connection: sqlite3.Connection, sequence: int, record_hash: bytes) -> None:
+    def _set_head(
+        self, connection: sqlite3.Connection, sequence: int, record_hash: bytes
+    ) -> None:
         connection.execute(
             "UPDATE metadata SET value = ? WHERE key = 'head_sequence'",
             (sqlite3.Binary(str(sequence).encode("ascii")),),
@@ -1393,12 +1473,16 @@ class EncryptedLedger:
             (sqlite3.Binary(record_hash),),
         )
 
-    def _install_identity(self, master_key: bytes, ledger_id: str, identity_root: bytes) -> None:
+    def _install_identity(
+        self, master_key: bytes, ledger_id: str, identity_root: bytes
+    ) -> None:
         self._ledger_id = ledger_id
         self._identity_root = identity_root
         self._chain_key = _derive(master_key, identity_root, ledger_id, b"chain-mac")
         self._anchor_key = _derive(master_key, identity_root, ledger_id, b"anchor-auth")
-        self._store_key = _derive(master_key, identity_root, ledger_id, b"record-store-root")
+        self._store_key = _derive(
+            master_key, identity_root, ledger_id, b"record-store-root"
+        )
         self._expected_key_check = self._key_check(master_key)
 
     def _key_check(self, master_key: bytes) -> bytes:
@@ -1411,20 +1495,42 @@ class EncryptedLedger:
             cast(str, self._ledger_id),
             b"key-check",
         )
-        return hmac.new(key, b"aluclu/v2/key-check\0" + material, hashlib.sha256).digest()
+        return hmac.new(
+            key, b"aluclu/v2/key-check\0" + material, hashlib.sha256
+        ).digest()
 
     def _open_record_store(self, *, create: bool) -> RecordKeyStore:
         if self._provided_store is not None:
             if self._provided_store.ledger_id != self._ledger_id:
                 raise LedgerIntegrityError("record key store ledger identity mismatch")
+            self._validate_record_store_profile(self._provided_store)
             self._provided_store.verify_integrity()
             return self._provided_store
-        return DirectoryRecordKeyStore(
-            self._record_store_path,
-            cast(bytes, self._store_key),
+        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
+            if self._keyring_plan is None:
+                raise LedgerCapabilityUnavailable(
+                    "OS-keyring record storage is unavailable"
+                )
+            return self._keyring_plan.open_store(
+                cast(bytes, self._store_key),
+                ledger_id=cast(str, self._ledger_id),
+                create=create,
+                fault_injector=self._fault_injector,
+            )
+        if self._fault_injector is not None:
+            return DirectoryRecordKeyStore(
+                self._record_store_path,
+                cast(bytes, self._store_key),
+                ledger_id=cast(str, self._ledger_id),
+                create=create,
+                _fault_injector=self._fault_injector,
+            )
+        return create_record_key_store(
+            self._path,
+            self._provider,
+            integrity_key=cast(bytes, self._store_key),
             ledger_id=cast(str, self._ledger_id),
             create=create,
-            _fault_injector=self._fault_injector,
         )
 
     def _write_anchor(self, head_sequence: int, head_hash: bytes) -> None:
@@ -1475,8 +1581,7 @@ class EncryptedLedger:
                 "schema_version",
                 "version",
             }
-            or
-            payload.get("version") != 1
+            or payload.get("version") != 1
             or payload.get("schema_version") != SCHEMA_VERSION
             or payload.get("ledger_id") != self._ledger_id
             or type(payload.get("head_sequence")) is not int
@@ -1499,7 +1604,10 @@ class EncryptedLedger:
         return head_sequence, head_hash
 
     def _verify_schema(self, connection: sqlite3.Connection) -> None:
-        if cast(int, connection.execute("PRAGMA user_version").fetchone()[0]) != SCHEMA_VERSION:
+        if (
+            cast(int, connection.execute("PRAGMA user_version").fetchone()[0])
+            != SCHEMA_VERSION
+        ):
             raise LedgerMigrationRequired("ledger schema version is unsupported")
         tables = {
             cast(str, row[0])
@@ -1524,7 +1632,9 @@ class EncryptedLedger:
         table_modes = {
             cast(str, row[1]): (cast(int, row[4]), cast(int, row[5]))
             for row in connection.execute("PRAGMA table_list")
-            if row[0] == "main" and row[2] == "table" and not str(row[1]).startswith("sqlite_")
+            if row[0] == "main"
+            and row[2] == "table"
+            and not str(row[1]).startswith("sqlite_")
         }
         if table_modes != {
             "metadata": (1, 1),
@@ -1535,7 +1645,12 @@ class EncryptedLedger:
             raise LedgerIntegrityError("ledger table modes do not match")
         for table, expected in _EXPECTED_COLUMNS.items():
             actual = tuple(
-                (cast(str, row[1]), cast(str, row[2]), cast(int, row[3]), cast(int, row[5]))
+                (
+                    cast(str, row[1]),
+                    cast(str, row[2]),
+                    cast(int, row[3]),
+                    cast(int, row[5]),
+                )
                 for row in connection.execute(f"PRAGMA table_info({table})")
             )
             if actual != expected:
@@ -1545,7 +1660,9 @@ class EncryptedLedger:
         try:
             rows = connection.execute("SELECT key, value FROM metadata").fetchall()
         except sqlite3.DatabaseError as exc:
-            raise LedgerMigrationRequired("ledger metadata schema is unavailable") from exc
+            raise LedgerMigrationRequired(
+                "ledger metadata schema is unavailable"
+            ) from exc
         metadata: dict[str, bytes] = {}
         for key, value in rows:
             if type(key) is not str or type(value) is not bytes:
@@ -1577,14 +1694,18 @@ class EncryptedLedger:
                 int, connection.execute("PRAGMA trusted_schema").fetchone()[0]
             )
             if trusted_schema != 0:
-                raise LedgerCapabilityUnavailable("SQLite trusted_schema=OFF is unavailable")
+                raise LedgerCapabilityUnavailable(
+                    "SQLite trusted_schema=OFF is unavailable"
+                )
 
             connection.execute("PRAGMA cell_size_check = ON")
             cell_size_check = cast(
                 int, connection.execute("PRAGMA cell_size_check").fetchone()[0]
             )
             if cell_size_check != 1:
-                raise LedgerCapabilityUnavailable("SQLite cell_size_check=ON is unavailable")
+                raise LedgerCapabilityUnavailable(
+                    "SQLite cell_size_check=ON is unavailable"
+                )
 
             connection.execute("PRAGMA foreign_keys = ON")
             connection.execute("PRAGMA busy_timeout = 30000")
@@ -1596,16 +1717,29 @@ class EncryptedLedger:
             raise
 
     def _configure_connection(self, connection: sqlite3.Connection) -> None:
-        journal_mode = cast(str, connection.execute("PRAGMA journal_mode = WAL").fetchone()[0])
+        journal_mode = cast(
+            str, connection.execute("PRAGMA journal_mode = WAL").fetchone()[0]
+        )
         if journal_mode.casefold() != "wal":
             raise LedgerCapabilityUnavailable("SQLite WAL mode is unavailable")
         connection.execute("PRAGMA synchronous = FULL")
         synchronous = cast(int, connection.execute("PRAGMA synchronous").fetchone()[0])
         if synchronous != 2:
-            raise LedgerCapabilityUnavailable("SQLite FULL synchronous mode is unavailable")
+            raise LedgerCapabilityUnavailable(
+                "SQLite FULL synchronous mode is unavailable"
+            )
 
     def _master_key(self) -> bytes:
-        key = self._provider.get_key()
+        if isinstance(self._provider, KeyringKeyProvider):
+            if self._keyring_plan is None:
+                raise LedgerCapabilityUnavailable(
+                    "OS-keyring record storage is unavailable"
+                )
+            key = self._provider._get_key_from_captured_backend(
+                self._keyring_plan.backend
+            )
+        else:
+            key = self._provider.get_key()
         if type(key) is not bytes or len(key) != 32:
             raise LedgerKeyError("master key must be exactly 32 immutable bytes")
         return bytes(key)
@@ -1621,10 +1755,7 @@ class EncryptedLedger:
         )
 
     def _preflight_record_store(self) -> None:
-        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
-            raise LedgerCapabilityUnavailable(
-                "OS-keyring record storage is unavailable until its capability profile is active"
-            )
+        self._keyring_plan = None
         try:
             resolve_ledger_path(self._bootstrap_pending_path)
             resolve_ledger_path(self._bootstrap_complete_path)
@@ -1636,7 +1767,13 @@ class EncryptedLedger:
         complete_bootstrap = self._bootstrap_complete_path.exists()
         if pending_bootstrap and complete_bootstrap:
             raise LedgerIntegrityError("ledger bootstrap phases conflict")
+        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
+            self._keyring_plan = _capture_keyring_store_plan(
+                self._path,
+                self._provider,
+            )
         if self._provided_store is not None:
+            self._validate_record_store_profile(self._provided_store)
             return
         if self._legacy_record_store_path.exists() or any(
             self._legacy_record_store_path.parent.glob(
@@ -1647,7 +1784,9 @@ class EncryptedLedger:
                 "legacy monolithic record key state requires explicit migration"
             )
         if self._record_store_path.exists() and not self._record_store_path.is_dir():
-            raise LedgerMigrationRequired("directory record key path is not a directory")
+            raise LedgerMigrationRequired(
+                "directory record key path is not a directory"
+            )
         if (
             not self._path.exists()
             and self._record_store_path.exists()
@@ -1656,6 +1795,58 @@ class EncryptedLedger:
         ):
             raise LedgerMigrationRequired(
                 "record key directory exists without its ledger database"
+            )
+
+    def _bootstrap_store_mode(self) -> str:
+        if self._provided_store is not None:
+            return "provided"
+        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
+            return "keyring"
+        return "directory"
+
+    def _bootstrap_store_profile(self) -> RecordKeyStoreProfile:
+        if self._provided_store is not None:
+            self._validate_record_store_profile(self._provided_store)
+            return self._provided_store.profile
+        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
+            return RecordKeyStoreProfile.OS_KEYRING
+        return RecordKeyStoreProfile.DIRECTORY
+
+    def _bootstrap_store_binding(self) -> str | None:
+        profile = self._bootstrap_store_profile()
+        if profile is not RecordKeyStoreProfile.OS_KEYRING:
+            return None
+        if self._provided_store is not None:
+            binding = getattr(self._provided_store, "store_binding", None)
+            if type(binding) is not str or not _is_lower_hex(binding, length=64):
+                raise LedgerIntegrityError("keyring record store binding is malformed")
+            return binding
+        if self._keyring_plan is None:
+            raise LedgerCapabilityUnavailable(
+                "OS-keyring record storage is unavailable"
+            )
+        return self._keyring_plan.store_binding
+
+    def _validate_record_store_profile(self, store: RecordKeyStore) -> None:
+        if not isinstance(store.profile, RecordKeyStoreProfile):
+            raise LedgerIntegrityError("record key store profile is invalid")
+        if self._provider.security_scope is LedgerSecurityScope.OS_KEYRING:
+            if store.profile is not RecordKeyStoreProfile.OS_KEYRING:
+                raise LedgerIntegrityError(
+                    "OS-keyring ledger requires keyring record store"
+                )
+            binding = getattr(store, "store_binding", None)
+            if type(binding) is not str or not _is_lower_hex(binding, length=64):
+                raise LedgerIntegrityError("keyring record store binding is malformed")
+            if self._keyring_plan is not None and not hmac.compare_digest(
+                binding,
+                self._keyring_plan.store_binding,
+            ):
+                raise LedgerIntegrityError("keyring record store binding changed")
+            return
+        if store.profile is RecordKeyStoreProfile.OS_KEYRING:
+            raise LedgerIntegrityError(
+                "keyring record store requires OS-keyring provider"
             )
 
     def _require_open(self) -> None:
@@ -1691,6 +1882,7 @@ class EncryptedLedger:
         self._anchor_key = None
         self._store_key = None
         self._expected_key_check = None
+        self._keyring_plan = None
 
 
 HistoryRow = tuple[
@@ -1732,7 +1924,17 @@ def _read_bootstrap_file(path: Path) -> bytes:
 def _history_row(row: tuple[Any, ...]) -> HistoryRow:
     if len(row) != 9:
         raise LedgerIntegrityError("history row shape is invalid")
-    sequence, operation, event_id, key_reference, nonce, ciphertext, created_ns, previous, record = row
+    (
+        sequence,
+        operation,
+        event_id,
+        key_reference,
+        nonce,
+        ciphertext,
+        created_ns,
+        previous,
+        record,
+    ) = row
     if (
         type(sequence) is not int
         or type(operation) is not str
@@ -1765,7 +1967,9 @@ def _history_row(row: tuple[Any, ...]) -> HistoryRow:
     return cast(HistoryRow, row)
 
 
-def _derive(master_key: bytes, identity_root: bytes, ledger_id: str, purpose: bytes) -> bytes:
+def _derive(
+    master_key: bytes, identity_root: bytes, ledger_id: str, purpose: bytes
+) -> bytes:
     return HKDF(
         algorithm=hashes.SHA256(),
         length=32,
@@ -1811,14 +2015,20 @@ def _metadata_hash(metadata: Mapping[str, bytes], key: str) -> bytes:
     return value
 
 
-def _projection(connection: sqlite3.Connection, table: str) -> dict[str, tuple[int, bytes]]:
+def _projection(
+    connection: sqlite3.Connection, table: str
+) -> dict[str, tuple[int, bytes]]:
     if table not in {"records", "tombstones"}:
         raise ValueError("invalid projection table")
     result: dict[str, tuple[int, bytes]] = {}
     for event_id, sequence, record_hash in connection.execute(
         f"SELECT event_id, history_sequence, record_hash FROM {table}"
     ):
-        if type(event_id) is not str or type(sequence) is not int or type(record_hash) is not bytes:
+        if (
+            type(event_id) is not str
+            or type(sequence) is not int
+            or type(record_hash) is not bytes
+        ):
             raise LedgerIntegrityError("ledger projection row is malformed")
         result[event_id] = (sequence, record_hash)
     return result
@@ -1842,4 +2052,12 @@ def _normalize_schema_sql(value: str) -> str:
 
 
 def _is_lower_hex(value: str, *, length: int) -> bool:
-    return len(value) == length and all(character in "0123456789abcdef" for character in value)
+    return len(value) == length and all(
+        character in "0123456789abcdef" for character in value
+    )
+
+
+def _optional_digest_matches(left: str | None, right: str | None) -> bool:
+    if left is None or right is None:
+        return left is None and right is None
+    return hmac.compare_digest(left, right)

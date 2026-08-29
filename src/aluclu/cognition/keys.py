@@ -5,8 +5,10 @@ import binascii
 import hashlib
 import hmac
 import os
+import re
 import secrets
 import stat
+import threading
 import uuid
 from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass
@@ -31,8 +33,10 @@ from .contracts import (
     JsonValue,
     KeyProvider,
     KeyProviderUnavailable,
+    LedgerCapabilityUnavailable,
     LedgerIntegrityError,
     LedgerMigrationRequired,
+    LedgerRollbackError,
     LedgerSecurityScope,
     PersistenceError,
     StateIntegrityError,
@@ -46,14 +50,21 @@ from .persistence import (
 )
 
 _POSIX_MODE_CHECKS = os.name != "nt"
-_INSECURE_KEYRING_BACKEND_TOKENS = (
-    "plaintext",
-)
+_INSECURE_KEYRING_BACKEND_TOKENS = ("plaintext",)
 _DIRECTORY_STORE_VERSION = 2
 _DIRECTORY_STORE_MAX_ENVELOPE_BYTES = 64 * 1024
 _EMPTY_ACCUMULATOR = bytes(32)
 _HEX_DIGITS = frozenset("0123456789abcdef")
 _INITIALIZATION_TEMP_SUFFIX = ".init.tmp"
+_KEYRING_INITIALIZATION_INTENT = "init.json"
+_KEYRING_BACKEND_ID_MAX_BYTES = 1024
+_KEYRING_CREDENTIAL_PREFIX = "aluclu-v2"
+_KEYRING_CREDENTIAL_TRANSPORT_PREFIX = "aluclu-keyring-v1:"
+_KEYRING_CREDENTIAL_BLOB_MAX_BYTES = 2560
+_KEYRING_USERNAME_MAX_BYTES = 191
+_KEYRING_COMPONENT_PATTERN = re.compile(r"[a-z0-9](?:[a-z0-9._-]{0,189}[a-z0-9])?\Z")
+_KEYRING_PROFILE_VERSION = 1
+_KEYRING_PROBE_LOCK = threading.Lock()
 _ROOT_ATOMIC_TARGETS = frozenset(
     {"head.json", "identity.json", "prepare.json", "staged.bin"}
 )
@@ -64,10 +75,13 @@ __all__ = [
     "FileRecordKeyStore",
     "KeyProvider",
     "KeyringKeyProvider",
+    "KeyringRecordKeyStore",
     "RecordKeyReference",
     "RecordKeyState",
     "RecordKeyStore",
+    "RecordKeyStoreProfile",
     "StaticKeyProvider",
+    "create_record_key_store",
 ]
 
 
@@ -156,10 +170,11 @@ class FileKeyProvider:
 
 class KeyringKeyProvider:
     def __init__(self, service: str, username: str, *, create: bool = False) -> None:
-        if not service or not username:
-            raise InputBoundaryError("keyring service and username are required")
-        self._service = service
-        self._username = username
+        self._service = _validate_keyring_component(service, label="keyring service")
+        self._username = _validate_keyring_component(
+            username,
+            label="keyring username",
+        )
         self._create = create
 
     @property
@@ -196,10 +211,146 @@ class KeyringKeyProvider:
             raise KeyProviderUnavailable("keyring entry is not valid base64") from exc
         return _key_bytes(data, label="keyring key")
 
+    def _get_key_from_captured_backend(
+        self,
+        backend: _CapturedKeyringBackend,
+    ) -> bytes:
+        """Read the master key from the ledger's already-probed vault."""
+
+        try:
+            encoded = backend.get_password(self._service, self._username)
+            if encoded is None and self._create:
+                secret = base64.b64encode(secrets.token_bytes(32)).decode("ascii")
+                backend.set_password(self._service, self._username, secret)
+                encoded = backend.get_password(self._service, self._username)
+        except Exception as exc:
+            raise KeyProviderUnavailable("keyring backend failed") from exc
+        if type(encoded) is not str or not encoded:
+            raise KeyProviderUnavailable("keyring entry is missing")
+        try:
+            data = base64.b64decode(encoded.encode("ascii"), validate=True)
+        except (UnicodeEncodeError, binascii.Error) as exc:
+            raise KeyProviderUnavailable("keyring entry is not valid base64") from exc
+        return _key_bytes(data, label="keyring key")
+
+
+@dataclass(frozen=True)
+class _CapturedKeyringBackend:
+    backend: object
+    identity: str
+
+    def get_password(self, service: str, username: str) -> str | None:
+        operation = getattr(self.backend, "get_password")
+        return cast(str | None, operation(service, username))
+
+    def set_password(self, service: str, username: str, password: str) -> None:
+        operation = getattr(self.backend, "set_password")
+        operation(service, username, password)
+
+    def delete_password(self, service: str, username: str) -> None:
+        operation = getattr(self.backend, "delete_password")
+        operation(service, username)
+
+
+@dataclass(frozen=True)
+class _CapturedKeyringStorePlan:
+    """Immutable backend, namespace, path, and binding for one unlock."""
+
+    backend: _CapturedKeyringBackend
+    database_path: Path
+    root: Path
+    service: str
+    username_prefix: str
+    namespace_hash: str
+    store_binding: str
+
+    def __post_init__(self) -> None:
+        _validate_captured_keyring_backend(
+            self.backend.backend,
+            reject_chainer=True,
+            require_operations=True,
+        )
+        if self.backend.identity != _backend_name(self.backend.backend):
+            raise LedgerCapabilityUnavailable(
+                "OS-keyring backend identity changed during capture"
+            )
+        _validate_keyring_backend_identity(self.backend.identity)
+        safe_service = _validate_keyring_component(
+            self.service,
+            label="keyring service",
+        )
+        safe_username_prefix = _validate_keyring_component(
+            self.username_prefix,
+            label="keyring username prefix",
+        )
+        resolved_database = resolve_ledger_path(self.database_path)
+        resolved_root = resolve_ledger_path(self.root)
+        if resolved_database != self.database_path or resolved_root != self.root:
+            raise LedgerIntegrityError("captured keyring store paths are not resolved")
+        expected_namespace = _keyring_namespace_hash(
+            username_prefix=safe_username_prefix,
+            database_path=resolved_database,
+        )
+        if not hmac.compare_digest(self.namespace_hash, expected_namespace):
+            raise LedgerIntegrityError("captured keyring namespace does not match")
+        expected_binding = _keyring_store_binding(
+            backend_id=self.backend.identity,
+            service=safe_service,
+            namespace_hash=expected_namespace,
+            database_path=_normalized_path_identity(resolved_database),
+        )
+        if not hmac.compare_digest(self.store_binding, expected_binding):
+            raise LedgerIntegrityError("captured keyring store binding does not match")
+
+    def open_store(
+        self,
+        integrity_key: bytes | bytearray | memoryview,
+        *,
+        ledger_id: str,
+        create: bool,
+        fault_injector: Callable[[str], None] | None = None,
+    ) -> KeyringRecordKeyStore:
+        return KeyringRecordKeyStore(
+            self.root,
+            integrity_key,
+            ledger_id=ledger_id,
+            service=self.service,
+            username_prefix=self.username_prefix,
+            create=create,
+            database_path=self.database_path,
+            _fault_injector=fault_injector,
+            _captured_plan=self,
+        )
+
+
+def _load_keyring_backend(*, reject_chainer: bool = False) -> _CapturedKeyringBackend:
+    """Capture one concrete backend so a store cannot switch vaults mid-session."""
+
+    try:
+        import keyring  # type: ignore[import-not-found]
+    except Exception as exc:
+        raise KeyProviderUnavailable("keyring backend is unavailable") from exc
+    try:
+        backend = keyring.get_keyring()
+    except Exception as exc:
+        raise KeyProviderUnavailable("keyring backend is unavailable") from exc
+    _validate_captured_keyring_backend(
+        backend,
+        reject_chainer=reject_chainer,
+        require_operations=True,
+    )
+    return _CapturedKeyringBackend(backend=backend, identity=_backend_name(backend))
+
 
 class RecordKeyState(str, Enum):
     PENDING = "pending"
     COMMITTED = "committed"
+
+
+class RecordKeyStoreProfile(str, Enum):
+    FILE_COMPAT = "file-compat"
+    DIRECTORY = "directory"
+    OS_KEYRING = "os-keyring"
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -211,6 +362,9 @@ class RecordKeyReference:
 
 
 class RecordKeyStore(Protocol):
+    @property
+    def profile(self) -> RecordKeyStoreProfile: ...
+
     @property
     def ledger_id(self) -> str: ...
 
@@ -257,14 +411,23 @@ class FileRecordKeyStore:
             self._prune_old_manifests(current_generation)
 
     @property
+    def profile(self) -> RecordKeyStoreProfile:
+        return RecordKeyStoreProfile.FILE_COMPAT
+
+    @property
     def ledger_id(self) -> str:
         return self._ledger_id
 
     @property
     def revision(self) -> int:
-        return int(self._load()["revision"])
+        revision = self._load()["revision"]
+        if type(revision) is not int:
+            raise LedgerIntegrityError("record key store revision is malformed")
+        return revision
 
-    def put_pending(self, event_id: str, key: bytes | bytearray | memoryview) -> RecordKeyReference:
+    def put_pending(
+        self, event_id: str, key: bytes | bytearray | memoryview
+    ) -> RecordKeyReference:
         safe_event_id = validate_event_id(event_id)
         safe_key = _key_bytes(key, label="record key")
         with exclusive_file_lock(self._lock_path):
@@ -310,10 +473,14 @@ class FileRecordKeyStore:
         safe_hash = _record_hash(record_hash)
         with exclusive_file_lock(self._lock_path):
             state = self._load()
-            entry = _entry_dict(cast(dict[str, JsonValue], state["entries"]).get(safe_event_id))
+            entry = _entry_dict(
+                cast(dict[str, JsonValue], state["entries"]).get(safe_event_id)
+            )
             current_hash = entry.get("record_hash")
             if entry.get("state") == RecordKeyState.COMMITTED.value:
-                if type(current_hash) is str and hmac.compare_digest(current_hash, safe_hash):
+                if type(current_hash) is str and hmac.compare_digest(
+                    current_hash, safe_hash
+                ):
                     return _reference(safe_event_id, entry)
                 raise LedgerIntegrityError("committed record hash mismatch")
             if entry.get("state") != RecordKeyState.PENDING.value:
@@ -398,7 +565,12 @@ class FileRecordKeyStore:
         try:
             resolve_ledger_path(self._path)
             state, metadata = self._codec.load(self._state_name)
-        except (OSError, InputBoundaryError, StateIntegrityError, UnsafePathError) as exc:
+        except (
+            OSError,
+            InputBoundaryError,
+            StateIntegrityError,
+            UnsafePathError,
+        ) as exc:
             raise LedgerIntegrityError("record key store is unreadable") from exc
         try:
             self._validate_metadata(metadata)
@@ -498,6 +670,15 @@ class _DirectoryTombstone:
     encoded: bytes
 
 
+@dataclass(frozen=True)
+class _KeyringHeadWitness:
+    revision: int
+    event_count: int
+    tombstone_count: int
+    accumulator: bytes
+    head_digest: str
+
+
 class DirectoryRecordKeyStore:
     """Crash-forward, HMAC-addressed per-record key directory.
 
@@ -560,6 +741,10 @@ class DirectoryRecordKeyStore:
             self._cleanup_root_atomic_write_temps_locked()
             self._recover_locked()
             self._verify_integrity_locked()
+
+    @property
+    def profile(self) -> RecordKeyStoreProfile:
+        return RecordKeyStoreProfile.DIRECTORY
 
     @property
     def ledger_id(self) -> str:
@@ -793,11 +978,15 @@ class DirectoryRecordKeyStore:
             (staging / "events").mkdir()
             (staging / "tombstones").mkdir()
         except OSError as exc:
-            raise LedgerIntegrityError("record key directory cannot be created") from exc
+            raise LedgerIntegrityError(
+                "record key directory cannot be created"
+            ) from exc
         try:
             self._set_identity(secrets.token_hex(32))
             identity = self._identity_body()
-            self._write_authenticated(staging / "identity.json", identity, self._identity_key)
+            self._write_authenticated(
+                staging / "identity.json", identity, self._identity_key
+            )
             self._inject("after_directory_initialize_identity")
             initial_head = self._head_body(
                 revision=0,
@@ -805,7 +994,9 @@ class DirectoryRecordKeyStore:
                 tombstone_count=0,
                 accumulator=_EMPTY_ACCUMULATOR,
             )
-            self._write_authenticated(staging / "head.json", initial_head, self._auth_key)
+            self._write_authenticated(
+                staging / "head.json", initial_head, self._auth_key
+            )
             self._inject("after_directory_initialize_head")
             _fsync_directory(staging)
             self._publish_initialization_directory(staging)
@@ -817,7 +1008,9 @@ class DirectoryRecordKeyStore:
     def _preflight_existing_root(self) -> None:
         resolve_ledger_path(self._root)
         if not self._root.is_dir():
-            raise LedgerMigrationRequired("record key directory path is not a directory")
+            raise LedgerMigrationRequired(
+                "record key directory path is not a directory"
+            )
         if not self._identity_path.exists() or not self._head_path.exists():
             raise LedgerMigrationRequired("record key directory identity is missing")
 
@@ -849,7 +1042,9 @@ class DirectoryRecordKeyStore:
         try:
             candidates = tuple(self._root.parent.iterdir())
         except OSError as exc:
-            raise LedgerIntegrityError("record key directory parent is unreadable") from exc
+            raise LedgerIntegrityError(
+                "record key directory parent is unreadable"
+            ) from exc
         for candidate in sorted(candidates, key=lambda path: path.name):
             if _is_initialization_temp_name(candidate.name, self._root.name):
                 self._remove_initialization_directory(candidate)
@@ -861,11 +1056,9 @@ class DirectoryRecordKeyStore:
             raise LedgerIntegrityError(
                 "record key initialization directory is unsafe"
             ) from exc
-        if (
-            os.path.normcase(str(resolved.parent))
-            != os.path.normcase(str(self._root.parent))
-            or not _is_initialization_temp_name(resolved.name, self._root.name)
-        ):
+        if os.path.normcase(str(resolved.parent)) != os.path.normcase(
+            str(self._root.parent)
+        ) or not _is_initialization_temp_name(resolved.name, self._root.name):
             raise LedgerIntegrityError("record key initialization directory is invalid")
         try:
             root_stat = resolved.lstat()
@@ -875,7 +1068,9 @@ class DirectoryRecordKeyStore:
                 "record key initialization directory is unreadable"
             ) from exc
         if not stat.S_ISDIR(root_stat.st_mode):
-            raise LedgerIntegrityError("record key initialization path is not a directory")
+            raise LedgerIntegrityError(
+                "record key initialization path is not a directory"
+            )
 
         files: list[Path] = []
         directories: list[Path] = []
@@ -904,12 +1099,12 @@ class DirectoryRecordKeyStore:
                 directories.append(entry)
                 continue
 
+            allowed_files = self._initialization_allowed_files()
             atomic_target = _atomic_temp_target(entry.name)
-            if entry.name not in {"identity.json", "head.json"} and atomic_target not in {
-                "identity.json",
-                "head.json",
-            }:
-                raise LedgerIntegrityError("record key initialization layout is invalid")
+            if entry.name not in allowed_files and atomic_target not in allowed_files:
+                raise LedgerIntegrityError(
+                    "record key initialization layout is invalid"
+                )
             _validate_cleanup_file(entry_stat)
             files.append(entry)
 
@@ -924,6 +1119,9 @@ class DirectoryRecordKeyStore:
                 "record key initialization directory cannot be cleaned"
             ) from exc
         _fsync_directory(self._root.parent)
+
+    def _initialization_allowed_files(self) -> frozenset[str]:
+        return frozenset({"identity.json", "head.json"})
 
     def _publish_initialization_directory(self, staging: Path) -> None:
         try:
@@ -1064,8 +1262,13 @@ class DirectoryRecordKeyStore:
             label="store identity",
         )
         if body.get("kind") != "identity":
-            raise LedgerMigrationRequired("record key directory identity is unsupported")
-        if body.get("ledger_id") != self._ledger_id or body.get("root_name") != self._root_name:
+            raise LedgerMigrationRequired(
+                "record key directory identity is unsupported"
+            )
+        if (
+            body.get("ledger_id") != self._ledger_id
+            or body.get("root_name") != self._root_name
+        ):
             raise LedgerIntegrityError("record key directory identity mismatch")
         store_id = body.get("store_id")
         if type(store_id) is not str:
@@ -1073,7 +1276,9 @@ class DirectoryRecordKeyStore:
         _validate_store_id(store_id)
         previous_store_id = self._store_id
         candidate_keys = self._derive_identity_keys(store_id)
-        _verify_envelope_mac(body, supplied_mac, candidate_keys[0], label="store identity")
+        _verify_envelope_mac(
+            body, supplied_mac, candidate_keys[0], label="store identity"
+        )
         if previous_store_id and not hmac.compare_digest(previous_store_id, store_id):
             raise LedgerIntegrityError("record key directory store ID changed")
         self._store_id = store_id
@@ -1102,7 +1307,9 @@ class DirectoryRecordKeyStore:
             "version": _DIRECTORY_STORE_VERSION,
         }
 
-    def _validate_common_body(self, body: Mapping[str, JsonValue], *, kind: str) -> None:
+    def _validate_common_body(
+        self, body: Mapping[str, JsonValue], *, kind: str
+    ) -> None:
         if (
             body.get("version") != _DIRECTORY_STORE_VERSION
             or body.get("kind") != kind
@@ -1113,7 +1320,9 @@ class DirectoryRecordKeyStore:
             raise LedgerIntegrityError(f"record key {kind} identity mismatch")
 
     def _token(self, event_id: str) -> str:
-        return hmac.new(self._address_key, event_id.encode("ascii"), hashlib.sha256).hexdigest()
+        return hmac.new(
+            self._address_key, event_id.encode("ascii"), hashlib.sha256
+        ).hexdigest()
 
     def _event_path(self, token: str) -> Path:
         _validate_token(token)
@@ -1125,7 +1334,9 @@ class DirectoryRecordKeyStore:
 
     def _read_head(self) -> _DirectoryHead:
         encoded = _read_regular_file(self._head_path)
-        body = _decode_authenticated_envelope(encoded, self._auth_key, label="store head")
+        body = _decode_authenticated_envelope(
+            encoded, self._auth_key, label="store head"
+        )
         _require_exact_keys(
             body,
             {
@@ -1157,7 +1368,9 @@ class DirectoryRecordKeyStore:
             and self._highest_head_digest is not None
             and not hmac.compare_digest(self._highest_head_digest, head_digest)
         ):
-            raise LedgerIntegrityError("record key directory head forked at one revision")
+            raise LedgerIntegrityError(
+                "record key directory head forked at one revision"
+            )
         self._highest_revision = revision
         self._highest_head_digest = head_digest
         return _DirectoryHead(
@@ -1219,7 +1432,9 @@ class DirectoryRecordKeyStore:
         return _encode_authenticated_envelope(body, self._auth_key)
 
     def _decode_event(self, encoded: bytes, *, expected_token: str) -> _DirectoryEvent:
-        body = _decode_authenticated_envelope(encoded, self._auth_key, label="event key")
+        body = _decode_authenticated_envelope(
+            encoded, self._auth_key, label="event key"
+        )
         _require_exact_keys(
             body,
             {
@@ -1239,7 +1454,9 @@ class DirectoryRecordKeyStore:
             label="event key",
         )
         self._validate_common_body(body, kind="event")
-        event_id = validate_event_id(_required_str(body.get("event_id"), label="event ID"))
+        event_id = validate_event_id(
+            _required_str(body.get("event_id"), label="event ID")
+        )
         token = _required_str(body.get("token"), label="event token")
         _validate_token(token)
         if not hmac.compare_digest(token, expected_token) or not hmac.compare_digest(
@@ -1248,7 +1465,9 @@ class DirectoryRecordKeyStore:
         ):
             raise LedgerIntegrityError("event key address mismatch")
         try:
-            state = RecordKeyState(_required_str(body.get("state"), label="record key state"))
+            state = RecordKeyState(
+                _required_str(body.get("state"), label="record key state")
+            )
         except ValueError as exc:
             raise LedgerIntegrityError("record key state is invalid") from exc
         raw_hash = body.get("record_hash")
@@ -1259,13 +1478,19 @@ class DirectoryRecordKeyStore:
         else:
             record_hash = _record_hash(cast(str, raw_hash))
         revision = _positive_int(body.get("revision"), label="event revision")
-        nonce = _decode_b64_bytes(body.get("nonce"), expected_length=12, label="event nonce")
+        nonce = _decode_b64_bytes(
+            body.get("nonce"), expected_length=12, label="event nonce"
+        )
         wrapped = _decode_b64_bytes(
             body.get("wrapped_key"),
             expected_length=48,
             label="wrapped record key",
         )
-        metadata = {key: value for key, value in body.items() if key not in {"nonce", "wrapped_key"}}
+        metadata = {
+            key: value
+            for key, value in body.items()
+            if key not in {"nonce", "wrapped_key"}
+        }
         try:
             key = AESGCM(self._encryption_key).decrypt(
                 nonce,
@@ -1273,7 +1498,9 @@ class DirectoryRecordKeyStore:
                 self._event_aad(cast(dict[str, JsonValue], metadata)),
             )
         except InvalidTag as exc:
-            raise LedgerIntegrityError("wrapped record key authentication failed") from exc
+            raise LedgerIntegrityError(
+                "wrapped record key authentication failed"
+            ) from exc
         _key_bytes(key, label="record key")
         return _DirectoryEvent(
             event_id=event_id,
@@ -1318,7 +1545,9 @@ class DirectoryRecordKeyStore:
         *,
         expected_token: str,
     ) -> _DirectoryTombstone:
-        body = _decode_authenticated_envelope(encoded, self._auth_key, label="tombstone")
+        body = _decode_authenticated_envelope(
+            encoded, self._auth_key, label="tombstone"
+        )
         _require_exact_keys(
             body,
             {
@@ -1335,7 +1564,9 @@ class DirectoryRecordKeyStore:
             label="tombstone",
         )
         self._validate_common_body(body, kind="tombstone")
-        event_id = validate_event_id(_required_str(body.get("event_id"), label="event ID"))
+        event_id = validate_event_id(
+            _required_str(body.get("event_id"), label="event ID")
+        )
         token = _required_str(body.get("token"), label="event token")
         _validate_token(token)
         if not hmac.compare_digest(token, expected_token) or not hmac.compare_digest(
@@ -1388,12 +1619,16 @@ class DirectoryRecordKeyStore:
         expected_event = self._verified_event_digests.get(token)
         expected_tombstone = self._verified_tombstone_digests.get(token)
         if not _optional_digest_matches(_optional_digest(event_bytes), expected_event):
-            raise LedgerIntegrityError("record key event membership changed unexpectedly")
+            raise LedgerIntegrityError(
+                "record key event membership changed unexpectedly"
+            )
         if not _optional_digest_matches(
             _optional_digest(tombstone_bytes),
             expected_tombstone,
         ):
-            raise LedgerIntegrityError("record key tombstone membership changed unexpectedly")
+            raise LedgerIntegrityError(
+                "record key tombstone membership changed unexpectedly"
+            )
 
     def _reference_for_event(self, event: _DirectoryEvent) -> RecordKeyReference:
         return RecordKeyReference(
@@ -1496,7 +1731,9 @@ class DirectoryRecordKeyStore:
         ):
             if encoded is not None:
                 _xor_into(accumulator, self._member_digest(kind, token, encoded))
-        event_count = head.event_count - int(old_event is not None) + int(new_event is not None)
+        event_count = (
+            head.event_count - int(old_event is not None) + int(new_event is not None)
+        )
         tombstone_count = (
             head.tombstone_count
             - int(old_tombstone is not None)
@@ -1626,7 +1863,9 @@ class DirectoryRecordKeyStore:
         current_is_expected = hmac.compare_digest(current_digest, expected_digest)
         current_is_desired = hmac.compare_digest(current_digest, desired_digest)
         if not current_is_expected and not current_is_desired:
-            raise LedgerIntegrityError("record key prepare does not match the store head")
+            raise LedgerIntegrityError(
+                "record key prepare does not match the store head"
+            )
         self._cleanup_staged_target_atomic_write_temps_locked(stage_body)
         if current_is_expected:
             self._apply_staged_target(stage_body, allow_expected=True)
@@ -1639,7 +1878,9 @@ class DirectoryRecordKeyStore:
         self._cleanup_mutation_files()
 
     def _decode_staged(self, encoded: bytes) -> dict[str, JsonValue]:
-        body = _decode_authenticated_envelope(encoded, self._auth_key, label="staged state")
+        body = _decode_authenticated_envelope(
+            encoded, self._auth_key, label="staged state"
+        )
         _require_exact_keys(
             body,
             {
@@ -1667,7 +1908,9 @@ class DirectoryRecordKeyStore:
         return body
 
     def _decode_prepare(self, encoded: bytes) -> dict[str, JsonValue]:
-        body = _decode_authenticated_envelope(encoded, self._auth_key, label="prepare state")
+        body = _decode_authenticated_envelope(
+            encoded, self._auth_key, label="prepare state"
+        )
         _require_exact_keys(
             body,
             {
@@ -1699,9 +1942,16 @@ class DirectoryRecordKeyStore:
 
     def _validate_mutation_body(self, body: Mapping[str, JsonValue]) -> None:
         operation = body.get("operation")
-        if operation not in {"put_pending", "mark_committed", "shred", "discard_pending"}:
+        if operation not in {
+            "put_pending",
+            "mark_committed",
+            "shred",
+            "discard_pending",
+        }:
             raise LedgerIntegrityError("record key mutation operation is invalid")
-        event_id = validate_event_id(_required_str(body.get("event_id"), label="event ID"))
+        event_id = validate_event_id(
+            _required_str(body.get("event_id"), label="event ID")
+        )
         token = _required_str(body.get("token"), label="event token")
         _validate_token(token)
         if not hmac.compare_digest(token, self._token(event_id)):
@@ -1735,7 +1985,9 @@ class DirectoryRecordKeyStore:
                 cast(str, stage_body[name]),
             ):
                 raise LedgerIntegrityError("record key prepare/staged mismatch")
-        event_state = _optional_decoded_bytes(stage_body.get("event_state"), label="event state")
+        event_state = _optional_decoded_bytes(
+            stage_body.get("event_state"), label="event state"
+        )
         tombstone_state = _optional_decoded_bytes(
             stage_body.get("tombstone_state"),
             label="tombstone state",
@@ -1772,7 +2024,9 @@ class DirectoryRecordKeyStore:
     ) -> None:
         token = cast(str, stage_body["token"])
         event_id = cast(str, stage_body["event_id"])
-        event_state = _optional_decoded_bytes(stage_body.get("event_state"), label="event state")
+        event_state = _optional_decoded_bytes(
+            stage_body.get("event_state"), label="event state"
+        )
         tombstone_state = _optional_decoded_bytes(
             stage_body.get("tombstone_state"),
             label="tombstone state",
@@ -1834,14 +2088,18 @@ class DirectoryRecordKeyStore:
             current_digest,
             expected_digest,
         ):
-            raise LedgerIntegrityError("record key mutation target changed unexpectedly")
+            raise LedgerIntegrityError(
+                "record key mutation target changed unexpectedly"
+            )
         if desired is None:
             self._remove_file(path)
         else:
             self._write_bytes(path, desired)
 
     def _decode_head_bytes(self, encoded: bytes) -> _DirectoryHead:
-        body = _decode_authenticated_envelope(encoded, self._auth_key, label="staged head")
+        body = _decode_authenticated_envelope(
+            encoded, self._auth_key, label="staged head"
+        )
         self._validate_common_body(body, kind="head")
         _require_exact_keys(
             body,
@@ -1889,11 +2147,18 @@ class DirectoryRecordKeyStore:
         self._write_bytes(path, _encode_authenticated_envelope(body, key))
 
     def _write_bytes(self, path: Path, encoded: bytes) -> None:
+        if (
+            type(encoded) is not bytes
+            or len(encoded) > _DIRECTORY_STORE_MAX_ENVELOPE_BYTES
+        ):
+            raise LedgerIntegrityError("record key state exceeds the size boundary")
         parent_existed = path.parent.exists()
         try:
             atomic_write_bytes(path, encoded)
         except OSError as exc:
-            raise LedgerIntegrityError("record key directory cannot be written") from exc
+            raise LedgerIntegrityError(
+                "record key directory cannot be written"
+            ) from exc
         if not parent_existed:
             _fsync_directory(path.parent.parent)
 
@@ -1902,7 +2167,9 @@ class DirectoryRecordKeyStore:
         try:
             path.unlink(missing_ok=True)
         except OSError as exc:
-            raise LedgerIntegrityError("record key directory cannot be cleaned") from exc
+            raise LedgerIntegrityError(
+                "record key directory cannot be cleaned"
+            ) from exc
         _fsync_directory(path.parent)
 
     def _verify_integrity_locked(
@@ -1996,12 +2263,1474 @@ class DirectoryRecordKeyStore:
             for member in members:
                 name = member.name
                 if not name.endswith(".json"):
-                    raise LedgerIntegrityError("record key member filename is malformed")
+                    raise LedgerIntegrityError(
+                        "record key member filename is malformed"
+                    )
                 token = name[:-5]
                 _validate_token(token)
                 if token[:2] != fanout.name:
                     raise LedgerIntegrityError("record key member fanout mismatch")
                 yield token, _read_regular_file(member)
+
+
+class KeyringRecordKeyStore(DirectoryRecordKeyStore):
+    """Per-record key store whose DEKs live only in one concrete OS vault.
+
+    Authenticated disk metadata retains the directory store's bounded fanout
+    and crash-forward journal.  Event credentials and the independent head
+    witness are kept behind the captured keyring backend; regular files carry
+    only HMAC-authenticated metadata and SHA-256 key digests.
+    """
+
+    def __init__(
+        self,
+        root: str | Path,
+        integrity_key: bytes | bytearray | memoryview,
+        *,
+        ledger_id: str,
+        service: str,
+        username_prefix: str,
+        create: bool = True,
+        database_path: str | Path | None = None,
+        provider_scope: LedgerSecurityScope = LedgerSecurityScope.OS_KEYRING,
+        _fault_injector: Callable[[str], None] | None = None,
+        _captured_plan: _CapturedKeyringStorePlan | None = None,
+    ) -> None:
+        safe_service = _validate_keyring_component(service, label="keyring service")
+        safe_username_prefix = _validate_keyring_component(
+            username_prefix,
+            label="keyring username prefix",
+        )
+        if provider_scope is not LedgerSecurityScope.OS_KEYRING:
+            raise LedgerCapabilityUnavailable(
+                "keyring record storage requires OS-keyring provider scope"
+            )
+
+        resolved_root = resolve_ledger_path(root)
+        resolved_database = resolve_ledger_path(
+            database_path
+            if database_path is not None
+            else _database_path_for_record_store_root(resolved_root)
+        )
+        master_key = _key_bytes(integrity_key, label="integrity_key")
+        safe_ledger_id = _validate_ledger_id(ledger_id)
+        plan = _captured_plan or _build_keyring_store_plan(
+            root=resolved_root,
+            database_path=resolved_database,
+            service=safe_service,
+            username_prefix=safe_username_prefix,
+        )
+        if (
+            plan.root != resolved_root
+            or plan.database_path != resolved_database
+            or plan.service != safe_service
+            or plan.username_prefix != safe_username_prefix
+        ):
+            raise LedgerIntegrityError("captured keyring store plan does not match")
+
+        self._keyring = plan.backend
+        self._service = plan.service
+        self._username_namespace = plan.namespace_hash
+        self._database_identity = _normalized_path_identity(resolved_database)
+        self._provider_scope = provider_scope
+        self._store_binding = plan.store_binding
+        self._create_requested = create
+        self._mutation_plaintext_keys: dict[str, bytes] = {}
+
+        super().__init__(
+            resolved_root,
+            master_key,
+            ledger_id=safe_ledger_id,
+            create=create,
+            _fault_injector=_fault_injector,
+        )
+
+    @property
+    def profile(self) -> RecordKeyStoreProfile:
+        return RecordKeyStoreProfile.OS_KEYRING
+
+    @property
+    def store_binding(self) -> str:
+        return self._store_binding
+
+    @property
+    def backend_id(self) -> str:
+        return self._keyring.identity
+
+    def _derive_identity_keys(self, store_id: str) -> tuple[bytes, bytes, bytes, bytes]:
+        salt = canonical_json_bytes(
+            {
+                "ledger_id": self._ledger_id,
+                "profile": RecordKeyStoreProfile.OS_KEYRING.value,
+                "root_name": self._root_name,
+                "store_binding": self._store_binding,
+                "store_id": store_id,
+                "version": _DIRECTORY_STORE_VERSION,
+            }
+        )
+        return (
+            _derive_store_key(
+                self._master_key,
+                salt,
+                b"aluclu/v2/keyring-record-store/identity",
+            ),
+            _derive_store_key(
+                self._master_key,
+                salt,
+                b"aluclu/v2/keyring-record-store/authentication",
+            ),
+            _derive_store_key(
+                self._master_key,
+                salt,
+                b"aluclu/v2/keyring-record-store/addressing",
+            ),
+            _derive_store_key(
+                self._master_key,
+                salt,
+                b"aluclu/v2/keyring-record-store/reserved",
+            ),
+        )
+
+    def _identity_body(self) -> dict[str, JsonValue]:
+        return {
+            "kind": "identity",
+            "ledger_id": self._ledger_id,
+            "profile": RecordKeyStoreProfile.OS_KEYRING.value,
+            "root_name": self._root_name,
+            "store_binding": self._store_binding,
+            "store_id": self._store_id,
+            "version": _DIRECTORY_STORE_VERSION,
+        }
+
+    def _load_identity(self) -> None:
+        encoded = _read_regular_file(self._identity_path)
+        body, supplied_mac = _decode_canonical_envelope(
+            encoded,
+            label="keyring store identity",
+        )
+        if body.get("version") != _DIRECTORY_STORE_VERSION:
+            raise LedgerMigrationRequired("keyring record store version is unsupported")
+        _require_exact_keys(
+            body,
+            {
+                "kind",
+                "ledger_id",
+                "profile",
+                "root_name",
+                "store_binding",
+                "store_id",
+                "version",
+            },
+            label="keyring store identity",
+        )
+        if (
+            body.get("kind") != "identity"
+            or body.get("ledger_id") != self._ledger_id
+            or body.get("profile") != RecordKeyStoreProfile.OS_KEYRING.value
+            or body.get("root_name") != self._root_name
+            or body.get("store_binding") != self._store_binding
+        ):
+            raise LedgerIntegrityError("keyring record store identity mismatch")
+        store_id = body.get("store_id")
+        if type(store_id) is not str:
+            raise LedgerIntegrityError("keyring record store ID is malformed")
+        _validate_store_id(store_id)
+        previous_store_id = self._store_id
+        candidate_keys = self._derive_identity_keys(store_id)
+        _verify_envelope_mac(
+            body,
+            supplied_mac,
+            candidate_keys[0],
+            label="keyring store identity",
+        )
+        if previous_store_id and not hmac.compare_digest(previous_store_id, store_id):
+            raise LedgerIntegrityError("keyring record store ID changed")
+        self._store_id = store_id
+        (
+            self._identity_key,
+            self._auth_key,
+            self._address_key,
+            self._encryption_key,
+        ) = candidate_keys
+
+    def _common_body(self, kind: str) -> dict[str, JsonValue]:
+        return super()._common_body(kind)
+
+    def _validate_common_body(
+        self, body: Mapping[str, JsonValue], *, kind: str
+    ) -> None:
+        super()._validate_common_body(body, kind=kind)
+
+    def _credential_identity_binding(self) -> str:
+        material: JsonValue = {
+            "ledger_id": self._ledger_id,
+            "root_name": self._root_name,
+            "store_binding": self._store_binding,
+            "store_id": self._store_id,
+            "version": _DIRECTORY_STORE_VERSION,
+        }
+        return hashlib.sha256(
+            b"aluclu/v2/keyring-credential-identity\0" + canonical_json_bytes(material)
+        ).hexdigest()
+
+    def _credential_common_body(self, kind: str) -> dict[str, JsonValue]:
+        return {
+            "identity_binding": self._credential_identity_binding(),
+            "kind": kind,
+            "version": _DIRECTORY_STORE_VERSION,
+        }
+
+    def _validate_credential_common_body(
+        self,
+        body: Mapping[str, JsonValue],
+        *,
+        kind: str,
+    ) -> None:
+        identity_binding = body.get("identity_binding")
+        if (
+            body.get("version") != _DIRECTORY_STORE_VERSION
+            or body.get("kind") != kind
+            or type(identity_binding) is not str
+            or not hmac.compare_digest(
+                identity_binding,
+                self._credential_identity_binding(),
+            )
+        ):
+            raise LedgerIntegrityError(f"keyring {kind} identity mismatch")
+
+    def _initialize(self) -> None:
+        self._cleanup_initialization_directories_locked()
+        staging = self._root.parent / (
+            f".{self._root.name}.{os.getpid()}.{uuid.uuid4().hex}"
+            f"{_INITIALIZATION_TEMP_SUFFIX}"
+        )
+        try:
+            staging.mkdir(parents=False, exist_ok=False)
+            (staging / "events").mkdir()
+            (staging / "tombstones").mkdir()
+        except OSError as exc:
+            raise LedgerIntegrityError(
+                "keyring record store cannot be created"
+            ) from exc
+        try:
+            self._set_identity(secrets.token_hex(32))
+            self._write_authenticated(
+                staging / "identity.json",
+                self._identity_body(),
+                self._identity_key,
+            )
+            self._inject("after_keyring_initialize_identity")
+            initial_head_body = self._head_body(
+                revision=0,
+                event_count=0,
+                tombstone_count=0,
+                accumulator=_EMPTY_ACCUMULATOR,
+            )
+            initial_head = _encode_authenticated_envelope(
+                initial_head_body,
+                self._auth_key,
+            )
+            initial_witness = self._encode_head_witness(initial_head)
+            self._write_bytes(staging / "head.json", initial_head)
+            self._inject("after_keyring_initialize_head")
+            self._write_authenticated(
+                staging / _KEYRING_INITIALIZATION_INTENT,
+                self._initialization_intent_body(),
+                self._auth_key,
+            )
+            self._inject("after_keyring_initialize_intent")
+            _fsync_directory(staging)
+            self._publish_initialization_directory(staging)
+            self._inject("after_keyring_initialize_publish")
+            self._write_encoded_head_witness(initial_witness)
+            self._inject("after_keyring_initialize_witness")
+            self._remove_file(self._root / _KEYRING_INITIALIZATION_INTENT)
+            self._inject("after_keyring_initialize_cleanup")
+        finally:
+            if staging.exists():
+                self._remove_initialization_directory(staging)
+
+    def _initialization_allowed_files(self) -> frozenset[str]:
+        return frozenset({"identity.json", "head.json", _KEYRING_INITIALIZATION_INTENT})
+
+    def _initialization_intent_body(self) -> dict[str, JsonValue]:
+        body = self._common_body("keyring-init")
+        body.update(
+            {
+                "backend_id": self._keyring.identity,
+                "create": True,
+                "database_path": self._database_identity,
+                "namespace_hash": self._username_namespace,
+                "profile": RecordKeyStoreProfile.OS_KEYRING.value,
+                "provider_scope": self._provider_scope.value,
+                "service": self._service,
+                "store_binding": self._store_binding,
+            }
+        )
+        return body
+
+    def _decode_initialization_intent(self, encoded: bytes) -> dict[str, JsonValue]:
+        body = _decode_authenticated_envelope(
+            encoded,
+            self._auth_key,
+            label="keyring initialization intent",
+        )
+        _require_exact_keys(
+            body,
+            {
+                "backend_id",
+                "create",
+                "database_path",
+                "kind",
+                "ledger_id",
+                "namespace_hash",
+                "profile",
+                "provider_scope",
+                "root_name",
+                "service",
+                "store_binding",
+                "store_id",
+                "version",
+            },
+            label="keyring initialization intent",
+        )
+        self._validate_common_body(body, kind="keyring-init")
+        if (
+            body.get("backend_id") != self._keyring.identity
+            or body.get("create") is not True
+            or body.get("database_path") != self._database_identity
+            or body.get("namespace_hash") != self._username_namespace
+            or body.get("profile") != RecordKeyStoreProfile.OS_KEYRING.value
+            or body.get("provider_scope") != self._provider_scope.value
+            or body.get("service") != self._service
+            or body.get("store_binding") != self._store_binding
+        ):
+            raise LedgerIntegrityError("keyring initialization binding mismatch")
+        return body
+
+    def _cleanup_root_atomic_write_temps_locked(self) -> None:
+        try:
+            entries = tuple(self._root.iterdir())
+        except OSError as exc:
+            raise LedgerIntegrityError("keyring record store is unreadable") from exc
+        allowed = {
+            "events",
+            "head.json",
+            "identity.json",
+            _KEYRING_INITIALIZATION_INTENT,
+            "prepare.json",
+            "staged.bin",
+            "tombstones",
+        }
+        atomic_targets = {
+            "head.json",
+            "identity.json",
+            _KEYRING_INITIALIZATION_INTENT,
+            "prepare.json",
+            "staged.bin",
+        }
+        temps: list[Path] = []
+        for entry in entries:
+            if entry.name in allowed:
+                continue
+            if _atomic_temp_target(entry.name) not in atomic_targets:
+                raise LedgerIntegrityError("keyring record store layout is invalid")
+            try:
+                entry_stat = entry.lstat()
+            except OSError as exc:
+                raise LedgerIntegrityError(
+                    "keyring temporary state is unavailable"
+                ) from exc
+            _validate_cleanup_file(entry_stat)
+            temps.append(entry)
+        for temp in temps:
+            self._remove_file(temp)
+
+    def _encode_event(
+        self,
+        *,
+        event_id: str,
+        token: str,
+        state: RecordKeyState,
+        record_hash: str | None,
+        key: bytes,
+        revision: int,
+    ) -> bytes:
+        safe_key = _key_bytes(key, label="record key")
+        body = self._common_body("event")
+        body.update(
+            {
+                "event_id": event_id,
+                "key_digest": _sha256_hex(safe_key),
+                "record_hash": record_hash,
+                "revision": revision,
+                "state": state.value,
+                "token": token,
+            }
+        )
+        self._mutation_plaintext_keys[token] = safe_key
+        return _encode_authenticated_envelope(body, self._auth_key)
+
+    def _decode_event_metadata(
+        self,
+        encoded: bytes,
+        *,
+        expected_token: str,
+    ) -> tuple[str, str, RecordKeyState, str | None, int]:
+        body = _decode_authenticated_envelope(
+            encoded,
+            self._auth_key,
+            label="keyring event metadata",
+        )
+        _require_exact_keys(
+            body,
+            {
+                "event_id",
+                "key_digest",
+                "kind",
+                "ledger_id",
+                "record_hash",
+                "revision",
+                "root_name",
+                "state",
+                "store_id",
+                "token",
+                "version",
+            },
+            label="keyring event metadata",
+        )
+        self._validate_common_body(body, kind="event")
+        event_id = validate_event_id(
+            _required_str(body.get("event_id"), label="event ID")
+        )
+        token = _required_str(body.get("token"), label="event token")
+        _validate_token(token)
+        if not hmac.compare_digest(token, expected_token) or not hmac.compare_digest(
+            token,
+            self._token(event_id),
+        ):
+            raise LedgerIntegrityError("keyring event metadata address mismatch")
+        key_digest = _digest(body.get("key_digest"), label="record key digest")
+        try:
+            state = RecordKeyState(
+                _required_str(body.get("state"), label="record key state")
+            )
+        except ValueError as exc:
+            raise LedgerIntegrityError("record key state is invalid") from exc
+        raw_hash = body.get("record_hash")
+        if state is RecordKeyState.PENDING:
+            if raw_hash is not None:
+                raise LedgerIntegrityError("pending record key has a record hash")
+            record_hash = None
+        else:
+            record_hash = _record_hash(cast(str, raw_hash))
+        revision = _positive_int(body.get("revision"), label="event revision")
+        return event_id, key_digest, state, record_hash, revision
+
+    def _decode_event(self, encoded: bytes, *, expected_token: str) -> _DirectoryEvent:
+        event_id, key_digest, state, record_hash, revision = (
+            self._decode_event_metadata(
+                encoded,
+                expected_token=expected_token,
+            )
+        )
+        key = self._read_event_credential(expected_token, required=True)
+        if key is None or not hmac.compare_digest(_sha256_hex(key), key_digest):
+            raise LedgerIntegrityError("keyring event credential digest mismatch")
+        return _DirectoryEvent(
+            event_id=event_id,
+            token=expected_token,
+            state=state,
+            record_hash=record_hash,
+            key=key,
+            revision=revision,
+            encoded=encoded,
+        )
+
+    def _event_key_digest(self, encoded: bytes | None, *, token: str) -> str | None:
+        if encoded is None:
+            return None
+        return self._decode_event_metadata(encoded, expected_token=token)[1]
+
+    def _credential_username(self, purpose: str, token: str | None = None) -> str:
+        if purpose not in {"event", "head", "staging"}:
+            raise LedgerIntegrityError("keyring credential purpose is invalid")
+        material: dict[str, JsonValue] = {
+            "ledger_id": self._ledger_id,
+            "namespace_hash": self._username_namespace,
+            "purpose": purpose,
+            "store_id": self._store_id,
+        }
+        if token is not None:
+            _validate_token(token)
+            material["token"] = token
+        address = hmac.new(
+            self._address_key,
+            b"aluclu/v2/keyring-username\0" + canonical_json_bytes(material),
+            hashlib.sha256,
+        ).hexdigest()
+        username = (
+            f"{_KEYRING_CREDENTIAL_PREFIX}:"
+            f"{self._username_namespace[:32]}:{purpose}:{address}"
+        )
+        if (
+            not username.isascii()
+            or len(username.encode("ascii")) > _KEYRING_USERNAME_MAX_BYTES
+        ):
+            raise LedgerCapabilityUnavailable("keyring credential username is too long")
+        return username
+
+    def _credential_body(
+        self,
+        *,
+        kind: str,
+        token: str,
+        key: bytes,
+    ) -> dict[str, JsonValue]:
+        body = self._credential_common_body(kind)
+        body.update(
+            {
+                "key": _b64(key),
+                "key_digest": _sha256_hex(key),
+                "profile": RecordKeyStoreProfile.OS_KEYRING.value,
+                "store_binding": self._store_binding,
+                "token": token,
+            }
+        )
+        return body
+
+    def _encode_event_credential(self, token: str, key: bytes, *, staging: bool) -> str:
+        kind = "staging-credential" if staging else "event-credential"
+        return _encode_keyring_credential_transport(
+            _encode_authenticated_envelope(
+                self._credential_body(kind=kind, token=token, key=key),
+                self._auth_key,
+            ),
+            label="keyring event credential",
+        )
+
+    def _decode_event_credential(
+        self,
+        encoded: str,
+        *,
+        token: str,
+        staging: bool,
+    ) -> bytes:
+        raw = _decode_keyring_credential_transport(
+            encoded,
+            label="keyring event credential",
+        )
+        kind = "staging-credential" if staging else "event-credential"
+        body = _decode_authenticated_envelope(
+            raw,
+            self._auth_key,
+            label="keyring event credential",
+        )
+        _require_exact_keys(
+            body,
+            {
+                "identity_binding",
+                "key",
+                "key_digest",
+                "kind",
+                "profile",
+                "store_binding",
+                "token",
+                "version",
+            },
+            label="keyring event credential",
+        )
+        self._validate_credential_common_body(body, kind=kind)
+        if (
+            body.get("profile") != RecordKeyStoreProfile.OS_KEYRING.value
+            or body.get("store_binding") != self._store_binding
+        ):
+            raise LedgerIntegrityError("keyring event credential binding mismatch")
+        supplied_token = _required_str(body.get("token"), label="event token")
+        _validate_token(supplied_token)
+        if not hmac.compare_digest(supplied_token, token):
+            raise LedgerIntegrityError("keyring event credential address mismatch")
+        key = _decode_b64_bytes(
+            body.get("key"),
+            expected_length=32,
+            label="record key",
+        )
+        key_digest = _digest(body.get("key_digest"), label="record key digest")
+        if not hmac.compare_digest(_sha256_hex(key), key_digest):
+            raise LedgerIntegrityError("keyring event credential digest mismatch")
+        return key
+
+    def _read_event_credential(self, token: str, *, required: bool) -> bytes | None:
+        encoded = self._get_password(self._credential_username("event", token))
+        if encoded is None:
+            if required:
+                raise LedgerIntegrityError("keyring event credential is missing")
+            return None
+        return self._decode_event_credential(encoded, token=token, staging=False)
+
+    def _read_staging_credential(self, *, required: bool) -> tuple[str, bytes] | None:
+        encoded = self._get_password(self._credential_username("staging"))
+        if encoded is None:
+            if required:
+                raise LedgerIntegrityError("keyring staging credential is missing")
+            return None
+        raw = _decode_keyring_credential_transport(
+            encoded,
+            label="keyring staging credential",
+        )
+        body = _decode_authenticated_envelope(
+            raw,
+            self._auth_key,
+            label="keyring staging credential",
+        )
+        token = _required_str(body.get("token"), label="event token")
+        _validate_token(token)
+        return token, self._decode_event_credential(
+            encoded,
+            token=token,
+            staging=True,
+        )
+
+    def _set_event_credential(self, token: str, key: bytes, *, staging: bool) -> None:
+        purpose = "staging" if staging else "event"
+        username = self._credential_username(purpose, None if staging else token)
+        encoded = self._encode_event_credential(token, key, staging=staging)
+        self._set_password_verified(username, encoded)
+
+    def _delete_event_credential(self, token: str, *, staging: bool) -> None:
+        purpose = "staging" if staging else "event"
+        username = self._credential_username(purpose, None if staging else token)
+        self._delete_password_if_present(username)
+
+    def _head_witness_body(self, head_encoded: bytes) -> dict[str, JsonValue]:
+        head = self._decode_head_bytes(head_encoded)
+        body = self._credential_common_body("keyring-head")
+        body.update(
+            {
+                "accumulator": head.accumulator.hex(),
+                "event_count": head.event_count,
+                "head_digest": _sha256_hex(head_encoded),
+                "profile": RecordKeyStoreProfile.OS_KEYRING.value,
+                "revision": head.revision,
+                "store_binding": self._store_binding,
+                "tombstone_count": head.tombstone_count,
+            }
+        )
+        return body
+
+    def _encode_head_witness(self, head_encoded: bytes) -> str:
+        return _encode_keyring_credential_transport(
+            _encode_authenticated_envelope(
+                self._head_witness_body(head_encoded),
+                self._auth_key,
+            ),
+            label="keyring head witness",
+        )
+
+    def _write_encoded_head_witness(self, encoded: str) -> None:
+        self._set_password_verified(self._credential_username("head"), encoded)
+
+    def _write_head_witness(self, head_encoded: bytes) -> None:
+        self._write_encoded_head_witness(self._encode_head_witness(head_encoded))
+
+    def _read_head_witness(self, *, required: bool) -> _KeyringHeadWitness | None:
+        encoded = self._get_password(self._credential_username("head"))
+        if encoded is None:
+            if required:
+                raise LedgerIntegrityError("keyring head witness is missing")
+            return None
+        raw = _decode_keyring_credential_transport(
+            encoded,
+            label="keyring head witness",
+        )
+        body = _decode_authenticated_envelope(
+            raw,
+            self._auth_key,
+            label="keyring head witness",
+        )
+        _require_exact_keys(
+            body,
+            {
+                "accumulator",
+                "event_count",
+                "head_digest",
+                "identity_binding",
+                "kind",
+                "profile",
+                "revision",
+                "store_binding",
+                "tombstone_count",
+                "version",
+            },
+            label="keyring head witness",
+        )
+        self._validate_credential_common_body(body, kind="keyring-head")
+        if (
+            body.get("profile") != RecordKeyStoreProfile.OS_KEYRING.value
+            or body.get("store_binding") != self._store_binding
+        ):
+            raise LedgerIntegrityError("keyring head witness binding mismatch")
+        return _KeyringHeadWitness(
+            revision=_nonnegative_int(body.get("revision"), label="store revision"),
+            event_count=_nonnegative_int(body.get("event_count"), label="event count"),
+            tombstone_count=_nonnegative_int(
+                body.get("tombstone_count"),
+                label="tombstone count",
+            ),
+            accumulator=_hex_bytes(body.get("accumulator"), label="state accumulator"),
+            head_digest=_digest(body.get("head_digest"), label="head digest"),
+        )
+
+    def _get_password(self, username: str) -> str | None:
+        try:
+            value = self._keyring.get_password(self._service, username)
+        except Exception as exc:
+            raise LedgerCapabilityUnavailable("OS keyring read failed") from exc
+        if value is not None and type(value) is not str:
+            raise LedgerIntegrityError("OS keyring returned a malformed credential")
+        return value
+
+    def _set_password_verified(self, username: str, password: str) -> None:
+        _validate_keyring_credential_for_write(password)
+        try:
+            self._keyring.set_password(self._service, username, password)
+            observed = self._keyring.get_password(self._service, username)
+        except Exception as exc:
+            raise LedgerCapabilityUnavailable("OS keyring write failed") from exc
+        if type(observed) is not str or not hmac.compare_digest(observed, password):
+            raise LedgerIntegrityError("OS keyring write did not verify")
+
+    def _delete_password_if_present(self, username: str) -> None:
+        current = self._get_password(username)
+        if current is None:
+            return
+        try:
+            self._keyring.delete_password(self._service, username)
+            observed = self._keyring.get_password(self._service, username)
+        except Exception as exc:
+            raise LedgerCapabilityUnavailable("OS keyring delete failed") from exc
+        if observed is not None:
+            raise LedgerIntegrityError("OS keyring delete did not verify")
+
+    def _mutate_locked(
+        self,
+        *,
+        operation: str,
+        event_id: str,
+        token: str,
+        head: _DirectoryHead,
+        old_event: bytes | None,
+        old_tombstone: bytes | None,
+        new_event: bytes | None,
+        new_tombstone: bytes | None,
+    ) -> None:
+        expected_key_digest = self._event_key_digest(old_event, token=token)
+        desired_key_digest = self._event_key_digest(new_event, token=token)
+        mutation_key = self._mutation_plaintext_keys.pop(token, None)
+        try:
+            new_head = self._next_head(
+                head,
+                token=token,
+                old_event=old_event,
+                old_tombstone=old_tombstone,
+                new_event=new_event,
+                new_tombstone=new_tombstone,
+            )
+            new_head_witness = self._encode_head_witness(new_head.encoded)
+            stage_body = self._common_body("staged")
+            stage_body.update(
+                {
+                    "desired_key_digest": desired_key_digest,
+                    "event_id": event_id,
+                    "event_state": _optional_b64(new_event),
+                    "expected_event_digest": _optional_digest(old_event),
+                    "expected_head_digest": _sha256_hex(head.encoded),
+                    "expected_key_digest": expected_key_digest,
+                    "expected_revision": head.revision,
+                    "expected_tombstone_digest": _optional_digest(old_tombstone),
+                    "head_state": _b64(new_head.encoded),
+                    "new_revision": new_head.revision,
+                    "operation": operation,
+                    "token": token,
+                    "tombstone_state": _optional_b64(new_tombstone),
+                }
+            )
+            staged = _encode_authenticated_envelope(stage_body, self._auth_key)
+            prepare_body = self._common_body("prepare")
+            prepare_body.update(
+                {
+                    "event_digest": _optional_digest(new_event),
+                    "event_id": event_id,
+                    "expected_head_digest": _sha256_hex(head.encoded),
+                    "expected_revision": head.revision,
+                    "head_digest": _sha256_hex(new_head.encoded),
+                    "new_revision": new_head.revision,
+                    "operation": operation,
+                    "staged_digest": _sha256_hex(staged),
+                    "token": token,
+                    "tombstone_digest": _optional_digest(new_tombstone),
+                }
+            )
+            prepare = _encode_authenticated_envelope(prepare_body, self._auth_key)
+
+            self._validate_live_credential_for_operation(
+                operation,
+                token=token,
+                expected_key_digest=expected_key_digest,
+            )
+            self._membership_uncertain = True
+            if operation == "put_pending":
+                if mutation_key is None or desired_key_digest is None:
+                    raise LedgerIntegrityError(
+                        "pending key mutation lost its credential"
+                    )
+                if not hmac.compare_digest(
+                    _sha256_hex(mutation_key), desired_key_digest
+                ):
+                    raise LedgerIntegrityError("pending key mutation digest mismatch")
+                self._set_event_credential(token, mutation_key, staging=True)
+            self._inject("after_keyring_staging_credential")
+            self._write_bytes(self._staged_path, staged)
+            self._inject("after_keyring_staged_metadata")
+            self._write_bytes(self._prepare_path, prepare)
+            self._inject("after_keyring_prepare")
+            self._apply_prepared_credential(stage_body)
+            self._inject("after_keyring_final_credential")
+            self._apply_staged_target(stage_body, allow_expected=True)
+            self._inject("after_keyring_event_state")
+            self._write_bytes(self._head_path, new_head.encoded)
+            self._highest_revision = new_head.revision
+            self._highest_head_digest = _sha256_hex(new_head.encoded)
+            self._inject("after_keyring_disk_head")
+            self._write_encoded_head_witness(new_head_witness)
+            self._inject("after_keyring_keyring_head")
+            self._cleanup_keyring_mutation(token)
+            self._record_verified_mutation(
+                token=token,
+                new_event=new_event,
+                new_tombstone=new_tombstone,
+                new_head=new_head,
+            )
+            self._inject("after_keyring_cleanup")
+        finally:
+            self._mutation_plaintext_keys.pop(token, None)
+
+    def _validate_live_credential_for_operation(
+        self,
+        operation: str,
+        *,
+        token: str,
+        expected_key_digest: str | None,
+    ) -> None:
+        current = self._read_event_credential(token, required=False)
+        if operation == "put_pending":
+            if current is not None:
+                raise LedgerIntegrityError("orphan keyring event credential exists")
+            return
+        if expected_key_digest is None or current is None:
+            raise LedgerIntegrityError("keyring event credential is missing")
+        if not hmac.compare_digest(_sha256_hex(current), expected_key_digest):
+            raise LedgerIntegrityError("keyring event credential digest mismatch")
+
+    def _decode_staged(self, encoded: bytes) -> dict[str, JsonValue]:
+        body = _decode_authenticated_envelope(
+            encoded,
+            self._auth_key,
+            label="keyring staged state",
+        )
+        _require_exact_keys(
+            body,
+            {
+                "desired_key_digest",
+                "event_id",
+                "event_state",
+                "expected_event_digest",
+                "expected_head_digest",
+                "expected_key_digest",
+                "expected_revision",
+                "expected_tombstone_digest",
+                "head_state",
+                "kind",
+                "ledger_id",
+                "new_revision",
+                "operation",
+                "root_name",
+                "store_id",
+                "token",
+                "tombstone_state",
+                "version",
+            },
+            label="keyring staged state",
+        )
+        self._validate_common_body(body, kind="staged")
+        self._validate_mutation_body(body)
+        expected_key_digest = _digest_or_none(
+            body.get("expected_key_digest"),
+            label="expected key digest",
+        )
+        desired_key_digest = _digest_or_none(
+            body.get("desired_key_digest"),
+            label="desired key digest",
+        )
+        operation = cast(str, body["operation"])
+        if operation == "put_pending":
+            if expected_key_digest is not None or desired_key_digest is None:
+                raise LedgerIntegrityError("pending key journal digest is invalid")
+        elif operation == "mark_committed":
+            if (
+                expected_key_digest is None
+                or desired_key_digest is None
+                or not hmac.compare_digest(expected_key_digest, desired_key_digest)
+            ):
+                raise LedgerIntegrityError("commit key journal digest is invalid")
+        elif desired_key_digest is not None or expected_key_digest is None:
+            raise LedgerIntegrityError("key deletion journal digest is invalid")
+        return body
+
+    def _apply_prepared_credential(self, stage_body: Mapping[str, JsonValue]) -> None:
+        operation = cast(str, stage_body["operation"])
+        token = cast(str, stage_body["token"])
+        expected_digest = cast(str | None, stage_body["expected_key_digest"])
+        desired_digest = cast(str | None, stage_body["desired_key_digest"])
+        final_key = self._read_event_credential(token, required=False)
+
+        if operation == "put_pending":
+            staged = self._read_staging_credential(required=False)
+            staged_key: bytes | None = None
+            if staged is not None:
+                staged_token, staged_key = staged
+                if not hmac.compare_digest(staged_token, token):
+                    raise LedgerIntegrityError(
+                        "keyring staging credential address mismatch"
+                    )
+                if desired_digest is None or not hmac.compare_digest(
+                    _sha256_hex(staged_key),
+                    desired_digest,
+                ):
+                    raise LedgerIntegrityError(
+                        "keyring staging credential digest mismatch"
+                    )
+            if final_key is not None:
+                if desired_digest is None or not hmac.compare_digest(
+                    _sha256_hex(final_key),
+                    desired_digest,
+                ):
+                    raise LedgerIntegrityError(
+                        "keyring final credential digest mismatch"
+                    )
+                if staged_key is not None and not hmac.compare_digest(
+                    final_key, staged_key
+                ):
+                    raise LedgerIntegrityError(
+                        "keyring staged/final credentials diverged"
+                    )
+                return
+            if staged_key is None:
+                raise LedgerIntegrityError("prepared keyring credential is unavailable")
+            self._set_event_credential(token, staged_key, staging=False)
+            return
+
+        if operation == "mark_committed":
+            if (
+                final_key is None
+                or expected_digest is None
+                or desired_digest is None
+                or not hmac.compare_digest(_sha256_hex(final_key), expected_digest)
+                or not hmac.compare_digest(expected_digest, desired_digest)
+            ):
+                raise LedgerIntegrityError(
+                    "committed keyring credential does not verify"
+                )
+            return
+
+        if final_key is not None:
+            if expected_digest is None or not hmac.compare_digest(
+                _sha256_hex(final_key),
+                expected_digest,
+            ):
+                raise LedgerIntegrityError("deleted keyring credential does not verify")
+            self._delete_event_credential(token, staging=False)
+
+    def _recover_locked(self) -> None:
+        self._recover_initialization_locked()
+        staged = _read_optional_regular_file(self._staged_path)
+        prepare = _read_optional_regular_file(self._prepare_path)
+        if staged is not None or prepare is not None:
+            self._membership_uncertain = True
+        if prepare is not None and staged is None:
+            raise LedgerIntegrityError("keyring prepare is missing staged state")
+        if staged is None:
+            self._delete_orphan_staging_credential()
+            self._verify_head_pair_at_rest()
+            return
+        stage_body = self._decode_staged(staged)
+        if prepare is None:
+            self._recover_orphan_keyring_stage(stage_body)
+            return
+        prepare_body = self._decode_prepare(prepare)
+        self._validate_prepare_pair(staged, stage_body, prepare_body)
+        self._forward_recover_keyring(stage_body)
+
+    def _recover_initialization_locked(self) -> None:
+        intent_path = self._root / _KEYRING_INITIALIZATION_INTENT
+        intent = _read_optional_regular_file(intent_path)
+        witness = self._read_head_witness(required=False)
+        if intent is None:
+            if witness is None:
+                raise LedgerIntegrityError("keyring head witness is missing")
+            return
+        self._decode_initialization_intent(intent)
+        if not self._create_requested:
+            raise LedgerIntegrityError(
+                "keyring initialization recovery requires create mode"
+            )
+        if self._prepare_path.exists() or self._staged_path.exists():
+            raise LedgerIntegrityError("keyring initialization has mutation state")
+        head = self._decode_head_bytes(_read_regular_file(self._head_path))
+        try:
+            events_present = any(self._events_root.iterdir())
+            tombstones_present = any(self._tombstones_root.iterdir())
+        except OSError as exc:
+            raise LedgerIntegrityError(
+                "keyring initialization fanout is unreadable"
+            ) from exc
+        if (
+            head.revision != 0
+            or head.event_count != 0
+            or head.tombstone_count != 0
+            or not hmac.compare_digest(head.accumulator, _EMPTY_ACCUMULATOR)
+            or events_present
+            or tombstones_present
+        ):
+            raise LedgerIntegrityError("keyring initialization state is not empty")
+        if witness is None:
+            self._write_head_witness(head.encoded)
+        elif not self._witness_matches_head(witness, head):
+            raise LedgerIntegrityError("keyring initialization witness conflicts")
+        self._remove_file(intent_path)
+
+    def _recover_orphan_keyring_stage(
+        self, stage_body: Mapping[str, JsonValue]
+    ) -> None:
+        disk_head = self._decode_head_bytes(_read_regular_file(self._head_path))
+        witness = self._read_head_witness(required=True)
+        assert witness is not None
+        expected_digest = cast(str, stage_body["expected_head_digest"])
+        desired_encoded = _decode_b64_bytes(
+            stage_body.get("head_state"),
+            expected_length=None,
+            label="staged head",
+        )
+        desired_digest = _sha256_hex(desired_encoded)
+        disk_digest = _sha256_hex(disk_head.encoded)
+        if hmac.compare_digest(disk_digest, expected_digest):
+            if not self._witness_matches_head(witness, disk_head):
+                self._raise_head_pair_mismatch(disk_head, witness)
+            self._validate_orphan_stage_credential(stage_body)
+            self._validate_expected_targets(stage_body)
+        elif hmac.compare_digest(disk_digest, desired_digest):
+            desired = self._decode_head_bytes(desired_encoded)
+            if not self._witness_matches_head(witness, desired):
+                self._raise_head_pair_mismatch(desired, witness)
+            self._apply_staged_target(stage_body, allow_expected=False)
+        else:
+            raise LedgerIntegrityError("orphan keyring stage does not match store head")
+        self._delete_orphan_staging_credential()
+        self._remove_file(self._staged_path)
+
+    def _validate_orphan_stage_credential(
+        self,
+        stage_body: Mapping[str, JsonValue],
+    ) -> None:
+        operation = cast(str, stage_body["operation"])
+        token = cast(str, stage_body["token"])
+        expected_digest = cast(str | None, stage_body["expected_key_digest"])
+        final_key = self._read_event_credential(token, required=False)
+        if operation == "put_pending":
+            if final_key is not None:
+                raise LedgerIntegrityError(
+                    "unprepared keyring final credential is present"
+                )
+            return
+        if (
+            final_key is None
+            or expected_digest is None
+            or not hmac.compare_digest(_sha256_hex(final_key), expected_digest)
+        ):
+            raise LedgerIntegrityError("unprepared keyring credential changed")
+
+    def _forward_recover_keyring(self, stage_body: Mapping[str, JsonValue]) -> None:
+        disk_head = self._decode_head_bytes(_read_regular_file(self._head_path))
+        witness = self._read_head_witness(required=True)
+        assert witness is not None
+        expected_digest = cast(str, stage_body["expected_head_digest"])
+        desired_encoded = _decode_b64_bytes(
+            stage_body.get("head_state"),
+            expected_length=None,
+            label="staged head",
+        )
+        desired = self._decode_head_bytes(desired_encoded)
+        desired_witness = self._encode_head_witness(desired_encoded)
+        desired_digest = _sha256_hex(desired_encoded)
+        disk_digest = _sha256_hex(disk_head.encoded)
+        disk_state = _head_transition_state(
+            disk_digest,
+            expected=expected_digest,
+            desired=desired_digest,
+        )
+        witness_state = _head_transition_state(
+            witness.head_digest,
+            expected=expected_digest,
+            desired=desired_digest,
+        )
+        if (disk_state, witness_state) == ("expected", "desired"):
+            raise LedgerRollbackError("keyring head is ahead of the disk head")
+        if (disk_state, witness_state) not in {
+            ("expected", "expected"),
+            ("desired", "expected"),
+            ("desired", "desired"),
+        }:
+            raise LedgerIntegrityError("keyring prepared head pair is invalid")
+        if disk_state == "expected" and not self._witness_matches_head(
+            witness, disk_head
+        ):
+            raise LedgerIntegrityError("keyring expected head witness conflicts")
+        if witness_state == "desired" and not self._witness_matches_head(
+            witness, desired
+        ):
+            raise LedgerIntegrityError("keyring desired head witness conflicts")
+
+        self._cleanup_staged_target_atomic_write_temps_locked(stage_body)
+        self._apply_prepared_credential(stage_body)
+        self._apply_staged_target(
+            stage_body,
+            allow_expected=disk_state == "expected",
+        )
+        if disk_state == "expected":
+            self._write_bytes(self._head_path, desired_encoded)
+        if witness_state == "expected":
+            self._write_encoded_head_witness(desired_witness)
+        self._highest_revision = desired.revision
+        self._highest_head_digest = desired_digest
+        self._cleanup_keyring_mutation(cast(str, stage_body["token"]))
+
+    def _verify_head_pair_at_rest(self) -> None:
+        disk_head = self._decode_head_bytes(_read_regular_file(self._head_path))
+        witness = self._read_head_witness(required=True)
+        assert witness is not None
+        if not self._witness_matches_head(witness, disk_head):
+            self._raise_head_pair_mismatch(disk_head, witness)
+
+    def _witness_matches_head(
+        self,
+        witness: _KeyringHeadWitness,
+        head: _DirectoryHead,
+    ) -> bool:
+        return (
+            witness.revision == head.revision
+            and witness.event_count == head.event_count
+            and witness.tombstone_count == head.tombstone_count
+            and hmac.compare_digest(witness.accumulator, head.accumulator)
+            and hmac.compare_digest(witness.head_digest, _sha256_hex(head.encoded))
+        )
+
+    def _raise_head_pair_mismatch(
+        self,
+        disk_head: _DirectoryHead,
+        witness: _KeyringHeadWitness,
+    ) -> None:
+        if witness.revision > disk_head.revision:
+            raise LedgerRollbackError("keyring head is ahead of the disk head")
+        raise LedgerIntegrityError("disk and keyring heads do not match")
+
+    def _delete_orphan_staging_credential(self) -> None:
+        staged = self._read_staging_credential(required=False)
+        if staged is not None:
+            self._delete_event_credential(staged[0], staging=True)
+
+    def _cleanup_keyring_mutation(self, token: str) -> None:
+        self._delete_event_credential(token, staging=True)
+        self._cleanup_mutation_files()
+
+    def _verify_integrity_locked(
+        self,
+    ) -> tuple[dict[str, _DirectoryEvent], dict[str, _DirectoryTombstone]]:
+        self._verify_head_pair_at_rest()
+        return super()._verify_integrity_locked()
+
+
+def create_record_key_store(
+    database_path: str | Path,
+    key_provider: KeyProvider,
+    *,
+    ledger_id: str,
+    integrity_key: bytes | bytearray | memoryview,
+    create: bool,
+) -> RecordKeyStore:
+    """Select the only store profile compatible with the provider's scope."""
+
+    resolved_database = resolve_ledger_path(database_path)
+    root = resolved_database.with_suffix(resolved_database.suffix + ".record-keys")
+    scope = key_provider.security_scope
+    if scope is LedgerSecurityScope.OS_KEYRING:
+        if not isinstance(key_provider, KeyringKeyProvider):
+            raise LedgerCapabilityUnavailable(
+                "OS-keyring scope requires a concrete KeyringKeyProvider namespace"
+            )
+        return KeyringRecordKeyStore(
+            root,
+            integrity_key,
+            ledger_id=ledger_id,
+            service=key_provider.service,
+            username_prefix=key_provider.username,
+            create=create,
+            database_path=resolved_database,
+        )
+    if scope not in {
+        LedgerSecurityScope.STATIC_TEST_KEY,
+        LedgerSecurityScope.LOCAL_FILE_KEY,
+    }:
+        raise LedgerCapabilityUnavailable("record-key provider scope is unsupported")
+    return DirectoryRecordKeyStore(
+        root,
+        integrity_key,
+        ledger_id=ledger_id,
+        create=create,
+    )
+
+
+def _capture_keyring_store_plan(
+    database_path: str | Path,
+    provider: KeyProvider,
+) -> _CapturedKeyringStorePlan:
+    if not isinstance(provider, KeyringKeyProvider):
+        raise LedgerCapabilityUnavailable(
+            "OS-keyring scope requires a concrete KeyringKeyProvider namespace"
+        )
+    resolved_database = resolve_ledger_path(database_path)
+    root = resolved_database.with_suffix(resolved_database.suffix + ".record-keys")
+    return _build_keyring_store_plan(
+        root=root,
+        database_path=resolved_database,
+        service=provider.service,
+        username_prefix=provider.username,
+    )
+
+
+def _build_keyring_store_plan(
+    *,
+    root: str | Path,
+    database_path: str | Path,
+    service: str,
+    username_prefix: str,
+) -> _CapturedKeyringStorePlan:
+    """Capture and probe one concrete vault, then seal its derived binding."""
+
+    safe_service = _validate_keyring_component(service, label="keyring service")
+    safe_username_prefix = _validate_keyring_component(
+        username_prefix,
+        label="keyring username prefix",
+    )
+    resolved_root = resolve_ledger_path(root)
+    resolved_database = resolve_ledger_path(database_path)
+    namespace_hash = _keyring_namespace_hash(
+        username_prefix=safe_username_prefix,
+        database_path=resolved_database,
+    )
+    try:
+        backend = _load_keyring_backend(reject_chainer=True)
+    except KeyProviderUnavailable as exc:
+        raise LedgerCapabilityUnavailable(
+            "OS-keyring record storage is unavailable"
+        ) from exc
+    _validate_keyring_backend_identity(backend.identity)
+    _probe_keyring_backend(
+        backend,
+        service=safe_service,
+        namespace_hash=namespace_hash,
+    )
+    binding = _keyring_store_binding(
+        backend_id=backend.identity,
+        service=safe_service,
+        namespace_hash=namespace_hash,
+        database_path=_normalized_path_identity(resolved_database),
+    )
+    return _CapturedKeyringStorePlan(
+        backend=backend,
+        database_path=resolved_database,
+        root=resolved_root,
+        service=safe_service,
+        username_prefix=safe_username_prefix,
+        namespace_hash=namespace_hash,
+        store_binding=binding,
+    )
+
+
+def _database_path_for_record_store_root(root: Path) -> Path:
+    suffix = ".record-keys"
+    if root.name.endswith(suffix) and len(root.name) > len(suffix):
+        return root.with_name(root.name[: -len(suffix)])
+    return root
+
+
+def _normalized_path_identity(path: Path) -> str:
+    return os.path.normcase(os.path.normpath(str(resolve_ledger_path(path))))
+
+
+def _validate_keyring_component(value: str, *, label: str) -> str:
+    if type(value) is not str or _KEYRING_COMPONENT_PATTERN.fullmatch(value) is None:
+        raise InputBoundaryError(f"{label} is outside the portable canonical boundary")
+    return value
+
+
+def _validate_keyring_backend_identity(value: str) -> None:
+    try:
+        encoded = value.encode("utf-8")
+    except (AttributeError, UnicodeEncodeError) as exc:
+        raise LedgerCapabilityUnavailable(
+            "OS-keyring backend identity is invalid"
+        ) from exc
+    if (
+        type(value) is not str
+        or not encoded
+        or len(encoded) > _KEYRING_BACKEND_ID_MAX_BYTES
+        or any(ord(character) < 0x20 or ord(character) == 0x7F for character in value)
+    ):
+        raise LedgerCapabilityUnavailable("OS-keyring backend identity is invalid")
+
+
+def _encode_keyring_credential_transport(encoded: bytes, *, label: str) -> str:
+    transport = _KEYRING_CREDENTIAL_TRANSPORT_PREFIX + base64.b64encode(encoded).decode(
+        "ascii"
+    )
+    try:
+        _validate_keyring_credential_for_write(transport)
+    except LedgerCapabilityUnavailable as exc:
+        raise LedgerCapabilityUnavailable(
+            f"{label} exceeds the portable OS-keyring boundary"
+        ) from exc
+    return transport
+
+
+def _decode_keyring_credential_transport(encoded: str, *, label: str) -> bytes:
+    if type(encoded) is not str:
+        raise LedgerIntegrityError(f"{label} is malformed")
+    if len(encoded) > _KEYRING_CREDENTIAL_BLOB_MAX_BYTES // 2:
+        raise LedgerIntegrityError(f"{label} exceeds the portable size boundary")
+    try:
+        ascii_encoded = encoded.encode("ascii")
+    except UnicodeEncodeError as exc:
+        raise LedgerIntegrityError(f"{label} is malformed") from exc
+    prefix = _KEYRING_CREDENTIAL_TRANSPORT_PREFIX.encode("ascii")
+    if not ascii_encoded.startswith(prefix):
+        raise LedgerIntegrityError(f"{label} encoding version is unsupported")
+    payload = ascii_encoded[len(prefix) :]
+    if not payload:
+        raise LedgerIntegrityError(f"{label} is malformed")
+    try:
+        decoded = base64.b64decode(payload, validate=True)
+    except binascii.Error as exc:
+        raise LedgerIntegrityError(f"{label} is malformed") from exc
+    if not hmac.compare_digest(base64.b64encode(decoded), payload):
+        raise LedgerIntegrityError(f"{label} is not canonically encoded")
+    if len(decoded) > _DIRECTORY_STORE_MAX_ENVELOPE_BYTES:
+        raise LedgerIntegrityError(f"{label} exceeds the size boundary")
+    return decoded
+
+
+def _validate_keyring_credential_for_write(password: str) -> None:
+    if type(password) is not str or not password.startswith(
+        _KEYRING_CREDENTIAL_TRANSPORT_PREFIX
+    ):
+        raise LedgerCapabilityUnavailable("OS-keyring credential encoding is invalid")
+    if len(password) > _KEYRING_CREDENTIAL_BLOB_MAX_BYTES // 2:
+        raise LedgerCapabilityUnavailable(
+            "OS-keyring credential exceeds the portable size boundary"
+        )
+    try:
+        password.encode("ascii")
+    except UnicodeEncodeError as exc:
+        raise LedgerCapabilityUnavailable(
+            "OS-keyring credential encoding is not portable"
+        ) from exc
+
+
+def _keyring_namespace_hash(
+    *,
+    username_prefix: str,
+    database_path: Path,
+) -> str:
+    material: JsonValue = {
+        "database_path": _normalized_path_identity(database_path),
+        "username_prefix": username_prefix,
+        "version": _KEYRING_PROFILE_VERSION,
+    }
+    return hashlib.sha256(
+        b"aluclu/v2/keyring-namespace\0" + canonical_json_bytes(material)
+    ).hexdigest()
+
+
+def _keyring_store_binding(
+    *,
+    backend_id: str,
+    service: str,
+    namespace_hash: str,
+    database_path: str,
+) -> str:
+    material: JsonValue = {
+        "backend_id": backend_id,
+        "database_path": database_path,
+        "namespace_hash": namespace_hash,
+        "profile": RecordKeyStoreProfile.OS_KEYRING.value,
+        "service": service,
+        "version": _KEYRING_PROFILE_VERSION,
+    }
+    return hashlib.sha256(
+        b"aluclu/v2/keyring-store-binding\0" + canonical_json_bytes(material)
+    ).hexdigest()
+
+
+def _probe_keyring_backend(
+    backend: _CapturedKeyringBackend,
+    *,
+    service: str,
+    namespace_hash: str,
+) -> None:
+    nonce = secrets.token_hex(16)
+    username = f"{_KEYRING_CREDENTIAL_PREFIX}:{namespace_hash[:32]}:probe:{nonce}"
+    password = secrets.token_hex(32)
+    with _KEYRING_PROBE_LOCK:
+        try:
+            backend.set_password(service, username, password)
+            observed = backend.get_password(service, username)
+            if type(observed) is not str or not hmac.compare_digest(observed, password):
+                raise LedgerCapabilityUnavailable(
+                    "OS keyring probe write did not verify"
+                )
+            backend.delete_password(service, username)
+            if backend.get_password(service, username) is not None:
+                raise LedgerCapabilityUnavailable(
+                    "OS keyring probe delete did not verify"
+                )
+        except LedgerCapabilityUnavailable:
+            raise
+        except Exception as exc:
+            raise LedgerCapabilityUnavailable(
+                "OS keyring capability probe failed"
+            ) from exc
+
+
+def _head_transition_state(
+    digest: str,
+    *,
+    expected: str,
+    desired: str,
+) -> str:
+    if hmac.compare_digest(digest, expected):
+        return "expected"
+    if hmac.compare_digest(digest, desired):
+        return "desired"
+    return "other"
 
 
 def _atomic_temp_target(name: str) -> str | None:
@@ -2293,7 +4022,13 @@ def _fsync_directory(path: Path) -> None:
 
 
 def _initial_state(ledger_id: str) -> dict[str, JsonValue]:
-    return {"entries": {}, "ledger_id": ledger_id, "revision": 0, "tombstones": {}, "version": 1}
+    return {
+        "entries": {},
+        "ledger_id": ledger_id,
+        "revision": 0,
+        "tombstones": {},
+        "version": 1,
+    }
 
 
 def _bump(state: dict[str, JsonValue]) -> None:
@@ -2319,7 +4054,10 @@ def _entry_dict(value: JsonValue | None) -> dict[str, JsonValue]:
         raise LedgerIntegrityError("record key entry is missing or malformed")
     if type(value.get("key")) is not str or type(value.get("state")) is not str:
         raise LedgerIntegrityError("record key entry is malformed")
-    if value.get("record_hash") is not None and type(value.get("record_hash")) is not str:
+    if (
+        value.get("record_hash") is not None
+        and type(value.get("record_hash")) is not str
+    ):
         raise LedgerIntegrityError("record key hash is malformed")
     return cast(dict[str, JsonValue], value)
 
@@ -2359,7 +4097,9 @@ def _state_name_for_path(path: Path) -> str:
     _validate_json_store_path(path)
     name = path.stem
     if STATE_NAME_PATTERN.fullmatch(name) is None:
-        raise InputBoundaryError("record key store path must have a canonical state name")
+        raise InputBoundaryError(
+            "record key store path must have a canonical state name"
+        )
     return name
 
 
@@ -2404,8 +4144,30 @@ def _validate_keyring_backend(keyring_module: object) -> None:
         raise KeyProviderUnavailable("keyring backend is unavailable") from exc
     if backend is None:
         raise KeyProviderUnavailable("keyring backend is unavailable")
+    _validate_captured_keyring_backend(
+        backend,
+        reject_chainer=False,
+        require_operations=False,
+    )
+
+
+def _validate_captured_keyring_backend(
+    backend: object,
+    *,
+    reject_chainer: bool,
+    require_operations: bool,
+) -> None:
+    if backend is None:
+        raise KeyProviderUnavailable("keyring backend is unavailable")
+    module = getattr(type(backend), "__module__", "").lower()
+    if reject_chainer and module == "keyring.backends.chainer":
+        raise KeyProviderUnavailable("chained keyring backends are ambiguous")
     if not _is_secure_keyring_backend(backend):
         raise KeyProviderUnavailable("keyring backend is not secure")
+    if require_operations:
+        for name in ("get_password", "set_password", "delete_password"):
+            if not callable(getattr(backend, name, None)):
+                raise KeyProviderUnavailable(f"keyring backend lacks {name}")
 
 
 def _is_secure_keyring_backend(backend: object) -> bool:
@@ -2431,7 +4193,9 @@ def _is_secure_keyring_backend(backend: object) -> bool:
         candidate_backends = getattr(backend, "backends", None)
         if not candidate_backends:
             return False
-        return all(_is_secure_keyring_backend(candidate) for candidate in candidate_backends)
+        return all(
+            _is_secure_keyring_backend(candidate) for candidate in candidate_backends
+        )
     return True
 
 

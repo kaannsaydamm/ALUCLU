@@ -206,7 +206,55 @@ def test_keyring_provider_import_is_lazy_and_reports_missing_backend(
         provider.get_key()
 
 
-def test_keyring_provider_rejects_invalid_base64(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_keyring_provider_accepts_portable_maximum_identifiers() -> None:
+    provider = KeyringKeyProvider("s" * 191, "u" * 191)
+
+    assert provider.service == "s" * 191
+    assert provider.username == "u" * 191
+
+
+@pytest.mark.parametrize(
+    ("service", "username"),
+    [
+        ("", "user"),
+        ("service", ""),
+        ("s" * 192, "user"),
+        ("service", "u" * 192),
+        ("Service", "user"),
+        ("service", "User"),
+        ("sérvice", "user"),
+        ("service", "usér"),
+        ("-service", "user"),
+        ("service-", "user"),
+        ("service", "_user"),
+        ("service", "user_"),
+        ("service:name", "user"),
+        ("service", "user@name"),
+        ("service name", "user"),
+        ("service", "user\nname"),
+    ],
+)
+def test_keyring_provider_rejects_nonportable_identifiers_before_import(
+    monkeypatch: pytest.MonkeyPatch,
+    service: str,
+    username: str,
+) -> None:
+    monkeypatch.setitem(sys.modules, "keyring", None)
+
+    with pytest.raises(InputBoundaryError):
+        KeyringKeyProvider(service, username)
+
+
+def test_keyring_provider_accepts_single_and_interior_separator_components() -> None:
+    provider = KeyringKeyProvider("s", "user.name_1-test")
+
+    assert provider.service == "s"
+    assert provider.username == "user.name_1-test"
+
+
+def test_keyring_provider_rejects_invalid_base64(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     class FakeKeyring:
         @staticmethod
         def get_keyring() -> object:
@@ -361,7 +409,9 @@ def test_keyring_provider_rejects_chainer_with_mixed_insecure_backend(
         KeyringKeyProvider("svc", "user").get_key()
 
 
-def test_file_record_key_store_repairs_pending_only_with_exact_hash(tmp_path: Path) -> None:
+def test_file_record_key_store_repairs_pending_only_with_exact_hash(
+    tmp_path: Path,
+) -> None:
     store = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
 
     pending = store.put_pending("evt_1", b"d" * 32)
@@ -495,7 +545,9 @@ def test_file_record_key_store_discards_uncommitted_pending_key(tmp_path: Path) 
     assert store.reference("evt_1") is None
 
 
-def test_file_record_key_store_detects_authenticated_state_tamper(tmp_path: Path) -> None:
+def test_file_record_key_store_detects_authenticated_state_tamper(
+    tmp_path: Path,
+) -> None:
     path = tmp_path / "keys.json"
     store = FileRecordKeyStore(path, b"m" * 32, ledger_id="ledger-1")
     store.put_pending("evt_1", b"d" * 32)
@@ -548,8 +600,12 @@ def test_file_record_key_store_valid_distinct_names_coexist_and_reopen(
     first.put_pending("evt_1", b"a" * 32)
     second.put_pending("evt_2", b"b" * 32)
 
-    reopened_first = FileRecordKeyStore(tmp_path / "one.json", b"m" * 32, ledger_id="ledger-1")
-    reopened_second = FileRecordKeyStore(tmp_path / "two.json", b"m" * 32, ledger_id="ledger-2")
+    reopened_first = FileRecordKeyStore(
+        tmp_path / "one.json", b"m" * 32, ledger_id="ledger-1"
+    )
+    reopened_second = FileRecordKeyStore(
+        tmp_path / "two.json", b"m" * 32, ledger_id="ledger-2"
+    )
 
     assert reopened_first.get("evt_1") == b"a" * 32
     assert reopened_first.get("evt_2") is None
@@ -574,7 +630,9 @@ def test_file_record_key_store_shred_reopen_prunes_after_pointer_commit(
             raise OSError("prune interrupted")
         original_prune(self, current_generation)
 
-    monkeypatch.setattr(keys_module.FileRecordKeyStore, "_prune_old_manifests", fail_prune_once)
+    monkeypatch.setattr(
+        keys_module.FileRecordKeyStore, "_prune_old_manifests", fail_prune_once
+    )
     with pytest.raises(LedgerIntegrityError):
         store.shred("evt_1", "ab" * 32)
 
@@ -583,7 +641,9 @@ def test_file_record_key_store_shred_reopen_prunes_after_pointer_commit(
         "_prune_old_manifests",
         original_prune,
     )
-    reopened = FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
+    reopened = FileRecordKeyStore(
+        tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1"
+    )
 
     assert reopened.is_tombstoned("evt_1")
     assert reopened.get("evt_1") is None
@@ -614,7 +674,9 @@ def test_file_record_key_store_recovery_uses_one_authenticated_snapshot(
     assert calls == 1
 
 
-def test_file_record_key_store_unknown_partial_state_fails_closed(tmp_path: Path) -> None:
+def test_file_record_key_store_unknown_partial_state_fails_closed(
+    tmp_path: Path,
+) -> None:
     path = tmp_path / "keys.json"
     path.write_bytes(b'{"version":1}')
 
@@ -622,14 +684,18 @@ def test_file_record_key_store_unknown_partial_state_fails_closed(tmp_path: Path
         FileRecordKeyStore(path, b"m" * 32, ledger_id="ledger-1")
 
 
-def test_file_record_key_store_manifest_without_pointer_fails_closed(tmp_path: Path) -> None:
+def test_file_record_key_store_manifest_without_pointer_fails_closed(
+    tmp_path: Path,
+) -> None:
     (tmp_path / "keys.00000000000000000001.manifest.json").write_bytes(b"{}")
 
     with pytest.raises(LedgerIntegrityError):
         FileRecordKeyStore(tmp_path / "keys.json", b"m" * 32, ledger_id="ledger-1")
 
 
-def test_file_record_key_store_concurrent_first_create_is_stable(tmp_path: Path) -> None:
+def test_file_record_key_store_concurrent_first_create_is_stable(
+    tmp_path: Path,
+) -> None:
     path = tmp_path / "keys.json"
 
     def open_store() -> int:

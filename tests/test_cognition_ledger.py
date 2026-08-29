@@ -1,4 +1,6 @@
+import base64
 import sqlite3
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -9,6 +11,8 @@ from aluclu.cognition import (
     EncryptedLedger,
     FileKeyProvider,
     FileRecordKeyStore,
+    KeyringKeyProvider,
+    KeyringRecordKeyStore,
     LedgerCapabilityUnavailable,
     LedgerConflictError,
     LedgerIntegrityError,
@@ -16,12 +20,88 @@ from aluclu.cognition import (
     LedgerLifecycleError,
     LedgerMigrationRequired,
     LedgerSecurityScope,
+    RecordKeyStoreProfile,
     StaticKeyProvider,
 )
 from aluclu.cognition import ledger as ledger_module
 from aluclu.cognition.codec import MAX_PAYLOAD_BYTES
 
 MASTER_KEY = b"m" * 32
+
+
+class MemoryKeyringBackend:
+    priority = 1
+
+    def __init__(self) -> None:
+        self.credentials: dict[tuple[str, str], str] = {}
+
+    def get_password(self, service: str, username: str) -> str | None:
+        return self.credentials.get((service, username))
+
+    def set_password(self, service: str, username: str, password: str) -> None:
+        self.credentials[(service, username)] = password
+
+    def delete_password(self, service: str, username: str) -> None:
+        self.credentials.pop((service, username), None)
+
+
+MemoryKeyringBackend.__module__ = "keyring.backends.Windows"
+
+
+class AlternateMemoryKeyringBackend(MemoryKeyringBackend):
+    pass
+
+
+AlternateMemoryKeyringBackend.__module__ = "keyring.backends.macOS"
+
+
+class MemoryKeyringModule:
+    def __init__(self, backend: MemoryKeyringBackend) -> None:
+        self._backend = backend
+
+    def get_keyring(self) -> MemoryKeyringBackend:
+        return self._backend
+
+    def get_password(self, service: str, username: str) -> str | None:
+        return self._backend.get_password(service, username)
+
+    def set_password(self, service: str, username: str, password: str) -> None:
+        self._backend.set_password(service, username, password)
+
+
+class FlappingMemoryKeyringModule:
+    def __init__(self, *backends: MemoryKeyringBackend) -> None:
+        self._backends = list(backends)
+        self._active = backends[0]
+        self.calls = 0
+
+    def get_keyring(self) -> MemoryKeyringBackend:
+        index = min(self.calls, len(self._backends) - 1)
+        self._active = self._backends[index]
+        self.calls += 1
+        return self._active
+
+    def get_password(self, service: str, username: str) -> str | None:
+        return self._active.get_password(service, username)
+
+    def set_password(self, service: str, username: str, password: str) -> None:
+        self._active.set_password(service, username, password)
+
+
+@pytest.fixture
+def memory_keyring(monkeypatch: pytest.MonkeyPatch) -> MemoryKeyringBackend:
+    backend = MemoryKeyringBackend()
+    monkeypatch.setitem(sys.modules, "keyring", MemoryKeyringModule(backend))
+    return backend
+
+
+def _keyring_provider_with_master(backend: MemoryKeyringBackend) -> KeyringKeyProvider:
+    backend.set_password(
+        "aluclu-test",
+        "owner",
+        base64.b64encode(MASTER_KEY).decode("ascii"),
+    )
+    return KeyringKeyProvider("aluclu-test", "owner")
 
 
 def test_construction_is_side_effect_free_and_lifecycle_is_typed(tmp_path: Path) -> None:
@@ -487,6 +567,64 @@ def test_local_file_provider_uses_directory_record_store_by_default(tmp_path: Pa
     assert not path.with_suffix(path.suffix + ".record-keys.json").exists()
 
 
+def test_os_keyring_provider_uses_keyring_record_store_by_default(
+    tmp_path: Path,
+    memory_keyring: MemoryKeyringBackend,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    provider = _keyring_provider_with_master(memory_keyring)
+
+    with EncryptedLedger(path, provider) as ledger:
+        ledger.append("evt_1", {"value": 1})
+        store = ledger._record_store_required()
+        assert isinstance(store, KeyringRecordKeyStore)
+        assert store.profile is RecordKeyStoreProfile.OS_KEYRING
+
+    with EncryptedLedger(path, provider) as reopened:
+        record = reopened.read("evt_1")
+
+    assert record is not None
+    assert record.payload == {"value": 1}
+    assert path.with_suffix(path.suffix + ".record-keys").is_dir()
+    assert not path.with_suffix(path.suffix + ".record-keys.json").exists()
+
+
+def test_os_keyring_master_and_record_keys_share_one_captured_backend(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    captured_backend = MemoryKeyringBackend()
+    alternate_backend = AlternateMemoryKeyringBackend()
+    provider = _keyring_provider_with_master(captured_backend)
+    keyring_module = FlappingMemoryKeyringModule(
+        captured_backend,
+        alternate_backend,
+    )
+    monkeypatch.setitem(sys.modules, "keyring", keyring_module)
+
+    with EncryptedLedger(path, provider) as ledger:
+        ledger.append("evt_1", {"value": 1})
+
+    assert keyring_module.calls == 1
+    assert captured_backend.credentials
+    assert alternate_backend.credentials == {}
+
+
+def test_os_keyring_capability_failure_precedes_provider_or_disk_mutation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setitem(sys.modules, "keyring", None)
+    path = tmp_path / "memory.sqlite3"
+    ledger = EncryptedLedger(path, KeyringKeyProvider("aluclu-test", "owner"))
+
+    with pytest.raises(LedgerCapabilityUnavailable):
+        ledger.unlock()
+
+    assert list(tmp_path.iterdir()) == []
+
+
 def test_os_keyring_scope_fails_before_provider_or_persistence_mutation(
     tmp_path: Path,
 ) -> None:
@@ -505,6 +643,132 @@ def test_os_keyring_scope_fails_before_provider_or_persistence_mutation(
         ledger.unlock()
 
     assert list(tmp_path.iterdir()) == []
+
+
+def test_os_keyring_bootstrap_marker_binds_captured_store_backend(
+    tmp_path: Path,
+    memory_keyring: MemoryKeyringBackend,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class StopAfterMarker(Exception):
+        pass
+
+    def stop_after_marker(boundary: str) -> None:
+        if boundary == "after_ledger_bootstrap_marker":
+            raise StopAfterMarker
+
+    path = tmp_path / "memory.sqlite3"
+    provider = _keyring_provider_with_master(memory_keyring)
+    pending = path.with_suffix(path.suffix + ".bootstrap.pending.json")
+
+    with pytest.raises(StopAfterMarker):
+        EncryptedLedger(
+            path,
+            provider,
+            _fault_injector=stop_after_marker,
+        ).unlock()
+    marker_before = pending.read_bytes()
+
+    alternate_backend = AlternateMemoryKeyringBackend()
+    alternate_backend.credentials.update(memory_keyring.credentials)
+    monkeypatch.setitem(sys.modules, "keyring", MemoryKeyringModule(alternate_backend))
+
+    with pytest.raises(LedgerIntegrityError, match="binding changed"):
+        EncryptedLedger(path, provider).unlock()
+
+    assert pending.read_bytes() == marker_before
+    assert not path.exists()
+
+
+def test_explicit_keyring_store_must_match_provider_binding(
+    tmp_path: Path,
+    memory_keyring: MemoryKeyringBackend,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    store = KeyringRecordKeyStore(
+        path.with_suffix(path.suffix + ".record-keys"),
+        b"s" * 32,
+        ledger_id="ledger-1",
+        service="aluclu-test",
+        username_prefix="owner",
+        database_path=path,
+    )
+    memory_keyring.set_password(
+        "aluclu-test",
+        "other-owner",
+        base64.b64encode(MASTER_KEY).decode("ascii"),
+    )
+
+    with pytest.raises(LedgerIntegrityError, match="binding changed"):
+        EncryptedLedger(
+            path,
+            KeyringKeyProvider("aluclu-test", "other-owner"),
+            record_key_store=store,
+        ).unlock()
+
+    assert not path.exists()
+    assert not path.with_suffix(path.suffix + ".bootstrap.pending.json").exists()
+
+
+def test_explicit_keyring_store_with_matching_binding_opens(
+    tmp_path: Path,
+    memory_keyring: MemoryKeyringBackend,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    provider = _keyring_provider_with_master(memory_keyring)
+    store = KeyringRecordKeyStore(
+        path.with_suffix(path.suffix + ".record-keys"),
+        b"s" * 32,
+        ledger_id="ledger-1",
+        service="aluclu-test",
+        username_prefix="owner",
+        database_path=path,
+    )
+
+    with EncryptedLedger(path, provider, record_key_store=store) as ledger:
+        ledger.append("evt_1", {"value": 1})
+
+    with EncryptedLedger(path, provider, record_key_store=store) as reopened:
+        record = reopened.read("evt_1")
+
+    assert record is not None
+    assert record.payload == {"value": 1}
+
+
+def test_explicit_keyring_store_still_preflights_provider_backend(
+    tmp_path: Path,
+    memory_keyring: MemoryKeyringBackend,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    store_root = path.with_suffix(path.suffix + ".record-keys")
+    provider = _keyring_provider_with_master(memory_keyring)
+    store = KeyringRecordKeyStore(
+        store_root,
+        b"s" * 32,
+        ledger_id="ledger-1",
+        service="aluclu-test",
+        username_prefix="owner",
+        database_path=path,
+    )
+    store_before = {
+        store_path.relative_to(store_root): store_path.read_bytes()
+        for store_path in store_root.rglob("*")
+        if store_path.is_file()
+    }
+    monkeypatch.setitem(sys.modules, "keyring", None)
+
+    with pytest.raises(LedgerCapabilityUnavailable):
+        EncryptedLedger(path, provider, record_key_store=store).unlock()
+
+    store_after = {
+        store_path.relative_to(store_root): store_path.read_bytes()
+        for store_path in store_root.rglob("*")
+        if store_path.is_file()
+    }
+    assert store_after == store_before
+    assert not path.exists()
+    assert not path.with_suffix(path.suffix + ".bootstrap.pending.json").exists()
 
 
 @pytest.mark.parametrize("legacy_kind", ["monolithic", "file_at_directory_root"])

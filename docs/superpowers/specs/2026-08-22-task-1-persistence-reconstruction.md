@@ -46,7 +46,7 @@ Build a Python 3.10+ local lifetime ledger that:
 
 - Python: `>=3.10`.
 - Runtime dependencies added by Task 1: `cryptography>=43`.
-- Optional OS-vault integration: `keyring>=25`; importing ALUCLU must not
+- Optional OS-vault integration: `keyring>=25.7,<26`; importing ALUCLU must not
   require this extra.
 - SQLite transaction control uses `isolation_level=None` plus explicit
   `BEGIN`, `BEGIN IMMEDIATE`, `COMMIT`, and `ROLLBACK`; it does not use the
@@ -417,15 +417,24 @@ class RecordKeyReference:
     record_hash: str | None
 
 
+class RecordKeyStoreProfile(str, Enum):
+    FILE_COMPAT = "file-compat"
+    DIRECTORY = "directory"
+    OS_KEYRING = "os-keyring"
+
+
 class RecordKeyStore(Protocol):
     @property
     def ledger_id(self) -> str: ...
     @property
     def revision(self) -> int: ...
+    @property
+    def profile(self) -> RecordKeyStoreProfile: ...
     def put_pending(self, event_id: str, key: bytes) -> RecordKeyReference: ...
     def get(self, event_id: str) -> bytes | None: ...
     def reference(self, event_id: str) -> RecordKeyReference | None: ...
     def mark_committed(self, event_id: str, record_hash: str) -> RecordKeyReference: ...
+    def discard_pending(self, event_id: str) -> bool: ...
     def shred(self, event_id: str, record_hash: str) -> bool: ...
     def is_tombstoned(self, event_id: str) -> bool: ...
     def iter_references(self) -> Iterator[RecordKeyReference]: ...
@@ -472,12 +481,14 @@ def create_record_key_store(
     key_provider: KeyProvider,
     *,
     ledger_id: str,
+    integrity_key: bytes,
     create: bool,
 ) -> RecordKeyStore: ...
 ```
 
-`RecordKeyState`, `RecordKeyReference`, `RecordKeyStore`, all three concrete
-stores, and `create_record_key_store` are exported from `aluclu.cognition`.
+`RecordKeyState`, `RecordKeyReference`, `RecordKeyStoreProfile`,
+`RecordKeyStore`, all three concrete stores, and `create_record_key_store` are
+exported from `aluclu.cognition`.
 
 Rules:
 
@@ -494,10 +505,19 @@ Rules:
 - `FileRecordKeyStore` remains an explicit compatibility/test backend.
   `DirectoryRecordKeyStore` is the default for `STATIC_TEST_KEY` and
   `LOCAL_FILE_KEY` ledgers.
-- `OS_KEYRING` defaults to `KeyringRecordKeyStore`. Passing an explicit store
-  overrides factory selection only after its identity, ledger binding, and
-  security scope verify. There is no silent fallback from keyring storage to a
-  file-backed DEK store.
+- `FileRecordKeyStore.profile` is `FILE_COMPAT`;
+  `DirectoryRecordKeyStore.profile` is `DIRECTORY`;
+  `KeyringRecordKeyStore.profile` is `OS_KEYRING`.
+- `OS_KEYRING` defaults to `KeyringRecordKeyStore`. Static and local-file
+  master-key scopes accept only `FILE_COMPAT` or `DIRECTORY` stores.
+  OS-keyring master-key scope accepts only `OS_KEYRING` stores. Passing an
+  explicit store overrides factory selection only after its ledger ID matches,
+  `verify_integrity()` proves its authenticated identity, and its profile is
+  compatible with the provider security scope. Keyring store binding must also
+  match the provider namespace and canonical database path. Legacy
+  `FILE_COMPAT` and `DIRECTORY` stores are not required to expose or match the
+  default provider/database `store_binding` unless they implement it. There is
+  no silent fallback from keyring storage to a file-backed DEK store.
 - Unknown monolithic or schema-v1 state is not silently converted.
 
 ## DirectoryRecordKeyStore layout and commit protocol
@@ -543,19 +563,108 @@ entry upper bound.
 The keyring profile uses the same authenticated identity, event/tombstone
 metadata, prepare record, revision, and fanout layout as the directory store,
 but no record DEK or wrapped record DEK is written to a regular file. Credential
-usernames are derived from `username_prefix`, ledger ID, purpose, and the HMAC
-event token. In addition to one credential per live event, one fixed staging
-credential and one fixed authenticated store-head credential exist.
+usernames are fixed-size strings derived from `username_prefix`, ledger ID,
+purpose, and the HMAC event token; raw event IDs and unbounded caller strings
+never enter credential names. In addition to one credential per live event, one
+fixed staging credential and one fixed authenticated store-head credential
+exist.
+
+Caller-provided keyring `service`, master-key `username`, and record-store
+`username_prefix` are one portable canonical component grammar: 1–191 lowercase
+ASCII bytes, `[a-z0-9._-]`, with an alphanumeric first and last byte. Inputs are
+rejected rather than normalized before backend capture, probe, or disk mutation.
+This removes Windows case-insensitive versus Secret Service case-sensitive
+namespace aliases and reserves `:`/`@` separators for generated credential
+names.
+
+Credential values use the exact versioned ASCII transport
+`aluclu-keyring-v1:<canonical-base64>`. The decoded value is an authenticated
+canonical JSON envelope. Strict decode rejects an unknown version, non-ASCII,
+noncanonical base64, or a value whose UTF-16LE representation exceeds Windows'
+2,560-byte generic credential-blob boundary. Raw Unicode ledger IDs and root
+names remain supported: credential envelopes carry a fixed SHA-256
+`identity_binding` over ledger ID, root name, store binding, store ID, and schema
+version instead of repeating those unbounded UTF-8 strings. The outer MAC key is
+itself derived from the same authenticated store identity.
+
+Before publishing a new keyring store root, the factory derives an exact
+pre-creation `store_binding` from:
+
+- keyring backend ID;
+- configured service;
+- a bounded namespace hash derived from the configured username prefix and
+  canonical database path.
+
+The pre-creation binding explicitly excludes `store_id`, because `store_id`
+does not exist until the store root is initialized. After initialization,
+`store_id` is authenticated inside the identity for compatibility with existing
+store checks, while `store_binding` remains the cross-resource compatibility
+key used by the ledger factory and explicit-store override path.
 
 At create/open, the backend is imported lazily and must pass an isolated
-set/get/delete round trip. Missing packages, unusable or insecure backends,
-unsupported deletion, backend exceptions, quota errors, or an unexpected
-credential value raise `LedgerCapabilityUnavailable` or
-`LedgerIntegrityError`; they never select the directory backend instead.
+set/get/delete round trip before persistence mutation. The probe uses only the
+pre-creation namespace and does not create or modify any ledger database,
+anchor, key directory, event metadata, or head. If the backend lies or fails
+during deletion, a non-ledger inert probe credential may remain, but it is never
+part of a valid store namespace and cannot satisfy recovery. Missing packages,
+unusable or insecure backends, chainer backends, unsupported deletion, backend
+exceptions, quota errors, or an unexpected credential value raise
+`LedgerCapabilityUnavailable` or `LedgerIntegrityError`; they never select the
+directory backend instead.
+
+One concrete backend is captured for the complete ledger unlock inside one
+immutable keyring-store plan. The plan validates and retains the concrete
+backend identity, resolved database/store paths, service, namespace hash, and
+derived `store_binding` as one invariant. After the probe succeeds, master-key
+read/create is serialized by `<database>.lock` and is executed through the
+plan's captured backend; `KeyringRecordKeyStore` is opened from that same plan,
+and ledger binding checks consume the same plan value. A second process-global
+backend lookup is forbidden on this path. Consequently, concurrent creation
+produces exactly one master credential, while backend reconfiguration cannot
+split master and record keys across different vaults. Reopen through a backend
+with a different concrete identity fails closed without disk or vault mutation.
+
+New keyring-store initialization is a crash-forward protocol:
+
+```text
+build sibling root containing:
+  authenticated identity
+  authenticated disk head.json at revision 0
+  authenticated init-intent with store_binding
+pre-encode and size-check the revision-0 keyring witness
+fsync sibling root and containing directories
+atomically publish sibling root as the store root
+write/verify keyring rev0 head witness
+delete init-intent
+fsync containing directories
+```
+
+Recovery accepts only an authenticated init intent whose path, provider scope,
+backend ID, service, namespace hash, and create/open mode exactly match the
+current factory inputs. Only `create=True` plus a valid init intent may repair
+a missing revision-0 keyring witness. With a matching intent, recovery moves
+forward from a published root to the revision-0 keyring witness and final
+cleanup. Without a matching intent, a partial root, partial witness, or
+conflicting namespace fails closed and is not repaired or deleted.
+Every regular state write is rejected before I/O when its encoded envelope is
+larger than the 64 KiB state-reader boundary. Third-party backend identities are
+also bounded before probe; a backend or path that would still make the init
+intent unreadable cannot publish a store root.
+
+The disk head and keyring head are a pair. At rest they must authenticate the
+same store ID, store binding, revision, member accumulator, and head digest.
+Without `prepare.json`, the disk and keyring heads must be exactly equal:
+keyring ahead is rollback evidence, disk ahead is integrity failure, and any
+other mismatch is integrity failure. With an exact authenticated prepare record,
+only head pairs `(E,E)`, `(D,E)`, and `(D,D)` move forward, where `E` is the
+expected old head and `D` is the prepared destination head. `(E,D)` is always
+rollback evidence. Any other mismatch, foreign store ID, or foreign binding
+fails closed.
 
 Append mutation order is:
 
 ```text
+pre-encode and size-check the destination keyring head witness
 write DEK to fixed staging credential
 write+fsync staged metadata containing only the DEK digest
 write+fsync authenticated prepare.json               # commit intent
@@ -576,6 +685,15 @@ credential can satisfy an append prepare, recovery fails closed; it never
 recreates a missing DEK. A keyring head ahead of disk metadata is rollback
 evidence. Rolling back the database, disk metadata/anchor, and OS keyring head
 together remains outside the stated threat model.
+
+Operation recovery table:
+
+| Operation | Before authenticated prepare | At/after authenticated prepare |
+| --- | --- | --- |
+| `put_pending` | leave old state and clean only exact staging artifacts | write/verify final event credential, event metadata, disk head, keyring head, then cleanup |
+| `mark_committed` | leave old state and clean only exact staging artifacts | validate the existing credential digest, bind exact record hash, advance both heads, then cleanup |
+| `discard_pending` | leave old state and clean only exact staging artifacts | delete the exact pending credential/event metadata, advance both heads, then cleanup |
+| `shred` | leave old state and clean only exact staging artifacts | delete exact final credential without recreating it, write tombstone metadata, advance both heads, then cleanup |
 
 ## Ledger operation order
 
