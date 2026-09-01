@@ -401,7 +401,12 @@ files named by an authenticated marker may be removed.
 
 ## External key-state contract
 
-`RecordKeyStore` exposes atomic state transitions:
+`RecordKeyStore` exposes atomic state transitions. Every state-changing atomic
+transition advances the nonnegative `revision` by exactly one; idempotent and
+no-op calls leave it unchanged. Consequently, a successful append advances the
+store twice (`put_pending` then `mark_committed`), while a successful shred
+advances it once. `EncryptedLedger` binds these exact transitions to the
+verification certificate that authorized them.
 
 ```python
 class RecordKeyState(str, Enum):
@@ -423,6 +428,13 @@ class RecordKeyStoreProfile(str, Enum):
     OS_KEYRING = "os-keyring"
 
 
+@dataclass(frozen=True)
+class RecordKeyStoreSnapshot:
+    revision: int
+    references: tuple[RecordKeyReference, ...]
+    tombstones: tuple[tuple[str, str], ...]
+
+
 class RecordKeyStore(Protocol):
     @property
     def ledger_id(self) -> str: ...
@@ -437,7 +449,10 @@ class RecordKeyStore(Protocol):
     def discard_pending(self, event_id: str) -> bool: ...
     def shred(self, event_id: str, record_hash: str) -> bool: ...
     def is_tombstoned(self, event_id: str) -> bool: ...
+    def tombstone_hash(self, event_id: str) -> str | None: ...
+    def verified_snapshot(self) -> RecordKeyStoreSnapshot: ...
     def iter_references(self) -> Iterator[RecordKeyReference]: ...
+    def iter_tombstones(self) -> Iterator[tuple[str, str]]: ...
     def verify_integrity(self) -> None: ...
 
 
@@ -751,12 +766,24 @@ otherwise identical.
 - A changed `data_version`, anchor digest, key-store revision, database/WAL
   fingerprint, uncertain crash, or failed clean-session close invalidates the
   certificate and forces a full verification.
+- If an operation and its rollback, pending-key compensation, cursor release,
+  connection close, or lock release both fail, the operation failure remains
+  the public exception and cleanup failure is retained as its explicit cause.
+  Remaining cleanup is still attempted, the certificate is invalidated, and an
+  uncertain session cannot be reused. Context-manager cleanup likewise never
+  replaces the exception raised by the managed body.
 - Explicit `verify_integrity()` always performs a full streaming verification.
 - Normal same-object operations verify authenticated head/tail plus the
   certificate inputs; they do not reread lifetime history.
 - A verified session holds the ledger's process and cross-process locks for
   its lifetime. Public convenience calls create a short session but reuse the
   object's valid certificate.
+- That lifetime lock is an intentional fail-closed serialization boundary, not
+  a claim of concurrent throughput. The scale artifact must measure a
+  controlled cross-process writer waiting behind a live verified session,
+  including lock-hold time, observed writer wait, and release-to-completion
+  time; a reviewer may not infer contention cost from the single-process append
+  curve alone.
 - Cursors fetch at most `batch_size` rows, snapshot the verified head, and
   yield only live records at or before that head. `batch_size` is 1–4096.
 
@@ -822,6 +849,13 @@ loss, a duplicate history event, or resurrection after shredding.
   The result records that `.venv313` uses system site packages and that the
   installed Torch 2.6.0 is below the repository's declared `torch>=2.10`
   constraint; the persistence measurement itself does not use Torch or GPU.
+- The same artifact includes a controlled contention probe. A second process
+  signals before attempting a write while the parent holds a verified session;
+  it must remain blocked during a measured hold interval, then complete within
+  a bounded timeout after release. The JSON records hold, total wait, and
+  release-to-completion seconds plus whether the writer escaped early. These
+  facts are reviewed as a Task 8 tradeoff and are never hidden behind the
+  single-process success flag.
 - For the fixed 8,192 × 512-byte gate: exactly 8,192 appends and one final full
   verification succeed; `full_verifications <= 2`; fourth/first-quartile
   per-append time and second/first-half per-append time are each `<= 1.75`;

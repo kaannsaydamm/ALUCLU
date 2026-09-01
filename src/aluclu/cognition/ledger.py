@@ -13,7 +13,7 @@ import time
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, NoReturn, cast
 
 from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.primitives import hashes
@@ -33,6 +33,7 @@ from .contracts import (
     KeyProvider,
     LedgerCapabilityUnavailable,
     LedgerConflictError,
+    LedgerCursorCheckpoint,
     LedgerIntegrityError,
     LedgerKeyError,
     LedgerLifecycleError,
@@ -40,6 +41,7 @@ from .contracts import (
     LedgerRecord,
     LedgerRollbackError,
     LedgerSecurityScope,
+    LedgerSnapshotChanged,
     LedgerVerificationStats,
     PersistenceError,
     UnsafePathError,
@@ -67,6 +69,11 @@ SCHEMA_VERSION = 2
 ZERO_HASH = b"\0" * 32
 _BOOTSTRAP_VERSION = 1
 _BOOTSTRAP_MAX_BYTES = 16 * 1024
+_ANCHOR_MAX_BYTES = 16 * 1024
+_VERIFICATION_BATCH_SIZE = 64
+_METADATA_BATCH_SIZE = 64
+_ACTIVE_LEDGER_PATHS = threading.local()
+_THREAD_OWNERSHIP = threading.local()
 _HEX_DIGITS = frozenset("0123456789abcdef")
 _METADATA_KEYS = {
     "schema_version",
@@ -155,11 +162,18 @@ class _LedgerState:
     metadata: dict[str, bytes]
     records: dict[str, tuple[int, bytes]]
     tombstones: dict[str, tuple[int, bytes]]
-    live_rows: dict[str, HistoryRow]
     append_hashes: dict[str, bytes]
     key_references: dict[str, str]
     head_sequence: int
     head_hash: bytes
+
+
+@dataclass(frozen=True)
+class _FullVerification:
+    state: _LedgerState
+    anchor_lagging: bool
+    store_revision: int
+    data_version: int
 
 
 @dataclass(frozen=True)
@@ -172,6 +186,39 @@ class _LedgerBootstrap:
     store_mode: str
     store_profile: RecordKeyStoreProfile
     store_binding: str | None
+
+
+@dataclass(frozen=True)
+class _FileFingerprint:
+    exists: bool
+    mode: int = 0
+    device: int = 0
+    inode: int = 0
+    size: int = 0
+    modified_ns: int = 0
+    changed_ns: int = 0
+
+
+@dataclass(frozen=True)
+class _VerificationCertificate:
+    ledger_id: str
+    head_sequence: int
+    head_hash: bytes
+    anchor_digest: bytes
+    store_revision: int
+    data_version: int
+    database_fingerprint: _FileFingerprint
+    wal_fingerprint: _FileFingerprint
+
+
+@dataclass(frozen=True)
+class _CertificateExpectation:
+    ledger_id: str
+    head_sequence: int
+    head_hash: bytes
+    anchor_digest: bytes
+    store_revision: int
+    data_version: int
 
 
 class EncryptedLedger:
@@ -213,13 +260,21 @@ class EncryptedLedger:
         self._open = False
         self._object_lock = threading.RLock()
         self._full_verifications = 0
+        self._delta_verifications = 0
+        self._verification_certificate: _VerificationCertificate | None = None
+        self._active_sessions = 0
 
     def __enter__(self) -> EncryptedLedger:
         self.unlock()
         return self
 
     def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
-        self.close()
+        try:
+            self.close()
+        except BaseException as cleanup_failure:
+            if isinstance(exc, BaseException):
+                _raise_primary_from_cleanup(exc, cleanup_failure)
+            raise
 
     @property
     def ledger_id(self) -> str:
@@ -228,157 +283,166 @@ class EncryptedLedger:
 
     @property
     def verification_stats(self) -> LedgerVerificationStats:
-        return LedgerVerificationStats(
-            full_verifications=self._full_verifications,
-            delta_verifications=0,
-        )
+        with _primary_preserving_context(self._object_lock):
+            return LedgerVerificationStats(
+                full_verifications=self._full_verifications,
+                delta_verifications=self._delta_verifications,
+            )
 
     def unlock(self) -> None:
-        with self._object_lock:
+        with _primary_preserving_context(self._object_lock):
             if self._open:
                 return
-            self._preflight_record_store()
+            _mark_active_ledger_path(self._lock_path)
             try:
-                resolve_ledger_path(self._path)
-                with exclusive_file_lock(self._lock_path):
-                    master_key = self._master_key()
-                    bootstrap_phase = self._bootstrap_phase()
-                    if bootstrap_phase is not None:
-                        self._resume_bootstrap(master_key, phase=bootstrap_phase)
-                    elif self._path.exists():
-                        self._unlock_existing(master_key)
-                    else:
-                        self._unlock_new(master_key)
-                    self._open = True
-            except Exception:
-                self._close_connection()
-                self._clear_secrets()
+                try:
+                    self._preflight_record_store()
+                    resolve_ledger_path(self._path)
+                    with _primary_preserving_exclusive_file_lock(self._lock_path):
+                        master_key = self._master_key()
+                        bootstrap_phase = self._bootstrap_phase()
+                        if bootstrap_phase is not None:
+                            verification = self._resume_bootstrap(
+                                master_key,
+                                phase=bootstrap_phase,
+                            )
+                        elif self._path.exists():
+                            verification = self._unlock_existing(master_key)
+                        else:
+                            verification = self._unlock_new(master_key)
+                        self._inject_fault(
+                            "after_full_verification_commit_before_certificate"
+                        )
+                        expectation = self._advance_verified_anchor(verification)
+                        self._refresh_verification_certificate_locked(
+                            expected=expectation,
+                        )
+                        self._open = True
+                except BaseException as primary:
+                    self._invalidate_verification_certificate()
+                    self._record_store = None
+                    self._open = False
+                    cleanup_failure: BaseException | None = None
+                    try:
+                        self._close_connection()
+                    except BaseException as cleanup_exc:
+                        cleanup_failure = cleanup_exc
+                    finally:
+                        self._clear_secrets()
+                    if cleanup_failure is not None:
+                        _raise_primary_from_cleanup(primary, cleanup_failure)
+                    raise
+            except BaseException as primary:
+                try:
+                    _unmark_active_ledger_path(self._lock_path)
+                except BaseException as cleanup_failure:
+                    _raise_primary_from_cleanup(primary, cleanup_failure)
                 raise
+            else:
+                try:
+                    _unmark_active_ledger_path(self._lock_path)
+                except BaseException as primary:
+                    self._invalidate_verification_certificate()
+                    self._record_store = None
+                    self._open = False
+                    cleanup_failure: BaseException | None = None
+                    try:
+                        self._close_connection()
+                    except BaseException as cleanup_exc:
+                        cleanup_failure = cleanup_exc
+                    finally:
+                        self._clear_secrets()
+                    if cleanup_failure is not None:
+                        _raise_primary_from_cleanup(primary, cleanup_failure)
+                    raise
 
     def close(self) -> None:
-        with self._object_lock:
-            self._close_connection()
-            self._record_store = None
-            self._clear_secrets()
+        with _primary_preserving_context(self._object_lock):
+            if self._active_sessions:
+                raise LedgerLifecycleError(
+                    "ledger cannot close while a verified session is active"
+                )
+            self._invalidate_verification_certificate()
             self._open = False
+            try:
+                self._close_connection()
+            finally:
+                self._record_store = None
+                self._clear_secrets()
+
+    def verified_session(self) -> VerifiedLedgerSession:
+        self._require_open()
+        return VerifiedLedgerSession(self)
 
     def append(self, event_id: str, payload: JsonValue) -> AppendOutcome:
-        return self._append(event_id, payload, idempotent=False)
+        with self.verified_session() as session:
+            return session.append(event_id, payload)
 
     def append_once(self, event_id: str, payload: JsonValue) -> AppendOutcome:
-        return self._append(event_id, payload, idempotent=True)
+        with self.verified_session() as session:
+            return session.append_once(event_id, payload)
 
     def read(self, event_id: str) -> LedgerRecord | None:
-        with self._object_lock:
-            self._require_open()
-            safe_event_id = validate_event_id(event_id)
-            with exclusive_file_lock(self._lock_path):
-                connection = self._connection_required()
-                connection.execute("BEGIN IMMEDIATE")
-                try:
-                    verification = self._verify_integrity_locked()
-                    record = self._read_record_locked(safe_event_id)
-                    connection.execute("COMMIT")
-                except Exception:
-                    if connection.in_transaction:
-                        connection.execute("ROLLBACK")
-                    raise
-                self._advance_verified_anchor(verification)
-                return record
+        with self.verified_session() as session:
+            return session.read(event_id)
 
     def shred(self, event_id: str) -> bool:
-        with self._object_lock:
-            self._require_open()
-            safe_event_id = validate_event_id(event_id)
-            with exclusive_file_lock(self._lock_path):
-                connection = self._connection_required()
-                store = self._record_store_required()
-                connection.execute("BEGIN IMMEDIATE")
-                try:
-                    verification = self._verify_integrity_locked()
-                    lineage = self._lineage(safe_event_id)
-                    if lineage is None or lineage[0] == "tombstone":
-                        connection.execute("COMMIT")
-                        self._advance_verified_anchor(verification)
-                        return False
-
-                    row = verification[0].live_rows.get(safe_event_id)
-                    if row is None:
-                        raise LedgerIntegrityError("live record history is missing")
-                    append_hash = row[8]
-                    if not store.shred(safe_event_id, append_hash.hex()):
-                        raise LedgerIntegrityError("record key could not be shredded")
-                    self._inject_fault("after_store_tombstone_before_sqlite_shred")
-                    sequence, record_hash = self._append_shred_history_locked(
-                        safe_event_id,
-                        append_hash,
-                    )
-                    connection.execute("COMMIT")
-                except Exception:
-                    if connection.in_transaction:
-                        connection.execute("ROLLBACK")
-                    raise
-                self._inject_fault("after_sqlite_shred_before_anchor")
-                self._write_anchor(sequence, record_hash)
-                return True
+        with self.verified_session() as session:
+            return session.shred(event_id)
 
     def is_tombstoned(self, event_id: str) -> bool:
-        with self._object_lock:
-            self._require_open()
-            safe_event_id = validate_event_id(event_id)
-            with exclusive_file_lock(self._lock_path):
-                connection = self._connection_required()
-                connection.execute("BEGIN IMMEDIATE")
-                try:
-                    verification = self._verify_integrity_locked()
-                    found = self._lineage(safe_event_id)
-                    result = found is not None and found[0] == "tombstone"
-                    connection.execute("COMMIT")
-                except Exception:
-                    if connection.in_transaction:
-                        connection.execute("ROLLBACK")
-                    raise
-                self._advance_verified_anchor(verification)
-                return result
+        with self.verified_session() as session:
+            return session.is_tombstoned(event_id)
 
     def event_count(self) -> int:
-        with self._object_lock:
-            self._require_open()
-            with exclusive_file_lock(self._lock_path):
-                connection = self._connection_required()
-                connection.execute("BEGIN IMMEDIATE")
-                try:
-                    verification = self._verify_integrity_locked()
-                    count = cast(
-                        int,
-                        connection.execute("SELECT COUNT(*) FROM history").fetchone()[
-                            0
-                        ],
-                    )
-                    connection.execute("COMMIT")
-                except Exception:
-                    if connection.in_transaction:
-                        connection.execute("ROLLBACK")
-                    raise
-                self._advance_verified_anchor(verification)
-                return count
+        with self.verified_session() as session:
+            return session.event_count()
 
     def verify_integrity(self) -> None:
-        with self._object_lock:
+        with _primary_preserving_context(self._object_lock):
             self._require_open()
-            with exclusive_file_lock(self._lock_path):
-                connection = self._connection_required()
-                connection.execute("BEGIN IMMEDIATE")
+            _mark_active_ledger_path(self._lock_path)
+            try:
+                with _primary_preserving_exclusive_file_lock(self._lock_path):
+                    connection = self._connection_required()
+                    try:
+                        connection.execute("BEGIN IMMEDIATE")
+                        verification = self._verify_integrity_locked()
+                        connection.execute("COMMIT")
+                    except BaseException as primary:
+                        cleanup_failure = self._rollback_cleanup_failure_locked(
+                            connection
+                        )
+                        self._invalidate_verification_certificate()
+                        if cleanup_failure is not None:
+                            _raise_primary_from_cleanup(primary, cleanup_failure)
+                        raise
+                    try:
+                        self._inject_fault(
+                            "after_full_verification_commit_before_certificate"
+                        )
+                        expectation = self._advance_verified_anchor(verification)
+                        self._refresh_verification_certificate_locked(
+                            expected=expectation,
+                        )
+                    except BaseException:
+                        self._invalidate_verification_certificate()
+                        raise
+            except BaseException as primary:
+                self._invalidate_verification_certificate()
                 try:
-                    verification = self._verify_integrity_locked()
-                    connection.execute("COMMIT")
-                except Exception:
-                    if connection.in_transaction:
-                        connection.execute("ROLLBACK")
+                    _unmark_active_ledger_path(self._lock_path)
+                except BaseException as cleanup_failure:
+                    _raise_primary_from_cleanup(primary, cleanup_failure)
+                raise
+            else:
+                try:
+                    _unmark_active_ledger_path(self._lock_path)
+                except BaseException:
+                    self._invalidate_verification_certificate()
                     raise
-                self._advance_verified_anchor(verification)
 
-    def _unlock_new(self, master_key: bytes) -> None:
+    def _unlock_new(self, master_key: bytes) -> _FullVerification:
         if self._anchor_path.exists() or self._record_state_exists():
             raise LedgerIntegrityError("new ledger has pre-existing sidecar state")
         if self._provided_store is not None:
@@ -404,9 +468,14 @@ class EncryptedLedger:
             bootstrap, self._bootstrap_pending_path, master_key
         )
         self._inject_fault("after_ledger_bootstrap_marker")
-        self._resume_bootstrap(master_key, phase="pending")
+        return self._resume_bootstrap(master_key, phase="pending")
 
-    def _resume_bootstrap(self, master_key: bytes, *, phase: str) -> None:
+    def _resume_bootstrap(
+        self,
+        master_key: bytes,
+        *,
+        phase: str,
+    ) -> _FullVerification:
         marker_path = (
             self._bootstrap_pending_path
             if phase == "pending"
@@ -487,9 +556,18 @@ class EncryptedLedger:
             self._finalize_bootstrap_key_check(connection, bootstrap_key_check)
             self._inject_fault("after_ledger_bootstrap_key_check")
 
-        self._verify_integrity_locked()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            verification = self._verify_integrity_locked()
+            connection.execute("COMMIT")
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
         self._inject_fault("after_ledger_bootstrap_verified")
         durable_unlink(self._bootstrap_complete_path)
+        return verification
 
     def _build_bootstrap_database(
         self,
@@ -532,11 +610,16 @@ class EncryptedLedger:
                 raise LedgerCapabilityUnavailable(
                     "bootstrap SQLite journal cannot be made self-contained"
                 )
-        except Exception:
-            if connection.in_transaction:
-                connection.execute("ROLLBACK")
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            try:
+                connection.close()
+            except BaseException as close_exc:
+                cleanup_failure = cleanup_failure or close_exc
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
             raise
-        finally:
+        else:
             connection.close()
         self._inject_fault("after_ledger_bootstrap_staging_database")
 
@@ -548,7 +631,13 @@ class EncryptedLedger:
                 bootstrap_key_check,
                 phase="pending",
             )
-        finally:
+        except BaseException as primary:
+            try:
+                verification.close()
+            except BaseException as cleanup_failure:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+        else:
             verification.close()
         atomic_publish_path(staging, self._path)
         self._cleanup_bootstrap_scratch(bootstrap)
@@ -620,9 +709,10 @@ class EncryptedLedger:
             if cursor.rowcount != 1:
                 raise LedgerIntegrityError("bootstrap key check changed unexpectedly")
             connection.execute("COMMIT")
-        except Exception:
-            if connection.in_transaction:
-                connection.execute("ROLLBACK")
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
             raise
 
     def _bootstrap_phase(self) -> str | None:
@@ -859,7 +949,7 @@ class EncryptedLedger:
                     "ledger bootstrap scratch cannot be cleaned"
                 ) from exc
 
-    def _unlock_existing(self, master_key: bytes) -> None:
+    def _unlock_existing(self, master_key: bytes) -> _FullVerification:
         connection = self._connect(configure=False)
         self._connection = connection
         if (
@@ -888,142 +978,512 @@ class EncryptedLedger:
             raise LedgerKeyError("master key does not match ledger")
         self._configure_connection(connection)
         self._record_store = self._open_record_store(create=False)
-        connection.execute("BEGIN IMMEDIATE")
         try:
+            connection.execute("BEGIN IMMEDIATE")
             verification = self._verify_integrity_locked()
             connection.execute("COMMIT")
-        except Exception:
-            if connection.in_transaction:
-                connection.execute("ROLLBACK")
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
             raise
-        self._advance_verified_anchor(verification)
+        return verification
 
-    def _append(
+    def _append_in_session(
         self,
         event_id: str,
         payload: JsonValue,
         *,
         idempotent: bool,
     ) -> AppendOutcome:
-        with self._object_lock:
-            self._require_open()
-            safe_event_id = validate_event_id(event_id)
-            payload_bytes = canonical_json_bytes(payload)
-            with exclusive_file_lock(self._lock_path):
-                connection = self._connection_required()
-                store = self._record_store_required()
-                connection.execute("BEGIN IMMEDIATE")
-                pending_created = False
-                sqlite_committed = False
-                try:
-                    verification = self._verify_integrity_locked()
-                    existing = self._lineage(safe_event_id)
-                    if existing is not None:
-                        operation = existing[0]
-                        if idempotent and operation == "record":
-                            record = self._read_record_locked(safe_event_id)
-                            if (
-                                record is None
-                                or canonical_json_bytes(record.payload) != payload_bytes
-                            ):
-                                raise LedgerConflictError(
-                                    "event payload conflicts with live record"
-                                )
-                            connection.execute("COMMIT")
-                            sqlite_committed = True
-                            self._advance_verified_anchor(verification)
-                            return AppendOutcome(record=record, created=False)
-                        raise LedgerConflictError("event ID already has ledger lineage")
-
-                    metadata = self._metadata(connection)
-                    sequence = _metadata_int(metadata, "head_sequence") + 1
-                    previous_hash = _metadata_hash(metadata, "head_hash")
-                    created_ns = max(1, time.time_ns())
-                    record_key = secrets.token_bytes(32)
-                    before = store.reference(safe_event_id)
-                    reference = store.put_pending(safe_event_id, record_key)
-                    pending_created = before is None
-                    self._inject_fault("after_pending_key_before_sqlite_insert")
-                    nonce = secrets.token_bytes(12)
-                    aad = self._aad(
-                        operation="append",
-                        sequence=sequence,
-                        event_id=safe_event_id,
-                        key_reference=reference.reference,
-                        previous_hash=previous_hash,
-                        created_ns=created_ns,
-                    )
-                    ciphertext = AESGCM(record_key).encrypt(nonce, payload_bytes, aad)
-                    record_hash = self._history_hash(
-                        sequence=sequence,
-                        operation="append",
-                        event_id=safe_event_id,
-                        key_reference=reference.reference,
-                        nonce=nonce,
-                        ciphertext=ciphertext,
-                        created_ns=created_ns,
-                        previous_hash=previous_hash,
-                    )
-                    connection.execute(
-                        """
-                        INSERT INTO history(
-                            sequence, operation, event_id, key_reference, nonce,
-                            ciphertext, created_ns, previous_hash, record_hash
-                        ) VALUES (?, 'append', ?, ?, ?, ?, ?, ?, ?)
-                        """,
-                        (
-                            sequence,
-                            safe_event_id,
-                            reference.reference,
-                            sqlite3.Binary(nonce),
-                            sqlite3.Binary(ciphertext),
-                            created_ns,
-                            sqlite3.Binary(previous_hash),
-                            sqlite3.Binary(record_hash),
-                        ),
-                    )
-                    connection.execute(
-                        "INSERT INTO records(event_id, history_sequence, record_hash) VALUES (?, ?, ?)",
-                        (safe_event_id, sequence, sqlite3.Binary(record_hash)),
-                    )
-                    self._set_head(connection, sequence, record_hash)
+        safe_event_id = validate_event_id(event_id)
+        payload_bytes = canonical_json_bytes(payload)
+        connection = self._connection_required()
+        store = self._record_store_required()
+        pending_created = False
+        sqlite_committed = False
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            certificate = self._require_current_verification_certificate_locked()
+            existing = self._lineage(safe_event_id)
+            if existing is not None:
+                operation = existing[0]
+                if idempotent and operation == "record":
+                    record = self._read_record_locked(safe_event_id)
+                    if (
+                        record is None
+                        or canonical_json_bytes(record.payload) != payload_bytes
+                    ):
+                        raise LedgerConflictError(
+                            "event payload conflicts with live record"
+                        )
                     connection.execute("COMMIT")
                     sqlite_committed = True
-                    self._inject_fault("after_sqlite_commit_before_key_committed")
-                    store.mark_committed(safe_event_id, record_hash.hex())
-                    self._inject_fault("after_key_committed_before_anchor")
-                    self._write_anchor(sequence, record_hash)
-                    decoded = strict_json_loads(payload_bytes)
-                    return AppendOutcome(
-                        record=LedgerRecord(
-                            sequence=sequence,
-                            event_id=safe_event_id,
-                            payload=decoded,
-                            record_hash=record_hash.hex(),
-                            created_ns=created_ns,
-                        ),
-                        created=True,
-                    )
-                except Exception:
-                    if connection.in_transaction:
-                        connection.execute("ROLLBACK")
-                    if not sqlite_committed and pending_created:
-                        store.discard_pending(safe_event_id)
-                    raise
+                    return AppendOutcome(record=record, created=False)
+                raise LedgerConflictError("event ID already has ledger lineage")
 
-    def _verify_integrity_locked(self) -> tuple[_LedgerState, bool]:
+            metadata = self._metadata(connection)
+            sequence = _metadata_int(metadata, "head_sequence") + 1
+            previous_hash = _metadata_hash(metadata, "head_hash")
+            created_ns = max(1, time.time_ns())
+            record_key = secrets.token_bytes(32)
+            before = store.reference(safe_event_id)
+            reference = store.put_pending(safe_event_id, record_key)
+            pending_created = before is None
+            if not pending_created or store.revision != certificate.store_revision + 1:
+                raise LedgerIntegrityError(
+                    "record key store changed during append prepare"
+                )
+            self._inject_fault("after_pending_key_before_sqlite_insert")
+            nonce = secrets.token_bytes(12)
+            aad = self._aad(
+                operation="append",
+                sequence=sequence,
+                event_id=safe_event_id,
+                key_reference=reference.reference,
+                previous_hash=previous_hash,
+                created_ns=created_ns,
+            )
+            ciphertext = AESGCM(record_key).encrypt(nonce, payload_bytes, aad)
+            record_hash = self._history_hash(
+                sequence=sequence,
+                operation="append",
+                event_id=safe_event_id,
+                key_reference=reference.reference,
+                nonce=nonce,
+                ciphertext=ciphertext,
+                created_ns=created_ns,
+                previous_hash=previous_hash,
+            )
+            connection.execute(
+                """
+                INSERT INTO history(
+                    sequence, operation, event_id, key_reference, nonce,
+                    ciphertext, created_ns, previous_hash, record_hash
+                ) VALUES (?, 'append', ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    sequence,
+                    safe_event_id,
+                    reference.reference,
+                    sqlite3.Binary(nonce),
+                    sqlite3.Binary(ciphertext),
+                    created_ns,
+                    sqlite3.Binary(previous_hash),
+                    sqlite3.Binary(record_hash),
+                ),
+            )
+            connection.execute(
+                "INSERT INTO records(event_id, history_sequence, record_hash) VALUES (?, ?, ?)",
+                (safe_event_id, sequence, sqlite3.Binary(record_hash)),
+            )
+            self._set_head(connection, sequence, record_hash)
+            connection.execute("COMMIT")
+            sqlite_committed = True
+            self._inject_fault("after_sqlite_commit_before_key_committed")
+            store.mark_committed(safe_event_id, record_hash.hex())
+            expected_store_revision = certificate.store_revision + 2
+            if store.revision != expected_store_revision:
+                raise LedgerIntegrityError(
+                    "record key store changed during append commit"
+                )
+            self._inject_fault("after_key_committed_before_anchor")
+            self._write_anchor(sequence, record_hash)
+            self._inject_fault("after_append_anchor_before_certificate")
+            expectation = self._certificate_expectation_for_head_locked(
+                head_sequence=sequence,
+                head_hash=record_hash,
+                store_revision=expected_store_revision,
+                data_version=certificate.data_version,
+            )
+            self._refresh_verification_certificate_locked(
+                expected=expectation,
+            )
+            decoded = strict_json_loads(payload_bytes)
+            return AppendOutcome(
+                record=LedgerRecord(
+                    sequence=sequence,
+                    event_id=safe_event_id,
+                    payload=decoded,
+                    record_hash=record_hash.hex(),
+                    created_ns=created_ns,
+                ),
+                created=True,
+            )
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if not sqlite_committed and pending_created:
+                try:
+                    if not store.discard_pending(safe_event_id):
+                        raise LedgerIntegrityError(
+                            "pending record key cleanup did not remove its entry"
+                        )
+                except BaseException as cleanup_exc:
+                    cleanup_failure = cleanup_failure or cleanup_exc
+                # put_pending() and discard_pending() both advance the store
+                # revision. Even successful compensation therefore makes the
+                # pre-operation certificate stale.
+                self._invalidate_verification_certificate()
+            if cleanup_failure is not None:
+                self._invalidate_verification_certificate()
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def _read_in_session(self, event_id: str) -> LedgerRecord | None:
+        safe_event_id = validate_event_id(event_id)
+        connection = self._connection_required()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            self._require_current_verification_certificate_locked()
+            record = self._read_record_locked(safe_event_id)
+            connection.execute("COMMIT")
+            return record
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def _shred_in_session(self, event_id: str) -> bool:
+        safe_event_id = validate_event_id(event_id)
+        connection = self._connection_required()
+        store = self._record_store_required()
+        store_shredded = False
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            certificate = self._require_current_verification_certificate_locked()
+            lineage = self._lineage(safe_event_id)
+            if lineage is None or lineage[0] == "tombstone":
+                connection.execute("COMMIT")
+                return False
+
+            row = self._live_history_row_locked(safe_event_id)
+            append_hash = row[8]
+            if not store.shred(safe_event_id, append_hash.hex()):
+                raise LedgerIntegrityError("record key could not be shredded")
+            store_shredded = True
+            expected_store_revision = certificate.store_revision + 1
+            if store.revision != expected_store_revision:
+                raise LedgerIntegrityError(
+                    "record key store changed during shred"
+                )
+            self._inject_fault("after_store_tombstone_before_sqlite_shred")
+            sequence, record_hash = self._append_shred_history_locked(
+                safe_event_id,
+                append_hash,
+            )
+            connection.execute("COMMIT")
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if store_shredded:
+                self._invalidate_verification_certificate()
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+        self._inject_fault("after_sqlite_shred_before_anchor")
+        self._write_anchor(sequence, record_hash)
+        self._inject_fault("after_shred_anchor_before_certificate")
+        expectation = self._certificate_expectation_for_head_locked(
+            head_sequence=sequence,
+            head_hash=record_hash,
+            store_revision=expected_store_revision,
+            data_version=certificate.data_version,
+        )
+        self._refresh_verification_certificate_locked(
+            expected=expectation,
+        )
+        return True
+
+    def _is_tombstoned_in_session(self, event_id: str) -> bool:
+        safe_event_id = validate_event_id(event_id)
+        connection = self._connection_required()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            self._require_current_verification_certificate_locked()
+            found = self._lineage(safe_event_id)
+            result = found is not None and found[0] == "tombstone"
+            connection.execute("COMMIT")
+            return result
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def _event_count_in_session(self) -> int:
+        connection = self._connection_required()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            self._require_current_verification_certificate_locked()
+            row = connection.execute("SELECT COUNT(*) FROM history").fetchone()
+            if row is None or type(row[0]) is not int or row[0] < 0:
+                raise LedgerIntegrityError("ledger history count is malformed")
+            count = cast(int, row[0])
+            connection.execute("COMMIT")
+            return count
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def _live_history_row_locked(self, event_id: str) -> HistoryRow:
+        row = (
+            self._connection_required()
+            .execute(
+                """
+            SELECT h.sequence, h.operation, h.event_id, h.key_reference, h.nonce,
+                   h.ciphertext, h.created_ns, h.previous_hash, h.record_hash
+            FROM records AS r JOIN history AS h ON h.sequence = r.history_sequence
+            WHERE r.event_id = ?
+            """,
+                (event_id,),
+            )
+            .fetchone()
+        )
+        if row is None:
+            raise LedgerIntegrityError("live record history is missing")
+        parsed = _history_row(row)
+        if parsed[1] != "append" or parsed[2] != event_id:
+            raise LedgerIntegrityError("live record history does not verify")
+        return parsed
+
+    def _open_verified_session_locked(self) -> None:
+        self._verify_certificate_or_full_locked(count_delta=True)
+
+    def _close_verified_session_locked(self) -> None:
+        self._verify_certificate_or_full_locked(count_delta=False)
+
+    def _verify_certificate_or_full_locked(self, *, count_delta: bool) -> None:
+        connection = self._connection_required()
+        verification: _FullVerification | None = None
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            candidate: _VerificationCertificate | None = None
+            if self._verification_certificate is not None:
+                try:
+                    candidate = self._capture_verification_certificate_locked()
+                except (LedgerIntegrityError, LedgerMigrationRequired):
+                    # A bounded probe is only an optimization. The full verifier
+                    # remains the authority for changed or malformed state.
+                    candidate = None
+            if candidate is not None and _certificates_match(
+                self._verification_certificate,
+                candidate,
+            ):
+                self._verification_certificate = candidate
+                connection.execute("COMMIT")
+                if count_delta:
+                    self._delta_verifications += 1
+                return
+
+            verification = self._verify_integrity_locked()
+            connection.execute("COMMIT")
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            self._invalidate_verification_certificate()
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+        self._inject_fault("after_full_verification_commit_before_certificate")
+        expectation = self._advance_verified_anchor(verification)
+        self._refresh_verification_certificate_locked(
+            expected=expectation,
+        )
+
+    def _refresh_verification_certificate_locked(
+        self,
+        *,
+        expected: _CertificateExpectation | None = None,
+    ) -> None:
+        connection = self._connection_required()
+        started_transaction = not connection.in_transaction
+        try:
+            if started_transaction:
+                connection.execute("BEGIN IMMEDIATE")
+            certificate = self._capture_verification_certificate_locked()
+            if started_transaction:
+                connection.execute("COMMIT")
+        except BaseException as primary:
+            cleanup_failure = (
+                self._rollback_cleanup_failure_locked(connection)
+                if started_transaction
+                else None
+            )
+            self._invalidate_verification_certificate()
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+        if expected is not None and not _certificate_matches_expectation(
+            certificate,
+            expected,
+        ):
+            self._invalidate_verification_certificate()
+            raise LedgerIntegrityError(
+                "ledger state changed before certificate refresh"
+            )
+        self._verification_certificate = certificate
+
+    def _require_current_verification_certificate_locked(
+        self,
+    ) -> _VerificationCertificate:
+        current = self._verification_certificate
+        if current is None:
+            raise LedgerIntegrityError("verified session certificate is unavailable")
+        try:
+            candidate = self._capture_verification_certificate_locked()
+        except BaseException:
+            self._invalidate_verification_certificate()
+            raise
+        if not _certificates_match(current, candidate):
+            self._invalidate_verification_certificate()
+            raise LedgerIntegrityError(
+                "ledger state changed during verified session"
+            )
+        self._verification_certificate = candidate
+        return candidate
+
+    def _capture_verification_certificate_locked(
+        self,
+    ) -> _VerificationCertificate:
+        connection = self._connection_required()
+        store = self._record_store_required()
+
+        data_version_before = _sqlite_data_version(connection)
+        store_revision_before = store.revision
+        database_before = _regular_file_fingerprint(self._path, required=True)
+        wal_path = Path(f"{self._path}-wal")
+        wal_before = _regular_file_fingerprint(wal_path, required=False)
+
+        metadata = self._metadata(connection)
+        try:
+            stored_ledger_id = metadata["ledger_id"].decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise LedgerIntegrityError("ledger identity is not UTF-8") from exc
+        if stored_ledger_id != self._ledger_id:
+            raise LedgerIntegrityError("ledger identity changed")
+        if metadata["identity_root"] != self._identity_root:
+            raise LedgerIntegrityError("ledger identity root changed")
+        if not hmac.compare_digest(
+            metadata["key_check"],
+            cast(bytes, self._expected_key_check),
+        ):
+            raise LedgerKeyError("ledger key check changed")
+
+        head_sequence = _metadata_int(metadata, "head_sequence")
+        head_hash = _metadata_hash(metadata, "head_hash")
+        self._verify_certificate_tail_locked(head_sequence, head_hash)
+        anchor_sequence, anchor_hash, anchor_digest = self._load_anchor_snapshot()
+        if anchor_sequence != head_sequence or not hmac.compare_digest(
+            anchor_hash,
+            head_hash,
+        ):
+            raise LedgerIntegrityError("ledger anchor does not match verified head")
+
+        data_version_after = _sqlite_data_version(connection)
+        store_revision_after = store.revision
+        database_after = _regular_file_fingerprint(self._path, required=True)
+        wal_after = _regular_file_fingerprint(wal_path, required=False)
+        if (
+            data_version_before != data_version_after
+            or store_revision_before != store_revision_after
+            or database_before != database_after
+            or wal_before != wal_after
+        ):
+            raise LedgerIntegrityError(
+                "ledger state changed while capturing verification certificate"
+            )
+        if type(store_revision_after) is not int or store_revision_after < 0:
+            raise LedgerIntegrityError("record key store revision is invalid")
+
+        return _VerificationCertificate(
+            ledger_id=stored_ledger_id,
+            head_sequence=head_sequence,
+            head_hash=head_hash,
+            anchor_digest=anchor_digest,
+            store_revision=store_revision_after,
+            data_version=data_version_after,
+            database_fingerprint=database_after,
+            wal_fingerprint=wal_after,
+        )
+
+    def _verify_certificate_tail_locked(
+        self,
+        head_sequence: int,
+        head_hash: bytes,
+    ) -> None:
+        connection = self._connection_required()
+        if head_sequence == 0:
+            first = connection.execute(
+                "SELECT sequence FROM history ORDER BY sequence LIMIT 1"
+            ).fetchone()
+            if first is not None or not hmac.compare_digest(head_hash, ZERO_HASH):
+                raise LedgerIntegrityError("empty ledger head does not verify")
+            return
+
+        row = connection.execute(
+            "SELECT record_hash FROM history WHERE sequence = ?",
+            (head_sequence,),
+        ).fetchone()
+        if (
+            row is None
+            or type(row[0]) is not bytes
+            or not hmac.compare_digest(
+                cast(bytes, row[0]),
+                head_hash,
+            )
+        ):
+            raise LedgerIntegrityError("ledger tail does not verify")
+        extra = connection.execute(
+            "SELECT sequence FROM history WHERE sequence > ? ORDER BY sequence LIMIT 1",
+            (head_sequence,),
+        ).fetchone()
+        if extra is not None:
+            raise LedgerIntegrityError("ledger history extends beyond metadata head")
+
+    def _invalidate_verification_certificate(self) -> None:
+        self._verification_certificate = None
+
+    def _rollback_cleanup_failure_locked(
+        self,
+        connection: sqlite3.Connection,
+    ) -> BaseException | None:
+        """Attempt transaction rollback without replacing the primary failure."""
+
+        if not connection.in_transaction:
+            return None
+        try:
+            connection.execute("ROLLBACK")
+        except BaseException as cleanup_failure:
+            self._invalidate_verification_certificate()
+            return cleanup_failure
+        return None
+
+    def _verify_integrity_locked(self) -> _FullVerification:
         state = self._scan_history_locked()
         anchor_lagging = self._verify_anchor_locked(state)
-        if self._recover_external_state_locked(state):
+        external_state = self._external_state_snapshot()
+        if self._recover_external_state_locked(state, external_state):
             state = self._scan_history_locked()
-        self._verify_external_state_locked(state)
+            external_state = self._external_state_snapshot()
+        store_revision = self._verify_external_state_locked(state, external_state)
         anchor_lagging = self._verify_anchor_locked(state)
+        if self._record_store_required().revision != store_revision:
+            raise LedgerIntegrityError(
+                "record key store changed during full verification"
+            )
+        data_version = _sqlite_data_version(self._connection_required())
         self._full_verifications += 1
-        return state, anchor_lagging
+        return _FullVerification(
+            state=state,
+            anchor_lagging=anchor_lagging,
+            store_revision=store_revision,
+            data_version=data_version,
+        )
 
     def _scan_history_locked(self) -> _LedgerState:
         connection = self._connection_required()
-        store = self._record_store_required()
         self._verify_schema(connection)
         metadata = self._metadata(connection)
         try:
@@ -1038,69 +1498,68 @@ class EncryptedLedger:
             metadata["key_check"], cast(bytes, self._expected_key_check)
         ):
             raise LedgerKeyError("ledger key check changed")
-        store.verify_integrity()
-
         expected_records: dict[str, tuple[int, bytes]] = {}
         expected_tombstones: dict[str, tuple[int, bytes]] = {}
-        live_rows: dict[str, HistoryRow] = {}
         append_hashes: dict[str, bytes] = {}
         expected_key_references: dict[str, str] = {}
         previous_hash = ZERO_HASH
         expected_sequence = 1
-        rows = connection.execute(
+        cursor = connection.execute(
             """
             SELECT sequence, operation, event_id, key_reference, nonce,
                    ciphertext, created_ns, previous_hash, record_hash
             FROM history ORDER BY sequence
             """
         )
-        for raw_row in rows:
-            row = _history_row(raw_row)
-            sequence = row[0]
-            if sequence != expected_sequence or not hmac.compare_digest(
-                row[7],
-                previous_hash,
-            ):
-                raise LedgerIntegrityError("history chain sequence is broken")
-            try:
-                validate_event_id(row[2])
-            except InputBoundaryError as exc:
-                raise LedgerIntegrityError("stored event ID is invalid") from exc
-            try:
-                computed_hash = self._history_hash(
-                    sequence=sequence,
-                    operation=row[1],
-                    event_id=row[2],
-                    key_reference=row[3],
-                    nonce=row[4],
-                    ciphertext=row[5],
-                    created_ns=row[6],
-                    previous_hash=row[7],
-                )
-            except (InputBoundaryError, UnicodeEncodeError) as exc:
-                raise LedgerIntegrityError(
-                    "history authenticated bytes are invalid"
-                ) from exc
-            if not hmac.compare_digest(row[8], computed_hash):
-                raise LedgerIntegrityError("history record hash does not verify")
-            if row[1] == "append":
-                if row[2] in append_hashes:
-                    raise LedgerIntegrityError("event lineage is duplicated")
-                expected_records[row[2]] = (sequence, row[8])
-                live_rows[row[2]] = row
-                append_hashes[row[2]] = row[8]
-                expected_key_references[row[2]] = cast(str, row[3])
-            elif row[1] == "shred":
-                live = expected_records.pop(row[2], None)
-                live_rows.pop(row[2], None)
-                expected_key_references.pop(row[2], None)
-                if live is None or row[2] in expected_tombstones:
-                    raise LedgerIntegrityError("shred lineage has no live record")
-                expected_tombstones[row[2]] = (sequence, row[8])
-            else:
-                raise LedgerIntegrityError("history operation is invalid")
-            previous_hash = row[8]
-            expected_sequence += 1
+        while True:
+            batch = cursor.fetchmany(_VERIFICATION_BATCH_SIZE)
+            if not batch:
+                break
+            for raw_row in batch:
+                row = _history_row(raw_row)
+                sequence = row[0]
+                if sequence != expected_sequence or not hmac.compare_digest(
+                    row[7],
+                    previous_hash,
+                ):
+                    raise LedgerIntegrityError("history chain sequence is broken")
+                try:
+                    validate_event_id(row[2])
+                except InputBoundaryError as exc:
+                    raise LedgerIntegrityError("stored event ID is invalid") from exc
+                try:
+                    computed_hash = self._history_hash(
+                        sequence=sequence,
+                        operation=row[1],
+                        event_id=row[2],
+                        key_reference=row[3],
+                        nonce=row[4],
+                        ciphertext=row[5],
+                        created_ns=row[6],
+                        previous_hash=row[7],
+                    )
+                except (InputBoundaryError, UnicodeEncodeError) as exc:
+                    raise LedgerIntegrityError(
+                        "history authenticated bytes are invalid"
+                    ) from exc
+                if not hmac.compare_digest(row[8], computed_hash):
+                    raise LedgerIntegrityError("history record hash does not verify")
+                if row[1] == "append":
+                    if row[2] in append_hashes:
+                        raise LedgerIntegrityError("event lineage is duplicated")
+                    expected_records[row[2]] = (sequence, row[8])
+                    append_hashes[row[2]] = row[8]
+                    expected_key_references[row[2]] = cast(str, row[3])
+                elif row[1] == "shred":
+                    live = expected_records.pop(row[2], None)
+                    expected_key_references.pop(row[2], None)
+                    if live is None or row[2] in expected_tombstones:
+                        raise LedgerIntegrityError("shred lineage has no live record")
+                    expected_tombstones[row[2]] = (sequence, row[8])
+                else:
+                    raise LedgerIntegrityError("history operation is invalid")
+                previous_hash = row[8]
+                expected_sequence += 1
 
         actual_head_sequence = expected_sequence - 1
         if _metadata_int(metadata, "head_sequence") != actual_head_sequence:
@@ -1121,16 +1580,19 @@ class EncryptedLedger:
             metadata=metadata,
             records=expected_records,
             tombstones=expected_tombstones,
-            live_rows=live_rows,
             append_hashes=append_hashes,
             key_references=expected_key_references,
             head_sequence=actual_head_sequence,
             head_hash=previous_hash,
         )
 
-    def _recover_external_state_locked(self, state: _LedgerState) -> bool:
+    def _recover_external_state_locked(
+        self,
+        state: _LedgerState,
+        external_state: ExternalStateSnapshot,
+    ) -> bool:
         store = self._record_store_required()
-        references, tombstones = self._external_state_snapshot()
+        references, tombstones, _store_revision = external_state
         pending_commits: list[tuple[str, str]] = []
         pending_discards: list[str] = []
         forward_shreds: list[tuple[str, bytes]] = []
@@ -1198,9 +1660,10 @@ class EncryptedLedger:
             if event_id not in state.records and event_id not in state.tombstones:
                 raise LedgerIntegrityError("external tombstone lineage is incomplete")
 
-        for event_id, row in state.live_rows.items():
-            if event_id in references:
-                self._decrypt_row(row)
+        self._verify_live_payloads_locked(
+            state,
+            decrypt_event_ids=set(references),
+        )
 
         for event_id in sorted(pending_discards):
             if not store.discard_pending(event_id):
@@ -1214,8 +1677,12 @@ class EncryptedLedger:
 
         return bool(pending_discards or pending_commits or forward_shreds)
 
-    def _verify_external_state_locked(self, state: _LedgerState) -> None:
-        references, tombstones = self._external_state_snapshot()
+    def _verify_external_state_locked(
+        self,
+        state: _LedgerState,
+        external_state: ExternalStateSnapshot,
+    ) -> int:
+        references, tombstones, store_revision = external_state
         extra_references = set(references) - set(state.records)
         for event_id in extra_references:
             if references[event_id].state is RecordKeyState.COMMITTED:
@@ -1241,35 +1708,85 @@ class EncryptedLedger:
                 )
             ):
                 raise LedgerIntegrityError("record key state does not verify")
-            self._decrypt_row(state.live_rows[event_id])
+        self._verify_live_payloads_locked(
+            state,
+            decrypt_event_ids=set(references),
+        )
         for event_id, tombstone_hash in tombstones.items():
             if not hmac.compare_digest(
                 tombstone_hash,
                 state.append_hashes[event_id].hex(),
             ):
                 raise LedgerIntegrityError("record key tombstone does not verify")
+        if self._record_store_required().revision != store_revision:
+            raise LedgerIntegrityError(
+                "record key store changed during full verification"
+            )
+        return store_revision
+
+    def _verify_live_payloads_locked(
+        self,
+        state: _LedgerState,
+        *,
+        decrypt_event_ids: set[str],
+    ) -> None:
+        connection = self._connection_required()
+        seen: set[str] = set()
+        cursor = connection.execute(
+            """
+            SELECT h.sequence, h.operation, h.event_id, h.key_reference, h.nonce,
+                   h.ciphertext, h.created_ns, h.previous_hash, h.record_hash
+            FROM history AS h JOIN records AS r ON r.history_sequence = h.sequence
+            ORDER BY h.sequence
+            """
+        )
+        while True:
+            batch = cursor.fetchmany(_VERIFICATION_BATCH_SIZE)
+            if not batch:
+                break
+            for raw_row in batch:
+                row = _history_row(raw_row)
+                event_id = row[2]
+                expected = state.records.get(event_id)
+                expected_reference = state.key_references.get(event_id)
+                if (
+                    row[1] != "append"
+                    or event_id in seen
+                    or expected is None
+                    or expected != (row[0], row[8])
+                    or expected_reference is None
+                    or row[3] is None
+                    or not hmac.compare_digest(expected_reference, row[3])
+                ):
+                    raise LedgerIntegrityError(
+                        "live record history projection does not verify"
+                    )
+                seen.add(event_id)
+                if event_id in decrypt_event_ids:
+                    self._decrypt_row(row)
+        if seen != set(state.records):
+            raise LedgerIntegrityError("live record history projection is incomplete")
 
     def _external_state_snapshot(
         self,
-    ) -> tuple[dict[str, RecordKeyReference], dict[str, str]]:
+    ) -> tuple[dict[str, RecordKeyReference], dict[str, str], int]:
         store = self._record_store_required()
-        revision_before = store.revision
+        snapshot = store.verified_snapshot()
         references: dict[str, RecordKeyReference] = {}
-        for reference in store.iter_references():
+        for reference in snapshot.references:
             if reference.event_id in references:
                 raise LedgerIntegrityError("record key reference is duplicated")
             references[reference.event_id] = reference
         tombstones: dict[str, str] = {}
-        for event_id, record_hash in store.iter_tombstones():
+        for event_id, record_hash in snapshot.tombstones:
             if event_id in tombstones:
                 raise LedgerIntegrityError("record key tombstone is duplicated")
             tombstones[event_id] = record_hash
-        revision_after = store.revision
-        if revision_before != revision_after:
-            raise LedgerIntegrityError("record key store changed during verification")
+        if type(snapshot.revision) is not int or snapshot.revision < 0:
+            raise LedgerIntegrityError("record key store revision is invalid")
         if set(references) & set(tombstones):
             raise LedgerIntegrityError("record key store state overlaps")
-        return references, tombstones
+        return references, tombstones, snapshot.revision
 
     def _verify_anchor_locked(self, state: _LedgerState) -> bool:
         anchor_sequence, anchor_hash = self._load_anchor()
@@ -1299,10 +1816,53 @@ class EncryptedLedger:
             raise LedgerRollbackError("ledger anchor is not a database ancestor")
         return True
 
-    def _advance_verified_anchor(self, verification: tuple[_LedgerState, bool]) -> None:
-        state, anchor_lagging = verification
-        if anchor_lagging:
-            self._write_anchor(state.head_sequence, state.head_hash)
+    def _advance_verified_anchor(
+        self,
+        verification: _FullVerification,
+    ) -> _CertificateExpectation:
+        if verification.anchor_lagging:
+            self._write_anchor(
+                verification.state.head_sequence,
+                verification.state.head_hash,
+            )
+        return self._certificate_expectation_for_head_locked(
+            head_sequence=verification.state.head_sequence,
+            head_hash=verification.state.head_hash,
+            store_revision=verification.store_revision,
+            data_version=verification.data_version,
+        )
+
+    def _certificate_expectation_for_head_locked(
+        self,
+        *,
+        head_sequence: int,
+        head_hash: bytes,
+        store_revision: int,
+        data_version: int,
+    ) -> _CertificateExpectation:
+        anchor_sequence, anchor_hash, anchor_digest = self._load_anchor_snapshot()
+        if (
+            anchor_sequence != head_sequence
+            or not hmac.compare_digest(
+                anchor_hash,
+                head_hash,
+            )
+        ):
+            raise LedgerIntegrityError(
+                "ledger anchor changed before certificate refresh"
+            )
+        if self._record_store_required().revision != store_revision:
+            raise LedgerIntegrityError(
+                "record key store changed before certificate refresh"
+            )
+        return _CertificateExpectation(
+            ledger_id=cast(str, self._ledger_id),
+            head_sequence=head_sequence,
+            head_hash=head_hash,
+            anchor_digest=anchor_digest,
+            store_revision=store_revision,
+            data_version=data_version,
+        )
 
     def _append_shred_history_locked(
         self,
@@ -1366,6 +1926,8 @@ class EncryptedLedger:
         if row is None:
             return None
         parsed = _history_row(row)
+        if parsed[1] != "append" or parsed[2] != event_id:
+            raise LedgerIntegrityError("live record history does not verify")
         payload = self._decrypt_row(parsed)
         return LedgerRecord(
             sequence=parsed[0],
@@ -1553,9 +2115,17 @@ class EncryptedLedger:
         atomic_write_bytes(self._anchor_path, canonical_json_bytes(envelope))
 
     def _load_anchor(self) -> tuple[int, bytes]:
+        head_sequence, head_hash, _digest = self._load_anchor_snapshot()
+        return head_sequence, head_hash
+
+    def _load_anchor_snapshot(self) -> tuple[int, bytes, bytes]:
         try:
-            resolve_ledger_path(self._anchor_path)
-            envelope = strict_json_loads(self._anchor_path.read_bytes())
+            encoded = _read_regular_file_bounded(
+                self._anchor_path,
+                max_bytes=_ANCHOR_MAX_BYTES,
+                label="ledger anchor",
+            )
+            envelope = strict_json_loads(encoded)
         except (OSError, InputBoundaryError, UnsafePathError) as exc:
             raise LedgerIntegrityError("ledger anchor is unreadable") from exc
         if type(envelope) is not dict or set(envelope) != {"mac", "payload"}:
@@ -1601,7 +2171,7 @@ class EncryptedLedger:
             or encoded_head_hash != encoded_head_hash.lower()
         ):
             raise LedgerIntegrityError("ledger anchor head is invalid")
-        return head_sequence, head_hash
+        return head_sequence, head_hash, hashlib.sha256(encoded).digest()
 
     def _verify_schema(self, connection: sqlite3.Connection) -> None:
         if (
@@ -1658,16 +2228,25 @@ class EncryptedLedger:
 
     def _metadata(self, connection: sqlite3.Connection) -> dict[str, bytes]:
         try:
-            rows = connection.execute("SELECT key, value FROM metadata").fetchall()
+            cursor = connection.execute("SELECT key, value FROM metadata")
         except sqlite3.DatabaseError as exc:
             raise LedgerMigrationRequired(
                 "ledger metadata schema is unavailable"
             ) from exc
         metadata: dict[str, bytes] = {}
-        for key, value in rows:
-            if type(key) is not str or type(value) is not bytes:
-                raise LedgerIntegrityError("ledger metadata value is malformed")
-            metadata[key] = value
+        while True:
+            try:
+                rows = cursor.fetchmany(_METADATA_BATCH_SIZE)
+            except sqlite3.DatabaseError as exc:
+                raise LedgerMigrationRequired(
+                    "ledger metadata schema is unavailable"
+                ) from exc
+            if not rows:
+                break
+            for key, value in rows:
+                if type(key) is not str or type(value) is not bytes:
+                    raise LedgerIntegrityError("ledger metadata value is malformed")
+                metadata[key] = value
         if set(metadata) != _METADATA_KEYS:
             raise LedgerIntegrityError("ledger metadata keys do not match")
         if metadata["schema_version"] != b"2":
@@ -1712,7 +2291,7 @@ class EncryptedLedger:
             if configure:
                 self._configure_connection(connection)
             return connection
-        except Exception:
+        except BaseException:
             connection.close()
             raise
 
@@ -1871,9 +2450,10 @@ class EncryptedLedger:
             raise LedgerLifecycleError("ledger connection is not open")
 
     def _close_connection(self) -> None:
-        if self._connection is not None:
-            self._connection.close()
-            self._connection = None
+        connection = self._connection
+        self._connection = None
+        if connection is not None:
+            connection.close()
 
     def _clear_secrets(self) -> None:
         self._ledger_id = None
@@ -1883,6 +2463,582 @@ class EncryptedLedger:
         self._store_key = None
         self._expected_key_check = None
         self._keyring_plan = None
+
+
+class VerifiedLedgerSession:
+    """One object-local verification epoch holding both ledger locks."""
+
+    def __init__(self, ledger: EncryptedLedger) -> None:
+        self._ledger = ledger
+        # Keep the concrete Thread object, not only its recyclable numeric ID.
+        # A leaked session must never become usable by a later thread whose OS
+        # identifier happens to be reused.
+        self._owner_thread = threading.current_thread()
+        self._owner_token = _thread_ownership_token()
+        self._lock_context: Any | None = None
+        self._path_marked = False
+        self._closed = True
+        self._poisoned = False
+        self._cursors: set[VerifiedLedgerCursor] = set()
+        self._head_sequence = 0
+        self._head_hash = ZERO_HASH
+
+        ledger._object_lock.acquire()
+        object_lock_held = True
+        try:
+            ledger._require_open()
+            if ledger._active_sessions:
+                raise LedgerLifecycleError("verified ledger sessions cannot be nested")
+            _reject_reentrant_ledger_path(ledger._lock_path)
+            lock_context = exclusive_file_lock(ledger._lock_path)
+            lock_context.__enter__()
+            self._lock_context = lock_context
+            try:
+                _mark_active_ledger_path(ledger._lock_path)
+                self._path_marked = True
+                ledger._open_verified_session_locked()
+                self._sync_snapshot()
+                ledger._active_sessions += 1
+                self._closed = False
+            except BaseException as primary:
+                ledger._invalidate_verification_certificate()
+                cleanup_failure: BaseException | None = None
+                if self._path_marked:
+                    try:
+                        _unmark_active_ledger_path(ledger._lock_path)
+                    except BaseException as cleanup_exc:
+                        cleanup_failure = cleanup_exc
+                    self._path_marked = False
+                try:
+                    lock_context.__exit__(None, None, None)
+                except BaseException as cleanup_exc:
+                    cleanup_failure = cleanup_failure or cleanup_exc
+                self._lock_context = None
+                if cleanup_failure is not None:
+                    _raise_primary_from_cleanup(primary, cleanup_failure)
+                raise
+        except BaseException as primary:
+            cleanup_failure = None
+            if object_lock_held:
+                try:
+                    ledger._object_lock.release()
+                except BaseException as cleanup_exc:
+                    cleanup_failure = cleanup_exc
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def __enter__(self) -> VerifiedLedgerSession:
+        self._ensure_active()
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
+        if exc_type is not None and not isinstance(
+            exc,
+            (
+                InputBoundaryError,
+                LedgerConflictError,
+                LedgerSnapshotChanged,
+            ),
+        ):
+            self._poisoned = True
+            self._ledger._invalidate_verification_certificate()
+        try:
+            self.close()
+        except BaseException as cleanup_failure:
+            if isinstance(exc, BaseException):
+                _raise_primary_from_cleanup(exc, cleanup_failure)
+            raise
+
+    def close(self) -> None:
+        self._ensure_owner()
+        if self._closed:
+            return
+
+        failure: BaseException | None = None
+        try:
+            for cursor in tuple(self._cursors):
+                try:
+                    cursor._close_from_session()
+                except BaseException as exc:  # pragma: no cover - driver cleanup
+                    self._poisoned = True
+                    failure = failure or exc
+                finally:
+                    self._cursors.discard(cursor)
+            connection = self._ledger._connection
+            if connection is not None and connection.in_transaction:
+                try:
+                    connection.execute("ROLLBACK")
+                except BaseException as exc:
+                    self._poisoned = True
+                    failure = failure or exc
+            if self._poisoned or failure is not None:
+                self._ledger._invalidate_verification_certificate()
+            else:
+                try:
+                    self._ledger._close_verified_session_locked()
+                except BaseException as exc:
+                    self._ledger._invalidate_verification_certificate()
+                    failure = exc
+        finally:
+            self._closed = True
+            self._ledger._active_sessions -= 1
+            lock_context = self._lock_context
+            self._lock_context = None
+            if self._path_marked:
+                try:
+                    _unmark_active_ledger_path(self._ledger._lock_path)
+                except BaseException as exc:
+                    self._ledger._invalidate_verification_certificate()
+                    failure = failure or exc
+                self._path_marked = False
+            if lock_context is not None:
+                try:
+                    lock_context.__exit__(None, None, None)
+                except BaseException as exc:  # pragma: no cover - OS unlock failure
+                    self._ledger._invalidate_verification_certificate()
+                    failure = failure or exc
+            try:
+                self._ledger._object_lock.release()
+            except BaseException as exc:  # pragma: no cover - lock cleanup
+                self._ledger._invalidate_verification_certificate()
+                failure = failure or exc
+        if failure is not None:
+            raise failure
+
+    def append(self, event_id: str, payload: JsonValue) -> AppendOutcome:
+        return self._append(event_id, payload, idempotent=False)
+
+    def append_once(self, event_id: str, payload: JsonValue) -> AppendOutcome:
+        return self._append(event_id, payload, idempotent=True)
+
+    def _append(
+        self,
+        event_id: str,
+        payload: JsonValue,
+        *,
+        idempotent: bool,
+    ) -> AppendOutcome:
+        self._ensure_active()
+        self._ensure_no_active_cursors()
+        try:
+            outcome = self._ledger._append_in_session(
+                event_id,
+                payload,
+                idempotent=idempotent,
+            )
+            self._sync_snapshot()
+            return outcome
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def read(self, event_id: str) -> LedgerRecord | None:
+        self._ensure_active()
+        try:
+            return self._ledger._read_in_session(event_id)
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def shred(self, event_id: str) -> bool:
+        self._ensure_active()
+        self._ensure_no_active_cursors()
+        try:
+            shredded = self._ledger._shred_in_session(event_id)
+            if shredded:
+                self._sync_snapshot()
+            return shredded
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def is_tombstoned(self, event_id: str) -> bool:
+        self._ensure_active()
+        try:
+            return self._ledger._is_tombstoned_in_session(event_id)
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def event_count(self) -> int:
+        self._ensure_active()
+        try:
+            return self._ledger._event_count_in_session()
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def cursor(
+        self,
+        *,
+        after_sequence: int = 0,
+        batch_size: int = 64,
+    ) -> VerifiedLedgerCursor:
+        self._ensure_active()
+        safe_after_sequence = _validated_after_sequence(after_sequence)
+        safe_batch_size = _validated_batch_size(batch_size)
+        next_sequence = min(safe_after_sequence + 1, self._head_sequence + 1)
+        try:
+            return VerifiedLedgerCursor(
+                self,
+                next_sequence=next_sequence,
+                batch_size=safe_batch_size,
+                snapshot_head_sequence=self._head_sequence,
+                snapshot_head_hash=self._head_hash,
+            )
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def resume_verified(
+        self,
+        checkpoint: LedgerCursorCheckpoint,
+        *,
+        batch_size: int = 64,
+    ) -> VerifiedLedgerCursor:
+        self._ensure_active()
+        safe_batch_size = _validated_batch_size(batch_size)
+        _validate_checkpoint_shape(checkpoint)
+        if (
+            checkpoint.ledger_id != self._ledger.ledger_id
+            or checkpoint.snapshot_head_sequence != self._head_sequence
+            or not hmac.compare_digest(
+                checkpoint.snapshot_head_hash,
+                self._head_hash.hex(),
+            )
+        ):
+            raise LedgerSnapshotChanged(
+                "cursor checkpoint does not match the verified ledger snapshot"
+            )
+        if not 1 <= checkpoint.next_sequence <= self._head_sequence + 1:
+            raise InputBoundaryError("cursor checkpoint next sequence is invalid")
+        try:
+            return VerifiedLedgerCursor(
+                self,
+                next_sequence=checkpoint.next_sequence,
+                batch_size=safe_batch_size,
+                snapshot_head_sequence=self._head_sequence,
+                snapshot_head_hash=self._head_hash,
+            )
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def _register_cursor(self, cursor: VerifiedLedgerCursor) -> None:
+        self._ensure_active()
+        self._cursors.add(cursor)
+
+    def _unregister_cursor(self, cursor: VerifiedLedgerCursor) -> None:
+        self._cursors.discard(cursor)
+
+    def _sync_snapshot(self) -> None:
+        certificate = self._ledger._verification_certificate
+        if certificate is None:
+            raise LedgerLifecycleError("verified session has no certificate")
+        self._head_sequence = certificate.head_sequence
+        self._head_hash = certificate.head_hash
+
+    def _handle_operation_exception(self, exc: BaseException) -> None:
+        expected = isinstance(
+            exc,
+            (
+                InputBoundaryError,
+                LedgerConflictError,
+                LedgerSnapshotChanged,
+            ),
+        )
+        connection = self._ledger._connection
+        if (
+            expected
+            and self._ledger._verification_certificate is not None
+            and connection is not None
+            and not connection.in_transaction
+        ):
+            return
+        self._poisoned = True
+        self._ledger._invalidate_verification_certificate()
+
+    def _ensure_no_active_cursors(self) -> None:
+        if self._cursors:
+            raise LedgerLifecycleError(
+                "verified ledger mutation requires all cursors to be closed"
+            )
+
+    def _ensure_active(self) -> None:
+        self._ensure_owner()
+        if self._closed or self._poisoned:
+            raise LedgerLifecycleError("verified ledger session is not active")
+        self._ledger._require_open()
+
+    def _ensure_owner(self) -> None:
+        if (
+            threading.current_thread() is not self._owner_thread
+            or _thread_ownership_token() is not self._owner_token
+        ):
+            raise LedgerLifecycleError(
+                "verified ledger session belongs to another thread"
+            )
+
+
+class VerifiedLedgerCursor:
+    """Lazy live-record cursor bound to one exact verified ledger head."""
+
+    def __init__(
+        self,
+        session: VerifiedLedgerSession,
+        *,
+        next_sequence: int,
+        batch_size: int,
+        snapshot_head_sequence: int,
+        snapshot_head_hash: bytes,
+    ) -> None:
+        session._ensure_active()
+        safe_batch_size = _validated_batch_size(batch_size)
+        if (
+            type(next_sequence) is not int
+            or type(snapshot_head_sequence) is not int
+            or type(snapshot_head_hash) is not bytes
+            or snapshot_head_sequence < 0
+            or len(snapshot_head_hash) != 32
+            or not 1 <= next_sequence <= snapshot_head_sequence + 1
+        ):
+            raise InputBoundaryError("verified cursor snapshot is malformed")
+        if (
+            snapshot_head_sequence != session._head_sequence
+            or not hmac.compare_digest(snapshot_head_hash, session._head_hash)
+        ):
+            raise LedgerSnapshotChanged(
+                "verified cursor snapshot does not match its session"
+            )
+        self._session = session
+        # Thread identifiers may be recycled after a thread exits.  Identity of
+        # the captured Thread object preserves the ownership boundary instead.
+        self._owner_thread = threading.current_thread()
+        self._owner_token = _thread_ownership_token()
+        self._batch_size = safe_batch_size
+        self._snapshot_head_sequence = snapshot_head_sequence
+        self._snapshot_head_hash = bytes(snapshot_head_hash)
+        self._next_sequence = next_sequence
+        self._batch: list[tuple[Any, ...]] = []
+        self._batch_index = 0
+        self._closed = False
+        self._exhausted = False
+        connection = session._ledger._connection_required()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            certificate = (
+                session._ledger._require_current_verification_certificate_locked()
+            )
+            if (
+                certificate.head_sequence != snapshot_head_sequence
+                or not hmac.compare_digest(
+                    certificate.head_hash,
+                    snapshot_head_hash,
+                )
+            ):
+                raise LedgerSnapshotChanged(
+                    "verified cursor snapshot changed before construction"
+                )
+            connection.execute("COMMIT")
+        except BaseException as primary:
+            cleanup_failure = (
+                session._ledger._rollback_cleanup_failure_locked(connection)
+            )
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+        try:
+            session._register_cursor(self)
+        except BaseException:
+            self._closed = True
+            session._cursors.discard(self)
+            raise
+
+    def __iter__(self) -> VerifiedLedgerCursor:
+        return self
+
+    def __enter__(self) -> VerifiedLedgerCursor:
+        self._ensure_active()
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
+        try:
+            self.close()
+        except BaseException as cleanup_failure:
+            if isinstance(exc, BaseException):
+                _raise_primary_from_cleanup(exc, cleanup_failure)
+            raise
+
+    def __next__(self) -> LedgerRecord:
+        self._ensure_active()
+        if self._exhausted:
+            raise StopIteration
+        connection = self._session._ledger._connection_required()
+        exhausted = False
+        try:
+            # Fence the complete certificate-check/use interval.  Without the
+            # write transaction, a raw external SQLite writer could commit
+            # after certificate capture but before a prefetched or newly
+            # fetched row was decrypted and returned.
+            connection.execute("BEGIN IMMEDIATE")
+            certificate = (
+                self._session._ledger._require_current_verification_certificate_locked()
+            )
+            if (
+                certificate.head_sequence != self._snapshot_head_sequence
+                or not hmac.compare_digest(
+                    certificate.head_hash,
+                    self._snapshot_head_hash,
+                )
+            ):
+                raise LedgerSnapshotChanged(
+                    "verified cursor snapshot changed during iteration"
+            )
+            if self._batch_index >= len(self._batch):
+                sql_cursor = connection.cursor()
+                try:
+                    sql_cursor.execute(
+                        """
+                        SELECT h.sequence, h.operation, h.event_id, h.key_reference,
+                               h.nonce, h.ciphertext, h.created_ns, h.previous_hash,
+                               h.record_hash
+                        FROM records AS r JOIN history AS h
+                          ON h.sequence = r.history_sequence
+                        WHERE h.sequence >= ? AND h.sequence <= ?
+                        ORDER BY h.sequence
+                        LIMIT ?
+                        """,
+                        (
+                            self._next_sequence,
+                            self._snapshot_head_sequence,
+                            self._batch_size,
+                        ),
+                    )
+                    self._batch = sql_cursor.fetchmany(self._batch_size)
+                    self._batch_index = 0
+                except BaseException as primary:
+                    try:
+                        sql_cursor.close()
+                    except BaseException as cleanup_failure:
+                        _raise_primary_from_cleanup(primary, cleanup_failure)
+                    raise
+                else:
+                    sql_cursor.close()
+                if not self._batch:
+                    self._exhausted = True
+                    self._next_sequence = self._snapshot_head_sequence + 1
+                    self._release_sql()
+                    connection.execute("COMMIT")
+                    exhausted = True
+            if not exhausted:
+                raw_row = self._batch[self._batch_index]
+                self._batch_index += 1
+                row = _history_row(raw_row)
+                if (
+                    row[1] != "append"
+                    or row[0] < self._next_sequence
+                    or row[0] > self._snapshot_head_sequence
+                ):
+                    raise LedgerIntegrityError("cursor row is outside its snapshot")
+                payload = self._session._ledger._decrypt_row(row)
+                self._next_sequence = row[0] + 1
+                record = LedgerRecord(
+                    sequence=row[0],
+                    event_id=row[2],
+                    payload=payload,
+                    record_hash=row[8].hex(),
+                    created_ns=row[6],
+                )
+                connection.execute("COMMIT")
+                return record
+        except BaseException as exc:
+            public_exc: BaseException = exc
+            if isinstance(exc, StopIteration):
+                public_exc = LedgerIntegrityError(
+                    "cursor dependency ended iteration unexpectedly"
+                )
+            cleanup_failure: BaseException | None = None
+            if connection.in_transaction:
+                try:
+                    connection.execute("ROLLBACK")
+                except BaseException as rollback_exc:
+                    cleanup_failure = rollback_exc
+            self._session._handle_operation_exception(public_exc)
+            try:
+                self._release_sql()
+            except BaseException as release_exc:
+                cleanup_failure = cleanup_failure or release_exc
+            if cleanup_failure is not None:
+                # Cleanup uncertainty is itself fatal even when the primary
+                # exception is normally non-poisoning.  Preserve the primary
+                # failure as the public exception and retain cleanup evidence
+                # as its explicit cause.
+                self._session._poisoned = True
+                self._session._ledger._invalidate_verification_certificate()
+                _raise_primary_from_cleanup(public_exc, cleanup_failure)
+            if public_exc is not exc:
+                raise public_exc from exc
+            raise
+        if not exhausted:  # pragma: no cover - defensive control-flow boundary
+            raise LedgerLifecycleError("verified cursor did not produce a result")
+        raise StopIteration
+
+    def close(self) -> None:
+        self._ensure_owner()
+        if self._closed:
+            return
+        self._closed = True
+        try:
+            self._release_sql()
+        except BaseException as exc:
+            self._session._cursors.discard(self)
+            self._session._handle_operation_exception(exc)
+            raise
+
+    def suspend(self) -> LedgerCursorCheckpoint:
+        self._ensure_active()
+        checkpoint = LedgerCursorCheckpoint(
+            ledger_id=self._session._ledger.ledger_id,
+            snapshot_head_sequence=self._snapshot_head_sequence,
+            snapshot_head_hash=self._snapshot_head_hash.hex(),
+            next_sequence=min(
+                self._next_sequence,
+                self._snapshot_head_sequence + 1,
+            ),
+        )
+        self.close()
+        return checkpoint
+
+    def _close_from_session(self) -> None:
+        if self._closed:
+            self._session._cursors.discard(self)
+            return
+        self._closed = True
+        try:
+            self._release_sql()
+        finally:
+            self._session._cursors.discard(self)
+
+    def _release_sql(self) -> None:
+        self._batch = []
+        self._batch_index = 0
+        self._session._unregister_cursor(self)
+
+    def _ensure_active(self) -> None:
+        self._ensure_owner()
+        self._session._ensure_active()
+        if self._closed:
+            raise LedgerLifecycleError("verified ledger cursor is not active")
+
+    def _ensure_owner(self) -> None:
+        if (
+            threading.current_thread() is not self._owner_thread
+            or _thread_ownership_token() is not self._owner_token
+        ):
+            raise LedgerLifecycleError(
+                "verified ledger cursor belongs to another thread"
+            )
 
 
 HistoryRow = tuple[
@@ -1896,6 +3052,65 @@ HistoryRow = tuple[
     bytes,
     bytes,
 ]
+ExternalStateSnapshot = tuple[
+    dict[str, RecordKeyReference],
+    dict[str, str],
+    int,
+]
+
+
+def _raise_primary_from_cleanup(
+    primary: BaseException,
+    cleanup: BaseException,
+) -> NoReturn:
+    """Keep the operation failure public while retaining cleanup evidence."""
+
+    # Cleanup normally runs while ``primary`` is already being handled, so
+    # Python sets cleanup.__context__ back to primary. Reversing the explicit
+    # cause without removing that implicit edge would create an exception-cycle.
+    if cleanup.__context__ is primary:
+        cleanup.__context__ = primary.__cause__
+    raise primary.with_traceback(primary.__traceback__) from cleanup
+
+
+class _PrimaryPreservingContext:
+    """Run context cleanup without replacing an in-flight operation failure."""
+
+    def __init__(self, context: Any) -> None:
+        self._context = context
+
+    def __enter__(self) -> None:
+        self._context.__enter__()
+
+    def __exit__(
+        self,
+        exc_type: object,
+        exc: object,
+        traceback: object,
+    ) -> Literal[False]:
+        if not isinstance(exc, BaseException):
+            self._context.__exit__(exc_type, exc, traceback)
+            return False
+        try:
+            self._context.__exit__(exc_type, exc, traceback)
+        except BaseException as cleanup_failure:
+            prior_cause = exc.__cause__
+            if cleanup_failure.__context__ is exc:
+                cleanup_failure.__context__ = prior_cause
+            exc.__cause__ = cleanup_failure
+            exc.__context__ = None
+            exc.__suppress_context__ = True
+        return False
+
+
+def _primary_preserving_exclusive_file_lock(
+    path: Path,
+) -> _PrimaryPreservingContext:
+    return _PrimaryPreservingContext(exclusive_file_lock(path))
+
+
+def _primary_preserving_context(context: Any) -> _PrimaryPreservingContext:
+    return _PrimaryPreservingContext(context)
 
 
 def _read_bootstrap_file(path: Path) -> bytes:
@@ -1919,6 +3134,174 @@ def _read_bootstrap_file(path: Path) -> bytes:
         raise LedgerIntegrityError("ledger bootstrap marker changed while being read")
     resolve_ledger_path(resolved)
     return encoded
+
+
+def _read_regular_file_bounded(
+    path: Path,
+    *,
+    max_bytes: int,
+    label: str,
+) -> bytes:
+    try:
+        resolved = resolve_ledger_path(path)
+        before = _regular_file_fingerprint(resolved, required=True)
+        if before.size > max_bytes:
+            raise LedgerIntegrityError(f"{label} exceeds its size limit")
+        encoded = resolved.read_bytes()
+        after = _regular_file_fingerprint(resolved, required=True)
+    except LedgerIntegrityError:
+        raise
+    except (OSError, UnsafePathError) as exc:
+        raise LedgerIntegrityError(f"{label} is unavailable") from exc
+    if before != after or len(encoded) != after.size:
+        raise LedgerIntegrityError(f"{label} changed while being read")
+    return encoded
+
+
+def _regular_file_fingerprint(
+    path: Path,
+    *,
+    required: bool,
+) -> _FileFingerprint:
+    try:
+        resolved = resolve_ledger_path(path)
+        path_stat = resolved.lstat()
+    except FileNotFoundError as exc:
+        if required:
+            raise LedgerIntegrityError(
+                f"required ledger file is missing: {path.name}"
+            ) from exc
+        return _FileFingerprint(exists=False)
+    except (OSError, UnsafePathError) as exc:
+        raise LedgerIntegrityError(f"ledger file is unavailable: {path.name}") from exc
+    if not stat.S_ISREG(path_stat.st_mode):
+        raise LedgerIntegrityError(f"ledger path is not a regular file: {path.name}")
+    return _FileFingerprint(
+        exists=True,
+        mode=path_stat.st_mode,
+        device=path_stat.st_dev,
+        inode=path_stat.st_ino,
+        size=path_stat.st_size,
+        modified_ns=path_stat.st_mtime_ns,
+        changed_ns=path_stat.st_ctime_ns,
+    )
+
+
+def _ledger_path_key(path: Path) -> str:
+    return os.path.normcase(os.path.normpath(str(path)))
+
+
+def _thread_ownership_token() -> object:
+    """Return an opaque identity that cannot survive actual thread teardown."""
+
+    token = getattr(_THREAD_OWNERSHIP, "token", None)
+    if token is None:
+        token = object()
+        _THREAD_OWNERSHIP.token = token
+    return token
+
+
+def _active_ledger_paths() -> set[str]:
+    paths = getattr(_ACTIVE_LEDGER_PATHS, "paths", None)
+    if paths is None:
+        paths = set()
+        _ACTIVE_LEDGER_PATHS.paths = paths
+    return cast(set[str], paths)
+
+
+def _reject_reentrant_ledger_path(path: Path) -> None:
+    if _ledger_path_key(path) in _active_ledger_paths():
+        raise LedgerLifecycleError(
+            "ledger path already has an active operation in this thread"
+        )
+
+
+def _mark_active_ledger_path(path: Path) -> None:
+    key = _ledger_path_key(path)
+    paths = _active_ledger_paths()
+    if key in paths:
+        raise LedgerLifecycleError(
+            "ledger path already has an active operation in this thread"
+        )
+    paths.add(key)
+
+
+def _unmark_active_ledger_path(path: Path) -> None:
+    paths = _active_ledger_paths()
+    paths.discard(_ledger_path_key(path))
+    if not paths:
+        del _ACTIVE_LEDGER_PATHS.paths
+
+
+def _sqlite_data_version(connection: sqlite3.Connection) -> int:
+    row = connection.execute("PRAGMA data_version").fetchone()
+    if row is None or len(row) != 1 or type(row[0]) is not int or row[0] < 0:
+        raise LedgerIntegrityError("SQLite data_version is unavailable")
+    return cast(int, row[0])
+
+
+def _certificates_match(
+    left: _VerificationCertificate | None,
+    right: _VerificationCertificate,
+) -> bool:
+    return (
+        left is not None
+        and left.ledger_id == right.ledger_id
+        and left.head_sequence == right.head_sequence
+        and hmac.compare_digest(left.head_hash, right.head_hash)
+        and hmac.compare_digest(left.anchor_digest, right.anchor_digest)
+        and left.store_revision == right.store_revision
+        and left.data_version == right.data_version
+        and left.database_fingerprint == right.database_fingerprint
+        and left.wal_fingerprint == right.wal_fingerprint
+    )
+
+
+def _certificate_matches_expectation(
+    certificate: _VerificationCertificate,
+    expected: _CertificateExpectation,
+) -> bool:
+    return (
+        certificate.ledger_id == expected.ledger_id
+        and certificate.head_sequence == expected.head_sequence
+        and hmac.compare_digest(
+            certificate.head_hash,
+            expected.head_hash,
+        )
+        and hmac.compare_digest(
+            certificate.anchor_digest,
+            expected.anchor_digest,
+        )
+        and certificate.store_revision == expected.store_revision
+        and certificate.data_version == expected.data_version
+    )
+
+
+def _validated_batch_size(batch_size: int) -> int:
+    if type(batch_size) is not int or not 1 <= batch_size <= 4096:
+        raise InputBoundaryError("cursor batch size must be an integer from 1 to 4096")
+    return batch_size
+
+
+def _validated_after_sequence(after_sequence: int) -> int:
+    if type(after_sequence) is not int or after_sequence < 0:
+        raise InputBoundaryError("cursor after sequence must be a non-negative integer")
+    return after_sequence
+
+
+def _validate_checkpoint_shape(checkpoint: LedgerCursorCheckpoint) -> None:
+    if type(checkpoint) is not LedgerCursorCheckpoint:
+        raise InputBoundaryError("cursor checkpoint type is invalid")
+    if (
+        type(checkpoint.ledger_id) is not str
+        or not checkpoint.ledger_id
+        or type(checkpoint.snapshot_head_sequence) is not int
+        or checkpoint.snapshot_head_sequence < 0
+        or type(checkpoint.snapshot_head_hash) is not str
+        or not _is_lower_hex(checkpoint.snapshot_head_hash, length=64)
+        or type(checkpoint.next_sequence) is not int
+    ):
+        raise InputBoundaryError("cursor checkpoint is malformed")
 
 
 def _history_row(row: tuple[Any, ...]) -> HistoryRow:

@@ -1038,8 +1038,9 @@ Record a CLEAN independent review before Task 8.
 - Consumes: public `EncryptedLedger.verified_session()` API only.
 - Produces: `aluclu-benchmark-cognition-ledger` CLI and one atomic JSON result
   containing configuration, platform versions, success, quartile latency,
-  verification counts, peak RSS, database/WAL/key-store byte totals, and the
-  current host's CPU/RAM/GPU/storage profile.
+  verification counts, peak RSS, database/WAL/key-store byte totals, a
+  controlled verified-session contention measurement, and the current host's
+  CPU/RAM/GPU/storage profile.
 
 - [ ] **Step 1: Write deterministic CLI/result RED test**
 
@@ -1079,6 +1080,15 @@ whether installed versions satisfy `pyproject.toml`; a dependency mismatch is
 visible evidence, not a silently ignored field. Torch/GPU are inventory only
 and are not touched by the persistence loop.
 
+Measure the deliberate lifetime-session serialization boundary separately from
+the single-process append curve. A child process must signal readiness before
+attempting one write while the parent holds a verified session for a controlled
+interval. Record the measured session hold, the child's total lock wait,
+release-to-completion time, whether it completed while the lock was held, exit
+status, and timeout status. Also record the wall time of a complete verified
+cursor scan. This is evidence for the Task 7 safety/concurrency tradeoff; do not
+fold it into or conceal it behind aggregate append latency.
+
 - [ ] **Step 3: Prove the benchmark's failure behavior**
 
 Add tests that an existing output is atomically replaced, invalid turn/payload
@@ -1097,8 +1107,11 @@ Acceptance: exit 0, 8,192 events, no integrity error, no duplicate, no more
 than two full verifications in the single-process run, finite positive RSS and
 disk metrics, fourth/first-quartile and second/first-half per-append ratios each
 at most 1.75, peak RSS delta at most 256 MiB, and total logical persistent bytes
-at most 128 MiB. The artifact reports the absolute LocalAppData run path, each
-raw threshold input, the new host profile, and any declared/installed
+at most 128 MiB. The contention child must not complete while the verified
+session is held and must complete successfully within 10 seconds after release;
+all hold/wait/release timings and the full verified-cursor scan time must be
+finite and positive. The artifact reports the absolute LocalAppData run path,
+each raw threshold input, the new host profile, and any declared/installed
 dependency mismatch rather than hiding a missed gate. Preserve the run
 directory through final review.
 

@@ -80,6 +80,7 @@ __all__ = [
     "RecordKeyState",
     "RecordKeyStore",
     "RecordKeyStoreProfile",
+    "RecordKeyStoreSnapshot",
     "StaticKeyProvider",
     "create_record_key_store",
 ]
@@ -361,7 +362,22 @@ class RecordKeyReference:
     record_hash: str | None
 
 
+@dataclass(frozen=True)
+class RecordKeyStoreSnapshot:
+    revision: int
+    references: tuple[RecordKeyReference, ...]
+    tombstones: tuple[tuple[str, str], ...]
+
+
 class RecordKeyStore(Protocol):
+    """Atomic external record-key state required by ``EncryptedLedger``.
+
+    Every state-changing atomic transition advances ``revision`` by exactly
+    one.  Idempotent and no-op calls leave it unchanged.  This contiguous
+    revision contract lets the ledger bind each expected key-state mutation to
+    the verification certificate that authorized it.
+    """
+
     @property
     def profile(self) -> RecordKeyStoreProfile: ...
 
@@ -379,6 +395,7 @@ class RecordKeyStore(Protocol):
     def discard_pending(self, event_id: str) -> bool: ...
     def is_tombstoned(self, event_id: str) -> bool: ...
     def tombstone_hash(self, event_id: str) -> str | None: ...
+    def verified_snapshot(self) -> RecordKeyStoreSnapshot: ...
     def iter_references(self) -> Iterator[RecordKeyReference]: ...
     def iter_tombstones(self) -> Iterator[tuple[str, str]]: ...
     def verify_integrity(self) -> None: ...
@@ -544,19 +561,32 @@ class FileRecordKeyStore:
             return None
         return _tombstone_record_hash(tombstone)
 
-    def iter_references(self) -> Iterator[RecordKeyReference]:
-        entries = cast(dict[str, JsonValue], self._load()["entries"])
-        for event_id in sorted(entries):
-            yield _reference(event_id, _entry_dict(entries[event_id]))
-
-    def iter_tombstones(self) -> Iterator[tuple[str, str]]:
+    def verified_snapshot(self) -> RecordKeyStoreSnapshot:
         state = self._load()
+        revision = state["revision"]
+        if type(revision) is not int or revision < 0:
+            raise LedgerIntegrityError("record key store revision is malformed")
+        entries = cast(dict[str, JsonValue], state["entries"])
         tombstones = cast(dict[str, JsonValue], state["tombstones"])
-        snapshot = tuple(
+        references = tuple(
+            _reference(event_id, _entry_dict(entries[event_id]))
+            for event_id in sorted(entries)
+        )
+        tombstone_snapshot = tuple(
             (event_id, _tombstone_record_hash(tombstones[event_id]))
             for event_id in sorted(tombstones)
         )
-        return iter(snapshot)
+        return RecordKeyStoreSnapshot(
+            revision=revision,
+            references=references,
+            tombstones=tombstone_snapshot,
+        )
+
+    def iter_references(self) -> Iterator[RecordKeyReference]:
+        return iter(self.verified_snapshot().references)
+
+    def iter_tombstones(self) -> Iterator[tuple[str, str]]:
+        return iter(self.verified_snapshot().tombstones)
 
     def verify_integrity(self) -> None:
         self._load()
@@ -668,6 +698,13 @@ class _DirectoryTombstone:
     record_hash: str
     revision: int
     encoded: bytes
+
+
+@dataclass(frozen=True)
+class _DirectoryVerificationSnapshot:
+    revision: int
+    references: tuple[RecordKeyReference, ...]
+    tombstones: tuple[tuple[str, str], ...]
 
 
 @dataclass(frozen=True)
@@ -942,25 +979,21 @@ class DirectoryRecordKeyStore:
             _, tombstone = self._read_target(safe_event_id, token)
             return None if tombstone is None else tombstone.record_hash
 
-    def iter_references(self) -> Iterator[RecordKeyReference]:
+    def verified_snapshot(self) -> RecordKeyStoreSnapshot:
         with exclusive_file_lock(self._lock_path):
             self._open_locked()
-            events, _ = self._verify_integrity_locked()
-            snapshot = tuple(
-                self._reference_for_event(event)
-                for event in sorted(events.values(), key=lambda item: item.event_id)
-            )
-        return iter(snapshot)
+            snapshot = self._verify_integrity_locked()
+        return RecordKeyStoreSnapshot(
+            revision=snapshot.revision,
+            references=snapshot.references,
+            tombstones=snapshot.tombstones,
+        )
+
+    def iter_references(self) -> Iterator[RecordKeyReference]:
+        return iter(self.verified_snapshot().references)
 
     def iter_tombstones(self) -> Iterator[tuple[str, str]]:
-        with exclusive_file_lock(self._lock_path):
-            self._open_locked()
-            _, tombstones = self._verify_integrity_locked()
-            snapshot = tuple(
-                (item.event_id, item.record_hash)
-                for item in sorted(tombstones.values(), key=lambda item: item.event_id)
-            )
-        return iter(snapshot)
+        return iter(self.verified_snapshot().tombstones)
 
     def verify_integrity(self) -> None:
         with exclusive_file_lock(self._lock_path):
@@ -2174,38 +2207,52 @@ class DirectoryRecordKeyStore:
 
     def _verify_integrity_locked(
         self,
-    ) -> tuple[dict[str, _DirectoryEvent], dict[str, _DirectoryTombstone]]:
+    ) -> _DirectoryVerificationSnapshot:
+        # A failed scan must never leave the previous membership cache usable.
+        # The old maps may remain allocated, but target reads reject them while
+        # this flag is set and all replacement state is built in locals below.
+        self._membership_uncertain = True
         self._validate_root_layout()
         head = self._read_head()
-        events = self._scan_events()
-        tombstones = self._scan_tombstones()
-        if set(events).intersection(tombstones):
+        (
+            event_digests,
+            references,
+            event_accumulator,
+        ) = self._scan_events()
+        (
+            tombstone_digests,
+            tombstones,
+            tombstone_accumulator,
+        ) = self._scan_tombstones()
+        if set(event_digests).intersection(tombstone_digests):
             raise LedgerIntegrityError("record key is live and tombstoned")
-        accumulator = bytearray(_EMPTY_ACCUMULATOR)
-        for token, event in events.items():
-            _xor_into(accumulator, self._member_digest("event", token, event.encoded))
-        for token, tombstone in tombstones.items():
-            _xor_into(
-                accumulator,
-                self._member_digest("tombstone", token, tombstone.encoded),
-            )
+        accumulator = bytearray(event_accumulator)
+        _xor_into(accumulator, tombstone_accumulator)
         if (
-            head.event_count != len(events)
-            or head.tombstone_count != len(tombstones)
+            head.event_count != len(event_digests)
+            or head.tombstone_count != len(tombstone_digests)
             or not hmac.compare_digest(head.accumulator, bytes(accumulator))
         ):
             raise LedgerIntegrityError("record key directory head does not match state")
-        self._verified_event_digests = {
-            token: _sha256_hex(event.encoded) for token, event in events.items()
-        }
-        self._verified_tombstone_digests = {
-            token: _sha256_hex(tombstone.encoded)
-            for token, tombstone in tombstones.items()
-        }
-        self._verified_revision = head.revision
-        self._verified_head_digest = _sha256_hex(head.encoded)
+
+        snapshot = _DirectoryVerificationSnapshot(
+            revision=head.revision,
+            references=references,
+            tombstones=tombstones,
+        )
+        (
+            self._verified_event_digests,
+            self._verified_tombstone_digests,
+            self._verified_revision,
+            self._verified_head_digest,
+        ) = (
+            event_digests,
+            tombstone_digests,
+            head.revision,
+            _sha256_hex(head.encoded),
+        )
         self._membership_uncertain = False
-        return events, tombstones
+        return snapshot
 
     def _validate_root_layout(self) -> None:
         allowed = {"events", "head.json", "identity.json", "tombstones"}
@@ -2221,27 +2268,52 @@ class DirectoryRecordKeyStore:
             if not path.is_dir():
                 raise LedgerIntegrityError("record key fanout path is not a directory")
 
-    def _scan_events(self) -> dict[str, _DirectoryEvent]:
-        result: dict[str, _DirectoryEvent] = {}
+    def _scan_events(
+        self,
+    ) -> tuple[dict[str, str], tuple[RecordKeyReference, ...], bytes]:
+        digests: dict[str, str] = {}
+        event_ids: set[str] = set()
+        references: list[RecordKeyReference] = []
+        accumulator = bytearray(_EMPTY_ACCUMULATOR)
         for token, encoded in self._scan_member_files(self._events_root):
-            event = self._decode_event(encoded, expected_token=token)
-            if token in result:
+            if token in digests:
                 raise LedgerIntegrityError("duplicate record key address")
-            result[token] = event
-        if len({event.event_id for event in result.values()}) != len(result):
-            raise LedgerIntegrityError("duplicate record key event ID")
-        return result
+            event = self._decode_event(encoded, expected_token=token)
+            if event.event_id in event_ids:
+                raise LedgerIntegrityError("duplicate record key event ID")
+            event_ids.add(event.event_id)
+            references.append(self._reference_for_event(event))
+            digests[token] = _sha256_hex(encoded)
+            _xor_into(accumulator, self._member_digest("event", token, encoded))
+            # Keyring events can carry a vault DEK. Retain only the key-free
+            # public reference before moving to the next member.
+            del event
+        references.sort(key=lambda item: item.event_id)
+        return digests, tuple(references), bytes(accumulator)
 
-    def _scan_tombstones(self) -> dict[str, _DirectoryTombstone]:
-        result: dict[str, _DirectoryTombstone] = {}
+    def _scan_tombstones(
+        self,
+    ) -> tuple[dict[str, str], tuple[tuple[str, str], ...], bytes]:
+        digests: dict[str, str] = {}
+        event_ids: set[str] = set()
+        tombstones: list[tuple[str, str]] = []
+        accumulator = bytearray(_EMPTY_ACCUMULATOR)
         for token, encoded in self._scan_member_files(self._tombstones_root):
-            tombstone = self._decode_tombstone(encoded, expected_token=token)
-            if token in result:
+            if token in digests:
                 raise LedgerIntegrityError("duplicate tombstone address")
-            result[token] = tombstone
-        if len({item.event_id for item in result.values()}) != len(result):
-            raise LedgerIntegrityError("duplicate tombstone event ID")
-        return result
+            tombstone = self._decode_tombstone(encoded, expected_token=token)
+            if tombstone.event_id in event_ids:
+                raise LedgerIntegrityError("duplicate tombstone event ID")
+            event_ids.add(tombstone.event_id)
+            tombstones.append((tombstone.event_id, tombstone.record_hash))
+            digests[token] = _sha256_hex(encoded)
+            _xor_into(
+                accumulator,
+                self._member_digest("tombstone", token, encoded),
+            )
+            del tombstone
+        tombstones.sort(key=lambda item: item[0])
+        return digests, tuple(tombstones), bytes(accumulator)
 
     def _scan_member_files(self, root: Path) -> Iterator[tuple[str, bytes]]:
         try:
@@ -3454,7 +3526,8 @@ class KeyringRecordKeyStore(DirectoryRecordKeyStore):
 
     def _verify_integrity_locked(
         self,
-    ) -> tuple[dict[str, _DirectoryEvent], dict[str, _DirectoryTombstone]]:
+    ) -> _DirectoryVerificationSnapshot:
+        self._membership_uncertain = True
         self._verify_head_pair_at_rest()
         return super()._verify_integrity_locked()
 

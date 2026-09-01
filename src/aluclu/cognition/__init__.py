@@ -40,7 +40,7 @@ from .keys import (
     StaticKeyProvider,
     create_record_key_store,
 )
-from .ledger import EncryptedLedger
+from .ledger import EncryptedLedger, VerifiedLedgerCursor, VerifiedLedgerSession
 from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
 
 __all__ = [
@@ -77,6 +77,8 @@ __all__ = [
     "StateIntegrityError",
     "StaticKeyProvider",
     "UnsafePathError",
+    "VerifiedLedgerCursor",
+    "VerifiedLedgerSession",
     "atomic_write_bytes",
     "canonical_json_bytes",
     "create_record_key_store",

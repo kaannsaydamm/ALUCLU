@@ -883,7 +883,11 @@ def test_two_ledger_objects_sustain_concurrent_append_streams(tmp_path: Path) ->
                 pool.submit(append_stream, ledger, stream)
                 for stream, ledger in enumerate(ledgers)
             ]
-            sequences = [sequence for future in futures for sequence in future.result()]
+            sequences = [
+                sequence
+                for future in futures
+                for sequence in future.result(timeout=600)
+            ]
 
         assert sorted(sequences) == list(range(1, 65))
         assert ledgers[0].event_count() == 64
