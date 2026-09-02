@@ -16,6 +16,9 @@
 - Every external side effect is typed, budgeted, journaled, and fail-closed.
 - Claims such as SOTA, zero forgetting, or fastest are blocked until their
   predeclared experiments pass.
+- Root `TRAJECTORY.md` is the durable continuity ledger. Every logical tracked
+  change, verification run, independent review, gate decision, and commit must
+  be recorded there before the next implementation step begins.
 - Task 1 scale persistence must be CLEAN before Task 2 implementation starts.
 - Licensing/IP, multilingual README, paper, release, and push are deferred to
   Tasks 13–14.
