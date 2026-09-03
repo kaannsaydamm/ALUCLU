@@ -33,7 +33,7 @@ agent context disappears.
 | Task | State | Authoritative checkpoint | Next gate |
 |---|---|---|---|
 | 1 — encrypted lifetime persistence | CLEAN | `f5a30e0` | Frozen unless a concrete regression is proved |
-| 2 — sensorium/recollection | TASK 2.0 GATE APPROVED | plan hash `196B1FFF...97E0`; requirements/architect/critic APPROVE | Commit this checkpoint, then Task 2.1 RED |
+| 2 — sensorium/recollection | TASK 2.0 REAPPROVED / 2.1 RED | corrected hash `01669B9D...8357`; requirements + architecture + critic APPROVE | Checkpoint plan repair and observation RED, then implement Task 2.1 |
 | 3–14 | NOT STARTED | global roadmap | Start only after every preceding task is CLEAN |
 
 ## Reconstructed committed history
@@ -383,3 +383,156 @@ session can map each decision to the exact diff.
   sensorium contract before implementation`. The next logical change must first
   record this commit's resulting hash, then create and observe the Task 2.1 RED
   contract/feature fixtures.
+
+## 2026-09-02 — Task 2.1 strict contracts started
+
+- Task 2.0 committed as `bc20605` (`Freeze the Task 2 sensorium contract before
+  implementation`), containing exactly the four declared planning/continuity
+  files. The reviewed Task 2 plan hash remained `196B1FFF...97E0` at commit.
+- Autopilot transitions from `ralplan` to implementation only after this clean
+  checkpoint. Task 2.1 begins fixture-first: observation/core contracts and
+  deterministic retrieval features are independent owned lanes, while the
+  controller owns additive exports, integration, evidence, and this trajectory.
+- Current expected state is RED because neither Task 2 production module nor
+  its tests/protocol fixture exists yet. The next evidence entry must identify
+  the exact failing test commands before any GREEN implementation is accepted.
+
+### Task 2.1 Python signature freeze
+
+- The reviewed plan freezes wire semantics and public operation names but does
+  not prescribe two non-wire Python return/signature details needed by literal
+  tests. The task brief resolves them without changing any reviewed schema or
+  plan hash.
+- `derive_boundary_signal_digests(request)` returns frozen, keyword-only,
+  slotted `BoundarySignalDigestsV1` with exactly
+  `session_signal_digest`, `goal_ids_signal_digest`,
+  `participant_ids_signal_digest`, `tool_signal_digest`, and
+  `topic_signal_digest` attributes.
+- `build_canonical_observation` is keyword-only over `request`,
+  `boundary_decision`, `pre_core_state_digest`, `post_core_state`,
+  `pre_append_head_sequence`, `pre_append_head_hash`, and
+  `boundary_profile_id`; it computes request/content/post-core digests itself.
+- `derive_episode_id` is keyword-only over `boundary_profile_id`,
+  `first_observation_id`, and `session_id`.
+- These choices remove test-author guesswork while preserving the approved wire
+  contract. Both RED lanes remain test/fixture-only at this point.
+- A feature-bound proof found that 4,096 normalized bytes plus the four framing
+  bytes emit at most 12,291 total 3/4/5-grams. Therefore a single bin cannot
+  reach the symmetric ±32,767 saturation boundary through any valid v1 public
+  input, even under a total collision. The mandated sum-then-clamp rule remains
+  a defensive invariant and is tested through private pure helper
+  `_saturate_feature_bin(total)`, exactly
+  `max(-32767, min(32767, total))`, plus the public 12,291-gram bound oracle.
+
+### Task 2.1 RED fixture exposed plan contradiction
+
+- While materializing the literal protocol JSON, the feature RED lane found a
+  real contradiction in reviewed plan hash `196B1FFF...97E0`: a stable search
+  vector had one `bins_i16be_digest`, but `feature_vector_digest` intentionally
+  binds a `feature_spec_id` whose suffix changes with UCD 13.0/14.0/15.0/15.1.
+  Identical bin bytes therefore require four different feature-vector digests.
+- No implementation workaround is accepted. The plan now requires
+  `feature_vector_digest_by_unidata_version` with all four exact UCD keys for a
+  stable vector, and singular `feature_vector_digest` inside each already
+  version-scoped assignment case. This preserves the approved feature identity
+  definition rather than weakening it to an unversioned raw-bin hash.
+- Consequence: Task 2.0 is reopened, all reviews of `196B1FFF...97E0` are stale,
+  and implementation is paused. This is the intended value of fixture-first
+  RED: the contradiction was discovered before a production API encoded it.
+- Next action: compute a new plan hash, repeat requirements -> architect ->
+  critic on that exact hash, then resume the two existing RED lanes.
+- The feature RED lane found no second contradiction. Its pending literal tests
+  distinguish both byte caps with `U+0958`: 682 repetitions are raw 2,046
+  bytes/NFC 4,092 bytes and accepted; 683 are raw 2,049/NFC 4,098 and rejected.
+  Independent boundary vectors reject 4,097 raw whitespace bytes even though
+  search normalization is one byte, and accept exactly 4,096 ASCII bytes.
+- The observation RED draft found no second plan contradiction. It locks the
+  source, provenance, request, content, boundary, core, digest, persisted
+  envelope, and additive-export contracts using the exact Python signature
+  brief above; focused RED evidence is still pending.
+- Corrected Task 2 plan candidate SHA-256 is
+  `01669B9DE8FF941E690FB0624E8611684FCB847692C720539BA615141EC98357`.
+  `git diff --check` is clean apart from Git's informational LF-to-CRLF warning.
+  The requirements, architecture, and critic gates must each approve this exact
+  hash; none of the superseded `196B1FFF...97E0` verdicts carry forward.
+- Observation RED lane completed with only
+  `tests/test_cognition_observation.py`: 37 test definitions / 1,278 lines.
+  CPython 3.13 `py_compile` and `git diff --check` passed. Focused pytest exited
+  1 during collection with exactly one expected error and zero tests executed:
+  line 15 cannot import the not-yet-created `aluclu.cognition.observation`
+  module. This is accepted RED evidence, not a product failure; production code
+  remains paused until the corrected plan is reapproved.
+- Requirements gate 3 independently matched corrected plan hash
+  `01669B9D...8357` and roadmap hash `95012647...9050`, and found the per-UCD
+  digest repair implementable, but returned BLOCK because the first trajectory
+  entry incorrectly said 1,134 lines. The controller independently counted 37
+  `def test_...` definitions and 1,278 physical lines, corrected the evidence
+  above, and preserves this failed gate in the history. The plan did not change,
+  so the same requirements reviewer must now re-evaluate the same exact hash.
+- Requirements gate 3 rerun: APPROVE. The reviewer independently confirmed the
+  unchanged full Task 2 hash, roadmap hash, 1,278 physical lines, 37 literal
+  tests, clean diff-check/`py_compile`, expected missing-module RED, and the
+  corrected stable-vector versus version-scoped assignment digest semantics.
+  No requirements ambiguity remains. Architecture review is now authorized on
+  this exact hash; critic review remains unauthorized until architecture passes.
+- Architecture gate 3 first response is not accepted as a formal verdict. It
+  reported architectural status `CLEAR` and useful file/API evidence, but did
+  not return the required literal `APPROVE`/`BLOCK` verdict or independently
+  state both computed full hashes. As in the earlier architecture cycle, useful
+  commentary is not consensus evidence. The same read-only reviewer is reissued
+  the gate; critic remains unauthorized.
+- Architecture gate 3 reissue: APPROVE. The reviewer independently matched Task
+  2 hash `01669B9D...8357` and roadmap hash `95012647...9050`, then verified the
+  pure API surface, per-UCD digest repair, Task 2.2--2.8 path, additive Task 1
+  exports, caller-owned session/cursor discipline, and RED oracles against live
+  files. No structural blocker remains. The final sequential critic gate is now
+  authorized on these exact hashes.
+
+## 2026-09-03 — Resume after critic infrastructure interruption
+
+- The first Task 2 critic gate 3 dispatch produced no review verdict or plan
+  finding. Its agent turn terminated at the account usage limit, so it is
+  recorded as interrupted infrastructure evidence and cannot count as APPROVE
+  or BLOCK. The paused feature RED agent ended for the same external reason and
+  created or edited no owned file.
+- The user-supplied `a2.txt` history and this repository ledger were reread as
+  context, with this tracked ledger remaining authoritative. Live Git state is
+  still branch `codex/unified-lifelong-cognition` at `bc20605`, with only the
+  Task 2 plan repair, this trajectory, and the observation RED test pending.
+- The controller recomputed Task 2 plan SHA-256 as
+  `01669B9DE8FF941E690FB0624E8611684FCB847692C720539BA615141EC98357`;
+  it is unchanged from the requirements and architecture approvals. Roadmap
+  hash remains `950126478A4198334B71328282A23C404142A8A28BDB7957BC9F997F1DB79050`.
+  `git diff --check` still exits clean with only informational LF-to-CRLF
+  notices. Exact next action is a fresh adversarial critic review on these two
+  hashes; production remains unauthorized until it explicitly approves.
+- Fresh critic `/root/task2_critic_gate3_retry` independently matched the full
+  Task 2 and roadmap hashes and returned `APPROVE`; no material blocker was
+  found. Representative Task 2.1--2.6 simulations confirmed the closed
+  observation contracts, per-UCD digest repair, live caller-owned Task 1 session
+  and cursor lifecycle, bounded streaming/replay, fail-closed calibration, and
+  immutable/no-resurrection reconsolidation path. The critic also verified the
+  37-test/1,278-line RED file and clean diff-check.
+- Non-blocking watch items remain: do not claim cross-platform proof from the
+  current Windows host; retain the known concurrency long-tail test-health debt;
+  and make the observation RED file part of this checkpoint only deliberately.
+  The controller chooses that deliberate combined checkpoint: the plan repair
+  and its already-reviewed observation RED contract form one logical transition
+  into Task 2.1, while no Task 2 production file is included. Consensus is now
+  complete and Autopilot may return to `ultragoal` after fresh controller checks.
+- Fresh controller checks exposed two non-semantic lint defects in the RED test:
+  Ruff initially exited 1 for unsorted imports and importing `Callable` from
+  `typing`. The imports were repaired with the exact Ruff-proposed organization;
+  no test assertion or protocol fixture changed. A second Ruff pass is clean,
+  CPython 3.13 `py_compile` is clean, and the file remains 37 test definitions /
+  1,278 physical lines.
+- Fresh focused CPython 3.13 pytest remains intentionally RED: exit 1, exactly
+  one collection error and zero executed tests, now reported at line 12 as
+  `ModuleNotFoundError: No module named 'aluclu.cognition.observation'`. Both
+  plan/roadmap hashes remain exact and `git diff --check` exits 0 with only the
+  known informational line-ending notices.
+- Checkpoint scope is exactly `TRAJECTORY.md`, the corrected Task 2 plan, and
+  `tests/test_cognition_observation.py`. This deliberately combines the
+  reapproved protocol repair with its observation RED oracle. No Task 1 file,
+  Task 2 production module, generated bytecode, or ignored orchestration state
+  is part of the commit.

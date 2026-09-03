@@ -1116,13 +1116,19 @@ Every `domain_vector` has exact keys `case_id`, `domain_ascii`,
 `canonical_payload_utf8_hex`, and `expected_sha256_hex`. Every stable
 `search_vector` has exact keys `case_id`, `input`, `raw_utf8_hex`,
 `search_utf8_hex`, `gram_count`, `gram_fixtures`, `nonzero_bins`, and
-`bins_i16be_digest`. Each selected `gram_fixture` has exact keys `start`,
-`length`, `gram_hex`, `message_hex`, `blake2s_hex`, `bin`, and `sign`. Short
-cases include enough literal gram fixtures to verify framing and emission order;
-`nonzero_bins` is an increasing array of `[index,signed_count]`.
+`feature_vector_digest_by_unidata_version`. Each selected `gram_fixture` has
+exact keys `start`, `length`, `gram_hex`, `message_hex`, `blake2s_hex`, `bin`,
+and `sign`. Short cases include enough literal gram fixtures to verify framing
+and emission order; `nonzero_bins` is an increasing array of
+`[index,signed_count]`.
+`feature_vector_digest_by_unidata_version` is an object with exactly the four
+ordered keys in `supported_unidata_versions`, each mapped to its 64-character
+lowercase digest. The bin bytes are stable for a stable search vector, but the
+feature-vector digest also binds the UCD-suffixed `feature_spec_id`, so one
+unversioned digest would be mathematically contradictory.
 `assignment_vectors_by_unidata_version` is an object whose exact UCD-version
 keys map to ordered boundary-case arrays. Each boundary case has exact keys
-`case_id`, `input`, `outcome`, `search_utf8_hex`, and `bins_i16be_digest`;
+`case_id`, `input`, `outcome`, `search_utf8_hex`, and `feature_vector_digest`;
 `outcome` is `accept` or `reject_unassigned`, and both result fields are `null`
 for rejection. The complete 2,048-byte feature vector is bound by the
 feature-vector domain digest rather than copied as 1,024 JSON integers.
