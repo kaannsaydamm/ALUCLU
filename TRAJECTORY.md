@@ -743,3 +743,141 @@ session can map each decision to the exact diff.
   is clean. Task 2.1 is marked CLEAN at code checkpoint `03a2792`. No later
   functionality is inferred: storage-pure ingestion and direct exact recall are
   still unimplemented and become Task 2.2's next fixture-first RED story.
+
+## 2026-09-07 — Task 2.2 first ingest-to-recall vertical slice
+
+- Task 2.1 CLEAN evidence was committed in trajectory-only checkpoint
+  `7c55ec030f6f60df7cf5b48ffa8311a610912581`. The Task 2.2 ignored execution
+  brief freezes ownership and copies only the already-approved parent oracles;
+  plan hash and architecture remain unchanged.
+- Added three fixture-first RED suites for sensorium contracts/storage-pure
+  receipt classification, idempotent ingestion/stale-state branches, direct ID
+  exact recollection, bare-ledger rejection, and close/reopen lost-return E2E.
+  Production `sensorium.py` and `recollection.py` do not exist yet; the next
+  command must demonstrate the expected missing-module collection RED before
+  any implementation begins.
+- Controller reproduced the intended RED: three collection errors, one for
+  missing `aluclu.cognition.sensorium` and two for missing recollection imports;
+  no tests executed. Test-only Ruff then identified three missing-module import
+  groupings and one unused variable; mechanical import repair and removal kept
+  the product RED unchanged.
+- Implemented the minimum first vertical slice in new `sensorium.py` and
+  `recollection.py`: immutable baseline profile/state/receipt/result contracts,
+  real Task 1 tail checkpoints, pure boundary transition, storage-pure receipt
+  classification, one-append NEW ingestion, duplicate convergence, typed
+  conflict/tombstone/state/replay rejection, and direct authenticated ID recall.
+  Initial focused GREEN was 12 passed in 21.10 seconds.
+- Adversarial acceptance was then extended RED-first for exact returned wire
+  schemas, forged populated core state, a single request larger than its episode
+  budget, caller-owned-session verification reuse, and a valid-looking
+  observation stored at the wrong ledger sequence. The missing converter import
+  produced the expected one collection error. Production now validates live
+  state lineage against its last authenticated observation, binds stored
+  observation pre/post sequences to the enclosing ledger record, enforces the
+  per-request profile byte limit, and serializes exact receipt/accepted/rejected/
+  bootstrap shapes. Additive root exports are included.
+- Current Task 2.2 focused suite: 17 passed in 26.29 seconds. This is a GREEN
+  implementation checkpoint, not CLEAN: scoped static checks, broader Task 2
+  regression, full suite, crash-process evidence, and independent review remain.
+- Static checkpoint after root exports: repository Ruff and six-file format
+  checks passed; scoped Pyright 1.1.413 reported 0 errors/warnings/informations;
+  compileall passed. Added a real subprocess-loss oracle: a child process loads
+  the pre-append state, performs normal ingestion, and exits with code 91 only
+  when constructing the post-append return value. The parent must reopen, retry
+  from the same old state, observe DUPLICATE, retain one live event, and recall
+  identical canonical content. Its result is pending; no crash-pass claim yet.
+- Controller RED run produced exactly three collection errors: missing
+  `aluclu.cognition.sensorium` and `aluclu.cognition.recollection`; no tests
+  executed. Pre-implementation Ruff found three import-order defects (fixed
+  mechanically) and one unused test variable (removed). These are test hygiene
+  corrections only; the intended missing-production-module RED remains valid.
+- The real subprocess lost-return oracle passed: the child completed the normal
+  append path and exited with code 91 before returning acceptance; the parent
+  reopened the ledger, retried from the original state, received DUPLICATE,
+  retained exactly one live event, and recalled identical canonical content
+  (1 passed in 10.67 seconds). No mocked persistence boundary is claimed.
+- Added the second sequential NEW observation acceptance case. It proves the
+  same episode advances to observation count 2, emits the CONTINUE boundary
+  reason, keeps the encoded continuation state within 4,096 bytes, and stores
+  exactly two events. A patch-placement defect initially split the existing
+  duplicate-retry test; inspection caught and mechanically repaired it before
+  execution. The combined CPython 3.13 Task 2 suite is now 191 passed in 92.87
+  seconds, including the subprocess crash/reopen oracle. Task 2.2 remains GREEN,
+  not CLEAN, pending the 3.12 mirror, full repository suite, and independent
+  review.
+- The CPython 3.12 interpreter survived the reboot under `.venv` rather than
+  the stale `.venv312` path. The stale command failed before test collection;
+  after resolving the actual runtime as Python 3.12.13, the same 191-test Task
+  2 suite passed in 98.83 seconds. This is environment-path evidence, not a
+  product failure.
+- Repository Ruff, seven-file format check, compileall over `src`/`tests`,
+  `git diff --check`, and scoped Pyright 1.1.413 all passed; Pyright reported 0
+  errors, 0 warnings, and 0 informations. Added two focused fail-closed oracles:
+  wrong-position valid-looking observations classify as CONFLICT as well as
+  failing exact recall, and an exactly-one-behind duplicate with a forged
+  pre-core digest returns STATE_CONFLICT without a second write. Both targeted
+  tests passed (2 passed in 6.65 seconds). The dual-runtime combined rerun is
+  next; independent architecture review is CLEAR and code review is pending.
+- Final expanded Task 2 focused reruns are clean on both installed interpreters:
+  CPython 3.13 passed 192 tests in 114.60 seconds and CPython 3.12.13 passed 192
+  tests in 116.63 seconds. Independent code/spec/security review returned
+  APPROVE with zero CRITICAL/HIGH/MEDIUM/LOW findings and independently reran
+  the 20 Task 2.2 tests (20 passed in 43.12 seconds), Pyright 0/0/0, Ruff,
+  compileall, and diff-check. Independent architecture review returned CLEAR:
+  session ownership remains caller-controlled, sensorium/recollection ownership
+  is one-way, root exports are additive, and no Task 2.3+ blocker was found.
+  The final precommit full CPython 3.13 repository regression is now running
+  with retained JUnit output; no CLEAN claim is made until it exits successfully.
+- The first full repository run was not clean: 714 passed and one pre-existing
+  Task 1 process-race fixture failed in 1,248.03 seconds. The failure was outside
+  Task 2.2: two child processes concurrently initialized the same fake keyring
+  SQLite vault and one received `database is locked` at `PRAGMA
+  journal_mode=WAL`. The failed run's JUnit artifact is retained. An immediate
+  isolated rerun passed, followed by six unchanged isolated repetitions, which
+  established a low-probability fixture-startup race rather than a sensorium or
+  recollection semantic failure. CLEAN remained blocked.
+- Applied a narrowly scoped test-infrastructure repair in
+  `tests/_keyring_master_race_worker.py`: fake-vault connection setup now retries
+  only SQLite `locked`/`busy` errors with the fixture's existing bounded deadline,
+  closes each failed connection, and re-raises every other OperationalError or
+  deadline expiry. Production keyring/persistence code is unchanged. Ruff,
+  format, compileall, and Pyright 1.1.413 (0/0/0) passed for the helper; the
+  repaired real two-process race passed eight consecutive isolated runs. A fresh
+  full-suite pass and independent review of this additional file are mandatory.
+- The second full repository run again finished 714 passed/1 failed, this time
+  in 1,200.74 seconds and at a different pre-existing Task 1 harness boundary.
+  The repaired keyring race passed. One bootstrap-crash child exceeded its fixed
+  20-second `subprocess.run` budget under full-suite load and raised
+  `TimeoutExpired`; the exact parameter passed in 3.79 seconds immediately when
+  isolated. No recovery-state, exit-code, integrity, or Task 2.2 assertion
+  failed. This second failed JUnit artifact is retained separately.
+- Centralized the nine duplicated 20-second subprocess limits in
+  `tests/test_cognition_crash_recovery.py` as a 60-second test-only budget. This
+  accommodates slower Windows/OneDrive/antivirus scheduling while preserving a
+  finite deadlock detector and every semantic crash-recovery assertion. Ruff
+  also mechanically normalized three pre-existing formatting sites now that the
+  file is in the candidate diff. The combined crash-recovery plus keyring-race
+  package passed all 33 tests in 108.25 seconds; Ruff, format, compileall, and
+  Pyright 0/0/0 are clean. A third full-suite pass remains mandatory.
+- The third CPython 3.13 full repository run is clean: 715 passed, 0 failed,
+  0 errors, and 0 skipped in 1,070.14 seconds. The retained JUnit was parsed
+  independently as 715/0/0/0 with suite time 1,067.358 seconds, timestamp
+  2026-09-07T22:13:43.480623+03:00, host `Kaan`. The only warning is the
+  pre-existing pytest xunit2 `record_property` compatibility warning; it is not
+  a failed product or acceptance assertion.
+- Final candidate static gates are clean: repository Ruff, nine-file format
+  check, compileall over `src`/`tests`, and `git diff --check` passed (Git emits
+  only existing CRLF conversion notices); scoped Pyright 1.1.413 reports 0
+  errors/warnings/informations. The repaired crash-recovery plus keyring-race
+  package also passed all 33 tests under CPython 3.12.13 in 122.07 seconds.
+  Task 2.2 is precommit-green; owned-file commit plus fresh committed-diff review
+  remain before CLEAN.
+- Final precommit independent code/spec/security re-review returned APPROVE with
+  zero findings across the ten-file candidate. It specifically confirmed that
+  fake-vault reconnect is limited to bounded `locked`/`busy` setup errors,
+  failed connections close, other/deadline errors re-raise, and the centralized
+  60-second child timeout preserves every crash exit/state/integrity assertion.
+  The reviewer independently obtained Pyright 0/0/0, Ruff/compileall/diff clean,
+  and 33/33 affected crash/keyring tests in 115.25 seconds. Architecture remains
+  CLEAR. The candidate is approved for an exact owned-file commit; postcommit
+  base-to-head review is still required before marking Task 2.2 CLEAN.

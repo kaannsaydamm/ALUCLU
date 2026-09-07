@@ -186,10 +186,22 @@ class PersistentRaceKeyringBackend:
         )
 
     def _connect(self) -> sqlite3.Connection:
-        connection = sqlite3.connect(self._vault_path, timeout=10)
-        connection.execute("PRAGMA journal_mode=WAL")
-        connection.execute("PRAGMA synchronous=FULL")
-        return connection
+        deadline = time.monotonic() + self._timeout_seconds
+        while True:
+            connection = sqlite3.connect(self._vault_path, timeout=10)
+            try:
+                connection.execute("PRAGMA journal_mode=WAL")
+                connection.execute("PRAGMA synchronous=FULL")
+            except sqlite3.OperationalError as exc:
+                connection.close()
+                transient_lock = any(
+                    marker in str(exc).lower() for marker in ("locked", "busy")
+                )
+                if not transient_lock or time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.02)
+                continue
+            return connection
 
 
 PersistentRaceKeyringBackend.__module__ = "keyring.backends.Windows"

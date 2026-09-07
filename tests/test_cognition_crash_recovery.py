@@ -23,6 +23,7 @@ from aluclu.cognition import (
 
 MASTER_KEY = b"m" * 32
 CRASH_EXIT_CODE = 73
+SUBPROCESS_TIMEOUT_SECONDS = 60
 
 _CRASH_SCRIPT = textwrap.dedent(
     """
@@ -144,7 +145,7 @@ def test_real_process_bootstrap_crash_recovers_without_weakening_anchor(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -205,7 +206,7 @@ def test_bootstrap_marker_wrong_key_fails_before_state_mutation(tmp_path: Path) 
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -239,7 +240,7 @@ def test_pending_bootstrap_marker_replay_cannot_claim_completed_ledger(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -274,7 +275,7 @@ def test_complete_bootstrap_marker_never_recreates_missing_anchor(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -294,9 +295,7 @@ def test_complete_bootstrap_marker_never_recreates_missing_anchor(
 def test_bootstrap_marker_is_bound_to_exact_database_path(tmp_path: Path) -> None:
     original = tmp_path / "original.sqlite3"
     moved = tmp_path / "moved.sqlite3"
-    original_pending = original.with_suffix(
-        original.suffix + ".bootstrap.pending.json"
-    )
+    original_pending = original.with_suffix(original.suffix + ".bootstrap.pending.json")
     moved_pending = moved.with_suffix(moved.suffix + ".bootstrap.pending.json")
     completed = subprocess.run(
         [
@@ -309,7 +308,7 @@ def test_bootstrap_marker_is_bound_to_exact_database_path(tmp_path: Path) -> Non
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -338,7 +337,7 @@ def test_bootstrap_marker_never_authorizes_unexpected_final_database(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -372,7 +371,7 @@ def test_bootstrap_marker_binds_explicit_store_mode_and_requires_empty_store(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -416,7 +415,7 @@ def test_bootstrap_never_recursively_cleans_reserved_scratch_directory(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -465,7 +464,7 @@ def test_real_process_crash_boundaries_recover_exactly_once(
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,
-        timeout=20,
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
         check=False,
     )
     assert completed.returncode == CRASH_EXIT_CODE, completed.stderr
@@ -553,7 +552,9 @@ def test_same_process_repairs_sqlite_commit_before_receipt_without_duplicate(
         ledger.close()
 
 
-def test_pending_receipt_repairs_only_after_exact_aead_verification(tmp_path: Path) -> None:
+def test_pending_receipt_repairs_only_after_exact_aead_verification(
+    tmp_path: Path,
+) -> None:
     path = tmp_path / "memory.sqlite3"
     store = FileRecordKeyStore(
         tmp_path / "keys.json",
@@ -653,7 +654,9 @@ def test_committed_receipt_rollback_is_not_deleted_as_pending(tmp_path: Path) ->
     assert reference.state is RecordKeyState.COMMITTED
 
 
-def test_anchor_ahead_of_otherwise_matching_database_fails_closed(tmp_path: Path) -> None:
+def test_anchor_ahead_of_otherwise_matching_database_fails_closed(
+    tmp_path: Path,
+) -> None:
     path = tmp_path / "memory.sqlite3"
     store = FileRecordKeyStore(
         tmp_path / "keys.json",
