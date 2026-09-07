@@ -4,11 +4,21 @@ import hashlib
 import inspect
 import struct
 from collections.abc import Callable
-from dataclasses import FrozenInstanceError, fields, replace
+from dataclasses import FrozenInstanceError, asdict, fields, is_dataclass, replace
 from enum import Enum
 from typing import Any, cast
 
 import pytest
+
+import aluclu.cognition as cognition
+from aluclu.cognition import (
+    InputBoundaryError,
+    LedgerCursorCheckpoint,
+    canonical_json_bytes,
+    strict_json_loads,
+)
+from aluclu.cognition import codec as task1_codec
+from aluclu.cognition import observation as observation_module
 from aluclu.cognition.observation import (
     BoundarySignalDigestsV1,
     CanonicalJsonValue,
@@ -40,11 +50,6 @@ from aluclu.cognition.observation import (
     sensorium_core_state_from_json_value,
     sensorium_core_state_to_json_value,
 )
-
-import aluclu.cognition as cognition
-from aluclu.cognition import InputBoundaryError, canonical_json_bytes, strict_json_loads
-from aluclu.cognition import codec as task1_codec
-from aluclu.cognition import observation as observation_module
 
 MAX_I63 = (1 << 63) - 1
 OBSERVATION_ENVELOPE_MAX_BYTES = 262_144
@@ -314,7 +319,10 @@ def _observation(
     )
 
 
-def _assert_frozen_kw_only_slotted(instance: object, field_names: tuple[str, ...]) -> None:
+def _assert_frozen_kw_only_slotted(
+    instance: object, field_names: tuple[str, ...]
+) -> None:
+    assert is_dataclass(instance) and not isinstance(instance, type)
     assert tuple(field.name for field in fields(instance)) == field_names
     assert not hasattr(instance, "__dict__")
     first_field = field_names[0]
@@ -446,6 +454,8 @@ def test_canonical_json_value_has_only_validated_deeply_immutable_bytes() -> Non
 
 def test_canonical_json_value_constructor_is_disabled_and_decoder_is_exact() -> None:
     with pytest.raises(TypeError):
+        cast(Any, CanonicalJsonValue)()
+    with pytest.raises(TypeError):
         cast(Any, CanonicalJsonValue)(b"{}")
     with pytest.raises(InputBoundaryError):
         CanonicalJsonValue.from_canonical_bytes(b'{"z":1,"a":2}')
@@ -460,7 +470,9 @@ def test_canonical_json_value_constructor_is_disabled_and_decoder_is_exact() -> 
     assert canonical.to_value() == {"a": 2, "z": 1}
 
 
-def test_content_preserves_unicode_code_points_and_digest_distinguishes_nfc_nfd() -> None:
+def test_content_preserves_unicode_code_points_and_digest_distinguishes_nfc_nfd() -> (
+    None
+):
     composed = CanonicalJsonValue.from_value({"text": "é"})
     decomposed = CanonicalJsonValue.from_value({"text": "e\u0301"})
 
@@ -546,7 +558,9 @@ def test_provenance_accepts_all_exact_inclusive_boundaries() -> None:
     assert decode_provenance(encode_provenance(provenance)) == provenance
 
 
-def test_observation_request_is_frozen_keyword_only_slotted_and_exactly_shaped() -> None:
+def test_observation_request_is_frozen_keyword_only_slotted_and_exactly_shaped() -> (
+    None
+):
     request = _request()
     _assert_frozen_kw_only_slotted(
         request,
@@ -680,7 +694,9 @@ def test_retrieval_text_raw_and_normalized_utf8_limits_are_independent() -> None
         _request(retrieval_text="\u0958" * 683)
 
 
-def test_request_decoder_rejects_noncanonical_arrays_unknown_source_and_bad_schema() -> None:
+def test_request_decoder_rejects_noncanonical_arrays_unknown_source_and_bad_schema() -> (
+    None
+):
     encoded = encode_observation_request(_request())
 
     def unsort_goals(wire: dict[str, Any]) -> None:
@@ -982,19 +998,58 @@ def test_maximum_goal_and_participant_sets_leave_only_fixed_digests_in_core() ->
     goals = tuple(f"g{index:03d}-" + ("a" * 251) for index in range(32))
     participants = tuple(f"p{index:03d}-" + ("b" * 251) for index in range(32))
     request = _request(
+        observation_id="obs:" + ("x" * 252),
         provenance=_provenance(parent_observation_ids=()),
         goal_ids=goals,
         participant_ids=participants,
     )
-    core = _post_core(request)
+    core = _post_core(
+        request,
+        episode_observation_count=MAX_I63,
+        episode_canonical_request_bytes=MAX_I63,
+        last_observation_sequence=MAX_I63,
+        last_observed_at_ns=MAX_I63,
+    )
     encoded = encode_sensorium_core_state(core)
 
     assert len(encoded) <= SENSORIUM_CORE_MAX_BYTES
     assert set(cast(dict[str, Any], strict_json_loads(encoded))) == CORE_KEYS
     assert goals[0].encode("ascii") not in encoded
     assert participants[0].encode("ascii") not in encoded
-    assert b"goal_ids" not in encoded
-    assert b"participant_ids" not in encoded
+    assert b'"goal_ids":' not in encoded
+    assert b'"participant_ids":' not in encoded
+
+    # Pure frozen-wire budget evidence; runtime wrapper validation is Task 2.2+.
+    # NUL uses six JSON bytes per UTF-8 byte, maximizing ledger-ID escaping.
+    checkpoint = LedgerCursorCheckpoint(
+        ledger_id="\x00" * 256,
+        snapshot_head_sequence=MAX_I63,
+        snapshot_head_hash="f" * 64,
+        next_sequence=MAX_I63 + 1,
+    )
+    checkpoint_wire = asdict(checkpoint)
+    assert set(checkpoint_wire) == {
+        "ledger_id",
+        "snapshot_head_sequence",
+        "snapshot_head_hash",
+        "next_sequence",
+    }
+    assert checkpoint.next_sequence == checkpoint.snapshot_head_sequence + 1
+    wrapper = {
+        "schema": "aluclu.sensorium-state.v1",
+        "core": strict_json_loads(encoded),
+        "task1_checkpoint": checkpoint_wire,
+    }
+    wrapper_bytes = canonical_json_bytes(wrapper)
+    decoded_wrapper = strict_json_loads(wrapper_bytes)
+    assert type(decoded_wrapper) is dict
+    assert set(decoded_wrapper) == {
+        "schema",
+        "core",
+        "task1_checkpoint",
+    }
+    assert len(wrapper_bytes) <= 4096
+    assert b'"task1_checkpoint":' not in encoded
 
 
 def test_core_decoder_rejects_checkpoint_fields_and_checks_size_before_parsing(
@@ -1137,7 +1192,9 @@ def test_canonical_observation_builder_rejects_profile_and_episode_mismatches() 
             request=request,
             boundary_decision=_decision(request),
             pre_core_state_digest=derive_sensorium_core_state_digest(_initial_core()),
-            post_core_state=replace(_post_core(request), boundary_profile_id=other_profile),
+            post_core_state=replace(
+                _post_core(request), boundary_profile_id=other_profile
+            ),
             pre_append_head_sequence=0,
             pre_append_head_hash=ZERO_HASH,
             boundary_profile_id=BOUNDARY_PROFILE_ID,
@@ -1167,9 +1224,7 @@ def test_observation_decoder_recomputes_request_content_and_post_core_digests() 
         cast(dict[str, Any], value["request"])["content"] = {"tampered": True}
 
     def mutate_post_core(value: dict[str, Any]) -> None:
-        cast(dict[str, Any], value["post_core_state"])[
-            "episode_observation_count"
-        ] = 2
+        cast(dict[str, Any], value["post_core_state"])["episode_observation_count"] = 2
 
     def mutate_request_digest(value: dict[str, Any]) -> None:
         value["request_digest"] = "d" * 64
@@ -1212,9 +1267,7 @@ def test_post_core_and_digest_basis_exclude_task1_checkpoint_and_post_head() -> 
 
     build_parameters = inspect.signature(build_canonical_observation).parameters
     assert "post_append_head_hash" not in build_parameters
-    digest_parameters = inspect.signature(
-        derive_sensorium_core_state_digest
-    ).parameters
+    digest_parameters = inspect.signature(derive_sensorium_core_state_digest).parameters
     assert tuple(digest_parameters) == ("core",)
 
 
