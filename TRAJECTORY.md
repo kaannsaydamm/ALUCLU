@@ -900,3 +900,17 @@ session can map each decision to the exact diff.
   reversal, bounded paged replay, frozen-head continuation, 8,192-observation
   state bounds, shred-safe replay, and partition/restart byte identity. No Task
   2.3 implementation is claimed yet.
+
+## 2026-09-07 — Environment attribution correction
+
+- User clarified that the repository's `OneDrive\Desktop` path is a historical
+  Windows Desktop redirection artifact caused by an old configuration mistake;
+  it is not evidence that OneDrive synchronization is active or contributed to
+  test latency. Earlier trajectory wording that listed OneDrive as a possible
+  scheduling/load factor was unsupported and must not be treated as a root-cause
+  finding. The evidence supports only this narrower conclusion: one child
+  process exceeded a fixed 20-second harness budget during a full-suite Windows
+  run, passed in 3.79 seconds when isolated, and the finite 60-second test budget
+  subsequently passed the full suite. No specific external load source is
+  established. Future portability/runtime reporting will distinguish filesystem
+  path location from verified sync-provider activity.
