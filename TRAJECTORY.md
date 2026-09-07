@@ -914,3 +914,40 @@ session can map each decision to the exact diff.
   subsequently passed the full suite. No specific external load source is
   established. Future portability/runtime reporting will distinguish filesystem
   path location from verified sync-provider activity.
+
+## 2026-09-07 — Task 2.3 deterministic segmentation and bounded replay
+
+- Task 2.2 CLEAN marker is `5c3d46b`; environment-attribution correction is
+  `34c3382`. The unchanged parent plan authorizes Task 2.3. An ignored execution
+  brief freezes its scope and records one plan gap: the parent names a frozen
+  replay page policy but specifies no type/fields, while the public Task 1 cursor
+  exposes no pre-read payload-size peek. The minimal honest Task 2.3 policy is
+  therefore exact `max_records` in 0..8,192; its hard bound composes with Task 1's
+  existing 2 MiB payload cap, while actual canonical bytes remain exact work
+  telemetry. No finer byte-admission or Task 1 API claim is made.
+- Added fixture-first Task 2.3 RED suites. Boundary oracles freeze first/continue,
+  combined reason precedence, deterministic literal episode IDs, profile-change
+  ingest, exact integer time-gap/reversal behavior, strict count/request-byte
+  limits, and duplicate counter idempotence. Replay oracles import the missing
+  closed policy/work/continuation/complete/incomplete contracts and require
+  zero-budget INCOMPLETE, exact resume, frozen wire shapes, a 5,120-byte
+  continuation cap, and empty-snapshot completion. The next command must capture
+  boundary results separately from the expected missing replay API collection
+  RED; no Task 2.3 production implementation exists yet.
+- First boundary-only RED run executed five tests: three passed and two failed.
+  One failure is the intended production gap: ingesting a new observation under
+  a new profile returns STATE_CONFLICT instead of applying a PROFILE_CHANGED
+  boundary. The other exposed a test-author literal typo; the episode domain
+  hash was recomputed from the frozen profile/session/first-observation inputs
+  and the fixture was corrected to `episode:7c8a...3310`. No production code has
+  changed and the profile-change RED remains.
+- Corrected boundary rerun is the intended product RED: four passed and only
+  `test_profile_change_precedes_other_reasons_and_ingest_accepts_it` failed,
+  because current ingest returns STATE_CONFLICT. Separate replay collection
+  produced exactly one expected ImportError for missing
+  `SensoriumReplayCompleteV1` (the replay contract family/API is unimplemented).
+  Both new test files are Ruff-clean. Independent Task 1 mapping confirmed no
+  persistence change is needed: fresh `cursor`, mid-snapshot `suspend`, exact
+  `resume_verified`, and propagated `LedgerSnapshotChanged` supply the full
+  frozen-head lifecycle. This tests-only RED checkpoint is ready; no GREEN or
+  Task 2.3 behavior is claimed.
