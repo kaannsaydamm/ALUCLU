@@ -33,7 +33,7 @@ agent context disappears.
 | Task | State | Authoritative checkpoint | Next gate |
 |---|---|---|---|
 | 1 — encrypted lifetime persistence | CLEAN | `f5a30e0` | Frozen unless a concrete regression is proved |
-| 2 — sensorium/recollection | TASK 2.0–2.1 CLEAN / 2.2 NEXT | `03a2792`; corrected plan hash `01669B9D...8357` | Freeze Task 2.2 brief, write ingest/exact-recall RED oracles |
+| 2 — sensorium/recollection | TASK 2.0–2.2 CLEAN / 2.3 NEXT | `be08f41`; corrected plan hash `01669B9D...8357` | Write deterministic segmentation/bounded replay RED oracles |
 | 3–14 | NOT STARTED | global roadmap | Start only after every preceding task is CLEAN |
 
 ## Reconstructed committed history
@@ -881,3 +881,22 @@ session can map each decision to the exact diff.
   and 33/33 affected crash/keyring tests in 115.25 seconds. Architecture remains
   CLEAR. The candidate is approved for an exact owned-file commit; postcommit
   base-to-head review is still required before marking Task 2.2 CLEAN.
+- Task 2.2 implementation was committed as
+  `be08f4122643314029a0455e3d4459e25196ff5d` (`Build Task 2 ingest and exact
+  recall slice`): exactly ten expected files, 2,235 insertions/18 deletions, and
+  a clean worktree. Fresh review used the immutable exact range
+  `7c55ec030f6f60df7cf5b48ffa8311a610912581..be08f4122643314029a0455e3d4459e25196ff5d`.
+- Exact postcommit code/spec/security review returned APPROVE with zero findings,
+  independently confirmed the ten-file scope/no drift/plan hash, and reran the
+  committed Task 2.2 focused suite (20 passed in 22.47 seconds), Pyright 0/0/0,
+  Ruff, and diff-check. Exact postcommit architecture review returned CLEAR:
+  caller-owned session and one-way sensorium/recollection ownership remain
+  intact; checkpoint/digest guards, additive exports, and test-infrastructure
+  repairs create no Task 2.3 blocker.
+- Controller synthesis is `APPROVE + CLEAR` on the exact committed diff, with
+  dual-runtime Task 2 evidence, retained RED artifacts, a clean 715-test full
+  suite, and clean static gates. Task 2.2 is therefore CLEAN at `be08f41`.
+  Task 2.3 is next: fixture-first deterministic boundary precedence, typed time
+  reversal, bounded paged replay, frozen-head continuation, 8,192-observation
+  state bounds, shred-safe replay, and partition/restart byte identity. No Task
+  2.3 implementation is claimed yet.
