@@ -33,7 +33,7 @@ agent context disappears.
 | Task | State | Authoritative checkpoint | Next gate |
 |---|---|---|---|
 | 1 — encrypted lifetime persistence | CLEAN | `f5a30e0` | Frozen unless a concrete regression is proved |
-| 2 — sensorium/recollection | TASK 2.0 CLEAN / 2.1 VERIFICATION | `3aa3fd8`; corrected plan hash `01669B9D...8357`; GREEN implementation pending acceptance | Independent review, full/static/determinism gates |
+| 2 — sensorium/recollection | TASK 2.0–2.1 CLEAN / 2.2 NEXT | `03a2792`; corrected plan hash `01669B9D...8357` | Freeze Task 2.2 brief, write ingest/exact-recall RED oracles |
 | 3–14 | NOT STARTED | global roadmap | Start only after every preceding task is CLEAN |
 
 ## Reconstructed committed history
@@ -725,3 +725,21 @@ session can map each decision to the exact diff.
   static, deterministic-process, dynamic-QA, code-review, and architecture
   evidence for the precommit candidate. The next mandatory gate is an owned-file
   commit followed by fresh base-to-head review; Task 2.2 remains unstarted.
+- Task 2.1 implementation was committed as
+  `03a2792ddd7ca1d385932ad611746ca1acbeb060` (`Establish deterministic Task 2
+  observation contracts`), containing exactly nine owned files. The worktree
+  was clean immediately after the commit.
+- Fresh postcommit review used the exact diff
+  `3aa3fd8f235ac2f81e4f88485a8bc2b9555bd813..03a2792ddd7ca1d385932ad611746ca1acbeb060`.
+  Independent code/spec/security reviewer `/root/task21_code_review` returned
+  APPROVE with zero CRITICAL/HIGH/MEDIUM/LOW findings after independently
+  confirming the plan hash, wrapper sizes, canonical manifest, Pyright, Ruff,
+  compileall, clean worktree, and retained full/QA evidence. Independent
+  architecture reviewer `/root/task21_repair_arch` returned CLEAR: pure one-way
+  module boundaries, additive exports, no ledger/session coupling, no checkpoint
+  self-hash cycle, and no Task 2.2 compatibility blocker. Its only articulated
+  tradeoff is duplicate frozen 4,096-byte caps, intentionally pinned by tests.
+- Controller synthesis is therefore `APPROVE + CLEAR`; every Task 2.1 exit gate
+  is clean. Task 2.1 is marked CLEAN at code checkpoint `03a2792`. No later
+  functionality is inferred: storage-pure ingestion and direct exact recall are
+  still unimplemented and become Task 2.2's next fixture-first RED story.
