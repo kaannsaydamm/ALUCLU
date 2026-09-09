@@ -267,6 +267,32 @@ def test_existing_incomplete_database_is_never_initialized(tmp_path: Path) -> No
         connection.close()
 
 
+def test_schema_v2_requires_explicit_migration_without_mutation(tmp_path: Path) -> None:
+    path = tmp_path / "memory.sqlite3"
+    connection = sqlite3.connect(path)
+    try:
+        connection.execute("CREATE TABLE legacy_v2(value TEXT)")
+        connection.execute("INSERT INTO legacy_v2(value) VALUES ('preserve')")
+        connection.execute("PRAGMA user_version = 2")
+        connection.commit()
+    finally:
+        connection.close()
+
+    with pytest.raises(
+        LedgerMigrationRequired,
+        match="explicit migration to schema v3",
+    ):
+        EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
+
+    connection = sqlite3.connect(path)
+    try:
+        assert connection.execute("PRAGMA user_version").fetchone() == (2,)
+        assert connection.execute("SELECT value FROM legacy_v2").fetchone() == (
+            "preserve",
+        )
+    finally:
+        connection.close()
+
 def test_relative_ledger_path_does_not_follow_later_chdir(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -286,14 +312,14 @@ def test_relative_ledger_path_does_not_follow_later_chdir(
     assert not (second / "memory.sqlite3").exists()
 
 
-def test_schema_v2_and_exact_metadata_keys_are_created(tmp_path: Path) -> None:
+def test_schema_v3_and_exact_metadata_keys_are_created(tmp_path: Path) -> None:
     path = tmp_path / "memory.sqlite3"
     with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)):
         pass
 
     connection = sqlite3.connect(path)
     try:
-        assert connection.execute("PRAGMA user_version").fetchone() == (2,)
+        assert connection.execute("PRAGMA user_version").fetchone() == (3,)
         metadata = {row[0] for row in connection.execute("SELECT key FROM metadata")}
         assert metadata == {
             "schema_version",
@@ -302,6 +328,20 @@ def test_schema_v2_and_exact_metadata_keys_are_created(tmp_path: Path) -> None:
             "key_check",
             "head_sequence",
             "head_hash",
+        }
+        tables = {
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master "
+                "WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
+            )
+        }
+        assert tables == {
+            "append_witnesses",
+            "history",
+            "metadata",
+            "records",
+            "tombstones",
         }
     finally:
         connection.close()

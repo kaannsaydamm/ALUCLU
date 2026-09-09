@@ -1245,7 +1245,48 @@ observation-to-memory path.
 
 ### Task 2.3 — deterministic segmentation and bounded replay
 
-**Files:** `sensorium.py`, sensorium/E2E tests.
+**Files:** `sensorium.py`, sensorium/E2E tests, plus the narrowly reopened
+Task 1 `ledger.py`/ledger-session tests described below.
+
+Security amendment after RED review:
+
+- Task 1 schema v2 cannot prove the Task 2 pre/post-core lineage of an append
+  after crypto-shred destroys its payload key. Task 2.3 therefore reopens Task
+  1 for one additive schema-v3 `append_witnesses` projection; no other Task 1
+  behavior is redesigned.
+- Existing schema-v2 ledgers fail with explicit `LedgerMigrationRequired` and
+  are not mutated. A separately reviewed crash-safe migrator is outside this
+  task. History record hash/AAD framing remains version 2, so the storage schema
+  bump does not silently redefine existing record cryptography.
+- Only the private append path reached after `ingest_observation` validation
+  atomically mints a witness. Generic `append`/`append_once`, including a raw
+  canonical-looking Task 2 payload, never mints one. The underscore method is a
+  library trust boundary, not a defense against hostile code executing inside
+  the same Python process.
+- Each witness is HMAC-authenticated with a ledger-internal key and bound to
+  ledger ID, event ID, append sequence, append record hash, exact witness
+  schema, post-core link digest, and a canonical body of IDs/digests/profile and
+  append/core counters. It stores no observation content, retrieval text,
+  provenance text, or record key.
+- When a predecessor core is missing, replay must walk an exact ordered chain
+  of tombstoned Task 2 witnesses back to the currently adopted core. It must
+  also verify an exact live ingest witness for the first surviving observation;
+  otherwise a generic raw successor could borrow a valid missing witness while
+  presenting an unvalidated post core. Unrelated live/shredded records and
+  unwitnessed Task 2-shaped records never bridge the chain.
+- When the predecessor core is present but the exact boundary profile object is
+  unavailable, replay likewise requires the live ingest witness instead of
+  accepting a transition it cannot recompute. A raw record never turns a
+  missing profile into implicit trust; an ingested profile change remains
+  replayable because its exact append binding survives.
+- Witness reads use the same frozen verified-session certificate and remain
+  valid across continuation pages without changing the frozen continuation
+  wire. Lookup and chain traversal are bounded by the 8,192-record replay cap.
+- Deleting a witness without its HMAC is intentionally an availability attack:
+  replay fails closed because the bridge disappears. The history chain does
+  not commit to witness presence, so this task makes no rollback-detection claim
+  for isolated witness deletion; preventing that denial of service requires a
+  later history-format/migration design rather than resurrecting shredded data.
 
 RED oracles:
 

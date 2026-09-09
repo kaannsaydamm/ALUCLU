@@ -951,3 +951,402 @@ session can map each decision to the exact diff.
   `resume_verified`, and propagated `LedgerSnapshotChanged` supply the full
   frozen-head lifecycle. This tests-only RED checkpoint is ready; no GREEN or
   Task 2.3 behavior is claimed.
+- Implemented the first bounded replay candidate and removed the unreachable
+  profile-transition guard. New observations may now change boundary profiles;
+  the transition is still canonicalized against the caller-supplied immutable
+  profile and records `PROFILE_CHANGED` before every other applicable reason.
+  Duplicate retry branches validate the stored observation's profile rather
+  than incorrectly requiring its predecessor core to already use that profile.
+- Added immutable replay page-policy, page-work, continuation, incomplete, and
+  complete records plus exact canonical wire projections. The frozen minimal
+  policy is `max_records` in `0..8192`; zero work on a nonempty snapshot returns
+  a distinct continuation, while an empty snapshot completes immediately.
+  Continuations carry the exact Task 1 frozen-head checkpoint and cumulative
+  work counters, are capped at 5,120 canonical bytes, and resume only through
+  `VerifiedLedgerSession.resume_verified`.
+- The initial Task 2.3 implementation rerun is GREEN for nine focused oracles:
+  the five deterministic boundary tests, three initial replay lifecycle/wire
+  tests, and the additive root-export check all passed. Ruff found only import
+  ordering while the behavior tests passed; that mechanical ordering issue was
+  corrected before continuing. Task 2.3 remains uncommitted and not CLEAN.
+- Expanded replay validation with frozen-head mutation, page partition,
+  shred-gap, malformed-record, and restart cases. Fourteen focused Task 2.3
+  tests now pass: a changed head raises `LedgerSnapshotChanged`; one-shot and
+  page sizes 1/2/3/7/16 produce identical completed state; shredding the first
+  observation never resurrects it and surviving authenticated post-core state
+  is adopted; a payload that claims the Task 2 observation schema but is
+  malformed raises `LedgerIntegrityError` and releases the cursor; and reopen
+  replay at the same head is byte-identical. Independent validator dispatch was
+  attempted but its model quota expired before inspection, so no independent
+  approval is claimed and that gate remains mandatory.
+- Added strict JSON-value decoders for every new Task 2.3 replay record. Policy,
+  page-work, continuation, incomplete, and complete values now round-trip their
+  exact versioned schemas; unknown fields, boolean-as-integer counters, invalid
+  checkpoint relationships, and constructor bounds fail closed. Root exports
+  remain additive. Added an unbroken-predecessor integrity oracle proving a
+  stored but forged boundary decision is rejected after deterministic
+  recomputation. The focused Task 2.3 package passed 17 tests; Ruff and
+  compileall passed. Pyright 1.1.413 was no longer present in either active venv
+  or PATH after reboot, so that static gate remains pending restoration rather
+  than being reported as clean.
+- Executed the real 8,192-observation Task 2.3 scale oracle through the
+  production encrypted ledger, canonical ingest, and frozen-head replay paths.
+  It passed all assertions in 6,705.19 seconds (1:51:45): exactly 8,192 records
+  were examined and applied, the replayed completed state equalled the live
+  ingest state, its last observation sequence was 8,192, and its canonical
+  encoding remained at or below the 4,096-byte hard limit. Process counters
+  showed the durable ingest write phase complete before the replay-only read
+  phase; no deadlock or retry was observed. Because this is intentionally
+  expensive evidence, the oracle is moved into the plan-designated dedicated
+  `test_cognition_task2_scale.py` lane rather than the fast replay test module.
+  Task 2.3 remains GREEN, not CLEAN, pending post-move focused reruns, dual
+  runtime/full regression, and independent review.
+- A post-scale semantic-forgery oracle exposed a real replay classification
+  defect before commit: the fail-closed `claims_observation` branch compared
+  against a non-wire literal (`aluclu.canonical-observation.v1`) while canonical
+  Task 2 records actually use `aluclu.observation.v1`. Consequently a malformed
+  record with the real Task 2 schema, including a valid-looking envelope whose
+  post core named a different last observation ID, could be skipped as
+  unrelated instead of rejected. The first focused rerun was intentionally RED
+  on that case. The implementation now uses one internal canonical-observation
+  schema constant matching the frozen observation codec, and replay also
+  requires post-core `last_observation_id` to equal the ledger event/request ID.
+  A corrected focused rerun is mandatory before this repair is GREEN.
+- Corrected the real-schema classification defect and reran the complete fast
+  Task 2.3 package: 18/18 tests passed. Ruff passed, the three focused
+  shred/malformed/post-core integrity cases passed, and Pyright 1.1.413 was
+  restored through a pinned ephemeral runner with the active CPython 3.12
+  interpreter; after one real optional-string narrowing repair it reported 0
+  errors, 0 warnings, and 0 informations. The runner generated an unrelated
+  root `uv.lock`; creation time proved it was a tool artifact from this gate,
+  so it was removed without changing project dependency declarations.
+- The wider non-scale Task 2 suite contains 199 tests across observation,
+  recall-feature, sensorium, boundary, replay, recollection, and E2E modules.
+  All 199 passed under CPython 3.12.13 and all 199 passed under CPython 3.13.5.
+  The 8,192 scale oracle remains separate and already passed on CPython 3.12.13;
+  it was not silently skipped inside either 199-test claim. Both attempted
+  independent review agents exhausted their external quota before reading the
+  candidate, so no independent verdict is claimed; retry is scheduled after
+  their reported 07:50 reset.
+- Expanded the deterministic boundary suite from combined precedence coverage
+  to an isolated literal matrix. Forced, session, time-gap, goal, tool-phase,
+  participants, topic-key, profile, observation-count, and request-byte
+  boundaries each now produce exactly one expected reason and a hard-coded
+  episode ID; FIRST and CONTINUE remain covered separately. The byte fixture
+  also freezes the two-request canonical threshold at 1,198 bytes. All seven
+  boundary tests passed and scoped Pyright remained 0/0/0. A CPython 3.13
+  mirror and repository-wide regression are still required after this final
+  oracle expansion.
+- The isolated boundary matrix passed 7/7 under CPython 3.13.5 as well as
+  CPython 3.12.13. A fresh repository-wide CPython 3.13.5 regression then
+  passed all 734 non-scale tests with 0 failures, 0 errors, and 0 skips. The
+  retained xUnit2 JUnit reports 1,098.208 seconds, timestamp
+  `2026-09-08T16:12:58.808539+03:00`, and host `Kaan`. The sole warning is the
+  pre-existing pytest `record_property`/xUnit2 compatibility warning in the
+  real keyring smoke test. The deliberately separate 8,192 scale oracle is not
+  included in the 734 count; its 1:51:45 PASS remains separate evidence.
+  Task 2.3 is pre-review GREEN, not CLEAN.
+- Independent review then found a composite replay hole not covered by the
+  direct shred or partition tests: observation sequence 1 can be shredded,
+  an unrelated live record can remain at sequence 2, and a surviving
+  observation at sequence 3 can cross a page boundary after that unrelated
+  record. The current loop advances its local expected sequence across the
+  unrelated record and then rejects the authenticated surviving post core as
+  though history were unbroken. Added one exact regression that requires both
+  one-shot and one-record pages to adopt the same surviving bounded core. This
+  is an intentional post-review RED checkpoint; no repair or CLEAN verdict is
+  claimed yet. The finding also disproves the initial architecture review's
+  claim that the frozen continuation alone preserves enough gap provenance.
+- Ran the new composite oracle alone under CPython 3.12.13 and observed the
+  intended RED failure in production code: even the one-shot replay raises
+  `LedgerIntegrityError: Task 2 replay predecessor core digest does not match`
+  at the surviving sequence-3 observation. This confirms the defect is not a
+  test-only page-serialization artifact. The repair must distinguish an
+  authenticated shredded append from merely interleaved unrelated live
+  records, and that distinction must remain available after restart.
+- Implemented the narrow repair boundary without changing the frozen Task 2
+  continuation wire: an active `VerifiedLedgerSession` can now answer whether
+  its already-verified snapshot proves a genuinely shredded append in one
+  caller-bounded open sequence interval. The query is read-only, certificate-
+  fenced, transactionally cleaned up, and rejects booleans, reversed/empty
+  ranges, and bounds beyond the snapshot. Sensorium replay now relaxes a
+  predecessor-core mismatch only when that proof exists between the last
+  adopted observation and the current surviving observation; unrelated live
+  records alone cannot open the integrity gate. Added direct Task 1 session
+  tests, including use while a cursor is active. This is a candidate GREEN
+  repair pending focused execution and independent review; Task 1's change is
+  an additive read-only exception justified by the concrete RED regression.
+- Added the complementary fail-closed oracle: a live predecessor observation,
+  then an unrelated live record, then a well-formed observation envelope with
+  a forged predecessor-core digest must still raise. This freezes the security
+  distinction that motivated the repair: sequence distance or unrelated live
+  traffic is never treated as shred evidence. The nine initial repair-focused
+  cases passed on CPython 3.12.13 before this complementary oracle was added.
+- The complete focused segmentation/replay package is GREEN at 21/21, including
+  the composite recovery and complementary forged-predecessor cases. The new
+  verified-session primitive plus all seven strict bound variants passed 8/8.
+  Ruff, compileall, `git diff --check`, and pinned Pyright 1.1.413 over the
+  changed production/test surface passed; Pyright reported 0 errors, 0
+  warnings, and 0 informations. A broader combined Task 2 plus Task 1 session
+  regression passed 314/314 independently under CPython 3.12.13 in 221.798s
+  and CPython 3.13.5 in 211.391s, with zero failures, errors, or skips in both
+  JUnit reports. Task 2.3 returns to review-ready GREEN, not CLEAN; the new
+  cross-layer exception and exact security distinction still require fresh
+  independent code and architecture review, followed by a repository-wide
+  controller rerun.
+- Extended the established Task 1 lifecycle/ownership oracles to the additive
+  range-proof method: it fails after session close and cannot be invoked from a
+  non-owner thread, including while the owning thread holds a live cursor. This
+  closes the method-surface gap before review; focused rerun is pending.
+- Independent code re-review rejected the first repair with one HIGH finding:
+  the new range proof authenticates that an append was shredded, but not that
+  the shredded append was a Task 2 observation. A valid observation followed
+  by a shredded unrelated record can therefore authorize a later well-formed
+  envelope whose predecessor-core digest was forged. Added the exact public-
+  API reproduction as a fail-closed oracle. It must raise
+  `LedgerIntegrityError`; the current generic proof is expected to make this
+  test RED. Task 2.3 is reopened and no prior CLEAR/CLEAN claim survives this
+  semantic blocker.
+- Executed that oracle alone under CPython 3.12.13 and observed the intended
+  RED result: replay completed instead of raising. This independently confirms
+  the reviewer's reproduction. A usable repair therefore needs authenticated,
+  content-free record-kind provenance that survives key destruction; event-ID
+  shape or the existence of a generic tombstone is not sufficient evidence.
+- Removed one validator-written trajectory paragraph that violated its
+  read-only assignment and contradicted the live RED security oracle. Its
+  unsourced claim of a new scale pass and manually interrupted full-suite run
+  is not accepted as controller evidence. The earlier controller-owned 8,192
+  PASS remains valid for the pre-repair replay path; the current candidate is
+  RED solely on the authenticated lineage-witness blocker above.
+- Architecture and code review now agree that the v2 ledger projection cannot
+  soundly satisfy both shred-safe replay availability and fail-closed Task 2
+  integrity: after key destruction it retains no authenticated semantic link
+  from a shredded observation's pre/post core digests. The repair boundary is
+  therefore frozen as a narrow Task 1 schema-v3 exception. Observation ingest
+  will atomically add an HMAC-authenticated, content-free append witness bound
+  to ledger ID, event ID, append sequence, append record hash, witness schema,
+  and link digest; generic `append_once` will not mint one. Replay will accept
+  a predecessor mismatch only when the same verified snapshot contains the
+  tombstoned Task 2 witness whose post-core link digest exactly equals the
+  surviving observation's pre-core digest and whose append sequence lies
+  strictly after the current core and before that observation. The frozen
+  Task 2 continuation wire remains unchanged. History/AAD chain framing stays
+  v2 so schema-v3 creation does not silently redefine record cryptography;
+  pre-existing schema-v2 ledgers fail with explicit migration-required rather
+  than being mutated without a separately reviewed crash-safe migrator.
+- Added the issuance-boundary RED oracle before implementation: a canonical-
+  looking Task 2 envelope inserted through generic `session.append_once`, then
+  shredded, must not become a lineage bridge for a later envelope. Only the
+  private atomic path reached by validated `ingest_observation` may mint the
+  authenticated witness. This prevents strict payload shape alone from being
+  laundered into proof of a previously validated cognition transition.
+- Ran the issuance-boundary oracle under CPython 3.12.13 and observed the
+  intended RED failure: the generic shredded Task 2-shaped append currently
+  bridges replay and completes instead of raising. The new v3 witness path
+  must turn this exact case GREEN without weakening legitimate ingested-shred
+  recovery.
+- Resumed after the host reboot and audited the partially written schema-v3
+  ledger diff before trusting it. Compileall passed, while the first focused
+  session run exposed a mechanical v2-to-v3 fixture drift: the external
+  metadata touch helper was restoring byte `2` and consequently triggered the
+  new migration guard. Updated that fixture and the exact schema-creation
+  oracle to v3. Hardened the unfinished witness value object so its HMAC is
+  always computed from the frozen canonical body bytes rather than a caller-
+  mutable JSON reference, and restricted generic witness schema tokens to the
+  canonical lowercase ASCII alphabet. This is still implementation-in-
+  progress: sensorium has not yet switched from the rejected generic shred
+  boolean, and no CLEAN claim is made.
+- Replaced that rejected boolean gate in production. Validated
+  `ingest_observation` now uses the private atomic append-with-witness path;
+  generic append remains witness-free. The content-free Task 2 witness carries
+  only canonical IDs, digests, profile identity, and append/core lineage
+  counters. Replay asks for an HMAC-verified, tombstoned witness whose exact
+  post-core link equals the missing predecessor digest, validates the complete
+  ledger-supplied append binding plus the strict Task 2 body, and walks
+  backwards until it reaches the currently adopted core. That backwards walk
+  deliberately supports multiple consecutive shredded observations and
+  rejects a chain containing any raw/unwitnessed Task 2-shaped append. The
+  ledger query now returns authenticated append sequence/event/hash metadata
+  alongside the body, and the overly weak generic shred-range API has been
+  removed from production and its direct tests. Focused RED-to-GREEN execution
+  and dedicated witness tamper/atomicity coverage are still pending.
+- First post-integration execution is GREEN: the existing ledger package
+  completed 40/40, the verified-session package completed 72/72, and the
+  sensorium replay package completed 16/16. The latter includes both security
+  RED oracles that previously completed incorrectly: an unrelated shredded
+  append and a generic raw Task 2-shaped shredded append can no longer bridge
+  a forged predecessor digest. Ruff over the touched implementation/tests and
+  cognition compileall also passed. These are focused results only; the new
+  witness primitive still needs its own atomicity/tamper/idempotency oracles,
+  multi-witness recovery, dual-runtime and full-repository gates before review.
+- Tightened the candidate after identifying a second issuance-boundary nuance:
+  proving the missing predecessors is insufficient if the first surviving
+  observation itself came through generic raw append, because replay cannot
+  recompute a transition whose predecessor body was shredded. Gap recovery
+  now requires both (a) an exact backwards chain of tombstoned ingest
+  witnesses to the adopted core and (b) an exact live ingest witness bound to
+  the surviving event ID, sequence, record hash, post-core link and all of its
+  non-content observation digests/append metadata. Added an oracle preventing
+  a raw successor from borrowing a valid missing witness, plus a positive
+  two-consecutive-shred/page-boundary oracle. Added Task 1 coverage for private
+  issuance versus generic append, live/tombstoned visibility, active-cursor
+  reads, exact idempotency conflicts, pre-commit fault rollback including key
+  cleanup, body/MAC/history-binding tamper rejection, schema-v2 no-mutation
+  migration refusal, and exact schema-v3 table creation. Execution of this
+  expanded set is pending; no GREEN claim applies to these new assertions yet.
+- The expanded witness security set is now focused GREEN. The complete replay
+  file passed 18/18, including the new raw-successor rejection and the positive
+  two-consecutive-shred chain under one-record pages. Fourteen witness-focused
+  session cases passed, covering lifecycle/thread ownership, strict ranges,
+  private versus generic issuance, live/tombstoned visibility, exact
+  idempotency, injected pre-commit rollback, and three external SQL tamper
+  classes. The three schema-v1/v2/v3 compatibility/exactness cases passed.
+  Ruff and `git diff --check` are clean (Git reports only the repository's
+  existing LF-to-CRLF checkout warnings). Broader dual-runtime and repository
+  gates remain outstanding, so this checkpoint is GREEN but not CLEAN.
+- Extended Task 1 witness coverage again before broad gates: direct lookup now
+  proves an exact witnessed live append and returns no proof for a generic live
+  append. Three post-SQLite-commit interruption boundaries now require
+  recovery-forward to preserve both the encrypted record and its authenticated
+  witness: before key-store commit, before anchor publication, and after anchor
+  publication but before certificate refresh. These new recovery assertions
+  are not counted GREEN until their focused run completes.
+- The extended recovery set passed 17/17 together with the other witness-
+  focused cases. Pinned Pyright 1.1.413 over the changed cognition production
+  package and all Task 2/witness test files passed with 0 errors, 0 warnings,
+  and 0 informations after one test-local invariant dictionary was explicitly
+  typed as JSON-compatible. Ruff and `git diff --check` remain clean apart
+  from Git's informational line-ending notices. The earlier broad dual-runtime
+  processes began before this final test addition and therefore will not be
+  used as final evidence; fresh candidate-wide runs are still required.
+- Amended the frozen Task 2.3 plan instead of leaving a silent cross-task
+  deviation. The amendment records the schema-v3 Task 1 exception, explicit
+  no-mutation handling for schema v2, unchanged history/AAD framing version,
+  private issuance trust boundary, tombstoned-chain plus live-successor proof,
+  unchanged continuation wire, 8,192 bound, and the honest residual that
+  isolated witness deletion is fail-closed denial of service rather than a
+  detected rollback. New Task 2 plan SHA-256:
+  `2C0BFE51FC5DA06EAE88581F0F2303948BC2CD0BD73B98553F0187227017E65F`.
+  The global roadmap remains byte-identical at SHA-256
+  `950126478A4198334B71328282A23C404142A8A28BDB7957BC9F997F1DB79050`.
+  All remaining review and CLEAN gates are against this amended plan hash.
+- Added an executable oracle for the plan's deletion residual: the raw
+  schema-v3 witness body must not contain the observation's retrieval text or
+  canonical content, and externally deleting the only missing-predecessor
+  witness may pass structural ledger verification but must make replay fail
+  closed rather than guess or resurrect data. This assertion is pending its
+  first run and is explicitly an availability guarantee, not rollback
+  detection.
+- The deletion/no-content oracle passed as part of the complete 19/19 replay
+  file. Pinned Pyright remained 0/0/0. Ruff correctly flagged only a newly
+  introduced local import-order issue; it was repaired by ordering the
+  contracts import after the package import. A clean post-repair Ruff rerun is
+  still required and no test or static failure was hidden.
+- Added the final mixed-history discriminator requested by the security model:
+  an unrelated generic append may be shredded near a real missing Task 2
+  observation, but replay must ignore it and recover only through the exact
+  Task 2 witness, identically in one-shot and one-record pages. This new case
+  is pending execution. Broad runs already in flight predate it and remain
+  diagnostic rather than final candidate evidence.
+- The mixed-history discriminator passed and the complete replay file is now
+  20/20. Post-import-fix repository Ruff, compileall, and `git diff --check`
+  also passed; only informational line-ending warnings remain. The test surface
+  is frozen for fresh dual-runtime and repository-wide execution unless review
+  produces a new valid finding.
+- Controller security inspection found one additional missing-profile trust
+  edge before freeze: when the predecessor core matched but replay could not
+  reconstruct the exact boundary profile, the old branch skipped recomputation
+  and could accept a raw, unwitnessed transition. Replay now requires the same
+  exact live ingest witness whenever the profile object is unavailable. Added
+  a raw custom-profile rejection oracle and a positive ingested profile-change
+  one-shot/page-1 equivalence oracle. The plan amendment now states this rule;
+  it supersedes the immediately prior Task 2 plan hash. Current Task 2 plan
+  SHA-256 is
+  `7C695BD60355C21FE181AB8A89F165A3D63E203BB9220DE16DC96C11F0D88200`;
+  global roadmap hash remains
+  `950126478A4198334B71328282A23C404142A8A28BDB7957BC9F997F1DB79050`.
+  These two new assertions are pending execution and broad runs already in
+  flight remain non-final evidence.
+- Both missing-profile assertions passed and the complete replay file is now
+  22/22. Repository Ruff and compileall passed, and pinned Pyright 1.1.413
+  again reported 0 errors, 0 warnings, and 0 informations over the changed
+  production and test scope. This is the final focused candidate pending fresh
+  broad execution and independent review.
+- Stopped the two superseded broad Python 3.12/3.13 processes explicitly after
+  the missing-profile production edit; both therefore exited 1 by controller
+  interrupt and neither is counted as a regression or as evidence. Fresh runs
+  will start from the final candidate rather than spend further time testing a
+  pre-fix import snapshot.
+- Independent code/security re-review is APPROVE with zero CRITICAL, HIGH,
+  MEDIUM, or LOW findings on the current live diff. The review re-ran
+  repository Ruff, both missing-profile cases, the complete 22-case replay
+  file, scoped Pyright 1.1.413, compileall, and base-to-head diff-check; all
+  passed. Its initial report had correctly withheld approval for the transient
+  import-order failure it observed, then the reviewer re-read the repaired live
+  state and cleared that sole blocker. Residuals remain explicit and accepted:
+  private underscore issuance is not a hostile same-process boundary, isolated
+  witness deletion is fail-closed availability loss rather than rollback
+  detection, and the reviewer did not rerun the 8,192 lane. Controller-owned
+  fresh dual-runtime/full/scale gates remain required before CLEAN.
+- Fresh final-candidate Task 1 plus Task 2.3 execution passed independently on
+  both local runtimes: CPython 3.12 completed 193/193 with zero failures,
+  errors, or skips in 403.817s; CPython 3.13 completed the same 193/193 with
+  zero failures, errors, or skips in 388.610s. Controller parsed the persisted
+  JUnit reports from the OS temporary directory rather than inferring counts
+  from progress dots. Architecture-review delegation could not return a
+  verdict because that agent exhausted its account usage; this is recorded as
+  unavailable evidence, not an approval. Repository-wide and real 8,192-scale
+  controller gates remain before CLEAN.
+- Fresh Python 3.13 repository-wide execution, intentionally excluding only the
+  separately controlled 8,192 scale file, passed 762/762 with zero failures,
+  errors, or skips in 840.430s. The sole warning is the pre-existing Pytest
+  compatibility notice that `record_property` is incompatible with JUnit
+  xunit2 in the real platform keyring smoke; the smoke itself passed and this
+  warning does not affect product behavior. Controller parsed the OS-temporary
+  JUnit report. The dedicated real 8,192 observation gate is now the remaining
+  execution blocker before final static rerun, commit, and CLEAN review record.
+- The dedicated final-candidate scale lane passed on CPython 3.13: one real
+  test created and ingested 8,192 canonical observations through the production
+  encrypted directory-backed ledger and schema-v3 witness path, replayed all
+  8,192 from the same verified snapshot, matched the exact final
+  `SensoriumStateV1`, reported 8,192 examined/applied records, and kept the
+  encoded completed state within 4,096 bytes. JUnit reports 1/1 with zero
+  failures, errors, or skips in 2290.723s (about 38m11s). Progress was observed
+  only via record-key file counts and process metrics; the controller never
+  opened the live SQLite database or disturbed its verification certificate.
+  This is materially faster than the earlier pre-witness 6705.19s host run,
+  but no general performance claim is made from two differently timed local
+  executions. Final static/diff gates, architecture review, and commit remain.
+- Final post-scale static gates passed on the unchanged candidate: repository
+  Ruff, compileall over `src scripts tests`, and `git diff --check` are clean;
+  pinned Pyright 1.1.413 over the changed cognition package plus Task 2.3/
+  witness tests reports 0 errors, 0 warnings, and 0 informations. Task 2 plan
+  SHA-256 rechecks as
+  `7C695BD60355C21FE181AB8A89F165A3D63E203BB9220DE16DC96C11F0D88200`
+  and global roadmap SHA-256 remains
+  `950126478A4198334B71328282A23C404142A8A28BDB7957BC9F997F1DB79050`.
+  The only outstanding gate is the final independent architecture/threat
+  verdict, after which controller will record CLEAN and commit the exact owned
+  surface if no finding reopens the candidate.
+- Final independent architecture/threat review returned APPROVE with zero
+  CRITICAL, HIGH, MEDIUM, or LOW findings. The reviewer independently reran 33
+  architecture-critical assertions (33/33 passed in 34.33s), verified the
+  schema-v3/history-format split, authenticated and transition-bound append
+  witnesses, crypto-shred bridge rules, exact live-witness requirement,
+  missing-profile fail-closed behavior, witness atomicity/recovery, bounded
+  frozen continuations, and explicit schema-v2 migration refusal. Repository
+  diff-check passed and both the Task 2 plan and global roadmap hashes matched
+  the controller values above. Accepted residuals remain documented: private
+  underscore APIs are not a hostile same-process security boundary, and
+  deleting authenticated witness rows causes fail-closed availability loss
+  rather than furnishing rollback-detection evidence.
+- **Task 2.3 deterministic segmentation and bounded replay: CLEAN.** The final
+  acceptance record is: Task 1 plus Task 2.3 passed 193/193 on both CPython
+  3.12 and 3.13; the Python 3.13 repository-wide non-scale lane passed 762/762;
+  the dedicated production-backed 8,192-observation lane passed 1/1 with exact
+  final-state equivalence and a completed encoded state no larger than 4,096
+  bytes; repository Ruff, compileall, diff-check, and scoped pinned Pyright all
+  passed; independent code/security and architecture/threat reviews both
+  returned APPROVE with zero findings. The next implementation unit is Task
+  2.4: bounded streaming approximate recollection, beginning with a fresh
+  contract/plan read and RED acceptance oracles.

@@ -122,6 +122,171 @@ def test_first_continue_and_combined_boundary_precedence_are_literal() -> None:
     )
 
 
+def test_every_boundary_reason_has_an_isolated_literal_decision() -> None:
+    profile = baseline_boundary_profile()
+    first_request = _request(1)
+    first = canonicalize_observation(first_request, profile, _initial_core(profile), 1)
+    isolated = (
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-forced",
+                force_boundary=True,
+            ),
+            profile,
+            EpisodeBoundaryReason.FORCED,
+            "episode:da80fa7e1d6a9ff7670f80010186f036b490f2bbc2339e3774e16f3ccb12615f",
+        ),
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-session",
+                session_id="session:changed",
+            ),
+            profile,
+            EpisodeBoundaryReason.SESSION_CHANGED,
+            "episode:8a1e0f4bd8f8755c498022ca3bb2bab4198c809a2a25d999c0b51c8bf796c17d",
+        ),
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-time",
+                provenance=replace(
+                    _request(2).provenance,
+                    observed_at_ns=(
+                        first_request.provenance.observed_at_ns
+                        + profile.max_inter_observation_gap_ns
+                        + 1
+                    ),
+                ),
+            ),
+            profile,
+            EpisodeBoundaryReason.TIME_GAP,
+            "episode:b42054ebcac934c9bee3960013ab87f332e9f0db782c7bed28504d0f41c71bea",
+        ),
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-goal",
+                goal_ids=("goal:changed",),
+            ),
+            profile,
+            EpisodeBoundaryReason.GOAL_CHANGED,
+            "episode:a1b2f565ab2b08d46c11b6d7637eb2b121199eb7ab07a9a8007e116bcac91abb",
+        ),
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-tool",
+                tool_invocation_id="tool:changed",
+                tool_phase="done",
+            ),
+            profile,
+            EpisodeBoundaryReason.TOOL_PHASE_CHANGED,
+            "episode:075605c5f65198bc7a040ac0ad64c11f85cc6a8b009e5c344033a4af95b77637",
+        ),
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-participants",
+                participant_ids=("participant:changed",),
+            ),
+            profile,
+            EpisodeBoundaryReason.PARTICIPANTS_CHANGED,
+            "episode:3a78e6d29a06bef6e8c128f8b64c3e6d3250968fb0f297b730807c419a5333ad",
+        ),
+        (
+            _request(
+                2,
+                observation_id="obs:t23-only-topic",
+                topic_key="topic:changed",
+            ),
+            profile,
+            EpisodeBoundaryReason.TOPIC_KEY_CHANGED,
+            "episode:6ed50550fe1c36a1f5849b56a8c1133b65c5f8865790974b352c8abd1966e1be",
+        ),
+    )
+    for request, case_profile, expected_reason, expected_episode_id in isolated:
+        transition = canonicalize_observation(
+            request, case_profile, first.post_core_state, 2
+        )
+        assert transition.boundary_decision.reasons == (expected_reason,)
+        assert transition.boundary_decision.episode_id == expected_episode_id
+
+    alternate = BoundaryProfileV1(
+        name="task2-profile-only-v1",
+        max_inter_observation_gap_ns=9_999_999_999_999,
+        max_observations=99,
+        max_canonical_request_bytes=8 * 1024 * 1024,
+        max_goal_ids=32,
+        max_participant_ids=32,
+    )
+    profile_only = canonicalize_observation(
+        _request(2, observation_id="obs:t23-only-profile"),
+        alternate,
+        first.post_core_state,
+        2,
+    )
+    assert profile_only.boundary_decision.reasons == (
+        EpisodeBoundaryReason.PROFILE_CHANGED,
+    )
+    assert profile_only.boundary_decision.episode_id == (
+        "episode:3d7fab5933f2e38e515662fbb925b928ea348e853931557cd8d85652f924594f"
+    )
+
+    count_profile = BoundaryProfileV1(
+        name="task2-count-only-v1",
+        max_inter_observation_gap_ns=profile.max_inter_observation_gap_ns,
+        max_observations=1,
+        max_canonical_request_bytes=8 * 1024 * 1024,
+        max_goal_ids=32,
+        max_participant_ids=32,
+    )
+    count_first = canonicalize_observation(
+        first_request, count_profile, _initial_core(count_profile), 1
+    )
+    count_only = canonicalize_observation(
+        _request(2, observation_id="obs:t23-only-count"),
+        count_profile,
+        count_first.post_core_state,
+        2,
+    )
+    assert count_only.boundary_decision.reasons == (
+        EpisodeBoundaryReason.EPISODE_COUNT_LIMIT,
+    )
+    assert count_only.boundary_decision.episode_id == (
+        "episode:713707d779bfc62a4a6112e4f0b312ab24ddc1112e48a69bf5230428ad430b5e"
+    )
+
+    byte_request = _request(2, observation_id="obs:t23-only-byte")
+    byte_cap = (
+        len(encode_observation_request(first_request))
+        + len(encode_observation_request(byte_request))
+        - 1
+    )
+    assert byte_cap == 1_198
+    byte_profile = BoundaryProfileV1(
+        name="task2-byte-only-v1",
+        max_inter_observation_gap_ns=profile.max_inter_observation_gap_ns,
+        max_observations=99,
+        max_canonical_request_bytes=byte_cap,
+        max_goal_ids=32,
+        max_participant_ids=32,
+    )
+    byte_first = canonicalize_observation(
+        first_request, byte_profile, _initial_core(byte_profile), 1
+    )
+    byte_only = canonicalize_observation(
+        byte_request, byte_profile, byte_first.post_core_state, 2
+    )
+    assert byte_only.boundary_decision.reasons == (
+        EpisodeBoundaryReason.EPISODE_BYTE_LIMIT,
+    )
+    assert byte_only.boundary_decision.episode_id == (
+        "episode:d8080f3899a36933a53c93d6fe82f2fec900a878d3e56479e303b614b2a56435"
+    )
+
+
 def test_profile_change_precedes_other_reasons_and_ingest_accepts_it(
     tmp_path: Path,
 ) -> None:
@@ -177,6 +342,43 @@ def test_profile_change_precedes_other_reasons_and_ingest_accepts_it(
     assert changed.stored_observation.boundary_decision.episode_id == (
         "episode:d6d1246c36e9d186f05a439fecc85cc7b1ff2aa0a1a15e4832947a3103e49b76"
     )
+
+
+def test_profile_change_duplicate_retry_converges_without_second_write(
+    tmp_path: Path,
+) -> None:
+    baseline = baseline_boundary_profile()
+    alternate = BoundaryProfileV1(
+        name="task2-alt-v1",
+        max_inter_observation_gap_ns=10,
+        max_observations=2,
+        max_canonical_request_bytes=2_000,
+        max_goal_ids=32,
+        max_participant_ids=32,
+    )
+    first_request = _request(1)
+    changed_request = _request(2, observation_id="obs:t23-profile-retry")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            initial = initialize_empty_sensorium_state(session, baseline)
+            assert type(initial) is SensoriumStateV1
+            first = ingest_observation(session, first_request, baseline, initial)
+            assert type(first) is ObservationAcceptedV1
+            changed = ingest_observation(
+                session, changed_request, alternate, first.next_state
+            )
+            assert type(changed) is ObservationAcceptedV1
+            retried = ingest_observation(
+                session, changed_request, alternate, first.next_state
+            )
+            assert session.event_count() == 2
+
+    assert type(retried) is ObservationAcceptedV1
+    assert retried.status is IngestStatus.DUPLICATE
+    assert retried.next_state == changed.next_state
 
 
 def test_time_gap_is_strict_integer_nanoseconds_and_reversal_is_typed(

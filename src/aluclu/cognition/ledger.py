@@ -65,13 +65,16 @@ from .persistence import (
     resolve_ledger_path,
 )
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
+_HISTORY_FORMAT_VERSION = 2
 ZERO_HASH = b"\0" * 32
 _BOOTSTRAP_VERSION = 1
 _BOOTSTRAP_MAX_BYTES = 16 * 1024
 _ANCHOR_MAX_BYTES = 16 * 1024
 _VERIFICATION_BATCH_SIZE = 64
 _METADATA_BATCH_SIZE = 64
+_MAX_APPEND_WITNESS_BODY_BYTES = 2048
+_MAX_APPEND_WITNESS_SCHEMA_BYTES = 128
 _ACTIVE_LEDGER_PATHS = threading.local()
 _THREAD_OWNERSHIP = threading.local()
 _HEX_DIGITS = frozenset("0123456789abcdef")
@@ -108,6 +111,15 @@ _EXPECTED_COLUMNS = {
         ("event_id", "TEXT", 1, 1),
         ("history_sequence", "INTEGER", 1, 0),
         ("record_hash", "BLOB", 1, 0),
+    ),
+    "append_witnesses": (
+        ("event_id", "TEXT", 1, 1),
+        ("append_sequence", "INTEGER", 1, 0),
+        ("append_record_hash", "BLOB", 1, 0),
+        ("witness_schema", "TEXT", 1, 0),
+        ("link_digest", "TEXT", 1, 0),
+        ("witness_body", "BLOB", 1, 0),
+        ("witness_mac", "BLOB", 1, 0),
     ),
 }
 
@@ -153,8 +165,26 @@ _SCHEMA = (
         record_hash BLOB NOT NULL UNIQUE CHECK(length(record_hash) = 32)
     ) STRICT, WITHOUT ROWID
     """,
+    """
+    CREATE TABLE append_witnesses (
+        event_id TEXT PRIMARY KEY,
+        append_sequence INTEGER NOT NULL UNIQUE REFERENCES history(sequence),
+        append_record_hash BLOB NOT NULL UNIQUE CHECK(length(append_record_hash) = 32),
+        witness_schema TEXT NOT NULL,
+        link_digest TEXT NOT NULL CHECK(length(link_digest) = 64),
+        witness_body BLOB NOT NULL CHECK(length(witness_body) BETWEEN 1 AND 2048),
+        witness_mac BLOB NOT NULL CHECK(length(witness_mac) = 32),
+        UNIQUE(witness_schema, link_digest)
+    ) STRICT, WITHOUT ROWID
+    """,
 )
-_SCHEMA_TABLES = ("metadata", "history", "records", "tombstones")
+_SCHEMA_TABLES = (
+    "metadata",
+    "history",
+    "records",
+    "tombstones",
+    "append_witnesses",
+)
 
 
 @dataclass(frozen=True)
@@ -163,6 +193,7 @@ class _LedgerState:
     records: dict[str, tuple[int, bytes]]
     tombstones: dict[str, tuple[int, bytes]]
     append_hashes: dict[str, bytes]
+    append_sequences: dict[str, int]
     key_references: dict[str, str]
     head_sequence: int
     head_hash: bytes
@@ -219,6 +250,13 @@ class _CertificateExpectation:
     anchor_digest: bytes
     store_revision: int
     data_version: int
+
+
+@dataclass(frozen=True)
+class _AppendWitnessInput:
+    witness_schema: str
+    link_digest: str
+    body_bytes: bytes
 
 
 class EncryptedLedger:
@@ -669,9 +707,9 @@ class EncryptedLedger:
             raise LedgerIntegrityError("pending bootstrap marker was replayed")
         counts = tuple(
             cast(int, connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0])
-            for table in ("history", "records", "tombstones")
+            for table in ("history", "records", "tombstones", "append_witnesses")
         )
-        if counts != (0, 0, 0):
+        if counts != (0, 0, 0, 0):
             raise LedgerIntegrityError("bootstrap database is not empty")
         return stored_key_check
 
@@ -952,11 +990,16 @@ class EncryptedLedger:
     def _unlock_existing(self, master_key: bytes) -> _FullVerification:
         connection = self._connect(configure=False)
         self._connection = connection
-        if (
-            cast(int, connection.execute("PRAGMA user_version").fetchone()[0])
-            != SCHEMA_VERSION
-        ):
-            raise LedgerMigrationRequired("existing database is not schema v2")
+        stored_schema_version = cast(
+            int,
+            connection.execute("PRAGMA user_version").fetchone()[0],
+        )
+        if stored_schema_version == 2:
+            raise LedgerMigrationRequired(
+                "existing schema v2 ledger requires explicit migration to schema v3"
+            )
+        if stored_schema_version != SCHEMA_VERSION:
+            raise LedgerMigrationRequired("existing database schema is unsupported")
         if not self._anchor_path.exists():
             raise LedgerIntegrityError("ledger anchor is missing")
         metadata = self._metadata(connection)
@@ -995,6 +1038,7 @@ class EncryptedLedger:
         payload: JsonValue,
         *,
         idempotent: bool,
+        witness: _AppendWitnessInput | None = None,
     ) -> AppendOutcome:
         safe_event_id = validate_event_id(event_id)
         payload_bytes = canonical_json_bytes(payload)
@@ -1016,6 +1060,13 @@ class EncryptedLedger:
                     ):
                         raise LedgerConflictError(
                             "event payload conflicts with live record"
+                        )
+                    if witness is not None:
+                        self._require_exact_append_witness_locked(
+                            event_id=safe_event_id,
+                            append_sequence=record.sequence,
+                            append_record_hash=bytes.fromhex(record.record_hash),
+                            expected=witness,
                         )
                     connection.execute("COMMIT")
                     sqlite_committed = True
@@ -1077,6 +1128,31 @@ class EncryptedLedger:
                 "INSERT INTO records(event_id, history_sequence, record_hash) VALUES (?, ?, ?)",
                 (safe_event_id, sequence, sqlite3.Binary(record_hash)),
             )
+            if witness is not None:
+                witness_mac = self._append_witness_mac(
+                    event_id=safe_event_id,
+                    append_sequence=sequence,
+                    append_record_hash=record_hash,
+                    witness=witness,
+                )
+                connection.execute(
+                    """
+                    INSERT INTO append_witnesses(
+                        event_id, append_sequence, append_record_hash,
+                        witness_schema, link_digest, witness_body, witness_mac
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        safe_event_id,
+                        sequence,
+                        sqlite3.Binary(record_hash),
+                        witness.witness_schema,
+                        witness.link_digest,
+                        sqlite3.Binary(witness.body_bytes),
+                        sqlite3.Binary(witness_mac),
+                    ),
+                )
+                self._inject_fault("after_append_witness_before_sqlite_commit")
             self._set_head(connection, sequence, record_hash)
             connection.execute("COMMIT")
             sqlite_committed = True
@@ -1226,6 +1302,215 @@ class EncryptedLedger:
             if cleanup_failure is not None:
                 _raise_primary_from_cleanup(primary, cleanup_failure)
             raise
+
+    def _authenticated_tombstoned_append_witness_in_session(
+        self,
+        *,
+        witness_schema: str,
+        link_digest: str,
+        after_sequence: int,
+        before_sequence: int,
+    ) -> JsonValue | None:
+        connection = self._connection_required()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            self._require_current_verification_certificate_locked()
+            cursor = connection.execute(
+                """
+                SELECT witness.event_id, witness.append_sequence,
+                       witness.append_record_hash, witness.witness_schema,
+                       witness.link_digest, witness.witness_body,
+                       witness.witness_mac
+                FROM append_witnesses AS witness
+                JOIN history AS appended
+                  ON appended.sequence = witness.append_sequence
+                 AND appended.event_id = witness.event_id
+                 AND appended.record_hash = witness.append_record_hash
+                 AND appended.operation = 'append'
+                JOIN tombstones AS tombstone
+                  ON tombstone.event_id = witness.event_id
+                LEFT JOIN records AS live
+                  ON live.event_id = witness.event_id
+                WHERE witness.witness_schema = ?
+                  AND witness.link_digest = ?
+                  AND witness.append_sequence > ?
+                  AND witness.append_sequence < ?
+                  AND live.event_id IS NULL
+                LIMIT 2
+                """,
+                (
+                    witness_schema,
+                    link_digest,
+                    after_sequence,
+                    before_sequence,
+                ),
+            )
+            rows = cursor.fetchmany(2)
+            if len(rows) > 1:
+                raise LedgerIntegrityError("append witness lookup is ambiguous")
+            body = None if not rows else self._append_witness_proof(rows[0])
+            connection.execute("COMMIT")
+            return body
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def _authenticated_live_append_witness_in_session(
+        self,
+        *,
+        event_id: str,
+        append_sequence: int,
+        append_record_hash: bytes,
+        witness_schema: str,
+        link_digest: str,
+    ) -> JsonValue | None:
+        connection = self._connection_required()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            self._require_current_verification_certificate_locked()
+            cursor = connection.execute(
+                """
+                SELECT witness.event_id, witness.append_sequence,
+                       witness.append_record_hash, witness.witness_schema,
+                       witness.link_digest, witness.witness_body,
+                       witness.witness_mac
+                FROM append_witnesses AS witness
+                JOIN history AS appended
+                  ON appended.sequence = witness.append_sequence
+                 AND appended.event_id = witness.event_id
+                 AND appended.record_hash = witness.append_record_hash
+                 AND appended.operation = 'append'
+                JOIN records AS live
+                  ON live.event_id = witness.event_id
+                 AND live.history_sequence = witness.append_sequence
+                 AND live.record_hash = witness.append_record_hash
+                WHERE witness.event_id = ?
+                  AND witness.append_sequence = ?
+                  AND witness.append_record_hash = ?
+                  AND witness.witness_schema = ?
+                  AND witness.link_digest = ?
+                LIMIT 2
+                """,
+                (
+                    event_id,
+                    append_sequence,
+                    sqlite3.Binary(append_record_hash),
+                    witness_schema,
+                    link_digest,
+                ),
+            )
+            rows = cursor.fetchmany(2)
+            if len(rows) > 1:
+                raise LedgerIntegrityError("append witness lookup is ambiguous")
+            body = None if not rows else self._append_witness_proof(rows[0])
+            connection.execute("COMMIT")
+            return body
+        except BaseException as primary:
+            cleanup_failure = self._rollback_cleanup_failure_locked(connection)
+            if cleanup_failure is not None:
+                _raise_primary_from_cleanup(primary, cleanup_failure)
+            raise
+
+    def _append_witness_proof(self, raw_row: tuple[Any, ...]) -> JsonValue:
+        witness = self._verified_append_witness_row(raw_row)
+        event_id, append_sequence, append_record_hash, _, _, _, _ = (
+            _append_witness_row(raw_row)
+        )
+        return {
+            "append_record_hash": append_record_hash.hex(),
+            "append_sequence": append_sequence,
+            "event_id": event_id,
+            "link_digest": witness.link_digest,
+            "witness_body": strict_json_loads(witness.body_bytes),
+            "witness_schema": witness.witness_schema,
+        }
+
+    def _require_exact_append_witness_locked(
+        self,
+        *,
+        event_id: str,
+        append_sequence: int,
+        append_record_hash: bytes,
+        expected: _AppendWitnessInput,
+    ) -> None:
+        row = self._connection_required().execute(
+            """
+            SELECT event_id, append_sequence, append_record_hash,
+                   witness_schema, link_digest, witness_body, witness_mac
+            FROM append_witnesses WHERE event_id = ?
+            """,
+            (event_id,),
+        ).fetchone()
+        if row is None:
+            raise LedgerConflictError("event witness conflicts with live record")
+        actual = self._verified_append_witness_row(row)
+        if (
+            actual.witness_schema != expected.witness_schema
+            or not hmac.compare_digest(actual.link_digest, expected.link_digest)
+            or not hmac.compare_digest(actual.body_bytes, expected.body_bytes)
+            or append_sequence != cast(int, row[1])
+            or not hmac.compare_digest(append_record_hash, cast(bytes, row[2]))
+        ):
+            raise LedgerConflictError("event witness conflicts with live record")
+
+    def _verified_append_witness_row(
+        self,
+        raw_row: tuple[Any, ...],
+    ) -> _AppendWitnessInput:
+        (
+            event_id,
+            append_sequence,
+            append_record_hash,
+            witness_schema,
+            link_digest,
+            witness_body,
+            witness_mac,
+        ) = _append_witness_row(raw_row)
+        try:
+            body = strict_json_loads(witness_body)
+            if canonical_json_bytes(body) != witness_body:
+                raise LedgerIntegrityError("append witness body is not canonical")
+            witness = _validated_append_witness_input(
+                witness_schema=witness_schema,
+                link_digest=link_digest,
+                witness_body=body,
+            )
+        except InputBoundaryError as exc:
+            raise LedgerIntegrityError("append witness body is malformed") from exc
+        expected_mac = self._append_witness_mac(
+            event_id=event_id,
+            append_sequence=append_sequence,
+            append_record_hash=append_record_hash,
+            witness=witness,
+        )
+        if not hmac.compare_digest(witness_mac, expected_mac):
+            raise LedgerIntegrityError("append witness MAC does not verify")
+        return witness
+
+    def _append_witness_mac(
+        self,
+        *,
+        event_id: str,
+        append_sequence: int,
+        append_record_hash: bytes,
+        witness: _AppendWitnessInput,
+    ) -> bytes:
+        envelope: JsonValue = {
+            "append_record_hash": append_record_hash.hex(),
+            "append_sequence": append_sequence,
+            "event_id": event_id,
+            "ledger_id": cast(str, self._ledger_id),
+            "link_digest": witness.link_digest,
+            "witness_body": strict_json_loads(witness.body_bytes),
+            "witness_schema": witness.witness_schema,
+        }
+        return hmac.new(
+            cast(bytes, self._chain_key),
+            b"aluclu/v3/append-witness\0" + _internal_canonical_json(envelope),
+            hashlib.sha256,
+        ).digest()
 
     def _live_history_row_locked(self, event_id: str) -> HistoryRow:
         row = (
@@ -1501,6 +1786,7 @@ class EncryptedLedger:
         expected_records: dict[str, tuple[int, bytes]] = {}
         expected_tombstones: dict[str, tuple[int, bytes]] = {}
         append_hashes: dict[str, bytes] = {}
+        append_sequences: dict[str, int] = {}
         expected_key_references: dict[str, str] = {}
         previous_hash = ZERO_HASH
         expected_sequence = 1
@@ -1549,6 +1835,7 @@ class EncryptedLedger:
                         raise LedgerIntegrityError("event lineage is duplicated")
                     expected_records[row[2]] = (sequence, row[8])
                     append_hashes[row[2]] = row[8]
+                    append_sequences[row[2]] = sequence
                     expected_key_references[row[2]] = cast(str, row[3])
                 elif row[1] == "shred":
                     live = expected_records.pop(row[2], None)
@@ -1575,16 +1862,63 @@ class EncryptedLedger:
             expected_tombstones,
         ):
             raise LedgerIntegrityError("tombstone projection does not verify")
+        self._verify_append_witness_projection_locked(
+            append_hashes=append_hashes,
+            append_sequences=append_sequences,
+        )
 
         return _LedgerState(
             metadata=metadata,
             records=expected_records,
             tombstones=expected_tombstones,
             append_hashes=append_hashes,
+            append_sequences=append_sequences,
             key_references=expected_key_references,
             head_sequence=actual_head_sequence,
             head_hash=previous_hash,
         )
+
+    def _verify_append_witness_projection_locked(
+        self,
+        *,
+        append_hashes: Mapping[str, bytes],
+        append_sequences: Mapping[str, int],
+    ) -> None:
+        seen_event_ids: set[str] = set()
+        cursor = self._connection_required().execute(
+            """
+            SELECT event_id, append_sequence, append_record_hash,
+                   witness_schema, link_digest, witness_body, witness_mac
+            FROM append_witnesses ORDER BY append_sequence
+            """
+        )
+        while True:
+            rows = cursor.fetchmany(_VERIFICATION_BATCH_SIZE)
+            if not rows:
+                break
+            for raw_row in rows:
+                (
+                    event_id,
+                    append_sequence,
+                    append_record_hash,
+                    _witness_schema,
+                    _link_digest,
+                    _witness_body,
+                    _witness_mac,
+                ) = _append_witness_row(raw_row)
+                if event_id in seen_event_ids:
+                    raise LedgerIntegrityError("append witness is duplicated")
+                seen_event_ids.add(event_id)
+                expected_hash = append_hashes.get(event_id)
+                if (
+                    expected_hash is None
+                    or append_sequences.get(event_id) != append_sequence
+                    or not hmac.compare_digest(expected_hash, append_record_hash)
+                ):
+                    raise LedgerIntegrityError(
+                        "append witness history binding does not verify"
+                    )
+                self._verified_append_witness_row(raw_row)
 
     def _recover_external_state_locked(
         self,
@@ -1974,7 +2308,7 @@ class EncryptedLedger:
             "ledger_id": cast(str, self._ledger_id),
             "operation": operation,
             "previous_hash": previous_hash.hex(),
-            "schema_version": SCHEMA_VERSION,
+            "schema_version": _HISTORY_FORMAT_VERSION,
             "sequence": sequence,
         }
         return canonical_json_bytes(value)
@@ -2000,7 +2334,7 @@ class EncryptedLedger:
             "nonce": _optional_b64(nonce),
             "operation": operation,
             "previous_hash": previous_hash.hex(),
-            "schema_version": SCHEMA_VERSION,
+            "schema_version": _HISTORY_FORMAT_VERSION,
             "sequence": sequence,
         }
         return hmac.new(
@@ -2185,7 +2519,13 @@ class EncryptedLedger:
                 "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
             )
         }
-        if tables != {"metadata", "history", "records", "tombstones"}:
+        if tables != {
+            "metadata",
+            "history",
+            "records",
+            "tombstones",
+            "append_witnesses",
+        }:
             raise LedgerIntegrityError("ledger schema tables do not match")
         actual_sql = {
             cast(str, row[0]): _normalize_schema_sql(cast(str, row[1]))
@@ -2211,6 +2551,7 @@ class EncryptedLedger:
             "history": (0, 1),
             "records": (1, 1),
             "tombstones": (1, 1),
+            "append_witnesses": (1, 1),
         }:
             raise LedgerIntegrityError("ledger table modes do not match")
         for table, expected in _EXPECTED_COLUMNS.items():
@@ -2249,7 +2590,7 @@ class EncryptedLedger:
                 metadata[key] = value
         if set(metadata) != _METADATA_KEYS:
             raise LedgerIntegrityError("ledger metadata keys do not match")
-        if metadata["schema_version"] != b"2":
+        if metadata["schema_version"] != b"3":
             raise LedgerMigrationRequired("ledger metadata schema is unsupported")
         if len(metadata["key_check"]) != 32:
             raise LedgerIntegrityError("ledger key check is malformed")
@@ -2612,12 +2953,37 @@ class VerifiedLedgerSession:
     def append_once(self, event_id: str, payload: JsonValue) -> AppendOutcome:
         return self._append(event_id, payload, idempotent=True)
 
+    def _append_once_with_authenticated_witness(
+        self,
+        event_id: str,
+        payload: JsonValue,
+        *,
+        witness_schema: str,
+        link_digest: str,
+        witness_body: JsonValue,
+    ) -> AppendOutcome:
+        """Append once and atomically persist a private authenticated witness."""
+
+        self._ensure_active()
+        witness = _validated_append_witness_input(
+            witness_schema=witness_schema,
+            link_digest=link_digest,
+            witness_body=witness_body,
+        )
+        return self._append(
+            event_id,
+            payload,
+            idempotent=True,
+            witness=witness,
+        )
+
     def _append(
         self,
         event_id: str,
         payload: JsonValue,
         *,
         idempotent: bool,
+        witness: _AppendWitnessInput | None = None,
     ) -> AppendOutcome:
         self._ensure_active()
         self._ensure_no_active_cursors()
@@ -2626,6 +2992,7 @@ class VerifiedLedgerSession:
                 event_id,
                 payload,
                 idempotent=idempotent,
+                witness=witness,
             )
             self._sync_snapshot()
             return outcome
@@ -2665,6 +3032,76 @@ class VerifiedLedgerSession:
         self._ensure_active()
         try:
             return self._ledger._event_count_in_session()
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def authenticated_tombstoned_append_witness(
+        self,
+        *,
+        witness_schema: str,
+        link_digest: str,
+        after_sequence: int,
+        before_sequence: int,
+    ) -> JsonValue | None:
+        """Return a verified append binding only after that append was shredded."""
+
+        self._ensure_active()
+        safe_witness_schema = _validated_append_witness_schema(witness_schema)
+        safe_link_digest = _validated_append_witness_link_digest(link_digest)
+        _validate_open_sequence_interval(
+            after_sequence=after_sequence,
+            before_sequence=before_sequence,
+            snapshot_head_sequence=self._head_sequence,
+        )
+        try:
+            return self._ledger._authenticated_tombstoned_append_witness_in_session(
+                witness_schema=safe_witness_schema,
+                link_digest=safe_link_digest,
+                after_sequence=after_sequence,
+                before_sequence=before_sequence,
+            )
+        except BaseException as exc:
+            self._handle_operation_exception(exc)
+            raise
+
+    def authenticated_live_append_witness(
+        self,
+        *,
+        event_id: str,
+        append_sequence: int,
+        append_record_hash: str,
+        witness_schema: str,
+        link_digest: str,
+    ) -> JsonValue | None:
+        """Return a verified append binding only while that append is live."""
+
+        self._ensure_active()
+        safe_event_id = validate_event_id(event_id)
+        if (
+            type(append_sequence) is not int
+            or not 1 <= append_sequence <= self._head_sequence
+        ):
+            raise InputBoundaryError(
+                "append witness sequence must be within the verified snapshot"
+            )
+        if (
+            type(append_record_hash) is not str
+            or not _is_lower_hex(append_record_hash, length=64)
+        ):
+            raise InputBoundaryError(
+                "append witness record hash must be 64 lowercase hexadecimal characters"
+            )
+        safe_witness_schema = _validated_append_witness_schema(witness_schema)
+        safe_link_digest = _validated_append_witness_link_digest(link_digest)
+        try:
+            return self._ledger._authenticated_live_append_witness_in_session(
+                event_id=safe_event_id,
+                append_sequence=append_sequence,
+                append_record_hash=bytes.fromhex(append_record_hash),
+                witness_schema=safe_witness_schema,
+                link_digest=safe_link_digest,
+            )
         except BaseException as exc:
             self._handle_operation_exception(exc)
             raise
@@ -3052,6 +3489,7 @@ HistoryRow = tuple[
     bytes,
     bytes,
 ]
+AppendWitnessRow = tuple[str, int, bytes, str, str, bytes, bytes]
 ExternalStateSnapshot = tuple[
     dict[str, RecordKeyReference],
     dict[str, str],
@@ -3289,6 +3727,68 @@ def _validated_after_sequence(after_sequence: int) -> int:
     return after_sequence
 
 
+def _validate_open_sequence_interval(
+    *,
+    after_sequence: int,
+    before_sequence: int,
+    snapshot_head_sequence: int,
+) -> None:
+    if (
+        type(after_sequence) is not int
+        or type(before_sequence) is not int
+        or after_sequence < 0
+        or before_sequence <= after_sequence
+        or before_sequence > snapshot_head_sequence + 1
+    ):
+        raise InputBoundaryError(
+            "sequence interval must be an open range within the verified snapshot"
+        )
+
+
+def _validated_append_witness_input(
+    *,
+    witness_schema: str,
+    link_digest: str,
+    witness_body: JsonValue,
+) -> _AppendWitnessInput:
+    safe_schema = _validated_append_witness_schema(witness_schema)
+    safe_digest = _validated_append_witness_link_digest(link_digest)
+    body_bytes = canonical_json_bytes(witness_body)
+    if not 1 <= len(body_bytes) <= _MAX_APPEND_WITNESS_BODY_BYTES:
+        raise InputBoundaryError(
+            "append witness body must encode to at most 2048 bytes"
+        )
+    return _AppendWitnessInput(
+        witness_schema=safe_schema,
+        link_digest=safe_digest,
+        body_bytes=body_bytes,
+    )
+
+
+def _validated_append_witness_schema(witness_schema: str) -> str:
+    if (
+        type(witness_schema) is not str
+        or not 1 <= len(witness_schema) <= _MAX_APPEND_WITNESS_SCHEMA_BYTES
+        or not witness_schema.isascii()
+        or any(
+            character not in "abcdefghijklmnopqrstuvwxyz0123456789._-"
+            for character in witness_schema
+        )
+    ):
+        raise InputBoundaryError(
+            "append witness schema must be a 1 to 128 byte ASCII token"
+        )
+    return witness_schema
+
+
+def _validated_append_witness_link_digest(link_digest: str) -> str:
+    if type(link_digest) is not str or not _is_lower_hex(link_digest, length=64):
+        raise InputBoundaryError(
+            "append witness link digest must be 64 lowercase hexadecimal characters"
+        )
+    return link_digest
+
+
 def _validate_checkpoint_shape(checkpoint: LedgerCursorCheckpoint) -> None:
     if type(checkpoint) is not LedgerCursorCheckpoint:
         raise InputBoundaryError("cursor checkpoint type is invalid")
@@ -3348,6 +3848,41 @@ def _history_row(row: tuple[Any, ...]) -> HistoryRow:
     ):
         raise LedgerIntegrityError("shred history row is malformed")
     return cast(HistoryRow, row)
+
+
+def _append_witness_row(row: tuple[Any, ...]) -> AppendWitnessRow:
+    if len(row) != 7:
+        raise LedgerIntegrityError("append witness row shape is invalid")
+    (
+        event_id,
+        append_sequence,
+        append_record_hash,
+        witness_schema,
+        link_digest,
+        witness_body,
+        witness_mac,
+    ) = row
+    if (
+        type(event_id) is not str
+        or type(append_sequence) is not int
+        or type(append_record_hash) is not bytes
+        or type(witness_schema) is not str
+        or type(link_digest) is not str
+        or type(witness_body) is not bytes
+        or type(witness_mac) is not bytes
+        or append_sequence < 1
+        or len(append_record_hash) != 32
+        or not 1 <= len(witness_body) <= _MAX_APPEND_WITNESS_BODY_BYTES
+        or len(witness_mac) != 32
+    ):
+        raise LedgerIntegrityError("append witness row value is malformed")
+    try:
+        validate_event_id(event_id)
+        _validated_append_witness_schema(witness_schema)
+        _validated_append_witness_link_digest(link_digest)
+    except InputBoundaryError as exc:
+        raise LedgerIntegrityError("append witness row value is malformed") from exc
+    return cast(AppendWitnessRow, row)
 
 
 def _derive(

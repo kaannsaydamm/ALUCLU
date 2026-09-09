@@ -13,6 +13,7 @@ from .contracts import (
     JsonValue,
     LedgerConflictError,
     LedgerCursorCheckpoint,
+    LedgerIntegrityError,
     LedgerSnapshotChanged,
 )
 from .ledger import VerifiedLedgerSession
@@ -36,6 +37,8 @@ from .observation import (
 
 MAX_I63 = (1 << 63) - 1
 SENSORIUM_STATE_MAX_BYTES = 4_096
+SENSORIUM_REPLAY_CONTINUATION_MAX_BYTES = 5_120
+SENSORIUM_REPLAY_MAX_RECORDS = 8_192
 
 _PROFILE_SCHEMA = "aluclu.boundary-profile.v1"
 _STATE_SCHEMA = "aluclu.sensorium-state.v1"
@@ -43,6 +46,13 @@ _BOOTSTRAP_REPLAY_SCHEMA = "aluclu.sensorium-bootstrap-replay-required.v1"
 _RECEIPT_SCHEMA = "aluclu.observation-receipt.v1"
 _INGEST_ACCEPTED_SCHEMA = "aluclu.observation-ingest-accepted.v1"
 _INGEST_REJECTED_SCHEMA = "aluclu.observation-ingest-rejected.v1"
+_CANONICAL_OBSERVATION_SCHEMA = "aluclu.observation.v1"
+_REPLAY_PAGE_POLICY_SCHEMA = "aluclu.sensorium-replay-page-policy.v1"
+_REPLAY_PAGE_WORK_SCHEMA = "aluclu.sensorium-replay-page-work.v1"
+_REPLAY_CONTINUATION_SCHEMA = "aluclu.sensorium-replay-continuation.v1"
+_REPLAY_INCOMPLETE_SCHEMA = "aluclu.sensorium-replay-incomplete.v1"
+_REPLAY_COMPLETE_SCHEMA = "aluclu.sensorium-replay-complete.v1"
+_TASK2_LINEAGE_WITNESS_SCHEMA = "aluclu.task2-observation-lineage-witness.v1"
 _PROFILE_DOMAIN = b"aluclu.task2.boundary-profile.v1"
 _PROFILE_NAME_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}\Z")
 _OBSERVATION_ID_PATTERN = re.compile(r"obs:[A-Za-z0-9][A-Za-z0-9._:-]{0,251}\Z")
@@ -143,11 +153,109 @@ class SensoriumBootstrapReplayRequiredV1:
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
+class SensoriumReplayPagePolicyV1:
+    max_records: int
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.max_records) is not int
+            or not 0 <= self.max_records <= SENSORIUM_REPLAY_MAX_RECORDS
+        ):
+            raise InputBoundaryError("replay max_records must be an integer in 0..8192")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class SensoriumReplayPageWorkV1:
+    records_examined: int
+    observations_applied: int
+    canonical_payload_bytes_examined: int
+
+    def __post_init__(self) -> None:
+        _require_nonnegative_i63(self.records_examined, "records_examined")
+        _require_nonnegative_i63(self.observations_applied, "observations_applied")
+        _require_nonnegative_i63(
+            self.canonical_payload_bytes_examined,
+            "canonical_payload_bytes_examined",
+        )
+        if self.observations_applied > self.records_examined:
+            raise InputBoundaryError("replay observations exceed examined records")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class SensoriumReplayContinuationV1:
+    core: SensoriumCoreStateV1
+    task1_checkpoint: LedgerCursorCheckpoint
+    records_examined: int
+    observations_applied: int
+    canonical_payload_bytes_examined: int
+
+    def __post_init__(self) -> None:
+        if type(self.core) is not SensoriumCoreStateV1:
+            raise InputBoundaryError("replay continuation core is invalid")
+        _validate_checkpoint(self.task1_checkpoint)
+        checkpoint = self.task1_checkpoint
+        if checkpoint.next_sequence > checkpoint.snapshot_head_sequence:
+            raise InputBoundaryError("replay continuation checkpoint is exhaustive")
+        if self.core.last_observation_sequence >= checkpoint.next_sequence:
+            raise InputBoundaryError("replay continuation core is ahead of checkpoint")
+        SensoriumReplayPageWorkV1(
+            records_examined=self.records_examined,
+            observations_applied=self.observations_applied,
+            canonical_payload_bytes_examined=self.canonical_payload_bytes_examined,
+        )
+        if (
+            len(_encode_replay_continuation_unchecked(self))
+            > SENSORIUM_REPLAY_CONTINUATION_MAX_BYTES
+        ):
+            raise InputBoundaryError(
+                "sensorium replay continuation exceeds 5120 canonical bytes"
+            )
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class SensoriumReplayIncompleteV1:
+    continuation: SensoriumReplayContinuationV1
+    page_work: SensoriumReplayPageWorkV1
+
+    def __post_init__(self) -> None:
+        if type(self.continuation) is not SensoriumReplayContinuationV1:
+            raise InputBoundaryError("replay continuation is invalid")
+        if type(self.page_work) is not SensoriumReplayPageWorkV1:
+            raise InputBoundaryError("replay page work is invalid")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class SensoriumReplayCompleteV1:
+    state: SensoriumStateV1
+    page_work: SensoriumReplayPageWorkV1
+
+    def __post_init__(self) -> None:
+        if type(self.state) is not SensoriumStateV1:
+            raise InputBoundaryError("completed replay state is invalid")
+        if type(self.page_work) is not SensoriumReplayPageWorkV1:
+            raise InputBoundaryError("replay page work is invalid")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
 class CanonicalizedObservationV1:
     request: ObservationRequestV1
     pre_core_state: SensoriumCoreStateV1
     boundary_decision: EpisodeBoundaryDecisionV1
     post_core_state: SensoriumCoreStateV1
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class _Task2LineageWitnessV1:
+    event_id: str
+    append_sequence: int
+    append_record_hash: str
+    boundary_profile_id: str
+    content_digest: str
+    pre_append_head_hash: str
+    pre_append_head_sequence: int
+    pre_core_state_digest: str
+    post_core_state_digest: str
+    request_digest: str
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -303,6 +411,150 @@ def bootstrap_replay_to_json_value(
         "snapshot_head_hash": replay.snapshot_head_hash,
         "replay_from_sequence": replay.replay_from_sequence,
     }
+
+
+def replay_page_policy_to_json_value(
+    policy: SensoriumReplayPagePolicyV1,
+) -> dict[str, JsonValue]:
+    if type(policy) is not SensoriumReplayPagePolicyV1:
+        raise InputBoundaryError("policy must be SensoriumReplayPagePolicyV1")
+    return {"schema": _REPLAY_PAGE_POLICY_SCHEMA, "max_records": policy.max_records}
+
+
+def replay_page_work_to_json_value(
+    work: SensoriumReplayPageWorkV1,
+) -> dict[str, JsonValue]:
+    if type(work) is not SensoriumReplayPageWorkV1:
+        raise InputBoundaryError("work must be SensoriumReplayPageWorkV1")
+    return {
+        "schema": _REPLAY_PAGE_WORK_SCHEMA,
+        "records_examined": work.records_examined,
+        "observations_applied": work.observations_applied,
+        "canonical_payload_bytes_examined": (work.canonical_payload_bytes_examined),
+    }
+
+
+def replay_continuation_to_json_value(
+    continuation: SensoriumReplayContinuationV1,
+) -> dict[str, JsonValue]:
+    if type(continuation) is not SensoriumReplayContinuationV1:
+        raise InputBoundaryError("continuation must be SensoriumReplayContinuationV1")
+    return {
+        "schema": _REPLAY_CONTINUATION_SCHEMA,
+        "core": sensorium_core_state_to_json_value(continuation.core),
+        "task1_checkpoint": _checkpoint_to_json_value(continuation.task1_checkpoint),
+        "records_examined": continuation.records_examined,
+        "observations_applied": continuation.observations_applied,
+        "canonical_payload_bytes_examined": (
+            continuation.canonical_payload_bytes_examined
+        ),
+    }
+
+
+def replay_incomplete_to_json_value(
+    incomplete: SensoriumReplayIncompleteV1,
+) -> dict[str, JsonValue]:
+    if type(incomplete) is not SensoriumReplayIncompleteV1:
+        raise InputBoundaryError("incomplete must be SensoriumReplayIncompleteV1")
+    return {
+        "schema": _REPLAY_INCOMPLETE_SCHEMA,
+        "continuation": replay_continuation_to_json_value(incomplete.continuation),
+        "page_work": replay_page_work_to_json_value(incomplete.page_work),
+    }
+
+
+def replay_complete_to_json_value(
+    complete: SensoriumReplayCompleteV1,
+) -> dict[str, JsonValue]:
+    if type(complete) is not SensoriumReplayCompleteV1:
+        raise InputBoundaryError("complete must be SensoriumReplayCompleteV1")
+    return {
+        "schema": _REPLAY_COMPLETE_SCHEMA,
+        "state": sensorium_state_to_json_value(complete.state),
+        "page_work": replay_page_work_to_json_value(complete.page_work),
+    }
+
+
+def replay_page_policy_from_json_value(
+    value: JsonValue,
+) -> SensoriumReplayPagePolicyV1:
+    wire = _require_object(
+        value,
+        {_REPLAY_PAGE_POLICY_SCHEMA: {"schema", "max_records"}},
+    )
+    return SensoriumReplayPagePolicyV1(max_records=_required_int(wire, "max_records"))
+
+
+def replay_page_work_from_json_value(value: JsonValue) -> SensoriumReplayPageWorkV1:
+    wire = _require_object(
+        value,
+        {
+            _REPLAY_PAGE_WORK_SCHEMA: {
+                "schema",
+                "records_examined",
+                "observations_applied",
+                "canonical_payload_bytes_examined",
+            }
+        },
+    )
+    return SensoriumReplayPageWorkV1(
+        records_examined=_required_int(wire, "records_examined"),
+        observations_applied=_required_int(wire, "observations_applied"),
+        canonical_payload_bytes_examined=_required_int(
+            wire, "canonical_payload_bytes_examined"
+        ),
+    )
+
+
+def replay_continuation_from_json_value(
+    value: JsonValue,
+) -> SensoriumReplayContinuationV1:
+    wire = _require_object(
+        value,
+        {
+            _REPLAY_CONTINUATION_SCHEMA: {
+                "schema",
+                "core",
+                "task1_checkpoint",
+                "records_examined",
+                "observations_applied",
+                "canonical_payload_bytes_examined",
+            }
+        },
+    )
+    return SensoriumReplayContinuationV1(
+        core=sensorium_core_state_from_json_value(wire["core"]),
+        task1_checkpoint=_checkpoint_from_json_value(wire["task1_checkpoint"]),
+        records_examined=_required_int(wire, "records_examined"),
+        observations_applied=_required_int(wire, "observations_applied"),
+        canonical_payload_bytes_examined=_required_int(
+            wire, "canonical_payload_bytes_examined"
+        ),
+    )
+
+
+def replay_incomplete_from_json_value(
+    value: JsonValue,
+) -> SensoriumReplayIncompleteV1:
+    wire = _require_object(
+        value,
+        {_REPLAY_INCOMPLETE_SCHEMA: {"schema", "continuation", "page_work"}},
+    )
+    return SensoriumReplayIncompleteV1(
+        continuation=replay_continuation_from_json_value(wire["continuation"]),
+        page_work=replay_page_work_from_json_value(wire["page_work"]),
+    )
+
+
+def replay_complete_from_json_value(value: JsonValue) -> SensoriumReplayCompleteV1:
+    wire = _require_object(
+        value,
+        {_REPLAY_COMPLETE_SCHEMA: {"schema", "state", "page_work"}},
+    )
+    return SensoriumReplayCompleteV1(
+        state=sensorium_state_from_json_value(wire["state"]),
+        page_work=replay_page_work_from_json_value(wire["page_work"]),
+    )
 
 
 def observation_receipt_to_json_value(
@@ -516,6 +768,163 @@ def canonicalize_observation(
     )
 
 
+def replay_sensorium_page(
+    session: VerifiedLedgerSession,
+    policy: SensoriumReplayPagePolicyV1,
+    start: BoundaryProfileV1 | SensoriumReplayContinuationV1,
+) -> SensoriumReplayCompleteV1 | SensoriumReplayIncompleteV1:
+    active = _require_session(session)
+    if type(policy) is not SensoriumReplayPagePolicyV1:
+        raise InputBoundaryError("policy must be SensoriumReplayPagePolicyV1")
+
+    batch_size = max(1, min(policy.max_records, 64))
+    available_profile: BoundaryProfileV1 | None = None
+    if type(start) is BoundaryProfileV1:
+        available_profile = start
+        core = _initial_core(start)
+        cursor = active.cursor(after_sequence=0, batch_size=batch_size)
+        total_records = 0
+        total_observations = 0
+        total_payload_bytes = 0
+    elif type(start) is SensoriumReplayContinuationV1:
+        core = start.core
+        cursor = active.resume_verified(
+            start.task1_checkpoint,
+            batch_size=batch_size,
+        )
+        total_records = start.records_examined
+        total_observations = start.observations_applied
+        total_payload_bytes = start.canonical_payload_bytes_examined
+        baseline = baseline_boundary_profile()
+        if baseline.profile_id == core.boundary_profile_id:
+            available_profile = baseline
+    else:
+        raise InputBoundaryError("replay start must be a profile or continuation")
+
+    page_records = 0
+    page_observations = 0
+    page_payload_bytes = 0
+    exhausted = False
+    try:
+        while page_records < policy.max_records:
+            try:
+                record = next(cursor)
+            except StopIteration:
+                exhausted = True
+                break
+            page_records += 1
+            payload_bytes = len(canonical_json_bytes(record.payload))
+            page_payload_bytes += payload_bytes
+            total_records += 1
+            total_payload_bytes += payload_bytes
+
+            observation = _observation_from_record_payload(
+                record.payload,
+                record.event_id,
+                record.sequence,
+            )
+            claims_observation = (
+                type(record.payload) is dict
+                and cast(dict[str, JsonValue], record.payload).get("schema")
+                == _CANONICAL_OBSERVATION_SCHEMA
+            )
+            if observation is None:
+                if claims_observation:
+                    raise LedgerIntegrityError(
+                        "malformed Task 2 observation encountered during replay"
+                    )
+                continue
+
+            pre_core_matches = _core_digest_matches(
+                core, observation.pre_core_state_digest
+            )
+            if not pre_core_matches:
+                if not _has_authenticated_lineage_bridge(
+                    active,
+                    core,
+                    target_digest=observation.pre_core_state_digest,
+                    before_sequence=record.sequence,
+                ):
+                    raise LedgerIntegrityError(
+                        "Task 2 replay predecessor core digest does not match"
+                    )
+                if not _live_observation_has_authenticated_witness(
+                    active,
+                    event_id=record.event_id,
+                    sequence=record.sequence,
+                    record_hash=record.record_hash,
+                    observation=observation,
+                ):
+                    raise LedgerIntegrityError(
+                        "Task 2 replay gap successor lacks authenticated ingest witness"
+                    )
+            profile = _available_replay_profile(
+                observation.boundary_profile_id,
+                available_profile,
+            )
+            if pre_core_matches and profile is not None:
+                try:
+                    recomputed = canonicalize_observation(
+                        observation.request,
+                        profile,
+                        core,
+                        record.sequence,
+                    )
+                except InputBoundaryError as exc:
+                    raise LedgerIntegrityError(
+                        "Task 2 replay transition cannot be recomputed"
+                    ) from exc
+                if (
+                    recomputed.boundary_decision != observation.boundary_decision
+                    or recomputed.post_core_state != observation.post_core_state
+                ):
+                    raise LedgerIntegrityError(
+                        "Task 2 replay transition disagrees with stored observation"
+                    )
+            elif pre_core_matches and not _live_observation_has_authenticated_witness(
+                active,
+                event_id=record.event_id,
+                sequence=record.sequence,
+                record_hash=record.record_hash,
+                observation=observation,
+            ):
+                raise LedgerIntegrityError(
+                    "Task 2 replay unavailable profile lacks authenticated ingest witness"
+                )
+            core = observation.post_core_state
+            available_profile = profile
+            page_observations += 1
+            total_observations += 1
+    except BaseException as primary:
+        try:
+            cursor.close()
+        except BaseException as cleanup_failure:
+            raise primary from cleanup_failure
+        raise
+
+    checkpoint = cursor.suspend()
+    page_work = SensoriumReplayPageWorkV1(
+        records_examined=page_records,
+        observations_applied=page_observations,
+        canonical_payload_bytes_examined=page_payload_bytes,
+    )
+    if exhausted or checkpoint.next_sequence == checkpoint.snapshot_head_sequence + 1:
+        return SensoriumReplayCompleteV1(
+            state=SensoriumStateV1(core=core, task1_checkpoint=checkpoint),
+            page_work=page_work,
+        )
+    return SensoriumReplayIncompleteV1(
+        continuation=SensoriumReplayContinuationV1(
+            core=core,
+            task1_checkpoint=checkpoint,
+            records_examined=total_records,
+            observations_applied=total_observations,
+            canonical_payload_bytes_examined=total_payload_bytes,
+        ),
+        page_work=page_work,
+    )
+
+
 def classify_observation_receipt(
     session: VerifiedLedgerSession,
     request: ObservationRequestV1,
@@ -580,8 +989,6 @@ def ingest_observation(
 
     if not _state_matches_active_head(active, state):
         return _rejected(receipt, IngestRejectionCode.STATE_CONFLICT)
-    if state.core.boundary_profile_id != profile.profile_id:
-        return _rejected(receipt, IngestRejectionCode.STATE_CONFLICT)
     if not _state_lineage_is_valid(active, state):
         return _rejected(receipt, IngestRejectionCode.STATE_CONFLICT)
     try:
@@ -602,9 +1009,12 @@ def ingest_observation(
         pre_append_head_hash=state.task1_checkpoint.snapshot_head_hash,
         boundary_profile_id=profile.profile_id,
     )
-    outcome = active.append_once(
+    outcome = active._append_once_with_authenticated_witness(
         request.observation_id,
         cast(JsonValue, canonical_observation_to_json_value(observation)),
+        witness_schema=_TASK2_LINEAGE_WITNESS_SCHEMA,
+        link_digest=observation.post_core_state_digest,
+        witness_body=_task2_lineage_witness_body(observation),
     )
     if not outcome.created:
         raise LedgerConflictError("NEW observation unexpectedly already exists")
@@ -659,7 +1069,7 @@ def _resolve_duplicate(
             or checkpoint.next_sequence != checkpoint.snapshot_head_sequence + 1
             or derive_sensorium_core_state_digest(state.core)
             != observation.pre_core_state_digest
-            or state.core.boundary_profile_id != profile.profile_id
+            or observation.boundary_profile_id != profile.profile_id
             or active_tail.snapshot_head_hash != record.record_hash
         ):
             return _rejected(receipt, IngestRejectionCode.STATE_CONFLICT)
@@ -670,7 +1080,7 @@ def _resolve_duplicate(
     else:
         if not _state_matches_checkpoint(active_tail, state.task1_checkpoint):
             return _rejected(receipt, IngestRejectionCode.STATE_CONFLICT)
-        if state.core.boundary_profile_id != profile.profile_id:
+        if observation.boundary_profile_id != profile.profile_id:
             return _rejected(receipt, IngestRejectionCode.STATE_CONFLICT)
         if caller_sequence > existing_sequence and not _state_lineage_is_valid(
             session, state
@@ -766,6 +1176,7 @@ def _observation_from_record_payload(
         return None
     if (
         observation.pre_append_head_sequence + 1 != record_sequence
+        or observation.post_core_state.last_observation_id != expected_id
         or observation.post_core_state.last_observation_sequence != record_sequence
     ):
         return None
@@ -805,6 +1216,13 @@ def _require_profile(value: object) -> BoundaryProfileV1:
 
 
 def _validate_exhaustive_checkpoint(value: object) -> None:
+    _validate_checkpoint(value)
+    checkpoint = cast(LedgerCursorCheckpoint, value)
+    if checkpoint.next_sequence != checkpoint.snapshot_head_sequence + 1:
+        raise InputBoundaryError("sensorium state checkpoint is not exhaustive")
+
+
+def _validate_checkpoint(value: object) -> None:
     if type(value) is not LedgerCursorCheckpoint:
         raise InputBoundaryError("Task 1 checkpoint is invalid")
     checkpoint = cast(LedgerCursorCheckpoint, value)
@@ -820,13 +1238,257 @@ def _validate_exhaustive_checkpoint(value: object) -> None:
     _require_digest(checkpoint.snapshot_head_hash, "snapshot_head_hash")
     if (
         type(checkpoint.next_sequence) is not int
-        or checkpoint.next_sequence != checkpoint.snapshot_head_sequence + 1
+        or not 1 <= checkpoint.next_sequence <= checkpoint.snapshot_head_sequence + 1
     ):
-        raise InputBoundaryError("sensorium state checkpoint is not exhaustive")
+        raise InputBoundaryError("checkpoint next_sequence is invalid")
 
 
 def _encode_sensorium_state_unchecked(state: SensoriumStateV1) -> bytes:
     return canonical_json_bytes(sensorium_state_to_json_value(state))
+
+
+def _encode_replay_continuation_unchecked(
+    continuation: SensoriumReplayContinuationV1,
+) -> bytes:
+    return canonical_json_bytes(replay_continuation_to_json_value(continuation))
+
+
+def _checkpoint_to_json_value(
+    checkpoint: LedgerCursorCheckpoint,
+) -> dict[str, JsonValue]:
+    _validate_checkpoint(checkpoint)
+    return {
+        "ledger_id": checkpoint.ledger_id,
+        "snapshot_head_sequence": checkpoint.snapshot_head_sequence,
+        "snapshot_head_hash": checkpoint.snapshot_head_hash,
+        "next_sequence": checkpoint.next_sequence,
+    }
+
+
+def _checkpoint_from_json_value(value: JsonValue) -> LedgerCursorCheckpoint:
+    wire = _require_exact_object(
+        value,
+        {"ledger_id", "snapshot_head_sequence", "snapshot_head_hash", "next_sequence"},
+        "task1_checkpoint",
+    )
+    return LedgerCursorCheckpoint(
+        ledger_id=_required_str(wire, "ledger_id"),
+        snapshot_head_sequence=_required_int(wire, "snapshot_head_sequence"),
+        snapshot_head_hash=_required_str(wire, "snapshot_head_hash"),
+        next_sequence=_required_int(wire, "next_sequence"),
+    )
+
+
+def _core_digest_matches(core: SensoriumCoreStateV1, expected: str) -> bool:
+    return derive_sensorium_core_state_digest(core) == expected
+
+
+def _task2_lineage_witness_body(
+    observation: CanonicalObservationV1,
+) -> dict[str, JsonValue]:
+    post_core = observation.post_core_state
+    return {
+        "boundary_profile_id": observation.boundary_profile_id,
+        "content_digest": observation.content_digest,
+        "observation_id": observation.request.observation_id,
+        "observation_schema": _CANONICAL_OBSERVATION_SCHEMA,
+        "post_core_state_digest": observation.post_core_state_digest,
+        "post_last_observation_id": post_core.last_observation_id,
+        "post_last_observation_sequence": post_core.last_observation_sequence,
+        "pre_append_head_hash": observation.pre_append_head_hash,
+        "pre_append_head_sequence": observation.pre_append_head_sequence,
+        "pre_core_state_digest": observation.pre_core_state_digest,
+        "request_digest": observation.request_digest,
+        "schema": _TASK2_LINEAGE_WITNESS_SCHEMA,
+    }
+
+
+def _has_authenticated_lineage_bridge(
+    session: VerifiedLedgerSession,
+    core: SensoriumCoreStateV1,
+    *,
+    target_digest: str,
+    before_sequence: int,
+) -> bool:
+    anchored_digest = derive_sensorium_core_state_digest(core)
+    next_digest = target_digest
+    upper_bound = before_sequence
+    traversed = 0
+    while next_digest != anchored_digest:
+        proof = session.authenticated_tombstoned_append_witness(
+            witness_schema=_TASK2_LINEAGE_WITNESS_SCHEMA,
+            link_digest=next_digest,
+            after_sequence=core.last_observation_sequence,
+            before_sequence=upper_bound,
+        )
+        if proof is None:
+            return False
+        try:
+            witness = _task2_lineage_witness_from_proof(proof)
+        except InputBoundaryError as exc:
+            raise LedgerIntegrityError(
+                "authenticated Task 2 lineage witness is malformed"
+            ) from exc
+        if (
+            witness.post_core_state_digest != next_digest
+            or witness.append_sequence >= upper_bound
+            or witness.append_sequence <= core.last_observation_sequence
+        ):
+            raise LedgerIntegrityError(
+                "authenticated Task 2 lineage witness binding is invalid"
+            )
+        next_digest = witness.pre_core_state_digest
+        upper_bound = witness.append_sequence
+        traversed += 1
+        if traversed > SENSORIUM_REPLAY_MAX_RECORDS:
+            raise LedgerIntegrityError("Task 2 lineage witness chain exceeds bound")
+    return True
+
+
+def _live_observation_has_authenticated_witness(
+    session: VerifiedLedgerSession,
+    *,
+    event_id: str,
+    sequence: int,
+    record_hash: str,
+    observation: CanonicalObservationV1,
+) -> bool:
+    proof = session.authenticated_live_append_witness(
+        event_id=event_id,
+        append_sequence=sequence,
+        append_record_hash=record_hash,
+        witness_schema=_TASK2_LINEAGE_WITNESS_SCHEMA,
+        link_digest=observation.post_core_state_digest,
+    )
+    if proof is None:
+        return False
+    try:
+        witness = _task2_lineage_witness_from_proof(proof)
+    except InputBoundaryError as exc:
+        raise LedgerIntegrityError(
+            "authenticated Task 2 successor witness is malformed"
+        ) from exc
+    return witness == _Task2LineageWitnessV1(
+        event_id=event_id,
+        append_sequence=sequence,
+        append_record_hash=record_hash,
+        boundary_profile_id=observation.boundary_profile_id,
+        content_digest=observation.content_digest,
+        pre_append_head_hash=observation.pre_append_head_hash,
+        pre_append_head_sequence=observation.pre_append_head_sequence,
+        pre_core_state_digest=observation.pre_core_state_digest,
+        post_core_state_digest=observation.post_core_state_digest,
+        request_digest=observation.request_digest,
+    )
+
+
+def _task2_lineage_witness_from_proof(
+    value: JsonValue,
+) -> _Task2LineageWitnessV1:
+    proof = _require_exact_object(
+        value,
+        {
+            "append_record_hash",
+            "append_sequence",
+            "event_id",
+            "link_digest",
+            "witness_body",
+            "witness_schema",
+        },
+        "authenticated append witness",
+    )
+    witness_schema = _required_str(proof, "witness_schema")
+    if witness_schema != _TASK2_LINEAGE_WITNESS_SCHEMA:
+        raise InputBoundaryError("Task 2 lineage witness schema is invalid")
+    event_id = _required_str(proof, "event_id")
+    _require_observation_id(event_id)
+    append_sequence = _required_int(proof, "append_sequence")
+    _require_positive_i63(append_sequence, "append_sequence")
+    append_record_hash = _required_str(proof, "append_record_hash")
+    _require_digest(append_record_hash, "append_record_hash")
+    link_digest = _required_str(proof, "link_digest")
+    _require_digest(link_digest, "link_digest")
+
+    body = _require_exact_object(
+        proof["witness_body"],
+        {
+            "boundary_profile_id",
+            "content_digest",
+            "observation_id",
+            "observation_schema",
+            "post_core_state_digest",
+            "post_last_observation_id",
+            "post_last_observation_sequence",
+            "pre_append_head_hash",
+            "pre_append_head_sequence",
+            "pre_core_state_digest",
+            "request_digest",
+            "schema",
+        },
+        "Task 2 lineage witness body",
+    )
+    if (
+        _required_str(body, "schema") != _TASK2_LINEAGE_WITNESS_SCHEMA
+        or _required_str(body, "observation_schema")
+        != _CANONICAL_OBSERVATION_SCHEMA
+    ):
+        raise InputBoundaryError("Task 2 lineage witness body schema is invalid")
+    observation_id = _required_str(body, "observation_id")
+    post_last_observation_id = _required_str(body, "post_last_observation_id")
+    _require_observation_id(observation_id)
+    _require_observation_id(post_last_observation_id)
+    pre_head_sequence = _required_int(body, "pre_append_head_sequence")
+    _require_nonnegative_i63(pre_head_sequence, "pre_append_head_sequence")
+    post_last_sequence = _required_int(body, "post_last_observation_sequence")
+    _require_positive_i63(post_last_sequence, "post_last_observation_sequence")
+    pre_head_hash = _required_str(body, "pre_append_head_hash")
+    request_digest = _required_str(body, "request_digest")
+    content_digest = _required_str(body, "content_digest")
+    pre_core_digest = _required_str(body, "pre_core_state_digest")
+    post_core_digest = _required_str(body, "post_core_state_digest")
+    for field_name, digest in (
+        ("pre_append_head_hash", pre_head_hash),
+        ("request_digest", request_digest),
+        ("content_digest", content_digest),
+        ("pre_core_state_digest", pre_core_digest),
+        ("post_core_state_digest", post_core_digest),
+    ):
+        _require_digest(digest, field_name)
+    profile_id = _required_str(body, "boundary_profile_id")
+    if _PROFILE_ID_PATTERN.fullmatch(profile_id) is None:
+        raise InputBoundaryError("boundary_profile_id is invalid")
+    if (
+        event_id != observation_id
+        or observation_id != post_last_observation_id
+        or append_sequence != pre_head_sequence + 1
+        or append_sequence != post_last_sequence
+        or link_digest != post_core_digest
+    ):
+        raise InputBoundaryError("Task 2 lineage witness binding is invalid")
+    return _Task2LineageWitnessV1(
+        event_id=event_id,
+        append_sequence=append_sequence,
+        append_record_hash=append_record_hash,
+        boundary_profile_id=profile_id,
+        content_digest=content_digest,
+        pre_append_head_hash=pre_head_hash,
+        pre_append_head_sequence=pre_head_sequence,
+        pre_core_state_digest=pre_core_digest,
+        post_core_state_digest=post_core_digest,
+        request_digest=request_digest,
+    )
+
+
+def _available_replay_profile(
+    profile_id: str,
+    current: BoundaryProfileV1 | None,
+) -> BoundaryProfileV1 | None:
+    if current is not None and current.profile_id == profile_id:
+        return current
+    baseline = baseline_boundary_profile()
+    if baseline.profile_id == profile_id:
+        return baseline
+    return None
 
 
 def _require_object(
@@ -895,6 +1557,8 @@ def _domain_digest(domain: bytes, payload: bytes) -> str:
 
 
 __all__ = [
+    "SENSORIUM_REPLAY_CONTINUATION_MAX_BYTES",
+    "SENSORIUM_REPLAY_MAX_RECORDS",
     "BoundaryProfileV1",
     "CanonicalizedObservationV1",
     "IngestRejectionCode",
@@ -904,6 +1568,11 @@ __all__ = [
     "ObservationRejectedV1",
     "ReceiptClass",
     "SensoriumBootstrapReplayRequiredV1",
+    "SensoriumReplayCompleteV1",
+    "SensoriumReplayContinuationV1",
+    "SensoriumReplayIncompleteV1",
+    "SensoriumReplayPagePolicyV1",
+    "SensoriumReplayPageWorkV1",
     "SensoriumStateV1",
     "baseline_boundary_profile",
     "bootstrap_replay_to_json_value",
@@ -917,6 +1586,17 @@ __all__ = [
     "observation_accepted_to_json_value",
     "observation_receipt_to_json_value",
     "observation_rejected_to_json_value",
+    "replay_complete_from_json_value",
+    "replay_complete_to_json_value",
+    "replay_continuation_from_json_value",
+    "replay_continuation_to_json_value",
+    "replay_incomplete_from_json_value",
+    "replay_incomplete_to_json_value",
+    "replay_page_policy_from_json_value",
+    "replay_page_policy_to_json_value",
+    "replay_page_work_from_json_value",
+    "replay_page_work_to_json_value",
+    "replay_sensorium_page",
     "sensorium_state_from_json_value",
     "sensorium_state_to_json_value",
 ]

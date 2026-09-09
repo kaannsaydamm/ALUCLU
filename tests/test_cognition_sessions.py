@@ -28,6 +28,7 @@ from aluclu.cognition import (
     VerifiedLedgerCursor,
     atomic_write_bytes,
 )
+from aluclu.cognition.contracts import JsonValue
 
 MASTER_KEY = b"m" * 32
 
@@ -382,10 +383,10 @@ def _touch_valid_metadata_from_external_connection(path: Path) -> None:
         external.execute("PRAGMA busy_timeout = 30000")
         external.execute("BEGIN IMMEDIATE")
         external.execute(
-            "UPDATE metadata SET value = X'3032' WHERE key = 'schema_version'"
+            "UPDATE metadata SET value = X'3033' WHERE key = 'schema_version'"
         )
         external.execute(
-            "UPDATE metadata SET value = X'32' WHERE key = 'schema_version'"
+            "UPDATE metadata SET value = X'33' WHERE key = 'schema_version'"
         )
         external.execute("COMMIT")
     finally:
@@ -405,10 +406,10 @@ def _try_valid_metadata_commit_from_external_connection(path: Path) -> str:
                 return "blocked"
             raise
         external.execute(
-            "UPDATE metadata SET value = X'3032' WHERE key = 'schema_version'"
+            "UPDATE metadata SET value = X'3033' WHERE key = 'schema_version'"
         )
         external.execute(
-            "UPDATE metadata SET value = X'32' WHERE key = 'schema_version'"
+            "UPDATE metadata SET value = X'33' WHERE key = 'schema_version'"
         )
         external.execute("COMMIT")
         return "committed"
@@ -473,6 +474,13 @@ def test_session_and_cursor_contexts_fail_closed_after_close(tmp_path: Path) -> 
     with pytest.raises(LedgerLifecycleError):
         session.cursor()
     with pytest.raises(LedgerLifecycleError):
+        session.authenticated_tombstoned_append_witness(
+            witness_schema="aluclu.test-witness.v1",
+            link_digest="0" * 64,
+            after_sequence=0,
+            before_sequence=1,
+        )
+    with pytest.raises(LedgerLifecycleError):
         next(cursor)
 
     ledger.close()
@@ -482,7 +490,13 @@ def test_session_and_cursor_contexts_fail_closed_after_close(tmp_path: Path) -> 
 
 @pytest.mark.parametrize(
     "operation_name",
-    ["session_method", "session_close", "cursor_next", "cursor_suspend"],
+    [
+        "session_method",
+        "authenticated_witness",
+        "session_close",
+        "cursor_next",
+        "cursor_suspend",
+    ],
 )
 def test_session_and_cursor_are_strictly_thread_owned(
     tmp_path: Path,
@@ -497,6 +511,12 @@ def test_session_and_cursor_are_strictly_thread_owned(
         cursor = session.cursor(batch_size=1)
         operations: dict[str, Callable[[], object]] = {
             "session_method": session.event_count,
+            "authenticated_witness": lambda: session.authenticated_tombstoned_append_witness(
+                witness_schema="aluclu.test-witness.v1",
+                link_digest="0" * 64,
+                after_sequence=0,
+                before_sequence=1,
+            ),
             "session_close": session.close,
             "cursor_next": lambda: next(cursor),
             "cursor_suspend": cursor.suspend,
@@ -2784,6 +2804,330 @@ def test_cursor_orders_live_records_and_honors_after_sequence(tmp_path: Path) ->
             "evt_6",
         ]
         assert records == [outcome.record for outcome in outcomes[2:]]
+
+
+@pytest.mark.parametrize(
+    ("after_sequence", "before_sequence"),
+    [
+        (-1, 1),
+        (True, 1),
+        (0, True),
+        (0, 0),
+        (1, 1),
+        (2, 1),
+        (0, 2),
+    ],
+)
+def test_authenticated_witness_rejects_noncanonical_or_out_of_snapshot_bounds(
+    tmp_path: Path,
+    after_sequence: object,
+    before_sequence: object,
+) -> None:
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3",
+        StaticKeyProvider(MASTER_KEY),
+    ) as ledger:
+        with ledger.verified_session() as session:
+            with pytest.raises(InputBoundaryError):
+                session.authenticated_tombstoned_append_witness(
+                    witness_schema="aluclu.test-witness.v1",
+                    link_digest="0" * 64,
+                    after_sequence=after_sequence,  # type: ignore[arg-type]
+                    before_sequence=before_sequence,  # type: ignore[arg-type]
+                )
+
+
+def test_authenticated_witness_is_atomic_private_and_visible_only_after_shred(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    schema = "aluclu.test-witness.v1"
+    witnessed_link = "1" * 64
+    raw_link = "2" * 64
+    body: dict[str, JsonValue] = {"digest": "3" * 64, "schema": schema}
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as ledger:
+        with ledger.verified_session() as session:
+            witnessed = session._append_once_with_authenticated_witness(
+                "evt_witnessed",
+                {"value": "private"},
+                witness_schema=schema,
+                link_digest=witnessed_link,
+                witness_body=body,
+            )
+            raw = session.append_once("evt_raw", {"value": "generic"})
+            live_proof = session.authenticated_live_append_witness(
+                event_id="evt_witnessed",
+                append_sequence=witnessed.record.sequence,
+                append_record_hash=witnessed.record.record_hash,
+                witness_schema=schema,
+                link_digest=witnessed_link,
+            )
+            assert live_proof == {
+                "append_record_hash": witnessed.record.record_hash,
+                "append_sequence": witnessed.record.sequence,
+                "event_id": "evt_witnessed",
+                "link_digest": witnessed_link,
+                "witness_body": body,
+                "witness_schema": schema,
+            }
+            assert (
+                session.authenticated_live_append_witness(
+                    event_id="evt_raw",
+                    append_sequence=raw.record.sequence,
+                    append_record_hash=raw.record.record_hash,
+                    witness_schema=schema,
+                    link_digest=raw_link,
+                )
+                is None
+            )
+            assert (
+                session.authenticated_tombstoned_append_witness(
+                    witness_schema=schema,
+                    link_digest=witnessed_link,
+                    after_sequence=0,
+                    before_sequence=raw.record.sequence + 1,
+                )
+                is None
+            )
+
+        assert ledger.shred("evt_witnessed") is True
+        assert ledger.shred("evt_raw") is True
+        with ledger.verified_session() as session:
+            cursor = session.cursor(batch_size=1)
+            proof = session.authenticated_tombstoned_append_witness(
+                witness_schema=schema,
+                link_digest=witnessed_link,
+                after_sequence=0,
+                before_sequence=raw.record.sequence + 1,
+            )
+            assert proof == {
+                "append_record_hash": witnessed.record.record_hash,
+                "append_sequence": witnessed.record.sequence,
+                "event_id": "evt_witnessed",
+                "link_digest": witnessed_link,
+                "witness_body": body,
+                "witness_schema": schema,
+            }
+            assert (
+                session.authenticated_tombstoned_append_witness(
+                    witness_schema=schema,
+                    link_digest=raw_link,
+                    after_sequence=0,
+                    before_sequence=5,
+                )
+                is None
+            )
+            cursor.close()
+
+    connection = sqlite3.connect(path)
+    try:
+        stored_body = connection.execute(
+            "SELECT witness_body FROM append_witnesses WHERE event_id = ?",
+            ("evt_witnessed",),
+        ).fetchone()
+        assert stored_body is not None
+        expected_body = json.dumps(
+            body,
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        assert stored_body[0] == expected_body
+        assert b"private" not in stored_body[0]
+    finally:
+        connection.close()
+
+
+def test_authenticated_witness_idempotency_requires_exact_witness(
+    tmp_path: Path,
+) -> None:
+    schema = "aluclu.test-witness.v1"
+    link = "4" * 64
+    body = {"schema": schema, "value": 1}
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3",
+        StaticKeyProvider(MASTER_KEY),
+    ) as ledger:
+        with ledger.verified_session() as session:
+            first = session._append_once_with_authenticated_witness(
+                "evt_once",
+                {"value": 1},
+                witness_schema=schema,
+                link_digest=link,
+                witness_body=body,
+            )
+            duplicate = session._append_once_with_authenticated_witness(
+                "evt_once",
+                {"value": 1},
+                witness_schema=schema,
+                link_digest=link,
+                witness_body=body,
+            )
+            assert first.created is True
+            assert duplicate.created is False
+            assert duplicate.record == first.record
+            with pytest.raises(LedgerConflictError):
+                session._append_once_with_authenticated_witness(
+                    "evt_once",
+                    {"value": 1},
+                    witness_schema=schema,
+                    link_digest="5" * 64,
+                    witness_body=body,
+                )
+            with pytest.raises(LedgerConflictError):
+                session._append_once_with_authenticated_witness(
+                    "evt_once",
+                    {"value": 1},
+                    witness_schema=schema,
+                    link_digest=link,
+                    witness_body={"schema": schema, "value": 2},
+                )
+
+
+def test_append_witness_fault_rolls_back_record_key_and_sqlite_rows(
+    tmp_path: Path,
+) -> None:
+    class InjectedWitnessFailure(RuntimeError):
+        pass
+
+    armed = True
+
+    def inject(boundary: str) -> None:
+        nonlocal armed
+        if armed and boundary == "after_append_witness_before_sqlite_commit":
+            armed = False
+            raise InjectedWitnessFailure("injected witness transaction failure")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3",
+        StaticKeyProvider(MASTER_KEY),
+        _fault_injector=inject,
+    ) as ledger:
+        failed_session = None
+        with pytest.raises(InjectedWitnessFailure):
+            with ledger.verified_session() as failed_session:
+                failed_session._append_once_with_authenticated_witness(
+                    "evt_rolled_back",
+                    {"value": 1},
+                    witness_schema="aluclu.test-witness.v1",
+                    link_digest="6" * 64,
+                    witness_body={"value": 1},
+                )
+        assert failed_session is not None
+        with pytest.raises(LedgerLifecycleError):
+            failed_session.event_count()
+        connection = ledger._connection_required()
+        assert connection.in_transaction is False
+        assert connection.execute("SELECT COUNT(*) FROM history").fetchone() == (0,)
+        assert connection.execute(
+            "SELECT COUNT(*) FROM append_witnesses"
+        ).fetchone() == (0,)
+        assert ledger._record_store_required().reference("evt_rolled_back") is None
+        assert ledger.event_count() == 0
+
+
+@pytest.mark.parametrize(
+    "boundary",
+    [
+        "after_sqlite_commit_before_key_committed",
+        "after_key_committed_before_anchor",
+        "after_append_anchor_before_certificate",
+    ],
+)
+def test_committed_append_witness_recovers_forward_after_interruption(
+    tmp_path: Path,
+    boundary: str,
+) -> None:
+    class InjectedWitnessInterruption(RuntimeError):
+        pass
+
+    path = tmp_path / f"{boundary}.sqlite3"
+    armed = True
+
+    def inject(observed: str) -> None:
+        nonlocal armed
+        if armed and observed == boundary:
+            armed = False
+            raise InjectedWitnessInterruption(boundary)
+
+    ledger = EncryptedLedger(
+        path,
+        StaticKeyProvider(MASTER_KEY),
+        _fault_injector=inject,
+    )
+    ledger.unlock()
+    with pytest.raises(InjectedWitnessInterruption):
+        with ledger.verified_session() as session:
+            session._append_once_with_authenticated_witness(
+                "evt_recover_witness",
+                {"value": 1},
+                witness_schema="aluclu.test-witness.v1",
+                link_digest="8" * 64,
+                witness_body={"value": 1},
+            )
+    ledger.close()
+
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as recovered:
+        record = recovered.read("evt_recover_witness")
+        assert record is not None
+        with recovered.verified_session() as session:
+            proof = session.authenticated_live_append_witness(
+                event_id=record.event_id,
+                append_sequence=record.sequence,
+                append_record_hash=record.record_hash,
+                witness_schema="aluclu.test-witness.v1",
+                link_digest="8" * 64,
+            )
+            assert proof == {
+                "append_record_hash": record.record_hash,
+                "append_sequence": record.sequence,
+                "event_id": record.event_id,
+                "link_digest": "8" * 64,
+                "witness_body": {"value": 1},
+                "witness_schema": "aluclu.test-witness.v1",
+            }
+
+
+@pytest.mark.parametrize("tamper", ["body", "mac", "record_hash"])
+def test_append_witness_external_tamper_fails_full_verification(
+    tmp_path: Path,
+    tamper: str,
+) -> None:
+    path = tmp_path / "memory.sqlite3"
+    with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as ledger:
+        with ledger.verified_session() as session:
+            session._append_once_with_authenticated_witness(
+                "evt_tampered",
+                {"value": 1},
+                witness_schema="aluclu.test-witness.v1",
+                link_digest="7" * 64,
+                witness_body={"value": 1},
+            )
+
+    connection = sqlite3.connect(path)
+    try:
+        if tamper == "body":
+            connection.execute(
+                "UPDATE append_witnesses SET witness_body = ?",
+                (sqlite3.Binary(b'{"value":2}'),),
+            )
+        elif tamper == "mac":
+            connection.execute(
+                "UPDATE append_witnesses SET witness_mac = ?",
+                (sqlite3.Binary(b"x" * 32),),
+            )
+        else:
+            connection.execute(
+                "UPDATE append_witnesses SET append_record_hash = ?",
+                (sqlite3.Binary(b"y" * 32),),
+            )
+        connection.commit()
+    finally:
+        connection.close()
+
+    with pytest.raises(LedgerIntegrityError):
+        EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)).unlock()
 
 
 @pytest.mark.parametrize("batch_size", [0, -1, 4097, True, 1.0, "1", None])
