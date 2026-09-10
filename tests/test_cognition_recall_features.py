@@ -13,13 +13,16 @@ import pytest
 
 from aluclu.cognition import InputBoundaryError
 from aluclu.cognition.recall_features import (
+    FeatureSimilarityV1,
     RetrievalFeatureVectorV1,
     _bins_to_saturated_i16be,
     _iter_signed_byte_grams,
     active_feature_spec_id,
     active_normalizer_id,
+    compare_feature_similarity_exact,
     encode_retrieval_text,
     feature_vector_digest,
+    measure_feature_similarity,
     search_view_utf8,
 )
 
@@ -33,6 +36,7 @@ PROTOCOL_PATH = (
     / "protocols"
     / "task2_determinism_v1.json"
 )
+RECOLLECTION_PROTOCOL_PATH = PROTOCOL_PATH.with_name("task2_recollection_v1.json")
 
 
 def _canonical_json_bytes(value: object) -> bytes:
@@ -383,3 +387,179 @@ def test_private_saturation_helper_clips_each_bin_to_int16_storage() -> None:
 
     assert len(encoded) == 2048
     assert encoded[14:22].hex() == "7fff80017fff8001"
+
+
+def _literal_vector(*bins: int) -> RetrievalFeatureVectorV1:
+    padded = (*bins, *((0,) * (1024 - len(bins))))
+    return RetrievalFeatureVectorV1(
+        feature_spec_id=active_feature_spec_id(),
+        bins_i16be=_bins_to_i16be(padded),
+    )
+
+
+def _sparse_literal_vector(entries: list[list[int]]) -> RetrievalFeatureVectorV1:
+    bins = [0] * 1024
+    for index, value in entries:
+        bins[index] = value
+    return _literal_vector(*bins)
+
+
+def test_recollection_protocol_fixture_is_canonical_and_exactly_shaped() -> None:
+    wire = RECOLLECTION_PROTOCOL_PATH.read_bytes()
+    manifest = json.loads(wire)
+
+    assert wire == _canonical_json_bytes(manifest)
+    assert tuple(manifest) == (
+        "algorithm",
+        "ranking_vectors",
+        "schema",
+        "similarity_vectors",
+    )
+    assert manifest["schema"] == "aluclu.task2-recollection-determinism.v1"
+    assert manifest["algorithm"] == {
+        "comparator": "positive-cosine-cross-product.v1",
+        "score": "cosine-q32-floor-isqrt.v1",
+    }
+
+
+@pytest.mark.parametrize(
+    "case",
+    json.loads(RECOLLECTION_PROTOCOL_PATH.read_bytes())["similarity_vectors"],
+)
+def test_similarity_matches_companion_protocol_fixture(case: dict[str, Any]) -> None:
+    assert tuple(case) == (
+        "candidate_nonzero_bins",
+        "candidate_squared_norm",
+        "case_id",
+        "dot_product",
+        "norm_product",
+        "pre_isqrt_quotient",
+        "query_nonzero_bins",
+        "query_squared_norm",
+        "score_q32",
+    )
+    measured = measure_feature_similarity(
+        _sparse_literal_vector(case["query_nonzero_bins"]),
+        _sparse_literal_vector(case["candidate_nonzero_bins"]),
+    )
+
+    assert measured.dot_product == case["dot_product"]
+    assert measured.query_squared_norm == case["query_squared_norm"]
+    assert measured.candidate_squared_norm == case["candidate_squared_norm"]
+    assert (
+        measured.query_squared_norm * measured.candidate_squared_norm
+        == case["norm_product"]
+    )
+    if measured.dot_product > 0 and case["norm_product"] > 0:
+        scale = 1 << 32
+        assert (
+            ((measured.dot_product * scale) ** 2) // case["norm_product"]
+            == case["pre_isqrt_quotient"]
+        )
+    else:
+        assert case["pre_isqrt_quotient"] == 0
+    assert measured.score_q32 == case["score_q32"]
+
+
+def test_exact_comparator_matches_companion_protocol_fixture() -> None:
+    [case] = json.loads(RECOLLECTION_PROTOCOL_PATH.read_bytes())["ranking_vectors"]
+    query_bins = [case["query_default_bin"]] * 1024
+    left_bins = [case["left_candidate_default_bin"]] * 1024
+    right_bins = [case["right_candidate_default_bin"]] * 1024
+    for index, value in case["left_candidate_overrides"]:
+        left_bins[index] = value
+    for index, value in case["right_candidate_overrides"]:
+        right_bins[index] = value
+
+    left = measure_feature_similarity(
+        _literal_vector(*query_bins), _literal_vector(*left_bins)
+    )
+    right = measure_feature_similarity(
+        _literal_vector(*query_bins), _literal_vector(*right_bins)
+    )
+    left_cross = (
+        left.dot_product
+        * left.dot_product
+        * right.query_squared_norm
+        * right.candidate_squared_norm
+    )
+    right_cross = (
+        right.dot_product
+        * right.dot_product
+        * left.query_squared_norm
+        * left.candidate_squared_norm
+    )
+
+    assert left.score_q32 == case["left_score_q32"]
+    assert right.score_q32 == case["right_score_q32"]
+    assert left_cross == case["left_cross_product"]
+    assert right_cross == case["right_cross_product"]
+    assert compare_feature_similarity_exact(left, right) == case["expected_comparison"]
+
+
+@pytest.mark.parametrize(
+    ("query", "candidate", "expected_dot", "expected_query_norm", "expected_candidate_norm", "expected_score"),
+    (
+        ((1,), (1,), 1, 1, 1, 1 << 32),
+        ((1,), (-1,), -1, 1, 1, 0),
+        ((1, 0), (0, 1), 0, 1, 1, 0),
+        ((1, 1), (1, 0), 1, 2, 1, 3_037_000_499),
+        ((3, 4), (6, 8), 50, 25, 100, 1 << 32),
+    ),
+)
+def test_literal_q32_similarity_fixtures(
+    query: tuple[int, ...],
+    candidate: tuple[int, ...],
+    expected_dot: int,
+    expected_query_norm: int,
+    expected_candidate_norm: int,
+    expected_score: int,
+) -> None:
+    measured = measure_feature_similarity(
+        _literal_vector(*query),
+        _literal_vector(*candidate),
+    )
+
+    assert type(measured) is FeatureSimilarityV1
+    assert measured.dot_product == expected_dot
+    assert measured.query_squared_norm == expected_query_norm
+    assert measured.candidate_squared_norm == expected_candidate_norm
+    assert measured.score_q32 == expected_score
+    assert 0 <= measured.score_q32 <= 1 << 32
+
+
+def test_q32_similarity_is_symmetric_and_floors_before_integer_square_root() -> None:
+    left = _literal_vector(1, 1)
+    right = _literal_vector(1, 0)
+
+    forward = measure_feature_similarity(left, right)
+    reverse = measure_feature_similarity(right, left)
+
+    assert forward.score_q32 == reverse.score_q32 == 3_037_000_499
+    assert forward.dot_product == reverse.dot_product == 1
+    assert forward.query_squared_norm == reverse.candidate_squared_norm == 2
+    assert forward.candidate_squared_norm == reverse.query_squared_norm == 1
+
+
+def test_exact_cross_product_breaks_a_quantized_q32_score_tie() -> None:
+    query_bins = [32_767] * 1024
+    closer_bins = query_bins.copy()
+    farther_bins = query_bins.copy()
+    closer_bins[0] -= 1
+    farther_bins[0] -= 19
+    query = _literal_vector(*query_bins)
+    closer = measure_feature_similarity(query, _literal_vector(*closer_bins))
+    farther = measure_feature_similarity(query, _literal_vector(*farther_bins))
+
+    assert closer.score_q32 == farther.score_q32 == (1 << 32) - 1
+    assert compare_feature_similarity_exact(closer, farther) == 1
+    assert compare_feature_similarity_exact(farther, closer) == -1
+    assert compare_feature_similarity_exact(closer, closer) == 0
+
+
+def test_similarity_primitives_reject_non_vectors_and_incompatible_specs() -> None:
+    vector = _literal_vector(1)
+    with pytest.raises(InputBoundaryError):
+        measure_feature_similarity(vector, object())  # type: ignore[arg-type]
+    with pytest.raises(InputBoundaryError):
+        compare_feature_similarity_exact(vector, vector)  # type: ignore[arg-type]

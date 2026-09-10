@@ -1313,6 +1313,107 @@ RED oracles:
 **Files:** `recall_features.py`, `recollection.py`, feature/recollection/scale
 tests.
 
+#### Task 2.4 binding implementation freeze
+
+This subsection resolves ambiguities found at Task 2.4 entry and is binding for
+the RED/GREEN work below. It does not change Task 2.1 feature bytes or Task 2.2
+direct-ID behavior.
+
+- Task 2.1's canonical `task2_determinism_v1.json` manifest and its exact key
+  set remain frozen. Task 2.4 adds the separately canonical
+  `task2_recollection_v1.json` companion with exact top-level keys
+  `algorithm`, `ranking_vectors`, `schema`, and `similarity_vectors`; its schema
+  is `aluclu.task2-recollection-determinism.v1`. The companion contains sparse
+  signed-bin inputs plus literal dot, squared-norm, norm-product, pre-`isqrt`
+  quotient, Q32 score, and cross-product ordering values. Neither manifest is
+  derived from the implementation under test.
+- `FeatureSimilarityV1` is a frozen/slotted runtime value containing exact
+  `dot_product`, `query_squared_norm`, `candidate_squared_norm`, and
+  `score_q32`. `measure_feature_similarity` and
+  `compare_feature_similarity_exact` are pure public operations. The comparator
+  returns `1`, `0`, or `-1` for its left operand and treats every nonpositive
+  dot or zero norm as the same zero-similarity class; positive values compare
+  `d_left^2 * n_right` with `d_right^2 * n_left` before any tie breaker.
+- The accepted Task 2.2 call `recall(session, EventIdRecallQuery(...))` and its
+  exact `ExactRecollection | NoRecollection` shapes remain behavior-compatible.
+  Scan queries require the keyword-only `policy`; a resumed call additionally
+  requires the exact opaque continuation returned by the preceding call.
+- `RecallFiltersV1` contains sorted-unique session IDs (at most 32),
+  sorted-unique `SourceKind` values, inclusive optional provenance
+  `observed_at_ns_min`/`observed_at_ns_max` hard bounds, and an independent
+  inclusive optional `preferred_observed_at_ns_min`/
+  `preferred_observed_at_ns_max` window. Empty ID/source tuples mean no hard
+  constraint. A preference window contributes the boolean temporal-preference
+  tie breaker but never admits a record excluded by a hard filter. Range ends
+  must be supplied together and lower must not exceed upper.
+- `ContentDigestRecallQuery` is the exact lowercase content digest plus frozen
+  filters. `TextRecallQuery` is bounded text plus frozen filters. The policy is
+  separate from both query types: `RecallExecutionPolicyV1` has exact
+  `max_records` in `[0,8192]`, `top_k` in `[1,32]`,
+  `max_returned_payload_bytes` in `[0,262144]`, active normalizer/feature IDs,
+  `minimum_score_q32` and `minimum_margin_q32` in `[0,2^32]`, exact booleans
+  `allow_approximate` and `allow_incomplete`, and no checkpoint. Fresh recall
+  always captures a Task 1 cursor from sequence zero; only the continuation
+  owns a resume checkpoint.
+- Score eligibility is inclusive (`score_q32 >= minimum_score_q32`). A
+  distinct-content top pair is conflicted when
+  `margin_q32 <= minimum_margin_q32`; promotion would require a strictly larger
+  margin. Task 2.4 never emits `CALIBRATED_TEXT_MATCH`, even for Q32 score
+  `2^32`; Task 2.5 alone may add that transition after compatible calibration.
+- The exact total order is unquantized positive cosine by cross-product,
+  preferred-window match (`1` before `0`), newer provenance timestamp, higher
+  ledger sequence, then lexicographically smaller ASCII observation ID. The
+  query's feature vector is common, but implementations still use the general
+  exact comparator. Content-digest summaries use the same order with the
+  similarity term equal for every exact match.
+- `RecallContinuationV1` is a public-name, non-publicly-constructible,
+  process-local capability. It contains a Task 1 checkpoint, query/policy
+  digests, the literal no-calibration profile digest, bounded top-candidate
+  metadata, scalar exact-match count, at most 32 exact-match summaries, and
+  cumulative work. A module-private process token authenticates all those
+  fields. There is no byte decoder or persistence format in Task 2.4. A
+  lookalike, field mutation, different process, changed query/policy/profile,
+  different ledger/head, or bare checkpoint fails closed. As elsewhere in
+  Task 2, private module state is not a hostile same-process isolation boundary.
+- The broad canonical-wire rule in Section 6 applies to a public record only
+  when this plan names a wire codec for it. Task 2.2/2.4 runtime query, result,
+  usage, candidate, and process-local continuation values are immutable strict
+  Python contracts but are deliberately not persistence authorities and have
+  no JSON decoders. Task 9 may introduce a distinct encrypted continuation
+  record and schema.
+- A non-exhaustive page never returns absence, uniqueness, ambiguity, conflict,
+  or final candidates. With `allow_incomplete=True` it returns only
+  `IncompleteRecollection` and its full accumulator. With
+  `allow_incomplete=False` it returns `AbstainedRecollection` with reason
+  `WORK_BUDGET_EXHAUSTED`, no absence claim, and no resumable authority. A legal
+  zero-record page follows the same rule. Changed snapshot on resume raises
+  Task 1 `LedgerSnapshotChanged`.
+- Direct-ID absence keeps the existing `NoRecollection`. Exhaustive scan
+  absence uses the new closed `NoScanRecollection`, avoiding optional-field
+  retrofits. Exact digest uniqueness yields `ExactRecollection` with basis
+  `CONTENT_DIGEST`; multiple live filtered occurrences yield
+  `AmbiguousExactRecollection` with an exact scalar count, at most 32 ordered
+  summaries, and no content. An exact or approximate payload that alone exceeds
+  remaining output budget is never attached; exact selection abstains with
+  `PAYLOAD_BUDGET_EXCEEDED`, while approximate candidate metadata records
+  `content_omitted=True` and `content=None`.
+- Output-byte accounting is the sum of attached
+  `CanonicalJsonValue.canonical_bytes` lengths. Work totals are cumulative
+  across continuation pages and separately report records scanned, canonical
+  payload bytes decoded, candidates scored, candidates returned, output bytes,
+  and exhaustive status. The candidate accumulator never exceeds `top_k`,
+  exact summaries never exceed 32, and no all-record list is permitted.
+- During a cursor scan, unrelated schemas are skipped. A payload claiming the
+  canonical Task 2 observation schema but failing strict decode or Task 2
+  position invariants raises `LedgerIntegrityError`; it is not converted into
+  false absence. Selected payloads are direct-read and revalidated by
+  ID/sequence/hash/content digest only after the cursor is closed or suspended.
+  All exception paths close the cursor.
+- The no-calibration profile digest is a frozen literal fixture derived from a
+  separately domain-framed canonical null payload. Query and policy digests use
+  distinct new literal Task 2 domains. These digests bind continuations but do
+  not grant evidence or calibration authority.
+
 RED oracles:
 
 - feature vectors and Q32 scores match protocol fixtures on all local Python

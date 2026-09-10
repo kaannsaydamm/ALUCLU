@@ -1350,3 +1350,87 @@ session can map each decision to the exact diff.
   returned APPROVE with zero findings. The next implementation unit is Task
   2.4: bounded streaming approximate recollection, beginning with a fresh
   contract/plan read and RED acceptance oracles.
+- Task 2.4 execution began from clean commit `244ebe0`. Live-plan and code
+  mapping confirmed that Task 2.1 already freezes normalization/feature-vector
+  construction while Task 2.2 exposes only direct-ID exact recall; Q32 feature
+  comparison, exact cross-product ranking, content-digest scans, and bounded
+  streaming text recall remain the new Task 2.4 surface. The first RED slice
+  adds literal feature-math oracles for nonpositive and zero dots, exact
+  `2^32` identity, floor-before-`isqrt`, symmetry, and an adversarial pair whose
+  quantized Q32 scores tie while its exact rational cosine ordering differs.
+  The expected new public contracts are `FeatureSimilarityV1`,
+  `measure_feature_similarity`, and `compare_feature_similarity_exact`; no
+  production implementation exists yet, so focused collection must fail at
+  import before the GREEN step.
+- The first Task 2.4 RED execution behaved as intended on CPython 3.13: test
+  collection failed because `FeatureSimilarityV1` and the two comparison APIs
+  did not exist. The attempted CPython 3.12 command did not start because the
+  assumed worktree-local `.venv312` path is absent; this is environment-path
+  evidence, not a test failure, and the interpreter will be resolved before
+  cross-runtime acceptance. The GREEN implementation now adds immutable,
+  self-validating integer similarity statistics, exact dot/norm accumulation,
+  the specified floor-before-`isqrt` Q32 calculation clipped to `[0, 2^32]`,
+  and exact rational cross-product comparison without floating point.
+- The first Task 2.4 GREEN slice passed: the complete feature test file is
+  50/50 on both CPython 3.12.13 (`.venv`) and CPython 3.13.5 (`.venv313`), and
+  focused Ruff is clean. The large-bin adversarial fixture confirms two
+  candidates can both quantize to `2^32 - 1` while exact integer
+  cross-products still order the closer vector correctly. The next RED slice
+  freezes content-digest query/result types and paged duplicate accumulation
+  before implementing text top-k.
+- Independent Task 2.4 read-only mapping confirmed the current implementation
+  gap and found no Task 1 redesign need, but identified decision blockers in
+  fixture ownership, scan-result compatibility, filter semantics, threshold
+  equality, continuation forgery, and incomplete-page behavior. The Task 2
+  plan now freezes those points: a companion recollection determinism manifest
+  preserves the CLEAN Task 2.1 manifest; the two-argument direct-ID API remains
+  unchanged; provenance filters are inclusive and separate from the preferred
+  time-window tie breaker; score eligibility is `>=` while margin passage is
+  strict `>`; scan absence is a distinct closed type; and page continuation is
+  a query/policy/profile/snapshot-bound process-local authenticated capability.
+  The plan also makes malformed claimed observations fail closed, requires
+  cursor closure before payload reads, and defines exact output/work accounting.
+  The first requested architecture agent was unavailable because its fixed
+  model is unsupported on this account; the successful explorer report is the
+  independent evidence used for this amendment.
+- Added the frozen canonical Task 2.4 companion determinism fixture rather than
+  mutating Task 2.1's already-CLEAN manifest. Its literal sparse cases cover
+  dot/norm products, the quotient before integer square root, exact Q32 values,
+  and the large-bin Q32 collision whose exact cross-products differ. Tests
+  independently reconstruct vectors and arithmetic from the fixture; the file
+  is not generated from production code.
+- First companion-fixture execution produced the intended strict byte-level
+  failure on both runtimes: only the trailing newline introduced while adding
+  the file differed from canonical JSON bytes; all arithmetic assertions and
+  focused Ruff/diff checks otherwise passed. The canonical-byte requirement is
+  retained and the file will be normalized without weakening the oracle.
+- After removing only that terminal LF, the companion manifest is canonical
+  byte-for-byte and the complete feature suite passes 57/57 on both CPython
+  3.12.13 and 3.13.5. Focused Ruff and diff-check also pass. Task 2.4's pure
+  feature mathematics and independent protocol fixtures are now GREEN; public
+  root exports and the first paged content-digest RED contract follow.
+- Added the three feature-similarity symbols to the additive root cognition
+  surface and preserved every earlier export. The combined
+  `test_cognition_recall_features.py` plus `test_cognition_sensorium.py` command
+  passes 72/72 on both CPython 3.12.13 and 3.13.5, and focused Ruff is clean
+  after correcting export order. A fresh independent code/security review plus
+  scoped type/compile/diff checks are the remaining gates for this pure-feature
+  checkpoint.
+- The worktree-local Pyright executable probe was unavailable and is not
+  counted as a type-check result. The corrected pinned ephemeral Pyright
+  1.1.413 command, bound to `.venv313`, reports 0 errors, 0 warnings, and 0
+  informations for the changed feature production/root/test scope. Compileall
+  and diff-check pass; only the independent review remains before checkpoint.
+- Independent feature-checkpoint code/security review returned APPROVE with no
+  CRITICAL, HIGH, or MEDIUM findings. Its sole LOW traceability note was that
+  the 72-test trajectory wording could be misread as naming a nonexistent
+  public-surface test file; the sentence now names the two files actually run.
+  The reviewer independently passed 57 feature tests on both runtimes, 156
+  observation/sensorium/replay regressions and 14 contract tests on CPython
+  3.12, root import probes on both runtimes, Ruff, compileall, and diff-check.
+  The pure feature/Q32/companion-fixture slice is accepted for checkpoint.
+- Task 2.4 binding-plan SHA-256 at this checkpoint is
+  `16938F0BB27A4546659E9D5F74F5F366623544EACC676FFD752A205D434FF158`.
+  The global roadmap remains unchanged. Exact staged scope is the Task 2 plan,
+  trajectory, feature implementation/root exports, companion protocol JSON,
+  and feature tests only.

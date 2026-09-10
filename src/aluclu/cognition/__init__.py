@@ -74,11 +74,14 @@ from .observation import (
 )
 from .persistence import atomic_write_bytes, exclusive_file_lock, resolve_ledger_path
 from .recall_features import (
+    FeatureSimilarityV1,
     RetrievalFeatureVectorV1,
     active_feature_spec_id,
     active_normalizer_id,
+    compare_feature_similarity_exact,
     encode_retrieval_text,
     feature_vector_digest,
+    measure_feature_similarity,
     search_view_utf8,
 )
 from .recollection import (
@@ -149,6 +152,7 @@ __all__ = [
     "EpisodeBoundaryReason",
     "EventIdRecallQuery",
     "ExactRecollection",
+    "FeatureSimilarityV1",
     "FileKeyProvider",
     "FileRecordKeyStore",
     "IngestRejectionCode",
@@ -212,6 +216,7 @@ __all__ = [
     "canonical_observation_to_json_value",
     "canonicalize_observation",
     "classify_observation_receipt",
+    "compare_feature_similarity_exact",
     "create_record_key_store",
     "decode_canonical_observation",
     "decode_observation_request",
@@ -233,6 +238,7 @@ __all__ = [
     "feature_vector_digest",
     "ingest_observation",
     "initialize_empty_sensorium_state",
+    "measure_feature_similarity",
     "observation_accepted_to_json_value",
     "observation_receipt_to_json_value",
     "observation_rejected_to_json_value",
