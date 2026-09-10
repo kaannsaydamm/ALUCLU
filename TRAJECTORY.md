@@ -1434,3 +1434,91 @@ session can map each decision to the exact diff.
   The global roadmap remains unchanged. Exact staged scope is the Task 2 plan,
   trajectory, feature implementation/root exports, companion protocol JSON,
   and feature tests only.
+- Task 2.4 content-digest RED work resumed from clean commit `64ef402`, after
+  the accepted pure feature/Q32 checkpoint. The first reduced RED slice now
+  lives in `tests/test_cognition_recollection.py` only and freezes strict
+  `RecallFiltersV1`, `ContentDigestRecallQuery`, and
+  `RecallExecutionPolicyV1` boundaries plus exhaustive zero/one/two
+  content-digest scan outcomes, zero-record non-final pages, no-continuation
+  work-budget abstention, and one duplicate-accumulating continuation page.
+  The policy fixture deliberately binds to the live `active_normalizer_id()` and
+  `active_feature_spec_id()` helpers instead of invented IDs, and filter tuples
+  are strict sorted-unique inputs: unsorted or duplicate IDs/source kinds are
+  rejected rather than silently canonicalized. Syntax and focused Ruff over the
+  touched recollection test file pass on CPython 3.13.
+- The intended RED signal is confirmed on both local runtimes. CPython 3.13
+  (`.venv313`) and CPython 3.12 (`.venv`) both fail collection of
+  `tests/test_cognition_recollection.py` because the new Task 2.4 recollection
+  contracts are not implemented yet:
+  `ImportError: cannot import name 'AbstainedRecollection' from
+  'aluclu.cognition.recollection'`. This is the expected next GREEN target, not
+  a syntax/lint failure. The next implementation step is to add the immutable
+  scan contracts/results/work accounting and route `recall(..., policy=...)`
+  through a bounded verified-ledger cursor while preserving the existing
+  two-argument direct-ID behavior.
+- Checkpoint commit `64ef402` (`Add deterministic Task 2 recall scoring`)
+  records the reviewed Task 2.4 pure-feature slice. The next owned change is
+  the content-digest/paged-continuation RED suite; production scan code remains
+  absent at this point.
+- The initial content-digest RED slice now freezes strict sorted/unique filter
+  inputs, exact active-runtime policy IDs and bounds, exhaustive scan absence,
+  unique exact digest recall, ambiguous duplicate results without content,
+  accumulator preservation across a one-record page split, zero-work
+  incompleteness, and no-continuation abstention. Controller corrected the test
+  continuation to reuse the exact frozen one-record policy rather than expand
+  its per-call budget. CPython 3.13 collection is RED because the new closed
+  query/policy/result contracts do not yet exist; existing direct-ID tests
+  remain in the same file as compatibility oracles.
+- The first content-digest GREEN attempt exposed two import-time integration
+  defects before behavioral execution: `validate_event_id` was imported from
+  `contracts` instead of its owning `codec` module, and a default filter object
+  was constructed before a later validation helper existed. Both were repaired
+  at the cause (owner-correct import and dataclass `default_factory`), with no
+  fallback or relaxed validation. The complete recollection file then passed
+  19/19 on CPython 3.13. The implementation now provides strict filters and
+  policy bounds, closed exact/ambiguous/absent/incomplete/abstained results,
+  a query/policy/profile/snapshot-bound HMAC continuation, cumulative work,
+  bounded exact summaries, stable cursor paging, fail-closed claimed-observation
+  parsing, and post-cursor direct-read revalidation. Combined recollection plus
+  sensorium compatibility passed 34/34; only root-export ordering remained a
+  static finding and was corrected before the next gate.
+- Added the second content-digest adversarial test layer before checkpoint:
+  33 live same-digest occurrences must retain an exact scalar count while
+  capping summaries at 32; hard filters must run before uniqueness; continuation
+  must reject changed query, changed policy, field tampering, and a changed
+  Task 1 head; unrelated schemas are skipped but a malformed payload claiming
+  `aluclu.observation.v1` raises integrity failure; and selected direct reads
+  must observe zero active cursors before a subsequent mutation succeeds.
+- The strengthened content-digest slice passes all 25 focused recollection
+  tests on both CPython 3.12.13 and 3.13.5. The combined recollection plus
+  sensorium compatibility lane passes 40/40 on both runtimes. Focused Ruff,
+  compileall, and `git diff --check` are clean; the diff remains restricted to
+  the recollection implementation, additive root exports, recollection tests,
+  and this trajectory. These tests include process-local continuation HMAC
+  coverage over the complete retained provenance identity, exhaustive-result
+  validators, exact output/work accounting, and the cursor-before-direct-read
+  discipline.
+- Pinned Pyright 1.1.413 initially found that the static flow could not prove a
+  one-match accumulator contained exactly one retained summary. The controller
+  repaired the invariant at runtime rather than masking it with a cast: an
+  exhaustive `exact_match_count == 1` state now raises `LedgerIntegrityError`
+  unless the bounded summary tuple also has length one. After that change,
+  focused Ruff and the 25/25 CPython 3.13 recollection suite pass again, and
+  Pyright reports 0 errors, 0 warnings, and 0 informations for the modified
+  implementation, root exports, and tests. The first independent review
+  attempt could not run because the reviewer agent hit its account usage
+  window; that is recorded as infrastructure evidence rather than a code
+  verdict, and the review has been retried before CLEAN/commit.
+- The retried independent content-digest code/spec/security review returned
+  APPROVE with zero CRITICAL, HIGH, MEDIUM, or LOW findings. The reviewer
+  independently reran the focused recollection suite on both runtimes, the
+  recollection-plus-sensorium compatibility lane, Ruff, compileall, pinned
+  Pyright 1.1.413, and diff-check. Review specifically confirmed direct-ID
+  compatibility, bounded verified-cursor scanning, honest incomplete results,
+  process-local authenticated continuation binding, fail-closed accumulator
+  and claimed-observation invariants, exact/ambiguous/no-scan separation,
+  cursor closure before selected payload reads, and live identity revalidation.
+  Accepted residual scope is explicit: this checkpoint does not yet implement
+  approximate text recall, calibration, plasticity, or the later 2,048/8,192
+  scale gate. The Task 2.4 content-digest sub-slice is CLEAN and ready for its
+  exact-scope checkpoint commit.
