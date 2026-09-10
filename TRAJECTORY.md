@@ -1522,3 +1522,141 @@ session can map each decision to the exact diff.
   approximate text recall, calibration, plasticity, or the later 2,048/8,192
   scale gate. The Task 2.4 content-digest sub-slice is CLEAN and ready for its
   exact-scope checkpoint commit.
+- Checkpoint commit `8f19d83` (`Add bounded content digest recollection`)
+  records the reviewed content-digest sub-slice. Task 2.4 then moved directly
+  to text/approximate recall. Before RED, the binding plan was made literal for
+  the previously underspecified result shapes: one strict candidate record;
+  exhaustive approximate, conflict, and text-absence result records; top-two
+  margin behavior including a missing-second zero score; conflict precedence;
+  exact content-omission consistency; and an explicit
+  `APPROXIMATE_DISABLED` abstention. This amendment changes no completed
+  content-digest behavior and is the contract for the next failing tests.
+- The first text-recall RED layer is test-only and intentionally exercises the
+  new public surface before implementation: raw query-size rejection; a Q32
+  identity score with different stored content remaining approximate; a
+  distinct-content top-score tie becoming a metadata-only conflict; a
+  same-content tie remaining individually preserved candidates; bounded
+  top-candidate continuation across one-record pages; unscored
+  `retrieval_text=None`; deterministic content omission under a zero-byte
+  output budget; and `APPROXIMATE_DISABLED` abstention. Existing policy helpers
+  were only parameterized to express these literal boundaries. Production code
+  is unchanged in this RED step.
+- Focused Ruff is clean and both CPython 3.12.13 and 3.13.5 produce the intended
+  RED collection failure: `ApproximateCandidates` is absent from the committed
+  recollection module. This is the literal missing production surface rather
+  than an incidental syntax/import-order defect. A read-only independent map
+  corroborated the RED matrix and highlighted the continuation boundary: retain
+  compact ranking identity, exact similarity statistics, and a feature-vector
+  digest, not plaintext content or full provenance; authenticate the ordered
+  accumulator; then live-read and recompute the selected records only after the
+  cursor closes. This keeps content-digest continuations additive and prevents
+  Q32-only resume ordering from losing exact cross-product information.
+- Pre-GREEN review found a real `top_k=1` contract contradiction: text recall
+  cannot compute a top-two margin or return two conflict witnesses with a
+  one-slot accumulator. The shared policy still accepts one for content-digest
+  compatibility, while the text query-policy boundary now explicitly requires
+  at least two. A RED assertion freezes that fail-closed behavior; no runner-up
+  will be silently treated as absent.
+- The first text/approximate GREEN implementation now passes all 34 focused
+  recollection tests on both CPython 3.12.13 and 3.13.5. It adds a bounded text
+  query, strict candidate/approximate/conflict/text-absence records, exact
+  cross-product-first ordering, inclusive score eligibility, strict margin
+  conflict, additive top-candidate continuation state, HMAC coverage over the
+  ordered compact accumulator, output-budget omission, and post-cursor live
+  record/feature/similarity revalidation. Candidate content is direct-read only
+  once per final result. Focused Ruff is clean, pinned Pyright 1.1.413 reports
+  0 errors, 0 warnings, and 0 informations, and diff-check is clean. This is an
+  initial GREEN, not yet the text-recall checkpoint; adversarial ranking,
+  continuation-tamper, top-k, cursor-lifecycle, and exhaustive-reference tests
+  still follow.
+- Added the second text-recall adversarial layer before checkpoint. It drives
+  the companion fixture's Q32 collision through the production recall path and
+  requires exact cross-product similarity to beat a newer timestamp; proves the
+  preferred-time tie breaker precedes recency; mutates a continuation's raw
+  feature vector to test its independently authenticated digest; compares
+  one-shot and one-record-paged final candidates; scans 33 eligible records
+  while retaining exactly 32; proves hard filters run before scoring; and
+  instruments approximate direct reads to require zero active cursors before a
+  later append. The existing malformed-observation test now also appends after
+  the raised integrity error to prove exception-path cursor cleanup.
+- The first adversarial execution had one failure after all preceding cases
+  passed: feature-vector mutation was correctly rejected, but the test expected
+  an internal candidate-specific phrase while the continuation validator
+  deliberately normalizes malformed nested state to the public message
+  `recall continuation is malformed`. The test now asserts that stable public
+  boundary. No production check was removed or weakened.
+- After that expectation repair, all 41 focused recollection tests pass on both
+  CPython 3.12.13 and 3.13.5, with focused Ruff clean. The Q32-collision case
+  proves exact rational order wins even against the newer-timestamp tie breaker;
+  text continuation mutation is rejected; one-shot and paged results agree;
+  33 scored records retain/return exactly the configured 32; and success plus
+  integrity-exception paths leave no cursor that blocks mutation. Broader
+  feature/sensorium regressions, static gates, and independent review remain
+  before this text-recall slice can be checkpointed.
+- The broader text-slice compatibility lane passes 113/113 on both CPython
+  3.12.13 and 3.13.5 across recollection, deterministic feature math/fixtures,
+  and sensorium ingestion. Compileall, diff-check, and pinned Pyright 1.1.413
+  are clean, with Pyright reporting 0 errors, 0 warnings, and 0 informations.
+  The candidate is now entering independent code/spec/security review; Task
+  2.4 text scale/reference expansion and any review findings still precede a
+  CLEAN declaration.
+- Independent text-recall code/spec/security review returned REQUEST CHANGES
+  with one HIGH correctness finding: two same-digest observations could fill a
+  small observation-level top-k and hide an equally scored distinct-digest
+  candidate, incorrectly returning approximate candidates instead of conflict.
+  The reviewer supplied a live three-record reproducer. The binding contract
+  now defines conflict margin over the best two distinct content identities and
+  requires at most two compact conflict witnesses alongside the returned
+  observation top-k. Raw vectors are removed from continuation state in favor
+  of exact similarity statistics plus a feature digest, with final direct-read
+  re-encoding. A literal regression is added before the production repair.
+- The first regression attempt was blocked earlier than recall because its
+  newest-to-oldest ingestion order correctly triggered sensorium's
+  `TIME_REVERSED_INVALID` guard. The fixture now appends the same three records
+  in causal timestamp order while preserving the intended retrieval ranking;
+  production behavior remains untouched for the actual RED check.
+- With the causal fixture corrected, the reviewer reproducer is now a literal
+  RED: three equally scored observations with two newer same-digest rows and
+  one older distinct digest return `ApproximateCandidates` under `top_k=2`,
+  while the contract requires `ConflictedRecollection`. The failure is at the
+  intended result-type assertion and precisely demonstrates duplicate crowding.
+- The production repair now retains observation-level top-k plus at most two
+  best distinct-content witnesses, both as compact exact-statistics/digest
+  metadata without raw vectors. The focused HIGH reproducer and continuation
+  tamper check pass. The same-content-only test then exposed its intentionally
+  changed margin oracle: with one distinct content identity, the absent second
+  identity has score zero, so an identity-score candidate has margin `2^32`
+  rather than the old duplicate-row margin zero. The test is aligned to that
+  binding content-identity definition; no uncertainty check is weakened.
+- The HIGH regression now also executes the three-record duplicate-crowding
+  case as three one-record continuation pages and requires its final conflict
+  witnesses to equal the one-shot result. This specifically guards HMAC-bound
+  preservation of the distinct-content accumulator rather than proving only
+  the in-memory one-call path.
+- A broad test-edit hunk initially renamed the result variable in the preceding
+  identity-firewall case instead of the intended duplicate-crowding case. The
+  variable-only mistake was found by immediate source inspection and corrected
+  before execution; no assertion or production behavior changed.
+- A second targeted inspection found the same overly broad context had touched
+  the adjacent two-content conflict test as well. Function-scoped patch context
+  now restores that local `result` and names only the duplicate-crowding call
+  `one_shot`; the suite was not run in the inconsistent intermediate state.
+- The HIGH repair is now independently APPROVED on static code/spec/security
+  re-review. The reviewer confirmed the distinct-digest accumulator is updated
+  for every eligible observation, keeps only the best representative per digest
+  and at most two digests, survives continuation under HMAC, drives final
+  conflict selection, and retains no plaintext or raw feature vector. The full
+  focused suite passes 42/42 on both CPython 3.12.13 and 3.13.5 after the fix;
+  compileall and diff-check pass, and pinned Pyright 1.1.413 again reports 0
+  errors, 0 warnings, and 0 informations. The original reviewer reproducer is
+  therefore closed with both one-shot and paged runtime evidence.
+- Final post-fix compatibility evidence for the text-core checkpoint is 114/114
+  on both CPython 3.12.13 and 3.13.5 across recollection, feature mathematics/
+  protocol fixtures, and sensorium ingestion. Focused Ruff, compileall,
+  diff-check, and pinned Pyright 1.1.413 are clean; Pyright reports 0 errors, 0
+  warnings, and 0 informations. The Task 2 binding-plan SHA-256 is
+  `4F43006B2CC4E38B70B40A50BA7904236F182F0B8F954873FFC4F8FBEC373B7B`.
+  The reviewed Task 2.4 text-query/streaming-ranking correctness core is CLEAN
+  for an exact-scope checkpoint. This does not close Task 2.4: dedicated
+  structural memory accounting, independent exhaustive-reference coverage, and
+  2,048/8,192 scale evidence remain the next sub-slice.

@@ -1360,12 +1360,27 @@ direct-ID behavior.
   `margin_q32 <= minimum_margin_q32`; promotion would require a strictly larger
   margin. Task 2.4 never emits `CALIBRATED_TEXT_MATCH`, even for Q32 score
   `2^32`; Task 2.5 alone may add that transition after compatible calibration.
+- The shared policy contract accepts `top_k=1` for exact content-digest scans,
+  but a `TextRecallQuery` requires `top_k >= 2`. A one-slot text accumulator
+  cannot retain the runner-up needed to compute the required top-two margin or
+  return the two metadata witnesses required by a conflict. This is rejected at
+  the query-policy boundary rather than silently treating the missing runner-up
+  as absent.
 - The exact total order is unquantized positive cosine by cross-product,
   preferred-window match (`1` before `0`), newer provenance timestamp, higher
   ledger sequence, then lexicographically smaller ASCII observation ID. The
   query's feature vector is common, but implementations still use the general
   exact comparator. Content-digest summaries use the same order with the
   similarity term equal for every exact match.
+- Conflict margin is computed between the best representatives of the two
+  highest-ranked distinct content digests, not blindly between the first two
+  observation rows. Same-digest occurrences remain individually eligible for
+  the observation-level returned top-k, but cannot crowd a different content
+  identity out of conflict detection. The continuation therefore carries, in
+  addition to returned top-k metadata, at most two compact distinct-digest
+  conflict witnesses. Candidate state retains exact similarity statistics and
+  a feature-vector digest; raw feature vectors need not be retained because a
+  selected record is direct-read, re-encoded, and compared before return.
 - `RecallContinuationV1` is a public-name, non-publicly-constructible,
   process-local capability. It contains a Task 1 checkpoint, query/policy
   digests, the literal no-calibration profile digest, bounded top-candidate
@@ -1397,6 +1412,21 @@ direct-ID behavior.
   remaining output budget is never attached; exact selection abstains with
   `PAYLOAD_BUDGET_EXCEEDED`, while approximate candidate metadata records
   `content_omitted=True` and `content=None`.
+- The Task 2.4 text-result contracts are exact rather than optional bags.
+  `ApproximateCandidateV1` contains content-or-`None`, observation/episode IDs,
+  sequence, record hash, content digest, provenance, `score_q32`, and the exact
+  `content_omitted` boolean; `content_omitted` is true exactly when content is
+  absent. `ApproximateCandidates` contains an ordered nonempty tuple capped by
+  policy `top_k`, the top-two `margin_q32`, and exhaustive work.
+  `ConflictedRecollection` contains exactly the competing top two candidate
+  metadata values with both contents omitted, the nonpassing margin, and
+  exhaustive work. With only one eligible candidate, the missing second score
+  is zero, so margin equals the top score. Exhaustive text-scan absence uses the
+  distinct closed `NoTextRecollection` carrying the query digest and exhaustive
+  work. A non-conflicted candidate set with `allow_approximate=False` returns
+  `AbstainedRecollection(APPROXIMATE_DISABLED)`; conflict is reported before
+  that permission check because it is retrieval uncertainty, not answer
+  authority.
 - Output-byte accounting is the sum of attached
   `CanonicalJsonValue.canonical_bytes` lengths. Work totals are cumulative
   across continuation pages and separately report records scanned, canonical

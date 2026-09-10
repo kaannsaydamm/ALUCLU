@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import struct
 from collections.abc import Callable
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from aluclu.cognition import (
     LedgerSnapshotChanged,
     ObservationRequestV1,
     ProvenanceV1,
+    RetrievalFeatureVectorV1,
     SourceKind,
     StaticKeyProvider,
     active_feature_spec_id,
@@ -27,15 +29,19 @@ from aluclu.cognition.recollection import (
     AbstainedRecollection,
     AbstainReason,
     AmbiguousExactRecollection,
+    ApproximateCandidates,
+    ConflictedRecollection,
     ContentDigestRecallQuery,
     EventIdRecallQuery,
     ExactRecollection,
     IncompleteRecollection,
     NoRecollection,
     NoScanRecollection,
+    NoTextRecollection,
     RecallBasis,
     RecallExecutionPolicyV1,
     RecallFiltersV1,
+    TextRecallQuery,
     recall,
 )
 from aluclu.cognition.sensorium import (
@@ -51,6 +57,7 @@ from aluclu.cognition.sensorium import (
 
 MASTER_KEY = b"m" * 32
 MAX_Q32 = 1 << 32
+FEATURE_DIMENSIONS = 1024
 
 
 def _provenance(**overrides: object) -> ProvenanceV1:
@@ -93,6 +100,9 @@ def _policy(
     max_records: int = 8192,
     top_k: int = 32,
     max_returned_payload_bytes: int = 262_144,
+    minimum_score_q32: int = 0,
+    minimum_margin_q32: int = MAX_Q32,
+    allow_approximate: bool = False,
     allow_incomplete: bool = True,
 ) -> RecallExecutionPolicyV1:
     return RecallExecutionPolicyV1(
@@ -101,9 +111,9 @@ def _policy(
         max_returned_payload_bytes=max_returned_payload_bytes,
         active_normalizer_id=active_normalizer_id(),
         active_feature_spec_id=active_feature_spec_id(),
-        minimum_score_q32=0,
-        minimum_margin_q32=MAX_Q32,
-        allow_approximate=False,
+        minimum_score_q32=minimum_score_q32,
+        minimum_margin_q32=minimum_margin_q32,
+        allow_approximate=allow_approximate,
         allow_incomplete=allow_incomplete,
     )
 
@@ -143,6 +153,20 @@ def _ingest_requests(
         accepted.append(result)
         state = result.next_state
     return tuple(accepted)
+
+
+def _dense_feature_vector(
+    *,
+    default: int,
+    overrides: dict[int, int] | None = None,
+) -> RetrievalFeatureVectorV1:
+    bins = [default] * FEATURE_DIMENSIONS
+    for index, value in (overrides or {}).items():
+        bins[index] = value
+    return RetrievalFeatureVectorV1(
+        feature_spec_id=active_feature_spec_id(),
+        bins_i16be=struct.pack(f">{FEATURE_DIMENSIONS}h", *bins),
+    )
 
 
 def test_recall_filter_contract_accepts_sorted_unique_ids_and_source_kinds() -> None:
@@ -516,6 +540,9 @@ def test_scan_skips_unrelated_schema_but_rejects_malformed_claimed_observation(
             session.append_once("obs:malformed", {"schema": "aluclu.observation.v1"})
             with pytest.raises(LedgerIntegrityError, match="malformed"):
                 recall(session, query, policy=_policy())
+            appended = session.append_once("unrelated:after-malformed-scan", {"ok": True})
+
+    assert appended.created is True
 
 
 def test_unique_digest_direct_read_occurs_after_cursor_close_and_allows_mutation(
@@ -541,6 +568,591 @@ def test_unique_digest_direct_read_occurs_after_cursor_close_and_allows_mutation
             appended = session.append_once("unrelated:after-recall", {"ok": True})
 
     assert type(result) is ExactRecollection
+    assert appended.created is True
+
+
+def test_text_recall_query_rejects_raw_text_over_4096_utf8_bytes() -> None:
+    with pytest.raises(InputBoundaryError, match="4096"):
+        TextRecallQuery(text="x" * 4097)
+
+
+def test_text_recall_rejects_one_slot_policy_that_cannot_measure_margin(
+    tmp_path: Path,
+) -> None:
+    query = TextRecallQuery(text="margin needs a runner-up")
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            with pytest.raises(InputBoundaryError, match="top_k"):
+                recall(
+                    session,
+                    query,
+                    policy=_policy(top_k=1, allow_approximate=True),
+                )
+
+
+def test_identical_features_with_different_content_remain_approximate(
+    tmp_path: Path,
+) -> None:
+    request = _same_content_request(
+        1,
+        content=CanonicalJsonValue.from_value({"stored": "different bytes"}),
+    )
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    minimum_score_q32=MAX_Q32,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert result.margin_q32 == MAX_Q32
+    assert len(result.candidates) == 1
+    candidate = result.candidates[0]
+    assert candidate.observation_id == request.observation_id
+    assert candidate.score_q32 == MAX_Q32
+    assert candidate.content == request.content
+    assert candidate.content_omitted is False
+    assert result.work.candidates_scored == 1
+    assert result.work.candidates_returned == 1
+
+
+def test_distinct_content_top_score_tie_returns_conflict_without_content(
+    tmp_path: Path,
+) -> None:
+    first = _same_content_request(
+        1,
+        observed_at_ns=100,
+        content=CanonicalJsonValue.from_value({"stored": "first"}),
+    )
+    second = _same_content_request(
+        2,
+        observed_at_ns=200,
+        content=CanonicalJsonValue.from_value({"stored": "second"}),
+    )
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (first, second))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ConflictedRecollection
+    assert result.margin_q32 == 0
+    assert tuple(item.observation_id for item in result.candidates) == (
+        second.observation_id,
+        first.observation_id,
+    )
+    assert all(item.content is None for item in result.candidates)
+    assert all(item.content_omitted is True for item in result.candidates)
+
+
+def test_same_content_top_score_tie_does_not_create_false_conflict(
+    tmp_path: Path,
+) -> None:
+    content = CanonicalJsonValue.from_value({"stored": "same"})
+    first = _same_content_request(1, observed_at_ns=100, content=content)
+    second = _same_content_request(2, observed_at_ns=200, content=content)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (first, second))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    top_k=2,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert result.margin_q32 == MAX_Q32
+    assert tuple(item.observation_id for item in result.candidates) == (
+        second.observation_id,
+        first.observation_id,
+    )
+
+
+def test_same_digest_duplicates_cannot_hide_distinct_digest_conflict(
+    tmp_path: Path,
+) -> None:
+    duplicate_content = CanonicalJsonValue.from_value({"stored": "duplicate"})
+    newest_duplicate = _same_content_request(
+        1,
+        observed_at_ns=300,
+        content=duplicate_content,
+    )
+    older_duplicate = _same_content_request(
+        2,
+        observed_at_ns=200,
+        content=duplicate_content,
+    )
+    distinct = _same_content_request(
+        3,
+        observed_at_ns=100,
+        content=CanonicalJsonValue.from_value({"stored": "distinct"}),
+    )
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (distinct, older_duplicate, newest_duplicate),
+            )
+            one_shot = recall(
+                session,
+                query,
+                policy=_policy(
+                    top_k=2,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+            page = recall(
+                session,
+                query,
+                policy=_policy(
+                    max_records=1,
+                    top_k=2,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+            while type(page) is IncompleteRecollection:
+                page = recall(
+                    session,
+                    query,
+                    policy=_policy(
+                        max_records=1,
+                        top_k=2,
+                        minimum_margin_q32=0,
+                        allow_approximate=True,
+                    ),
+                    continuation=page.continuation,
+                )
+
+    assert type(one_shot) is ConflictedRecollection
+    assert type(page) is ConflictedRecollection
+    assert one_shot.margin_q32 == 0
+    assert page.margin_q32 == one_shot.margin_q32
+    assert tuple(item.observation_id for item in one_shot.candidates) == (
+        newest_duplicate.observation_id,
+        distinct.observation_id,
+    )
+    assert page.candidates == one_shot.candidates
+
+
+def test_text_continuation_preserves_top_candidates_across_pages(tmp_path: Path) -> None:
+    content = CanonicalJsonValue.from_value({"stored": "same"})
+    first = _same_content_request(1, observed_at_ns=100, content=content)
+    second = _same_content_request(2, observed_at_ns=200, content=content)
+    query = TextRecallQuery(text="duplicate memory")
+    policy = _policy(
+        max_records=1,
+        top_k=2,
+        minimum_margin_q32=0,
+        allow_approximate=True,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (first, second))
+            first_page = recall(session, query, policy=policy)
+            assert type(first_page) is IncompleteRecollection
+            assert first_page.work.candidates_scored == 1
+            result = recall(
+                session,
+                query,
+                policy=policy,
+                continuation=first_page.continuation,
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert result.work.exhaustive is True
+    assert result.work.records_scanned == 2
+    assert result.work.candidates_scored == 2
+    assert tuple(item.observation_id for item in result.candidates) == (
+        second.observation_id,
+        first.observation_id,
+    )
+
+
+def test_text_scan_counts_content_without_retrieval_text_but_does_not_score_it(
+    tmp_path: Path,
+) -> None:
+    request = _request(retrieval_text=None)
+    query = TextRecallQuery(text="exact bytes")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+            result = recall(
+                session,
+                query,
+                policy=_policy(allow_approximate=True),
+            )
+
+    assert type(result) is NoTextRecollection
+    assert result.work.records_scanned == 1
+    assert result.work.candidates_scored == 0
+    assert result.work.exhaustive is True
+
+
+def test_approximate_payload_over_budget_is_omitted_without_changing_rank(
+    tmp_path: Path,
+) -> None:
+    request = _same_content_request(1)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    max_returned_payload_bytes=0,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert result.candidates[0].observation_id == request.observation_id
+    assert result.candidates[0].content is None
+    assert result.candidates[0].content_omitted is True
+    assert result.work.candidates_returned == 1
+    assert result.work.output_bytes == 0
+
+
+def test_nonconflicted_text_candidate_abstains_when_approximate_is_disabled(
+    tmp_path: Path,
+) -> None:
+    request = _same_content_request(1)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    minimum_margin_q32=0,
+                    allow_approximate=False,
+                ),
+            )
+
+    assert type(result) is AbstainedRecollection
+    assert result.reason is AbstainReason.APPROXIMATE_DISABLED
+    assert result.work.exhaustive is True
+
+
+def test_text_ranking_uses_exact_cross_product_when_q32_scores_collide(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    query_vector = _dense_feature_vector(default=32767)
+    closer_vector = _dense_feature_vector(default=32767, overrides={0: 32766})
+    farther_vector = _dense_feature_vector(default=32767, overrides={0: 32748})
+    vectors = {
+        "query": query_vector,
+        "closer": closer_vector,
+        "farther": farther_vector,
+    }
+
+    def fake_encode(text: str, *, feature_spec_id: str) -> RetrievalFeatureVectorV1:
+        assert feature_spec_id == active_feature_spec_id()
+        return vectors[text]
+
+    monkeypatch.setattr(
+        "aluclu.cognition.recollection.encode_retrieval_text",
+        fake_encode,
+    )
+    closer = _request(
+        observation_id="obs:closer",
+        turn_id="turn:closer",
+        provenance=_provenance(observed_at_ns=100),
+        content=CanonicalJsonValue.from_value({"stored": "closer"}),
+        retrieval_text="closer",
+    )
+    farther = _request(
+        observation_id="obs:farther",
+        turn_id="turn:farther",
+        provenance=_provenance(observed_at_ns=200),
+        content=CanonicalJsonValue.from_value({"stored": "farther"}),
+        retrieval_text="farther",
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (closer, farther))
+            result = recall(
+                session,
+                TextRecallQuery(text="query"),
+                policy=_policy(
+                    top_k=2,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ConflictedRecollection
+    assert result.margin_q32 == 0
+    assert result.candidates[0].score_q32 == MAX_Q32 - 1
+    assert result.candidates[1].score_q32 == MAX_Q32 - 1
+    assert tuple(item.observation_id for item in result.candidates) == (
+        closer.observation_id,
+        farther.observation_id,
+    )
+
+
+def test_text_temporal_preference_precedes_newer_timestamp_on_similarity_tie(
+    tmp_path: Path,
+) -> None:
+    content = CanonicalJsonValue.from_value({"stored": "same"})
+    preferred = _same_content_request(1, observed_at_ns=100, content=content)
+    newer = _same_content_request(2, observed_at_ns=200, content=content)
+    query = TextRecallQuery(
+        text="duplicate memory",
+        filters=RecallFiltersV1(
+            preferred_observed_at_ns_min=90,
+            preferred_observed_at_ns_max=110,
+        ),
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (preferred, newer))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    top_k=2,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert tuple(item.observation_id for item in result.candidates) == (
+        preferred.observation_id,
+        newer.observation_id,
+    )
+
+
+def test_text_continuation_rejects_query_change_and_feature_vector_tamper(
+    tmp_path: Path,
+) -> None:
+    first = _same_content_request(1)
+    second = _same_content_request(2)
+    query = TextRecallQuery(text="duplicate memory")
+    policy = _policy(max_records=1, top_k=2, allow_approximate=True)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (first, second))
+            first_page = recall(session, query, policy=policy)
+            assert type(first_page) is IncompleteRecollection
+            with pytest.raises(InputBoundaryError, match="query changed"):
+                recall(
+                    session,
+                    TextRecallQuery(text="changed query"),
+                    policy=policy,
+                    continuation=first_page.continuation,
+                )
+
+            state = first_page.continuation.text_candidates[0]
+            object.__setattr__(
+                state,
+                "feature_digest",
+                "0" * 64,
+            )
+            with pytest.raises(InputBoundaryError, match="authentication failed"):
+                recall(
+                    session,
+                    query,
+                    policy=policy,
+                    continuation=first_page.continuation,
+                )
+
+
+def test_text_one_shot_and_paged_recall_produce_identical_final_candidates(
+    tmp_path: Path,
+) -> None:
+    requests = tuple(_same_content_request(index) for index in range(1, 4))
+    query = TextRecallQuery(text="duplicate memory")
+    one_shot_policy = _policy(
+        top_k=3,
+        minimum_margin_q32=0,
+        allow_approximate=True,
+    )
+    paged_policy = _policy(
+        max_records=1,
+        top_k=3,
+        minimum_margin_q32=0,
+        allow_approximate=True,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, requests)
+            one_shot = recall(session, query, policy=one_shot_policy)
+            page = recall(session, query, policy=paged_policy)
+            while type(page) is IncompleteRecollection:
+                page = recall(
+                    session,
+                    query,
+                    policy=paged_policy,
+                    continuation=page.continuation,
+                )
+
+    assert type(one_shot) is ApproximateCandidates
+    assert type(page) is ApproximateCandidates
+    assert one_shot.candidates == page.candidates
+    assert one_shot.margin_q32 == page.margin_q32
+    assert one_shot.work.records_scanned == page.work.records_scanned
+    assert one_shot.work.candidates_scored == page.work.candidates_scored
+
+
+def test_text_top_k_remains_bounded_across_more_than_32_candidates(
+    tmp_path: Path,
+) -> None:
+    content = CanonicalJsonValue.from_value({"stored": "same"})
+    requests = tuple(
+        _same_content_request(index, observed_at_ns=index, content=content)
+        for index in range(1, 34)
+    )
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, requests)
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    top_k=32,
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert len(result.candidates) == 32
+    assert result.work.candidates_scored == 33
+    assert result.work.candidates_returned == 32
+    assert tuple(item.observation_id for item in result.candidates) == tuple(
+        request.observation_id for request in reversed(requests[1:])
+    )
+
+
+def test_text_filters_apply_before_scoring(tmp_path: Path) -> None:
+    included = _same_content_request(1, session_id="session:a")
+    excluded = _same_content_request(2, session_id="session:b")
+    query = TextRecallQuery(
+        text="duplicate memory",
+        filters=RecallFiltersV1(session_ids=("session:a",)),
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (included, excluded))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert result.work.records_scanned == 2
+    assert result.work.candidates_scored == 1
+    assert tuple(item.observation_id for item in result.candidates) == (
+        included.observation_id,
+    )
+
+
+def test_approximate_direct_reads_occur_after_cursor_close_and_allow_mutation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request = _same_content_request(1)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+            original_read = type(session).read
+
+            def guarded_read(active: object, event_id: str) -> object:
+                assert not active._cursors  # type: ignore[attr-defined]
+                return original_read(active, event_id)  # type: ignore[arg-type]
+
+            monkeypatch.setattr(type(session), "read", guarded_read)
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+            appended = session.append_once("unrelated:after-text-recall", {"ok": True})
+
+    assert type(result) is ApproximateCandidates
     assert appended.created is True
 
 

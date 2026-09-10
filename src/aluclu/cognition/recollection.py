@@ -7,6 +7,7 @@ import secrets
 import struct
 from dataclasses import dataclass, field
 from enum import Enum
+from functools import cmp_to_key
 from typing import cast, overload
 
 from .codec import canonical_json_bytes, validate_event_id
@@ -24,6 +25,14 @@ from .observation import (
     ProvenanceV1,
     SourceKind,
     canonical_observation_from_json_value,
+)
+from .recall_features import (
+    FeatureSimilarityV1,
+    RetrievalFeatureVectorV1,
+    compare_feature_similarity_exact,
+    encode_retrieval_text,
+    feature_vector_digest,
+    measure_feature_similarity,
 )
 from .recall_features import (
     active_feature_spec_id as runtime_feature_spec_id,
@@ -107,6 +116,17 @@ class ContentDigestRecallQuery:
 
     def __post_init__(self) -> None:
         _require_digest(self.content_digest, "content_digest")
+        if type(self.filters) is not RecallFiltersV1:
+            raise InputBoundaryError("filters must be RecallFiltersV1")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class TextRecallQuery:
+    text: str
+    filters: RecallFiltersV1 = field(default_factory=RecallFiltersV1)
+
+    def __post_init__(self) -> None:
+        encode_retrieval_text(self.text, feature_spec_id=runtime_feature_spec_id())
         if type(self.filters) is not RecallFiltersV1:
             raise InputBoundaryError("filters must be RecallFiltersV1")
 
@@ -200,9 +220,36 @@ class ExactOccurrenceSummaryV1:
             raise InputBoundaryError("temporal_preference_match must be bool")
 
 
+@dataclass(frozen=True, kw_only=True, slots=True)
+class _TextCandidateStateV1:
+    observation_id: str
+    episode_id: str
+    sequence: int
+    record_hash: str
+    content_digest: str
+    observed_at_ns: int
+    temporal_preference_match: bool
+    similarity: FeatureSimilarityV1
+    feature_digest: str
+
+    def __post_init__(self) -> None:
+        _require_observation_id(self.observation_id)
+        _require_episode_id(self.episode_id)
+        _require_bounded_int(self.sequence, "sequence", 1, _MAX_I63)
+        _require_digest(self.record_hash, "record_hash")
+        _require_digest(self.content_digest, "content_digest")
+        _require_bounded_int(self.observed_at_ns, "observed_at_ns", 0, _MAX_I63)
+        if type(self.temporal_preference_match) is not bool:
+            raise InputBoundaryError("temporal_preference_match must be bool")
+        if type(self.similarity) is not FeatureSimilarityV1:
+            raise InputBoundaryError("similarity must be FeatureSimilarityV1")
+        _require_digest(self.feature_digest, "feature_digest")
+
+
 class AbstainReason(str, Enum):
     WORK_BUDGET_EXHAUSTED = "work_budget_exhausted"
     PAYLOAD_BUDGET_EXCEEDED = "payload_budget_exceeded"
+    APPROXIMATE_DISABLED = "approximate_disabled"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -255,6 +302,125 @@ class NoScanRecollection:
         return False
 
 
+@dataclass(frozen=True, kw_only=True, slots=True)
+class ApproximateCandidateV1:
+    content: CanonicalJsonValue | None
+    observation_id: str
+    episode_id: str
+    sequence: int
+    record_hash: str
+    content_digest: str
+    provenance: ProvenanceV1
+    score_q32: int
+    content_omitted: bool
+
+    def __post_init__(self) -> None:
+        if self.content is not None and type(self.content) is not CanonicalJsonValue:
+            raise InputBoundaryError("candidate content is invalid")
+        _require_observation_id(self.observation_id)
+        _require_episode_id(self.episode_id)
+        _require_bounded_int(self.sequence, "sequence", 1, _MAX_I63)
+        _require_digest(self.record_hash, "record_hash")
+        _require_digest(self.content_digest, "content_digest")
+        if type(self.provenance) is not ProvenanceV1:
+            raise InputBoundaryError("candidate provenance is invalid")
+        _require_bounded_int(self.score_q32, "score_q32", 0, _MAX_Q32)
+        if type(self.content_omitted) is not bool:
+            raise InputBoundaryError("content_omitted must be bool")
+        if self.content_omitted != (self.content is None):
+            raise InputBoundaryError("content_omitted disagrees with content")
+
+    @property
+    def content_is_observation(self) -> bool:
+        return self.content is not None
+
+    @property
+    def content_is_verified_fact(self) -> bool:
+        return False
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class ApproximateCandidates:
+    candidates: tuple[ApproximateCandidateV1, ...]
+    margin_q32: int
+    work: RecollectionWorkV1
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.candidates) is not tuple
+            or not 1 <= len(self.candidates) <= _MAX_TOP_K
+            or any(type(item) is not ApproximateCandidateV1 for item in self.candidates)
+        ):
+            raise InputBoundaryError("approximate candidates are invalid")
+        _require_bounded_int(self.margin_q32, "margin_q32", 0, _MAX_Q32)
+        if (
+            type(self.work) is not RecollectionWorkV1
+            or not self.work.exhaustive
+            or self.work.candidates_returned != len(self.candidates)
+        ):
+            raise InputBoundaryError("approximate work is invalid")
+
+    @property
+    def content_is_observation(self) -> bool:
+        return True
+
+    @property
+    def content_is_verified_fact(self) -> bool:
+        return False
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class ConflictedRecollection:
+    candidates: tuple[ApproximateCandidateV1, ApproximateCandidateV1]
+    margin_q32: int
+    work: RecollectionWorkV1
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.candidates) is not tuple
+            or len(self.candidates) != 2
+            or any(type(item) is not ApproximateCandidateV1 for item in self.candidates)
+            or any(not item.content_omitted for item in self.candidates)
+            or self.candidates[0].content_digest == self.candidates[1].content_digest
+        ):
+            raise InputBoundaryError("conflict candidates are invalid")
+        _require_bounded_int(self.margin_q32, "margin_q32", 0, _MAX_Q32)
+        if (
+            type(self.work) is not RecollectionWorkV1
+            or not self.work.exhaustive
+            or self.work.candidates_returned != 2
+            or self.work.output_bytes != 0
+        ):
+            raise InputBoundaryError("conflict work is invalid")
+
+    @property
+    def content_is_observation(self) -> bool:
+        return True
+
+    @property
+    def content_is_verified_fact(self) -> bool:
+        return False
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class NoTextRecollection:
+    query_digest: str
+    work: RecollectionWorkV1
+
+    def __post_init__(self) -> None:
+        _require_digest(self.query_digest, "query_digest")
+        if type(self.work) is not RecollectionWorkV1 or not self.work.exhaustive:
+            raise InputBoundaryError("text absence work must be exhaustive")
+
+    @property
+    def content_is_observation(self) -> bool:
+        return False
+
+    @property
+    def content_is_verified_fact(self) -> bool:
+        return False
+
+
 @dataclass(frozen=True, slots=True, init=False)
 class RecallContinuationV1:
     checkpoint: LedgerCursorCheckpoint
@@ -263,6 +429,8 @@ class RecallContinuationV1:
     profile_digest: str
     exact_match_count: int
     exact_summaries: tuple[ExactOccurrenceSummaryV1, ...]
+    text_candidates: tuple[_TextCandidateStateV1, ...]
+    conflict_candidates: tuple[_TextCandidateStateV1, ...]
     work: RecollectionWorkV1
     _authenticator: bytes = field(repr=False, compare=False)
 
@@ -399,9 +567,26 @@ def recall(
     ...
 
 
+@overload
 def recall(
     session: VerifiedLedgerSession,
-    query: EventIdRecallQuery | ContentDigestRecallQuery,
+    query: TextRecallQuery,
+    *,
+    policy: RecallExecutionPolicyV1,
+    continuation: RecallContinuationV1 | None = None,
+) -> (
+    ApproximateCandidates
+    | ConflictedRecollection
+    | NoTextRecollection
+    | IncompleteRecollection
+    | AbstainedRecollection
+):
+    ...
+
+
+def recall(
+    session: VerifiedLedgerSession,
+    query: EventIdRecallQuery | ContentDigestRecallQuery | TextRecallQuery,
     *,
     policy: RecallExecutionPolicyV1 | None = None,
     continuation: RecallContinuationV1 | None = None,
@@ -410,6 +595,9 @@ def recall(
     | NoRecollection
     | AmbiguousExactRecollection
     | NoScanRecollection
+    | ApproximateCandidates
+    | ConflictedRecollection
+    | NoTextRecollection
     | IncompleteRecollection
     | AbstainedRecollection
 ):
@@ -418,6 +606,12 @@ def recall(
         if type(policy) is not RecallExecutionPolicyV1:
             raise InputBoundaryError("scan recall requires RecallExecutionPolicyV1")
         return _recall_content_digest(active, query, policy, continuation)
+    if type(query) is TextRecallQuery:
+        if type(policy) is not RecallExecutionPolicyV1:
+            raise InputBoundaryError("scan recall requires RecallExecutionPolicyV1")
+        if policy.top_k < 2:
+            raise InputBoundaryError("text recall policy top_k must be at least 2")
+        return _recall_text(active, query, policy, continuation)
     if type(query) is not EventIdRecallQuery:
         raise InputBoundaryError("query is not a supported recall query")
     if policy is not None or continuation is not None:
@@ -594,6 +788,348 @@ def _recall_content_digest(
     )
 
 
+def _recall_text(
+    session: VerifiedLedgerSession,
+    query: TextRecallQuery,
+    policy: RecallExecutionPolicyV1,
+    continuation: RecallContinuationV1 | None,
+) -> (
+    ApproximateCandidates
+    | ConflictedRecollection
+    | NoTextRecollection
+    | IncompleteRecollection
+    | AbstainedRecollection
+):
+    query_digest = _query_digest(query)
+    policy_digest = _policy_digest(policy)
+    query_vector = encode_retrieval_text(
+        query.text,
+        feature_spec_id=policy.active_feature_spec_id,
+    )
+    if continuation is None:
+        cursor = session.cursor(
+            after_sequence=0,
+            batch_size=max(1, min(policy.max_records, 64)),
+        )
+        candidates: tuple[_TextCandidateStateV1, ...] = ()
+        conflict_candidates: tuple[_TextCandidateStateV1, ...] = ()
+        prior_work = _empty_work(exhaustive=False)
+    else:
+        _validate_continuation(
+            continuation,
+            query_digest=query_digest,
+            policy_digest=policy_digest,
+        )
+        if continuation.exact_match_count != 0 or continuation.exact_summaries:
+            raise InputBoundaryError("text continuation carries exact-digest state")
+        cursor = session.resume_verified(
+            continuation.checkpoint,
+            batch_size=max(1, min(policy.max_records, 64)),
+        )
+        candidates = continuation.text_candidates
+        conflict_candidates = continuation.conflict_candidates
+        prior_work = continuation.work
+
+    page_records = 0
+    page_bytes = 0
+    page_candidates_scored = 0
+    try:
+        while page_records < policy.max_records:
+            try:
+                record = next(cursor)
+            except StopIteration:
+                break
+            page_records += 1
+            page_bytes += len(canonical_json_bytes(record.payload))
+            observation = _scan_observation(record.payload, record.event_id, record.sequence)
+            if observation is None or not _matches_filters(observation, query.filters):
+                continue
+            retrieval_text = observation.request.retrieval_text
+            if retrieval_text is None:
+                continue
+            candidate_vector = encode_retrieval_text(
+                retrieval_text,
+                feature_spec_id=policy.active_feature_spec_id,
+            )
+            similarity = measure_feature_similarity(query_vector, candidate_vector)
+            page_candidates_scored += 1
+            if similarity.score_q32 < policy.minimum_score_q32:
+                continue
+            candidate_state = _text_candidate_state(
+                record,
+                observation,
+                query.filters,
+                similarity,
+                candidate_vector,
+            )
+            candidates = _retain_text_candidate(
+                candidates,
+                candidate_state,
+                top_k=policy.top_k,
+            )
+            conflict_candidates = _retain_conflict_candidate(
+                conflict_candidates,
+                candidate_state,
+            )
+    except BaseException as primary:
+        try:
+            cursor.close()
+        except BaseException as cleanup_failure:
+            raise primary from cleanup_failure
+        raise
+
+    checkpoint = cursor.suspend()
+    exhaustive = checkpoint.next_sequence == checkpoint.snapshot_head_sequence + 1
+    work = RecollectionWorkV1(
+        records_scanned=prior_work.records_scanned + page_records,
+        canonical_payload_bytes_decoded=(
+            prior_work.canonical_payload_bytes_decoded + page_bytes
+        ),
+        candidates_scored=prior_work.candidates_scored + page_candidates_scored,
+        candidates_returned=0,
+        output_bytes=0,
+        exhaustive=exhaustive,
+    )
+    if not exhaustive:
+        if not policy.allow_incomplete:
+            return AbstainedRecollection(
+                reason=AbstainReason.WORK_BUDGET_EXHAUSTED,
+                work=work,
+            )
+        next_continuation = _make_continuation(
+            checkpoint=checkpoint,
+            query_digest=query_digest,
+            policy_digest=policy_digest,
+            exact_match_count=0,
+            exact_summaries=(),
+            text_candidates=candidates,
+            conflict_candidates=conflict_candidates,
+            work=work,
+        )
+        return IncompleteRecollection(
+            continuation=next_continuation,
+            work=work,
+            exact_match_count=0,
+        )
+    if not candidates:
+        return NoTextRecollection(query_digest=query_digest, work=work)
+    if not conflict_candidates:
+        raise LedgerIntegrityError("text conflict accumulator is inconsistent")
+
+    margin_q32 = _top_two_margin_q32(conflict_candidates)
+    if len(conflict_candidates) >= 2 and margin_q32 <= policy.minimum_margin_q32:
+        competing = tuple(
+            _hydrate_text_candidate(
+                session,
+                state,
+                query_vector=query_vector,
+                filters=query.filters,
+                remaining_output_bytes=None,
+            )[0]
+            for state in conflict_candidates
+        )
+        if len(competing) != 2:
+            raise LedgerIntegrityError("conflict accumulator is inconsistent")
+        conflict_work = _completed_text_work(work, returned=2, output_bytes=0)
+        return ConflictedRecollection(
+            candidates=(competing[0], competing[1]),
+            margin_q32=margin_q32,
+            work=conflict_work,
+        )
+
+    if not policy.allow_approximate:
+        return AbstainedRecollection(
+            reason=AbstainReason.APPROXIMATE_DISABLED,
+            work=work,
+        )
+
+    remaining_output_bytes = policy.max_returned_payload_bytes
+    output_bytes = 0
+    hydrated: list[ApproximateCandidateV1] = []
+    for state in candidates:
+        candidate, attached_bytes = _hydrate_text_candidate(
+            session,
+            state,
+            query_vector=query_vector,
+            filters=query.filters,
+            remaining_output_bytes=remaining_output_bytes,
+        )
+        remaining_output_bytes -= attached_bytes
+        output_bytes += attached_bytes
+        hydrated.append(candidate)
+    completed_work = _completed_text_work(
+        work,
+        returned=len(hydrated),
+        output_bytes=output_bytes,
+    )
+    return ApproximateCandidates(
+        candidates=tuple(hydrated),
+        margin_q32=margin_q32,
+        work=completed_work,
+    )
+
+
+def _text_candidate_state(
+    record: LedgerRecord,
+    observation: CanonicalObservationV1,
+    filters: RecallFiltersV1,
+    similarity: FeatureSimilarityV1,
+    feature_vector: RetrievalFeatureVectorV1,
+) -> _TextCandidateStateV1:
+    return _TextCandidateStateV1(
+        observation_id=observation.request.observation_id,
+        episode_id=observation.boundary_decision.episode_id,
+        sequence=record.sequence,
+        record_hash=record.record_hash,
+        content_digest=observation.content_digest,
+        observed_at_ns=observation.request.provenance.observed_at_ns,
+        temporal_preference_match=_temporal_preference_match(observation, filters),
+        similarity=similarity,
+        feature_digest=feature_vector_digest(feature_vector),
+    )
+
+
+def _retain_text_candidate(
+    candidates: tuple[_TextCandidateStateV1, ...],
+    candidate: _TextCandidateStateV1,
+    *,
+    top_k: int,
+) -> tuple[_TextCandidateStateV1, ...]:
+    retained = [*candidates, candidate]
+    retained.sort(key=cmp_to_key(_compare_text_candidates))
+    return tuple(retained[:top_k])
+
+
+def _retain_conflict_candidate(
+    candidates: tuple[_TextCandidateStateV1, ...],
+    candidate: _TextCandidateStateV1,
+) -> tuple[_TextCandidateStateV1, ...]:
+    retained = list(candidates)
+    same_digest_index = next(
+        (
+            index
+            for index, current in enumerate(retained)
+            if current.content_digest == candidate.content_digest
+        ),
+        None,
+    )
+    if same_digest_index is None:
+        retained.append(candidate)
+    elif _compare_text_candidates(candidate, retained[same_digest_index]) < 0:
+        retained[same_digest_index] = candidate
+    retained.sort(key=cmp_to_key(_compare_text_candidates))
+    return tuple(retained[:2])
+
+
+def _compare_text_candidates(
+    left: _TextCandidateStateV1,
+    right: _TextCandidateStateV1,
+) -> int:
+    similarity_order = compare_feature_similarity_exact(
+        left.similarity,
+        right.similarity,
+    )
+    if similarity_order:
+        return -similarity_order
+    if left.temporal_preference_match != right.temporal_preference_match:
+        return -1 if left.temporal_preference_match else 1
+    if left.observed_at_ns != right.observed_at_ns:
+        return -1 if left.observed_at_ns > right.observed_at_ns else 1
+    if left.sequence != right.sequence:
+        return -1 if left.sequence > right.sequence else 1
+    return (left.observation_id > right.observation_id) - (
+        left.observation_id < right.observation_id
+    )
+
+
+def _top_two_margin_q32(candidates: tuple[_TextCandidateStateV1, ...]) -> int:
+    top_score = candidates[0].similarity.score_q32
+    second_score = candidates[1].similarity.score_q32 if len(candidates) >= 2 else 0
+    if second_score > top_score:
+        raise LedgerIntegrityError("candidate score order is inconsistent")
+    return top_score - second_score
+
+
+def _hydrate_text_candidate(
+    session: VerifiedLedgerSession,
+    state: _TextCandidateStateV1,
+    *,
+    query_vector: RetrievalFeatureVectorV1,
+    filters: RecallFiltersV1,
+    remaining_output_bytes: int | None,
+) -> tuple[ApproximateCandidateV1, int]:
+    record, observation = _read_and_revalidate_text_candidate(session, state)
+    retrieval_text = observation.request.retrieval_text
+    if retrieval_text is None or not _matches_filters(observation, filters):
+        raise LedgerIntegrityError("selected text candidate is no longer eligible")
+    candidate_vector = encode_retrieval_text(
+        retrieval_text,
+        feature_spec_id=query_vector.feature_spec_id,
+    )
+    similarity = measure_feature_similarity(query_vector, candidate_vector)
+    if (
+        feature_vector_digest(candidate_vector) != state.feature_digest
+        or similarity != state.similarity
+        or observation.request.provenance.observed_at_ns != state.observed_at_ns
+        or _temporal_preference_match(observation, filters)
+        != state.temporal_preference_match
+    ):
+        raise LedgerIntegrityError("selected text candidate ranking changed after scan")
+    content_bytes = len(observation.request.content.canonical_bytes)
+    attach_content = (
+        remaining_output_bytes is not None
+        and content_bytes <= remaining_output_bytes
+    )
+    candidate = ApproximateCandidateV1(
+        content=observation.request.content if attach_content else None,
+        observation_id=state.observation_id,
+        episode_id=state.episode_id,
+        sequence=record.sequence,
+        record_hash=record.record_hash,
+        content_digest=state.content_digest,
+        provenance=observation.request.provenance,
+        score_q32=state.similarity.score_q32,
+        content_omitted=not attach_content,
+    )
+    return candidate, content_bytes if attach_content else 0
+
+
+def _read_and_revalidate_text_candidate(
+    session: VerifiedLedgerSession,
+    state: _TextCandidateStateV1,
+) -> tuple[LedgerRecord, CanonicalObservationV1]:
+    record = session.read(state.observation_id)
+    observation = None
+    if record is not None:
+        observation = _scan_observation(record.payload, record.event_id, record.sequence)
+    if (
+        record is None
+        or observation is None
+        or record.sequence != state.sequence
+        or record.record_hash != state.record_hash
+        or observation.content_digest != state.content_digest
+        or observation.boundary_decision.episode_id != state.episode_id
+    ):
+        raise LedgerIntegrityError("selected text candidate changed after scan")
+    return record, observation
+
+
+def _completed_text_work(
+    work: RecollectionWorkV1,
+    *,
+    returned: int,
+    output_bytes: int,
+) -> RecollectionWorkV1:
+    return RecollectionWorkV1(
+        records_scanned=work.records_scanned,
+        canonical_payload_bytes_decoded=work.canonical_payload_bytes_decoded,
+        candidates_scored=work.candidates_scored,
+        candidates_returned=returned,
+        output_bytes=output_bytes,
+        exhaustive=True,
+    )
+
+
 def _scan_observation(
     payload: JsonValue,
     event_id: str,
@@ -650,12 +1186,6 @@ def _summary_from_observation(
     observation: CanonicalObservationV1,
     filters: RecallFiltersV1,
 ) -> ExactOccurrenceSummaryV1:
-    observed_at_ns = observation.request.provenance.observed_at_ns
-    preferred = (
-        filters.preferred_observed_at_ns_min is not None
-        and cast(int, filters.preferred_observed_at_ns_min) <= observed_at_ns
-        and observed_at_ns <= cast(int, filters.preferred_observed_at_ns_max)
-    )
     return ExactOccurrenceSummaryV1(
         observation_id=observation.request.observation_id,
         episode_id=observation.boundary_decision.episode_id,
@@ -663,7 +1193,19 @@ def _summary_from_observation(
         record_hash=record.record_hash,
         content_digest=observation.content_digest,
         provenance=observation.request.provenance,
-        temporal_preference_match=preferred,
+        temporal_preference_match=_temporal_preference_match(observation, filters),
+    )
+
+
+def _temporal_preference_match(
+    observation: CanonicalObservationV1,
+    filters: RecallFiltersV1,
+) -> bool:
+    observed_at_ns = observation.request.provenance.observed_at_ns
+    return (
+        filters.preferred_observed_at_ns_min is not None
+        and cast(int, filters.preferred_observed_at_ns_min) <= observed_at_ns
+        and observed_at_ns <= cast(int, filters.preferred_observed_at_ns_max)
     )
 
 
@@ -691,6 +1233,8 @@ def _make_continuation(
     exact_match_count: int,
     exact_summaries: tuple[ExactOccurrenceSummaryV1, ...],
     work: RecollectionWorkV1,
+    text_candidates: tuple[_TextCandidateStateV1, ...] = (),
+    conflict_candidates: tuple[_TextCandidateStateV1, ...] = (),
 ) -> RecallContinuationV1:
     continuation = object.__new__(RecallContinuationV1)
     object.__setattr__(continuation, "checkpoint", checkpoint)
@@ -701,6 +1245,8 @@ def _make_continuation(
     )
     object.__setattr__(continuation, "exact_match_count", exact_match_count)
     object.__setattr__(continuation, "exact_summaries", exact_summaries)
+    object.__setattr__(continuation, "text_candidates", text_candidates)
+    object.__setattr__(continuation, "conflict_candidates", conflict_candidates)
     object.__setattr__(continuation, "work", work)
     authenticator = hmac.new(
         _CONTINUATION_KEY,
@@ -720,6 +1266,28 @@ def _validate_continuation(
     if type(continuation) is not RecallContinuationV1:
         raise InputBoundaryError("continuation must be RecallContinuationV1")
     try:
+        if (
+            type(continuation.text_candidates) is not tuple
+            or len(continuation.text_candidates) > _MAX_TOP_K
+            or any(
+                type(candidate) is not _TextCandidateStateV1
+                for candidate in continuation.text_candidates
+            )
+            or type(continuation.conflict_candidates) is not tuple
+            or len(continuation.conflict_candidates) > 2
+            or any(
+                type(candidate) is not _TextCandidateStateV1
+                for candidate in continuation.conflict_candidates
+            )
+            or len(
+                {
+                    candidate.content_digest
+                    for candidate in continuation.conflict_candidates
+                }
+            )
+            != len(continuation.conflict_candidates)
+        ):
+            raise InputBoundaryError("recall continuation candidates are malformed")
         expected = hmac.new(
             _CONTINUATION_KEY,
             canonical_json_bytes(_continuation_payload(continuation)),
@@ -748,11 +1316,19 @@ def _continuation_payload(continuation: RecallContinuationV1) -> JsonValue:
                 "snapshot_head_hash": continuation.checkpoint.snapshot_head_hash,
                 "snapshot_head_sequence": continuation.checkpoint.snapshot_head_sequence,
             },
+            "conflict_candidates": [
+                _text_candidate_state_payload(item)
+                for item in continuation.conflict_candidates
+            ],
             "exact_match_count": continuation.exact_match_count,
             "exact_summaries": [_summary_payload(item) for item in continuation.exact_summaries],
             "policy_digest": continuation.policy_digest,
             "profile_digest": continuation.profile_digest,
             "query_digest": continuation.query_digest,
+            "text_candidates": [
+                _text_candidate_state_payload(item)
+                for item in continuation.text_candidates
+            ],
             "work": _work_payload(continuation.work),
         },
     )
@@ -776,6 +1352,26 @@ def _summary_payload(summary: ExactOccurrenceSummaryV1) -> dict[str, JsonValue]:
     }
 
 
+def _text_candidate_state_payload(
+    candidate: _TextCandidateStateV1,
+) -> dict[str, JsonValue]:
+    similarity = candidate.similarity
+    return {
+        "candidate_squared_norm": similarity.candidate_squared_norm,
+        "content_digest": candidate.content_digest,
+        "dot_product": similarity.dot_product,
+        "episode_id": candidate.episode_id,
+        "feature_digest": candidate.feature_digest,
+        "observation_id": candidate.observation_id,
+        "observed_at_ns": candidate.observed_at_ns,
+        "query_squared_norm": similarity.query_squared_norm,
+        "record_hash": candidate.record_hash,
+        "score_q32": similarity.score_q32,
+        "sequence": candidate.sequence,
+        "temporal_preference_match": candidate.temporal_preference_match,
+    }
+
+
 def _work_payload(work: RecollectionWorkV1) -> dict[str, JsonValue]:
     return {
         "candidates_returned": work.candidates_returned,
@@ -787,23 +1383,27 @@ def _work_payload(work: RecollectionWorkV1) -> dict[str, JsonValue]:
     }
 
 
-def _query_digest(query: ContentDigestRecallQuery) -> str:
+def _query_digest(query: ContentDigestRecallQuery | TextRecallQuery) -> str:
     filters = query.filters
-    payload = cast(
-        JsonValue,
-        {
-            "content_digest": query.content_digest,
-            "filters": {
-                "observed_at_ns_max": filters.observed_at_ns_max,
-                "observed_at_ns_min": filters.observed_at_ns_min,
-                "preferred_observed_at_ns_max": filters.preferred_observed_at_ns_max,
-                "preferred_observed_at_ns_min": filters.preferred_observed_at_ns_min,
-                "session_ids": list(filters.session_ids),
-                "source_kinds": [item.value for item in filters.source_kinds],
-            },
-            "query_kind": "content_digest",
+    common: dict[str, JsonValue] = {
+        "filters": {
+            "observed_at_ns_max": filters.observed_at_ns_max,
+            "observed_at_ns_min": filters.observed_at_ns_min,
+            "preferred_observed_at_ns_max": filters.preferred_observed_at_ns_max,
+            "preferred_observed_at_ns_min": filters.preferred_observed_at_ns_min,
+            "session_ids": list(filters.session_ids),
+            "source_kinds": [item.value for item in filters.source_kinds],
         },
-    )
+    }
+    if type(query) is ContentDigestRecallQuery:
+        common["content_digest"] = query.content_digest
+        common["query_kind"] = "content_digest"
+    elif type(query) is TextRecallQuery:
+        common["query_kind"] = "text"
+        common["text"] = query.text
+    else:
+        raise InputBoundaryError("scan query is unsupported")
+    payload = cast(JsonValue, common)
     return _domain_digest(_QUERY_DIGEST_DOMAIN, canonical_json_bytes(payload))
 
 
@@ -889,6 +1489,11 @@ def _require_observation_id(value: str) -> None:
         raise InputBoundaryError("observation_id is invalid")
 
 
+def _require_episode_id(value: str) -> None:
+    if type(value) is not str or _EPISODE_ID_PATTERN.fullmatch(value) is None:
+        raise InputBoundaryError("episode_id is invalid")
+
+
 def _require_digest(value: str, field_name: str) -> None:
     if type(value) is not str or _DIGEST_PATTERN.fullmatch(value) is None:
         raise InputBoundaryError(f"{field_name} must be a lowercase SHA-256 digest")
@@ -898,6 +1503,9 @@ __all__ = [
     "AbstainReason",
     "AbstainedRecollection",
     "AmbiguousExactRecollection",
+    "ApproximateCandidateV1",
+    "ApproximateCandidates",
+    "ConflictedRecollection",
     "ContentDigestRecallQuery",
     "EventIdRecallQuery",
     "ExactOccurrenceSummaryV1",
@@ -905,10 +1513,12 @@ __all__ = [
     "IncompleteRecollection",
     "NoRecollection",
     "NoScanRecollection",
+    "NoTextRecollection",
     "RecallBasis",
     "RecallContinuationV1",
     "RecallExecutionPolicyV1",
     "RecallFiltersV1",
     "RecollectionWorkV1",
+    "TextRecallQuery",
     "recall",
 ]
