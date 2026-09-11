@@ -1780,3 +1780,147 @@ session can map each decision to the exact diff.
   expected LF-to-CRLF notices. Task 2.4's dedicated scale/reference sub-slice is
   CLEAN and ready for a checkpoint commit; broader Task 2.7 RSS/restart/p95 and
   portability evidence remains explicitly open.
+- Checkpoint commit `96b24a9` (`Add Task 2.4 recollection scale gate`) records
+  the CLEAN bounded streaming recollection scale/reference slice. Task 2.4 is
+  now complete across deterministic Q32 scoring, content-digest exact scans,
+  approximate/conflicted text retrieval, authenticated bounded continuation,
+  independent exhaustive selection, and the current-host 8,192 evidence. Task
+  2.5 calibrated selective recall begins from this clean commit; no calibration
+  threshold or personal-memory production enablement is inferred from the
+  synthetic Task 2.4 fixtures.
+- Task 2.5 mapping confirms `calibration.py` and its dedicated tests do not yet
+  exist. The work is split into pure calibration mathematics/schema, artifact
+  selection/disabled states, and only then recollection authority integration;
+  the first slice imports no ledger code and cannot mint production authority.
+  Two initially requested specialized agent roles failed before work because
+  their fixed model is unsupported on this ChatGPT Codex account; supported
+  default-agent retries completed the same bounded architecture/statistics work.
+- The Task 2.5 numerical freeze uses canonical decimal input, an exact rational
+  Bonferroni tail `delta/m`, a 36-place decimal lattice, directed lower/upper
+  binomial-CDF enclosures, exact-integer fallback for unresolved comparisons,
+  and minimal upper serialization on a frozen 24-place lattice. Task 2 runtime
+  code gains no SciPy/mpmath dependency; independent 60-place reference brackets
+  were generated outside production with 160-digit regularized-beta inversion
+  and cross-checked by a separate arbitrary-precision binomial recurrence.
+- The first Task 2.5 RED adds only `test_cognition_calibration.py`. It binds nine
+  literal boundary/interior/8,192-count results, five conservative reference
+  brackets, the Bonferroni-family distinction, exact `n=0`/all-error behavior,
+  and strict rejection of bool integers or noncanonical decimal inputs. The
+  production module is intentionally absent at this point; the expected initial
+  failure is import/collection of `aluclu.cognition.calibration`, not an unrelated
+  runtime failure.
+- The initial Task 2.5 RED is reproduced on both installed runtimes at the exact
+  intended boundary: collection fails only because
+  `aluclu.cognition.calibration` does not exist. The minimal GREEN now creates
+  that pure module with no ledger or external numerical dependency. It validates
+  exact non-bool counts/family bounds and canonical open probabilities, keeps
+  `delta/m` as a reduced integer ratio, brackets the monotone binomial CDF with
+  fresh directed Decimal contexts, falls back to an exact integer recurrence
+  only when all precision tiers straddle the tail, and upper-rounds the proven
+  36-place root enclosure onto the canonical 24-place output lattice. Artifact
+  schema, deployment status, and recollection authority remain out of this
+  numerical-kernel GREEN until the literal fixtures pass.
+- Before executing the numerical GREEN, its internal Decimal multiplication
+  callback is given an explicit callable type and the invalid-input test crosses
+  the deliberately untyped API boundary through an explicit `Any` cast. This
+  removes a broad type-ignore without changing numerical behavior; both runtime
+  fixtures and the pinned static gates still have to prove the implementation.
+- The first numerical GREEN run is identical on CPython 3.12 and 3.13: 30/31
+  cases pass and only the uncorrected `k=0,n=100,delta=0.05,m=1` literal differs.
+  Production returns `0.029513049607039934500476`, while the test expected
+  `0.029513049607039932209963`; all independently bracketed cases, including the
+  corrected `m=10` value and both 8,192-count cases, pass. No value is changed
+  until the disputed literal is checked against the independent closed form.
+- A separate 100-digit Decimal evaluation of the exact zero-error closed form,
+  `1 - 0.05^(1/100)`, yields
+  `0.029513049607039934500475785607...`; directed upper rounding to the frozen
+  24-place lattice is exactly production's
+  `0.029513049607039934500476`. The lone test literal was therefore wrong and is
+  repaired; the solver is unchanged. Both runtimes must now rerun the full file.
+- The repaired Task 2.5 numerical file is GREEN on both CPython 3.12 and 3.13:
+  31/31 tests pass independently on each runtime. Static/style/compile gates and
+  adversarial review remain open before this mathematical kernel can be called
+  CLEAN.
+- The first static pass reports no type, compile, or whitespace error: pinned
+  Pyright 1.1.413 is 0/0/0, compileall passes, and `git diff --check` exits zero
+  apart from the existing Windows LF-to-CRLF notice. Ruff alone requests two
+  mechanical import-layout changes; its exact dry-run diff is applied with no
+  behavioral edit, after which every fast gate will be rerun.
+- After the import-only repair, both focused files remain 31/31 GREEN; Ruff,
+  compileall, diff-check, and pinned Pyright 1.1.413 are all clean. The broader
+  Task 2 compatibility package also exits zero on both CPython 3.12 and 3.13,
+  excluding only the already-completed one-hour 8,192 scale case. No existing
+  recall-feature, recollection, sensorium, or fast scale-reference behavior is
+  regressed by the new pure numerical module.
+- Two requested independent post-GREEN review turns failed before inspection
+  because the collaborating account hit its usage limit. They produced no
+  technical verdict and are not counted as review evidence. Local adversarial
+  inspection therefore continues and the independent-review gate stays open.
+- Local adversarial inspection finds a proof-level gap before declaring CLEAN:
+  the 36-digit lattice candidate and its complement are currently constructed
+  just before the fresh directed contexts, so a caller-mutated ambient Decimal
+  precision can round the supposedly exact candidate. A new RED compares two
+  distinct argument tuples with the same exact tail under normal versus hostile
+  ambient contexts; production must be invariant to all caller Decimal state.
+- The ambient-context RED fails identically on both runtimes at the intended
+  boundary: a hostile six-digit/limited-exponent caller context raises
+  `decimal.InvalidOperation` while scaling the first 36-digit lattice midpoint.
+  The candidate and exact complement are moved inside each fresh 80+-digit,
+  wide-exponent directed context. No solver, statistical, or serialization rule
+  changes; the new invariant and full fixture file must now rerun.
+- The ambient-context repair makes the complete numerical file 32/32 GREEN on
+  both runtimes. The numerical contract is further bounded to at most the frozen
+  36 fractional input digits so canonical validation cannot feed unbounded
+  attacker-sized integers into Bonferroni arithmetic. The independent
+  near-one `n=8192,k=8191` 60-place bracket is also promoted into the blocking
+  fixture set after a direct CPython 3.13 probe returned its expected 24-place
+  upper value in 8.81 seconds. These additions require a fresh two-runtime run.
+- The near-one bracket and bounded-input additions pass with the rest of the
+  file on both runtimes (35/35 each). Boundary coverage is extended once more
+  to prove that exactly 36 fractional digits, `family_size=256`, and the
+  no-evidence return remain accepted, while selected/error count 65,537 and
+  family size 257 fail closed. These are contract-boundary tests, not a widening
+  of the frozen solver limits.
+- Final fast/static evidence for the expanded A1 kernel is clean: 39/39 focused
+  tests pass on each of CPython 3.12 and 3.13; Ruff and compileall pass;
+  `git diff --check` exits zero apart from the Windows line-ending notice; and
+  pinned Pyright 1.1.413 reports 0 errors, 0 warnings, 0 informations. The final
+  two-runtime Task 2 compatibility rerun is also 154/154 on each interpreter
+  (57 recall-feature, 42 recollection, 15 sensorium, one fast scale reference,
+  and 39 calibration cases); only the already-completed one-hour 8,192 scale
+  fixture is excluded. Independent review remains the sole A1 CLEAN gate.
+- Independent code/security review and independent mathematical review both
+  return APPROVE with zero findings. The mathematical reviewer reproduces
+  directed enclosure containment and exact-fallback direction against 250
+  independent `Fraction` cases, confirms hostile ambient-context identity, and
+  verifies the lattice upper-rounding proof. Before checkpointing, its
+  nonblocking hardening suggestion is adopted: a new RED forces the exact
+  symmetry root `n=101,k=50,tail=0.5` and requires the fallback to reduce the
+  decimal lattice probability ratio before big-integer exponentiation. The
+  ambient regression is also anchored to the already independently verified
+  zero-error closed-form literal rather than a production-derived new value.
+- The forced-fallback RED fails identically on both runtimes while still
+  returning the correct root: only the tail reduction calls `gcd`; the lattice
+  probability remains unreduced. The exact comparator now reduces its
+  probability numerator/denominator before complement construction or any
+  exponentiation. For the symmetry fixture this changes the big-integer basis
+  from `5*10^35 / 10^36` to exact `1/2` without changing the comparison.
+- The first post-repair test still fails because its `n=101` case is classified
+  exactly by the directed Decimal path and therefore never enters the fallback;
+  this is a test-oracle error, not a production error. A cache-cleared runtime
+  probe finds `n=501,k=250` is the smallest sampled symmetry case that reliably
+  invokes the exact comparator on the current frozen precision tiers. The RED is
+  narrowed to that case; the `gcd` call itself remains the blocking assertion.
+- The corrected `n=501,k=250` forced-fallback oracle and the strengthened
+  ambient-context literal both pass on CPython 3.12 and 3.13. This proves the
+  exact fallback is actually exercised and ratio reduction occurs; the full
+  numerical/static suite and a delta re-review remain required.
+- Final hardened A1 evidence is CLEAN: 40/40 calibration tests pass on each of
+  CPython 3.12 and 3.13; Ruff, compileall, and diff-check are clean; pinned
+  Pyright 1.1.413 remains 0/0/0. Both independent reviewers re-review the exact
+  delta and retain APPROVE with zero findings. The mathematical reviewer also
+  matches the reduced exact comparator against 100 additional deterministic
+  `Fraction` cases and measures the `n=5001` symmetry probe improving from about
+  4.75 to 2.18 seconds. Task 2.5-A1's pure conservative numerical kernel is
+  ready for its checkpoint; calibration records/artifact authority are still
+  deliberately absent and begin in A2.
