@@ -26,14 +26,19 @@ from .contracts import InputBoundaryError, JsonValue
 _CALIBRATION_SPEC_SCHEMA = "aluclu.calibration-spec.v1"
 _LABEL_PROVENANCE_MANIFEST_SCHEMA = "aluclu.label-provenance-manifest.v1"
 _LABELED_RECALL_EXAMPLE_SCHEMA = "aluclu.labeled-recall-example.v1"
+_THRESHOLD_CALIBRATION_SCHEMA = "aluclu.threshold-calibration.v1"
+_CALIBRATION_ARTIFACT_SCHEMA = "aluclu.calibration-artifact.v1"
 _CALIBRATION_SPEC_DOMAIN = b"aluclu.task2.calibration-spec.v1"
 _LABEL_PROVENANCE_MANIFEST_DOMAIN = (
     b"aluclu.task2.label-provenance-manifest.v1"
 )
 _LABELED_RECALL_EXAMPLE_DOMAIN = b"aluclu.task2.labeled-recall-example.v1"
+_CALIBRATION_EXAMPLE_SET_DOMAIN = b"aluclu.task2.calibration-example-set.v1"
+_CALIBRATION_ARTIFACT_DOMAIN = b"aluclu.task2.calibration-artifact.v1"
 _CALIBRATION_SPEC_MAX_BYTES = 32_768
 _LABEL_PROVENANCE_MANIFEST_MAX_BYTES = 2_097_152
 _LABELED_RECALL_EXAMPLE_MAX_BYTES = 4_096
+_CALIBRATION_ARTIFACT_MAX_BYTES = 262_144
 _MAX_MANIFEST_EXAMPLE_IDS = 4_096
 _MAX_EXTERNAL_REFERENCE_BYTES = 2_048
 _Q32_ONE = 1 << 32
@@ -90,6 +95,35 @@ _LABELED_RECALL_EXAMPLE_KEYS = frozenset(
         "error",
     }
 )
+_THRESHOLD_CALIBRATION_KEYS = frozenset(
+    {
+        "schema",
+        "threshold_q32",
+        "selected_count",
+        "error_count",
+        "total_example_count",
+        "coverage_decimal",
+        "risk_upper_bound_decimal",
+        "passed",
+    }
+)
+_CALIBRATION_ARTIFACT_KEYS = frozenset(
+    {
+        "schema",
+        "spec_digest",
+        "label_provenance_manifest_digest",
+        "example_set_digest",
+        "threshold_results",
+        "chosen_threshold_q32",
+        "statistical_status",
+        "deployment_status",
+        "disabled_reasons",
+        "generator_version",
+        "independence_status",
+        "production_acceptance_digest",
+        "artifact_digest",
+    }
+)
 _JsonObject: TypeAlias = dict[str, JsonValue]
 
 
@@ -105,6 +139,28 @@ class ThresholdSelectionRule(str, Enum):
 
 class LabelIndependenceStatus(str, Enum):
     ASSERTED_NOT_PROVEN = "asserted_not_proven"
+
+
+class CalibrationStatisticalStatus(str, Enum):
+    STATISTICAL_PASS = "statistical_pass"
+    DISABLED = "disabled"
+
+
+class CalibrationDeploymentStatus(str, Enum):
+    TEST_ONLY = "test_only"
+    PRODUCTION_ACCEPTED = "production_accepted"
+
+
+class CalibrationDisabledReason(str, Enum):
+    DATASET_MANIFEST_MISMATCH = "dataset_manifest_mismatch"
+    EXAMPLE_SET_MISMATCH = "example_set_mismatch"
+    FIT_CALIBRATION_OVERLAP = "fit_calibration_overlap"
+    INSUFFICIENT_SELECTED = "insufficient_selected"
+    LABEL_MANIFEST_DIGEST_MISMATCH = "label_manifest_digest_mismatch"
+    LABEL_MANIFEST_LEAKAGE = "label_manifest_leakage"
+    NO_PASSING_THRESHOLD = "no_passing_threshold"
+    SPEC_DIGEST_MISMATCH = "spec_digest_mismatch"
+    ZERO_EXAMPLES = "zero_examples"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -295,6 +351,150 @@ class LabeledRecallExampleV1:
         return instance
 
 
+@dataclass(frozen=True, kw_only=True, slots=True)
+class ThresholdCalibrationV1:
+    threshold_q32: int
+    selected_count: int
+    error_count: int
+    total_example_count: int
+    coverage_decimal: str
+    risk_upper_bound_decimal: str
+    passed: bool
+
+    def __post_init__(self) -> None:
+        _require_int(self.threshold_q32, "threshold_q32", 0, _Q32_ONE)
+        _require_int(
+            self.total_example_count,
+            "total_example_count",
+            0,
+            _MAX_MANIFEST_EXAMPLE_IDS,
+        )
+        _require_int(
+            self.selected_count,
+            "selected_count",
+            0,
+            self.total_example_count,
+        )
+        _require_int(
+            self.error_count,
+            "error_count",
+            0,
+            self.selected_count,
+        )
+        _require_closed_probability(self.coverage_decimal, "coverage_decimal")
+        if self.coverage_decimal != _coverage_decimal(
+            self.selected_count,
+            self.total_example_count,
+        ):
+            raise InputBoundaryError("coverage_decimal does not match counts")
+        _require_closed_probability(
+            self.risk_upper_bound_decimal,
+            "risk_upper_bound_decimal",
+        )
+        if type(self.passed) is not bool:
+            raise InputBoundaryError("passed must be a bool")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True, init=False)
+class CalibrationArtifactV1:
+    spec_digest: str
+    label_provenance_manifest_digest: str
+    example_set_digest: str
+    threshold_results: tuple[ThresholdCalibrationV1, ...]
+    chosen_threshold_q32: int | None
+    statistical_status: CalibrationStatisticalStatus
+    deployment_status: CalibrationDeploymentStatus
+    disabled_reasons: tuple[CalibrationDisabledReason, ...]
+    generator_version: str
+    independence_status: LabelIndependenceStatus
+    production_acceptance_digest: str | None
+    artifact_digest: str
+
+    def __new__(cls) -> CalibrationArtifactV1:
+        raise TypeError("use build_calibration_artifact or decode_calibration_artifact")
+
+    @classmethod
+    def _create(
+        cls,
+        *,
+        spec_digest: str,
+        label_provenance_manifest_digest: str,
+        example_set_digest: str,
+        threshold_results: tuple[ThresholdCalibrationV1, ...],
+        chosen_threshold_q32: int | None,
+        statistical_status: CalibrationStatisticalStatus,
+        deployment_status: CalibrationDeploymentStatus,
+        disabled_reasons: tuple[CalibrationDisabledReason, ...],
+        generator_version: str,
+        independence_status: LabelIndependenceStatus,
+        production_acceptance_digest: str | None,
+        artifact_digest: str,
+    ) -> CalibrationArtifactV1:
+        _require_digest(spec_digest, "spec_digest")
+        _require_digest(
+            label_provenance_manifest_digest,
+            "label_provenance_manifest_digest",
+        )
+        _require_digest(example_set_digest, "example_set_digest")
+        _require_threshold_results(threshold_results)
+        _require_optional_q32(chosen_threshold_q32, "chosen_threshold_q32")
+        if type(statistical_status) is not CalibrationStatisticalStatus:
+            raise InputBoundaryError(
+                "statistical_status must be a CalibrationStatisticalStatus"
+            )
+        if type(deployment_status) is not CalibrationDeploymentStatus:
+            raise InputBoundaryError(
+                "deployment_status must be a CalibrationDeploymentStatus"
+            )
+        _require_disabled_reasons(disabled_reasons)
+        _require_ascii_token(
+            generator_version,
+            pattern=_VERSION_ID_PATTERN,
+            field_name="generator_version",
+        )
+        if generator_version != _CALIBRATION_GENERATOR_VERSION:
+            raise InputBoundaryError("generator_version is not supported")
+        if type(independence_status) is not LabelIndependenceStatus:
+            raise InputBoundaryError(
+                "independence_status must be a LabelIndependenceStatus"
+            )
+        if production_acceptance_digest is not None:
+            _require_digest(
+                production_acceptance_digest,
+                "production_acceptance_digest",
+            )
+        _require_digest(artifact_digest, "artifact_digest")
+        _validate_artifact_relations(
+            threshold_results=threshold_results,
+            chosen_threshold_q32=chosen_threshold_q32,
+            statistical_status=statistical_status,
+            deployment_status=deployment_status,
+            disabled_reasons=disabled_reasons,
+            production_acceptance_digest=production_acceptance_digest,
+        )
+
+        instance = object.__new__(cls)
+        for field_name, value in (
+            ("spec_digest", spec_digest),
+            (
+                "label_provenance_manifest_digest",
+                label_provenance_manifest_digest,
+            ),
+            ("example_set_digest", example_set_digest),
+            ("threshold_results", threshold_results),
+            ("chosen_threshold_q32", chosen_threshold_q32),
+            ("statistical_status", statistical_status),
+            ("deployment_status", deployment_status),
+            ("disabled_reasons", disabled_reasons),
+            ("generator_version", generator_version),
+            ("independence_status", independence_status),
+            ("production_acceptance_digest", production_acceptance_digest),
+            ("artifact_digest", artifact_digest),
+        ):
+            object.__setattr__(instance, field_name, value)
+        return instance
+
+
 _CANONICAL_OPEN_PROBABILITY = re.compile(r"0\.(?:[0-9]*[1-9])\Z")
 _CANONICAL_CLOSED_PROBABILITY = re.compile(
     r"(?:0|1|0\.(?:[0-9]*[1-9]))\Z"
@@ -304,6 +504,9 @@ _MAX_THRESHOLD_FAMILY = 256
 _OUTPUT_DECIMAL_PLACES = 24
 _SOLVER_DECIMAL_PLACES = 36
 _MAX_PROBABILITY_FRACTIONAL_DIGITS = _SOLVER_DECIMAL_PLACES
+_CALIBRATION_GENERATOR_VERSION = (
+    "aluclu.task2.calibration.clopper-pearson-q24.v1"
+)
 _SOLVER_SCALE = 10**_SOLVER_DECIMAL_PLACES
 _OUTPUT_SCALE = 10**_OUTPUT_DECIMAL_PLACES
 _OUTPUT_GUARD_FACTOR = 10 ** (
@@ -854,6 +1057,411 @@ def derive_labeled_recall_example_digest(
     )
 
 
+def build_calibration_artifact(
+    spec: CalibrationSpecV1,
+    manifest: LabelProvenanceManifestV1,
+    examples: tuple[LabeledRecallExampleV1, ...],
+) -> CalibrationArtifactV1:
+    if type(spec) is not CalibrationSpecV1:
+        raise InputBoundaryError("spec must be CalibrationSpecV1")
+    if type(manifest) is not LabelProvenanceManifestV1:
+        raise InputBoundaryError("manifest must be LabelProvenanceManifestV1")
+    if type(examples) is not tuple or any(
+        type(example) is not LabeledRecallExampleV1 for example in examples
+    ):
+        raise InputBoundaryError(
+            "examples must be a tuple of LabeledRecallExampleV1"
+        )
+    if len(examples) > _MAX_MANIFEST_EXAMPLE_IDS:
+        raise InputBoundaryError("examples exceed the calibration set boundary")
+
+    ordered_examples = tuple(
+        sorted(
+            examples,
+            key=lambda example: (
+                example.example_id,
+                encode_labeled_recall_example(example),
+            ),
+        )
+    )
+    spec_digest = derive_calibration_spec_digest(spec)
+    manifest_digest = derive_label_provenance_manifest_digest(manifest)
+    reasons: set[CalibrationDisabledReason] = set()
+
+    if not ordered_examples or not manifest.calibration_example_ids:
+        reasons.add(CalibrationDisabledReason.ZERO_EXAMPLES)
+    if spec.dataset_manifest_digest != manifest.dataset_manifest_digest:
+        reasons.add(CalibrationDisabledReason.DATASET_MANIFEST_MISMATCH)
+    if spec.label_provenance_manifest_digest != manifest_digest:
+        reasons.add(CalibrationDisabledReason.LABEL_MANIFEST_DIGEST_MISMATCH)
+    if set(manifest.fit_example_ids).intersection(
+        manifest.calibration_example_ids
+    ):
+        reasons.add(CalibrationDisabledReason.FIT_CALIBRATION_OVERLAP)
+    if manifest.scorer_input_manifest_digest == manifest.gold_label_manifest_digest:
+        reasons.add(CalibrationDisabledReason.LABEL_MANIFEST_LEAKAGE)
+
+    actual_example_ids = tuple(example.example_id for example in ordered_examples)
+    if actual_example_ids != manifest.calibration_example_ids:
+        reasons.add(CalibrationDisabledReason.EXAMPLE_SET_MISMATCH)
+    if any(
+        example.calibration_spec_digest != spec_digest
+        for example in ordered_examples
+    ):
+        reasons.add(CalibrationDisabledReason.SPEC_DIGEST_MISMATCH)
+    if any(
+        example.label_provenance_manifest_digest != manifest_digest
+        for example in ordered_examples
+    ):
+        reasons.add(CalibrationDisabledReason.LABEL_MANIFEST_DIGEST_MISMATCH)
+
+    threshold_results = tuple(
+        _calibrate_threshold(
+            threshold_q32=threshold_q32,
+            examples=ordered_examples,
+            spec=spec,
+        )
+        for threshold_q32 in spec.threshold_grid_q32
+    )
+    passing = tuple(result for result in threshold_results if result.passed)
+    if not any(
+        result.selected_count >= spec.minimum_selected
+        for result in threshold_results
+    ):
+        reasons.add(CalibrationDisabledReason.INSUFFICIENT_SELECTED)
+    if not passing:
+        reasons.add(CalibrationDisabledReason.NO_PASSING_THRESHOLD)
+
+    disabled_reasons = tuple(sorted(reasons, key=lambda reason: reason.value))
+    if disabled_reasons:
+        chosen_threshold_q32 = None
+        statistical_status = CalibrationStatisticalStatus.DISABLED
+    else:
+        chosen = max(
+            passing,
+            key=lambda result: (result.selected_count, result.threshold_q32),
+        )
+        chosen_threshold_q32 = chosen.threshold_q32
+        statistical_status = CalibrationStatisticalStatus.STATISTICAL_PASS
+
+    example_set_digest = _derive_example_set_digest(ordered_examples)
+    deployment_status = CalibrationDeploymentStatus.TEST_ONLY
+    production_acceptance_digest = None
+    artifact_digest = _derive_artifact_fields_digest(
+        spec_digest=spec_digest,
+        label_provenance_manifest_digest=manifest_digest,
+        example_set_digest=example_set_digest,
+        threshold_results=threshold_results,
+        chosen_threshold_q32=chosen_threshold_q32,
+        statistical_status=statistical_status,
+        deployment_status=deployment_status,
+        disabled_reasons=disabled_reasons,
+        generator_version=_CALIBRATION_GENERATOR_VERSION,
+        independence_status=manifest.independence_status,
+        production_acceptance_digest=production_acceptance_digest,
+    )
+    return CalibrationArtifactV1._create(
+        spec_digest=spec_digest,
+        label_provenance_manifest_digest=manifest_digest,
+        example_set_digest=example_set_digest,
+        threshold_results=threshold_results,
+        chosen_threshold_q32=chosen_threshold_q32,
+        statistical_status=statistical_status,
+        deployment_status=deployment_status,
+        disabled_reasons=disabled_reasons,
+        generator_version=_CALIBRATION_GENERATOR_VERSION,
+        independence_status=manifest.independence_status,
+        production_acceptance_digest=production_acceptance_digest,
+        artifact_digest=artifact_digest,
+    )
+
+
+def threshold_calibration_to_json_value(
+    result: ThresholdCalibrationV1,
+) -> _JsonObject:
+    if type(result) is not ThresholdCalibrationV1:
+        raise InputBoundaryError("result must be ThresholdCalibrationV1")
+    return {
+        "schema": _THRESHOLD_CALIBRATION_SCHEMA,
+        "threshold_q32": result.threshold_q32,
+        "selected_count": result.selected_count,
+        "error_count": result.error_count,
+        "total_example_count": result.total_example_count,
+        "coverage_decimal": result.coverage_decimal,
+        "risk_upper_bound_decimal": result.risk_upper_bound_decimal,
+        "passed": result.passed,
+    }
+
+
+def threshold_calibration_from_json_value(
+    value: JsonValue,
+) -> ThresholdCalibrationV1:
+    wire = _require_object(
+        value,
+        keys=_THRESHOLD_CALIBRATION_KEYS,
+        schema=_THRESHOLD_CALIBRATION_SCHEMA,
+    )
+    return ThresholdCalibrationV1(
+        threshold_q32=_required_int(wire, "threshold_q32"),
+        selected_count=_required_int(wire, "selected_count"),
+        error_count=_required_int(wire, "error_count"),
+        total_example_count=_required_int(wire, "total_example_count"),
+        coverage_decimal=_required_str(wire, "coverage_decimal"),
+        risk_upper_bound_decimal=_required_str(
+            wire,
+            "risk_upper_bound_decimal",
+        ),
+        passed=_required_bool(wire, "passed"),
+    )
+
+
+def calibration_artifact_to_json_value(
+    artifact: CalibrationArtifactV1,
+) -> _JsonObject:
+    if type(artifact) is not CalibrationArtifactV1:
+        raise InputBoundaryError("artifact must be CalibrationArtifactV1")
+    wire = _artifact_body_wire(
+        spec_digest=artifact.spec_digest,
+        label_provenance_manifest_digest=(
+            artifact.label_provenance_manifest_digest
+        ),
+        example_set_digest=artifact.example_set_digest,
+        threshold_results=artifact.threshold_results,
+        chosen_threshold_q32=artifact.chosen_threshold_q32,
+        statistical_status=artifact.statistical_status,
+        deployment_status=artifact.deployment_status,
+        disabled_reasons=artifact.disabled_reasons,
+        generator_version=artifact.generator_version,
+        independence_status=artifact.independence_status,
+        production_acceptance_digest=artifact.production_acceptance_digest,
+    )
+    wire["artifact_digest"] = artifact.artifact_digest
+    return wire
+
+
+def calibration_artifact_from_json_value(
+    value: JsonValue,
+) -> CalibrationArtifactV1:
+    wire = _require_object(
+        value,
+        keys=_CALIBRATION_ARTIFACT_KEYS,
+        schema=_CALIBRATION_ARTIFACT_SCHEMA,
+    )
+    raw_results = wire["threshold_results"]
+    if type(raw_results) is not list:
+        raise InputBoundaryError("threshold_results must be an array")
+    threshold_results = tuple(
+        threshold_calibration_from_json_value(item) for item in raw_results
+    )
+    try:
+        statistical_status = CalibrationStatisticalStatus(
+            _required_str(wire, "statistical_status")
+        )
+    except ValueError as exc:
+        raise InputBoundaryError("unknown calibration statistical status") from exc
+    try:
+        deployment_status = CalibrationDeploymentStatus(
+            _required_str(wire, "deployment_status")
+        )
+    except ValueError as exc:
+        raise InputBoundaryError("unknown calibration deployment status") from exc
+    disabled_reasons = _disabled_reason_tuple(wire, "disabled_reasons")
+    try:
+        independence_status = LabelIndependenceStatus(
+            _required_str(wire, "independence_status")
+        )
+    except ValueError as exc:
+        raise InputBoundaryError("unknown label independence status") from exc
+
+    artifact = CalibrationArtifactV1._create(
+        spec_digest=_required_str(wire, "spec_digest"),
+        label_provenance_manifest_digest=_required_str(
+            wire,
+            "label_provenance_manifest_digest",
+        ),
+        example_set_digest=_required_str(wire, "example_set_digest"),
+        threshold_results=threshold_results,
+        chosen_threshold_q32=_optional_int(wire, "chosen_threshold_q32"),
+        statistical_status=statistical_status,
+        deployment_status=deployment_status,
+        disabled_reasons=disabled_reasons,
+        generator_version=_required_str(wire, "generator_version"),
+        independence_status=independence_status,
+        production_acceptance_digest=_optional_str(
+            wire,
+            "production_acceptance_digest",
+        ),
+        artifact_digest=_required_str(wire, "artifact_digest"),
+    )
+    if derive_calibration_artifact_digest(artifact) != artifact.artifact_digest:
+        raise InputBoundaryError("calibration artifact digest does not verify")
+    return artifact
+
+
+def encode_calibration_artifact(artifact: CalibrationArtifactV1) -> bytes:
+    if derive_calibration_artifact_digest(artifact) != artifact.artifact_digest:
+        raise InputBoundaryError("calibration artifact digest does not verify")
+    encoded = canonical_json_bytes(
+        cast(JsonValue, calibration_artifact_to_json_value(artifact))
+    )
+    if len(encoded) > _CALIBRATION_ARTIFACT_MAX_BYTES:
+        raise InputBoundaryError("calibration artifact exceeds 262144 bytes")
+    return encoded
+
+
+def decode_calibration_artifact(data: bytes) -> CalibrationArtifactV1:
+    value = _decode_canonical_json(
+        data,
+        max_bytes=_CALIBRATION_ARTIFACT_MAX_BYTES,
+    )
+    return calibration_artifact_from_json_value(value)
+
+
+def derive_calibration_artifact_digest(
+    artifact: CalibrationArtifactV1,
+) -> str:
+    if type(artifact) is not CalibrationArtifactV1:
+        raise InputBoundaryError("artifact must be CalibrationArtifactV1")
+    return _derive_artifact_fields_digest(
+        spec_digest=artifact.spec_digest,
+        label_provenance_manifest_digest=(
+            artifact.label_provenance_manifest_digest
+        ),
+        example_set_digest=artifact.example_set_digest,
+        threshold_results=artifact.threshold_results,
+        chosen_threshold_q32=artifact.chosen_threshold_q32,
+        statistical_status=artifact.statistical_status,
+        deployment_status=artifact.deployment_status,
+        disabled_reasons=artifact.disabled_reasons,
+        generator_version=artifact.generator_version,
+        independence_status=artifact.independence_status,
+        production_acceptance_digest=artifact.production_acceptance_digest,
+    )
+
+
+def _calibrate_threshold(
+    *,
+    threshold_q32: int,
+    examples: tuple[LabeledRecallExampleV1, ...],
+    spec: CalibrationSpecV1,
+) -> ThresholdCalibrationV1:
+    selected = tuple(
+        example
+        for example in examples
+        if example.eligible and example.score_q32 >= threshold_q32
+    )
+    selected_count = len(selected)
+    error_count = sum(1 for example in selected if example.error)
+    coverage_decimal = _coverage_decimal(selected_count, len(examples))
+    risk_upper_bound_decimal = clopper_pearson_upper_bound(
+        error_count=error_count,
+        selected_count=selected_count,
+        delta_decimal=spec.delta_decimal,
+        family_size=len(spec.threshold_grid_q32),
+    )
+    passed = (
+        selected_count >= spec.minimum_selected
+        and Decimal(coverage_decimal) >= Decimal(spec.minimum_coverage_decimal)
+        and Decimal(risk_upper_bound_decimal) <= Decimal(spec.alpha_decimal)
+    )
+    return ThresholdCalibrationV1(
+        threshold_q32=threshold_q32,
+        selected_count=selected_count,
+        error_count=error_count,
+        total_example_count=len(examples),
+        coverage_decimal=coverage_decimal,
+        risk_upper_bound_decimal=risk_upper_bound_decimal,
+        passed=passed,
+    )
+
+
+def _coverage_decimal(selected_count: int, total_count: int) -> str:
+    if total_count == 0 or selected_count == 0:
+        return "0"
+    units = (selected_count * _OUTPUT_SCALE) // total_count
+    return _canonical_output_probability(units)
+
+
+def _derive_example_set_digest(
+    examples: tuple[LabeledRecallExampleV1, ...],
+) -> str:
+    hasher = hashlib.sha256()
+    hasher.update(struct.pack(">Q", len(_CALIBRATION_EXAMPLE_SET_DOMAIN)))
+    hasher.update(_CALIBRATION_EXAMPLE_SET_DOMAIN)
+    hasher.update(struct.pack(">Q", len(examples)))
+    for example in examples:
+        encoded = encode_labeled_recall_example(example)
+        hasher.update(struct.pack(">Q", len(encoded)))
+        hasher.update(encoded)
+    return hasher.hexdigest()
+
+
+def _derive_artifact_fields_digest(
+    *,
+    spec_digest: str,
+    label_provenance_manifest_digest: str,
+    example_set_digest: str,
+    threshold_results: tuple[ThresholdCalibrationV1, ...],
+    chosen_threshold_q32: int | None,
+    statistical_status: CalibrationStatisticalStatus,
+    deployment_status: CalibrationDeploymentStatus,
+    disabled_reasons: tuple[CalibrationDisabledReason, ...],
+    generator_version: str,
+    independence_status: LabelIndependenceStatus,
+    production_acceptance_digest: str | None,
+) -> str:
+    body = _artifact_body_wire(
+        spec_digest=spec_digest,
+        label_provenance_manifest_digest=label_provenance_manifest_digest,
+        example_set_digest=example_set_digest,
+        threshold_results=threshold_results,
+        chosen_threshold_q32=chosen_threshold_q32,
+        statistical_status=statistical_status,
+        deployment_status=deployment_status,
+        disabled_reasons=disabled_reasons,
+        generator_version=generator_version,
+        independence_status=independence_status,
+        production_acceptance_digest=production_acceptance_digest,
+    )
+    return _domain_digest(
+        _CALIBRATION_ARTIFACT_DOMAIN,
+        canonical_json_bytes(cast(JsonValue, body)),
+    )
+
+
+def _artifact_body_wire(
+    *,
+    spec_digest: str,
+    label_provenance_manifest_digest: str,
+    example_set_digest: str,
+    threshold_results: tuple[ThresholdCalibrationV1, ...],
+    chosen_threshold_q32: int | None,
+    statistical_status: CalibrationStatisticalStatus,
+    deployment_status: CalibrationDeploymentStatus,
+    disabled_reasons: tuple[CalibrationDisabledReason, ...],
+    generator_version: str,
+    independence_status: LabelIndependenceStatus,
+    production_acceptance_digest: str | None,
+) -> _JsonObject:
+    return {
+        "schema": _CALIBRATION_ARTIFACT_SCHEMA,
+        "spec_digest": spec_digest,
+        "label_provenance_manifest_digest": label_provenance_manifest_digest,
+        "example_set_digest": example_set_digest,
+        "threshold_results": [
+            threshold_calibration_to_json_value(result)
+            for result in threshold_results
+        ],
+        "chosen_threshold_q32": chosen_threshold_q32,
+        "statistical_status": statistical_status.value,
+        "deployment_status": deployment_status.value,
+        "disabled_reasons": [reason.value for reason in disabled_reasons],
+        "generator_version": generator_version,
+        "independence_status": independence_status.value,
+        "production_acceptance_digest": production_acceptance_digest,
+    }
+
+
 def _decode_canonical_json(data: bytes, *, max_bytes: int) -> JsonValue:
     if type(data) is not bytes:
         raise InputBoundaryError("JSON input must be bytes")
@@ -902,6 +1510,13 @@ def _required_int(wire: _JsonObject, field_name: str) -> int:
     return value
 
 
+def _optional_int(wire: _JsonObject, field_name: str) -> int | None:
+    value = wire[field_name]
+    if value is not None and type(value) is not int:
+        raise InputBoundaryError(f"{field_name} must be an integer or null")
+    return cast(int | None, value)
+
+
 def _required_bool(wire: _JsonObject, field_name: str) -> bool:
     value = wire[field_name]
     if type(value) is not bool:
@@ -921,6 +1536,22 @@ def _integer_tuple(wire: _JsonObject, field_name: str) -> tuple[int, ...]:
     if type(value) is not list or any(type(item) is not int for item in value):
         raise InputBoundaryError(f"{field_name} must be an array of integers")
     return tuple(cast(list[int], value))
+
+
+def _disabled_reason_tuple(
+    wire: _JsonObject,
+    field_name: str,
+) -> tuple[CalibrationDisabledReason, ...]:
+    value = wire[field_name]
+    if type(value) is not list or any(type(item) is not str for item in value):
+        raise InputBoundaryError(f"{field_name} must be an array of strings")
+    reasons: list[CalibrationDisabledReason] = []
+    for item in cast(list[str], value):
+        try:
+            reasons.append(CalibrationDisabledReason(item))
+        except ValueError as exc:
+            raise InputBoundaryError("unknown calibration disabled reason") from exc
+    return tuple(reasons)
 
 
 def _require_ascii_token(
@@ -973,6 +1604,97 @@ def _require_threshold_grid(value: object) -> tuple[int, ...]:
     if any(left >= right for left, right in zip(value, value[1:])):
         raise InputBoundaryError("threshold_grid_q32 must be strictly increasing")
     return cast(tuple[int, ...], value)
+
+
+def _require_optional_q32(value: object, field_name: str) -> int | None:
+    if value is None:
+        return None
+    _require_int(value, field_name, 0, _Q32_ONE)
+    return cast(int, value)
+
+
+def _require_threshold_results(value: object) -> tuple[ThresholdCalibrationV1, ...]:
+    if (
+        type(value) is not tuple
+        or not 1 <= len(value) <= _MAX_THRESHOLD_FAMILY
+        or any(type(result) is not ThresholdCalibrationV1 for result in value)
+    ):
+        raise InputBoundaryError(
+            "threshold_results must contain 1 to 256 ThresholdCalibrationV1 values"
+        )
+    results = cast(tuple[ThresholdCalibrationV1, ...], value)
+    if any(
+        left.threshold_q32 >= right.threshold_q32
+        for left, right in zip(results, results[1:])
+    ):
+        raise InputBoundaryError(
+            "threshold_results must be strictly ordered by threshold"
+        )
+    totals = {result.total_example_count for result in results}
+    if len(totals) != 1:
+        raise InputBoundaryError(
+            "threshold_results must share one total example count"
+        )
+    return results
+
+
+def _require_disabled_reasons(
+    value: object,
+) -> tuple[CalibrationDisabledReason, ...]:
+    if type(value) is not tuple or any(
+        type(reason) is not CalibrationDisabledReason for reason in value
+    ):
+        raise InputBoundaryError(
+            "disabled_reasons must be a tuple of CalibrationDisabledReason"
+        )
+    reasons = cast(tuple[CalibrationDisabledReason, ...], value)
+    if tuple(sorted(reasons, key=lambda reason: reason.value)) != reasons:
+        raise InputBoundaryError("disabled_reasons must be sorted and unique")
+    if len(set(reasons)) != len(reasons):
+        raise InputBoundaryError("disabled_reasons must be sorted and unique")
+    return reasons
+
+
+def _validate_artifact_relations(
+    *,
+    threshold_results: tuple[ThresholdCalibrationV1, ...],
+    chosen_threshold_q32: int | None,
+    statistical_status: CalibrationStatisticalStatus,
+    deployment_status: CalibrationDeploymentStatus,
+    disabled_reasons: tuple[CalibrationDisabledReason, ...],
+    production_acceptance_digest: str | None,
+) -> None:
+    if statistical_status is CalibrationStatisticalStatus.STATISTICAL_PASS:
+        if disabled_reasons or chosen_threshold_q32 is None:
+            raise InputBoundaryError(
+                "statistical pass requires one chosen threshold and no disabled reasons"
+            )
+        if not any(
+            result.threshold_q32 == chosen_threshold_q32 and result.passed
+            for result in threshold_results
+        ):
+            raise InputBoundaryError(
+                "chosen threshold must identify a passing threshold result"
+            )
+    elif chosen_threshold_q32 is not None or not disabled_reasons:
+        raise InputBoundaryError(
+            "disabled artifact requires reasons and no chosen threshold"
+        )
+
+    if deployment_status is CalibrationDeploymentStatus.TEST_ONLY:
+        if production_acceptance_digest is not None:
+            raise InputBoundaryError(
+                "test-only artifact cannot contain production acceptance"
+            )
+    else:
+        if statistical_status is not CalibrationStatisticalStatus.STATISTICAL_PASS:
+            raise InputBoundaryError(
+                "production artifact requires statistical pass"
+            )
+        if production_acceptance_digest is None:
+            raise InputBoundaryError(
+                "production artifact requires an acceptance evidence digest"
+            )
 
 
 def _require_sorted_event_ids(value: object, field_name: str) -> tuple[str, ...]:

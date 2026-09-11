@@ -2004,3 +2004,91 @@ session can map each decision to the exact diff.
   boundary, Python 3.10 compatibility, public exports, and the forbidden-ledger
   dependency edge. Task 2.5-A2 is CLEAN and ready for checkpoint; no artifact,
   profile activation, recall authority, or production risk claim exists yet.
+- Checkpoint commit `de4d74a` (`Add immutable calibration schemas`) records the
+  CLEAN Task 2.5-A2 records/codecs. Task 2.5-B now begins with per-threshold
+  counts, conservative coverage/risk gates, deterministic artifact selection,
+  explicit disabled reasons, and self-verifying artifact encoding. The Task 2
+  builder will be hard-wired to `TEST_ONLY`; production acceptance remains
+  impossible in this slice.
+- Task 2.5-B's artifact RED now binds per-grid selected/error counts, conservative
+  coverage, maximum-coverage/higher-threshold selection, permutation-stable
+  example/artifact digests, strict artifact round trips, digest-tamper rejection,
+  and explicit reasons for zero data, overlap, label leakage, dataset/example or
+  digest mismatch, insufficient selection, and no passing threshold. It also
+  blocks any Task 2 production-promotion API and requires the artifact surface
+  to be explicit in `aluclu.cognition.__all__`. Production types are absent, so
+  collection should fail at the new contract before any old test runs.
+- The B RED reproduces identically on both runtimes at collection because
+  `CalibrationArtifactV1` does not exist in the CLEAN A2 checkpoint. The minimal
+  GREEN now adds immutable threshold/artifact records, a pure builder that
+  canonicalizes example order, evaluates every frozen threshold with A1's
+  Bonferroni-corrected bound, selects by coverage then higher threshold, retains
+  explicit semantic failure reasons, and emits only `TEST_ONLY`. Artifact bytes
+  include a self-verifying domain-separated digest; no activation authority or
+  recollection dependency is introduced.
+- The first B GREEN runtime pass reaches 110/111 cases: every builder, disabled
+  reason, selection, permutation, count, and digest-tamper oracle passes; only
+  the deliberately absent package export fails at `CalibrationArtifactV1`.
+  Artifact and nested-threshold JSON conversion/codec functions are now added to
+  the explicit cognition API as well, and the full file must rerun on both
+  runtimes before static validation.
+- With explicit artifact exports, the full A1/A2/B calibration file is GREEN at
+  111/111 on both CPython 3.12 and 3.13. This is runtime evidence only; the new
+  artifact implementation and export list now enter Ruff, compile, diff, and
+  pinned Pyright gates before any review or checkpoint.
+- The first B static pass reports Pyright 0/0/0 and clean compile/diff behavior.
+  Ruff finds only deterministic import/`__all__` ordering plus one test-only
+  unused type import; its exact reorder/removal is applied without changing any
+  artifact field, decision, digest, or API membership. Runtime and static gates
+  must rerun after the mechanical repair.
+- Post-repair B evidence is clean: 111/111 tests pass independently on CPython
+  3.12 and 3.13; Ruff and compileall pass; diff-check exits zero apart from the
+  Windows line-ending notice; and pinned Pyright 1.1.413 reports 0/0/0. The
+  exact artifact/authority boundary and threshold-selection math now enter two
+  independent reviews while the broader Task 2 compatibility package runs.
+- The post-repair broader Task 2 compatibility gate completes at 226/226 on
+  each of CPython 3.12 and 3.13 with exit code zero. It covers recall features,
+  recollection, sensorium, the fast scale reference, and all 111 calibration
+  cases; only the already-completed one-hour 8,192-observation fixture is
+  excluded. This establishes no regression across the current Task 2 surface,
+  but Task 2.5-B remains uncommitted until both independent reviews are clean.
+- Independent B reviews do not yet accept the checkpoint. The statistical
+  review finds the implementation equations correct but identifies four
+  surviving test mutants: builder-level Bonferroni wiring, eligibility
+  exclusion, observed-error counting, and conservative non-terminating Q24
+  coverage rounding are not bound by adversarial artifact fixtures. The
+  code/authority review additionally demonstrates that a self-consistent
+  `DISABLED + PRODUCTION_ACCEPTED` wire can currently decode when supplied an
+  arbitrary acceptance digest. Five regression oracles are added before the
+  narrowest GREEN repair: bind the four already-correct statistical paths and
+  reject production deployment status unless the artifact is a clean
+  statistical pass with a chosen passing threshold and no disabled reasons.
+- The five new adversarial cases run first on CPython 3.12: all four statistical
+  wiring oracles pass unchanged, while the crafted, freshly re-digested
+  `DISABLED + PRODUCTION_ACCEPTED` artifact is accepted and produces the sole
+  expected RED. This reproduces the authority review's HIGH finding without a
+  stale-digest shortcut. The minimal GREEN is confined to the artifact relation
+  validator; no builder threshold, count, bound, selection, or digest algorithm
+  changes.
+- The minimal relation repair turns all five review regressions GREEN on both
+  CPython 3.12 and 3.13. A disabled artifact can no longer carry production
+  deployment status even when an attacker recomputes its public self-integrity
+  digest; production acceptance still grants no runtime authority in Task 2,
+  and the later activation boundary must require separately trusted exact
+  evidence. The full calibration and static gates now rerun before re-review.
+- Post-review-repair validation is locally clean: the expanded calibration file
+  passes 116/116 on both CPython 3.12 and 3.13; Ruff and compileall pass;
+  diff-check exits zero apart from the Windows line-ending notices; and pinned
+  Pyright 1.1.413 reports 0 errors, 0 warnings, 0 informations. The reviewers
+  now re-evaluate the exact regression/validator delta; B remains uncommitted
+  until both replace their prior REQUEST CHANGES verdicts with approval.
+- Both independent re-reviews now return APPROVE with zero remaining findings.
+  The statistical reviewer confirms that all four new builder oracles kill the
+  exact Bonferroni, eligibility, error-count, and coverage-rounding mutants. The
+  code/authority reviewer independently recomputes the crafted artifact digest
+  and confirms decode now rejects the prior HIGH case with `production artifact
+  requires statistical pass`. The expanded broader Task 2 compatibility gate
+  also passes 231/231 on each of CPython 3.12 and 3.13. Task 2.5-B is CLEAN for
+  deterministic `TEST_ONLY` artifact construction; activation, process-local
+  tightening, recollection `ProfileUnavailable`, and Task 12 acceptance remain
+  explicitly outside this checkpoint.

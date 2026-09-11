@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import struct
 from collections.abc import Callable
 from dataclasses import FrozenInstanceError, fields, is_dataclass, replace
 from decimal import Decimal, localcontext
@@ -11,21 +13,29 @@ import aluclu.cognition as cognition_api
 import aluclu.cognition.calibration as calibration_module
 from aluclu.cognition import InputBoundaryError
 from aluclu.cognition.calibration import (
+    CalibrationArtifactV1,
+    CalibrationDeploymentStatus,
+    CalibrationDisabledReason,
     CalibrationPurpose,
     CalibrationSpecV1,
+    CalibrationStatisticalStatus,
     LabeledRecallExampleV1,
     LabelIndependenceStatus,
     LabelProvenanceManifestV1,
     ThresholdSelectionRule,
+    build_calibration_artifact,
     calibration_spec_from_json_value,
     calibration_spec_to_json_value,
     clopper_pearson_upper_bound,
+    decode_calibration_artifact,
     decode_calibration_spec,
     decode_label_provenance_manifest,
     decode_labeled_recall_example,
+    derive_calibration_artifact_digest,
     derive_calibration_spec_digest,
     derive_label_provenance_manifest_digest,
     derive_labeled_recall_example_digest,
+    encode_calibration_artifact,
     encode_calibration_spec,
     encode_label_provenance_manifest,
     encode_labeled_recall_example,
@@ -349,6 +359,62 @@ def _labeled_example(
         target_observation_id="obs:gold-1",
         predicted_observation_id=None,
     )
+
+
+def _example_for(
+    *,
+    example_id: str,
+    score_q32: int,
+    target_observation_id: str,
+    predicted_observation_id: str | None,
+    spec: CalibrationSpecV1,
+    manifest: LabelProvenanceManifestV1,
+    eligible: bool = True,
+) -> LabeledRecallExampleV1:
+    return labeled_recall_example(
+        example_id=example_id,
+        calibration_spec_digest=derive_calibration_spec_digest(spec),
+        label_provenance_manifest_digest=(
+            derive_label_provenance_manifest_digest(manifest)
+        ),
+        score_q32=score_q32,
+        eligible=eligible,
+        target_observation_id=target_observation_id,
+        predicted_observation_id=predicted_observation_id,
+    )
+
+
+def _passing_artifact_inputs() -> tuple[
+    CalibrationSpecV1,
+    LabelProvenanceManifestV1,
+    tuple[LabeledRecallExampleV1, ...],
+]:
+    manifest = _label_manifest()
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="1",
+        minimum_selected=1,
+        minimum_coverage_decimal="0",
+    )
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+    return spec, manifest, examples
 
 
 @pytest.mark.parametrize(
@@ -731,3 +797,425 @@ def test_calibration_decoders_reject_bool_integer_fields() -> None:
     example_wire["score_q32"] = True
     with pytest.raises(InputBoundaryError):
         decode_labeled_recall_example(canonical_json_bytes(example_wire))
+
+
+def test_calibration_builder_selects_maximum_coverage_then_higher_threshold() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.statistical_status is CalibrationStatisticalStatus.STATISTICAL_PASS
+    assert artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY
+    assert artifact.independence_status is LabelIndependenceStatus.ASSERTED_NOT_PROVEN
+    assert artifact.chosen_threshold_q32 == 2**31
+    assert artifact.disabled_reasons == ()
+    assert artifact.production_acceptance_digest is None
+    assert tuple(result.threshold_q32 for result in artifact.threshold_results) == (
+        0,
+        2**31,
+        2**32,
+    )
+    assert tuple(result.selected_count for result in artifact.threshold_results) == (
+        2,
+        2,
+        1,
+    )
+    assert tuple(result.error_count for result in artifact.threshold_results) == (
+        0,
+        0,
+        0,
+    )
+    assert tuple(result.coverage_decimal for result in artifact.threshold_results) == (
+        "1",
+        "1",
+        "0.5",
+    )
+    assert all(result.passed for result in artifact.threshold_results)
+
+
+def test_calibration_builder_is_deterministic_under_example_permutation() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    forward = build_calibration_artifact(spec, manifest, examples)
+    reversed_artifact = build_calibration_artifact(
+        spec,
+        manifest,
+        tuple(reversed(examples)),
+    )
+
+    assert reversed_artifact == forward
+    assert reversed_artifact.artifact_digest == forward.artifact_digest
+    assert reversed_artifact.example_set_digest == forward.example_set_digest
+
+
+def test_calibration_artifact_round_trips_and_verifies_its_digest() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    encoded = encode_calibration_artifact(artifact)
+
+    assert decode_calibration_artifact(encoded) == artifact
+    assert derive_calibration_artifact_digest(artifact) == artifact.artifact_digest
+    assert not hasattr(artifact, "__dict__")
+    with pytest.raises(TypeError):
+        CalibrationArtifactV1()
+
+    wire = strict_json_loads(encoded)
+    assert type(wire) is dict
+    wire["chosen_threshold_q32"] = 0
+    with pytest.raises(InputBoundaryError):
+        decode_calibration_artifact(canonical_json_bytes(wire))
+
+
+@pytest.mark.parametrize(
+    "expected_reason",
+    (
+        CalibrationDisabledReason.ZERO_EXAMPLES,
+        CalibrationDisabledReason.FIT_CALIBRATION_OVERLAP,
+        CalibrationDisabledReason.LABEL_MANIFEST_LEAKAGE,
+        CalibrationDisabledReason.DATASET_MANIFEST_MISMATCH,
+        CalibrationDisabledReason.EXAMPLE_SET_MISMATCH,
+        CalibrationDisabledReason.SPEC_DIGEST_MISMATCH,
+        CalibrationDisabledReason.LABEL_MANIFEST_DIGEST_MISMATCH,
+        CalibrationDisabledReason.INSUFFICIENT_SELECTED,
+        CalibrationDisabledReason.NO_PASSING_THRESHOLD,
+    ),
+)
+def test_calibration_builder_emits_explicit_disabled_reasons(
+    expected_reason: CalibrationDisabledReason,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    if expected_reason is CalibrationDisabledReason.ZERO_EXAMPLES:
+        manifest = _label_manifest(calibration_example_ids=())
+        spec = _calibration_spec(manifest)
+        examples = ()
+    elif expected_reason is CalibrationDisabledReason.FIT_CALIBRATION_OVERLAP:
+        manifest = _label_manifest(
+            fit_example_ids=("example:calibration-1",),
+        )
+        spec = replace(
+            _calibration_spec(manifest),
+            alpha_decimal="1",
+            minimum_selected=1,
+            minimum_coverage_decimal="0",
+        )
+        examples = tuple(
+            _example_for(
+                example_id=example_id,
+                score_q32=2**32,
+                target_observation_id=f"obs:gold-{index}",
+                predicted_observation_id=f"obs:gold-{index}",
+                spec=spec,
+                manifest=manifest,
+            )
+            for index, example_id in enumerate(
+                manifest.calibration_example_ids,
+                start=1,
+            )
+        )
+    elif expected_reason is CalibrationDisabledReason.LABEL_MANIFEST_LEAKAGE:
+        manifest = replace(
+            manifest,
+            scorer_input_manifest_digest=manifest.gold_label_manifest_digest,
+        )
+        spec = replace(
+            spec,
+            label_provenance_manifest_digest=(
+                derive_label_provenance_manifest_digest(manifest)
+            ),
+        )
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+    elif expected_reason is CalibrationDisabledReason.DATASET_MANIFEST_MISMATCH:
+        spec = replace(spec, dataset_manifest_digest="e" * 64)
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+    elif expected_reason is CalibrationDisabledReason.EXAMPLE_SET_MISMATCH:
+        examples = examples[:1]
+    elif expected_reason is CalibrationDisabledReason.SPEC_DIGEST_MISMATCH:
+        spec = replace(spec, threshold_grid_q32=(0, 2**30, 2**32))
+    elif expected_reason is CalibrationDisabledReason.LABEL_MANIFEST_DIGEST_MISMATCH:
+        manifest = replace(manifest, issuer_id="issuer:changed")
+    elif expected_reason is CalibrationDisabledReason.INSUFFICIENT_SELECTED:
+        spec = replace(spec, minimum_selected=3)
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+    elif expected_reason is CalibrationDisabledReason.NO_PASSING_THRESHOLD:
+        spec = replace(spec, alpha_decimal="0")
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+    assert artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY
+    assert artifact.chosen_threshold_q32 is None
+    assert expected_reason in artifact.disabled_reasons
+    assert tuple(reason.value for reason in artifact.disabled_reasons) == tuple(
+        sorted(reason.value for reason in artifact.disabled_reasons)
+    )
+
+
+def test_task2_builder_cannot_mint_production_acceptance() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY
+    assert artifact.production_acceptance_digest is None
+    assert not hasattr(calibration_module, "promote_calibration_artifact")
+
+
+def test_artifact_surface_is_exported_from_cognition_package() -> None:
+    expected_names = (
+        "CalibrationArtifactV1",
+        "CalibrationDeploymentStatus",
+        "CalibrationDisabledReason",
+        "CalibrationStatisticalStatus",
+        "ThresholdCalibrationV1",
+        "build_calibration_artifact",
+        "calibration_artifact_from_json_value",
+        "calibration_artifact_to_json_value",
+        "decode_calibration_artifact",
+        "derive_calibration_artifact_digest",
+        "encode_calibration_artifact",
+        "threshold_calibration_from_json_value",
+        "threshold_calibration_to_json_value",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__
+
+
+def test_builder_binds_bonferroni_family_to_full_threshold_grid() -> None:
+    manifest = _label_manifest()
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="0.8",
+        minimum_selected=2,
+        minimum_coverage_decimal="0",
+    )
+    examples = tuple(
+        _example_for(
+            example_id=example_id,
+            score_q32=2**32,
+            target_observation_id=f"obs:gold-{index}",
+            predicted_observation_id=f"obs:gold-{index}",
+            spec=spec,
+            manifest=manifest,
+        )
+        for index, example_id in enumerate(
+            manifest.calibration_example_ids,
+            start=1,
+        )
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+    assert artifact.chosen_threshold_q32 is None
+    assert tuple(
+        result.risk_upper_bound_decimal for result in artifact.threshold_results
+    ) == (
+        "0.870900555126419437160692",
+        "0.870900555126419437160692",
+        "0.870900555126419437160692",
+    )
+    assert not any(result.passed for result in artifact.threshold_results)
+    assert CalibrationDisabledReason.NO_PASSING_THRESHOLD in artifact.disabled_reasons
+
+
+def test_builder_excludes_ineligible_examples_from_counts_and_errors() -> None:
+    manifest = _label_manifest(
+        calibration_example_ids=(
+            "example:calibration-1",
+            "example:calibration-2",
+            "example:calibration-3",
+        )
+    )
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="1",
+        minimum_selected=1,
+        minimum_coverage_decimal="0",
+    )
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-3",
+            score_q32=2**32,
+            target_observation_id="obs:gold-3",
+            predicted_observation_id="obs:wrong-3",
+            spec=spec,
+            manifest=manifest,
+            eligible=False,
+        ),
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    lowest_threshold = artifact.threshold_results[0]
+
+    assert lowest_threshold.selected_count == 2
+    assert lowest_threshold.error_count == 0
+    assert lowest_threshold.coverage_decimal == "0.666666666666666666666666"
+
+
+def test_builder_counts_selected_errors_and_binds_their_risk_bound() -> None:
+    manifest = _label_manifest()
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="0.99",
+        minimum_selected=2,
+        minimum_coverage_decimal="0",
+    )
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**32,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:wrong-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert tuple(
+        (result.selected_count, result.error_count)
+        for result in artifact.threshold_results
+    ) == ((2, 1), (2, 1), (2, 1))
+    assert tuple(
+        result.risk_upper_bound_decimal for result in artifact.threshold_results
+    ) == (
+        "0.991631652042901126219544",
+        "0.991631652042901126219544",
+        "0.991631652042901126219544",
+    )
+    assert not any(result.passed for result in artifact.threshold_results)
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+
+
+def test_builder_floors_nonterminating_coverage_before_the_gate() -> None:
+    manifest = _label_manifest(
+        calibration_example_ids=(
+            "example:calibration-1",
+            "example:calibration-2",
+            "example:calibration-3",
+        )
+    )
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="1",
+        minimum_selected=1,
+        minimum_coverage_decimal="0.333333333333333333333334",
+    )
+    examples = tuple(
+        _example_for(
+            example_id=example_id,
+            score_q32=2**32 if index == 1 else 0,
+            target_observation_id=f"obs:gold-{index}",
+            predicted_observation_id=f"obs:gold-{index}",
+            spec=spec,
+            manifest=manifest,
+        )
+        for index, example_id in enumerate(
+            manifest.calibration_example_ids,
+            start=1,
+        )
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    partial_results = artifact.threshold_results[1:]
+
+    assert tuple(result.selected_count for result in partial_results) == (1, 1)
+    assert tuple(result.coverage_decimal for result in partial_results) == (
+        "0.333333333333333333333333",
+        "0.333333333333333333333333",
+    )
+    assert not any(result.passed for result in partial_results)
+
+
+def test_disabled_artifact_cannot_claim_production_acceptance() -> None:
+    manifest = _label_manifest(calibration_example_ids=())
+    spec = _calibration_spec(manifest)
+    artifact = build_calibration_artifact(spec, manifest, ())
+    wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(wire) is dict
+    wire["deployment_status"] = "production_accepted"
+    wire["production_acceptance_digest"] = "f" * 64
+    artifact_body = dict(wire)
+    artifact_body.pop("artifact_digest")
+    domain = b"aluclu.task2.calibration-artifact.v1"
+    body_bytes = canonical_json_bytes(cast(Any, artifact_body))
+    framed = (
+        struct.pack(">Q", len(domain))
+        + domain
+        + struct.pack(">Q", len(body_bytes))
+        + body_bytes
+    )
+    wire["artifact_digest"] = hashlib.sha256(framed).hexdigest()
+
+    with pytest.raises(InputBoundaryError, match="statistical pass"):
+        decode_calibration_artifact(canonical_json_bytes(wire))
