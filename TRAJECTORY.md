@@ -1660,3 +1660,123 @@ session can map each decision to the exact diff.
   for an exact-scope checkpoint. This does not close Task 2.4: dedicated
   structural memory accounting, independent exhaustive-reference coverage, and
   2,048/8,192 scale evidence remain the next sub-slice.
+- Checkpoint commit `05427f9` (`Add bounded approximate text recollection`)
+  records the reviewed text-query/streaming-ranking correctness core. Task 2.4
+  scale work begins from that clean boundary. The next RED must prove bounded
+  continuation state without raw vectors, exact work growth at 2,048 versus
+  8,192 live observations, one-shot/paged result identity, and production-backed
+  cursor scanning while retaining raw timing/memory evidence. The existing
+  8,192 sensorium scale fixture is being mapped first so authenticity is not
+  weakened merely to shorten the run.
+- The first delegated read-only scale-fixture mapping attempt could not start
+  because that agent lane had reached its account usage window; this is recorded
+  as orchestration infrastructure, not as a code or test failure. Work continues
+  locally from the verified checkpoint, while the already available independent
+  reviewer lane has been asked to challenge the scale oracle without editing or
+  launching the long-running fixture.
+- The Task 2.4 scale RED design is frozen before implementation: extend the one
+  production-backed 8,192-observation fixture rather than duplicate its costly
+  ingestion; take a real exhaustive recall measurement at 2,048, then measure
+  one-shot and four 2,048-record continuation pages at 8,192. Blocking oracles
+  cover exact 4x scan/score work, one-shot/paged result identity, top-k and
+  two-digest continuation bounds, absence of raw vectors, a fixed authenticated
+  continuation-payload ceiling, and fixed traced-memory ceilings. Raw elapsed
+  time and traced peaks remain evidence rather than a flaky wall-clock ratio.
+  A separate small production-ledger fixture will compare streaming selection
+  with an independently written exhaustive exact-cross-product sorter.
+- The scale RED is now implemented in `test_cognition_task2_scale.py`. The
+  bounded reference fixture independently reimplements positive-cosine
+  cross-product ordering and the deterministic tie breakers active under its
+  default filters, then requires a
+  production one-shot scan and four streaming pages to select the same top-k.
+  The 8,192 fixture now captures a completed 2,048-record snapshot measurement,
+  continues ingestion to 8,192, compares one-shot with four-page recall, checks
+  the exact work ratio, and inspects every non-final continuation for top-k,
+  two-distinct-digest, raw-vector-absence, authenticated-state-size, and traced
+  memory bounds. Pytest properties retain all raw elapsed/peak measurements.
+  No production code changed in this RED step; static collection and execution
+  have not yet been claimed.
+- First static collection succeeds on both installed CPython 3.12 and 3.13 and
+  compileall/diff-check are clean. Ruff correctly rejected only import grouping:
+  `Callable` must come from `collections.abc`, and the two first-party
+  `aluclu.cognition` import forms must share one group. The imports are repaired
+  without changing either oracle; the static gate will be rerun rather than
+  treating the mechanical fix as presumed clean.
+- The first bounded reference execution is RED on both runtimes for a fixture
+  defect, not production ranking: the attempted `index % 4` timestamp variety
+  makes the fifth causal ingest older than the fourth, so the sensorium correctly
+  returns `TIME_REVERSED_INVALID`. The reference fixture now uses strictly
+  monotonic nanoseconds; exact-cosine ordering remains independently computed,
+  while dedicated correctness tests continue to own isolated tie-break vectors.
+  Ruff is already clean after the import repair. The bare global `pyright`
+  command is absent from PATH, so the previously pinned invocation must be
+  recovered before the type gate is claimed.
+- The corrected independent exhaustive-reference oracle is GREEN on both
+  CPython 3.12 and 3.13. The reviewer independently agrees with the production-
+  backed 2,048/8,192 design and warns against hard wall-clock ratios on this
+  Windows/SQLite/OneDrive host. Its strongest raw-vector recommendation is now
+  incorporated: every retained continuation candidate must expose the compact
+  `feature_digest`, no dataclass field name may contain `vector` or `bins`, and
+  the authenticated payload separately rejects vector/bin keys. The scale query
+  deliberately keeps a zero score floor so all 32 top-k slots are stressed;
+  result-type assertions permit explicit conflict at 2,048, while the exact
+  8,192 text supplies a unique top candidate for final identity comparison.
+- Pinned Pyright 1.1.413 then found one honest test-contract omission: the new
+  reference fixture passed the bootstrap union directly to ingestion without
+  proving its empty-ledger result is `SensoriumStateV1`. Runtime execution had
+  taken that branch on both interpreters, but the test now binds it explicitly
+  with the same type assertion as the production scale fixture; no cast or type
+  suppression is used. Ruff, compileall, and diff-check remain clean; Pyright
+  must be rerun after this invariant repair.
+- The invariant repair is clean: the independent reference fixture passes again
+  on CPython 3.12 and 3.13, Ruff passes, and pinned Pyright 1.1.413 reports 0
+  errors, 0 warnings, and 0 informations. Plan reinspection confirms that
+  512-byte-class payloads, the 2,048/4,096/8,192 RSS delta, restarted-result
+  digest, direct-read p95, and blocking wall-clock ratio belong to the later
+  Task 2.7 full scale/restart gate. Task 2.4's binding RED remains the narrower
+  production-backed 2,048-versus-8,192 bounded-candidate and approximately
+  linear-work proof. The existing expensive fixture is therefore not silently
+  expanded into Task 2.7; its Task 2.4 long run is ready on the current host.
+- The frozen production-backed 8,192 scale candidate passes on CPython 3.13.5:
+  1/1 in 3,668.71 seconds. Its blocking assertions prove an exact 2,048-to-8,192
+  4x increase in both records scanned and candidates scored, identical 8,192
+  one-shot/four-page results, exactly three non-final continuations, and all
+  structural/traced-memory ceilings. Raw evidence records 119.061 seconds and
+  460,134 traced bytes at 2,048; 464.904 seconds and 8,130,012 traced bytes for
+  the 8,192 one-shot; 476.082 seconds and 8,174,819 traced bytes for the paged
+  8,192 scan; and authenticated continuation sizes of 19,556, 19,559, and
+  19,562 bytes. The one-shot wall time scales by approximately 3.904x for 4x
+  work; that is retained evidence, not a new hard ratio gate.
+- Pytest emitted one metadata-only warning because `record_property` is not
+  xUnit2-compatible, although the completed XML did retain every property.
+  The evidence hook is narrowed to pytest's suite-level
+  `record_testsuite_property`, which is xUnit2-compatible and does not alter any
+  scale assertion or measured code path. The reviewer's only LOW is also closed
+  by describing the independent sorter as covering tie breakers active under
+  default filters, rather than claiming its no-preference fixture exercises the
+  separate temporal-preference branch. Fresh fast/static gates and re-review
+  remain required after these non-behavioral repairs.
+- Post-repair fast/static evidence is clean: the independent exhaustive fixture
+  passes on CPython 3.12 and 3.13; Ruff passes on both; compileall and diff-check
+  pass; pinned Pyright 1.1.413 reports 0 errors, 0 warnings, and 0 informations.
+  Direct inspection of the installed pytest fixture confirms
+  `record_testsuite_property` is explicitly xUnit2-compatible and converts each
+  `(name, value)` pair into suite-level XML metadata when JUnit output is active.
+- The first parallel compatibility invocation outlived its 30-second capture,
+  and the controller accidentally omitted the returned session IDs while
+  formatting its partial output. Both processes completed, but their final exit
+  output was therefore unavailable and is not counted as evidence. The exact
+  same frozen package was rerun with retained session IDs: 115/115 tests pass on
+  both CPython 3.12 and 3.13 (57 recall-feature, 42 recollection, 15 sensorium,
+  and one non-8,192 scale reference test). Both retained executions exited zero.
+  Final independent zero-finding re-review is now the remaining checkpoint gate.
+- Final independent re-review returns APPROVE / CLEAR with zero unresolved
+  findings. It confirms the prior temporal-preference wording LOW is closed,
+  the suite-property change is metadata-only and xUnit2-compatible, every
+  blocking scale assertion still precedes evidence recording, and both the
+  2,048 snapshot plus 8,192 one-shot/four-page paths use real encrypted-ledger
+  ingestion and public recall/resume. Reviewer static evidence independently
+  reports Ruff clean, Pyright 1.1.413 at 0/0/0, and diff-check clean apart from
+  expected LF-to-CRLF notices. Task 2.4's dedicated scale/reference sub-slice is
+  CLEAN and ready for a checkpoint commit; broader Task 2.7 RSS/restart/p95 and
+  portability evidence remains explicitly open.
