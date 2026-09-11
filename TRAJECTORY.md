@@ -1924,3 +1924,83 @@ session can map each decision to the exact diff.
   4.75 to 2.18 seconds. Task 2.5-A1's pure conservative numerical kernel is
   ready for its checkpoint; calibration records/artifact authority are still
   deliberately absent and begin in A2.
+- Checkpoint commit `ffaa47f` (`Add conservative calibration risk bounds`)
+  records the CLEAN Task 2.5-A1 kernel. Task 2.5-A2 now begins with immutable
+  calibration spec, label-provenance, and derived-label example schemas plus
+  strict canonical codecs/digests. Artifact selection and runtime recall
+  authority remain later sub-slices; this schema step cannot enable production.
+- Task 2.5-A2's first RED defines three narrow immutable records and their
+  domain-separated canonical codecs: label provenance, calibration spec, and a
+  labeled example whose `error` bit is derived only from target/prediction IDs.
+  The spec binds the exact label-provenance manifest digest so a threshold-grid
+  mutation after labels are frozen changes the spec digest. Structural tuple
+  errors fail at construction, while empty calibration sets and cross-set
+  fit/calibration overlap remain representable evidence so the later builder can
+  emit the plan-required explicit `DISABLED` artifact rather than losing the
+  reason in a constructor exception. No artifact or recall code is touched.
+- The A2 RED reproduces identically on CPython 3.12 and 3.13 at collection:
+  `CalibrationPurpose` and the new schema surface do not yet exist in the
+  committed A1 module. This is the intended missing-contract failure; the 40
+  numerical tests were clean immediately before the schema RED and no unrelated
+  runtime failure is being masked.
+- Independent A2 architecture ruling confirms the frozen schema boundary: the
+  spec binds both a distinct scorer ID and the label-provenance manifest digest,
+  but no invented wall-clock validity fields; a labeled example does not repeat
+  the stratum because its spec digest already binds the sole declared stratum.
+  The RED is aligned to that minimal non-cyclic contract before GREEN. Because
+  Task 1 canonical JSON is capped at 2 MiB, the implementation will also enforce
+  a combined manifest-ID count that guarantees every constructible V1 manifest
+  can actually round-trip through the required Task 1 codec.
+- The minimal A2 schema GREEN passes 76/76 tests on each of CPython 3.12 and
+  3.13. This proves current runtime construction, derived-error enforcement,
+  strict object decoding, canonical round trips, frozen/slotted shape, digest
+  stability, and structural/semantic boundary separation. Static typing/style,
+  public package exports, deeper malformed-wire cases, and independent review
+  remain open; this is not yet a CLEAN checkpoint.
+- The first A2 static pass is behaviorally clean: compileall/diff-check pass and
+  pinned Pyright 1.1.413 reports 0/0/0. Ruff requests only three deterministic
+  import-order/source fixes (Enum ordering, `Callable` from `collections.abc`,
+  and one merged calibration import); they are applied without changing the
+  schema or wire behavior, and all gates must rerun.
+- Before calling the schema public, a package-surface RED requires every A2 type
+  and codec/digest function to be deliberately re-exported through
+  `aluclu.cognition.__all__`. A separate binding oracle proves any post-label
+  threshold-grid mutation changes the spec digest while the frozen example
+  retains the original digest. Only the export oracle is expected to fail now.
+- The package-surface RED fails at the first absent name,
+  `CalibrationPurpose`, exactly as intended. The complete A1/A2 public surface
+  is now explicitly imported and listed in `aluclu.cognition.__all__`; no
+  wildcard or dynamic export is introduced. The focused export test and full
+  schema file must rerun before the API is considered GREEN.
+- After explicit exports, the complete calibration file passes 78/78 on both
+  installed runtimes. The grid-mutation binding and package-surface oracles are
+  GREEN alongside all A1 math and A2 codec cases. Static gates and additional
+  boundary review remain open.
+- The post-export static pass keeps compileall/diff-check clean and Pyright at
+  0/0/0. Ruff's only finding is deterministic ordering in the expanded
+  `__all__`; the exact suggested ordering is applied with no API membership or
+  runtime change. All fast gates will be repeated after this mechanical repair.
+- Pre-review adversarial coverage now binds strict enum identity, bool-versus-int
+  boundaries, wrong schema/key sets, invalid observation/digest IDs, forged
+  eligibility/error inputs, optional evidence limits, and the manifest's exact
+  4,096 combined-ID round-trip ceiling. That V1 ceiling is intentionally below
+  the pure A1 aggregate-count limit: it guarantees every constructible manifest,
+  even with maximum 256-byte IDs, remains encodable by Task 1's mandatory 2 MiB
+  canonical JSON boundary. These tests must pass on both runtimes before review.
+- The expanded A1+A2 calibration file passes 97/97 tests on both CPython 3.12
+  and 3.13, including the 4,096-ID boundary round trip and all new malformed
+  cases. Static checks are now rerun across the implementation, package export,
+  and tests before independent review.
+- Final local/static A2 evidence is clean: Ruff and compileall pass,
+  diff-check exits zero apart from Windows line-ending notices, and pinned
+  Pyright 1.1.413 reports 0 errors, 0 warnings, 0 informations. The broader
+  Task 2 compatibility package then passes 212/212 on each of CPython 3.12 and
+  3.13 (57 recall-feature, 42 recollection, 15 sensorium, one fast scale
+  reference, and 97 calibration tests); only the already-completed one-hour
+  8,192 scale fixture is excluded. Independent A2 review remains open.
+- Independent A2 review returns APPROVE with zero findings. It confirms strict
+  canonical decoding, non-cyclic domain-separated bindings, derived-label
+  construction, evidence-preserving semantic failures, the 4,096-ID payload
+  boundary, Python 3.10 compatibility, public exports, and the forbidden-ledger
+  dependency edge. Task 2.5-A2 is CLEAN and ready for checkpoint; no artifact,
+  profile activation, recall authority, or production risk claim exists yet.
