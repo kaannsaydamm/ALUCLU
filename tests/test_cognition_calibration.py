@@ -5,6 +5,7 @@ import struct
 from collections.abc import Callable
 from dataclasses import FrozenInstanceError, fields, is_dataclass, replace
 from decimal import Decimal, localcontext
+from inspect import signature
 from typing import Any, cast
 
 import pytest
@@ -13,16 +14,24 @@ import aluclu.cognition as cognition_api
 import aluclu.cognition.calibration as calibration_module
 from aluclu.cognition import InputBoundaryError
 from aluclu.cognition.calibration import (
+    ActiveCalibrationProfileV1,
+    CalibrationActivationScope,
     CalibrationArtifactV1,
+    CalibrationCompatibilityRequirementsV1,
     CalibrationDeploymentStatus,
     CalibrationDisabledReason,
+    CalibrationProfileUnavailableReason,
+    CalibrationProfileUnavailableV1,
+    CalibrationProfileV1,
     CalibrationPurpose,
     CalibrationSpecV1,
     CalibrationStatisticalStatus,
+    ExplicitCalibrationTestHarnessV1,
     LabeledRecallExampleV1,
     LabelIndependenceStatus,
     LabelProvenanceManifestV1,
     ThresholdSelectionRule,
+    activate_calibration_profile,
     build_calibration_artifact,
     calibration_spec_from_json_value,
     calibration_spec_to_json_value,
@@ -39,6 +48,7 @@ from aluclu.cognition.calibration import (
     encode_calibration_spec,
     encode_label_provenance_manifest,
     encode_labeled_recall_example,
+    explicit_calibration_test_harness,
     label_provenance_manifest_from_json_value,
     label_provenance_manifest_to_json_value,
     labeled_recall_example,
@@ -415,6 +425,35 @@ def _passing_artifact_inputs() -> tuple[
         ),
     )
     return spec, manifest, examples
+
+
+def _compatibility_requirements(
+    spec: CalibrationSpecV1,
+) -> CalibrationCompatibilityRequirementsV1:
+    return CalibrationCompatibilityRequirementsV1(
+        purpose=spec.purpose,
+        query_stratum_id=spec.query_stratum_id,
+        scorer_id=spec.scorer_id,
+        normalizer_id=spec.normalizer_id,
+        feature_spec_id=spec.feature_spec_id,
+        boundary_schema_id=spec.boundary_schema_id,
+        dataset_manifest_digest=spec.dataset_manifest_digest,
+    )
+
+
+def _redigested_artifact(wire: dict[str, Any]) -> CalibrationArtifactV1:
+    artifact_body = dict(wire)
+    artifact_body.pop("artifact_digest")
+    domain = b"aluclu.task2.calibration-artifact.v1"
+    body_bytes = canonical_json_bytes(cast(Any, artifact_body))
+    framed = (
+        struct.pack(">Q", len(domain))
+        + domain
+        + struct.pack(">Q", len(body_bytes))
+        + body_bytes
+    )
+    wire["artifact_digest"] = hashlib.sha256(framed).hexdigest()
+    return decode_calibration_artifact(canonical_json_bytes(cast(Any, wire)))
 
 
 @pytest.mark.parametrize(
@@ -1219,3 +1258,550 @@ def test_disabled_artifact_cannot_claim_production_acceptance() -> None:
 
     with pytest.raises(InputBoundaryError, match="statistical pass"):
         decode_calibration_artifact(canonical_json_bytes(wire))
+
+
+def test_calibration_activation_requires_explicit_test_harness_authority() -> None:
+    spec, _manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, _manifest, examples)
+    profile = CalibrationProfileV1(spec=spec, artifact=artifact)
+    requirements = _compatibility_requirements(spec)
+
+    unavailable = activate_calibration_profile(profile, requirements)
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.TEST_ONLY_REQUIRES_EXPLICIT_HARNESS
+    )
+
+    harness = explicit_calibration_test_harness()
+    active = activate_calibration_profile(
+        profile,
+        requirements,
+        test_harness=harness,
+    )
+
+    assert type(active) is ActiveCalibrationProfileV1
+    assert active.activation_scope is CalibrationActivationScope.TEST_HARNESS
+    assert active.spec_digest == derive_calibration_spec_digest(spec)
+    assert active.artifact_digest == artifact.artifact_digest
+    assert active.minimum_score_q32 == artifact.chosen_threshold_q32
+    assert active.minimum_margin_q32 == spec.minimum_margin_q32
+    profile_body = canonical_json_bytes(
+        cast(
+            Any,
+            {
+                "activation_scope": "test_harness",
+                "artifact_digest": artifact.artifact_digest,
+                "spec_digest": derive_calibration_spec_digest(spec),
+            },
+        )
+    )
+    profile_domain = b"aluclu.task2.calibration-profile.v1"
+    profile_frame = (
+        struct.pack(">Q", len(profile_domain))
+        + profile_domain
+        + struct.pack(">Q", len(profile_body))
+        + profile_body
+    )
+    assert active.profile_digest == hashlib.sha256(profile_frame).hexdigest()
+    assert not hasattr(active, "__dict__")
+    assert not hasattr(harness, "__dict__")
+    with pytest.raises(TypeError):
+        ActiveCalibrationProfileV1()
+    with pytest.raises(TypeError):
+        ExplicitCalibrationTestHarnessV1()
+
+
+def test_missing_test_authority_precedes_expensive_semantic_replay() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    rows[0]["risk_upper_bound_decimal"] = "0"
+    semantically_forged = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=semantically_forged),
+        _compatibility_requirements(spec),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.TEST_ONLY_REQUIRES_EXPLICIT_HARNESS
+    )
+
+
+def test_calibration_activation_rejects_test_harness_lookalike() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    profile = CalibrationProfileV1(
+        spec=spec,
+        artifact=build_calibration_artifact(spec, manifest, examples),
+    )
+    lookalike = {"_authenticator": b"not-a-capability"}
+
+    with pytest.raises(InputBoundaryError, match="test harness"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=cast(Any, lookalike),
+        )
+
+    harness = explicit_calibration_test_harness()
+    forged = cast(Any, object.__new__(ExplicitCalibrationTestHarnessV1))
+    object.__setattr__(
+        forged,
+        "_authenticator",
+        cast(Any, harness)._authenticator,
+    )
+    with pytest.raises(InputBoundaryError, match="test harness"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=forged,
+        )
+
+    damaged = explicit_calibration_test_harness()
+    object.__delattr__(damaged, "_authenticator")
+    with pytest.raises(InputBoundaryError, match="test harness"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=damaged,
+        )
+
+
+def test_active_profile_rejects_tampering_and_exact_type_clone() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    calibration_module._validate_active_calibration_profile(active)
+
+    clone = object.__new__(ActiveCalibrationProfileV1)
+    for field in fields(active):
+        object.__setattr__(clone, field.name, getattr(active, field.name))
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        calibration_module._validate_active_calibration_profile(clone)
+
+    object.__setattr__(
+        active,
+        "minimum_score_q32",
+        active.minimum_score_q32 - 1,
+    )
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        calibration_module._validate_active_calibration_profile(active)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    (
+        ("activation_scope", "test_harness"),
+        ("artifact_digest", "not-a-digest"),
+        ("minimum_score_q32", "not-an-int"),
+        ("_authenticator", "not-bytes"),
+    ),
+)
+def test_active_profile_normalizes_malformed_fields(
+    field_name: str,
+    invalid_value: object,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    object.__setattr__(active, field_name, invalid_value)
+
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        calibration_module._validate_active_calibration_profile(active)
+
+
+def test_activation_normalizes_malformed_profile_inputs() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    profile = CalibrationProfileV1(spec=spec, artifact=artifact)
+    object.__setattr__(artifact, "deployment_status", "test_only")
+
+    with pytest.raises(InputBoundaryError, match="calibration artifact is invalid"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=explicit_calibration_test_harness(),
+        )
+
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    profile = CalibrationProfileV1(spec=spec, artifact=artifact)
+    requirements = _compatibility_requirements(spec)
+    object.__setattr__(spec, "purpose", "personal_memory_text")
+
+    with pytest.raises(InputBoundaryError, match="calibration spec is invalid"):
+        activate_calibration_profile(
+            profile,
+            requirements,
+            test_harness=explicit_calibration_test_harness(),
+        )
+
+
+def test_calibration_activation_reports_spec_and_manifest_binding_mismatches() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    different_spec = replace(
+        spec,
+        query_stratum_id="personal-memory.other.v1",
+    )
+
+    spec_mismatch = activate_calibration_profile(
+        CalibrationProfileV1(spec=different_spec, artifact=artifact),
+        _compatibility_requirements(different_spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(spec_mismatch) is CalibrationProfileUnavailableV1
+    assert (
+        spec_mismatch.reason
+        is CalibrationProfileUnavailableReason.SPEC_DIGEST_MISMATCH
+    )
+
+    changed_manifest_spec = replace(
+        spec,
+        label_provenance_manifest_digest="d" * 64,
+    )
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    wire["spec_digest"] = derive_calibration_spec_digest(changed_manifest_spec)
+    rebound_artifact = _redigested_artifact(wire)
+
+    manifest_mismatch = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=changed_manifest_spec,
+            artifact=rebound_artifact,
+        ),
+        _compatibility_requirements(changed_manifest_spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(manifest_mismatch) is CalibrationProfileUnavailableV1
+    assert (
+        manifest_mismatch.reason
+        is CalibrationProfileUnavailableReason.LABEL_MANIFEST_DIGEST_MISMATCH
+    )
+
+
+def test_activation_recomputes_risk_after_valid_redigest() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    rows[0]["risk_upper_bound_decimal"] = "0"
+    redigested = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=redigested),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH
+    )
+
+
+def test_calibration_activation_has_no_raw_production_authority_input() -> None:
+    assert (
+        "trusted_production_acceptance_digest"
+        not in signature(activate_calibration_profile).parameters
+    )
+
+
+def test_calibration_activation_reports_missing_and_disabled_profiles() -> None:
+    spec, _manifest, _examples = _passing_artifact_inputs()
+    requirements = _compatibility_requirements(spec)
+
+    missing = activate_calibration_profile(None, requirements)
+
+    assert type(missing) is CalibrationProfileUnavailableV1
+    assert missing.reason is CalibrationProfileUnavailableReason.MISSING
+    assert missing.spec_digest is None
+    assert missing.artifact_digest is None
+
+    empty_manifest = _label_manifest(calibration_example_ids=())
+    disabled_spec = _calibration_spec(empty_manifest)
+    disabled_artifact = build_calibration_artifact(
+        disabled_spec,
+        empty_manifest,
+        (),
+    )
+    disabled = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=disabled_spec,
+            artifact=disabled_artifact,
+        ),
+        _compatibility_requirements(disabled_spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(disabled) is CalibrationProfileUnavailableV1
+    assert (
+        disabled.reason
+        is CalibrationProfileUnavailableReason.STATISTICALLY_DISABLED
+    )
+
+
+@pytest.mark.parametrize(
+    "expected_reason",
+    (
+        CalibrationProfileUnavailableReason.QUERY_STRATUM_MISMATCH,
+        CalibrationProfileUnavailableReason.SCORER_MISMATCH,
+        CalibrationProfileUnavailableReason.NORMALIZER_MISMATCH,
+        CalibrationProfileUnavailableReason.FEATURE_SPEC_MISMATCH,
+        CalibrationProfileUnavailableReason.BOUNDARY_SCHEMA_MISMATCH,
+        CalibrationProfileUnavailableReason.DATASET_MANIFEST_MISMATCH,
+    ),
+)
+def test_calibration_activation_reports_exact_runtime_mismatch(
+    expected_reason: CalibrationProfileUnavailableReason,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    profile = CalibrationProfileV1(
+        spec=spec,
+        artifact=build_calibration_artifact(spec, manifest, examples),
+    )
+    requirements = _compatibility_requirements(spec)
+    if (
+        expected_reason
+        is CalibrationProfileUnavailableReason.QUERY_STRATUM_MISMATCH
+    ):
+        requirements = replace(requirements, query_stratum_id="personal-memory.tr.v1")
+    elif expected_reason is CalibrationProfileUnavailableReason.SCORER_MISMATCH:
+        requirements = replace(requirements, scorer_id="aluclu.similarity.other.v1")
+    elif expected_reason is CalibrationProfileUnavailableReason.NORMALIZER_MISMATCH:
+        requirements = replace(requirements, normalizer_id="normalizer.other.v1")
+    elif expected_reason is CalibrationProfileUnavailableReason.FEATURE_SPEC_MISMATCH:
+        requirements = replace(requirements, feature_spec_id="feature.other.v1")
+    elif (
+        expected_reason
+        is CalibrationProfileUnavailableReason.BOUNDARY_SCHEMA_MISMATCH
+    ):
+        requirements = replace(requirements, boundary_schema_id="boundary.other.v1")
+    elif (
+        expected_reason
+        is CalibrationProfileUnavailableReason.DATASET_MANIFEST_MISMATCH
+    ):
+        requirements = replace(requirements, dataset_manifest_digest="e" * 64)
+
+    unavailable = activate_calibration_profile(
+        profile,
+        requirements,
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert unavailable.reason is expected_reason
+
+
+@pytest.mark.parametrize(
+    "expected_reason",
+    (
+        CalibrationProfileUnavailableReason.ARTIFACT_GRID_MISMATCH,
+        CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH,
+        CalibrationProfileUnavailableReason.ARTIFACT_SELECTION_MISMATCH,
+    ),
+)
+def test_activation_recomputes_artifact_semantics_after_valid_redigest(
+    expected_reason: CalibrationProfileUnavailableReason,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    if expected_reason is CalibrationProfileUnavailableReason.ARTIFACT_GRID_MISMATCH:
+        rows[1]["threshold_q32"] = 2**30
+        wire["chosen_threshold_q32"] = 2**30
+    elif expected_reason is CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH:
+        rows[0]["passed"] = False
+    else:
+        wire["chosen_threshold_q32"] = 0
+    redigested = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=redigested),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert unavailable.reason is expected_reason
+
+
+@pytest.mark.parametrize(
+    "failed_gate",
+    ("minimum_selected", "minimum_coverage", "maximum_risk"),
+)
+def test_activation_rejects_redigested_false_positive_gate(
+    failed_gate: str,
+) -> None:
+    if failed_gate == "minimum_coverage":
+        manifest = _label_manifest()
+        spec = replace(
+            _calibration_spec(manifest),
+            threshold_grid_q32=(2**31,),
+            minimum_selected=1,
+            minimum_coverage_decimal="0.75",
+            alpha_decimal="1",
+        )
+        examples = (
+            _example_for(
+                example_id="example:calibration-1",
+                score_q32=2**32,
+                target_observation_id="obs:gold-1",
+                predicted_observation_id="obs:gold-1",
+                spec=spec,
+                manifest=manifest,
+            ),
+            _example_for(
+                example_id="example:calibration-2",
+                score_q32=0,
+                target_observation_id="obs:gold-2",
+                predicted_observation_id="obs:gold-2",
+                spec=spec,
+                manifest=manifest,
+            ),
+        )
+    else:
+        manifest = _label_manifest(
+            calibration_example_ids=("example:calibration-1",),
+        )
+        spec = replace(
+            _calibration_spec(manifest),
+            threshold_grid_q32=(0,),
+            minimum_selected=2 if failed_gate == "minimum_selected" else 1,
+            minimum_coverage_decimal="0",
+            alpha_decimal="1" if failed_gate == "minimum_selected" else "0.1",
+        )
+        examples = (
+            _example_for(
+                example_id="example:calibration-1",
+                score_q32=2**32,
+                target_observation_id="obs:gold-1",
+                predicted_observation_id="obs:gold-1",
+                spec=spec,
+                manifest=manifest,
+            ),
+        )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    rows[0]["passed"] = True
+    wire["statistical_status"] = "statistical_pass"
+    wire["chosen_threshold_q32"] = spec.threshold_grid_q32[0]
+    wire["disabled_reasons"] = []
+    forged = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=forged),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH
+    )
+
+
+@pytest.mark.parametrize("mutation", ("reverse", "duplicate"))
+def test_disabled_reason_order_and_uniqueness_are_wire_invariants(
+    mutation: str,
+) -> None:
+    manifest = _label_manifest(calibration_example_ids=())
+    spec = _calibration_spec(manifest)
+    artifact = build_calibration_artifact(spec, manifest, ())
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    reasons = wire["disabled_reasons"]
+    assert type(reasons) is list
+    assert len(reasons) >= 3
+    if mutation == "reverse":
+        wire["disabled_reasons"] = list(reversed(reasons))
+    else:
+        wire["disabled_reasons"] = sorted([*reasons, reasons[0]])
+
+    with pytest.raises(InputBoundaryError, match="sorted and unique"):
+        _redigested_artifact(wire)
+
+
+def test_production_activation_requires_future_trusted_capability() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    acceptance_digest = "e" * 64
+    wire["deployment_status"] = "production_accepted"
+    wire["production_acceptance_digest"] = acceptance_digest
+    production_artifact = _redigested_artifact(wire)
+    profile = CalibrationProfileV1(spec=spec, artifact=production_artifact)
+    requirements = _compatibility_requirements(spec)
+
+    for test_harness in (None, explicit_calibration_test_harness()):
+        unavailable = activate_calibration_profile(
+            profile,
+            requirements,
+            test_harness=test_harness,
+        )
+        assert type(unavailable) is CalibrationProfileUnavailableV1
+        assert (
+            unavailable.reason
+            is CalibrationProfileUnavailableReason.PRODUCTION_ACCEPTANCE_UNTRUSTED
+        )
+
+
+def test_calibration_activation_surface_is_explicitly_exported() -> None:
+    expected_names = (
+        "ActiveCalibrationProfileV1",
+        "CalibrationActivationScope",
+        "CalibrationCompatibilityRequirementsV1",
+        "CalibrationProfileUnavailableReason",
+        "CalibrationProfileUnavailableV1",
+        "CalibrationProfileV1",
+        "ExplicitCalibrationTestHarnessV1",
+        "activate_calibration_profile",
+        "explicit_calibration_test_harness",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__

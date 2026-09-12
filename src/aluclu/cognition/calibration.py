@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import math
 import re
+import secrets
 import struct
+import weakref
 from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import (
@@ -35,6 +38,9 @@ _LABEL_PROVENANCE_MANIFEST_DOMAIN = (
 _LABELED_RECALL_EXAMPLE_DOMAIN = b"aluclu.task2.labeled-recall-example.v1"
 _CALIBRATION_EXAMPLE_SET_DOMAIN = b"aluclu.task2.calibration-example-set.v1"
 _CALIBRATION_ARTIFACT_DOMAIN = b"aluclu.task2.calibration-artifact.v1"
+_CALIBRATION_PROFILE_DOMAIN = b"aluclu.task2.calibration-profile.v1"
+_TEST_HARNESS_AUTH_DOMAIN = b"aluclu.task2.calibration-test-harness.v1"
+_ACTIVE_PROFILE_AUTH_DOMAIN = b"aluclu.task2.active-calibration-profile.v1"
 _CALIBRATION_SPEC_MAX_BYTES = 32_768
 _LABEL_PROVENANCE_MANIFEST_MAX_BYTES = 2_097_152
 _LABELED_RECALL_EXAMPLE_MAX_BYTES = 4_096
@@ -161,6 +167,32 @@ class CalibrationDisabledReason(str, Enum):
     NO_PASSING_THRESHOLD = "no_passing_threshold"
     SPEC_DIGEST_MISMATCH = "spec_digest_mismatch"
     ZERO_EXAMPLES = "zero_examples"
+
+
+class CalibrationActivationScope(str, Enum):
+    PRODUCTION = "production"
+    TEST_HARNESS = "test_harness"
+
+
+class CalibrationProfileUnavailableReason(str, Enum):
+    ARTIFACT_GATE_MISMATCH = "artifact_gate_mismatch"
+    ARTIFACT_GRID_MISMATCH = "artifact_grid_mismatch"
+    ARTIFACT_SELECTION_MISMATCH = "artifact_selection_mismatch"
+    BOUNDARY_SCHEMA_MISMATCH = "boundary_schema_mismatch"
+    DATASET_MANIFEST_MISMATCH = "dataset_manifest_mismatch"
+    FEATURE_SPEC_MISMATCH = "feature_spec_mismatch"
+    LABEL_MANIFEST_DIGEST_MISMATCH = "label_manifest_digest_mismatch"
+    MISSING = "missing"
+    NORMALIZER_MISMATCH = "normalizer_mismatch"
+    PRODUCTION_ACCEPTANCE_UNTRUSTED = "production_acceptance_untrusted"
+    PURPOSE_MISMATCH = "purpose_mismatch"
+    QUERY_STRATUM_MISMATCH = "query_stratum_mismatch"
+    SCORER_MISMATCH = "scorer_mismatch"
+    SPEC_DIGEST_MISMATCH = "spec_digest_mismatch"
+    STATISTICALLY_DISABLED = "statistically_disabled"
+    TEST_ONLY_REQUIRES_EXPLICIT_HARNESS = (
+        "test_only_requires_explicit_harness"
+    )
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -493,6 +525,179 @@ class CalibrationArtifactV1:
         ):
             object.__setattr__(instance, field_name, value)
         return instance
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class CalibrationProfileV1:
+    spec: CalibrationSpecV1
+    artifact: CalibrationArtifactV1
+
+    def __post_init__(self) -> None:
+        if type(self.spec) is not CalibrationSpecV1:
+            raise InputBoundaryError("spec must be CalibrationSpecV1")
+        if type(self.artifact) is not CalibrationArtifactV1:
+            raise InputBoundaryError("artifact must be CalibrationArtifactV1")
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class CalibrationCompatibilityRequirementsV1:
+    purpose: CalibrationPurpose
+    query_stratum_id: str
+    scorer_id: str
+    normalizer_id: str
+    feature_spec_id: str
+    boundary_schema_id: str
+    dataset_manifest_digest: str
+
+    def __post_init__(self) -> None:
+        if type(self.purpose) is not CalibrationPurpose:
+            raise InputBoundaryError("purpose must be a CalibrationPurpose")
+        _require_ascii_token(
+            self.query_stratum_id,
+            pattern=_STRATUM_ID_PATTERN,
+            field_name="query_stratum_id",
+        )
+        for field_name, value in (
+            ("scorer_id", self.scorer_id),
+            ("normalizer_id", self.normalizer_id),
+            ("feature_spec_id", self.feature_spec_id),
+            ("boundary_schema_id", self.boundary_schema_id),
+        ):
+            _require_ascii_token(
+                value,
+                pattern=_VERSION_ID_PATTERN,
+                field_name=field_name,
+            )
+        _require_digest(self.dataset_manifest_digest, "dataset_manifest_digest")
+
+
+@dataclass(frozen=True, init=False)
+class ExplicitCalibrationTestHarnessV1:
+    __slots__ = ("_authenticator", "__weakref__")
+
+    _authenticator: bytes
+
+    def __new__(cls) -> ExplicitCalibrationTestHarnessV1:
+        raise TypeError("use explicit_calibration_test_harness")
+
+    @classmethod
+    def _create(cls, *, authenticator: bytes) -> ExplicitCalibrationTestHarnessV1:
+        instance = object.__new__(cls)
+        object.__setattr__(instance, "_authenticator", authenticator)
+        return instance
+
+
+@dataclass(frozen=True, init=False)
+class ActiveCalibrationProfileV1:
+    __slots__ = (
+        "profile_digest",
+        "spec_digest",
+        "artifact_digest",
+        "purpose",
+        "query_stratum_id",
+        "scorer_id",
+        "normalizer_id",
+        "feature_spec_id",
+        "boundary_schema_id",
+        "dataset_manifest_digest",
+        "minimum_score_q32",
+        "minimum_margin_q32",
+        "deployment_status",
+        "activation_scope",
+        "production_acceptance_digest",
+        "_authenticator",
+        "__weakref__",
+    )
+
+    profile_digest: str
+    spec_digest: str
+    artifact_digest: str
+    purpose: CalibrationPurpose
+    query_stratum_id: str
+    scorer_id: str
+    normalizer_id: str
+    feature_spec_id: str
+    boundary_schema_id: str
+    dataset_manifest_digest: str
+    minimum_score_q32: int
+    minimum_margin_q32: int
+    deployment_status: CalibrationDeploymentStatus
+    activation_scope: CalibrationActivationScope
+    production_acceptance_digest: str | None
+    _authenticator: bytes
+
+    def __new__(cls) -> ActiveCalibrationProfileV1:
+        raise TypeError("use activate_calibration_profile")
+
+    @classmethod
+    def _create(
+        cls,
+        *,
+        profile_digest: str,
+        spec_digest: str,
+        artifact_digest: str,
+        purpose: CalibrationPurpose,
+        query_stratum_id: str,
+        scorer_id: str,
+        normalizer_id: str,
+        feature_spec_id: str,
+        boundary_schema_id: str,
+        dataset_manifest_digest: str,
+        minimum_score_q32: int,
+        minimum_margin_q32: int,
+        deployment_status: CalibrationDeploymentStatus,
+        activation_scope: CalibrationActivationScope,
+        production_acceptance_digest: str | None,
+        authenticator: bytes,
+    ) -> ActiveCalibrationProfileV1:
+        instance = object.__new__(cls)
+        for field_name, value in (
+            ("profile_digest", profile_digest),
+            ("spec_digest", spec_digest),
+            ("artifact_digest", artifact_digest),
+            ("purpose", purpose),
+            ("query_stratum_id", query_stratum_id),
+            ("scorer_id", scorer_id),
+            ("normalizer_id", normalizer_id),
+            ("feature_spec_id", feature_spec_id),
+            ("boundary_schema_id", boundary_schema_id),
+            ("dataset_manifest_digest", dataset_manifest_digest),
+            ("minimum_score_q32", minimum_score_q32),
+            ("minimum_margin_q32", minimum_margin_q32),
+            ("deployment_status", deployment_status),
+            ("activation_scope", activation_scope),
+            ("production_acceptance_digest", production_acceptance_digest),
+            ("_authenticator", authenticator),
+        ):
+            object.__setattr__(instance, field_name, value)
+        return instance
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class CalibrationProfileUnavailableV1:
+    reason: CalibrationProfileUnavailableReason
+    spec_digest: str | None
+    artifact_digest: str | None
+
+    def __post_init__(self) -> None:
+        if type(self.reason) is not CalibrationProfileUnavailableReason:
+            raise InputBoundaryError(
+                "reason must be a CalibrationProfileUnavailableReason"
+            )
+        if self.spec_digest is not None:
+            _require_digest(self.spec_digest, "spec_digest")
+        if self.artifact_digest is not None:
+            _require_digest(self.artifact_digest, "artifact_digest")
+
+
+_TEST_HARNESS_SECRET = secrets.token_bytes(32)
+_ACTIVE_PROFILE_SECRET = secrets.token_bytes(32)
+_LIVE_TEST_HARNESSES: weakref.WeakValueDictionary[
+    int, ExplicitCalibrationTestHarnessV1
+] = weakref.WeakValueDictionary()
+_LIVE_ACTIVE_PROFILES: weakref.WeakValueDictionary[
+    int, ActiveCalibrationProfileV1
+] = weakref.WeakValueDictionary()
 
 
 _CANONICAL_OPEN_PROBABILITY = re.compile(r"0\.(?:[0-9]*[1-9])\Z")
@@ -1336,6 +1541,521 @@ def derive_calibration_artifact_digest(
         generator_version=artifact.generator_version,
         independence_status=artifact.independence_status,
         production_acceptance_digest=artifact.production_acceptance_digest,
+    )
+
+
+def explicit_calibration_test_harness() -> ExplicitCalibrationTestHarnessV1:
+    authenticator = hmac.digest(
+        _TEST_HARNESS_SECRET,
+        _TEST_HARNESS_AUTH_DOMAIN,
+        "sha256",
+    )
+    harness = ExplicitCalibrationTestHarnessV1._create(
+        authenticator=authenticator,
+    )
+    _LIVE_TEST_HARNESSES[id(harness)] = harness
+    return harness
+
+
+def activate_calibration_profile(
+    profile: CalibrationProfileV1 | None,
+    requirements: CalibrationCompatibilityRequirementsV1,
+    *,
+    test_harness: ExplicitCalibrationTestHarnessV1 | None = None,
+) -> ActiveCalibrationProfileV1 | CalibrationProfileUnavailableV1:
+    _validate_compatibility_requirements_instance(requirements)
+    if test_harness is not None:
+        _validate_test_harness(test_harness)
+    if profile is None:
+        return CalibrationProfileUnavailableV1(
+            reason=CalibrationProfileUnavailableReason.MISSING,
+            spec_digest=None,
+            artifact_digest=None,
+        )
+    _validate_profile_instance(profile)
+
+    spec = profile.spec
+    artifact = profile.artifact
+    _validate_spec_instance(spec)
+    _validate_artifact_instance(artifact)
+    spec_digest = derive_calibration_spec_digest(spec)
+    if artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY:
+        if test_harness is None:
+            return _profile_unavailable(
+                CalibrationProfileUnavailableReason.TEST_ONLY_REQUIRES_EXPLICIT_HARNESS,
+                spec_digest=spec_digest,
+                artifact=artifact,
+            )
+    else:
+        return _profile_unavailable(
+            CalibrationProfileUnavailableReason.PRODUCTION_ACCEPTANCE_UNTRUSTED,
+            spec_digest=spec_digest,
+            artifact=artifact,
+        )
+
+    unavailable = _profile_semantic_unavailability(
+        spec=spec,
+        artifact=artifact,
+        spec_digest=spec_digest,
+    )
+    if unavailable is not None:
+        return unavailable
+    if artifact.statistical_status is CalibrationStatisticalStatus.DISABLED:
+        return _profile_unavailable(
+            CalibrationProfileUnavailableReason.STATISTICALLY_DISABLED,
+            spec_digest=spec_digest,
+            artifact=artifact,
+        )
+
+    compatibility_reason = _compatibility_unavailability(spec, requirements)
+    if compatibility_reason is not None:
+        return _profile_unavailable(
+            compatibility_reason,
+            spec_digest=spec_digest,
+            artifact=artifact,
+        )
+
+    activation_scope = CalibrationActivationScope.TEST_HARNESS
+
+    chosen_threshold = artifact.chosen_threshold_q32
+    if chosen_threshold is None:
+        raise InputBoundaryError(
+            "statistically enabled artifact has no chosen threshold"
+        )
+    profile_digest = _derive_profile_digest(
+        activation_scope=activation_scope,
+        artifact_digest=artifact.artifact_digest,
+        spec_digest=spec_digest,
+    )
+    fields = _active_profile_authentication_fields(
+        profile_digest=profile_digest,
+        spec_digest=spec_digest,
+        artifact_digest=artifact.artifact_digest,
+        purpose=spec.purpose,
+        query_stratum_id=spec.query_stratum_id,
+        scorer_id=spec.scorer_id,
+        normalizer_id=spec.normalizer_id,
+        feature_spec_id=spec.feature_spec_id,
+        boundary_schema_id=spec.boundary_schema_id,
+        dataset_manifest_digest=spec.dataset_manifest_digest,
+        minimum_score_q32=chosen_threshold,
+        minimum_margin_q32=spec.minimum_margin_q32,
+        deployment_status=artifact.deployment_status,
+        activation_scope=activation_scope,
+        production_acceptance_digest=artifact.production_acceptance_digest,
+    )
+    authenticator = _authenticate_active_profile_fields(fields)
+    active = ActiveCalibrationProfileV1._create(
+        profile_digest=profile_digest,
+        spec_digest=spec_digest,
+        artifact_digest=artifact.artifact_digest,
+        purpose=spec.purpose,
+        query_stratum_id=spec.query_stratum_id,
+        scorer_id=spec.scorer_id,
+        normalizer_id=spec.normalizer_id,
+        feature_spec_id=spec.feature_spec_id,
+        boundary_schema_id=spec.boundary_schema_id,
+        dataset_manifest_digest=spec.dataset_manifest_digest,
+        minimum_score_q32=chosen_threshold,
+        minimum_margin_q32=spec.minimum_margin_q32,
+        deployment_status=artifact.deployment_status,
+        activation_scope=activation_scope,
+        production_acceptance_digest=artifact.production_acceptance_digest,
+        authenticator=authenticator,
+    )
+    _LIVE_ACTIVE_PROFILES[id(active)] = active
+    return active
+
+
+def _validate_test_harness(harness: object) -> None:
+    if type(harness) is not ExplicitCalibrationTestHarnessV1:
+        raise InputBoundaryError("test harness capability is invalid")
+    typed = cast(ExplicitCalibrationTestHarnessV1, harness)
+    if _LIVE_TEST_HARNESSES.get(id(typed)) is not typed:
+        raise InputBoundaryError("test harness capability is invalid")
+    expected = hmac.digest(
+        _TEST_HARNESS_SECRET,
+        _TEST_HARNESS_AUTH_DOMAIN,
+        "sha256",
+    )
+    try:
+        authenticator = typed._authenticator
+    except AttributeError as exc:
+        raise InputBoundaryError("test harness capability is invalid") from exc
+    if type(authenticator) is not bytes or not hmac.compare_digest(
+        authenticator,
+        expected,
+    ):
+        raise InputBoundaryError("test harness capability is invalid")
+
+
+def _validate_active_calibration_profile(profile: object) -> None:
+    if type(profile) is not ActiveCalibrationProfileV1:
+        raise InputBoundaryError("active calibration profile is invalid")
+    typed = cast(ActiveCalibrationProfileV1, profile)
+    if _LIVE_ACTIVE_PROFILES.get(id(typed)) is not typed:
+        raise InputBoundaryError("active calibration profile is invalid")
+    try:
+        _validate_active_profile_fields(typed)
+        expected_profile_digest = _derive_profile_digest(
+            activation_scope=typed.activation_scope,
+            artifact_digest=typed.artifact_digest,
+            spec_digest=typed.spec_digest,
+        )
+        fields = _active_profile_authentication_fields(
+            profile_digest=typed.profile_digest,
+            spec_digest=typed.spec_digest,
+            artifact_digest=typed.artifact_digest,
+            purpose=typed.purpose,
+            query_stratum_id=typed.query_stratum_id,
+            scorer_id=typed.scorer_id,
+            normalizer_id=typed.normalizer_id,
+            feature_spec_id=typed.feature_spec_id,
+            boundary_schema_id=typed.boundary_schema_id,
+            dataset_manifest_digest=typed.dataset_manifest_digest,
+            minimum_score_q32=typed.minimum_score_q32,
+            minimum_margin_q32=typed.minimum_margin_q32,
+            deployment_status=typed.deployment_status,
+            activation_scope=typed.activation_scope,
+            production_acceptance_digest=typed.production_acceptance_digest,
+        )
+        expected = _authenticate_active_profile_fields(fields)
+        authenticator = typed._authenticator
+    except (AttributeError, InputBoundaryError, TypeError, ValueError) as exc:
+        raise InputBoundaryError("active calibration profile is invalid") from exc
+    if (
+        typed.profile_digest != expected_profile_digest
+        or not hmac.compare_digest(authenticator, expected)
+    ):
+        raise InputBoundaryError("active calibration profile is invalid")
+
+
+def _validate_active_profile_fields(profile: ActiveCalibrationProfileV1) -> None:
+    for field_name, value in (
+        ("profile_digest", profile.profile_digest),
+        ("spec_digest", profile.spec_digest),
+        ("artifact_digest", profile.artifact_digest),
+        ("dataset_manifest_digest", profile.dataset_manifest_digest),
+    ):
+        _require_digest(value, field_name)
+    if type(profile.purpose) is not CalibrationPurpose:
+        raise InputBoundaryError("purpose must be a CalibrationPurpose")
+    for field_name, value, pattern in (
+        ("query_stratum_id", profile.query_stratum_id, _STRATUM_ID_PATTERN),
+        ("scorer_id", profile.scorer_id, _VERSION_ID_PATTERN),
+        ("normalizer_id", profile.normalizer_id, _VERSION_ID_PATTERN),
+        ("feature_spec_id", profile.feature_spec_id, _VERSION_ID_PATTERN),
+        ("boundary_schema_id", profile.boundary_schema_id, _VERSION_ID_PATTERN),
+    ):
+        _require_ascii_token(value, pattern=pattern, field_name=field_name)
+    _require_int(profile.minimum_score_q32, "minimum_score_q32", 0, _Q32_ONE)
+    _require_int(profile.minimum_margin_q32, "minimum_margin_q32", 0, _Q32_ONE)
+    if type(profile.deployment_status) is not CalibrationDeploymentStatus:
+        raise InputBoundaryError(
+            "deployment_status must be a CalibrationDeploymentStatus"
+        )
+    if type(profile.activation_scope) is not CalibrationActivationScope:
+        raise InputBoundaryError(
+            "activation_scope must be a CalibrationActivationScope"
+        )
+    if profile.production_acceptance_digest is not None:
+        _require_digest(
+            profile.production_acceptance_digest,
+            "production_acceptance_digest",
+        )
+    if (
+        profile.activation_scope is CalibrationActivationScope.TEST_HARNESS
+        and (
+            profile.deployment_status is not CalibrationDeploymentStatus.TEST_ONLY
+            or profile.production_acceptance_digest is not None
+        )
+    ):
+        raise InputBoundaryError("test profile has invalid deployment binding")
+    if (
+        profile.activation_scope is CalibrationActivationScope.PRODUCTION
+        and (
+            profile.deployment_status
+            is not CalibrationDeploymentStatus.PRODUCTION_ACCEPTED
+            or profile.production_acceptance_digest is None
+        )
+    ):
+        raise InputBoundaryError("production profile has invalid deployment binding")
+    if type(profile._authenticator) is not bytes:
+        raise InputBoundaryError("authenticator must be bytes")
+
+
+def _validate_spec_instance(spec: CalibrationSpecV1) -> None:
+    if type(spec) is not CalibrationSpecV1:
+        raise InputBoundaryError("spec must be CalibrationSpecV1")
+    try:
+        if decode_calibration_spec(encode_calibration_spec(spec)) != spec:
+            raise InputBoundaryError("calibration spec does not round trip")
+    except InputBoundaryError:
+        raise
+    except (AttributeError, KeyError, OverflowError, TypeError, ValueError) as exc:
+        raise InputBoundaryError("calibration spec is invalid") from exc
+
+
+def _validate_artifact_instance(artifact: CalibrationArtifactV1) -> None:
+    if type(artifact) is not CalibrationArtifactV1:
+        raise InputBoundaryError("artifact must be CalibrationArtifactV1")
+    try:
+        if (
+            decode_calibration_artifact(encode_calibration_artifact(artifact))
+            != artifact
+        ):
+            raise InputBoundaryError("calibration artifact does not round trip")
+    except InputBoundaryError:
+        raise
+    except (AttributeError, KeyError, OverflowError, TypeError, ValueError) as exc:
+        raise InputBoundaryError("calibration artifact is invalid") from exc
+
+
+def _validate_profile_instance(profile: object) -> None:
+    if type(profile) is not CalibrationProfileV1:
+        raise InputBoundaryError("profile must be CalibrationProfileV1 or None")
+    typed = cast(CalibrationProfileV1, profile)
+    try:
+        typed.__post_init__()
+    except InputBoundaryError:
+        raise
+    except (AttributeError, TypeError) as exc:
+        raise InputBoundaryError("calibration profile is invalid") from exc
+
+
+def _validate_compatibility_requirements_instance(requirements: object) -> None:
+    if type(requirements) is not CalibrationCompatibilityRequirementsV1:
+        raise InputBoundaryError(
+            "requirements must be CalibrationCompatibilityRequirementsV1"
+        )
+    typed = cast(CalibrationCompatibilityRequirementsV1, requirements)
+    try:
+        typed.__post_init__()
+    except InputBoundaryError:
+        raise
+    except (AttributeError, TypeError) as exc:
+        raise InputBoundaryError("calibration requirements are invalid") from exc
+
+
+def _profile_semantic_unavailability(
+    *,
+    spec: CalibrationSpecV1,
+    artifact: CalibrationArtifactV1,
+    spec_digest: str,
+) -> CalibrationProfileUnavailableV1 | None:
+    if artifact.spec_digest != spec_digest:
+        return _profile_unavailable(
+            CalibrationProfileUnavailableReason.SPEC_DIGEST_MISMATCH,
+            spec_digest=spec_digest,
+            artifact=artifact,
+        )
+    if (
+        artifact.label_provenance_manifest_digest
+        != spec.label_provenance_manifest_digest
+    ):
+        return _profile_unavailable(
+            CalibrationProfileUnavailableReason.LABEL_MANIFEST_DIGEST_MISMATCH,
+            spec_digest=spec_digest,
+            artifact=artifact,
+        )
+    if (
+        tuple(row.threshold_q32 for row in artifact.threshold_results)
+        != spec.threshold_grid_q32
+    ):
+        return _profile_unavailable(
+            CalibrationProfileUnavailableReason.ARTIFACT_GRID_MISMATCH,
+            spec_digest=spec_digest,
+            artifact=artifact,
+        )
+
+    expected_passes: list[bool] = []
+    for row in artifact.threshold_results:
+        expected_coverage = _coverage_decimal(
+            row.selected_count,
+            row.total_example_count,
+        )
+        expected_risk = clopper_pearson_upper_bound(
+            error_count=row.error_count,
+            selected_count=row.selected_count,
+            delta_decimal=spec.delta_decimal,
+            family_size=len(spec.threshold_grid_q32),
+        )
+        expected_passed = (
+            row.selected_count >= spec.minimum_selected
+            and Decimal(expected_coverage)
+            >= Decimal(spec.minimum_coverage_decimal)
+            and Decimal(expected_risk) <= Decimal(spec.alpha_decimal)
+        )
+        expected_passes.append(expected_passed)
+        if (
+            row.coverage_decimal != expected_coverage
+            or row.risk_upper_bound_decimal != expected_risk
+            or row.passed is not expected_passed
+        ):
+            return _profile_unavailable(
+                CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH,
+                spec_digest=spec_digest,
+                artifact=artifact,
+            )
+
+    if artifact.statistical_status is CalibrationStatisticalStatus.STATISTICAL_PASS:
+        passing = tuple(
+            row
+            for row, passed in zip(artifact.threshold_results, expected_passes)
+            if passed
+        )
+        expected_choice = max(
+            passing,
+            key=lambda row: (row.selected_count, row.threshold_q32),
+        ).threshold_q32
+        if artifact.chosen_threshold_q32 != expected_choice:
+            return _profile_unavailable(
+                CalibrationProfileUnavailableReason.ARTIFACT_SELECTION_MISMATCH,
+                spec_digest=spec_digest,
+                artifact=artifact,
+            )
+    return None
+
+
+def _compatibility_unavailability(
+    spec: CalibrationSpecV1,
+    requirements: CalibrationCompatibilityRequirementsV1,
+) -> CalibrationProfileUnavailableReason | None:
+    comparisons = (
+        (
+            spec.purpose,
+            requirements.purpose,
+            CalibrationProfileUnavailableReason.PURPOSE_MISMATCH,
+        ),
+        (
+            spec.query_stratum_id,
+            requirements.query_stratum_id,
+            CalibrationProfileUnavailableReason.QUERY_STRATUM_MISMATCH,
+        ),
+        (
+            spec.scorer_id,
+            requirements.scorer_id,
+            CalibrationProfileUnavailableReason.SCORER_MISMATCH,
+        ),
+        (
+            spec.normalizer_id,
+            requirements.normalizer_id,
+            CalibrationProfileUnavailableReason.NORMALIZER_MISMATCH,
+        ),
+        (
+            spec.feature_spec_id,
+            requirements.feature_spec_id,
+            CalibrationProfileUnavailableReason.FEATURE_SPEC_MISMATCH,
+        ),
+        (
+            spec.boundary_schema_id,
+            requirements.boundary_schema_id,
+            CalibrationProfileUnavailableReason.BOUNDARY_SCHEMA_MISMATCH,
+        ),
+        (
+            spec.dataset_manifest_digest,
+            requirements.dataset_manifest_digest,
+            CalibrationProfileUnavailableReason.DATASET_MANIFEST_MISMATCH,
+        ),
+    )
+    for actual, expected, reason in comparisons:
+        if actual != expected:
+            return reason
+    return None
+
+
+def _profile_unavailable(
+    reason: CalibrationProfileUnavailableReason,
+    *,
+    spec_digest: str,
+    artifact: CalibrationArtifactV1,
+) -> CalibrationProfileUnavailableV1:
+    return CalibrationProfileUnavailableV1(
+        reason=reason,
+        spec_digest=spec_digest,
+        artifact_digest=artifact.artifact_digest,
+    )
+
+
+def _derive_profile_digest(
+    *,
+    activation_scope: CalibrationActivationScope,
+    artifact_digest: str,
+    spec_digest: str,
+) -> str:
+    body: _JsonObject = {
+        "activation_scope": activation_scope.value,
+        "artifact_digest": artifact_digest,
+        "spec_digest": spec_digest,
+    }
+    return _domain_digest(
+        _CALIBRATION_PROFILE_DOMAIN,
+        canonical_json_bytes(cast(JsonValue, body)),
+    )
+
+
+def _active_profile_authentication_fields(
+    *,
+    profile_digest: str,
+    spec_digest: str,
+    artifact_digest: str,
+    purpose: CalibrationPurpose,
+    query_stratum_id: str,
+    scorer_id: str,
+    normalizer_id: str,
+    feature_spec_id: str,
+    boundary_schema_id: str,
+    dataset_manifest_digest: str,
+    minimum_score_q32: int,
+    minimum_margin_q32: int,
+    deployment_status: CalibrationDeploymentStatus,
+    activation_scope: CalibrationActivationScope,
+    production_acceptance_digest: str | None,
+) -> dict[str, object]:
+    return {
+        "profile_digest": profile_digest,
+        "spec_digest": spec_digest,
+        "artifact_digest": artifact_digest,
+        "purpose": purpose,
+        "query_stratum_id": query_stratum_id,
+        "scorer_id": scorer_id,
+        "normalizer_id": normalizer_id,
+        "feature_spec_id": feature_spec_id,
+        "boundary_schema_id": boundary_schema_id,
+        "dataset_manifest_digest": dataset_manifest_digest,
+        "minimum_score_q32": minimum_score_q32,
+        "minimum_margin_q32": minimum_margin_q32,
+        "deployment_status": deployment_status,
+        "activation_scope": activation_scope,
+        "production_acceptance_digest": production_acceptance_digest,
+    }
+
+
+def _authenticate_active_profile_fields(fields: dict[str, object]) -> bytes:
+    wire: _JsonObject = {
+        "activation_scope": cast(CalibrationActivationScope, fields["activation_scope"]).value,
+        "artifact_digest": cast(str, fields["artifact_digest"]),
+        "boundary_schema_id": cast(str, fields["boundary_schema_id"]),
+        "dataset_manifest_digest": cast(str, fields["dataset_manifest_digest"]),
+        "deployment_status": cast(CalibrationDeploymentStatus, fields["deployment_status"]).value,
+        "feature_spec_id": cast(str, fields["feature_spec_id"]),
+        "minimum_margin_q32": cast(int, fields["minimum_margin_q32"]),
+        "minimum_score_q32": cast(int, fields["minimum_score_q32"]),
+        "normalizer_id": cast(str, fields["normalizer_id"]),
+        "production_acceptance_digest": cast(
+            str | None,
+            fields["production_acceptance_digest"],
+        ),
+        "profile_digest": cast(str, fields["profile_digest"]),
+        "purpose": cast(CalibrationPurpose, fields["purpose"]).value,
+        "query_stratum_id": cast(str, fields["query_stratum_id"]),
+        "scorer_id": cast(str, fields["scorer_id"]),
+        "spec_digest": cast(str, fields["spec_digest"]),
+    }
+    return hmac.digest(
+        _ACTIVE_PROFILE_SECRET,
+        _ACTIVE_PROFILE_AUTH_DOMAIN + canonical_json_bytes(cast(JsonValue, wire)),
+        "sha256",
     )
 
 

@@ -2092,3 +2092,96 @@ session can map each decision to the exact diff.
   deterministic `TEST_ONLY` artifact construction; activation, process-local
   tightening, recollection `ProfileUnavailable`, and Task 12 acceptance remain
   explicitly outside this checkpoint.
+- Checkpoint commit `a22fee5` (`Add deterministic calibration artifacts`)
+  records the CLEAN Task 2.5-B builder, immutable artifact wire, explicit
+  disabled evidence, conservative simultaneous-risk selection, authority
+  invariant repair, and adversarial tests. Task 2.5-C now begins at this exact
+  base: strict compatible-profile activation and recollection integration must
+  fail closed unless every frozen scorer/normalizer/feature/boundary/dataset,
+  purpose, stratum, threshold, deployment, and trusted-evidence binding agrees.
+- Task 2.5-C is split into three independently reviewable slices so authority
+  cannot be smuggled into the scan path: C1 prepares an authenticated
+  process-local profile only after recomputing the artifact against its exact
+  spec and explicit trust scope; C2 adds monotone policy tightening and binds
+  effective policy/profile digests; C3 integrates the closed
+  `ProfileUnavailable`/calibrated-exact state machine after cursor suspension
+  and direct-read revalidation. C1 REDs first cover TEST_ONLY harness gating,
+  production trust separation, every runtime compatibility field, disabled
+  artifacts, grid/gate/selection revalidation, and authority lookalikes.
+- The C1 RED stops identically at collection on the first absent contract,
+  `ActiveCalibrationProfileV1`; none of the new activation tests can fall
+  through to the already-green B implementation. The V1 purpose enum currently
+  has only `PERSONAL_MEMORY_TEXT`, so there is no constructible valid-but-
+  different purpose fixture; the mismatch reason remains reserved for a future
+  enum expansion, while all currently representable compatibility axes receive
+  executable REDs.
+- After the host reboot, the global Python launcher no longer resolves the
+  former `py -3.12` registration, but the repository-local interpreters remain
+  intact at `.venv` CPython 3.12.13 and `.venv313` CPython 3.13.5. The C1 import
+  RED is reproduced with the local 3.12 interpreter before implementation; this
+  is recorded as an environment-path change, not a product failure or a reason
+  to discard the checkpoint.
+- The first C1 GREEN adds immutable profile/compatibility records, closed typed
+  unavailable reasons, a non-serializable TEST_ONLY capability, and a
+  process-local authenticated active profile. Activation round-trips the spec
+  and artifact through their strict codecs, checks self-integrity, recomputes
+  the frozen threshold grid, exact coverage/risk values, pass predicates, and
+  deterministic winning threshold, then resolves every representable runtime
+  compatibility field before granting authority. TEST_ONLY requires a genuine
+  live harness instance; production requires a separately presented exact
+  acceptance digest and cannot infer trust from the artifact's public digest.
+- Adversarial C1 expansion now rejects a dict lookalike, an exact-type cloned
+  harness carrying a stolen authenticator, ambiguous test-plus-production
+  authority, spec rebinding, label-manifest rebinding, a re-digested false risk
+  row, a re-digested grid mutation, a forged gate bit, and a non-winning passing
+  selection. The active handle's profile digest is independently reproduced
+  from its domain-separated scope/spec/artifact frame; exact-type clones and
+  post-creation field mutation fail its process-local authenticator/identity
+  check. The expanded calibration suite passes 134/134 on both CPython 3.12.13
+  and 3.13.5; Ruff 0.16.6, cognition compileall, and pinned Pyright 1.1.413 are
+  clean at 0 errors, 0 warnings, 0 informations. Broader Task 2 regression and
+  independent C1 review remain open, so this slice is GREEN but not CLEAN.
+- Independent C1 review returns REQUEST CHANGES/BLOCK rather than accepting the
+  first GREEN. Two authority reviewers identify one HIGH flaw: the public
+  `trusted_production_acceptance_digest` string lets a caller echo an arbitrary
+  digest embedded in a freshly re-digested artifact, after which the activation
+  layer itself signs the untrusted claim. They also identify bounded CPU
+  amplification because unauthorized calls reach full Clopper-Pearson replay,
+  and malformed exact-type active objects can leak raw attribute/type errors.
+  The statistical reviewer finds the implementation math correct but rejects
+  acceptance evidence until false-positive fixtures separately kill removal of
+  the minimum-selected, minimum-coverage, and maximum-risk conjuncts and until
+  disabled-reason sorted/unique validation is mutation-bound.
+- The review repair removes the raw production-trust parameter entirely.
+  `PRODUCTION_ACCEPTED` remains parseable future evidence but cannot produce an
+  active profile in Task 2; it returns `PRODUCTION_ACCEPTANCE_UNTRUSTED` until a
+  non-serializable artifact-bound trust capability is supplied by the later
+  Task 12/host trust boundary. Cheap TEST_ONLY/production authority rejection
+  now follows strict spec/artifact self-integrity checks and precedes expensive
+  statistical replay. Active/test capability validation checks live identity
+  before field access, validates every digest/ID/enum/Q32/deployment relation,
+  and normalizes damaged exact-type handles to `InputBoundaryError`.
+- New regression oracles forge validly re-digested single-threshold artifacts
+  where exactly one of minimum selected count, Q24 coverage, or exact
+  Clopper-Pearson risk fails, then set `passed=true`; all three are rejected as
+  `ARTIFACT_GATE_MISMATCH`. Reversed and duplicate disabled reasons are rejected
+  by the wire boundary. A semantically forged artifact without a TEST_ONLY
+  capability proves cheap authority denial precedes replay, and malformed spec,
+  artifact, active-handle, and harness fields expose only controlled boundary
+  errors. The repaired calibration suite passes 145/145 on CPython 3.12.13 and
+  3.13.5; the broader Task 2 package passes 260/260 with the completed one-hour
+  8,192 fixture deliberately deselected on each runtime (95.20 s and 90.68 s).
+  Ruff 0.16.6, cognition compileall, git diff-check, and pinned Pyright 1.1.413
+  are clean. Reviewer re-approval remains mandatory before C1 is CLEAN.
+- All three independent C1 re-review lanes now approve with zero findings. The
+  statistical lane independently verifies the three isolated false-positive
+  conjunct mutants and both disabled-reason ordering/uniqueness mutants. The
+  code/security and authority/architecture lanes each confirm the prior HIGH
+  raw-digest self-authorization path is absent, unauthorized work is rejected
+  before numerical replay, damaged handles expose controlled boundary errors,
+  and the active handle authenticates the full C1 field set while its public
+  digest binds scope/spec/artifact. Task 2.5-C1 is therefore CLEAN for
+  TEST_ONLY process-local activation and typed fail-closed compatibility.
+  Production activation deliberately remains unavailable until Task 12 supplies
+  a separately reviewed artifact-bound trust capability; C2 policy tightening
+  and C3 recollection integration remain outside this checkpoint.
