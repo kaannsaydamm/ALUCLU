@@ -2185,3 +2185,61 @@ session can map each decision to the exact diff.
   Production activation deliberately remains unavailable until Task 12 supplies
   a separately reviewed artifact-bound trust capability; C2 policy tightening
   and C3 recollection integration remain outside this checkpoint.
+- Checkpoint commit `5757cc5` (`Add authenticated calibration profile
+  activation`) records the CLEAN C1 boundary. Autopilot state is advanced to
+  `C1_CLEAN_C2_RED_NEXT` with the two-runtime, static, broad-regression, and
+  three-review evidence preserved. C2 now begins fixture-first: a process-local
+  tightening must bind the exact active profile, base policy, runtime scorer,
+  normalizer, feature spec, and derived effective policy digest. It may only
+  reduce record/top-k/output budgets, raise score/margin floors, revoke
+  approximate/incomplete permissions, or force abstention. A base below either
+  calibrated floor, any authority-expanding request, serialized lookalike,
+  exact-type clone, field mutation, algorithm rebinding, or malformed handle
+  must fail closed. Recall state transitions remain deliberately untouched
+  until the independently reviewed C3 integration.
+- The C2 RED reproduces on the repository-local CPython 3.12.13 interpreter at
+  collection: `active_scorer_id` is absent from the CLEAN C1 code, so none of
+  the new tightening, digest-binding, monotonicity, algorithm-compatibility, or
+  anti-forgery tests can fall through to old green behavior. Minimal GREEN is
+  now limited to the scorer identity, authenticated tightening capability, its
+  validation boundary, and explicit package exports; C3 recall behavior remains
+  out of scope.
+- The first C2 GREEN passes the expanded calibration/policy file at 165/165 on
+  CPython 3.12.13 and 3.13.5, and the unchanged recollection regression on
+  CPython 3.12. Ruff initially reports only import/export ordering and fixes
+  both mechanically; compileall and diff-check are clean. Pinned Pyright finds
+  13 static argument-type errors at one dynamic `dict[str, object]` expansion
+  into the private handle constructor. Runtime values are correct, but the
+  checkpoint is not statically clean: construction is changed to explicit
+  typed arguments, while additional REDs bind the handle to its original base
+  policy/profile and preserve the text-recall `top_k >= 2` margin invariant.
+- After the typed-construction repair and rebinding/top-k additions, the focused
+  C2 file passes 167/167 on both runtimes, Ruff is clean, and pinned Pyright
+  reports 0/0/0. The broader Task 2 package passes 282/282 with only the
+  previously completed one-hour 8,192-observation replay deselected on each
+  runtime (206.26 s on 3.12, 201.06 s on 3.13). Independent architecture review
+  returns APPROVE/CLEAR with zero findings and confirms C3 must apply this
+  handle before opening a cursor. Before accepting C2, self-review adds literal
+  scorer-ID, equality/no-op, false-versus-true force-abstain digest, exact-bool,
+  and public-boundary lookalike oracles so shared helpers cannot mask a protocol
+  identity mutation or ignored conservative control.
+- The final self-review expansion passes 175/175 on CPython 3.12.13 and 175/175
+  on CPython 3.13.5; Ruff, cognition compileall, diff-check, and pinned Pyright
+  1.1.413 remain clean at 0 errors, 0 warnings, 0 informations. Three independent
+  C2 lanes approve the current live diff with zero findings: architecture marks
+  the boundary CLEAR, code/security finds no masking fallback or authority
+  expansion, and adversarial mutation review finds no surviving mutant across
+  all three budget ceilings, both calibrated floors, both permissions,
+  force-abstain identity, algorithm/profile/base/effective-digest binding,
+  top-two margin viability, or process-local anti-forgery behavior. Task 2.5-C2
+  is therefore CLEAN as an authenticated effective-policy capability. It does
+  not yet alter recall results; C3 must validate and freeze the active profile,
+  base policy, and tightening before opening a cursor, bind continuations to the
+  effective/profile digests, and implement typed fail-closed calibrated recall.
+- C2 mutation audit adds a surviving base-policy oracle: a calibrated text
+  tightening must also reject an already-constructed base policy with
+  `top_k=1`, even when the caller does not request a `top_k` change. The RED
+  fails because the earlier implementation only enforced the floor on requested
+  values; the GREEN keeps the broad `RecallExecutionPolicyV1` contract intact
+  for older exact-recall paths and enforces `top_k >= 2` only at the calibrated
+  tightening boundary.

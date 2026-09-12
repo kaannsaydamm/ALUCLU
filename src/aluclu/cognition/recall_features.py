@@ -17,6 +17,7 @@ FEATURE_VECTOR_BYTES = FEATURE_DIMENSIONS * 2
 
 _NORMALIZER_ID_PREFIX = "aluclu.search-view.nfc-ascii-ws.v1+ucd-"
 _FEATURE_SPEC_ID_PREFIX = "aluclu.feature.signed-byte-ngram-1024-int16.v1+ucd-"
+_SCORER_ID = "aluclu.similarity.cosine-q32.v1"
 _FEATURE_VECTOR_DOMAIN = b"aluclu.task2.feature-vector.v1"
 _FEATURE_FRAME_PREFIX = b"\xff\x01"
 _FEATURE_FRAME_SUFFIX = b"\xff\x02"
@@ -93,6 +94,12 @@ def active_feature_spec_id() -> str:
     """Return the feature algorithm ID for the active Unicode database."""
 
     return f"{_FEATURE_SPEC_ID_PREFIX}{unicodedata.unidata_version}"
+
+
+def active_scorer_id() -> str:
+    """Return the exact scorer algorithm ID used by this runtime."""
+
+    return _SCORER_ID
 
 
 def search_view_utf8(text: str, *, normalizer_id: str) -> bytes:
@@ -322,6 +329,7 @@ __all__ = [
     "RetrievalFeatureVectorV1",
     "active_feature_spec_id",
     "active_normalizer_id",
+    "active_scorer_id",
     "compare_feature_similarity_exact",
     "encode_retrieval_text",
     "feature_vector_digest",

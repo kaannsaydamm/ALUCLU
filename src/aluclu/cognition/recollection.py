@@ -5,11 +5,16 @@ import hmac
 import re
 import secrets
 import struct
+import weakref
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import cmp_to_key
 from typing import cast, overload
 
+from .calibration import (
+    ActiveCalibrationProfileV1,
+    _validate_active_calibration_profile,
+)
 from .codec import canonical_json_bytes, validate_event_id
 from .contracts import (
     InputBoundaryError,
@@ -40,6 +45,7 @@ from .recall_features import (
 from .recall_features import (
     active_normalizer_id as runtime_normalizer_id,
 )
+from .recall_features import active_scorer_id as runtime_scorer_id
 
 _OBSERVATION_ID_PATTERN = re.compile(r"obs:[A-Za-z0-9][A-Za-z0-9._:-]{0,251}\Z")
 _DIGEST_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
@@ -47,6 +53,8 @@ _EPISODE_ID_PATTERN = re.compile(r"episode:[0-9a-f]{64}\Z")
 _CANONICAL_OBSERVATION_SCHEMA = "aluclu.observation.v1"
 _QUERY_DIGEST_DOMAIN = b"aluclu.task2.recall-query.v1"
 _POLICY_DIGEST_DOMAIN = b"aluclu.task2.recall-policy.v1"
+_EFFECTIVE_POLICY_DIGEST_DOMAIN = b"aluclu.task2.effective-recall-policy.v1"
+_POLICY_TIGHTENING_AUTH_DOMAIN = b"aluclu.task2.recall-policy-tightening.v1"
 _NO_PROFILE_DOMAIN = b"aluclu.task2.no-calibration-profile.v1"
 _NO_CALIBRATION_PROFILE_DIGEST = ""
 _MAX_I63 = (1 << 63) - 1
@@ -166,6 +174,218 @@ class RecallExecutionPolicyV1:
             raise InputBoundaryError("allow_approximate must be bool")
         if type(self.allow_incomplete) is not bool:
             raise InputBoundaryError("allow_incomplete must be bool")
+
+
+@dataclass(frozen=True, init=False)
+class RecallPolicyTighteningV1:
+    __slots__ = (
+        "active_profile_digest",
+        "base_policy_digest",
+        "effective_policy_digest",
+        "active_scorer_id",
+        "active_normalizer_id",
+        "active_feature_spec_id",
+        "max_records",
+        "top_k",
+        "max_returned_payload_bytes",
+        "minimum_score_q32",
+        "minimum_margin_q32",
+        "allow_approximate",
+        "allow_incomplete",
+        "force_abstain",
+        "_authenticator",
+        "__weakref__",
+    )
+
+    active_profile_digest: str
+    base_policy_digest: str
+    effective_policy_digest: str
+    active_scorer_id: str
+    active_normalizer_id: str
+    active_feature_spec_id: str
+    max_records: int
+    top_k: int
+    max_returned_payload_bytes: int
+    minimum_score_q32: int
+    minimum_margin_q32: int
+    allow_approximate: bool
+    allow_incomplete: bool
+    force_abstain: bool
+    _authenticator: bytes
+
+    def __new__(cls) -> RecallPolicyTighteningV1:
+        raise TypeError("use tighten_recall_policy")
+
+    @classmethod
+    def _create(
+        cls,
+        *,
+        active_profile_digest: str,
+        base_policy_digest: str,
+        effective_policy_digest: str,
+        active_scorer_id: str,
+        active_normalizer_id: str,
+        active_feature_spec_id: str,
+        max_records: int,
+        top_k: int,
+        max_returned_payload_bytes: int,
+        minimum_score_q32: int,
+        minimum_margin_q32: int,
+        allow_approximate: bool,
+        allow_incomplete: bool,
+        force_abstain: bool,
+        authenticator: bytes,
+    ) -> RecallPolicyTighteningV1:
+        instance = object.__new__(cls)
+        for field_name, value in (
+            ("active_profile_digest", active_profile_digest),
+            ("base_policy_digest", base_policy_digest),
+            ("effective_policy_digest", effective_policy_digest),
+            ("active_scorer_id", active_scorer_id),
+            ("active_normalizer_id", active_normalizer_id),
+            ("active_feature_spec_id", active_feature_spec_id),
+            ("max_records", max_records),
+            ("top_k", top_k),
+            ("max_returned_payload_bytes", max_returned_payload_bytes),
+            ("minimum_score_q32", minimum_score_q32),
+            ("minimum_margin_q32", minimum_margin_q32),
+            ("allow_approximate", allow_approximate),
+            ("allow_incomplete", allow_incomplete),
+            ("force_abstain", force_abstain),
+            ("_authenticator", authenticator),
+        ):
+            object.__setattr__(instance, field_name, value)
+        return instance
+
+
+_POLICY_TIGHTENING_SECRET = secrets.token_bytes(32)
+_LIVE_POLICY_TIGHTENINGS: weakref.WeakValueDictionary[
+    int, RecallPolicyTighteningV1
+] = weakref.WeakValueDictionary()
+
+
+def tighten_recall_policy(
+    policy: RecallExecutionPolicyV1,
+    active_profile: ActiveCalibrationProfileV1,
+    *,
+    max_records: int | None = None,
+    top_k: int | None = None,
+    max_returned_payload_bytes: int | None = None,
+    minimum_score_q32: int | None = None,
+    minimum_margin_q32: int | None = None,
+    allow_approximate: bool | None = None,
+    allow_incomplete: bool | None = None,
+    force_abstain: bool = False,
+) -> RecallPolicyTighteningV1:
+    """Bind a calibrated profile to a policy using only conservative changes."""
+
+    _validate_recall_execution_policy(policy)
+    _validate_active_calibration_profile(active_profile)
+    if active_profile.scorer_id != runtime_scorer_id():
+        raise InputBoundaryError("scorer_id does not match the active runtime")
+    if active_profile.normalizer_id != policy.active_normalizer_id:
+        raise InputBoundaryError("normalizer_id does not match the recall policy")
+    if active_profile.feature_spec_id != policy.active_feature_spec_id:
+        raise InputBoundaryError("feature_spec_id does not match the recall policy")
+    if policy.minimum_score_q32 < active_profile.minimum_score_q32:
+        raise InputBoundaryError(
+            "minimum_score_q32 is below the active calibration profile"
+        )
+    if policy.minimum_margin_q32 < active_profile.minimum_margin_q32:
+        raise InputBoundaryError(
+            "minimum_margin_q32 is below the active calibration profile"
+        )
+    if policy.top_k < 2:
+        raise InputBoundaryError("top_k is below the calibrated text recall floor")
+
+    effective_max_records = _tighten_upper_bound(
+        max_records,
+        base=policy.max_records,
+        field_name="max_records",
+        lower=0,
+        upper=_MAX_RECORDS,
+    )
+    effective_top_k = _tighten_upper_bound(
+        top_k,
+        base=policy.top_k,
+        field_name="top_k",
+        lower=2,
+        upper=_MAX_TOP_K,
+    )
+    effective_output_bytes = _tighten_upper_bound(
+        max_returned_payload_bytes,
+        base=policy.max_returned_payload_bytes,
+        field_name="max_returned_payload_bytes",
+        lower=0,
+        upper=_MAX_RETURNED_PAYLOAD_BYTES,
+    )
+    effective_minimum_score = _tighten_lower_bound(
+        minimum_score_q32,
+        base=policy.minimum_score_q32,
+        field_name="minimum_score_q32",
+        lower=0,
+        upper=_MAX_Q32,
+    )
+    effective_minimum_margin = _tighten_lower_bound(
+        minimum_margin_q32,
+        base=policy.minimum_margin_q32,
+        field_name="minimum_margin_q32",
+        lower=0,
+        upper=_MAX_Q32,
+    )
+    effective_allow_approximate = _tighten_permission(
+        allow_approximate,
+        base=policy.allow_approximate,
+        field_name="allow_approximate",
+    )
+    effective_allow_incomplete = _tighten_permission(
+        allow_incomplete,
+        base=policy.allow_incomplete,
+        field_name="allow_incomplete",
+    )
+    if type(force_abstain) is not bool:
+        raise InputBoundaryError("force_abstain must be bool")
+
+    base_policy_digest = _policy_digest(policy)
+    fields = _policy_tightening_fields(
+        active_profile_digest=active_profile.profile_digest,
+        base_policy_digest=base_policy_digest,
+        active_scorer_id=active_profile.scorer_id,
+        active_normalizer_id=active_profile.normalizer_id,
+        active_feature_spec_id=active_profile.feature_spec_id,
+        max_records=effective_max_records,
+        top_k=effective_top_k,
+        max_returned_payload_bytes=effective_output_bytes,
+        minimum_score_q32=effective_minimum_score,
+        minimum_margin_q32=effective_minimum_margin,
+        allow_approximate=effective_allow_approximate,
+        allow_incomplete=effective_allow_incomplete,
+        force_abstain=force_abstain,
+    )
+    effective_policy_digest = _effective_policy_digest(fields)
+    authenticator = _authenticate_policy_tightening(
+        fields,
+        effective_policy_digest=effective_policy_digest,
+    )
+    tightening = RecallPolicyTighteningV1._create(
+        active_profile_digest=active_profile.profile_digest,
+        base_policy_digest=base_policy_digest,
+        effective_policy_digest=effective_policy_digest,
+        active_scorer_id=active_profile.scorer_id,
+        active_normalizer_id=active_profile.normalizer_id,
+        active_feature_spec_id=active_profile.feature_spec_id,
+        max_records=effective_max_records,
+        top_k=effective_top_k,
+        max_returned_payload_bytes=effective_output_bytes,
+        minimum_score_q32=effective_minimum_score,
+        minimum_margin_q32=effective_minimum_margin,
+        allow_approximate=effective_allow_approximate,
+        allow_incomplete=effective_allow_incomplete,
+        force_abstain=force_abstain,
+        authenticator=authenticator,
+    )
+    _LIVE_POLICY_TIGHTENINGS[id(tightening)] = tightening
+    return tightening
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -1425,6 +1645,252 @@ def _policy_digest(policy: RecallExecutionPolicyV1) -> str:
     return _domain_digest(_POLICY_DIGEST_DOMAIN, canonical_json_bytes(payload))
 
 
+def _validate_recall_policy_tightening(
+    tightening: object,
+    *,
+    policy: RecallExecutionPolicyV1,
+    active_profile: ActiveCalibrationProfileV1,
+) -> None:
+    if type(tightening) is not RecallPolicyTighteningV1:
+        raise InputBoundaryError("recall policy tightening is invalid")
+    typed = cast(RecallPolicyTighteningV1, tightening)
+    if _LIVE_POLICY_TIGHTENINGS.get(id(typed)) is not typed:
+        raise InputBoundaryError("recall policy tightening is invalid")
+    try:
+        _validate_policy_tightening_fields(typed)
+        fields = _policy_tightening_fields(
+            active_profile_digest=typed.active_profile_digest,
+            base_policy_digest=typed.base_policy_digest,
+            active_scorer_id=typed.active_scorer_id,
+            active_normalizer_id=typed.active_normalizer_id,
+            active_feature_spec_id=typed.active_feature_spec_id,
+            max_records=typed.max_records,
+            top_k=typed.top_k,
+            max_returned_payload_bytes=typed.max_returned_payload_bytes,
+            minimum_score_q32=typed.minimum_score_q32,
+            minimum_margin_q32=typed.minimum_margin_q32,
+            allow_approximate=typed.allow_approximate,
+            allow_incomplete=typed.allow_incomplete,
+            force_abstain=typed.force_abstain,
+        )
+        expected_digest = _effective_policy_digest(fields)
+        expected_authenticator = _authenticate_policy_tightening(
+            fields,
+            effective_policy_digest=typed.effective_policy_digest,
+        )
+        authenticator = typed._authenticator
+    except (AttributeError, InputBoundaryError, TypeError, ValueError) as exc:
+        raise InputBoundaryError("recall policy tightening is invalid") from exc
+    if (
+        typed.effective_policy_digest != expected_digest
+        or type(authenticator) is not bytes
+        or not hmac.compare_digest(authenticator, expected_authenticator)
+    ):
+        raise InputBoundaryError("recall policy tightening is invalid")
+
+    _validate_recall_execution_policy(policy)
+    _validate_active_calibration_profile(active_profile)
+    if typed.base_policy_digest != _policy_digest(policy):
+        raise InputBoundaryError("recall policy tightening has a different base policy")
+    if typed.active_profile_digest != active_profile.profile_digest:
+        raise InputBoundaryError("recall policy tightening has a different profile")
+    if (
+        typed.active_scorer_id != active_profile.scorer_id
+        or typed.active_scorer_id != runtime_scorer_id()
+    ):
+        raise InputBoundaryError("recall policy tightening has a different scorer")
+    if (
+        typed.active_normalizer_id != active_profile.normalizer_id
+        or typed.active_normalizer_id != policy.active_normalizer_id
+    ):
+        raise InputBoundaryError("recall policy tightening has a different normalizer")
+    if (
+        typed.active_feature_spec_id != active_profile.feature_spec_id
+        or typed.active_feature_spec_id != policy.active_feature_spec_id
+    ):
+        raise InputBoundaryError("recall policy tightening has a different feature spec")
+    if (
+        typed.max_records > policy.max_records
+        or typed.top_k > policy.top_k
+        or typed.max_returned_payload_bytes > policy.max_returned_payload_bytes
+        or typed.minimum_score_q32 < policy.minimum_score_q32
+        or typed.minimum_score_q32 < active_profile.minimum_score_q32
+        or typed.minimum_margin_q32 < policy.minimum_margin_q32
+        or typed.minimum_margin_q32 < active_profile.minimum_margin_q32
+        or (typed.allow_approximate and not policy.allow_approximate)
+        or (typed.allow_incomplete and not policy.allow_incomplete)
+    ):
+        raise InputBoundaryError("recall policy tightening expands authority")
+
+
+def _validate_recall_execution_policy(policy: object) -> None:
+    if type(policy) is not RecallExecutionPolicyV1:
+        raise InputBoundaryError("recall policy is invalid")
+    typed = cast(RecallExecutionPolicyV1, policy)
+    try:
+        reconstructed = RecallExecutionPolicyV1(
+            max_records=typed.max_records,
+            top_k=typed.top_k,
+            max_returned_payload_bytes=typed.max_returned_payload_bytes,
+            active_normalizer_id=typed.active_normalizer_id,
+            active_feature_spec_id=typed.active_feature_spec_id,
+            minimum_score_q32=typed.minimum_score_q32,
+            minimum_margin_q32=typed.minimum_margin_q32,
+            allow_approximate=typed.allow_approximate,
+            allow_incomplete=typed.allow_incomplete,
+        )
+    except (AttributeError, InputBoundaryError, TypeError, ValueError) as exc:
+        raise InputBoundaryError("recall policy is invalid") from exc
+    if reconstructed != typed:
+        raise InputBoundaryError("recall policy is invalid")
+
+
+def _validate_policy_tightening_fields(
+    tightening: RecallPolicyTighteningV1,
+) -> None:
+    _require_digest(tightening.active_profile_digest, "active_profile_digest")
+    _require_digest(tightening.base_policy_digest, "base_policy_digest")
+    _require_digest(tightening.effective_policy_digest, "effective_policy_digest")
+    if tightening.active_scorer_id != runtime_scorer_id():
+        raise InputBoundaryError("active_scorer_id does not match the active runtime")
+    if tightening.active_normalizer_id != runtime_normalizer_id():
+        raise InputBoundaryError("active_normalizer_id does not match the active runtime")
+    if tightening.active_feature_spec_id != runtime_feature_spec_id():
+        raise InputBoundaryError("active_feature_spec_id does not match the active runtime")
+    _require_bounded_int(tightening.max_records, "max_records", 0, _MAX_RECORDS)
+    _require_bounded_int(tightening.top_k, "top_k", 2, _MAX_TOP_K)
+    _require_bounded_int(
+        tightening.max_returned_payload_bytes,
+        "max_returned_payload_bytes",
+        0,
+        _MAX_RETURNED_PAYLOAD_BYTES,
+    )
+    _require_bounded_int(
+        tightening.minimum_score_q32,
+        "minimum_score_q32",
+        0,
+        _MAX_Q32,
+    )
+    _require_bounded_int(
+        tightening.minimum_margin_q32,
+        "minimum_margin_q32",
+        0,
+        _MAX_Q32,
+    )
+    for field_name, value in (
+        ("allow_approximate", tightening.allow_approximate),
+        ("allow_incomplete", tightening.allow_incomplete),
+        ("force_abstain", tightening.force_abstain),
+    ):
+        if type(value) is not bool:
+            raise InputBoundaryError(f"{field_name} must be bool")
+    if type(tightening._authenticator) is not bytes:
+        raise InputBoundaryError("authenticator must be bytes")
+
+
+def _policy_tightening_fields(
+    *,
+    active_profile_digest: str,
+    base_policy_digest: str,
+    active_scorer_id: str,
+    active_normalizer_id: str,
+    active_feature_spec_id: str,
+    max_records: int,
+    top_k: int,
+    max_returned_payload_bytes: int,
+    minimum_score_q32: int,
+    minimum_margin_q32: int,
+    allow_approximate: bool,
+    allow_incomplete: bool,
+    force_abstain: bool,
+) -> dict[str, object]:
+    return {
+        "active_profile_digest": active_profile_digest,
+        "base_policy_digest": base_policy_digest,
+        "active_scorer_id": active_scorer_id,
+        "active_normalizer_id": active_normalizer_id,
+        "active_feature_spec_id": active_feature_spec_id,
+        "max_records": max_records,
+        "top_k": top_k,
+        "max_returned_payload_bytes": max_returned_payload_bytes,
+        "minimum_score_q32": minimum_score_q32,
+        "minimum_margin_q32": minimum_margin_q32,
+        "allow_approximate": allow_approximate,
+        "allow_incomplete": allow_incomplete,
+        "force_abstain": force_abstain,
+    }
+
+
+def _effective_policy_digest(fields: dict[str, object]) -> str:
+    return _domain_digest(
+        _EFFECTIVE_POLICY_DIGEST_DOMAIN,
+        canonical_json_bytes(cast(JsonValue, fields)),
+    )
+
+
+def _authenticate_policy_tightening(
+    fields: dict[str, object],
+    *,
+    effective_policy_digest: str,
+) -> bytes:
+    payload = cast(
+        JsonValue,
+        {**fields, "effective_policy_digest": effective_policy_digest},
+    )
+    return hmac.digest(
+        _POLICY_TIGHTENING_SECRET,
+        _POLICY_TIGHTENING_AUTH_DOMAIN + canonical_json_bytes(payload),
+        "sha256",
+    )
+
+
+def _tighten_upper_bound(
+    requested: int | None,
+    *,
+    base: int,
+    field_name: str,
+    lower: int,
+    upper: int,
+) -> int:
+    if requested is None:
+        return base
+    _require_bounded_int(requested, field_name, lower, upper)
+    if requested > base:
+        raise InputBoundaryError(f"{field_name} cannot increase")
+    return requested
+
+
+def _tighten_lower_bound(
+    requested: int | None,
+    *,
+    base: int,
+    field_name: str,
+    lower: int,
+    upper: int,
+) -> int:
+    if requested is None:
+        return base
+    _require_bounded_int(requested, field_name, lower, upper)
+    if requested < base:
+        raise InputBoundaryError(f"{field_name} cannot decrease")
+    return requested
+
+
+def _tighten_permission(
+    requested: bool | None,
+    *,
+    base: bool,
+    field_name: str,
+) -> bool:
+    if requested is None:
+        return base
+    if type(requested) is not bool:
+        raise InputBoundaryError(f"{field_name} must be bool")
+    if requested and not base:
+        raise InputBoundaryError(f"{field_name} cannot grant permission")
+    return requested
+
+
 def _no_calibration_profile_digest() -> str:
     global _NO_CALIBRATION_PROFILE_DIGEST
     if not _NO_CALIBRATION_PROFILE_DIGEST:
@@ -1518,7 +1984,9 @@ __all__ = [
     "RecallContinuationV1",
     "RecallExecutionPolicyV1",
     "RecallFiltersV1",
+    "RecallPolicyTighteningV1",
     "RecollectionWorkV1",
     "TextRecallQuery",
     "recall",
+    "tighten_recall_policy",
 ]

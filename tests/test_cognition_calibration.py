@@ -12,6 +12,7 @@ import pytest
 
 import aluclu.cognition as cognition_api
 import aluclu.cognition.calibration as calibration_module
+import aluclu.cognition.recollection as recollection_module
 from aluclu.cognition import InputBoundaryError
 from aluclu.cognition.calibration import (
     ActiveCalibrationProfileV1,
@@ -56,6 +57,16 @@ from aluclu.cognition.calibration import (
     labeled_recall_example_to_json_value,
 )
 from aluclu.cognition.codec import canonical_json_bytes, strict_json_loads
+from aluclu.cognition.recall_features import (
+    active_feature_spec_id,
+    active_normalizer_id,
+    active_scorer_id,
+)
+from aluclu.cognition.recollection import (
+    RecallExecutionPolicyV1,
+    RecallPolicyTighteningV1,
+    tighten_recall_policy,
+)
 
 # Independently generated at 160 decimal digits by regularized-beta inversion,
 # then cross-checked with a separate arbitrary-precision binomial recurrence.
@@ -1800,6 +1811,445 @@ def test_calibration_activation_surface_is_explicitly_exported() -> None:
         "ExplicitCalibrationTestHarnessV1",
         "activate_calibration_profile",
         "explicit_calibration_test_harness",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__
+
+
+def _active_runtime_calibration_profile(
+    **spec_overrides: object,
+) -> ActiveCalibrationProfileV1:
+    manifest = _label_manifest()
+    values: dict[str, object] = {
+        "scorer_id": active_scorer_id(),
+        "normalizer_id": active_normalizer_id(),
+        "feature_spec_id": active_feature_spec_id(),
+        "alpha_decimal": "1",
+        "minimum_selected": 1,
+        "minimum_coverage_decimal": "0",
+    }
+    values.update(spec_overrides)
+    spec = replace(_calibration_spec(manifest), **values)  # type: ignore[arg-type]
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    return active
+
+
+def _calibrated_policy(
+    active: ActiveCalibrationProfileV1,
+    **overrides: object,
+) -> RecallExecutionPolicyV1:
+    values: dict[str, object] = {
+        "max_records": 128,
+        "top_k": 8,
+        "max_returned_payload_bytes": 16_384,
+        "active_normalizer_id": active.normalizer_id,
+        "active_feature_spec_id": active.feature_spec_id,
+        "minimum_score_q32": active.minimum_score_q32,
+        "minimum_margin_q32": active.minimum_margin_q32,
+        "allow_approximate": True,
+        "allow_incomplete": True,
+    }
+    values.update(overrides)
+    return RecallExecutionPolicyV1(**values)  # type: ignore[arg-type]
+
+
+def _domain_digest_for_test(domain: bytes, payload: object) -> str:
+    body = canonical_json_bytes(cast(Any, payload))
+    frame = (
+        struct.pack(">Q", len(domain))
+        + domain
+        + struct.pack(">Q", len(body))
+        + body
+    )
+    return hashlib.sha256(frame).hexdigest()
+
+
+def test_active_scorer_id_is_the_frozen_q32_cosine_protocol_identity() -> None:
+    assert active_scorer_id() == "aluclu.similarity.cosine-q32.v1"
+
+
+def test_equal_policy_bounds_are_valid_and_force_abstain_changes_identity() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    unchanged = tighten_recall_policy(
+        policy,
+        active,
+        max_records=policy.max_records,
+        top_k=policy.top_k,
+        max_returned_payload_bytes=policy.max_returned_payload_bytes,
+        minimum_score_q32=policy.minimum_score_q32,
+        minimum_margin_q32=policy.minimum_margin_q32,
+        allow_approximate=policy.allow_approximate,
+        allow_incomplete=policy.allow_incomplete,
+        force_abstain=False,
+    )
+    forced = tighten_recall_policy(policy, active, force_abstain=True)
+
+    assert unchanged.max_records == policy.max_records
+    assert unchanged.top_k == policy.top_k
+    assert unchanged.max_returned_payload_bytes == policy.max_returned_payload_bytes
+    assert unchanged.minimum_score_q32 == policy.minimum_score_q32
+    assert unchanged.minimum_margin_q32 == policy.minimum_margin_q32
+    assert unchanged.allow_approximate is policy.allow_approximate
+    assert unchanged.allow_incomplete is policy.allow_incomplete
+    assert unchanged.force_abstain is False
+    assert forced.force_abstain is True
+    assert forced.effective_policy_digest != unchanged.effective_policy_digest
+    recollection_module._validate_recall_policy_tightening(
+        unchanged,
+        policy=policy,
+        active_profile=active,
+    )
+    recollection_module._validate_recall_policy_tightening(
+        forced,
+        policy=policy,
+        active_profile=active,
+    )
+
+
+@pytest.mark.parametrize(
+    ("overrides", "field_name"),
+    (
+        ({"max_records": True}, "max_records"),
+        ({"minimum_score_q32": True}, "minimum_score_q32"),
+        ({"allow_approximate": 1}, "allow_approximate"),
+        ({"force_abstain": 1}, "force_abstain"),
+    ),
+)
+def test_policy_tightening_factory_requires_exact_scalar_types(
+    overrides: dict[str, object],
+    field_name: str,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    with pytest.raises(InputBoundaryError, match=field_name):
+        tighten_recall_policy(policy, active, **overrides)  # type: ignore[arg-type]
+
+
+def test_policy_tightening_factory_rejects_public_input_lookalikes() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    with pytest.raises(InputBoundaryError, match="recall policy"):
+        tighten_recall_policy(cast(Any, {"max_records": 1}), active)
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        tighten_recall_policy(policy, cast(Any, {"profile_digest": "0" * 64}))
+
+
+def test_calibrated_policy_tightening_binds_profile_and_effective_policy() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_records=64,
+        top_k=4,
+        max_returned_payload_bytes=8_192,
+        minimum_score_q32=active.minimum_score_q32 + 1,
+        minimum_margin_q32=active.minimum_margin_q32 + 1,
+        allow_approximate=False,
+        allow_incomplete=False,
+        force_abstain=True,
+    )
+
+    assert type(tightening) is RecallPolicyTighteningV1
+    assert tightening.active_profile_digest == active.profile_digest
+    assert tightening.active_scorer_id == active.scorer_id
+    assert tightening.active_normalizer_id == active.normalizer_id
+    assert tightening.active_feature_spec_id == active.feature_spec_id
+    assert tightening.max_records == 64
+    assert tightening.top_k == 4
+    assert tightening.max_returned_payload_bytes == 8_192
+    assert tightening.minimum_score_q32 == active.minimum_score_q32 + 1
+    assert tightening.minimum_margin_q32 == active.minimum_margin_q32 + 1
+    assert tightening.allow_approximate is False
+    assert tightening.allow_incomplete is False
+    assert tightening.force_abstain is True
+    assert not hasattr(tightening, "__dict__")
+    with pytest.raises(TypeError):
+        RecallPolicyTighteningV1()
+
+    expected_base_digest = _domain_digest_for_test(
+        b"aluclu.task2.recall-policy.v1",
+        {
+            "active_feature_spec_id": policy.active_feature_spec_id,
+            "active_normalizer_id": policy.active_normalizer_id,
+            "allow_approximate": policy.allow_approximate,
+            "allow_incomplete": policy.allow_incomplete,
+            "max_records": policy.max_records,
+            "max_returned_payload_bytes": policy.max_returned_payload_bytes,
+            "minimum_margin_q32": policy.minimum_margin_q32,
+            "minimum_score_q32": policy.minimum_score_q32,
+            "top_k": policy.top_k,
+        },
+    )
+    assert tightening.base_policy_digest == expected_base_digest
+    assert tightening.effective_policy_digest == _domain_digest_for_test(
+        b"aluclu.task2.effective-recall-policy.v1",
+        {
+            "active_feature_spec_id": tightening.active_feature_spec_id,
+            "active_normalizer_id": tightening.active_normalizer_id,
+            "active_profile_digest": tightening.active_profile_digest,
+            "active_scorer_id": tightening.active_scorer_id,
+            "allow_approximate": tightening.allow_approximate,
+            "allow_incomplete": tightening.allow_incomplete,
+            "base_policy_digest": tightening.base_policy_digest,
+            "force_abstain": tightening.force_abstain,
+            "max_records": tightening.max_records,
+            "max_returned_payload_bytes": tightening.max_returned_payload_bytes,
+            "minimum_margin_q32": tightening.minimum_margin_q32,
+            "minimum_score_q32": tightening.minimum_score_q32,
+            "top_k": tightening.top_k,
+        },
+    )
+
+
+@pytest.mark.parametrize(
+    ("policy_overrides", "tightening_overrides", "field_name"),
+    (
+        ({}, {"max_records": 129}, "max_records"),
+        ({}, {"top_k": 9}, "top_k"),
+        ({}, {"top_k": 1}, "top_k"),
+        ({}, {"max_returned_payload_bytes": 16_385}, "max_returned_payload_bytes"),
+        ({}, {"minimum_score_q32": 2**31 - 1}, "minimum_score_q32"),
+        ({}, {"minimum_margin_q32": 2**24 - 1}, "minimum_margin_q32"),
+        (
+            {"allow_approximate": False},
+            {"allow_approximate": True},
+            "allow_approximate",
+        ),
+        (
+            {"allow_incomplete": False},
+            {"allow_incomplete": True},
+            "allow_incomplete",
+        ),
+    ),
+)
+def test_policy_tightening_rejects_every_authority_expansion(
+    policy_overrides: dict[str, object],
+    tightening_overrides: dict[str, object],
+    field_name: str,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active, **policy_overrides)
+
+    with pytest.raises(InputBoundaryError, match=field_name):
+        tighten_recall_policy(policy, active, **tightening_overrides)  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value_delta"),
+    (("minimum_score_q32", -1), ("minimum_margin_q32", -1)),
+)
+def test_policy_tightening_rejects_a_base_below_calibration_floor(
+    field_name: str,
+    value_delta: int,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    floor = cast(int, getattr(active, field_name))
+    policy = _calibrated_policy(active, **{field_name: floor + value_delta})
+
+    with pytest.raises(InputBoundaryError, match=f"{field_name}.*calibration"):
+        tighten_recall_policy(policy, active)
+
+
+def test_policy_tightening_rejects_a_base_below_text_recall_margin_floor() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active, top_k=1)
+
+    with pytest.raises(InputBoundaryError, match="top_k"):
+        tighten_recall_policy(policy, active)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "replacement"),
+    (
+        ("scorer_id", "aluclu.similarity.other-q32.v1"),
+        ("normalizer_id", "aluclu.search-view.other.v1"),
+        ("feature_spec_id", "aluclu.feature.other.v1"),
+    ),
+)
+def test_policy_tightening_rejects_runtime_algorithm_mismatch(
+    field_name: str,
+    replacement: str,
+) -> None:
+    manifest = _label_manifest()
+    spec_overrides: dict[str, object] = {
+        "scorer_id": active_scorer_id(),
+        "normalizer_id": active_normalizer_id(),
+        "feature_spec_id": active_feature_spec_id(),
+        "alpha_decimal": "1",
+        "minimum_selected": 1,
+        "minimum_coverage_decimal": "0",
+    }
+    spec_overrides[field_name] = replacement
+    spec = replace(_calibration_spec(manifest), **spec_overrides)  # type: ignore[arg-type]
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    policy = RecallExecutionPolicyV1(
+        max_records=128,
+        top_k=8,
+        max_returned_payload_bytes=16_384,
+        active_normalizer_id=active_normalizer_id(),
+        active_feature_spec_id=active_feature_spec_id(),
+        minimum_score_q32=active.minimum_score_q32,
+        minimum_margin_q32=active.minimum_margin_q32,
+        allow_approximate=True,
+        allow_incomplete=True,
+    )
+
+    with pytest.raises(InputBoundaryError, match=field_name):
+        tighten_recall_policy(policy, active)
+
+
+def test_policy_tightening_rejects_lookalike_clone_and_mutation() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    recollection_module._validate_recall_policy_tightening(
+        tightening,
+        policy=policy,
+        active_profile=active,
+    )
+
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            {"effective_policy_digest": tightening.effective_policy_digest},
+            policy=policy,
+            active_profile=active,
+        )
+
+    clone = object.__new__(RecallPolicyTighteningV1)
+    for item in fields(tightening):
+        object.__setattr__(clone, item.name, getattr(tightening, item.name))
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            clone,
+            policy=policy,
+            active_profile=active,
+        )
+
+    object.__setattr__(tightening, "top_k", tightening.top_k + 1)
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=policy,
+            active_profile=active,
+        )
+
+
+def test_policy_tightening_cannot_be_rebound_to_another_policy_or_profile() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    another_policy = replace(policy, max_records=policy.max_records - 1)
+
+    with pytest.raises(InputBoundaryError, match="different base policy"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=another_policy,
+            active_profile=active,
+        )
+
+    another_active = _active_runtime_calibration_profile(
+        query_stratum_id="personal-memory.alternate.v1"
+    )
+    with pytest.raises(InputBoundaryError, match="different profile"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=policy,
+            active_profile=another_active,
+        )
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    (
+        ("force_abstain", 1),
+        ("allow_approximate", 0),
+        ("top_k", True),
+        ("effective_policy_digest", "not-a-digest"),
+        ("_authenticator", "not-bytes"),
+    ),
+)
+def test_policy_tightening_normalizes_malformed_handle_fields(
+    field_name: str,
+    invalid_value: object,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    object.__setattr__(tightening, field_name, invalid_value)
+
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=policy,
+            active_profile=active,
+        )
+
+
+def test_policy_tightening_surface_is_explicitly_exported() -> None:
+    expected_names = (
+        "RecallPolicyTighteningV1",
+        "active_scorer_id",
+        "tighten_recall_policy",
     )
 
     for name in expected_names:

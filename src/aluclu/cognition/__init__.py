@@ -125,6 +125,7 @@ from .recall_features import (
     RetrievalFeatureVectorV1,
     active_feature_spec_id,
     active_normalizer_id,
+    active_scorer_id,
     compare_feature_similarity_exact,
     encode_retrieval_text,
     feature_vector_digest,
@@ -150,9 +151,11 @@ from .recollection import (
     RecallContinuationV1,
     RecallExecutionPolicyV1,
     RecallFiltersV1,
+    RecallPolicyTighteningV1,
     RecollectionWorkV1,
     TextRecallQuery,
     recall,
+    tighten_recall_policy,
 )
 from .sensorium import (
     SENSORIUM_REPLAY_CONTINUATION_MAX_BYTES,
@@ -276,6 +279,7 @@ __all__ = [
     "RecallContinuationV1",
     "RecallExecutionPolicyV1",
     "RecallFiltersV1",
+    "RecallPolicyTighteningV1",
     "ReceiptClass",
     "RecollectionWorkV1",
     "RecordKeyReference",
@@ -304,6 +308,7 @@ __all__ = [
     "activate_calibration_profile",
     "active_feature_spec_id",
     "active_normalizer_id",
+    "active_scorer_id",
     "atomic_write_bytes",
     "baseline_boundary_profile",
     "bootstrap_replay_to_json_value",
@@ -387,5 +392,6 @@ __all__ = [
     "strict_json_loads",
     "threshold_calibration_from_json_value",
     "threshold_calibration_to_json_value",
+    "tighten_recall_policy",
     "validate_event_id",
 ]
