@@ -1507,8 +1507,9 @@ generate held-out real artifacts before enabling a release profile.
 
 RED oracles:
 
-- proposal from approximate/conflicted/missing/tombstoned/stale-hash memory is
-  rejected;
+- the pure proposal rejects approximate/conflicted/missing or malformed exact
+  recollection input without a ledger read; commit rejects tombstoned or
+  stale-hash parent/trigger endpoints before any lineage append;
 - proposal is pure and repeatable; same inputs have the same `recon:` ID;
 - commit appends one lineage record and does not mutate parent or trigger;
 - reconsolidation payload contains no parent content, trigger content, snippet,

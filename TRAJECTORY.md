@@ -2374,3 +2374,18 @@ session can map each decision to the exact diff.
   worktree is clean at this checkpoint. The commit name deliberately says
   GREEN: Task 2.6 is not CLEAN, Task 2.7 cannot yet consume it as an accepted
   upstream gate, and Task 2 as a whole remains open.
+- Task 2.6 independent review attempts at clean HEAD `04acc16`: the
+  code/spec/security lane inspects the five changed files plus the Task 2 plan
+  and supporting recollection/ledger contracts, reruns 15 focused tests on
+  CPython 3.13.5, Ruff, compileall, pinned Pyright, and diff-check, and returns
+  COMMENT with zero Critical/High/Medium findings and one Low acceptance-
+  wording ambiguity. The pure proposal API cannot read ledger tombstones or
+  live hashes, although commit already rejects those endpoints before append.
+  The Task 2.6 RED oracle is clarified to distinguish proposal-time typed/
+  malformed-input rejection from commit-time live-endpoint rejection; the
+  no-invalid-lineage threshold is unchanged. The separate architect lane
+  fails before review with HTTP 400 because its fixed `gpt-5.4-mini` model is
+  unsupported on this Codex account. The authoring lane does not replace this
+  missing independent evidence. Combined review is UNAVAILABLE/NOT APPROVED;
+  Task 2.6 remains GREEN, not CLEAN, and Task 2.7 implementation waits for a
+  supported independent architecture path.
