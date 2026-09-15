@@ -2323,3 +2323,48 @@ session can map each decision to the exact diff.
   mutation, and no resurrection after either endpoint is shredded. Task 2.7
   vertical E2E/scale/portability and Task 2.8 final independent gate remain
   downstream; no Task 2 or ALC capability claim is opened by C3 alone.
+- Task 2.6 starts fixture-first from clean handoff commit `79afc42`.
+  `tests/test_cognition_reconsolidation.py` first pins a deterministic pure
+  `recon:` proposal, one content-free append-only correction child, unchanged
+  parent/trigger hashes, lost-return/reopen idempotence, rejection of nonexact
+  or self-parent inputs, and no parent-content resurrection after shred. The
+  initial CPython 3.12.13 run is the expected RED at collection:
+  `ModuleNotFoundError: No module named 'aluclu.cognition.reconsolidation'`.
+  No existing Task 2 test was weakened to reach this RED. Before GREEN, the
+  remaining explicit oracles must expand to tombstoned/stale/cross-ledger
+  endpoint rejection, malformed lineage wire, cursor-before-commit,
+  conflicting observations, and a real subprocess lost-return boundary.
+- Task 2.6 first implementation adds a content-free `ReconsolidationRecordV1`,
+  deterministic framed-SHA256 `recon:` identity, pure proposal, live
+  parent/trigger read-back under one passed `VerifiedLedgerSession`, and one
+  `append_once`. The first five fixtures pass on CPython 3.12.13, but this is
+  GREEN only, not CLEAN. An expanded decoder fixture then produces a second
+  isolated RED at collection because the strict V1 JSON decoder is missing.
+  The decoder now accepts exactly the twelve permitted schema/lineage fields,
+  reconstructs enum and hash-bound identity, and rejects extra content fields.
+  Stale hash, shredded endpoint, active cursor, and cross-ledger provenance
+  checks expand the focused set to 9/9 GREEN. A real subprocess appends the
+  lineage and exits with code 93 before caller-visible completion; reopen and
+  retry return duplicate with exactly one lineage record, making 10/10 GREEN.
+  Reverse edges, excessive-parent wire fields, bool-as-sequence, changed
+  reason identity, and malformed calibrated evidence then expand the focused
+  matrix to 12/12 GREEN on CPython 3.12.13. Wider Task 2 regression, both
+  runtime/static gates, independent review, and final Task 2.6 handoff remain
+  open; no native model or production learning claim follows from this fixture.
+- The focused Task 2.6 matrix expands to 15/15 on both CPython 3.12.13 and
+  3.13.5 after parameterizing parent/trigger shredding, proving two
+  contradictory correction observations remain distinct, and rejecting a bare
+  ledger or closed verified session. Ruff, compileall, `git diff --check`, and
+  pinned Pyright 1.1.413 are clean on this final source snapshot (Pyright:
+  0 errors, 0 warnings, 0 informations). The final 11-file Task 2 regression
+  package passes 490/490 selected tests on CPython 3.12.13 and 3.13.5 from
+  this source snapshot. Only the already-completed approximately one-hour
+  8192-observation replay fixture is explicitly deselected for this repeat;
+  the other scale tests run. Until independent review accepts the slice, Task
+  2.6 remains GREEN, not CLEAN.
+  Calibration/profile digests in a lineage edge are metadata copied from the
+  supplied exact-recollection object; endpoint read-back authenticates the
+  observations, but cannot itself attest that a caller-produced calibration
+  execution really occurred. Downstream code must not treat this metadata as
+  a signed calibration authority or factual-truth certificate. A real held-out
+  calibration/release decision remains Task 12 evidence.

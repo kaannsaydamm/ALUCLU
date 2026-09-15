@@ -158,6 +158,16 @@ from .recollection import (
     recall,
     tighten_recall_policy,
 )
+from .reconsolidation import (
+    RECONSOLIDATION_SCHEMA,
+    ReconsolidationProposalV1,
+    ReconsolidationReason,
+    ReconsolidationRecordV1,
+    commit_reconsolidation,
+    propose_reconsolidation,
+    reconsolidation_record_from_json_value,
+    reconsolidation_record_to_json_value,
+)
 from .sensorium import (
     SENSORIUM_REPLAY_CONTINUATION_MAX_BYTES,
     SENSORIUM_REPLAY_MAX_RECORDS,
@@ -204,6 +214,7 @@ from .sensorium import (
 )
 
 __all__ = [
+    "RECONSOLIDATION_SCHEMA",
     "SENSORIUM_REPLAY_CONTINUATION_MAX_BYTES",
     "SENSORIUM_REPLAY_MAX_RECORDS",
     "AbstainReason",
@@ -284,6 +295,9 @@ __all__ = [
     "RecallPolicyTighteningV1",
     "ReceiptClass",
     "RecollectionWorkV1",
+    "ReconsolidationProposalV1",
+    "ReconsolidationReason",
+    "ReconsolidationRecordV1",
     "RecordKeyReference",
     "RecordKeyState",
     "RecordKeyStore",
@@ -327,6 +341,7 @@ __all__ = [
     "canonicalize_observation",
     "classify_observation_receipt",
     "clopper_pearson_upper_bound",
+    "commit_reconsolidation",
     "compare_feature_similarity_exact",
     "create_record_key_store",
     "decode_calibration_artifact",
@@ -373,7 +388,10 @@ __all__ = [
     "observation_rejected_to_json_value",
     "observation_request_from_json_value",
     "observation_request_to_json_value",
+    "propose_reconsolidation",
     "recall",
+    "reconsolidation_record_from_json_value",
+    "reconsolidation_record_to_json_value",
     "replay_complete_from_json_value",
     "replay_complete_to_json_value",
     "replay_continuation_from_json_value",
