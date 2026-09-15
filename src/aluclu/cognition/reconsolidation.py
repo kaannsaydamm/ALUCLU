@@ -1,4 +1,4 @@
-"""Explicit, content-free lineage between two independently stored observations."""
+"""Content-free lineage; recall annotations are not calibration authority."""
 
 from __future__ import annotations
 
@@ -42,6 +42,8 @@ class ReconsolidationReason(str, Enum):
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class ReconsolidationRecordV1:
+    """Endpoint-bound lineage with caller-declared, non-authoritative recall tags."""
+
     reconsolidation_id: str
     parent_observation_id: str
     parent_sequence: int

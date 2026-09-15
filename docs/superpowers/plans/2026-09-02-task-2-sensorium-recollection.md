@@ -705,7 +705,7 @@ outside explicit test harnesses, requires `PRODUCTION_ACCEPTED`.
 - explicit reason enum (`CORRECTION`, `CONTEXT_ADDED`, `USER_LINK`, or
   `OUTCOME_LINK`);
 - parent and trigger sequence/record hashes;
-- the recall/profile evidence that motivated the proposal;
+- the caller-declared recall/profile annotations that motivated the proposal;
 - no claim that either payload is true.
 
 `ReconsolidationRecordV1` has schema discriminator
@@ -717,6 +717,14 @@ creation sequence comes from the enclosing Task 1 `LedgerRecord`; it is not
 predicted inside the payload before append. The record never copies parent
 or trigger content. This prevents a lineage edge from resurrecting either
 shredded endpoint.
+
+The lineage `recall_basis`, calibration-profile digest, and effective-policy
+digest are caller-declared, non-authoritative annotations. Commit authenticates
+only the referenced observations' identity, hashes, and liveness; it does not
+attest that a particular recall or calibration execution occurred. No reader
+may treat these annotations as selection certification, activation authority,
+statistical acceptance, or factual truth. If a later consumer needs such an
+attestation, it requires a separate session-bound capability and its own gate.
 
 `RecallContinuationV1` carries the query/policy/profile digests, exact Task 1
 snapshot checkpoint, bounded top-k candidate metadata accumulated so far, and
@@ -1543,6 +1551,9 @@ Full E2E scenario:
    ordering, conflict state, and lineage;
 8. shred a selected parent and prove no resurrection;
 9. run the same scenario with page splits and process restarts.
+10. decode/replay a well-formed but caller-fabricated calibrated lineage edge
+    and prove its annotations are preserved only as metadata, never promoted
+    to calibrated-selection proof, activation authority, or factual truth.
 
 Scale gate on the current host:
 

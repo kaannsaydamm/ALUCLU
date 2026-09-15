@@ -2389,3 +2389,18 @@ session can map each decision to the exact diff.
   missing independent evidence. Combined review is UNAVAILABLE/NOT APPROVED;
   Task 2.6 remains GREEN, not CLEAN, and Task 2.7 implementation waits for a
   supported independent architecture path.
+- Documentation repair commit `5abfdb8` clarifies pure-proposal versus
+  commit-time liveness rejection. The same focused Task 2.6 suite reruns 15/15
+  on CPython 3.13.5; the code/spec/security lane re-reviews the sole Low
+  finding and returns APPROVE with zero remaining issues. A separate supported
+  `project-architect` lane independently runs 15/15 focused tests on CPython
+  3.12 and returns WATCH, not BLOCK: a caller can construct a well-formed
+  calibrated `ExactRecollection`, so its profile/policy digests in lineage
+  cannot attest actual calibration execution. The trajectory had already
+  documented this, but normative Task 2 plan §6.6 did not. The plan/API
+  docstrings now explicitly mark these tags as caller-declared,
+  non-authoritative metadata and Task 2.7 gains a lineage-consumer oracle that
+  forbids promotion to selection proof, activation authority, or truth. This
+  is a specification/contract repair, not a claim that the Task 2.7 oracle has
+  run. Independent re-review of the amended snapshot, relevant static/focused
+  tests, and exact checkpoint commit remain open before Task 2.6 CLEAN.
