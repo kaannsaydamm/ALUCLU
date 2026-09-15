@@ -2313,3 +2313,13 @@ session can map each decision to the exact diff.
   assert real held-out calibration accuracy or production activation, which
   remain dependent on Task 12 evidence. Task 2.6 reconsolidation is next;
   Task 2 as a whole is not yet CLEAN and ALC-R0 cannot start yet.
+- Checkpoint commit `350317d` (`Add calibrated selective recollection`)
+  records the independently reviewed C3 implementation and evidence. The
+  tracked worktree is clean after this commit. Task 2.6 now starts from this
+  exact base, not from the interrupted uncommitted C3 snapshot. Its first RED
+  must establish a content-free immutable lineage record, deterministic
+  proposal identity, same-session verified parent/trigger hash checks,
+  append-once crash retry, explicit correction reason, no read-triggered
+  mutation, and no resurrection after either endpoint is shredded. Task 2.7
+  vertical E2E/scale/portability and Task 2.8 final independent gate remain
+  downstream; no Task 2 or ALC capability claim is opened by C3 alone.
