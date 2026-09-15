@@ -2456,3 +2456,37 @@ session can map each decision to the exact diff.
   class. This is a host-selection research note, not a downloaded-model,
   training, ALC-0 capability, or native-ALUCLU claim; exact artifact hashes and
   local fit must still be frozen and executed only after Task 2 CLEAN.
+- Task 2.7 GREEN slice 2 strengthens the vertical fixture at the actual process
+  boundary. The first RED invokes a not-yet-existing replay worker and fails
+  with exit code 2 / missing `tests/helpers/task2_vertical_worker.py`; no
+  production behavior is changed to obtain the failure. The worker then opens
+  the same encrypted ledger for exactly one bounded replay page per invocation.
+  Incomplete pages emit only the public strict-JSON
+  `SensoriumReplayContinuationV1`; every next page runs in a fresh Python
+  process and resumes through Task 1's verified checkpoint. Process-local
+  `RecallContinuationV1` is never serialized: direct, calibrated, conflict,
+  and forced-abstention queries restart and complete from sequence zero in the
+  final fresh process.
+- The pre-shred vertical result is identical for six one-record processes, two
+  three-record processes, and one 64-record process: final sensorium-state
+  hash, all episode IDs and authenticated record hashes, calibrated selected
+  observation, ordered conflict candidates, forced-abstention reason, and
+  decoded lineage metadata all agree. The lineage parent is deliberately a
+  caller-fabricated `CALIBRATED_TEXT_MATCH` recollection with fixed `e...`
+  profile and `f...` effective-policy tags. Fresh-process decoding preserves
+  those exact annotations but the `recon:` child remains unqueryable as an
+  observation, carries no content, and exposes no verified-fact field. This is
+  the mandatory non-authority consumer oracle, not evidence that the fabricated
+  calibration ran or is trustworthy.
+- After parent shredding, a new process-per-page replay starts from the baseline
+  profile rather than reusing a pre-shred continuation. It matches a fresh
+  one-shot process, returns `NoRecollection` for the parent, retains the
+  tombstone, and strictly decodes the still content-free lineage without
+  resurrecting parent plaintext. The final vertical fixture passes 1/1 on
+  CPython 3.12.13 and 3.13.5. The 99-test related package spanning vertical,
+  prior E2E, sensorium, recollection, and reconsolidation passes 99/99 on
+  CPython 3.13.5. Scoped Ruff, compileall, `git diff --check`, and pinned
+  Pyright 1.1.413 pass at 0 errors, 0 warnings, 0 informations. This remains a
+  Task 2.7 GREEN checkpoint: the real 8,192-observation machine-readable scale
+  artifact and honest multi-OS/Python portability evidence are still open, so
+  neither Task 2.7 nor Task 2 is CLEAN.

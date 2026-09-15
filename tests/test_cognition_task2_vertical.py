@@ -1,12 +1,19 @@
 from __future__ import annotations
 
+import json
+import os
+import subprocess
+import sys
+from dataclasses import replace
 from pathlib import Path
+from typing import cast
 
 import pytest
 
 from aluclu.cognition import (
     AbstainedRecollection,
     ActiveCalibrationProfileV1,
+    CalibratedTextMatchEvidenceV1,
     CalibrationCompatibilityRequirementsV1,
     CalibrationProfileV1,
     CalibrationPurpose,
@@ -26,6 +33,7 @@ from aluclu.cognition import (
     ProvenanceV1,
     RecallBasis,
     RecallExecutionPolicyV1,
+    RecollectionWorkV1,
     ReconsolidationReason,
     SensoriumReplayCompleteV1,
     SensoriumReplayContinuationV1,
@@ -59,6 +67,68 @@ from aluclu.cognition.ledger import VerifiedLedgerSession
 
 MASTER_KEY = b"v" * 32
 DATASET_DIGEST = "b" * 64
+WORKER = Path(__file__).resolve().parent / "helpers" / "task2_vertical_worker.py"
+SRC_ROOT = Path(__file__).resolve().parents[1] / "src"
+TEST_ROOT = Path(__file__).resolve().parent
+
+
+def _run_restart_snapshot(
+    path: Path,
+    *,
+    page_size: int,
+    reconsolidation_id: str,
+    mode: str = "live",
+) -> tuple[dict[str, object], int]:
+    env = os.environ.copy()
+    python_paths = (str(SRC_ROOT), str(TEST_ROOT))
+    existing_python_path = env.get("PYTHONPATH")
+    env["PYTHONPATH"] = os.pathsep.join(
+        (*python_paths, existing_python_path) if existing_python_path else python_paths
+    )
+    env["PYTHONIOENCODING"] = "utf-8"
+    continuation: dict[str, object] | None = None
+    for process_count in range(1, 17):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(WORKER),
+                str(path),
+                str(page_size),
+                reconsolidation_id,
+                mode,
+            ],
+            cwd=Path(__file__).resolve().parents[1],
+            env=env,
+            input=(
+                ""
+                if continuation is None
+                else json.dumps(
+                    continuation,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+            ),
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=30,
+        )
+        assert completed.returncode == 0, (completed.stdout, completed.stderr)
+        assert completed.stderr == ""
+        decoded: object = json.loads(completed.stdout)
+        assert type(decoded) is dict
+        payload = cast(dict[str, object], decoded)
+        if payload.get("status") == "incomplete":
+            next_continuation = payload.get("continuation")
+            assert type(next_continuation) is dict
+            continuation = cast(dict[str, object], next_continuation)
+            continue
+        assert payload.get("status") == "complete"
+        snapshot = payload.get("snapshot")
+        assert type(snapshot) is dict
+        return cast(dict[str, object], snapshot), process_count
+    raise AssertionError("vertical replay exceeded the bounded subprocess count")
 
 
 def _request(
@@ -302,13 +372,63 @@ def test_task2_full_vertical_restart_lineage_and_no_authority_promotion(
             )
             assert type(forced) is AbstainedRecollection
 
+            forged_evidence = CalibratedTextMatchEvidenceV1(
+                profile_digest="e" * 64,
+                effective_policy_digest="f" * 64,
+                score_q32=2**32,
+                margin_q32=2**31,
+            )
+            caller_fabricated_parent = replace(
+                parent,
+                basis=RecallBasis.CALIBRATED_TEXT_MATCH,
+                work=RecollectionWorkV1(
+                    records_scanned=len(requests),
+                    canonical_payload_bytes_decoded=1,
+                    candidates_scored=len(requests),
+                    candidates_returned=1,
+                    output_bytes=len(parent.content.canonical_bytes),
+                    exhaustive=True,
+                ),
+                calibrated_evidence=forged_evidence,
+            )
             proposal = propose_reconsolidation(
-                parent, trigger, reason=ReconsolidationReason.CORRECTION
+                caller_fabricated_parent,
+                trigger,
+                reason=ReconsolidationReason.CORRECTION,
             )
             created = commit_reconsolidation(session, proposal)
             assert created.created is True
             expected_parent_hash = parent.record_hash
             expected_trigger_hash = trigger.record_hash
+
+    one_record_pages, one_record_processes = _run_restart_snapshot(
+        path,
+        page_size=1,
+        reconsolidation_id=proposal.reconsolidation_id,
+    )
+    three_record_pages, three_record_processes = _run_restart_snapshot(
+        path,
+        page_size=3,
+        reconsolidation_id=proposal.reconsolidation_id,
+    )
+    one_shot, one_shot_processes = _run_restart_snapshot(
+        path,
+        page_size=64,
+        reconsolidation_id=proposal.reconsolidation_id,
+    )
+    assert one_record_pages == three_record_pages == one_shot
+    assert one_record_processes == len(requests) + 1
+    assert three_record_processes == 2
+    assert one_shot_processes == 1
+    assert one_record_pages["parent_record_hash"] == expected_parent_hash
+    assert one_record_pages["trigger_record_hash"] == expected_trigger_hash
+    assert one_record_pages["selected_observation_id"] == requests[1].observation_id
+    assert one_record_pages["lineage_basis"] == RecallBasis.CALIBRATED_TEXT_MATCH.value
+    assert one_record_pages["lineage_profile_digest"] == "e" * 64
+    assert one_record_pages["lineage_effective_policy_digest"] == "f" * 64
+    assert one_record_pages["lineage_observation_queryable"] is False
+    assert one_record_pages["lineage_contains_content"] is False
+    assert one_record_pages["lineage_claims_verified_fact"] is False
 
     with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as reopened:
         with reopened.verified_session() as session:
@@ -333,6 +453,13 @@ def test_task2_full_vertical_restart_lineage_and_no_authority_promotion(
             assert child is not None
             decoded = reconsolidation_record_from_json_value(child.payload)
             assert decoded == proposal.record
+            assert decoded.recall_basis is RecallBasis.CALIBRATED_TEXT_MATCH
+            assert decoded.calibration_profile_digest == "e" * 64
+            assert decoded.effective_policy_digest == "f" * 64
+            assert type(child.payload) is dict
+            lineage_payload = cast(dict[str, object], child.payload)
+            assert "content" not in lineage_payload
+            assert "content_is_verified_fact" not in lineage_payload
             with pytest.raises(InputBoundaryError, match="observation_id is invalid"):
                 EventIdRecallQuery(observation_id=proposal.reconsolidation_id)
             assert session.shred(parent.observation_id)
@@ -346,3 +473,23 @@ def test_task2_full_vertical_restart_lineage_and_no_authority_promotion(
             assert child is not None
             assert "original personal observation" not in str(child.payload)
             assert session.is_tombstoned(parent.observation_id)
+
+    shredded_pages, shredded_processes = _run_restart_snapshot(
+        path,
+        page_size=1,
+        reconsolidation_id=proposal.reconsolidation_id,
+        mode="shredded",
+    )
+    shredded_one_shot, shredded_one_shot_processes = _run_restart_snapshot(
+        path,
+        page_size=64,
+        reconsolidation_id=proposal.reconsolidation_id,
+        mode="shredded",
+    )
+    assert shredded_pages == shredded_one_shot
+    assert shredded_processes > 1
+    assert shredded_one_shot_processes == 1
+    assert shredded_pages["parent_recollection"] == "none"
+    assert shredded_pages["parent_tombstoned"] is True
+    assert shredded_pages["lineage_contains_content"] is False
+    assert shredded_pages["lineage_claims_verified_fact"] is False
