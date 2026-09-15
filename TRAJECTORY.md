@@ -2404,3 +2404,19 @@ session can map each decision to the exact diff.
   is a specification/contract repair, not a claim that the Task 2.7 oracle has
   run. Independent re-review of the amended snapshot, relevant static/focused
   tests, and exact checkpoint commit remain open before Task 2.6 CLEAN.
+- Final independent re-review on exact clean commit `86d5468` closes both Task
+  2.6 lanes. The code/spec/security lane reports APPROVE with zero findings,
+  confirms the post-`5abfdb8` diff is limited to the restrictive authority
+  contract/docstrings/trajectory, reruns 15/15 focused tests, Ruff, compileall,
+  pinned Pyright (0/0/0), and diff-check, and finds no lowered numeric,
+  statistical, rejection, or production-activation threshold. The independent
+  architecture lane reports CLEAR with no remaining blocker or watch item,
+  independently runs 15/15 focused tests on CPython 3.12 plus scoped Ruff and
+  diff-check, and confirms the caller-constructible recall tags are now an
+  explicit non-authoritative representation choice. It assigns the forged-tag
+  no-promotion test to the mandatory Task 2.7 consumer gate, without claiming
+  that gate has run. Both lanes see an empty tracked/untracked status on the
+  reviewed commit. Task 2.6 explicit immutable reconsolidation gate: CLEAN for
+  the bounded TEST_ONLY mechanical slice. This grants no production
+  calibration, factual-truth, neural-learning, ALC-R0, or whole-Task-2 claim.
+  Task 2.7 full vertical/restart/scale/portability evidence is next.
