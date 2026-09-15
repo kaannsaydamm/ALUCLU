@@ -2368,3 +2368,9 @@ session can map each decision to the exact diff.
   execution really occurred. Downstream code must not treat this metadata as
   a signed calibration authority or factual-truth certificate. A real held-out
   calibration/release decision remains Task 12 evidence.
+- Checkpoint commit `9da4188` (`Add reconsolidation lineage green checkpoint`)
+  records the Task 2.6 implementation, RED/GREEN fixtures, two-runtime 490-test
+  regression result, and exact remaining independent-review gate. The tracked
+  worktree is clean at this checkpoint. The commit name deliberately says
+  GREEN: Task 2.6 is not CLEAN, Task 2.7 cannot yet consume it as an accepted
+  upstream gate, and Task 2 as a whole remains open.
