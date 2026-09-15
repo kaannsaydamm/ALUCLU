@@ -13,6 +13,8 @@ from typing import cast, overload
 
 from .calibration import (
     ActiveCalibrationProfileV1,
+    CalibrationProfileUnavailableReason,
+    CalibrationProfileUnavailableV1,
     _validate_active_calibration_profile,
 )
 from .codec import canonical_json_bytes, validate_event_id
@@ -264,6 +266,24 @@ _LIVE_POLICY_TIGHTENINGS: weakref.WeakValueDictionary[
 ] = weakref.WeakValueDictionary()
 
 
+@dataclass(frozen=True, slots=True)
+class _FrozenTextRecallPolicyV1:
+    policy_digest: str
+    profile_digest: str
+    calibrated: bool
+    active_scorer_id: str
+    active_normalizer_id: str
+    active_feature_spec_id: str
+    max_records: int
+    top_k: int
+    max_returned_payload_bytes: int
+    minimum_score_q32: int
+    minimum_margin_q32: int
+    allow_approximate: bool
+    allow_incomplete: bool
+    force_abstain: bool
+
+
 def tighten_recall_policy(
     policy: RecallExecutionPolicyV1,
     active_profile: ActiveCalibrationProfileV1,
@@ -470,6 +490,7 @@ class AbstainReason(str, Enum):
     WORK_BUDGET_EXHAUSTED = "work_budget_exhausted"
     PAYLOAD_BUDGET_EXCEEDED = "payload_budget_exceeded"
     APPROXIMATE_DISABLED = "approximate_disabled"
+    POLICY_FORCED_ABSTENTION = "policy_forced_abstention"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -706,6 +727,20 @@ class AbstainedRecollection:
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
+class CalibratedTextMatchEvidenceV1:
+    profile_digest: str
+    effective_policy_digest: str
+    score_q32: int
+    margin_q32: int
+
+    def __post_init__(self) -> None:
+        _require_digest(self.profile_digest, "profile_digest")
+        _require_digest(self.effective_policy_digest, "effective_policy_digest")
+        _require_bounded_int(self.score_q32, "score_q32", 0, _MAX_Q32)
+        _require_bounded_int(self.margin_q32, "margin_q32", 0, _MAX_Q32)
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
 class ExactRecollection:
     content: CanonicalJsonValue
     observation_id: str
@@ -716,6 +751,7 @@ class ExactRecollection:
     provenance: ProvenanceV1
     basis: RecallBasis
     work: RecollectionWorkV1 | None = None
+    calibrated_evidence: CalibratedTextMatchEvidenceV1 | None = None
 
     def __post_init__(self) -> None:
         if type(self.content) is not CanonicalJsonValue:
@@ -736,6 +772,23 @@ class ExactRecollection:
             raise InputBoundaryError("recollection basis is invalid")
         if self.work is not None and type(self.work) is not RecollectionWorkV1:
             raise InputBoundaryError("recollection work is invalid")
+        if self.basis is RecallBasis.CALIBRATED_TEXT_MATCH:
+            if type(self.calibrated_evidence) is not CalibratedTextMatchEvidenceV1:
+                raise InputBoundaryError(
+                    "calibrated text recollection requires calibrated evidence"
+                )
+            if (
+                type(self.work) is not RecollectionWorkV1
+                or not self.work.exhaustive
+                or self.work.candidates_returned != 1
+            ):
+                raise InputBoundaryError(
+                    "calibrated text recollection requires completed single-candidate work"
+                )
+        elif self.calibrated_evidence is not None:
+            raise InputBoundaryError(
+                "non-calibrated recollection cannot carry calibrated evidence"
+            )
 
     @property
     def content_is_observation(self) -> bool:
@@ -793,13 +846,17 @@ def recall(
     query: TextRecallQuery,
     *,
     policy: RecallExecutionPolicyV1,
+    active_profile: ActiveCalibrationProfileV1 | None = None,
+    policy_tightening: RecallPolicyTighteningV1 | None = None,
     continuation: RecallContinuationV1 | None = None,
 ) -> (
-    ApproximateCandidates
+    ExactRecollection
+    | ApproximateCandidates
     | ConflictedRecollection
     | NoTextRecollection
     | IncompleteRecollection
     | AbstainedRecollection
+    | CalibrationProfileUnavailableV1
 ):
     ...
 
@@ -809,6 +866,8 @@ def recall(
     query: EventIdRecallQuery | ContentDigestRecallQuery | TextRecallQuery,
     *,
     policy: RecallExecutionPolicyV1 | None = None,
+    active_profile: ActiveCalibrationProfileV1 | None = None,
+    policy_tightening: RecallPolicyTighteningV1 | None = None,
     continuation: RecallContinuationV1 | None = None,
 ) -> (
     ExactRecollection
@@ -820,21 +879,37 @@ def recall(
     | NoTextRecollection
     | IncompleteRecollection
     | AbstainedRecollection
+    | CalibrationProfileUnavailableV1
 ):
     active = _require_session(session)
     if type(query) is ContentDigestRecallQuery:
+        if active_profile is not None or policy_tightening is not None:
+            raise InputBoundaryError(
+                "content-digest recall does not accept calibration state"
+            )
         if type(policy) is not RecallExecutionPolicyV1:
             raise InputBoundaryError("scan recall requires RecallExecutionPolicyV1")
+        _validate_recall_execution_policy(policy)
         return _recall_content_digest(active, query, policy, continuation)
     if type(query) is TextRecallQuery:
         if type(policy) is not RecallExecutionPolicyV1:
             raise InputBoundaryError("scan recall requires RecallExecutionPolicyV1")
-        if policy.top_k < 2:
-            raise InputBoundaryError("text recall policy top_k must be at least 2")
-        return _recall_text(active, query, policy, continuation)
+        return _recall_text(
+            active,
+            query,
+            policy,
+            active_profile,
+            policy_tightening,
+            continuation,
+        )
     if type(query) is not EventIdRecallQuery:
         raise InputBoundaryError("query is not a supported recall query")
-    if policy is not None or continuation is not None:
+    if (
+        policy is not None
+        or active_profile is not None
+        or policy_tightening is not None
+        or continuation is not None
+    ):
         raise InputBoundaryError("direct-ID recall does not accept scan state")
     record = active.read(query.observation_id)
     if record is None:
@@ -1008,43 +1083,125 @@ def _recall_content_digest(
     )
 
 
+def _freeze_text_recall_policy(
+    policy: RecallExecutionPolicyV1,
+    *,
+    active_profile: ActiveCalibrationProfileV1 | None,
+    policy_tightening: RecallPolicyTighteningV1 | None,
+) -> _FrozenTextRecallPolicyV1:
+    _validate_recall_execution_policy(policy)
+    if policy.top_k < 2:
+        raise InputBoundaryError("text recall policy top_k must be at least 2")
+    if (active_profile is None) != (policy_tightening is None):
+        raise InputBoundaryError(
+            "calibrated text recall requires both profile and policy tightening"
+        )
+    if active_profile is None:
+        return _FrozenTextRecallPolicyV1(
+            policy_digest=_policy_digest(policy),
+            profile_digest=_no_calibration_profile_digest(),
+            calibrated=False,
+            active_scorer_id=runtime_scorer_id(),
+            active_normalizer_id=policy.active_normalizer_id,
+            active_feature_spec_id=policy.active_feature_spec_id,
+            max_records=policy.max_records,
+            top_k=policy.top_k,
+            max_returned_payload_bytes=policy.max_returned_payload_bytes,
+            minimum_score_q32=policy.minimum_score_q32,
+            minimum_margin_q32=policy.minimum_margin_q32,
+            allow_approximate=policy.allow_approximate,
+            allow_incomplete=policy.allow_incomplete,
+            force_abstain=False,
+        )
+
+    typed_profile = cast(ActiveCalibrationProfileV1, active_profile)
+    typed_tightening = cast(RecallPolicyTighteningV1, policy_tightening)
+    _validate_active_calibration_profile(typed_profile)
+    _validate_recall_policy_tightening(
+        typed_tightening,
+        policy=policy,
+        active_profile=typed_profile,
+    )
+    return _FrozenTextRecallPolicyV1(
+        policy_digest=typed_tightening.effective_policy_digest,
+        profile_digest=typed_profile.profile_digest,
+        calibrated=True,
+        active_scorer_id=typed_tightening.active_scorer_id,
+        active_normalizer_id=typed_tightening.active_normalizer_id,
+        active_feature_spec_id=typed_tightening.active_feature_spec_id,
+        max_records=typed_tightening.max_records,
+        top_k=typed_tightening.top_k,
+        max_returned_payload_bytes=typed_tightening.max_returned_payload_bytes,
+        minimum_score_q32=typed_tightening.minimum_score_q32,
+        minimum_margin_q32=typed_tightening.minimum_margin_q32,
+        allow_approximate=typed_tightening.allow_approximate,
+        allow_incomplete=typed_tightening.allow_incomplete,
+        force_abstain=typed_tightening.force_abstain,
+    )
+
+
 def _recall_text(
     session: VerifiedLedgerSession,
     query: TextRecallQuery,
     policy: RecallExecutionPolicyV1,
+    active_profile: ActiveCalibrationProfileV1 | None,
+    policy_tightening: RecallPolicyTighteningV1 | None,
     continuation: RecallContinuationV1 | None,
 ) -> (
-    ApproximateCandidates
+    ExactRecollection
+    | ApproximateCandidates
     | ConflictedRecollection
     | NoTextRecollection
     | IncompleteRecollection
     | AbstainedRecollection
+    | CalibrationProfileUnavailableV1
 ):
+    effective = _freeze_text_recall_policy(
+        policy,
+        active_profile=active_profile,
+        policy_tightening=policy_tightening,
+    )
     query_digest = _query_digest(query)
-    policy_digest = _policy_digest(policy)
+    if continuation is not None:
+        _validate_continuation(
+            continuation,
+            query_digest=query_digest,
+            policy_digest=effective.policy_digest,
+            profile_digest=effective.profile_digest,
+        )
+        if continuation.exact_match_count != 0 or continuation.exact_summaries:
+            raise InputBoundaryError("text continuation carries exact-digest state")
+        if effective.force_abstain:
+            raise InputBoundaryError(
+                "forced-abstention recall cannot accept a continuation"
+            )
+    if not effective.calibrated and not effective.allow_approximate:
+        return CalibrationProfileUnavailableV1(
+            reason=CalibrationProfileUnavailableReason.MISSING,
+            spec_digest=None,
+            artifact_digest=None,
+        )
+    if effective.force_abstain:
+        return AbstainedRecollection(
+            reason=AbstainReason.POLICY_FORCED_ABSTENTION,
+            work=_empty_work(exhaustive=False),
+        )
     query_vector = encode_retrieval_text(
         query.text,
-        feature_spec_id=policy.active_feature_spec_id,
+        feature_spec_id=effective.active_feature_spec_id,
     )
     if continuation is None:
         cursor = session.cursor(
             after_sequence=0,
-            batch_size=max(1, min(policy.max_records, 64)),
+            batch_size=max(1, min(effective.max_records, 64)),
         )
         candidates: tuple[_TextCandidateStateV1, ...] = ()
         conflict_candidates: tuple[_TextCandidateStateV1, ...] = ()
         prior_work = _empty_work(exhaustive=False)
     else:
-        _validate_continuation(
-            continuation,
-            query_digest=query_digest,
-            policy_digest=policy_digest,
-        )
-        if continuation.exact_match_count != 0 or continuation.exact_summaries:
-            raise InputBoundaryError("text continuation carries exact-digest state")
         cursor = session.resume_verified(
             continuation.checkpoint,
-            batch_size=max(1, min(policy.max_records, 64)),
+            batch_size=max(1, min(effective.max_records, 64)),
         )
         candidates = continuation.text_candidates
         conflict_candidates = continuation.conflict_candidates
@@ -1054,7 +1211,7 @@ def _recall_text(
     page_bytes = 0
     page_candidates_scored = 0
     try:
-        while page_records < policy.max_records:
+        while page_records < effective.max_records:
             try:
                 record = next(cursor)
             except StopIteration:
@@ -1069,11 +1226,11 @@ def _recall_text(
                 continue
             candidate_vector = encode_retrieval_text(
                 retrieval_text,
-                feature_spec_id=policy.active_feature_spec_id,
+                feature_spec_id=effective.active_feature_spec_id,
             )
             similarity = measure_feature_similarity(query_vector, candidate_vector)
             page_candidates_scored += 1
-            if similarity.score_q32 < policy.minimum_score_q32:
+            if similarity.score_q32 < effective.minimum_score_q32:
                 continue
             candidate_state = _text_candidate_state(
                 record,
@@ -1085,7 +1242,7 @@ def _recall_text(
             candidates = _retain_text_candidate(
                 candidates,
                 candidate_state,
-                top_k=policy.top_k,
+                top_k=effective.top_k,
             )
             conflict_candidates = _retain_conflict_candidate(
                 conflict_candidates,
@@ -1111,7 +1268,7 @@ def _recall_text(
         exhaustive=exhaustive,
     )
     if not exhaustive:
-        if not policy.allow_incomplete:
+        if not effective.allow_incomplete:
             return AbstainedRecollection(
                 reason=AbstainReason.WORK_BUDGET_EXHAUSTED,
                 work=work,
@@ -1119,7 +1276,8 @@ def _recall_text(
         next_continuation = _make_continuation(
             checkpoint=checkpoint,
             query_digest=query_digest,
-            policy_digest=policy_digest,
+            policy_digest=effective.policy_digest,
+            profile_digest=effective.profile_digest,
             exact_match_count=0,
             exact_summaries=(),
             text_candidates=candidates,
@@ -1137,7 +1295,10 @@ def _recall_text(
         raise LedgerIntegrityError("text conflict accumulator is inconsistent")
 
     margin_q32 = _top_two_margin_q32(conflict_candidates)
-    if len(conflict_candidates) >= 2 and margin_q32 <= policy.minimum_margin_q32:
+    if (
+        len(conflict_candidates) >= 2
+        and margin_q32 <= effective.minimum_margin_q32
+    ):
         competing = tuple(
             _hydrate_text_candidate(
                 session,
@@ -1157,13 +1318,25 @@ def _recall_text(
             work=conflict_work,
         )
 
-    if not policy.allow_approximate:
+    if effective.calibrated and margin_q32 > effective.minimum_margin_q32:
+        return _complete_calibrated_text_recollection(
+            session,
+            candidates[0],
+            conflict_candidates=conflict_candidates,
+            query_vector=query_vector,
+            filters=query.filters,
+            policy=effective,
+            margin_q32=margin_q32,
+            work=work,
+        )
+
+    if not effective.allow_approximate:
         return AbstainedRecollection(
             reason=AbstainReason.APPROXIMATE_DISABLED,
             work=work,
         )
 
-    remaining_output_bytes = policy.max_returned_payload_bytes
+    remaining_output_bytes = effective.max_returned_payload_bytes
     output_bytes = 0
     hydrated: list[ApproximateCandidateV1] = []
     for state in candidates:
@@ -1186,6 +1359,67 @@ def _recall_text(
         candidates=tuple(hydrated),
         margin_q32=margin_q32,
         work=completed_work,
+    )
+
+
+def _complete_calibrated_text_recollection(
+    session: VerifiedLedgerSession,
+    winner: _TextCandidateStateV1,
+    *,
+    conflict_candidates: tuple[_TextCandidateStateV1, ...],
+    query_vector: RetrievalFeatureVectorV1,
+    filters: RecallFiltersV1,
+    policy: _FrozenTextRecallPolicyV1,
+    margin_q32: int,
+    work: RecollectionWorkV1,
+) -> ExactRecollection | AbstainedRecollection:
+    if not policy.calibrated or policy.force_abstain:
+        raise LedgerIntegrityError("calibrated text policy state is inconsistent")
+    if not conflict_candidates or conflict_candidates[0] != winner:
+        raise LedgerIntegrityError("calibrated text winner state is inconsistent")
+
+    if len(conflict_candidates) >= 2:
+        _hydrate_text_candidate(
+            session,
+            conflict_candidates[1],
+            query_vector=query_vector,
+            filters=filters,
+            remaining_output_bytes=None,
+        )
+    candidate, attached_bytes = _hydrate_text_candidate(
+        session,
+        winner,
+        query_vector=query_vector,
+        filters=filters,
+        remaining_output_bytes=policy.max_returned_payload_bytes,
+    )
+    if candidate.content is None:
+        return AbstainedRecollection(
+            reason=AbstainReason.PAYLOAD_BUDGET_EXCEEDED,
+            work=work,
+        )
+
+    completed_work = _completed_text_work(
+        work,
+        returned=1,
+        output_bytes=attached_bytes,
+    )
+    return ExactRecollection(
+        content=candidate.content,
+        observation_id=candidate.observation_id,
+        episode_id=candidate.episode_id,
+        sequence=candidate.sequence,
+        record_hash=candidate.record_hash,
+        content_digest=candidate.content_digest,
+        provenance=candidate.provenance,
+        basis=RecallBasis.CALIBRATED_TEXT_MATCH,
+        work=completed_work,
+        calibrated_evidence=CalibratedTextMatchEvidenceV1(
+            profile_digest=policy.profile_digest,
+            effective_policy_digest=policy.policy_digest,
+            score_q32=candidate.score_q32,
+            margin_q32=margin_q32,
+        ),
     )
 
 
@@ -1450,6 +1684,7 @@ def _make_continuation(
     checkpoint: LedgerCursorCheckpoint,
     query_digest: str,
     policy_digest: str,
+    profile_digest: str | None = None,
     exact_match_count: int,
     exact_summaries: tuple[ExactOccurrenceSummaryV1, ...],
     work: RecollectionWorkV1,
@@ -1461,7 +1696,9 @@ def _make_continuation(
     object.__setattr__(continuation, "query_digest", query_digest)
     object.__setattr__(continuation, "policy_digest", policy_digest)
     object.__setattr__(
-        continuation, "profile_digest", _no_calibration_profile_digest()
+        continuation,
+        "profile_digest",
+        _no_calibration_profile_digest() if profile_digest is None else profile_digest,
     )
     object.__setattr__(continuation, "exact_match_count", exact_match_count)
     object.__setattr__(continuation, "exact_summaries", exact_summaries)
@@ -1482,6 +1719,7 @@ def _validate_continuation(
     *,
     query_digest: str,
     policy_digest: str,
+    profile_digest: str | None = None,
 ) -> None:
     if type(continuation) is not RecallContinuationV1:
         raise InputBoundaryError("continuation must be RecallContinuationV1")
@@ -1522,7 +1760,12 @@ def _validate_continuation(
         raise InputBoundaryError("recall continuation query changed")
     if continuation.policy_digest != policy_digest:
         raise InputBoundaryError("recall continuation policy changed")
-    if continuation.profile_digest != _no_calibration_profile_digest():
+    expected_profile_digest = (
+        _no_calibration_profile_digest()
+        if profile_digest is None
+        else profile_digest
+    )
+    if continuation.profile_digest != expected_profile_digest:
         raise InputBoundaryError("recall continuation profile changed")
 
 
@@ -1971,6 +2214,7 @@ __all__ = [
     "AmbiguousExactRecollection",
     "ApproximateCandidateV1",
     "ApproximateCandidates",
+    "CalibratedTextMatchEvidenceV1",
     "ConflictedRecollection",
     "ContentDigestRecallQuery",
     "EventIdRecallQuery",

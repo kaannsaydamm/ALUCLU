@@ -689,6 +689,14 @@ class CalibrationProfileUnavailableV1:
         if self.artifact_digest is not None:
             _require_digest(self.artifact_digest, "artifact_digest")
 
+    @property
+    def content_is_observation(self) -> bool:
+        return False
+
+    @property
+    def content_is_verified_fact(self) -> bool:
+        return False
+
 
 _TEST_HARNESS_SECRET = secrets.token_bytes(32)
 _ACTIVE_PROFILE_SECRET = secrets.token_bytes(32)

@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import struct
 from collections.abc import Callable
+from dataclasses import fields
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
@@ -20,16 +22,38 @@ from aluclu.cognition import (
     StaticKeyProvider,
     active_feature_spec_id,
     active_normalizer_id,
+    active_scorer_id,
     build_canonical_observation,
     canonical_observation_to_json_value,
     derive_content_digest,
     derive_sensorium_core_state_digest,
+    encode_retrieval_text,
+    measure_feature_similarity,
+)
+from aluclu.cognition.calibration import (
+    ActiveCalibrationProfileV1,
+    CalibrationCompatibilityRequirementsV1,
+    CalibrationProfileUnavailableReason,
+    CalibrationProfileUnavailableV1,
+    CalibrationProfileV1,
+    CalibrationPurpose,
+    CalibrationSpecV1,
+    LabelIndependenceStatus,
+    LabelProvenanceManifestV1,
+    ThresholdSelectionRule,
+    activate_calibration_profile,
+    build_calibration_artifact,
+    derive_calibration_spec_digest,
+    derive_label_provenance_manifest_digest,
+    explicit_calibration_test_harness,
+    labeled_recall_example,
 )
 from aluclu.cognition.recollection import (
     AbstainedRecollection,
     AbstainReason,
     AmbiguousExactRecollection,
     ApproximateCandidates,
+    CalibratedTextMatchEvidenceV1,
     ConflictedRecollection,
     ContentDigestRecallQuery,
     EventIdRecallQuery,
@@ -41,8 +65,10 @@ from aluclu.cognition.recollection import (
     RecallBasis,
     RecallExecutionPolicyV1,
     RecallFiltersV1,
+    RecallPolicyTighteningV1,
     TextRecallQuery,
     recall,
+    tighten_recall_policy,
 )
 from aluclu.cognition.sensorium import (
     ObservationAcceptedV1,
@@ -58,6 +84,10 @@ from aluclu.cognition.sensorium import (
 MASTER_KEY = b"m" * 32
 MAX_Q32 = 1 << 32
 FEATURE_DIMENSIONS = 1024
+_GOLD_SOURCE_DIGEST = "a" * 64
+_DATASET_MANIFEST_DIGEST = "b" * 64
+_SCORER_INPUT_MANIFEST_DIGEST = "c" * 64
+_GOLD_LABEL_MANIFEST_DIGEST = "d" * 64
 
 
 def _provenance(**overrides: object) -> ProvenanceV1:
@@ -118,6 +148,132 @@ def _policy(
     )
 
 
+def _label_manifest() -> LabelProvenanceManifestV1:
+    return LabelProvenanceManifestV1(
+        issuer_id="issuer:recall-test-team",
+        adjudication_method_id="held-out-double-review.v1",
+        gold_source_digest=_GOLD_SOURCE_DIGEST,
+        dataset_manifest_digest=_DATASET_MANIFEST_DIGEST,
+        scorer_input_manifest_digest=_SCORER_INPUT_MANIFEST_DIGEST,
+        gold_label_manifest_digest=_GOLD_LABEL_MANIFEST_DIGEST,
+        fit_example_ids=("example:fit-1",),
+        calibration_example_ids=(
+            "example:calibration-1",
+            "example:calibration-2",
+        ),
+        external_evidence_reference="audit:recall-c3-red",
+        external_signature_digest=None,
+        independence_status=LabelIndependenceStatus.ASSERTED_NOT_PROVEN,
+    )
+
+
+def _active_calibration_profile(
+    *,
+    minimum_margin_q32: int = 0,
+) -> ActiveCalibrationProfileV1:
+    manifest = _label_manifest()
+    spec = CalibrationSpecV1(
+        purpose=CalibrationPurpose.PERSONAL_MEMORY_TEXT,
+        query_stratum_id="personal-memory.en.v1",
+        scorer_id=active_scorer_id(),
+        normalizer_id=active_normalizer_id(),
+        feature_spec_id=active_feature_spec_id(),
+        boundary_schema_id="aluclu.boundary-profile.v1",
+        dataset_manifest_digest=_DATASET_MANIFEST_DIGEST,
+        label_provenance_manifest_digest=derive_label_provenance_manifest_digest(
+            manifest
+        ),
+        threshold_grid_q32=(0, 2**31, 2**32),
+        minimum_margin_q32=minimum_margin_q32,
+        alpha_decimal="1",
+        delta_decimal="0.05",
+        minimum_selected=1,
+        minimum_coverage_decimal="0",
+        selection_rule=ThresholdSelectionRule.MAX_COVERAGE_THEN_HIGHER_THRESHOLD,
+    )
+    examples = (
+        labeled_recall_example(
+            example_id="example:calibration-1",
+            calibration_spec_digest=derive_calibration_spec_digest(spec),
+            label_provenance_manifest_digest=derive_label_provenance_manifest_digest(
+                manifest
+            ),
+            score_q32=2**32,
+            eligible=True,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+        ),
+        labeled_recall_example(
+            example_id="example:calibration-2",
+            calibration_spec_digest=derive_calibration_spec_digest(spec),
+            label_provenance_manifest_digest=derive_label_provenance_manifest_digest(
+                manifest
+            ),
+            score_q32=2**31,
+            eligible=True,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+        ),
+    )
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        CalibrationCompatibilityRequirementsV1(
+            purpose=spec.purpose,
+            query_stratum_id=spec.query_stratum_id,
+            scorer_id=spec.scorer_id,
+            normalizer_id=spec.normalizer_id,
+            feature_spec_id=spec.feature_spec_id,
+            boundary_schema_id=spec.boundary_schema_id,
+            dataset_manifest_digest=spec.dataset_manifest_digest,
+        ),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    return active
+
+
+def _calibrated_policy(
+    active: ActiveCalibrationProfileV1,
+    **overrides: object,
+) -> RecallExecutionPolicyV1:
+    values: dict[str, object] = {
+        "max_records": 8192,
+        "top_k": 32,
+        "max_returned_payload_bytes": 262_144,
+        "active_normalizer_id": active.normalizer_id,
+        "active_feature_spec_id": active.feature_spec_id,
+        "minimum_score_q32": active.minimum_score_q32,
+        "minimum_margin_q32": active.minimum_margin_q32,
+        "allow_approximate": True,
+        "allow_incomplete": True,
+    }
+    values.update(overrides)
+    return RecallExecutionPolicyV1(**values)  # type: ignore[arg-type]
+
+
+def _clone_tightening(tightening: RecallPolicyTighteningV1) -> RecallPolicyTighteningV1:
+    clone = object.__new__(RecallPolicyTighteningV1)
+    for item in fields(tightening):
+        object.__setattr__(clone, item.name, getattr(tightening, item.name))
+    return clone
+
+
+def _clone_active_profile(
+    active: ActiveCalibrationProfileV1,
+) -> ActiveCalibrationProfileV1:
+    clone = object.__new__(ActiveCalibrationProfileV1)
+    for item in fields(active):
+        object.__setattr__(clone, item.name, getattr(active, item.name))
+    return clone
+
+
+def _recall_with_calibration(*args: object, **kwargs: object) -> object:
+    return cast(Any, recall)(*args, **kwargs)
+
+
 def _same_content_request(
     index: int,
     *,
@@ -125,6 +281,7 @@ def _same_content_request(
     source_kind: SourceKind = SourceKind.MODEL,
     observed_at_ns: int = 1_725_000_000_000_000_000,
     content: CanonicalJsonValue | None = None,
+    retrieval_text: str = "duplicate memory",
 ) -> ObservationRequestV1:
     body = content or CanonicalJsonValue.from_value({"text": "duplicate memory"})
     return _request(
@@ -136,7 +293,7 @@ def _same_content_request(
             observed_at_ns=observed_at_ns,
         ),
         content=body,
-        retrieval_text="duplicate memory",
+        retrieval_text=retrieval_text,
     )
 
 
@@ -859,7 +1016,7 @@ def test_approximate_payload_over_budget_is_omitted_without_changing_rank(
     assert result.work.output_bytes == 0
 
 
-def test_nonconflicted_text_candidate_abstains_when_approximate_is_disabled(
+def test_nonconflicted_personal_text_recall_reports_missing_profile(
     tmp_path: Path,
 ) -> None:
     request = _same_content_request(1)
@@ -879,9 +1036,10 @@ def test_nonconflicted_text_candidate_abstains_when_approximate_is_disabled(
                 ),
             )
 
-    assert type(result) is AbstainedRecollection
-    assert result.reason is AbstainReason.APPROXIMATE_DISABLED
-    assert result.work.exhaustive is True
+    assert type(result) is CalibrationProfileUnavailableV1
+    assert result.reason is CalibrationProfileUnavailableReason.MISSING
+    assert result.content_is_observation is False
+    assert result.content_is_verified_fact is False
 
 
 def test_text_ranking_uses_exact_cross_product_when_q32_scores_collide(
@@ -1154,6 +1312,879 @@ def test_approximate_direct_reads_occur_after_cursor_close_and_allow_mutation(
 
     assert type(result) is ApproximateCandidates
     assert appended.created is True
+
+
+def test_no_profile_text_recall_with_approximate_permission_remains_approximate(
+    tmp_path: Path,
+) -> None:
+    request = _same_content_request(1)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+            result = recall(
+                session,
+                query,
+                policy=_policy(
+                    minimum_margin_q32=0,
+                    allow_approximate=True,
+                ),
+            )
+
+    assert type(result) is ApproximateCandidates
+    assert result.candidates[0].observation_id == request.observation_id
+
+
+def test_no_profile_text_recall_without_approximate_permission_reports_missing_profile_before_cursor(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request = _same_content_request(1)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (request,))
+
+            def forbidden_cursor(active: object, *args: object, **kwargs: object) -> object:
+                raise AssertionError("missing calibrated profile must fail before cursor")
+
+            monkeypatch.setattr(type(session), "cursor", forbidden_cursor)
+            result = recall(
+                session,
+                query,
+                policy=_policy(allow_approximate=False),
+            )
+
+    assert type(result) is CalibrationProfileUnavailableV1
+    assert result.reason is CalibrationProfileUnavailableReason.MISSING
+
+
+def test_calibrated_text_recall_rejects_partial_profile_pair_before_cursor(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+
+            def forbidden_cursor(active_session: object, *args: object, **kwargs: object) -> object:
+                raise AssertionError("partial calibrated pair must fail before cursor")
+
+            monkeypatch.setattr(type(session), "cursor", forbidden_cursor)
+            with pytest.raises(InputBoundaryError, match="calibrat|policy_tightening"):
+                _recall_with_calibration(
+                    session,
+                    query,
+                    policy=policy,
+                    active_profile=active,
+                )
+
+
+def test_calibrated_text_recall_rejects_forged_tightening_before_cursor(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = _clone_tightening(tighten_recall_policy(policy, active))
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+
+            def forbidden_cursor(active_session: object, *args: object, **kwargs: object) -> object:
+                raise AssertionError("forged calibrated pair must fail before cursor")
+
+            monkeypatch.setattr(type(session), "cursor", forbidden_cursor)
+            with pytest.raises(InputBoundaryError, match="policy tightening"):
+                _recall_with_calibration(
+                    session,
+                    query,
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=tightening,
+                )
+
+
+def test_calibrated_text_recall_forced_abstention_happens_before_cursor(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active, force_abstain=True)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+
+            def forbidden_cursor(active_session: object, *args: object, **kwargs: object) -> object:
+                raise AssertionError("forced calibrated abstention must not scan")
+
+            monkeypatch.setattr(type(session), "cursor", forbidden_cursor)
+            result = _recall_with_calibration(
+                session,
+                query,
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is AbstainedRecollection
+    assert result.reason.value == "policy_forced_abstention"
+    assert result.work.records_scanned == 0
+
+
+def test_calibrated_text_recall_returns_exact_evidence_for_same_digest_duplicates(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    tightening = tighten_recall_policy(policy, active, minimum_margin_q32=0)
+    content = CanonicalJsonValue.from_value({"stored": "same"})
+    older = _same_content_request(1, observed_at_ns=100, content=content)
+    newer = _same_content_request(2, observed_at_ns=200, content=content)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (older, newer))
+            result = _recall_with_calibration(
+                session,
+                query,
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is ExactRecollection
+    assert result.basis is RecallBasis.CALIBRATED_TEXT_MATCH
+    assert result.observation_id == newer.observation_id
+    assert type(result.calibrated_evidence) is CalibratedTextMatchEvidenceV1
+    assert result.calibrated_evidence.profile_digest == active.profile_digest
+    assert (
+        result.calibrated_evidence.effective_policy_digest
+        == tightening.effective_policy_digest
+    )
+    assert result.calibrated_evidence.score_q32 >= active.minimum_score_q32
+    assert (
+        result.calibrated_evidence.margin_q32
+        > tightening.minimum_margin_q32
+    )
+
+
+def test_calibrated_text_continuation_binds_effective_policy_and_profile(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, max_records=1, minimum_margin_q32=0)
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_records=1,
+        minimum_margin_q32=0,
+    )
+    content = CanonicalJsonValue.from_value({"stored": "same"})
+    first = _same_content_request(1, observed_at_ns=100, content=content)
+    second = _same_content_request(2, observed_at_ns=200, content=content)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (first, second))
+            page = _recall_with_calibration(
+                session,
+                query,
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+            assert type(page) is IncompleteRecollection
+            assert page.continuation.policy_digest == tightening.effective_policy_digest
+            assert page.continuation.profile_digest == active.profile_digest
+
+            with pytest.raises(InputBoundaryError, match="policy|profile"):
+                recall(session, query, policy=policy, continuation=page.continuation)
+
+            result = _recall_with_calibration(
+                session,
+                query,
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+                continuation=page.continuation,
+            )
+
+    assert type(result) is ExactRecollection
+    assert result.basis is RecallBasis.CALIBRATED_TEXT_MATCH
+    assert result.observation_id == second.observation_id
+
+
+def test_calibrated_text_recall_revalidates_distinct_runner_up_after_cursor_close(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    tightening = tighten_recall_policy(policy, active, minimum_margin_q32=0)
+    winner = _same_content_request(
+        1,
+        observed_at_ns=200,
+        content=CanonicalJsonValue.from_value({"stored": "winner"}),
+    )
+    runner_up = _same_content_request(
+        2,
+        observed_at_ns=100,
+        content=CanonicalJsonValue.from_value({"stored": "runner-up"}),
+        retrieval_text="duplicate memory runner up",
+    )
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (runner_up, winner))
+            original_read = type(session).read
+            reads: list[str] = []
+
+            def guarded_read(active_session: object, event_id: str) -> object:
+                assert not active_session._cursors  # type: ignore[attr-defined]
+                reads.append(event_id)
+                return original_read(active_session, event_id)  # type: ignore[arg-type]
+
+            monkeypatch.setattr(type(session), "read", guarded_read)
+            result = _recall_with_calibration(
+                session,
+                query,
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is ExactRecollection
+    assert result.basis is RecallBasis.CALIBRATED_TEXT_MATCH
+    assert winner.observation_id in reads
+    assert runner_up.observation_id in reads
+    assert type(result.calibrated_evidence) is CalibratedTextMatchEvidenceV1
+    assert result.calibrated_evidence.profile_digest == active.profile_digest
+    assert (
+        result.calibrated_evidence.effective_policy_digest
+        == tightening.effective_policy_digest
+    )
+
+
+def test_calibrated_text_recall_rejects_forged_active_profile_before_cursor(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    forged = _clone_active_profile(active)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+
+            def forbidden_cursor(*args: object, **kwargs: object) -> object:
+                raise AssertionError("forged profile must fail before cursor")
+
+            monkeypatch.setattr(type(session), "cursor", forbidden_cursor)
+            with pytest.raises(InputBoundaryError, match="active calibration profile"):
+                _recall_with_calibration(
+                    session,
+                    TextRecallQuery(text="duplicate memory"),
+                    policy=policy,
+                    active_profile=forged,
+                    policy_tightening=tightening,
+                )
+
+
+def test_calibrated_text_recall_uses_tightened_work_and_incomplete_policy(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(
+        active,
+        max_records=8,
+        top_k=8,
+        minimum_margin_q32=0,
+        allow_incomplete=True,
+    )
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_records=1,
+        top_k=2,
+        allow_incomplete=False,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                tuple(_same_content_request(index) for index in range(1, 4)),
+            )
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is AbstainedRecollection
+    assert result.reason is AbstainReason.WORK_BUDGET_EXHAUSTED
+    assert result.work.records_scanned == 1
+    assert result.work.exhaustive is False
+
+
+def test_calibrated_continuation_retains_only_effective_top_k(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(
+        active,
+        max_records=3,
+        top_k=8,
+        minimum_margin_q32=0,
+    )
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_records=3,
+        top_k=2,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                tuple(
+                    _same_content_request(
+                        index,
+                        content=CanonicalJsonValue.from_value({"index": index}),
+                    )
+                    for index in range(1, 5)
+                ),
+            )
+            page = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(page) is IncompleteRecollection
+    assert page.work.records_scanned == 3
+    assert len(page.continuation.text_candidates) == 2
+
+
+def test_calibrated_text_recall_uses_effective_score_floor(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    candidate_text = "duplicate memory extra"
+    score = measure_feature_similarity(
+        encode_retrieval_text(
+            "duplicate memory", feature_spec_id=active_feature_spec_id()
+        ),
+        encode_retrieval_text(
+            candidate_text, feature_spec_id=active_feature_spec_id()
+        ),
+    ).score_q32
+    assert active.minimum_score_q32 <= score < MAX_Q32
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        minimum_score_q32=score + 1,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (_same_content_request(1, retrieval_text=candidate_text),),
+            )
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is NoTextRecollection
+    assert result.work.candidates_scored == 1
+
+
+def test_calibrated_text_recall_score_floor_is_inclusive(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        minimum_score_q32=MAX_Q32,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            request = _same_content_request(1)
+            _ingest_requests(session, (request,))
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is ExactRecollection
+    assert type(result.calibrated_evidence) is CalibratedTextMatchEvidenceV1
+    assert result.calibrated_evidence.score_q32 == MAX_Q32
+
+
+def test_calibrated_text_recall_margin_must_strictly_exceed_effective_floor(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    query_text = "duplicate memory"
+    runner_text = "duplicate memory extra"
+    query_vector = encode_retrieval_text(
+        query_text, feature_spec_id=active_feature_spec_id()
+    )
+    runner_score = measure_feature_similarity(
+        query_vector,
+        encode_retrieval_text(
+            runner_text, feature_spec_id=active_feature_spec_id()
+        ),
+    ).score_q32
+    margin = MAX_Q32 - runner_score
+    assert 0 < margin < MAX_Q32
+    at_floor = tighten_recall_policy(
+        policy,
+        active,
+        minimum_margin_q32=margin,
+    )
+    below_floor = tighten_recall_policy(
+        policy,
+        active,
+        minimum_margin_q32=margin - 1,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (
+                    _same_content_request(
+                        1,
+                        content=CanonicalJsonValue.from_value({"winner": True}),
+                    ),
+                    _same_content_request(
+                        2,
+                        content=CanonicalJsonValue.from_value({"runner": True}),
+                        retrieval_text=runner_text,
+                    ),
+                ),
+            )
+            conflicted = _recall_with_calibration(
+                session,
+                TextRecallQuery(text=query_text),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=at_floor,
+            )
+            exact = _recall_with_calibration(
+                session,
+                TextRecallQuery(text=query_text),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=below_floor,
+            )
+
+    assert type(conflicted) is ConflictedRecollection
+    assert conflicted.margin_q32 == margin
+    assert type(exact) is ExactRecollection
+    assert type(exact.calibrated_evidence) is CalibratedTextMatchEvidenceV1
+    assert exact.calibrated_evidence.margin_q32 == margin
+
+
+def test_calibrated_exact_ignores_approximate_return_permission(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(
+        active,
+        minimum_margin_q32=0,
+        allow_approximate=False,
+    )
+    tightening = tighten_recall_policy(policy, active)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            request = _same_content_request(1)
+            _ingest_requests(session, (request,))
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is ExactRecollection
+    assert result.basis is RecallBasis.CALIBRATED_TEXT_MATCH
+
+
+def test_calibrated_exact_uses_effective_output_budget(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_returned_payload_bytes=0,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(session, (_same_content_request(1),))
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is AbstainedRecollection
+    assert result.reason is AbstainReason.PAYLOAD_BUDGET_EXCEEDED
+    assert result.work.output_bytes == 0
+    assert result.work.candidates_returned == 0
+
+
+def test_calibrated_text_continuation_rejects_legacy_to_calibrated_resume(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(
+        active,
+        max_records=1,
+        minimum_margin_q32=0,
+        allow_approximate=True,
+    )
+    tightening = tighten_recall_policy(policy, active)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (_same_content_request(1), _same_content_request(2)),
+            )
+            legacy_page = recall(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+            )
+            assert type(legacy_page) is IncompleteRecollection
+            with pytest.raises(InputBoundaryError, match="policy|profile"):
+                _recall_with_calibration(
+                    session,
+                    TextRecallQuery(text="duplicate memory"),
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=tightening,
+                    continuation=legacy_page.continuation,
+                )
+
+
+def test_forced_calibrated_recall_rejects_supplied_continuation(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, max_records=1, minimum_margin_q32=0)
+    live = tighten_recall_policy(policy, active)
+    forced = tighten_recall_policy(policy, active, force_abstain=True)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (_same_content_request(1), _same_content_request(2)),
+            )
+            page = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=live,
+            )
+            assert type(page) is IncompleteRecollection
+            with pytest.raises(InputBoundaryError, match="policy|forced"):
+                _recall_with_calibration(
+                    session,
+                    TextRecallQuery(text="duplicate memory"),
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=forced,
+                    continuation=page.continuation,
+                )
+
+
+def test_calibration_state_is_rejected_for_nontext_recall_queries(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            with pytest.raises(InputBoundaryError, match="direct-ID"):
+                _recall_with_calibration(
+                    session,
+                    EventIdRecallQuery(observation_id="obs:missing"),
+                    active_profile=active,
+                    policy_tightening=tightening,
+                )
+            with pytest.raises(InputBoundaryError, match="content-digest"):
+                _recall_with_calibration(
+                    session,
+                    ContentDigestRecallQuery(content_digest="0" * 64),
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=tightening,
+                )
+
+
+def test_calibrated_text_recall_rejects_runner_up_change_after_scan(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active, minimum_margin_q32=0)
+    tightening = tighten_recall_policy(policy, active)
+    runner = _same_content_request(
+        2,
+        content=CanonicalJsonValue.from_value({"runner": True}),
+        retrieval_text="duplicate memory extra",
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (
+                    _same_content_request(
+                        1,
+                        content=CanonicalJsonValue.from_value({"winner": True}),
+                    ),
+                    runner,
+                ),
+            )
+            original_read = type(session).read
+
+            def changed_runner(active_session: object, event_id: str) -> object:
+                if event_id == runner.observation_id:
+                    return None
+                return original_read(active_session, event_id)  # type: ignore[arg-type]
+
+            monkeypatch.setattr(type(session), "read", changed_runner)
+            with pytest.raises(LedgerIntegrityError, match="changed after scan"):
+                _recall_with_calibration(
+                    session,
+                    TextRecallQuery(text="duplicate memory"),
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=tightening,
+                )
+
+
+def test_calibrated_policy_is_frozen_before_cursor_open(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(
+        active,
+        max_records=8,
+        minimum_margin_q32=0,
+        allow_incomplete=True,
+    )
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_records=1,
+        allow_incomplete=False,
+    )
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (_same_content_request(1), _same_content_request(2)),
+            )
+            original_cursor = type(session).cursor
+
+            def mutating_cursor(
+                active_session: object, *args: object, **kwargs: object
+            ) -> object:
+                object.__setattr__(tightening, "max_records", 8)
+                object.__setattr__(tightening, "allow_incomplete", True)
+                return original_cursor(
+                    active_session, *args, **kwargs  # type: ignore[arg-type]
+                )
+
+            monkeypatch.setattr(type(session), "cursor", mutating_cursor)
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is AbstainedRecollection
+    assert result.reason is AbstainReason.WORK_BUDGET_EXHAUSTED
+    assert result.work.records_scanned == 1
+
+
+def test_calibrated_conflict_precedes_approximate_permission(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(
+        active,
+        minimum_margin_q32=0,
+        allow_approximate=False,
+    )
+    tightening = tighten_recall_policy(policy, active)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            _ingest_requests(
+                session,
+                (
+                    _same_content_request(
+                        1,
+                        content=CanonicalJsonValue.from_value({"value": "left"}),
+                    ),
+                    _same_content_request(
+                        2,
+                        content=CanonicalJsonValue.from_value({"value": "right"}),
+                    ),
+                ),
+            )
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text="duplicate memory"),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    assert type(result) is ConflictedRecollection
+    assert result.margin_q32 == 0
+
+
+@pytest.mark.parametrize("allow_approximate", (True, False))
+def test_single_calibrated_candidate_at_margin_floor_is_not_exact(
+    tmp_path: Path,
+    allow_approximate: bool,
+) -> None:
+    query_text = "duplicate memory"
+    candidate_text = "duplicate memory extra"
+    score = measure_feature_similarity(
+        encode_retrieval_text(
+            query_text, feature_spec_id=active_feature_spec_id()
+        ),
+        encode_retrieval_text(
+            candidate_text, feature_spec_id=active_feature_spec_id()
+        ),
+    ).score_q32
+    active = _active_calibration_profile(minimum_margin_q32=score)
+    policy = _calibrated_policy(
+        active,
+        allow_approximate=allow_approximate,
+    )
+    tightening = tighten_recall_policy(policy, active)
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            request = _same_content_request(1, retrieval_text=candidate_text)
+            _ingest_requests(session, (request,))
+            result = _recall_with_calibration(
+                session,
+                TextRecallQuery(text=query_text),
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+    if allow_approximate:
+        assert type(result) is ApproximateCandidates
+        assert result.margin_q32 == score
+        assert result.candidates[0].observation_id == request.observation_id
+    else:
+        assert type(result) is AbstainedRecollection
+        assert result.reason is AbstainReason.APPROXIMATE_DISABLED
+        assert result.work.exhaustive is True
 
 
 def test_direct_id_recall_returns_authenticated_exact_observation(

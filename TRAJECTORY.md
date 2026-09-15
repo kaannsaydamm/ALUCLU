@@ -2243,3 +2243,73 @@ session can map each decision to the exact diff.
   values; the GREEN keeps the broad `RecallExecutionPolicyV1` contract intact
   for older exact-recall paths and enforces `top_k >= 2` only at the calibrated
   tightening boundary.
+- Checkpoint commit `bd6590d` (`Add authenticated recall policy tightening`)
+  records the CLEAN C2 capability after the added base-policy `top_k` repair,
+  two-runtime focused/broad regression gates, static gates, and three
+  independent approvals. Task 2.5-C3 starts from this exact base; C2 still
+  grants no recollection authority by itself.
+- C3 freezes the public state machine before implementation: legacy text recall
+  remains approximate only when no calibration pair is supplied and the caller
+  explicitly allows approximate output. A personal/answer-authority path with
+  approximation disabled and no pair returns typed `MISSING` before encoding or
+  opening a cursor. Calibrated exact recall requires both a live
+  `ActiveCalibrationProfileV1` and its live bound `RecallPolicyTighteningV1`;
+  partial, cloned, mutated, forged, or rebound pairs fail closed rather than
+  falling back. The private scan snapshot copies every effective field before
+  cursor creation, and continuations bind the effective-policy digest plus
+  active-profile digest.
+- The calibrated completion contract reuses `ExactRecollection` with basis
+  `CALIBRATED_TEXT_MATCH` and a conditional frozen evidence record binding the
+  profile digest, effective-policy digest, score, and margin. Same-content
+  occurrences remain one content identity for conflict detection and the
+  deterministic observation order selects the winning occurrence; only exact
+  content-digest queries produce occurrence ambiguity. Before exact promotion,
+  both the winner and any distinct-digest runner-up responsible for the margin
+  are direct-read and revalidated after cursor suspension. Margin equality is
+  conflict, score equality is eligible, and the effective output budget can
+  still force payload abstention.
+- After an interrupted agent turn, the worktree retained both the partial C3
+  implementation and fixture additions. The first recovered full recollection
+  run produced four honest failures: the prior uncalibrated
+  `APPROXIMATE_DISABLED` assertion had not yet adopted the new typed missing-
+  profile boundary; two agent assertions incorrectly treated the nested
+  evidence record as the top-level result; and a runner-up fixture used equal
+  retrieval text, correctly yielding conflict at zero margin. The tests were
+  repaired to the frozen contract rather than changing production semantics.
+  The expanded focused matrix now covers legacy compatibility, missing-profile
+  pre-scan behavior, partial/forged capabilities, forced abstention, every
+  effective budget/threshold/permission, inclusive score and strict margin,
+  continuation cross-mode binding, same-digest deterministic selection,
+  post-cursor winner/runner-up reads, runner-up mutation, non-text argument
+  rejection, and pre-cursor policy freezing. Final broad regression and
+  independent review gates remain open, so C3 is GREEN but not CLEAN.
+- Independent architecture review then finds and reproduces one HIGH authority
+  defect in the first GREEN: the conflict branch checked a nonpassing margin
+  only when two distinct content identities existed, so a lone candidate whose
+  defined margin (`score - 0`) exactly equalled the calibrated floor was still
+  promoted to exact. A new isolated fixture fixes both values at
+  `3108237854` and fails with `ExactRecollection` where approximate/fail-closed
+  output is required. The minimal repair makes every calibrated promotion,
+  including the one-identity case, require
+  `margin_q32 > effective.minimum_margin_q32`; equality now returns
+  `ApproximateCandidates` only when explicitly permitted and otherwise
+  `APPROXIMATE_DISABLED`. Both parameterized boundary cases pass on CPython
+  3.12.13 and 3.13.5. Architecture, code/security, and adversarial mutation
+  re-review all approve the repaired decision tree with zero remaining
+  findings. The complete repaired recollection file has 66 collected tests;
+  static and broad Task 2 gates are rerun from this exact state before CLEAN.
+- Final C3 validation on the repaired state passes the 66-test recollection
+  file on both CPython 3.12.13 and 3.13.5. The expanded Task 2 package selects
+  475 tests across observation, sensorium, boundary, replay, recall features,
+  recollection, calibration, determinism, end-to-end, and scale, and passes
+  475/475 on each runtime. Only the previously completed approximately
+  one-hour `test_8192_observation_replay_keeps_completed_state_bounded` fixture
+  is explicitly deselected for this repeat; the other scale test runs. Ruff
+  0.16.6, cognition/test compileall, `git diff --check`, and pinned Pyright
+  1.1.413 pass at 0 errors, 0 warnings, 0 informations. Architecture,
+  code/security, and adversarial mutation lanes each return APPROVE with zero
+  unresolved findings after the exact-margin repair. C3 is CLEAN for the
+  TEST_ONLY mechanical calibrated-recollection state machine; it does not
+  assert real held-out calibration accuracy or production activation, which
+  remain dependent on Task 12 evidence. Task 2.6 reconsolidation is next;
+  Task 2 as a whole is not yet CLEAN and ALC-R0 cannot start yet.
