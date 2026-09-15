@@ -2420,3 +2420,39 @@ session can map each decision to the exact diff.
   the bounded TEST_ONLY mechanical slice. This grants no production
   calibration, factual-truth, neural-learning, ALC-R0, or whole-Task-2 claim.
   Task 2.7 full vertical/restart/scale/portability evidence is next.
+- Task 2.6 final review evidence is checkpointed by commit `558f7f8` (`Close
+  Task 2.6 reconsolidation gate`) on top of normative-authority repair
+  `86d5468`. The tracked worktree is clean before Task 2.7 begins.
+- Task 2.7 starts with a new small full-vertical fixture rather than treating
+  prior unit/regression success as integration evidence. Early REDs expose
+  fixture/contract misunderstandings without changing production semantics:
+  participant IDs must be sorted; successful new ingest is `APPLIED`, not an
+  invented `NEW`; a duplicate retried against a much older state correctly
+  returns replay-required, so lost-return duplicate proof runs immediately
+  against its matching pre-state; replay reproduces the observation core while
+  advancing its exhaustive checkpoint across the non-observation lineage
+  record; and a `recon:` ID is rejected when constructing an observation-only
+  direct-recall query. After repairing the fixture to those existing
+  contracts, the vertical scenario passes 1/1 on CPython 3.12.13 and 3.13.5,
+  with Ruff, compileall, and pinned Pyright 1.1.413 at 0 errors/warnings/info.
+  The scenario exercises typed user/model/tool ingestion and explicit
+  boundaries, storage-pure duplicate retry, direct and TEST_ONLY calibrated
+  exact recall with observation-not-fact status, an equal-score near-tie
+  conflict, forced abstention, content-free correction lineage, reopen,
+  one-record replay pages, endpoint hash stability, strict lineage decoding,
+  no lineage-to-observation promotion, and parent shred/no-resurrection. This
+  is Task 2.7 GREEN slice 1 only: real process-restart page splitting, final
+  scale benchmark/evidence artifact, and portability scope remain open.
+- User-requested future neural-host research is recorded without starting
+  ALC-R0 before Task 2 CLEAN. The current machine is an i7-12650H (10 cores/16
+  logical), 16 GB RAM, RTX 4050 Laptop GPU with 6141 MiB reported VRAM, NVIDIA
+  driver 610.78, and about 80.8 GB free on C:. The primary ALC-R0 candidate
+  remains the preregistered `HuggingFaceTB/SmolLM2-135M`, current Hub revision
+  `93efa2f097d58c2a74874c7e644dbc9b0cee75a2`: ungated Apache-2.0 base weights,
+  `LlamaForCausalLM`/`model_type=llama`, safe 269 MB BF16 safetensors, and an
+  official open SmolLM repository with Nanotron pretraining/checkpoint paths.
+  It is selected as the first dissectible host/teacher because its full forward
+  can be reimplemented and weight-parity checked locally within this hardware
+  class. This is a host-selection research note, not a downloaded-model,
+  training, ALC-0 capability, or native-ALUCLU claim; exact artifact hashes and
+  local fit must still be frozen and executed only after Task 2 CLEAN.
