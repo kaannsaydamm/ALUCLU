@@ -2527,3 +2527,27 @@ session can map each decision to the exact diff.
   no approval is inferred. The next gate is a clean-SHA full 8,192/512 run,
   followed by artifact audit, independent re-review when available, and
   cross-platform portability evidence. Task 2.7 and Task 2 remain OPEN.
+- Task 2.7 portability work is isolated on `codex/task27-portability` while the
+  clean `000e259` scale run continues in the main cognition worktree. A 256-
+  observation public-API smoke now ingests deterministic user/model/tool
+  observations with explicit episode boundaries, verifies a storage-pure first
+  duplicate, closes the encrypted ledger, and uses a fresh Python process to
+  compare one-shot and seven-page replay state, direct exact recall, and
+  one-shot/paged text candidate ordering. The first RED was the deliberately
+  missing `tests/helpers/task2_portability_worker.py` (subprocess exit 2),
+  after the 256 real appends passed. The worker is now implemented and the
+  smoke passes 1/1 on local Windows CPython 3.12.13 and 3.13.5. The other
+  frozen determinism and recall-feature vector tests pass 68/68 on both
+  runtimes; the combined selected portability group is 69 tests. Ruff,
+  compileall, and pinned Pyright 1.1.413 report clean/0 errors, 0 warnings,
+  0 informations for the two new Python files. No production semantics are
+  changed by this smoke.
+- A manual `workflow_dispatch` GitHub Actions matrix is prepared for Windows
+  x64, Linux x64, and macOS arm64, each under CPython 3.10–3.13. It runs the
+  frozen vector files and the 256-observation fresh-process smoke and retains
+  per-lane JUnit output. GitHub's hosted-runner and setup-python documentation
+  was checked when selecting current runner labels; no workflow has run or
+  been pushed, so neither its twelve lanes nor broad portability is claimed
+  PASS. The accepted Task 1 static test-key profile is used rather than
+  pretending this exercises the separate OS-keyring E2E gate. Cross-platform
+  evidence remains OPEN until actual CI or equivalent host results exist.
