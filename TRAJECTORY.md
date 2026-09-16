@@ -2490,3 +2490,40 @@ session can map each decision to the exact diff.
   Task 2.7 GREEN checkpoint: the real 8,192-observation machine-readable scale
   artifact and honest multi-OS/Python portability evidence are still open, so
   neither Task 2.7 nor Task 2 is CLEAN.
+- Task 2.7 scale runner implementation checkpoint (not the final scale PASS):
+  the first focused RED was a missing `aluclu.cli.benchmark_cognition_task2`
+  module on CPython 3.13. The runner now fixes public counts at
+  2,048/4,096/8,192 and exact 512-byte canonical content, grows one physical
+  encrypted ledger to each exact checkpoint, samples fresh-process streaming
+  recall against an empty-session RSS worker, compares direct-ID p95 with a
+  Task 1 `session.read` baseline, measures logical/persistent bytes and
+  one-shot/paged/fresh-process result digests, and atomically records canonical
+  JSON including environment, seed, raw samples, exact git SHA, and checks.
+  A private 4/8/16 and 64-byte fixture tests the real ledger path without
+  claiming the fixed gate. The first implementation was corrected before this
+  checkpoint: scans now occur at exact-N heads rather than after all 8,192
+  appends, and small-fixture RSS keys follow its counts rather than fixed keys.
+- Independent code review requested changes in three measurement defenses:
+  unknown RSS could have been clamped to zero, fresh restarted scan's extra
+  full-verification count was not aggregated, and plaintext scanning covered
+  only the query marker. Regressions now require nonzero/comparable raw RSS
+  peaks alongside deltas, fail on restarted-worker verification, and scan
+  actual canonical/raw observation content plus the retrieval marker across
+  the work directory. The first broad digest sentinel produced an intentional
+  RED in the healthy encrypted ledger: Task 2's authenticated append lineage
+  witness stores the content digest as integrity metadata in SQLite, not the
+  observation plaintext or a retrieval index. The leak oracle therefore
+  excludes the digest but retains actual content bytes; the earlier false
+  positive is recorded rather than hidden. A targeted diagnostic found digest
+  sentinels in `cognition.sqlite3`, not canonical/raw content or the marker.
+  This is an explicit privacy-boundary distinction for later review.
+- Post-repair focused scale tests pass 17/17 on CPython 3.12.13 and 3.13.5.
+  The related Task 1/2 benchmark and Task 2 scale regression package passes
+  with its existing hour-scale 8,192 pytest case explicitly deselected (the
+  separate normative 8,192 artifact has not yet run). Ruff, compileall,
+  diff-check, and pinned Pyright 1.1.413 with the 3.13 interpreter pass at
+  0 errors, 0 warnings, 0 informations. A second independent reviewer and
+  verifier pass was attempted but both agents stopped on usage-limit errors;
+  no approval is inferred. The next gate is a clean-SHA full 8,192/512 run,
+  followed by artifact audit, independent re-review when available, and
+  cross-platform portability evidence. Task 2.7 and Task 2 remain OPEN.
