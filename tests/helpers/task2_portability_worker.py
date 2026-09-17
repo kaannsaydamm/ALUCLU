@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+import time
 from pathlib import Path
 from typing import cast
 
@@ -59,8 +60,16 @@ def _complete_recall(
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        raise SystemExit("expected ledger path and final observation ID")
+    if len(sys.argv) not in {3, 4} or (
+        len(sys.argv) == 4 and sys.argv[3] != "--profile"
+    ):
+        raise SystemExit("expected ledger path, final observation ID, optional --profile")
+    profile_stages = len(sys.argv) == 4
+
+    def stage(name: str, elapsed: float) -> None:
+        if profile_stages:
+            print(f"{name}: {elapsed:.3f}s", file=sys.stderr, flush=True)
+
     path = Path(sys.argv[1])
     observation_id = sys.argv[2]
     with EncryptedLedger(path, StaticKeyProvider(MASTER_KEY)) as ledger:
@@ -69,11 +78,15 @@ def main() -> None:
             if event_count != 256:
                 raise RuntimeError("portable ledger has unexpected head")
             profile = baseline_boundary_profile()
+            stage_started = time.perf_counter()
             one_shot = replay_sensorium_page(
                 session, SensoriumReplayPagePolicyV1(max_records=256), profile
             )
             if type(one_shot) is not SensoriumReplayCompleteV1:
                 raise RuntimeError("one-shot portable replay did not complete")
+            one_shot_replay_seconds = time.perf_counter() - stage_started
+            stage("one_shot_replay", one_shot_replay_seconds)
+            stage_started = time.perf_counter()
             next_page = replay_sensorium_page(
                 session, SensoriumReplayPagePolicyV1(max_records=37), profile
             )
@@ -89,13 +102,24 @@ def main() -> None:
                 steps += 1
             if type(next_page) is not SensoriumReplayCompleteV1:
                 raise RuntimeError("paged portable replay did not complete")
+            paged_replay_seconds = time.perf_counter() - stage_started
+            stage("paged_replay", paged_replay_seconds)
+            stage_started = time.perf_counter()
             exact = recall(
                 session, EventIdRecallQuery(observation_id=observation_id)
             )
             if type(exact) is not ExactRecollection:
                 raise RuntimeError("portable direct recall was not exact")
+            direct_recall_seconds = time.perf_counter() - stage_started
+            stage("direct_recall", direct_recall_seconds)
+            stage_started = time.perf_counter()
             text_one_shot = _complete_recall(session, page_size=256)
+            one_shot_text_seconds = time.perf_counter() - stage_started
+            stage("one_shot_text", one_shot_text_seconds)
+            stage_started = time.perf_counter()
             text_paged = _complete_recall(session, page_size=37)
+            paged_text_seconds = time.perf_counter() - stage_started
+            stage("paged_text", paged_text_seconds)
             payload = {
                 "event_count": event_count,
                 "one_shot_state_hex": encode_sensorium_state(one_shot.state).hex(),
@@ -115,6 +139,13 @@ def main() -> None:
                     item.observation_id for item in text_paged.candidates
                 ],
                 "recall_records_scanned": text_one_shot.work.records_scanned,
+                "stage_seconds": {
+                    "one_shot_replay": one_shot_replay_seconds,
+                    "paged_replay": paged_replay_seconds,
+                    "direct_recall": direct_recall_seconds,
+                    "one_shot_text": one_shot_text_seconds,
+                    "paged_text": paged_text_seconds,
+                },
             }
             sys.stdout.buffer.write(
                 canonical_json_bytes(cast(JsonValue, payload)) + b"\n"

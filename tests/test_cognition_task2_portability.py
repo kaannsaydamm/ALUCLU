@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+from collections.abc import Callable
 from pathlib import Path
 
 from aluclu.cognition import (
@@ -64,6 +65,7 @@ def _request(index: int) -> ObservationRequestV1:
 
 def test_256_observation_reopen_replay_and_recall_on_this_host(
     tmp_path: Path,
+    record_testsuite_property: Callable[[str, object], None],
 ) -> None:
     path = tmp_path / "portable.sqlite3"
     profile = baseline_boundary_profile()
@@ -111,7 +113,7 @@ def test_256_observation_reopen_replay_and_recall_on_this_host(
         capture_output=True,
         text=True,
         check=False,
-        timeout=180,
+        timeout=600,
     )
     assert completed.returncode == 0, (completed.stdout, completed.stderr)
     assert completed.stderr == ""
@@ -131,3 +133,7 @@ def test_256_observation_reopen_replay_and_recall_on_this_host(
     assert result["one_shot_recall_ids"] == result["paged_recall_ids"]
     assert result["one_shot_recall_ids"][0] == final_request.observation_id
     assert result["recall_records_scanned"] == 256
+    for name, elapsed in result["stage_seconds"].items():
+        assert type(name) is str
+        assert type(elapsed) is float and elapsed > 0
+        record_testsuite_property(f"portable_{name}_seconds", elapsed)

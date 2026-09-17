@@ -26,8 +26,8 @@ jobs:
           python -c "import platform, sys, unicodedata; print(sys.version); print(platform.platform()); print(platform.machine()); print('UCD', unicodedata.unidata_version)"
           python -m pip install -e ".[test]"
           python -m pip freeze
-      - name: Run frozen vectors and 256-observation fresh-process smoke
-        run: python -m pytest tests/test_cognition_task2_determinism.py tests/test_cognition_recall_features.py tests/test_cognition_task2_portability.py --junitxml=task2-portability.xml -q
+      - name: Run protocol vectors and 256-observation fresh-process smoke
+        run: python -m pytest tests/test_cognition_codec.py tests/test_cognition_observation.py tests/test_cognition_task2_determinism.py tests/test_cognition_recall_features.py tests/test_cognition_task2_portability.py --junitxml=task2-portability.xml -q
       - uses: actions/upload-artifact@v4
         if: always()
         with:

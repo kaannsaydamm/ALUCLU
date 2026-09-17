@@ -2551,3 +2551,38 @@ session can map each decision to the exact diff.
   PASS. The accepted Task 1 static test-key profile is used rather than
   pretending this exercises the separate OS-keyring E2E gate. Cross-platform
   evidence remains OPEN until actual CI or equivalent host results exist.
+- Additional local portability probing: CPython 3.11.13 in an isolated
+  `.venv` passes the complete 69-test selected vector/smoke group. CPython
+  3.10.21 was installed into a separate local research environment, and its
+  68 frozen determinism/feature tests passed, but the first 256-observation
+  smoke timed out at the test harness's 180-second fresh-process boundary.
+  This is a recorded negative run, not a platform PASS or a production
+  correctness failure: all 256 ingests completed, and the fresh-process
+  worker was still consuming CPU when the subprocess cap fired.
+- The failed test's own encrypted ledger was reopened with that same CPython
+  3.10 worker for a stage-level reproducer. It completed correctly with
+  one-shot replay 16.102 s, paged replay 15.461 s, direct recall 0.059 s,
+  one-shot text recall 15.769 s, and paged text recall 15.796 s. The first
+  interruption was therefore a host-load-sensitive harness duration; the
+  acceptance criteria contain no 180-second portability threshold. The
+  worker now reports per-stage elapsed values in its result, and the test
+  records them in JUnit evidence while retaining every semantic assertion.
+  Its subprocess safety timeout is expanded to 600 seconds without changing
+  any Task 2 RSS, scan-ratio, p95, or logical-cap threshold. The 3.10 full
+  smoke rerun remains pending until the concurrent 4,096 benchmark scan
+  finishes, to avoid contaminating its wall-clock ratio. The manual CI
+  workflow also adds Task 1 codec and Task 2 observation protocol tests to
+  its vector lane; this workflow has still not run externally.
+- The clean CPython 3.10.21 rerun completes the expanded local Windows lane:
+  Task 1 codec, Task 2 observation protocol, frozen determinism, recall-
+  feature vectors, and the 256-observation fresh-process smoke pass 215/215
+  with zero failures, errors, or skips in 333.785 seconds. JUnit records the
+  smoke itself at 221.210 seconds and its worker stages as direct recall
+  0.052 s, one-shot replay 15.439 s, paged replay 16.535 s, one-shot text
+  recall 14.511 s, and paged text recall 14.776 s. This closes the earlier
+  180-second harness RED without hiding it or changing a product acceptance
+  metric. Local Windows now has executable selected evidence on CPython
+  3.10.21, 3.11.13, 3.12.13, and 3.13.5; only 3.10 ran the subsequently
+  expanded 215-test lane, so the exact expanded final snapshot must still be
+  rerun on 3.11-3.13 after integration. Linux, macOS, and arm64 remain OPEN
+  until the prepared CI matrix actually executes.
