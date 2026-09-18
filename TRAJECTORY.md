@@ -2927,3 +2927,19 @@ session can map each decision to the exact diff.
   syntactic, not a complete Python interpreter/dataflow proof. The final
   architecture-inclusive full suite and completion-evidence verdict are
   still required before a host-scoped Task 2.8 decision.
+- The repaired oracle and this trajectory were committed as `0c5c48b` and
+  pushed to `codex/unified-lifelong-cognition`. A fresh Windows CPython 3.13
+  full `pytest -q` suite including that commit was started detached at
+  2026-09-19 02:19:11 +03:00 with wrapper PID 14932 and Python worker PID
+  32748 (IDs are startup hints, not future authority). Its three authoritative
+  targets are `results/cognition_task2_full_py313_architecture_oracle_v2_20260919`
+  with `.stdout.log`, `.stderr.log`, and `.xml` suffixes. The wrapper writes
+  `pytest_exit_code=<number>` after pytest returns, avoiding the prior blank
+  exit-watcher ambiguity. The processes were alive and stdout had begun
+  advancing when recorded; no JUnit or final verdict exists yet. The old
+  single-run monitor was no longer present in the app, so a new quiet-on-
+  unchanged 30-minute heartbeat named `ALUCLU Task 2 final full-suite takip`
+  (automation ID `aluclu-task-2-final-full-suite-takip`) now watches the new
+  evidence and will stop after the terminal result is processed. Scheduling
+  is not a test PASS. The user has deferred Linux/macOS; their absence and the
+  GitHub Actions billing lock remain separately visible, not silently passed.
