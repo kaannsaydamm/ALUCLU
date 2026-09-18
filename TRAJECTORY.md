@@ -2862,3 +2862,68 @@ session can map each decision to the exact diff.
   cover it. A fresh full suite including the new architecture oracle is the
   next execution gate; Task 2.8 and Task 2 remain REOPEN until it and renewed
   independent verdicts are clear.
+- The first architecture-inclusive detached Windows CPython 3.13 suite was
+  deliberately interrupted while still near its start after independent
+  reviewers found bypasses in the newly added architecture test. Its stdout
+  ended with `pytest_exit_code=-1`, stderr was empty, and no JUnit XML was
+  produced. This is an intentionally aborted invalid-candidate run, neither
+  a product test failure nor a full-suite PASS. The exact wrapper/worker
+  processes were verified and stopped; no unrelated process was touched.
+  This run must not be counted toward Task 2.8.
+- Independent Task 2.8 architecture and code/security review REOPENED the
+  regression oracle, not the inspected production architecture. Valid Python
+  imports `from . import observation` and
+  `from aluclu.cognition import observation` escaped the Task 1-to-Task 2
+  reverse-edge check; package-form ledger imports could evade the Task 2
+  check. The oracle also missed construction of an imported or aliased
+  `VerifiedLedgerSession`, caller-session `close`/context ownership, and
+  aliases that could obscure the close receiver. New synthetic tests first
+  reproduced those gaps as 2 focused failures (2 existing tests passed).
+  The test-only repair normalizes package-form imports, rejects session
+  constructors including aliases, permits `close` only on locally proven
+  verified cursor variables, rejects other close/context ownership, and
+  freezes the Task 1 reverse-edge helper. Expanded focused tests are now
+  4/4 PASS; Ruff over `src`, `tests`, and `scripts`, Ruff format check for the
+  changed test, compileall over cognition and tests, pinned Pyright 1.1.413
+  with the `.venv313` interpreter (0 errors/warnings/informations), and
+  `git diff --check` all PASS. The first Pyright invocation omitted the venv
+  and reported four missing `pytest` imports; rerunning with the explicit
+  interpreter resolved these environment-only diagnostics. Independent
+  re-review and an architecture-inclusive full suite remain pending, so
+  neither Task 2.8 nor Task 2 is CLEAN yet.
+- GitHub Actions run `35391775413` at `da979bc` reported twelve failed
+  portability matrix jobs (Ubuntu, Windows, macOS; Python 3.10-3.13), but
+  GitHub's annotation says every job was **not started** because the account
+  is locked due to a billing issue. These are zero-execution CI failures,
+  not product test failures or platform PASS evidence. The user explicitly
+  deferred Linux/macOS execution for now; local Windows Task 2.8 validation
+  proceeds separately. WSL2/Kali can provide Linux userspace evidence later,
+  but it is not bare-metal or macOS evidence.
+- Two further independent re-review cycles were treated as blockers rather
+  than waived. First, the oracle globally counted a local `cursor` assignment,
+  allowing `cursor.close()` in a different function, and missed valid
+  `from ..cognition import observation` / `from ..cognition.observation import`
+  reverse edges. Both were reproduced as focused RED, then fixed with
+  scope-local cursor binding and level-2 relative import normalization. The
+  architecture reviewer then found that the newly accepted level-2 ledger
+  import spelling was not recognized by the session-constructor alias check;
+  direct and `as VLS` mutations reproduced RED and were fixed. The code/
+  security reviewer found one more literal `getattr(session, "close")()`
+  lifecycle bypass; direct `close` and `__exit__` mutations reproduced RED,
+  and the guard now rejects literal dynamic lifecycle access including
+  `verified_session` and `unlock`. One-hop/chain constructor aliasing is also
+  tracked. Current architecture reviewer verdict is CLEAR for this scoped
+  oracle and inspected production graph. After the latest repair, focused
+  architecture pytest is 4/4 PASS, Ruff and compileall PASS, pinned Pyright
+  1.1.413 is 0/0/0, and diff-check PASS. The separate final code/security
+  re-review and the new full suite are still pending. This is not Task 2
+  CLEAN or broad portability PASS.
+- The final independent code/security re-review of the repaired architecture
+  oracle returned CLEAR with zero critical/high/medium/low findings. It
+  rechecked the prior cross-function cursor, constructor-alias, package and
+  parent-relative import, and literal-`getattr` lifecycle probes; the
+  legitimate local cursor close still passes. This is a scoped test/code
+  review verdict only. Its reviewer explicitly notes that the AST oracle is
+  syntactic, not a complete Python interpreter/dataflow proof. The final
+  architecture-inclusive full suite and completion-evidence verdict are
+  still required before a host-scoped Task 2.8 decision.
