@@ -2816,3 +2816,12 @@ session can map each decision to the exact diff.
   local/host-scoped completion from the broad portability claim reserved for
   Task 14; whether this allows a scoped Task 2 CLEAN will be decided by the
   required final independent gate, not silently assumed here.
+- The detached run subsequently reached the final Task 2 test group with no
+  reported failure so far. Because the real 8,192-observation case previously
+  required tens of minutes, an app heartbeat named
+  `ALUCLU Task 2 full-suite takip` (automation ID
+  `aluclu-task-2-full-suite-takip`) now checks this exact run every 30 minutes.
+  It is instructed to stay quiet on unchanged state, verify the process and
+  exit/JUnit evidence before reporting terminal status, record the outcome in
+  this trajectory, and stop the single-test monitor afterward. Scheduling a
+  check is not evidence that the run has passed or finished.
