@@ -16,16 +16,18 @@ keywords = [
     "associative-memory",
     "bounded-state",
 ]
-dependencies = ["numpy>=2.0", "torch>=2.10"]
+dependencies = ["numpy>=2.0", "torch>=2.10", "cryptography>=43"]
 
 [project.scripts]
 aluclu-train-mqar = "aluclu.cli.train_mqar:main"
 aluclu-train-zoology-mqar = "aluclu.cli.train_zoology_mqar:main"
 aluclu-benchmark = "aluclu.cli.benchmark_stream:main"
+aluclu-benchmark-cognition-ledger = "aluclu.cli.benchmark_cognition_ledger:main"
 
 [project.optional-dependencies]
 test = ["pytest>=8.3"]
 lint = ["ruff>=0.16,<0.17"]
+os-keyring = ["keyring>=25.7,<26"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

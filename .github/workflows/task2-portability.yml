@@ -1,0 +1,38 @@
+name: Task 2 portability evidence
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  vectors-and-256-observation-smoke:
+    name: ${{ matrix.os }} / CPython ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025, macos-14]
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Report runtime and install test dependencies
+        run: |
+          python -c "import platform, sys, unicodedata; print(sys.version); print(platform.platform()); print(platform.machine()); print('UCD', unicodedata.unidata_version)"
+          python -m pip install -e ".[test]"
+          python -m pip freeze
+      - name: Run protocol vectors and 256-observation fresh-process smoke
+        run: python -m pytest tests/test_cognition_codec.py tests/test_cognition_observation.py tests/test_cognition_task2_determinism.py tests/test_cognition_recall_features.py tests/test_cognition_task2_portability.py --junitxml=task2-portability.xml -q
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: task2-portability-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: task2-portability.xml
+          if-no-files-found: ignore
