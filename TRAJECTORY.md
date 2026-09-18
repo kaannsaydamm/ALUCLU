@@ -2719,3 +2719,13 @@ session can map each decision to the exact diff.
   local Windows x64 Task 2.7 scale sub-gate. They do not make Task 2.7 or Task
   2 CLEAN: Linux, macOS, and arm64 execution evidence plus the Task 2.8
   three-way final gate remain open.
+- Commit `ca80f05` freezes the final/progress artifacts and trajectory, and the
+  feature branch is pushed to `origin/codex/unified-lifelong-cognition`.
+  Attempting the prepared manual portability dispatch immediately returns
+  GitHub API 404 because `workflow_dispatch` only receives events when its
+  workflow file already exists on the repository default branch. No absent run
+  is relabelled as evidence. The workflow therefore adds a normal
+  `pull_request` trigger targeting `main` while preserving manual dispatch;
+  opening the branch PR can execute the same twelve hosted lanes from the PR
+  revision without first merging unverified code. This is CI reachability
+  plumbing only and changes no Task 2 protocol, threshold, or test selection.
