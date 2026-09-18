@@ -2662,3 +2662,60 @@ session can map each decision to the exact diff.
   uninterrupted same-host run. Its atomic progress JSON and work root are
   retained for audit. The next attempt must run as a detached hidden process
   whose lifetime is independent of an individual controller turn/session.
+- The third full-scale attempt ran detached from clean commit
+  `1150a30e105b5a05408bbe22e74c648af66932b8`, seed `20260918`, three samples,
+  and the fixed public 2,048/4,096/8,192 counts with exact 512-byte content.
+  It used the unsynchronised local-NVMe work root
+  `task2-20260918-163828-11772-dbe8def9`; the detached controller remained
+  alive from 16:38:20 through terminal completion at 19:41:47, emitted no
+  stderr, atomically advanced the progress protocol through all three exact
+  checkpoints to `stage=complete`, and wrote the final normative
+  `aluclu.cognition.task2.scale.v1` artifact. This is the first uninterrupted
+  completed Task 2.7 public scale run after the two retained interruption
+  negatives.
+- The final artifact is `results/cognition_task2_scale.json`, 6,177 bytes,
+  SHA-256
+  `fbfe72dd9458b27755a0a8e503a2599c6a00c72501efa70626482d3f721bfb6d`.
+  It binds the clean launch SHA, Windows 11 / CPython 3.13.5 / SQLite 3.49.1,
+  i7-12650H, 16 GB RAM, local NTFS/NVMe storage, dependency inventory, seed,
+  sample count, raw peaks, and raw timings. Torch 2.6.0+cu124 is below the
+  declared `torch>=2.10` inventory requirement, but the artifact marks Torch
+  and the RTX 4050 as inventory-only and the measured persistence/recollection
+  loop uses neither; this mismatch is retained rather than hidden and grants
+  no neural/GPU claim.
+- Exact scan samples were 174.1469283/189.2963480/203.4790805 seconds at
+  2,048, 430.7994885/508.1370472/498.2259318 seconds at 4,096, and
+  454.5412157/594.0896569/458.2759604 seconds at 8,192. The median
+  8,192-to-4,096 ratio is 0.9198155518407722 against the fixed 2.75 maximum.
+  Empty/2,048/4,096/8,192 isolated peak RSS values were respectively
+  410,320,896 / 421,089,280 / 426,504,192 / 433,975,296 bytes; their exact
+  signed increments are 10,768,384 / 16,183,296 / 23,654,400 bytes. Thus the
+  8,192 delta is below 64 MiB over empty and only 12,886,016 bytes above the
+  2,048 delta, below the fixed 16 MiB limit.
+- The one-shot, 2,048-page, and fresh-process-restarted 8,192 result digests
+  are all
+  `485e4249d8e528e55b900cab5db70f63848700b0541812a5d278808a1442b94c`.
+  Direct-ID p95 is 0.0669355 seconds versus the same-process Task 1 read p95
+  of 0.0644965 seconds, within the fixed 2x limit. Exactly 8,192 records were
+  scanned/scored, 32 candidates returned, full-verification delta stayed zero,
+  duplicate detection stayed false, and the plaintext-sidecar scan found
+  nothing. Persistent bytes are 81,132,810 total: 76,075,008 database,
+  5,057,802 record-key store, and zero WAL. Every one of the 28 named fixed
+  checks is true, `thresholds.passed` is true, and `success` is true.
+- Immediate post-artifact validation reruns the focused benchmark suite at
+  17/17 PASS on CPython 3.13.5. Scoped Ruff and compileall pass, pinned Pyright
+  1.1.413 reports 0 errors/0 warnings/0 informations, and `git diff --check`
+  passes. An independent code reviewer recomputed every resource ratio, checked
+  the retained work root and plaintext sentinels, reran 17/17 focused tests,
+  Ruff, and compileall, found zero Critical/High/Medium/Low issues, and returned
+  APPROVE for the scale artifact only. A separate completion verifier checked
+  the terminated launcher/controller, nonempty success stdout, zero-byte
+  stderr, terminal progress artifact, retained ledger/key material, raw
+  arithmetic, threshold/source/test mapping, and returned CLEAR for the same
+  scale-only scope. The verifier stopped an optional additional direct cursor
+  enumeration after several minutes when asked to return the verdict; that
+  redundant audit produced no evidence and is not represented as a pass.
+  Together the normative artifact and two independent verdicts close the
+  local Windows x64 Task 2.7 scale sub-gate. They do not make Task 2.7 or Task
+  2 CLEAN: Linux, macOS, and arm64 execution evidence plus the Task 2.8
+  three-way final gate remain open.
