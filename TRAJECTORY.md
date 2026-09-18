@@ -2645,3 +2645,20 @@ session can map each decision to the exact diff.
   evidence for Python 3.10-3.13, not Linux, macOS, arm64, or the prepared
   twelve-lane workflow: those external portability claims remain OPEN until
   their actual lanes execute.
+- A second full-scale attempt started from clean evidence commit
+  `b82f845353f1c5722082b60db44949e6a9b84cd2`, seed `20260918`, and a fresh
+  unsynchronised NVMe work root. It durably completed the exact 2,048
+  checkpoint: all three scans covered 2,048 records in 99.8438465 s,
+  96.03294 s, and 106.7919441 s; the isolated empty/scan RSS peaks were
+  413,945,856 and 425,189,376 bytes, so the recorded signed delta is the exact
+  11,243,520-byte raw difference. During the subsequent 4,096 ingest the
+  controller's foreground command session disappeared with no final result
+  artifact. The benchmark process and its command-session handle are both no
+  longer present. Read-only immutable SQLite inspection proves the retained
+  ledger is internally sound (`integrity_check=ok`) but contains only 2,994
+  history rows, records, and append witnesses, with no tombstones. Therefore
+  this is another interrupted negative run, not a scale PASS and not a valid
+  resume source: the required 8,192/4,096 ratio must be measured within one
+  uninterrupted same-host run. Its atomic progress JSON and work root are
+  retained for audit. The next attempt must run as a detached hidden process
+  whose lifetime is independent of an individual controller turn/session.
