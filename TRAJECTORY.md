@@ -2586,3 +2586,40 @@ session can map each decision to the exact diff.
   expanded 215-test lane, so the exact expanded final snapshot must still be
   rerun on 3.11-3.13 after integration. Linux, macOS, and arm64 remain OPEN
   until the prepared CI matrix actually executes.
+- The first clean-SHA full scale attempt ran from implementation commit
+  `000e2591aaf02508278ca9fee700d3f720a3c5b6` in the unsynchronised work root
+  `task2-20260916-175803-316-ffa0bab9`. Live evidence showed exact 2,048 and
+  4,096 checkpoint workers complete and the ledger later reached all 8,192
+  records. A machine/reboot interruption then ended the process before the
+  final scans and atomic result write. Post-interruption inspection proves the
+  ledger still contains exactly 8,192 history records and SQLite
+  `integrity_check` returns `ok`, but `results/cognition_task2_scale.json` was
+  never created and the earlier raw timing/RSS samples existed only in process
+  memory. This is an interrupted negative run, not Task 2.7 scale PASS; its
+  work directory is retained for audit and no missing metrics are inferred.
+- A reboot-evidence hardening slice starts with a RED where the small real
+  scale fixture passes an unsupported `progress_output` and the runner raises
+  `TypeError`. The runner now writes a distinct canonical, atomic progress
+  protocol after the empty-session baseline, after every exact count scan,
+  and after completion. Each checkpoint binds stage, completed counts,
+  parameters, partial raw measurements, environment, exact git state, and the
+  unsynchronised work path. It deliberately does not implement cross-reboot
+  resume: the plan's 8,192/4,096 timing ratio must come from one same-host/run,
+  so a later process may audit partial evidence but cannot relabel it as a
+  completed acceptance artifact.
+- The new small-fixture progress GREEN exposed a second honest measurement
+  RED: an empty-process peak RSS may be slightly higher than a tiny scan's
+  peak, so requiring every scan peak to be greater than the baseline made the
+  base gate nondeterministically false. The repair does not lower the 64 MiB
+  or 16 MiB limits. RSS increments are now signed raw `scan_peak - baseline`
+  values; all baseline/scan probes must remain nonzero, and a fail-closed check
+  requires every reported delta to exactly match its raw peak and baseline.
+  Thus missing probes or clamped/forged deltas still fail while a legitimate
+  negative incremental measurement is preserved instead of rewritten to
+  zero. A mutation regression proves inconsistent delta evidence fails.
+- Post-hardening Task 2 scale-runner tests pass 17/17 on CPython 3.12.13 and
+  3.13.5. The targeted RED/threshold/progress set passes 11/11; Ruff,
+  compileall, diff-check, and pinned Pyright 1.1.413 are clean at 0 errors,
+  0 warnings, 0 informations. The real 8,192 gate must be rerun from a clean
+  commit; progress checkpoints increase evidence durability but grant no
+  performance or completion claim.

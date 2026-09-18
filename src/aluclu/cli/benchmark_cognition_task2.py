@@ -62,6 +62,7 @@ from aluclu.cognition.ledger import VerifiedLedgerSession
 from aluclu.cognition.recollection import RecollectionWorkV1
 
 _PROTOCOL_ID = "aluclu.cognition.task2.scale.v1"
+_PROGRESS_PROTOCOL_ID = "aluclu.cognition.task2.scale-progress.v1"
 _FIXED_COUNTS = (2_048, 4_096, 8_192)
 _FIXED_PAYLOAD_BYTES = 512
 _DEFAULT_SAMPLES = 3
@@ -91,6 +92,42 @@ def local_benchmark_root(run_id: str | None = None) -> Path:
     return _task1_local_benchmark_root(suffix)
 
 
+def _default_progress_output(output: Path) -> Path:
+    suffix = output.suffix or ".json"
+    stem = output.name[: -len(output.suffix)] if output.suffix else output.name
+    return output.with_name(f"{stem}.progress{suffix}")
+
+
+def _write_measurement_progress(
+    output: Path,
+    *,
+    work_root: Path,
+    stage: str,
+    counts: tuple[int, int, int],
+    completed_counts: tuple[int, ...],
+    payload_bytes: int,
+    samples: int,
+    seed: int,
+    measurements: Mapping[str, Any],
+) -> None:
+    payload = {
+        "protocol_id": _PROGRESS_PROTOCOL_ID,
+        "stage": stage,
+        "completed_counts": list(completed_counts),
+        "counts": list(counts),
+        "payload_bytes": payload_bytes,
+        "samples": samples,
+        "seed": seed,
+        "measurements": dict(measurements),
+        "environment": _environment(work_root),
+        "paths": {
+            "work_dir": str(work_root),
+            "progress_output": str(output),
+        },
+    }
+    _write_json(output, payload)
+
+
 def run_benchmark(
     *,
     output: str | Path,
@@ -99,6 +136,7 @@ def run_benchmark(
     counts: tuple[int, int, int] = _FIXED_COUNTS,
     payload_bytes: int = _FIXED_PAYLOAD_BYTES,
     samples: int = _DEFAULT_SAMPLES,
+    progress_output: str | Path | None = None,
 ) -> dict[str, Any]:
     """Run the fixed Task 2 scale gate and atomically persist canonical JSON."""
 
@@ -111,6 +149,7 @@ def run_benchmark(
         payload_bytes=payload_bytes,
         samples=samples,
         benchmark_base_override=None,
+        progress_output=progress_output,
     )
 
 
@@ -123,12 +162,20 @@ def _run_benchmark_impl(
     payload_bytes: int,
     samples: int,
     benchmark_base_override: Path | None,
+    progress_output: str | Path | None = None,
 ) -> dict[str, Any]:
     safe_counts = _validated_counts(counts)
     safe_payload_bytes = _validated_payload_bytes(payload_bytes)
     safe_samples = _validated_samples(samples)
     safe_seed = _exact_int(seed, "seed")
     output_path = Path(output).expanduser().resolve(strict=False)
+    progress_path = (
+        _default_progress_output(output_path)
+        if progress_output is None
+        else Path(progress_output).expanduser().resolve(strict=False)
+    )
+    if progress_path == output_path:
+        raise InputBoundaryError("progress output must differ from final output")
     work_root = Path(work_dir).expanduser().resolve(strict=False)
     _require_work_root_boundary(
         work_root,
@@ -144,6 +191,7 @@ def _run_benchmark_impl(
             counts=safe_counts,
             payload_bytes=safe_payload_bytes,
             samples=safe_samples,
+            progress_output=progress_path,
         )
         thresholds = _threshold_evidence(measurements)
         result: dict[str, Any] = {
@@ -159,6 +207,7 @@ def _run_benchmark_impl(
             "paths": {
                 "work_dir": str(work_root),
                 "output": str(output_path),
+                "progress_output": str(progress_path),
                 "local_benchmark_root": str(local_benchmark_root("<run-id>")),
             },
             "algorithm": {
@@ -170,6 +219,17 @@ def _run_benchmark_impl(
             },
         }
         _write_json(output_path, result)
+        _write_measurement_progress(
+            progress_path,
+            work_root=work_root,
+            stage="complete",
+            counts=safe_counts,
+            completed_counts=safe_counts,
+            payload_bytes=safe_payload_bytes,
+            samples=safe_samples,
+            seed=safe_seed,
+            measurements=measurements,
+        )
         return result
     except Exception as primary:
         failure = {
@@ -179,7 +239,11 @@ def _run_benchmark_impl(
             "payload_bytes": safe_payload_bytes,
             "samples": safe_samples,
             "seed": safe_seed,
-            "paths": {"work_dir": str(work_root), "output": str(output_path)},
+            "paths": {
+                "work_dir": str(work_root),
+                "output": str(output_path),
+                "progress_output": str(progress_path),
+            },
             "error": {"type": type(primary).__name__, "message": str(primary)},
         }
         try:
@@ -196,6 +260,7 @@ def _run_measurements(
     counts: tuple[int, int, int],
     payload_bytes: int,
     samples: int,
+    progress_output: Path,
 ) -> dict[str, Any]:
     ledger_path = work_root / "cognition.sqlite3"
     key_path = work_root / "cognition.master.key"
@@ -240,6 +305,17 @@ def _run_measurements(
     maximum_work: Mapping[str, Any] = {}
     maximum_continuation_bytes = 0
     maximum_full_verification_delta = 0
+    _write_measurement_progress(
+        progress_output,
+        work_root=work_root,
+        stage="baseline",
+        counts=counts,
+        completed_counts=(),
+        payload_bytes=payload_bytes,
+        samples=samples,
+        seed=seed,
+        measurements={"rss_baseline_peak_bytes": baseline_peak},
+    )
 
     for count in counts:
         # Grow one physical encrypted ledger only as far as this checkpoint.
@@ -319,7 +395,7 @@ def _run_measurements(
         scan_records[str(count)] = _required_int(scan_work, "records_scanned")
         scan_peak = _required_int(scan, "peak_rss_bytes")
         scan_peaks[str(count)] = scan_peak
-        rss_increments[str(count)] = max(0, scan_peak - baseline_peak)
+        rss_increments[str(count)] = scan_peak - baseline_peak
         maximum_full_verification_delta = max(
             maximum_full_verification_delta,
             _required_int(scan, "full_verification_delta"),
@@ -329,6 +405,26 @@ def _run_measurements(
             direct_p95 = _required_float(scan, "direct_id_p95_seconds")
             read_p95 = _required_float(scan, "task1_read_p95_seconds")
             maximum_work = scan_work
+        _write_measurement_progress(
+            progress_output,
+            work_root=work_root,
+            stage=f"checkpoint-{count}",
+            counts=counts,
+            completed_counts=tuple(
+                item for item in counts if item <= count
+            ),
+            payload_bytes=payload_bytes,
+            samples=samples,
+            seed=seed,
+            measurements={
+                "full_verification_delta": maximum_full_verification_delta,
+                "peak_rss_bytes_by_count": scan_peaks,
+                "rss_baseline_peak_bytes": baseline_peak,
+                "rss_increment_bytes": rss_increments,
+                "scan_records_by_count": scan_records,
+                "scan_samples_seconds": scan_samples,
+            },
+        )
         previous_count = count
 
     paged = _run_worker(
@@ -469,8 +565,9 @@ def _threshold_evidence(measurements: Mapping[str, Any]) -> dict[str, Any]:
         and all(
             _mapping_int(rss_peaks, str(count)) > 0 for count in counts
         ),
-        "rss_peaks_comparable_to_empty": all(
-            _mapping_int(rss_peaks, str(count)) >= rss_baseline
+        "rss_deltas_match_raw_peaks": all(
+            _mapping_int(rss, str(count))
+            == _mapping_int(rss_peaks, str(count)) - rss_baseline
             for count in counts
         ),
         "no_duplicate_records": measurements.get("duplicate_records") is False,
@@ -967,6 +1064,7 @@ def _build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("results/cognition_task2_scale.json"),
     )
+    parser.add_argument("--progress-output", type=Path)
     parser.add_argument("--work-dir", type=Path)
     parser.add_argument("--seed", type=int, default=20260916)
     parser.add_argument("--samples", type=int, default=_DEFAULT_SAMPLES)
@@ -1002,6 +1100,7 @@ def main(argv: list[str] | None = None) -> None:
         work_dir=work_dir,
         seed=args.seed,
         samples=args.samples,
+        progress_output=args.progress_output,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     if not result["success"]:

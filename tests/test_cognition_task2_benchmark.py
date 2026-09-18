@@ -97,10 +97,10 @@ def test_fixed_thresholds_accept_exact_boundary_and_preserve_raw_samples() -> No
             "rss_probe_available",
         ),
         (
-            lambda item: item["peak_rss_bytes_by_count"].__setitem__(
-                "8192", 99 * 1024 * 1024
+            lambda item: item["rss_increment_bytes"].__setitem__(
+                "8192", 39 * 1024 * 1024
             ),
-            "rss_peaks_comparable_to_empty",
+            "rss_deltas_match_raw_peaks",
         ),
         (
             lambda item: item.__setitem__("direct_id_p95_seconds", 0.0021),
@@ -159,9 +159,11 @@ def test_small_fixture_runs_actual_encrypted_records_without_fixed_gate(
     benchmark_base = tmp_path / "local-state"
     work_dir = benchmark_base / "run"
     output = tmp_path / "result.json"
+    progress_output = tmp_path / "progress.json"
 
     result = benchmark_module._run_benchmark_impl(
         output=output,
+        progress_output=progress_output,
         work_dir=work_dir,
         seed=17,
         counts=(4, 8, 16),
@@ -171,7 +173,13 @@ def test_small_fixture_runs_actual_encrypted_records_without_fixed_gate(
     )
 
     persisted = json.loads(output.read_text(encoding="utf-8"))
+    progress = json.loads(progress_output.read_text(encoding="utf-8"))
     assert result == persisted
+    assert progress["protocol_id"] == "aluclu.cognition.task2.scale-progress.v1"
+    assert progress["stage"] == "complete"
+    assert progress["completed_counts"] == [4, 8, 16]
+    assert progress["measurements"] == result["measurements"]
+    assert progress_output.read_bytes().endswith(b"\n")
     assert result["success"] is True
     assert result["thresholds"]["fixed_gate_enforced"] is False
     assert result["counts"] == [4, 8, 16]
@@ -275,6 +283,7 @@ def test_failure_atomically_replaces_stale_success_artifact(
     with pytest.raises(RuntimeError, match="injected scale failure"):
         benchmark_module._run_benchmark_impl(
             output=output,
+            progress_output=tmp_path / "progress.json",
             work_dir=benchmark_base / "run",
             seed=19,
             counts=(4, 8, 16),
