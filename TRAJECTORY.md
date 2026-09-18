@@ -2802,3 +2802,17 @@ session can map each decision to the exact diff.
   skips, and artifact hash are inspected. The macOS/arm64 portability lanes
   remain blocked by the GitHub account billing state regardless of local
   Windows suite outcome.
+- Detached full-suite execution was observed alive again after controller-turn
+  rollover: launcher PID 29648 and worker PID 6292 were still running, stdout
+  advanced through 27% and into the next test group, stderr remained empty,
+  and C: stayed near 40.44 GiB physically free. A hidden process-handle watcher
+  (PID 22260) now waits for the existing launcher and will write its actual
+  exit code to `results/cognition_task2_full_py313_detached_20260918.exit.log`;
+  this does not restart or alter the test. The pending JUnit and exit code must
+  both be checked before any full-suite verdict. GitHub Actions run
+  `35381922237` at `1ad506a` again created twelve zero-step failed jobs; its
+  macOS annotation repeats the account billing-lock message, so none is
+  platform execution evidence. The Task 2 plan explicitly distinguishes
+  local/host-scoped completion from the broad portability claim reserved for
+  Task 14; whether this allows a scoped Task 2 CLEAN will be decided by the
+  required final independent gate, not silently assumed here.
