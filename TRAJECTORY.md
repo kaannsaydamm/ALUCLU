@@ -2786,3 +2786,19 @@ session can map each decision to the exact diff.
   Hyper-V's optional feature required elevation, so no VHD compaction was
   attempted and no further physical recovery is asserted. Do not interpret
   WSL `df` capacity as host disk capacity.
+- Post-cleanup local Task 2.8 preparation on Windows CPython 3.13.5 reran Ruff
+  over `src`, `tests`, and `scripts` (PASS); compileall over
+  `src/aluclu/cognition` and `tests` (PASS); scoped Pyright 1.1.413 over the
+  cognition source, Task 2 cognition tests, and Task 2 helper workers (0
+  errors, 0 warnings, 0 informations); and `git diff --check` (PASS). A first
+  foreground full-suite pytest run was deliberately interrupted during the
+  expensive 8,192-observation test so its lifetime would not depend on this
+  controller terminal; it produced no JUnit and is not a test PASS or product
+  failure. The identical complete pytest command was restarted in a detached
+  hidden process at 21:43:44 local, process ID 29648, with stdout/stderr and
+  JUnit targets under `results/cognition_task2_full_py313_detached_20260918.*`.
+  This run was alive and producing progress when recorded, but has no final
+  verdict yet. Do not count it toward Task 2.8 until its exit/result counts,
+  skips, and artifact hash are inspected. The macOS/arm64 portability lanes
+  remain blocked by the GitHub account billing state regardless of local
+  Windows suite outcome.
