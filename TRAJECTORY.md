@@ -2623,3 +2623,25 @@ session can map each decision to the exact diff.
   0 warnings, 0 informations. The real 8,192 gate must be rerun from a clean
   commit; progress checkpoints increase evidence durability but grant no
   performance or completion claim.
+- Two independent read-only gates reviewed exact commit
+  `608ed516096efa9113fd5238d4a608f9c4194001`. The code reviewer reports
+  APPROVE with zero critical/high/medium/low findings after independently
+  rerunning 17/17 focused tests under CPython 3.12 and 3.13, Ruff,
+  compileall, diff-check, and pinned Pyright. The verifier separately reports
+  CLEAR to start the real 8,192/512 run after checking the clean SHA, the
+  fixed public parameters, a real small-fixture final/progress artifact pair,
+  the retained interrupted ledger's 8,192 records and SQLite integrity, and
+  the absence of any final Task 2 scale result. Both gates explicitly reject
+  a scale PASS claim before a fresh final
+  `aluclu.cognition.task2.scale.v1` artifact reports `success: true`.
+- The expanded Windows portability lane was then rerun against that exact
+  integrated source snapshot on CPython 3.11.13, 3.12.13, and 3.13.5. Each
+  lane passes all 215 selected codec, observation, frozen determinism,
+  recall-feature, and 256-observation fresh-process tests with zero failures,
+  errors, or skips. JUnit totals are respectively 206.963 s, 198.326 s, and
+  194.580 s; the portability smoke cases are 150.235 s, 148.512 s, and
+  139.875 s. The committed raw JUnit files complement the earlier CPython
+  3.10.21 215/215 artifact. This establishes executable local Windows x64
+  evidence for Python 3.10-3.13, not Linux, macOS, arm64, or the prepared
+  twelve-lane workflow: those external portability claims remain OPEN until
+  their actual lanes execute.
