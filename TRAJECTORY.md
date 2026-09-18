@@ -2943,3 +2943,13 @@ session can map each decision to the exact diff.
   evidence and will stop after the terminal result is processed. Scheduling
   is not a test PASS. The user has deferred Linux/macOS; their absence and the
   GitHub Actions billing lock remain separately visible, not silently passed.
+- At the user's request to retry after a possible billing correction, GitHub
+  Actions portability run `35405342625` for the latest pushed commit
+  `de7898b` was rerun as attempt 2. GitHub accepted the rerun request, but
+  every one of the twelve Windows/Ubuntu/macOS matrix jobs again ended before
+  executing any steps. The attempt-2 job annotations still say the account is
+  locked due to a billing issue. This is renewed external blocker evidence,
+  not a failed product test or successful platform execution. Do not keep
+  rerunning the same workflow until GitHub billing/Actions availability has
+  actually changed. The detached local Windows full suite remained alive with
+  empty stderr when this was recorded.
