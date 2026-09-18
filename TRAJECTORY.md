@@ -2825,3 +2825,40 @@ session can map each decision to the exact diff.
   exit/JUnit evidence before reporting terminal status, record the outcome in
   this trajectory, and stop the single-test monitor afterward. Scheduling a
   check is not evidence that the run has passed or finished.
+- The detached CPython 3.13 full suite reached terminal output at 23:23:55
+  local. Its persisted JUnit report contains 1,051 test cases with zero
+  failures, zero errors, zero skips, and suite time 6,007.673 seconds; SHA-256
+  is `fe257e1e98732d126791e5f98be56d212e87dab4c71eb9b7a253c12979872156`.
+  Stdout reached 100%, is 1,660 bytes, and hashes to
+  `4b015d1b727b3766ef9763141a107b2a515dab49174823f27ec0a26e78e63630`.
+  Stderr is empty with the empty-file SHA-256
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+  The only warning is the already known pytest xunit2 incompatibility for
+  `record_property` in the real-platform keyring smoke; the smoke itself is a
+  passed test. The handle watcher wrote `exit_code=` without a value, so an
+  exact process exit code is unavailable and is not invented. The complete
+  JUnit case counts, 100% stdout, empty stderr, terminal processes, and report
+  hashes are retained as the evidence actually observed. The run's production
+  and pre-existing test inputs are byte-identical to current HEAD; intervening
+  commits changed trajectory only.
+- The fresh Task 2.8 architecture reviewer found no current source violation
+  but correctly REOPENED on a binding missing oracle: plan Section 5 says the
+  forbidden dependency graph is tested, yet no AST/source guard froze Task 1
+  to Task 2 direction, Task 2 internal edges, or the no-`EncryptedLedger` /
+  no-nested-session boundary across all Task 2 modules. Added the test-only
+  `tests/test_cognition_architecture.py`. It parses the six Task 2 modules and
+  five Task 1 persistence modules, freezes their allowed local graph, requires
+  ledger-dependent Task 2 modules to import only `VerifiedLedgerSession`, and
+  rejects `EncryptedLedger`, `verified_session`, `unlock`, later-task imports,
+  and reverse Task 1-to-Task 2 edges. A synthetic mutation fixture proves the
+  detector rejects forbidden ledger/sensorium imports, constructor reference,
+  and nested-session access. Its first mutation run was RED because the
+  synthetic input imported but did not reference `EncryptedLedger` while the
+  assertion expected both; adding an actual synthetic constructor reference
+  repaired the oracle without touching production code. The final focused run
+  is 2/2 PASS; Ruff and compileall pass; pinned Pyright 1.1.413 reports 0
+  errors, 0 warnings, and 0 informations; `git diff --check` passes. Because
+  this test was added after the 1,051-case suite collected, that JUnit does not
+  cover it. A fresh full suite including the new architecture oracle is the
+  next execution gate; Task 2.8 and Task 2 remain REOPEN until it and renewed
+  independent verdicts are clear.
