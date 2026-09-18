@@ -2729,3 +2729,34 @@ session can map each decision to the exact diff.
   opening the branch PR can execute the same twelve hosted lanes from the PR
   revision without first merging unverified code. This is CI reachability
   plumbing only and changes no Task 2 protocol, threshold, or test selection.
+- PR #2 (`https://github.com/kaannsaydamm/ALUCLU/pull/2`) was opened against
+  `main` at exact head `866c6d075cd64e4f956011703964e988ec26bdc7`.
+  GitHub Actions run `35371322774` expanded all twelve intended jobs but every
+  job failed before runner allocation with zero steps and no logs. The check-run
+  annotations say verbatim: "The job was not started because your account is
+  locked due to a billing issue." This is a reproducible external CI account
+  blocker, not a product-test failure or an executed macOS/arm64 lane. No
+  hosted matrix PASS is inferred.
+- A local alternative ran the identical 215-test selected portability group
+  from a clean clone of that exact SHA on a real WSL2 Linux x86_64 guest
+  (Kali 2026.1, Linux 6.18.33.2-microsoft-standard-WSL2, glibc 2.42). Each
+  interpreter had its own isolated virtual environment and the declared
+  `numpy>=2.0`, `torch>=2.10`, `cryptography>=43`, `pytest>=8.3` dependency
+  installation; Torch 2.14.0, cryptography 50.0.1, and pytest 9.1.1 were
+  present in all four. Exact interpreter/numpy/UCD versions and JUnit evidence:
+
+  | Linux lane | numpy | UCD | Tests | Fail/Error/Skip | JUnit seconds | JUnit SHA-256 |
+  | --- | --- | --- | ---: | --- | ---: | --- |
+  | CPython 3.10.21 | 2.2.6 | 13.0.0 | 215 | 0/0/0 | 63.435 | `758ae7cddf87d2f05ccea4e13701633bdc4723b3059f6cafa2705cce5c847ea8` |
+  | CPython 3.11.16 | 2.4.6 | 14.0.0 | 215 | 0/0/0 | 66.675 | `9c0613f92446ca76974f68ec2c0ca2fcef38dc0570cac54c183c8927b9365bfb` |
+  | CPython 3.12.14 | 2.5.3 | 15.0.0 | 215 | 0/0/0 | 93.917 | `ac12ae90bf8511359812b39e4e21896da424c9ba71fa89a92d0f51948a7d0396` |
+  | CPython 3.13.12 | 2.5.3 | 15.1.0 | 215 | 0/0/0 | 71.197 | `84ad4f529b2158e51086a04af29162885ec18a107d791bd1b99aac95d4d98b25` |
+
+  All four XML files are retained under `results/cognition_task2_portability_linux_x64_py3*.xml`.
+  This closes the selected Linux x64 3.10-3.13 lane evidence, not macOS or
+  arm64. WSL's `/dev/sdd` advertised 911 GiB free as a virtual-filesystem
+  capacity; a separate Windows `Get-PSDrive C`/`Win32_LogicalDisk` check showed
+  only 39.65 GiB physically free on C:. The earlier conflation of the WSL
+  virtual free-space report with host free space was incorrect and is corrected
+  here. Isolated Linux research environments and package cache occupy host
+  disk and are candidates for safe cleanup after evidence capture.
