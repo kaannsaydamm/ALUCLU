@@ -2760,3 +2760,29 @@ session can map each decision to the exact diff.
   virtual free-space report with host free space was incorrect and is corrected
   here. Isolated Linux research environments and package cache occupy host
   disk and are candidates for safe cleanup after evidence capture.
+- On the user's explicit disk-space correction and cleanup request, a separate
+  cleanup agent measured C: at 39.65 GiB physically free and removed only
+  rebuildable Windows package caches: `uv cache clean` reduced the measured
+  `C:\Users\kaann\AppData\Local\uv\cache` content from 2,137,125,917 bytes
+  to zero, and `npm cache clean --force` reduced
+  `C:\Users\kaann\AppData\Local\npm-cache\_cacache` from 745,600,548 bytes
+  to zero. The agent did not delete repository material, benchmark artifacts,
+  documentation, or unrelated user files. Logical cache bytes removed were
+  2,882,726,465 (about 2.68 GiB); measured host free-space improvement was
+  smaller amid concurrent disk activity, and no byte-for-byte physical saving
+  is claimed from those logical totals.
+- After the four Linux JUnit artifacts and dependency lock were committed,
+  the exact isolated WSL test tree
+  `/tmp/aluclu-task2-linux-py313-866c6d0` was checked to be the clean clone
+  at `866c6d0` plus four rebuildable virtual environments, with no active
+  processes, then deleted. It was approximately 22 GiB inside the WSL
+  filesystem. This permanent deletion affects only the session's temporary
+  test environment; the committed evidence remains and the environment can
+  be rebuilt from the recorded revision and lock. WSL's virtual free space
+  increased, but C: did not gain approximately 22 GiB: the exact Kali
+  `ext4.vhdx` remained 51,444,187,136 bytes (47.91 GiB), while the latest
+  observed C: free space was 43,503,247,360 bytes (40.52 GiB). The distros
+  were stopped when inspected. `Optimize-VHD` was unavailable and querying
+  Hyper-V's optional feature required elevation, so no VHD compaction was
+  attempted and no further physical recovery is asserted. Do not interpret
+  WSL `df` capacity as host disk capacity.
