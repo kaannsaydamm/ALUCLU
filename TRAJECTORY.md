@@ -2953,3 +2953,61 @@ session can map each decision to the exact diff.
   rerunning the same workflow until GitHub billing/Actions availability has
   actually changed. The detached local Windows full suite remained alive with
   empty stderr when this was recorded.
+
+## 2026-09-20 Task 2.8 whole-branch review blockers and lifecycle/position repair
+
+- Three independent GPT-5.6 Sol reviewers examined the same frozen
+  `f5a30e0..d2b5ab3841a4e3ddf29a5b4654b9cf3da7cfed08` range rather than the
+  earlier test-only patch. The architecture verdict was BLOCK because
+  missing-profile and forced-abstention early returns could accept a closed
+  or foreign-thread `VerifiedLedgerSession`. The code/security verdict was
+  REQUEST CHANGES because direct-ID recall and reconsolidation endpoint
+  validation omitted the authenticated
+  `post_core_state.last_observation_id == record.event_id` relation, and the
+  architecture oracle missed annotated and derived constructor aliases. The
+  completion map remained INCOMPLETE pending these repairs, current full-suite
+  evidence, a hashed final review package, and three clear final verdicts.
+- The old full-suite candidates are explicitly non-evidence. The v2 run was
+  interrupted by a machine restart near 75% and produced neither JUnit nor an
+  exit record. The v3 launcher split the `--junitxml` option and terminated
+  with pytest exit 4 before collection. The correctly launched v4 run reached
+  47% with empty stderr, but was deliberately stopped after the independent
+  blockers made its old-code result obsolete; its wrapper recorded
+  `pytest_exit_code=-1` and produced no JUnit. None of v2/v3/v4 is a product
+  PASS or FAIL. The obsolete v4 heartbeat was deleted.
+- RED was reproduced before production repair: five focused targets all
+  failed. They covered closed-session no-scan recall, foreign-thread no-scan
+  recall, direct-ID acceptance of a forged post-core observation ID,
+  reconsolidation acceptance of the same malformed endpoint, and annotated /
+  tuple-derived / named-expression `VerifiedLedgerSession` constructor aliases
+  plus a shadowed safe-name control.
+- The repair adds one shared
+  `canonical_observation_matches_position()` predicate for all four canonical
+  slot relations and uses it consistently in sensorium replay validation,
+  scan recall, direct-ID recall, and reconsolidation endpoint validation.
+  Task 2 session entry checks now call Task 1 `_ensure_active()` before policy,
+  profile, continuation, cursor, or mutation work, so closed, poisoned, and
+  foreign-thread sessions fail with Task 1 lifecycle authority even on
+  no-scan terminal paths. The architecture oracle now performs lexical-scope
+  aware alias propagation across plain, annotated, tuple/subscript, and named
+  expression assignments while respecting parameter shadowing.
+- The exact RED targets became 5/5 GREEN. The expanded post-repair suite over
+  `test_cognition_recollection.py`, `test_cognition_reconsolidation.py`,
+  `test_cognition_sensorium.py`, and `test_cognition_architecture.py` produced
+  `results/cognition_task28_blocker_repair_focused_20260919.xml`: 104 tests,
+  0 failures, 0 errors, 0 skipped, 142.643 seconds; SHA-256
+  `5d6d510b1b1cc253fe35fcc109902714e03f9055fcf8307602fc42fa42b804fd`.
+  Ruff 0.16.6 lint over `src`, `tests`, and `scripts` passes; Ruff format check
+  for the newly expanded architecture oracle passes; cognition/test
+  compileall and `git diff --check` pass; pinned Pyright 1.1.413 with the
+  `.venv313` interpreter reports 0 errors, 0 warnings, and 0 informations.
+  A whole-file Ruff format check was not claimed: several large pre-existing
+  files still have unrelated formatter deltas, and they were deliberately not
+  mechanically reformatted into this security repair.
+- Task 2.8 and Task 2 remain OPEN. The repaired diff still requires a new
+  frozen commit/range, fresh whole-branch architecture and code/security
+  verdicts, a new architecture-inclusive terminal full suite, final review
+  package hash, completion-verifier remap, clean tracked tree, and only then
+  the controller's literal host-scoped CLEAN record. macOS/arm64 evidence and
+  broad portability remain separately deferred and must not be inferred from
+  this Windows-host repair.

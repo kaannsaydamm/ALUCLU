@@ -630,6 +630,21 @@ def canonical_observation_from_json_value(value: JsonValue) -> CanonicalObservat
     )
 
 
+def canonical_observation_matches_position(
+    observation: CanonicalObservationV1,
+    event_id: str,
+    sequence: int,
+) -> bool:
+    """Bind a canonical observation to the ledger slot that authenticates it."""
+
+    return (
+        observation.request.observation_id == event_id
+        and observation.pre_append_head_sequence + 1 == sequence
+        and observation.post_core_state.last_observation_id == event_id
+        and observation.post_core_state.last_observation_sequence == sequence
+    )
+
+
 def encode_canonical_observation(observation: CanonicalObservationV1) -> bytes:
     encoded = canonical_json_bytes(
         cast(JsonValue, canonical_observation_to_json_value(observation))
@@ -962,6 +977,7 @@ __all__ = [
     "SourceKind",
     "build_canonical_observation",
     "canonical_observation_from_json_value",
+    "canonical_observation_matches_position",
     "canonical_observation_to_json_value",
     "decode_canonical_observation",
     "decode_observation_request",

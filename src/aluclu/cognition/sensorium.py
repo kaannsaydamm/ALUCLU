@@ -25,6 +25,7 @@ from .observation import (
     SensoriumCoreStateV1,
     build_canonical_observation,
     canonical_observation_from_json_value,
+    canonical_observation_matches_position,
     canonical_observation_to_json_value,
     derive_boundary_signal_digests,
     derive_episode_id,
@@ -1172,12 +1173,10 @@ def _observation_from_record_payload(
         observation = canonical_observation_from_json_value(payload)
     except InputBoundaryError:
         return None
-    if observation.request.observation_id != expected_id:
-        return None
-    if (
-        observation.pre_append_head_sequence + 1 != record_sequence
-        or observation.post_core_state.last_observation_id != expected_id
-        or observation.post_core_state.last_observation_sequence != record_sequence
+    if not canonical_observation_matches_position(
+        observation,
+        expected_id,
+        record_sequence,
     ):
         return None
     return observation
@@ -1206,6 +1205,7 @@ def _replay_required(
 def _require_session(value: object) -> VerifiedLedgerSession:
     if type(value) is not VerifiedLedgerSession:
         raise InputBoundaryError("an active VerifiedLedgerSession is required")
+    value._ensure_active()
     return value
 
 

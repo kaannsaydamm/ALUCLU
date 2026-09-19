@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import struct
 from collections.abc import Callable
-from dataclasses import fields
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import fields, replace
 from pathlib import Path
 from typing import Any, cast
 
@@ -14,6 +15,7 @@ from aluclu.cognition import (
     EncryptedLedger,
     InputBoundaryError,
     LedgerIntegrityError,
+    LedgerLifecycleError,
     LedgerSnapshotChanged,
     ObservationRequestV1,
     ProvenanceV1,
@@ -1450,6 +1452,68 @@ def test_calibrated_text_recall_forced_abstention_happens_before_cursor(
     assert result.work.records_scanned == 0
 
 
+def test_no_scan_text_recall_paths_require_active_session(tmp_path: Path) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active, force_abstain=True)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        session = ledger.verified_session()
+        session.close()
+
+        with pytest.raises(LedgerLifecycleError, match="not active"):
+            recall(
+                session,
+                query,
+                policy=_policy(allow_approximate=False),
+            )
+        with pytest.raises(LedgerLifecycleError, match="not active"):
+            _recall_with_calibration(
+                session,
+                query,
+                policy=policy,
+                active_profile=active,
+                policy_tightening=tightening,
+            )
+
+
+def test_no_scan_text_recall_paths_reject_foreign_thread_session(
+    tmp_path: Path,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active, force_abstain=True)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                missing_profile = pool.submit(
+                    recall,
+                    session,
+                    query,
+                    policy=_policy(allow_approximate=False),
+                )
+                with pytest.raises(LedgerLifecycleError, match="another thread"):
+                    missing_profile.result()
+
+                forced_abstention = pool.submit(
+                    _recall_with_calibration,
+                    session,
+                    query,
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=tightening,
+                )
+                with pytest.raises(LedgerLifecycleError, match="another thread"):
+                    forced_abstention.result()
+
+
 def test_calibrated_text_recall_returns_exact_evidence_for_same_digest_duplicates(
     tmp_path: Path,
 ) -> None:
@@ -2275,3 +2339,41 @@ def test_valid_looking_observation_at_wrong_ledger_position_is_not_memory(
 
     assert type(result) is NoRecollection
     assert receipt.receipt_class is ReceiptClass.CONFLICT
+
+
+def test_direct_id_recall_rejects_mismatched_post_core_observation_id(
+    tmp_path: Path,
+) -> None:
+    profile = baseline_boundary_profile()
+    request = _request(observation_id="obs:recall-position-mismatch")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            state = initialize_empty_sensorium_state(session, profile)
+            assert type(state) is SensoriumStateV1
+            canonical = canonicalize_observation(request, profile, state.core)
+            malformed = build_canonical_observation(
+                request=request,
+                boundary_decision=canonical.boundary_decision,
+                pre_core_state_digest=derive_sensorium_core_state_digest(state.core),
+                post_core_state=replace(
+                    canonical.post_core_state,
+                    last_observation_id="obs:recall-position-different",
+                ),
+                pre_append_head_sequence=0,
+                pre_append_head_hash="0" * 64,
+                boundary_profile_id=profile.profile_id,
+            )
+            session.append_once(
+                request.observation_id,
+                canonical_observation_to_json_value(malformed),
+            )
+
+            result = recall(
+                session,
+                EventIdRecallQuery(observation_id=request.observation_id),
+            )
+
+    assert type(result) is NoRecollection

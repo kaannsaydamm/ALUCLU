@@ -32,6 +32,7 @@ from .observation import (
     ProvenanceV1,
     SourceKind,
     canonical_observation_from_json_value,
+    canonical_observation_matches_position,
 )
 from .recall_features import (
     FeatureSimilarityV1,
@@ -918,11 +919,10 @@ def recall(
         observation = canonical_observation_from_json_value(record.payload)
     except InputBoundaryError:
         return NoRecollection(observation_id=query.observation_id)
-    if observation.request.observation_id != query.observation_id:
-        return NoRecollection(observation_id=query.observation_id)
-    if (
-        observation.pre_append_head_sequence + 1 != record.sequence
-        or observation.post_core_state.last_observation_sequence != record.sequence
+    if not canonical_observation_matches_position(
+        observation,
+        query.observation_id,
+        record.sequence,
     ):
         return NoRecollection(observation_id=query.observation_id)
     return ExactRecollection(
@@ -1602,13 +1602,10 @@ def _scan_observation(
                 "malformed Task 2 observation encountered during recall"
             ) from exc
         return None
-    if (
-        observation.request.observation_id != event_id
-        or observation.pre_append_head_sequence + 1 != sequence
-        or observation.post_core_state.last_observation_id != event_id
-        or observation.post_core_state.last_observation_sequence != sequence
-    ):
-        raise LedgerIntegrityError("Task 2 observation position is invalid during recall")
+    if not canonical_observation_matches_position(observation, event_id, sequence):
+        raise LedgerIntegrityError(
+            "Task 2 observation position is invalid during recall"
+        )
     return observation
 
 
@@ -2190,6 +2187,7 @@ def _require_bounded_int(
 def _require_session(value: object) -> VerifiedLedgerSession:
     if type(value) is not VerifiedLedgerSession:
         raise InputBoundaryError("an active VerifiedLedgerSession is required")
+    value._ensure_active()
     return value
 
 

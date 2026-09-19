@@ -17,7 +17,11 @@ from .contracts import (
     LedgerIntegrityError,
 )
 from .ledger import VerifiedLedgerSession
-from .observation import canonical_observation_from_json_value, derive_content_digest
+from .observation import (
+    canonical_observation_from_json_value,
+    canonical_observation_matches_position,
+    derive_content_digest,
+)
 from .recollection import (
     CalibratedTextMatchEvidenceV1,
     ExactRecollection,
@@ -192,6 +196,7 @@ def commit_reconsolidation(
 
     if type(session) is not VerifiedLedgerSession:
         raise InputBoundaryError("an active VerifiedLedgerSession is required")
+    session._ensure_active()
     session._ensure_no_active_cursors()
     _validate_proposal(proposal)
     _validate_live_endpoint(
@@ -293,8 +298,11 @@ def _validate_live_endpoint(
         or observation.request.observation_id != observation_id
         or observation.content_digest != content_digest
         or observation.boundary_decision.episode_id != episode_id
-        or observation.pre_append_head_sequence + 1 != sequence
-        or observation.post_core_state.last_observation_sequence != sequence
+        or not canonical_observation_matches_position(
+            observation,
+            observation_id,
+            sequence,
+        )
     ):
         raise InputBoundaryError("reconsolidation endpoint changed")
 
