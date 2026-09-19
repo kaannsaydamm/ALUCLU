@@ -80,23 +80,6 @@ def _local_imports(tree: ast.Module) -> list[tuple[str, frozenset[str]]]:
     return imports
 
 
-_LEXICAL_SCOPES = (
-    ast.Module,
-    ast.FunctionDef,
-    ast.AsyncFunctionDef,
-    ast.ClassDef,
-    ast.Lambda,
-)
-
-
-def _bound_names(target: ast.AST) -> set[str]:
-    if isinstance(target, ast.Name):
-        return {target.id}
-    if isinstance(target, (ast.Tuple, ast.List)):
-        return {name for item in target.elts for name in _bound_names(item)}
-    return set()
-
-
 def _scope_parameters(scope: ast.AST) -> set[str]:
     if not isinstance(scope, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
         return set()
@@ -115,35 +98,141 @@ def _scope_parameters(scope: ast.AST) -> set[str]:
     )
 
 
-def _direct_scope_nodes(scope: ast.AST) -> list[ast.AST]:
-    nodes = [scope]
-    for child in ast.iter_child_nodes(scope):
-        if isinstance(child, _LEXICAL_SCOPES):
-            continue
-        nodes.extend(_direct_scope_nodes(child))
-    return nodes
+def _annotation_nodes(tree: ast.Module) -> set[ast.AST]:
+    postponed = any(
+        isinstance(node, ast.ImportFrom)
+        and node.module == "__future__"
+        and any(alias.name == "annotations" for alias in node.names)
+        for node in tree.body
+    )
+    if not postponed:
+        return set()
+    annotations: set[ast.AST] = set()
+    for node in ast.walk(tree):
+        roots: list[ast.AST] = []
+        if isinstance(node, ast.arg) and node.annotation is not None:
+            roots.append(node.annotation)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if node.returns is not None:
+                roots.append(node.returns)
+        elif isinstance(node, ast.AnnAssign):
+            roots.append(node.annotation)
+        for root in roots:
+            annotations.update(ast.walk(root))
+    return annotations
 
 
-def _nested_scopes(scope: ast.AST) -> list[ast.AST]:
-    nested: list[ast.AST] = []
-    for child in ast.iter_child_nodes(scope):
-        if isinstance(child, _LEXICAL_SCOPES):
-            nested.append(child)
-        else:
-            nested.extend(_nested_scopes(child))
-    return nested
-
-
-def _expression_references_session_constructor(
-    expression: ast.AST,
-    aliases: set[str],
+def _parameter_shadows_reference(
+    reference: ast.AST,
+    alias: str,
+    parents: dict[ast.AST, ast.AST],
 ) -> bool:
-    for node in ast.walk(expression):
-        if isinstance(node, ast.Name) and node.id in aliases:
-            return True
-        if isinstance(node, ast.Attribute) and node.attr == "VerifiedLedgerSession":
-            return True
+    child = reference
+    parent = parents.get(child)
+    while parent is not None:
+        if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if child in parent.body and alias in _scope_parameters(parent):
+                return True
+        elif isinstance(parent, ast.Lambda):
+            if child is parent.body and alias in _scope_parameters(parent):
+                return True
+        child = parent
+        parent = parents.get(child)
+    return False
+
+
+def _is_type_call(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "type"
+        and len(node.args) == 1
+        and not node.keywords
+    )
+
+
+def _is_explicit_type_check(
+    reference: ast.AST,
+    parents: dict[ast.AST, ast.AST],
+) -> bool:
+    parent = parents.get(reference)
+    if isinstance(parent, ast.Compare):
+        operands = (parent.left, *parent.comparators)
+        for index, operand in enumerate(operands):
+            if operand is not reference:
+                continue
+            if (
+                index > 0
+                and isinstance(parent.ops[index - 1], (ast.Is, ast.IsNot))
+                and _is_type_call(operands[index - 1])
+            ):
+                return True
+            if (
+                index < len(parent.ops)
+                and isinstance(parent.ops[index], (ast.Is, ast.IsNot))
+                and _is_type_call(operands[index + 1])
+            ):
+                return True
+
+    child = reference
+    while parent is not None and isinstance(parent, (ast.Tuple, ast.List, ast.Set)):
+        child = parent
+        parent = parents.get(child)
+    return bool(
+        isinstance(parent, ast.Call)
+        and isinstance(parent.func, ast.Name)
+        and parent.func.id in {"isinstance", "issubclass"}
+        and len(parent.args) >= 2
+        and child is parent.args[1]
+    )
+
+
+def _session_constructor_runtime_uses(tree: ast.Module) -> set[ast.AST]:
+    """Reject moving the session constructor into any runtime data flow.
+
+    Task 2 may name the caller-owned session type in annotations and exact type
+    checks.  Every other runtime load is forbidden.  This fail-closed rule also
+    covers attributes, subscripts, containers, closures, defaults, and helper
+    returns without attempting an incomplete whole-Python taint analysis.
+    """
+
+    parents = {
+        child: parent
+        for parent in ast.walk(tree)
+        for child in ast.iter_child_nodes(parent)
+    }
+    annotations = _annotation_nodes(tree)
+    aliases = {
+        alias.asname or alias.name
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom)
+        and (node.level, node.module)
+        in {
+            (1, "ledger"),
+            (2, "cognition.ledger"),
+            (0, "aluclu.cognition.ledger"),
+        }
+        for alias in node.names
+        if alias.name == "VerifiedLedgerSession"
+    }
+    uses: set[ast.AST] = set()
+    for node in ast.walk(tree):
+        if node in annotations or _is_explicit_type_check(node, parents):
+            continue
         if (
+            isinstance(node, ast.Name)
+            and isinstance(node.ctx, ast.Load)
+            and node.id in aliases
+            and not _parameter_shadows_reference(node, node.id, parents)
+        ):
+            uses.add(node)
+        elif (
+            isinstance(node, ast.Attribute)
+            and isinstance(node.ctx, ast.Load)
+            and node.attr == "VerifiedLedgerSession"
+        ):
+            uses.add(node)
+        elif (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
             and node.func.id == "getattr"
@@ -151,76 +240,8 @@ def _expression_references_session_constructor(
             and isinstance(node.args[1], ast.Constant)
             and node.args[1].value == "VerifiedLedgerSession"
         ):
-            return True
-    return False
-
-
-def _session_constructor_calls(tree: ast.Module) -> set[ast.Call]:
-    calls: set[ast.Call] = set()
-
-    def inspect_scope(scope: ast.AST, inherited: set[str]) -> None:
-        direct_nodes = _direct_scope_nodes(scope)
-        local_bindings = _scope_parameters(scope)
-        assignments: list[tuple[set[str], ast.AST]] = []
-        imported_session_aliases: set[str] = set()
-
-        for node in direct_nodes:
-            if isinstance(node, ast.Assign):
-                targets = {
-                    name for target in node.targets for name in _bound_names(target)
-                }
-                local_bindings.update(targets)
-                assignments.append((targets, node.value))
-            elif isinstance(node, ast.AnnAssign) and node.value is not None:
-                targets = _bound_names(node.target)
-                local_bindings.update(targets)
-                assignments.append((targets, node.value))
-            elif isinstance(node, ast.NamedExpr):
-                targets = _bound_names(node.target)
-                local_bindings.update(targets)
-                assignments.append((targets, node.value))
-            elif isinstance(node, (ast.Import, ast.ImportFrom)):
-                for alias in node.names:
-                    local_bindings.add(alias.asname or alias.name.split(".", 1)[0])
-                if isinstance(node, ast.ImportFrom) and (node.level, node.module) in {
-                    (1, "ledger"),
-                    (2, "cognition.ledger"),
-                    (0, "aluclu.cognition.ledger"),
-                }:
-                    imported_session_aliases.update(
-                        alias.asname or alias.name
-                        for alias in node.names
-                        if alias.name == "VerifiedLedgerSession"
-                    )
-
-        local_bindings.update(
-            nested.name
-            for nested in _nested_scopes(scope)
-            if isinstance(nested, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
-        )
-        aliases = (inherited - local_bindings) | imported_session_aliases
-        while True:
-            additions = {
-                target
-                for targets, value in assignments
-                if _expression_references_session_constructor(value, aliases)
-                for target in targets
-            }
-            if additions <= aliases:
-                break
-            aliases.update(additions)
-
-        calls.update(
-            node
-            for node in direct_nodes
-            if isinstance(node, ast.Call)
-            and _expression_references_session_constructor(node.func, aliases)
-        )
-        for nested in _nested_scopes(scope):
-            inspect_scope(nested, aliases)
-
-    inspect_scope(tree, set())
-    return calls
+            uses.add(node)
+    return uses
 
 
 def _scope_nodes(root: ast.AST) -> list[ast.AST]:
@@ -303,7 +324,7 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
     violations: list[str] = []
     allowed = TASK2_IMPORT_GRAPH[module_name]
     ledger_names: set[str] = set()
-    session_constructor_calls = _session_constructor_calls(tree)
+    session_constructor_runtime_uses = _session_constructor_runtime_uses(tree)
 
     for imported_module, imported_names in _local_imports(tree):
         if imported_module not in allowed:
@@ -334,7 +355,7 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
                 violations.append(
                     f"{module_name} accesses ledger lifecycle {attribute_name}"
                 )
-        elif isinstance(node, ast.Call) and node in session_constructor_calls:
+        elif node in session_constructor_runtime_uses:
             violations.append(f"{module_name} constructs VerifiedLedgerSession")
         elif (
             isinstance(node, (ast.With, ast.AsyncWith))
@@ -436,6 +457,47 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
         "from .ledger import VerifiedLedgerSession\nmake: object = VerifiedLedgerSession\nmake(None)",
         "from .ledger import VerifiedLedgerSession\nmake = (VerifiedLedgerSession,)[0]\nmake(None)",
         "from .ledger import VerifiedLedgerSession\n(make := VerifiedLedgerSession)(None)",
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "class Box:\n"
+            "    pass\n"
+            "box = Box()\n"
+            "box.make = VerifiedLedgerSession\n"
+            "box.make(None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "box = {}\n"
+            "box['make'] = VerifiedLedgerSession\n"
+            "box['make'](None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "def factory():\n"
+            "    return VerifiedLedgerSession\n"
+            "factory()(None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "box = []\n"
+            "box.append(VerifiedLedgerSession)\n"
+            "box[0](None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "def violate(factory=VerifiedLedgerSession):\n"
+            "    factory(None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "def violate():\n"
+            "    return lambda: VerifiedLedgerSession(None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession\n"
+            "def violate(session: VerifiedLedgerSession(None)):\n"
+            "    return session\n"
+        ),
     ):
         violations = _task2_violations("sensorium", ast.parse(source))
         assert "sensorium constructs VerifiedLedgerSession" in violations
@@ -447,6 +509,20 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
     )
     assert "sensorium constructs VerifiedLedgerSession" not in _task2_violations(
         "sensorium", shadowed_constructor_name
+    )
+
+    allowed_type_references = ast.parse(
+        "from __future__ import annotations\n"
+        "from .ledger import VerifiedLedgerSession as VLS\n"
+        "def allowed(session: VLS) -> VLS:\n"
+        "    if type(session) is not VLS:\n"
+        "        raise TypeError\n"
+        "    if not isinstance(session, VLS):\n"
+        "        raise TypeError\n"
+        "    return session\n"
+    )
+    assert "sensorium constructs VerifiedLedgerSession" not in _task2_violations(
+        "sensorium", allowed_type_references
     )
 
     for operation in (

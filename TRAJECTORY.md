@@ -3011,3 +3011,55 @@ session can map each decision to the exact diff.
   the controller's literal host-scoped CLEAN record. macOS/arm64 evidence and
   broad portability remain separately deferred and must not be inferred from
   this Windows-host repair.
+
+## 2026-09-20 Task 2.8 final-review oracle reopen
+
+- Commit `3fc1063af0a5f0ae170b05c91268da8190826298` and frozen review package
+  SHA-256 `b87be7ec5fb1fe56d2307dd3a8f2a1626e0319bf1e4eaa45ca1a45c32e13e1ff`
+  received conflicting final independent outcomes. The architecture reviewer
+  returned the exact verdict `FULL-BRANCH ARCHITECTURE VERDICT: CLEAR`, after
+  independently exercising the poisoned-session early-return paths. The
+  code/security reviewer returned `REQUEST CHANGES`: the no-nested-session
+  acceptance oracle missed constructor flow through attribute/subscript
+  stores, helper returns, and containers, and Task 2 did not explicitly freeze
+  the poisoned-session member of the no-scan lifecycle family. The stricter
+  finding controls, so Task 2.8 remains OPEN even though no current production
+  nested-session construction or poisoned-session behavior defect was found.
+- The then-running v5 full suite was no longer capable of becoming final
+  evidence because the required acceptance tests must change. It was therefore
+  stopped rather than consuming the remaining host resources on obsolete
+  code. Its stdout had reached the 88% marker and continued emitting passing
+  dots, stderr was empty, the wrapper recorded `pytest_exit_code=-1`, and no
+  JUnit XML exists. This is an intentionally interrupted obsolete run, not a
+  product PASS or FAIL. Its quiet heartbeat
+  `aluclu-task-2-v5-final-suite-takip` was deleted.
+- RED was reproduced before changing the oracle. The four reviewer-provided
+  attribute, subscript, helper-return, and container fixture families caused
+  `test_architecture_guard_rejects_session_ownership_mutations` to fail, while
+  the new poisoned-session no-scan regression passed against the already-correct
+  production lifecycle enforcement. The poisoned regression covers both the
+  missing-profile and forced-abstention paths and makes cursor creation and text
+  encoding fatal if either occurs before lifecycle rejection.
+- The architecture oracle now uses a conservative runtime allowlist instead of
+  attempting incomplete Python taint propagation: an imported
+  `VerifiedLedgerSession` constructor may appear only in annotations and
+  explicit `type`/`isinstance`/`issubclass` checks. Every other unshadowed
+  runtime load is a violation, which covers assignment to attributes and
+  subscripts, storage in containers, helper/closure returns, and default
+  arguments without pretending to model arbitrary Python dataflow. Annotation
+  references are exempt only when the module explicitly enables postponed
+  annotations; a constructor call inside an eagerly evaluated annotation is a
+  violation. The four exact reviewer mutations, closure/default/eager-
+  annotation mutations, postponed-annotation/type-check controls, and
+  closed/poisoned/foreign-thread lifecycle targets pass together.
+- The final-source focused regression over recollection, reconsolidation,
+  sensorium, and the architecture oracle produced
+  `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
+  0 failures, 0 errors, 0 skipped, 85.081 seconds; SHA-256
+  `7b58d5bf6c292d416c4ee3123f34d101bd774029a61c8a8c7a40c2ddbdbf92e2`.
+  Repository Ruff lint, architecture-oracle Ruff format, compileall over
+  `src`/`tests`/`scripts`, and `git diff --check` pass. Pinned Pyright 1.1.413,
+  bound to `.venv313` and scoped over the cognition package plus both changed
+  tests, reports 0 errors, 0 warnings, and 0 informations. A new frozen
+  package, fresh independent reviews, and a terminal full suite remain
+  required before any CLEAN claim.

@@ -1480,6 +1480,51 @@ def test_no_scan_text_recall_paths_require_active_session(tmp_path: Path) -> Non
             )
 
 
+def test_no_scan_text_recall_paths_reject_poisoned_session_before_work(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    active = _active_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active, force_abstain=True)
+    query = TextRecallQuery(text="duplicate memory")
+
+    with EncryptedLedger(
+        tmp_path / "memory.sqlite3", StaticKeyProvider(MASTER_KEY)
+    ) as ledger:
+        with ledger.verified_session() as session:
+            session._poisoned = True
+
+            def forbidden_cursor(
+                active_session: object, *args: object, **kwargs: object
+            ) -> object:
+                raise AssertionError("poisoned session must fail before cursor")
+
+            def forbidden_encode(*args: object, **kwargs: object) -> object:
+                raise AssertionError("poisoned session must fail before text encoding")
+
+            monkeypatch.setattr(type(session), "cursor", forbidden_cursor)
+            monkeypatch.setattr(
+                "aluclu.cognition.recollection.encode_retrieval_text",
+                forbidden_encode,
+            )
+
+            with pytest.raises(LedgerLifecycleError, match="not active"):
+                recall(
+                    session,
+                    query,
+                    policy=_policy(allow_approximate=False),
+                )
+            with pytest.raises(LedgerLifecycleError, match="not active"):
+                _recall_with_calibration(
+                    session,
+                    query,
+                    policy=policy,
+                    active_profile=active,
+                    policy_tightening=tightening,
+                )
+
+
 def test_no_scan_text_recall_paths_reject_foreign_thread_session(
     tmp_path: Path,
 ) -> None:
