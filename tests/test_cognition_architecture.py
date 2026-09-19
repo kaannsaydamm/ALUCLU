@@ -122,6 +122,38 @@ def _annotation_nodes(tree: ast.Module) -> set[ast.AST]:
     return annotations
 
 
+def _scope_rebinding_names(scope: ast.AST) -> set[str]:
+    rebound: set[str] = set()
+
+    def visit(node: ast.AST) -> None:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            rebound.add(node.name)
+            return
+        if isinstance(node, ast.Lambda):
+            return
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            rebound.update(
+                alias.asname or alias.name.split(".", 1)[0] for alias in node.names
+            )
+        elif isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            rebound.add(node.id)
+        elif isinstance(node, ast.ExceptHandler) and node.name is not None:
+            rebound.add(node.name)
+        elif isinstance(node, (ast.MatchAs, ast.MatchStar)) and node.name is not None:
+            rebound.add(node.name)
+        elif isinstance(node, ast.MatchMapping) and node.rest is not None:
+            rebound.add(node.rest)
+        for child in ast.iter_child_nodes(node):
+            visit(child)
+
+    if isinstance(scope, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+        for statement in scope.body:
+            visit(statement)
+    elif isinstance(scope, ast.Lambda):
+        visit(scope.body)
+    return rebound
+
+
 def _parameter_shadows_reference(
     reference: ast.AST,
     alias: str,
@@ -131,11 +163,23 @@ def _parameter_shadows_reference(
     parent = parents.get(child)
     while parent is not None:
         if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            if child in parent.body and alias in _scope_parameters(parent):
-                return True
+            if child in parent.body:
+                if alias in _scope_rebinding_names(parent):
+                    return False
+                if alias in _scope_parameters(parent):
+                    return True
         elif isinstance(parent, ast.Lambda):
-            if child is parent.body and alias in _scope_parameters(parent):
-                return True
+            if child is parent.body:
+                if alias in _scope_rebinding_names(parent):
+                    return False
+                if alias in _scope_parameters(parent):
+                    return True
+        elif (
+            isinstance(parent, ast.ClassDef)
+            and child in parent.body
+            and alias in _scope_rebinding_names(parent)
+        ):
+            return False
         child = parent
         parent = parents.get(child)
     return False
@@ -497,6 +541,20 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
             "from .ledger import VerifiedLedgerSession\n"
             "def violate(session: VerifiedLedgerSession(None)):\n"
             "    return session\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate(VLS):\n"
+            "    from .ledger import VerifiedLedgerSession as VLS\n"
+            "    VLS(None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def outer(VLS):\n"
+            "    def violate():\n"
+            "        from .ledger import VerifiedLedgerSession as VLS\n"
+            "        VLS(None)\n"
+            "    return violate\n"
         ),
     ):
         violations = _task2_violations("sensorium", ast.parse(source))

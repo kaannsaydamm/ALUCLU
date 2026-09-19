@@ -3055,11 +3055,33 @@ session can map each decision to the exact diff.
 - The final-source focused regression over recollection, reconsolidation,
   sensorium, and the architecture oracle produced
   `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
-  0 failures, 0 errors, 0 skipped, 85.081 seconds; SHA-256
-  `7b58d5bf6c292d416c4ee3123f34d101bd774029a61c8a8c7a40c2ddbdbf92e2`.
+  0 failures, 0 errors, 0 skipped, 80.558 seconds; SHA-256
+  `d35d8f553eb7c1e82a0f108fcfe81671e07c194ce142d74931897f5de0bc0ce3`.
   Repository Ruff lint, architecture-oracle Ruff format, compileall over
   `src`/`tests`/`scripts`, and `git diff --check` pass. Pinned Pyright 1.1.413,
   bound to `.venv313` and scoped over the cognition package plus both changed
   tests, reports 0 errors, 0 warnings, and 0 informations. A new frozen
   package, fresh independent reviews, and a terminal full suite remain
   required before any CLEAN claim.
+- The first post-repair frozen package covered
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..5bba379f95936ff5dcaca1ce20aff2b58a01009f`
+  (46 commits, 58 files, 1,740,903 bytes) with SHA-256
+  `21e56a5ed10f2ee11c4dce73b044735510c1756ee73f0366274145c29af42979`.
+  Its independent architecture review returned
+  `FULL-BRANCH ARCHITECTURE VERDICT: CLEAR`, but code/security again returned
+  `REQUEST CHANGES`: a same-named parameter incorrectly remained exempt after
+  an in-scope import rebound it to `VerifiedLedgerSession`. The exact valid
+  Python mutation reproduced RED. A deeper nested-function variant, where an
+  inner import was incorrectly hidden by an outer parameter, was then derived
+  and also reproduced RED before the repair.
+- Parameter shadowing is now exempt only while name resolution reaches a
+  genuinely un-rebound parameter. Imports, assignments/deletions, loop/with/
+  comprehension stores, exception targets, nested definition names, and match
+  captures in the active lexical scope stop that exemption; class and nested
+  function boundaries are handled explicitly. The exact reviewer mutation and
+  the derived nested-scope mutation are GREEN while the original un-rebound
+  parameter control remains allowed. The final-source 105-test JUnit numbers
+  and hash above were regenerated after this repair, and Ruff, format,
+  compileall, diff-check, and pinned Pyright 1.1.413 all pass again. Because
+  this changed the reviewed oracle, another frozen package and two fresh
+  independent reviews are still mandatory.
