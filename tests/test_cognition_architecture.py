@@ -154,6 +154,30 @@ def _scope_rebinding_names(scope: ast.AST) -> set[str]:
     return rebound
 
 
+def _scope_declaration_names(
+    scope: ast.AST,
+    declaration_type: type[ast.Global] | type[ast.Nonlocal],
+) -> set[str]:
+    declared: set[str] = set()
+
+    def visit(node: ast.AST) -> None:
+        if isinstance(
+            node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)
+        ):
+            return
+        if isinstance(node, declaration_type):
+            declared.update(node.names)
+        for child in ast.iter_child_nodes(node):
+            visit(child)
+
+    if isinstance(scope, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+        for statement in scope.body:
+            visit(statement)
+    elif isinstance(scope, ast.Lambda):
+        visit(scope.body)
+    return declared
+
+
 def _parameter_shadows_reference(
     reference: ast.AST,
     alias: str,
@@ -161,25 +185,37 @@ def _parameter_shadows_reference(
 ) -> bool:
     child = reference
     parent = parents.get(child)
+    crossed_non_class_scope = False
     while parent is not None:
         if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef)):
             if child in parent.body:
-                if alias in _scope_rebinding_names(parent):
+                if alias in _scope_declaration_names(parent, ast.Global):
                     return False
-                if alias in _scope_parameters(parent):
-                    return True
+                if alias not in _scope_declaration_names(parent, ast.Nonlocal):
+                    if alias in _scope_rebinding_names(parent):
+                        return False
+                    if alias in _scope_parameters(parent):
+                        return True
+                crossed_non_class_scope = True
         elif isinstance(parent, ast.Lambda):
             if child is parent.body:
                 if alias in _scope_rebinding_names(parent):
                     return False
                 if alias in _scope_parameters(parent):
                     return True
-        elif (
-            isinstance(parent, ast.ClassDef)
-            and child in parent.body
-            and alias in _scope_rebinding_names(parent)
+                crossed_non_class_scope = True
+        elif isinstance(
+            parent, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)
         ):
-            return False
+            crossed_non_class_scope = True
+        elif isinstance(parent, ast.ClassDef) and child in parent.body:
+            if not crossed_non_class_scope:
+                if alias in _scope_declaration_names(parent, ast.Global):
+                    return False
+                if alias not in _scope_declaration_names(parent, ast.Nonlocal):
+                    if alias in _scope_rebinding_names(parent):
+                        return False
+            crossed_non_class_scope = True
         child = parent
         parent = parents.get(child)
     return False
@@ -556,6 +592,22 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
             "        VLS(None)\n"
             "    return violate\n"
         ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def outer(VLS):\n"
+            "    def violate():\n"
+            "        global VLS\n"
+            "        VLS(None)\n"
+            "    return violate\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def outer(VLS):\n"
+            "    class Violate:\n"
+            "        global VLS\n"
+            "        made = VLS(None)\n"
+            "    return Violate\n"
+        ),
     ):
         violations = _task2_violations("sensorium", ast.parse(source))
         assert "sensorium constructs VerifiedLedgerSession" in violations
@@ -582,6 +634,30 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
     assert "sensorium constructs VerifiedLedgerSession" not in _task2_violations(
         "sensorium", allowed_type_references
     )
+
+    allowed_lexical_shadows = (
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def outer(VLS):\n"
+            "    def allowed():\n"
+            "        nonlocal VLS\n"
+            "        return VLS(None)\n"
+            "    return allowed\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def outer(VLS):\n"
+            "    class C:\n"
+            "        VLS = int\n"
+            "        def allowed(self):\n"
+            "            return VLS(None)\n"
+            "    return C\n"
+        ),
+    )
+    for source in allowed_lexical_shadows:
+        assert "sensorium constructs VerifiedLedgerSession" not in _task2_violations(
+            "sensorium", ast.parse(source)
+        )
 
     for operation in (
         "session.close()",

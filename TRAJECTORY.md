@@ -3055,8 +3055,8 @@ session can map each decision to the exact diff.
 - The final-source focused regression over recollection, reconsolidation,
   sensorium, and the architecture oracle produced
   `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
-  0 failures, 0 errors, 0 skipped, 80.558 seconds; SHA-256
-  `d35d8f553eb7c1e82a0f108fcfe81671e07c194ce142d74931897f5de0bc0ce3`.
+  0 failures, 0 errors, 0 skipped, 80.697 seconds; SHA-256
+  `cc5d63d8f47b9dfbeffb2f9fd304ceb66355e09ede52fa9a7413bf05cf6d9483`.
   Repository Ruff lint, architecture-oracle Ruff format, compileall over
   `src`/`tests`/`scripts`, and `git diff --check` pass. Pinned Pyright 1.1.413,
   bound to `.venv313` and scoped over the cognition package plus both changed
@@ -3085,3 +3085,29 @@ session can map each decision to the exact diff.
   compileall, diff-check, and pinned Pyright 1.1.413 all pass again. Because
   this changed the reviewed oracle, another frozen package and two fresh
   independent reviews are still mandatory.
+- The next frozen package covered
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..d3fadf9e05b71219903f8fba91fe0b003e23088d`
+  (47 commits, 58 files, 1,744,730 bytes) with SHA-256
+  `58c9107b764396b34d6cf49b80d5bb382ab62ed749932424cc7e22244b4d27ab`.
+  Both independent rereviewers blocked it. A nested function or directly
+  evaluated class body could declare `global VLS`, redirecting the name away
+  from an outer shadowing parameter to the module-level imported constructor;
+  the oracle incorrectly kept the parameter exemption. The architecture
+  reviewer also demonstrated the inverse precision defect: a class attribute
+  named `VLS` was incorrectly treated as a lexical binding visible inside a
+  method, although Python method bodies do not close over class namespaces.
+  Both compile-valid examples were reproduced before repair. No current
+  production nested-session construction or lifecycle/slot defect was found;
+  the BLOCK was the mandatory no-nested-session acceptance oracle.
+- Scope resolution now models `global` and `nonlocal` declarations separately
+  from ordinary local bindings. A `global` declaration stops ancestor-
+  parameter lookup and leaves the module constructor load forbidden;
+  `nonlocal` continues to the relevant enclosing function binding. Class
+  namespace rebinding applies only to expressions evaluated directly in that
+  class body and is not propagated through a method, lambda, comprehension, or
+  nested-scope boundary. Exact nested-function and class-body `global`
+  mutations are GREEN; safe `nonlocal` and class-method/outer-parameter
+  controls remain allowed. The final-source focused JUnit and static evidence
+  above were regenerated after this repair. The source must now be frozen,
+  independently rereviewed again, and covered by a terminal full suite before
+  Task 2.8 can close.
