@@ -3325,3 +3325,248 @@ session can map each decision to the exact diff.
   portability remain explicitly deferred and unclaimed.
 
 Task 2 sensorium/recollection gate: CLEAN
+
+## 2026-09-20 — ALC-R0 preregistration begins after Task 2 CLEAN
+
+- The required roadmap dependency is now active: ALC-R0/ALC-0 is the blocking
+  phase between the completed Task 2 gate and Task 3. No later ALC container,
+  enterprise, marketplace, serving, compiler, or accelerator investment is
+  authorized by this transition.
+- The research-only host is pinned to
+  `HuggingFaceTB/SmolLM2-135M` revision
+  `93efa2f097d58c2a74874c7e644dbc9b0cee75a2`. Upstream metadata declares
+  Apache-2.0 and a 30-layer, width-576 `LlamaForCausalLM`. The expected
+  `model.safetensors` SHA-256 is
+  `80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1`.
+  These are acquisition expectations, not yet locally verified model evidence.
+- The new durable plan draft is
+  `docs/superpowers/plans/2026-09-20-alc-r0-neural-capability-proof.md`. It
+  proposes the `ResearchCapsuleV0` same-width residual update, zero-based port
+  sets `{14}`, `{29}`, and `{14,29}`, ranks `{4,8,16}`, and an exact
+  parameter-matched non-merged `q_proj` LoRA comparator. This is intentionally
+  a same-base proof and does not claim a general Neural ABI or cross-model
+  portability. It becomes experiment-authoritative only after preregistration
+  review and the R0.0 machine-freeze validator pass.
+- The two blocking real-data capability families are Banking77 intent routing
+  and CodeXGLUE/Devign defect detection. Frozen-base, bounded textual-context,
+  BM25 RAG, matched LoRA, capsule, zero, shuffled-label, wrong-family,
+  attach/detach, and fresh-process retrieval-off arms are required. WikiText-2
+  and LAMBADA are retention gates. A mechanistic diagnostic cannot substitute
+  for either capability family.
+- Development uses the complete 9-configuration grid and two seeds;
+  confirmation uses five untouched seeds after a committed freeze receipt.
+  P1--P14 are conjunctive blocking conditions, including paired confidence
+  intervals, positive-control validity, retention, byte/hash identity,
+  fresh-process isolation, artifact size, VRAM, latency, and complete evidence
+  validation. Thresholds cannot be softened after observation.
+- Current-host feasibility evidence is limited to hardware and import probes:
+  i7-12650H, 15.71 GiB RAM, RTX 4050 Laptop GPU with 6,141 MiB VRAM, driver
+  610.78, and successful CUDA BF16 matrix multiplication. The existing global
+  and `.venv313` packages are not a reproducible environment; the model is not
+  yet in the local HF cache. A separate Python 3.12 environment and research
+  tree under `%LOCALAPPDATA%\ALUCLU\research` are mandatory.
+- Upstream dataset identities were checked before freezing the plan:
+  Banking77 raw data at
+  `PolyAI-LDN/task-specific-datasets@9d081458ff52e53cf7e848f414e6e9344e4e6696`
+  plus the card snapshot
+  `PolyAI/banking77@90d4e2ee5521c04fc1488f065b8b083658768c57`
+  (declared CC-BY-4.0),
+  `google/code_x_glue_cc_defect_detection@69bd48c03223c2104342acd9a807caf61ac3efb8`
+  (declared C-UDA),
+  `Salesforce/wikitext@b08601e04326c79dfdd32d625aee71d232d685c3`,
+  and
+  `EleutherAI/lambada_openai@900124bf3b8235c6daf21033af9948b3f07346c4`.
+  Exact consumed-byte and split hashes remain an R0.0 prerequisite; no dataset
+  or capability PASS is claimed here.
+- The first source audit caught a reproducibility trap before acquisition: the
+  pinned Hugging Face Banking77 loader itself downloads CSV files from a moving
+  GitHub `master` URL. The plan therefore makes the exact upstream Git commit
+  and three Git blob identities authoritative and treats the Hugging Face
+  revision only as dataset-card/schema provenance. Devign similarly retains
+  both its pinned Parquet-mirror identity and its Microsoft CodeXGLUE upstream
+  provenance. No moving branch is permitted in a scientific run.
+- The research loop has selected `mission-validator-script` mode, but its
+  validator is not implemented yet. Completion will require a machine-readable
+  validator artifact, not an agent assertion or a promising run. Paid external
+  compute remains prohibited without explicit user approval.
+- The first independent GPT-5.6 Sol preregistration review returned
+  `REQUEST CHANGES`, with no Critical finding but five High blockers: the test
+  sealer contradicted the held-out counter, optimizer/LoRA tuning was not
+  symmetric, the bootstrap hypotheses were underspecified, the 512-token
+  controls exceeded the declared total length, and offline/filesystem denial
+  was only self-attested. Medium findings required a standard q+v LoRA reference,
+  a frozen resource harness, broader official-forward parity, exact negative
+  controls, crash-safe scoring transactions, and an explicit serialized dtype.
+  This verdict is retained; the draft was not frozen or used for training.
+- The draft has been repaired for rereview. It now separates sealing access from
+  scoring transactions, hides test content/labels behind AES-GCM and a
+  freeze-receipt key broker, and specifies a WSL2 user/mount/network/PID namespace
+  worker. A live host probe confirmed `kali-linux` WSL2, GPU exposure, and that
+  the worker can cover `/mnt/c` with an empty tmpfs while DNS is unavailable.
+  This is feasibility evidence for the isolation mechanism, not a completed
+  evaluator gate.
+- Optimization is now fixed rather than deferred: AdamW at `3e-4`, zero weight
+  decay, three epochs, cosine schedule, 5% warmup, effective batch 16, and
+  independent dev checkpoint selection. Development now includes 72 symmetric
+  capsule/q-only-LoRA runs plus four non-blocking all-layer q+v-LoRA reference
+  runs. The confirmatory count is 30 blocking train runs plus 10 non-blocking
+  q+v reference runs. Exact hierarchical bootstrap pairing, Holm families,
+  retention resampling, negative-control derangements, resource timing, and
+  official-forward conformance tolerances are declared.
+- Target-task length is now a total 1,024-token limit: at most 512 for the common
+  interface/query/answer and at most 512 for textual or RAG control content.
+  Banking split construction and Devign exact/near-clone filtering are now
+  deterministic and fixture-gated. The canonical capsule tensor dtype is FP32,
+  making the maximum raw tensor payload 147,456 bytes while retaining the
+  256-KiB artifact cap. No training or held-out scoring has started.
+- The first rereview still returned `REQUEST CHANGES`: same-user Windows
+  Credential Manager was not a process authorization boundary, the ordinary
+  bootstrap tail fractions were not calibrated p-values, Banking77 exact
+  duplicates were not governed, and the latency harness lacked arm-order and
+  exact tax arithmetic. No training was authorized on that draft.
+- The next repair requires a distinct non-interactive
+  `ALUCLU_R0_SEALER` Windows principal and ACL-restricted broker pipe; same-user
+  key custody is removed. If that principal cannot be created without weakening
+  policy, local confirmation is blocked rather than self-attested. Statistical
+  p-value labels and Holm gates are removed; P1--P8 now use explicitly sized
+  Bonferroni simultaneous one-sided percentile bounds, while ordinary 95%
+  intervals remain descriptive. Banking77 exact duplicates/conflicting labels
+  and train/test overlap are now governed with minimum post-filter count/class
+  coverage. Resource order is fixed to `B/A, A/B, B/A, A/B, B/A`, with literal
+  pooled-quantile tax formulas. This repaired draft awaits another independent
+  rereview and remains non-authoritative.
+- A second independent GPT-5.6 Sol reviewer read the broader design before the
+  latest repair and returned `REQUEST CHANGES`. It found arm-specific isolation,
+  true rootfs replacement, arm-neutral topology selection, Devign clone-group
+  units, executable retention metrics, exact textual/RAG controls, validator
+  schemas, runtime ceilings, state-digest framing, failure-status wording, and
+  the zero control still incomplete. These findings were accepted despite the
+  narrower rereviewer subsequently clearing its own prior list.
+- The draft now uses separate retrieval-off/profile/RAG rootfs policies and a
+  `pivot_root` isolation transition that unmounts the old root, allowlists CUDA
+  nodes, closes inherited descriptors, drops capabilities, and verifies the
+  complete in-namespace inventory. Grid selection maximizes the minimum gain
+  across both capsule and q-only LoRA on both families; a capsule-only optimum
+  can no longer under-select the comparator.
+- Devign union-find roots are now the retained data/statistical unit with
+  conflicting-label fail-closed behavior and minimum sealed-test coverage.
+  WikiText-2 perplexity and LAMBADA last-word accuracy now have exact split,
+  masking, windowing, generation, normalization, exclusion, and bootstrap-unit
+  definitions. Textual profiles and BM25 tokenization/scoring/rendering are
+  deterministic rather than R0.0 placeholders.
+- The local envelope is capped at four two-hour pilot jobs, 600 valid GPU-hours,
+  45 calendar days, and a 25-GiB research root while preserving 20 GiB free.
+  Exceeding it records a measured local blocker and requires explicit authority
+  for external compute; it does not narrow the experiment. The base digest now
+  frames every sorted persistent `state_dict()` entry, the all-zero control is
+  a distinct never-trained FP32 artifact, and the failure-status wording
+  distinguishes development-search exhaustion from held-out failure.
+- Evidence now requires RFC-8785 canonical JSON, versioned JSON Schemas, an
+  enumerated run/artifact matrix, primary/foreign-key integrity, append-only
+  state transitions, duplicate/orphan rejection, and a deterministic root claim
+  digest with negative fixture packages. This expanded draft still awaits final
+  independent rereview; no model acquisition, training, or held-out access has
+  begun.
+- A live read-only principal probe found the current process is not elevated:
+  `kaan\kaann` has the local Administrators SID present only as deny-only in this
+  token, and `ALUCLU_R0_SEALER` does not yet exist. Therefore R0.0 can implement
+  and test development lanes normally, but the distinct-principal sealer/broker
+  prerequisite will require a narrowly scoped elevated installation step before
+  sealing/confirmation. No account, service, credential, or ACL was created or
+  changed during this probe.
+- Two broader independent GPT-5.6 Sol preregistration reviews were retained as
+  `REQUEST CHANGES`, not treated as approval. The scientific review found that
+  retention data could influence development, WikiText units were inconsistent,
+  the later ALC program was absent from the master roadmap, the development
+  failure string did not match the required terminal status, confirmatory corpus
+  construction and the exact scoring/invariant matrix were incomplete, sealed
+  overlap identities could leak, the pilot was not literally 200 successful
+  updates, and the roadmap still called a fixed optimizer an optimization
+  candidate. The execution review of plan SHA-256
+  `00c713f5fd250416c19f5cca92f4425b23233f916497e2cc91f2ba4e800e2206`
+  confirmed earlier broker, statistic-edge, attempt-ledger, resource-accounting,
+  and completion-root fixes, then found three remaining Medium gaps: canonical
+  base/alias digest bytes, split Windows/Linux platform locks and transfer
+  provenance, and this trajectory's stale account of the repairs.
+- The live draft was repaired without opening held-out data or starting model
+  acquisition/training. Retention test suites are now sealed confirmatory-only;
+  WikiText uses one row-document unit consistently; the exact top-level failure
+  remains `ALC-R0 FAILED IN TESTED SCOPE` with a separate frozen failure stage;
+  and the master roadmap now places ALC-R1/R2/R3/R4, ALC-S0/S1, ALC-E0/E1, and
+  ALC-L in dependency order before Tasks 13–14. Confirmatory retraining now uses
+  only the original frozen training IDs, exact seed shuffle, no drop-last,
+  `ceil(N/16)` updates per epoch, actual-count normalization, and the frozen
+  warmup equation. The normative matrix fixes 40 trainable artifacts, 2 zero
+  artifacts, 58 held-out target rows, 22 retention rows, all-capsule remount and
+  size/resource gates, and all-artifact base-digest coverage.
+- Pre-score disclosure is reduced to aggregate counts plus one whole-shard
+  ciphertext commitment; per-group/linkable roots and identities remain sealed.
+  Each pilot job must produce exactly 200 successful journaled updates. The
+  600-GPU-hour cap now charges every valid, invalid, failed, retried, and resumed
+  attempt, correcting the older historical `600 valid GPU-hours` wording above.
+  Logical-run and attempt IDs, append-only transitions, exact-resume boundaries,
+  and total resource accounting are validator-enforced.
+- The base-state proof now has a versioned `ALCBASE` binary domain, a closed
+  dtype-ID table, tagged length framing, little-endian raw bytes, and stable
+  state-dict-name/offset/stride alias groups that forbid process addresses. A
+  shared-storage known-answer fixture and independent-load equality are required.
+  Separate hashed Windows-training and Linux-evaluator locks, a rootfs manifest,
+  an immutable phase/platform contract, broker-hashed SafeTensor/JSON transfer,
+  and explicit P9/P10/P11 reference sides now bind the two runtimes. The claim
+  ledger excludes both itself and the post-ledger completion artifact, while the
+  validator emits the completion artifact hash out of band, removing the former
+  self-hash cycle.
+- The repaired preregistration plan SHA-256 is
+  `686335eb416480604efbb34fe0e57443b601b8a40f650019c7051d64d3f8153f`.
+  It remains a draft pending fresh independent scientific and execution CLEAR
+  verdicts. R0.0 is not open yet; no model/dataset acquisition, training, or
+  held-out access is claimed.
+- A same-pass consistency scan found two residual singular/legacy phrases after
+  that hash: the freeze receipt still named opaque test roots and R0.0 still
+  named one environment lock. They were repaired to permit only aggregate
+  counters plus the whole-shard ciphertext commitment and to require both
+  platform locks with the evaluator-rootfs/transfer manifests. The superseding
+  plan SHA-256 submitted for fresh rereview is
+  `5a743de4493ab1b8e184bf2e1be8cf537fcb0f853c4c7dd2e964eb33eb5e0064`;
+  the status remains preregistration draft.
+- The fresh execution rereview then found two further serialization/boundary
+  ambiguities before verdict. The R0 non-goal now excludes product/capsule
+  encryption and end-user signing while explicitly classifying experimental
+  AES-GCM/HMAC as held-out custody only. The transfer intent is RFC-8785 JSON
+  authenticated with domain-separated HMAC-SHA-256 under a distinct sealer-only
+  key and bound to the broker launch receipt. The alias digest grammar now has
+  explicit group/member tags, group/member counts, UTF-8 name length, unsigned
+  scalar encodings, and two's-complement little-endian stride encoding. The
+  superseding plan SHA-256 is
+  `02bbb0570a5696bdd38fd013dce70e094fc15cdd7984893b3705c85c7b0efef9`;
+  independent review remains open and no execution gate is claimed.
+- The same rereview found that generic `acquisition` wording still placed public
+  confirmatory test bytes in the Windows development environment. Acquisition is
+  now split by actor and platform: model/card/license plus target train/dev bytes
+  use the hashed Windows environment, while every target and retention test
+  split is fetched only by `ALUCLU_R0_SEALER` in its dedicated evaluator distro
+  and streamed through one audited normalize/filter/encrypt command with no
+  development-readable path, cache, descriptor, or artifact. The sealer's
+  source-only network namespace is destroyed before shard commit; held-out
+  scoring remains networkless. The master roadmap was also tightened so a
+  falsification/blocker terminates or pauses its branch; only PASS unlocks a
+  dependent phase. The superseding plan SHA-256 is
+  `fc219ae22c62ffe5fb3f5108e7d9eb1b347eb648f454be7892165cd1929997b9`.
+- Two independent GPT-5.6 Sol reviewers then reread the exact stable
+  `fc219ae22c62ffe5fb3f5108e7d9eb1b347eb648f454be7892165cd1929997b9`
+  plan bytes plus the master roadmap and trajectory. The final scientific
+  preregistration verdict was `CLEAR` with Critical 0, High 0, Medium 0, Low 0.
+  The final execution/reproducibility preregistration verdict was also `CLEAR`
+  with Critical 0, High 0, Medium 0, Low 0. Both independently confirmed the
+  acquisition boundary, exact matrices, statistics, digest grammar, dual
+  platform locks, broker/sealer design, evidence closure, terminal taxonomy,
+  and rule that only PASS unlocks dependent work. Neither reviewer edited the
+  repository; `git diff --check` passed with only existing LF/CRLF warnings.
+- The only post-review change was the preregistration status line: the design is
+  now approved and R0.0 freeze/acquisition implementation is open. This is not a
+  development-training or held-out-scoring authorization; those remain blocked
+  until the R0.0 machine validator passes on a committed tracked-clean state.
+  The resulting status-only plan SHA-256 is
+  `0564ee0415e8fa0cb0b0563587ea767fb3bd48b45c5cd3561d7d0c51497cbcbc`;
+  the master-roadmap SHA-256 is
+  `fb2ab85d761ef0ab72f96f20337c3677339b3c1aad3b839ee35eeb71d5bf05aa`.

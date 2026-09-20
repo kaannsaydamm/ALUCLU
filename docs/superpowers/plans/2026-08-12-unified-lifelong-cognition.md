@@ -39,6 +39,15 @@ deterministic event boundaries, exact/approximate recall separation, bounded
 working state, calibrated selective-risk profiles, and explicit
 reconsolidation without nested ledger sessions.
 
+### ALC-R0 / ALC-0 — same-base neural capability proof
+
+Before Task 3, execute the blocking preregistered experiment in
+`docs/superpowers/plans/2026-09-20-alc-r0-neural-capability-proof.md`. It tests a
+small attachable/detachable neural capsule on the pinned SmolLM2-135M host
+against frozen-base, textual-context, RAG, and exact parameter-matched LoRA
+controls. Later ALC/product infrastructure remains blocked unless reproducible
+fresh-process retrieval-off capability evidence passes every declared gate.
+
 ### Task 3 — frozen host bridge and routing ABI
 
 Implement `FULL_WHITEBOX`, `COMPAT_BLACKBOX`, and later `NATIVE` capability
@@ -107,6 +116,34 @@ security, latency, state-byte, persistent-byte, FLOP, energy, and replay-cost
 experiments with predeclared seeds and confidence intervals. Components survive
 only when their quality/resource Pareto gate passes.
 
+### Post-Task-12 ALC research and product gates
+
+These phases remain blocked until ALC-R0/ALC-0 PASS. Each phase must terminate in
+either a reproducible PASS or a reproducible falsification/blocker, but only PASS
+unlocks its dependent next phase. A falsification/blocker pauses or terminates
+that branch until a new independently reviewed preregistration is approved; it
+never counts as dependent-phase advancement:
+
+1. **ALC-R1 / ALC-1:** bounded multi-capability inside one logical personal
+   capsule.
+2. **ALC-R2 / ALC-3:** governed durable generations with canary, atomic
+   promotion, and rollback.
+3. **ALC-R3 / ALC-4:** same-family cross-generation and width/depth portability.
+4. **ALC-R4 / ALC-5, ALC-5D, ALC-5P:** cross-width/depth, dense-to-MoE and
+   MoE-to-dense, and signed positive/negative/conditional preference
+   portability.
+5. **ALC-S0 / ALC-7:** secure `.alc` container, Neural ABI, ALC-IR, reference
+   executor, compiler/native execution cache, and ALC Explorer.
+6. **ALC-S1 / ALC-2:** shared-base serving, heterogeneous batching, and
+   hot/warm/cold neural-state paging.
+7. **ALC-E0 / ALC-6:** enterprise Mount Graph, IAM/RBAC/ACL, and
+   RO/RW/COW/QUARANTINE semantics.
+8. **ALC-E1 / ALC-8:** adversarial and security validation.
+9. **ALC-L / ALC-9:** longitudinal lifelong-learning evaluation.
+
+Tasks 13–14 follow these gates so legal/publication and release claims describe
+only capabilities actually earned by evidence.
+
 ### Task 13 — legal/IP and publication materials
 
 Only after measured technical gates: obtain qualified legal review; decide the
@@ -122,7 +159,10 @@ and only then push the complete non-bloat repository.
 
 ## Current checkpoint
 
-The other PC's accepted Task 1 round-5 commit (`b011a75`, 180 tests) was never
-pushed and cannot be recovered from this checkout. The active reconstruction
-plan is `docs/superpowers/plans/2026-08-22-task-1-persistence-reconstruction.md`.
-No later task may be marked started until that plan's final gate is clean.
+Task 1 and Task 2 have passed their reconstructed evidence gates. Task 2 is
+recorded literally CLEAN in `TRAJECTORY.md` at commit `4dca292`. The next
+blocking phase is ALC-R0/ALC-0; its preregistration plan is
+`docs/superpowers/plans/2026-09-20-alc-r0-neural-capability-proof.md`. No target
+development training begins until R0.0 freezes and validates the local model,
+datasets, splits, prompts, fixed optimization contract and checkpoint rule,
+evaluator, both platform locks, and hardware receipts.
