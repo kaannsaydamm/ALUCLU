@@ -92,8 +92,9 @@ revision fallback. After provisioning, all scientific runs use
 The base state digest covers every lexicographically name-sorted entry returned
 by the pinned host's `state_dict(keep_vars=False)`, including parameters and
 persistent buffers and excluding nonpersistent buffers by PyTorch definition.
-The versioned byte grammar is `ALCBASE\0`, `u16le(version=1)`,
-`u64le(entry_count)`, then tagged length-delimited entry records. Each entry is
+The one canonical combined stream is, in exact order, `ALCBASE\0`,
+`u16le(version=1)`, `u64le(entry_count)`, all tagged entry records, the single
+`0x02` alias-section record described below, then `0xff`. Each entry is
 `0x01`, UTF-8 name, one-byte dtype ID, `u64le(rank)`, `u64le(dim)` values,
 `u64le(byte_length)`, and raw little-endian bytes; every variable field is
 preceded by `u64le(length)`. Dtype IDs are closed and frozen as
@@ -108,10 +109,15 @@ ordered by their lexicographically first member. Each group is exactly `0x10`,
 records. A member is `0x11`, `u64le(name_utf8_length)`, UTF-8 state-dict name,
 `u64le(storage_offset_bytes)`, `u64le(storage_span_bytes)`, `u64le(rank)`, then
 exactly `rank` `u64le(dimension)` values and `rank` two's-complement
-`i64le(stride)` values. A group is discovered within one load from overlapping
-byte intervals in the same untyped storage, but its stable index is its one-based
-order, never a pointer or process-local storage ID. Members are name-sorted and
-singleton groups are included. The digest stream terminates with
+`i64le(stride)` values. A group is discovered within one load when entries share
+the same untyped storage object, including disjoint views, but its stable index
+is its one-based order, never a pointer or process-local storage ID.
+`storage_offset_bytes` is `tensor.storage_offset() * element_size`. Strides are
+the element strides from `tensor.stride()`. Negative strides are unsupported and
+fail validation. For a zero-numel tensor, `storage_span_bytes = 0`; otherwise it
+is `(1 + sum((dimension_i - 1) * stride_i)) * element_size`, including holes in
+a non-contiguous view. Members are name-sorted and singleton groups are included.
+The digest stream terminates with
 `0xff`; process addresses and allocator identifiers are forbidden. Snapshot-file
 hashes remain a separate source check. A hand-built shared-storage/overlap fixture
 and two independent model loads must reproduce both the main digest and alias
@@ -972,9 +978,14 @@ contain:
 R0.0 creates versioned JSON Schemas under `schemas/alc_r0/v1/`; changing them
 after development starts requires a new experiment version. JSON bytes use RFC
 8785 JSON Canonicalization Scheme and UTF-8 with no BOM. JSONL is one RFC-8785
-object followed by LF per line, including the final line. Artifact paths match
-`results/alc_r0/<phase>/<run-id>/<artifact-type>.<ext>`; run IDs match
-`alc-r0-v1-(pilot|dev|confirm|eval)-[a-z0-9-]+-s[0-9]{8}`.
+object followed by LF per line, including the final line. Run-artifact paths
+match `results/alc_r0/<phase>/<run-id>/<artifact-type>.<ext>`; run IDs match
+`alc-r0-v1-(pilot|dev|confirm|eval)-[a-z0-9-]+-s[0-9]{8}`. Non-run R0.0 and
+freeze controls match `results/alc_r0/control/<artifact-type>.<ext>`; terminal
+claim-ledger/completion support files match
+`results/alc_r0/final/<artifact-type>.<ext>`. The machine preregistration lists
+the exact allowed artifact types and extensions in all three namespaces; any
+other path is an orphan validator error.
 
 The machine preregistration enumerates the Cartesian expected-run matrix and
 expected artifact types/cardinalities. `(experiment_id, run_id)` and
@@ -1027,7 +1038,11 @@ and wrong-cardinality fixture packages are mandatory before R0.0 passes.
 - Create a validator that fails closed on any missing/mismatched field.
 
 Gate: no train command accepts `--development` until the R0.0 validator passes
-on a committed tracked-clean source state.
+on a committed source checkout whose
+`git status --porcelain=v1 --untracked-files=all` output is empty and whose HEAD,
+submodule state, and source-tree digest match the freeze receipt. Scientific
+commands run from that dedicated clean checkout, not from a worktree containing
+historical untracked evidence.
 
 ### R0.1 — Red conformance tests
 

@@ -3570,3 +3570,110 @@ Task 2 sensorium/recollection gate: CLEAN
   `0564ee0415e8fa0cb0b0563587ea767fb3bd48b45c5cd3561d7d0c51497cbcbc`;
   the master-roadmap SHA-256 is
   `fb2ab85d761ef0ab72f96f20337c3677339b3c1aad3b839ee35eeb71d5bf05aa`.
+
+## 2026-09-20 — ALC-R0 R0.0 implementation checkpoint 1
+
+- Commit `917387ee75d37b1fb46f4d0192ef0e4b64a24693` containing the approved
+  preregistration, unified roadmap, and full review chronology was pushed to
+  `origin/codex/unified-lifelong-cognition`. The historical untracked Task 2 logs
+  and root `uv.lock` were not staged, changed, or deleted.
+- A read-only R0.0 repository-layout audit found that Task 2 canonical JSON,
+  `tensor_tree_bytes`, the release validator, and the untracked project `uv.lock`
+  do not implement the R0 scientific contracts and must not be reused as if they
+  did. It also found three preregistration gaps before implementation: no legal
+  namespace for R0.0 control receipts, no exact non-contiguous/zero-size storage
+  span rule, and ambiguity over whether the alias bytes belong to the P10 digest.
+  The plan now freezes one combined `ALCBASE` stream, exact offset/span/stride
+  handling with negative-stride rejection, explicit `control` and `final`
+  evidence namespaces, and a fully clean dedicated scientific checkout. The
+  amended plan SHA-256 is
+  `0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b`.
+- The first external runtime mutation is isolated outside OneDrive at
+  `C:\Users\kaann\AppData\Local\ALUCLU\research\alc-r0-smollm2-135m-v1`.
+  `uv 0.12.5` created a non-system-site-packages Windows environment with managed
+  CPython 3.12.13; its `python.exe` SHA-256 is
+  `5731ffcb818b3868c98038171d06c7c9571c975d6cf335634d7a4748ce3f84c7`.
+  No model or dataset bytes have been acquired and no training or held-out
+  scoring has begun.
+- Separate pinned dependency inputs were created for Windows training and Linux
+  evaluation. Their SHA-256 values are respectively
+  `45beaa397ebafb0f61dd1c88de912ace7b449b57574fa848ae0b0e091b2f458c`
+  and `56add7a92c2921e3ae50721257d61e5484382271616517f86c7a7e5e72223f68`.
+  Both use official CPython-3.12 CUDA-13.0 Torch 2.14.0 wheel URLs with explicit
+  upstream hashes and pin the complete R0 user-space stack. The generated Linux
+  lock is 80,958 bytes with SHA-256
+  `4b6bb24c97a1accd301856f253957ded0fd3b8fed465c79f2bf37beafb3e1c65`;
+  it remains provisional until reproduced inside and bound to the dedicated
+  evaluator rootfs. Windows lock generation is still an observed live resolver,
+  not yet a completed artifact. Free `C:` space was 45,324,226,560 bytes, above
+  the mandatory 20-GiB floor.
+- The first R0.0 implementation slice adds an isolated `aluclu.alc_r0` package.
+  Its canonical layer enforces strict UTF-8/no-BOM, duplicate-key and nonfinite
+  rejection, RFC-8785 byte equality, LF-only canonical JSONL, exact SHA-256, and
+  normalized relative evidence paths including Windows-casefold collision
+  rejection. The `ALCBASE` layer implements the version-1 combined binary stream,
+  closed dtype map, deterministic tensor ordering, raw no-cast bytes, stable
+  name/offset/span/shape/stride alias groups, and diagnostic alias digest without
+  serializing process pointers. The acquisition layer inventories an absolute
+  local snapshot, rejects unsafe weights/symlinks/path escape, verifies all four
+  preregistered SmolLM2 hashes, and produces a canonical-ready receipt; normal
+  tests use fake local snapshots and perform no network download.
+- Focused RED-to-GREEN verification now reports 46 passing tests across canonical
+  evidence bytes, JSONL/path failures, hand-calculated tensor stream bytes,
+  aliases/disjoint views/non-contiguous/zero/BF16 cases, unsupported tensor
+  failures, exact snapshot inventory, pinned revision, missing/tampered files,
+  unsafe weight formats, symlink denial, and absolute-root enforcement. Ruff and
+  compileall pass for the new files, and `git diff --check` reports only the
+  existing Markdown/pyproject LF-to-CRLF warnings. This is an R0.0 implementation
+  checkpoint, not an R0.0 validator PASS or capability result.
+- Both dependency resolvers then terminated successfully. The Windows lock is
+  73,416 bytes with SHA-256
+  `a7a921f7b095b0329fbb7df6a25612c6e8a1f160122f853a6a159d8478946615`;
+  the Linux lock remains the 80,958-byte provisional artifact above. Their
+  RFC-8785 lock manifest is 1,030 bytes with SHA-256
+  `1756f42033d4de2f5d2944fc7a95a4e324665a26f54c0679bb757658fc91abaf`.
+  The Windows environment was synced from its lock with `--require-hashes` and
+  `uv pip check` reports all 50 packages compatible.
+- The locked Windows environment independently reports CPython 3.12.13, Windows
+  11 build 26200, Torch `2.14.0+cu130`, CUDA runtime 13.0, Transformers 5.17.0,
+  Hugging Face Hub 1.32.0, SafeTensors 0.8.0, Tokenizers 0.23.2, NumPy 2.5.3,
+  pytest 9.1.1, and Ruff 0.16.8. A real RTX 4050 CUDA BF16 matrix multiply
+  completed and synchronized. The same environment reran all 46 new focused
+  tests successfully and Ruff remained clean. Free `C:` space after lock sync
+  was 43,809,165,312 bytes, still above the fixed floor. This proves the Windows
+  user-space environment and first implementation slice fit; it does not prove
+  model acquisition, the Linux evaluator rootfs, the sealer principal, the R0.0
+  closed-world validator, or any neural capability.
+- Pinned Pyright 1.1.413 initially found one test-only typing mismatch in the
+  sparse-layout negative fixture. The fixture was repaired to pass explicit
+  tensor indices/values rather than list literals. The full new R0.0 slice then
+  returned Pyright `0 errors, 0 warnings, 0 informations`, 46/46 pytest PASS,
+  and Ruff PASS in one rerun.
+- The evidence-path boundary was then tightened for the actual Windows/Linux
+  interchange: alternate-data-stream colons, ASCII controls, trailing dot/space,
+  and Windows device names are now rejected in addition to traversal, absolute,
+  backslash, NUL, duplicate, and casefold-collision cases. The expanded final
+  checkpoint rerun is 50/50 pytest PASS, Ruff PASS, Pyright 0/0/0, compileall
+  PASS, and diff-check clean apart from the known line-ending warnings.
+- Repository attributes now pin every R0 lock/input/schema/experiment/result
+  evidence family to LF checkout bytes. The staged Git blobs, rather than only
+  the Windows working-tree views, were hashed after targeted renormalization:
+  the Windows lock is 73,416 bytes and
+  `a7a921f7b095b0329fbb7df6a25612c6e8a1f160122f853a6a159d8478946615`,
+  the provisional Linux lock is 80,958 bytes and
+  `4b6bb24c97a1accd301856f253957ded0fd3b8fed465c79f2bf37beafb3e1c65`,
+  and both contain LF with no CRLF. The staged RFC-8785 manifest remains exactly
+  1,030 bytes, has no final newline or CRLF, and hashes to
+  `1756f42033d4de2f5d2944fc7a95a4e324665a26f54c0679bb757658fc91abaf`;
+  both staged requirement-input hashes also match the manifest. This closes the
+  cross-platform byte-identity defect for these artifacts, not the still-open
+  R0.0 schema, closed-world validator, evaluator-rootfs, sealer, or acquisition
+  gates.
+- The first post-renormalization pytest invocation omitted `PYTHONPATH=src` for
+  the deliberately non-editable external research environment and therefore
+  stopped during collection with three `ModuleNotFoundError: aluclu` errors.
+  This was classified as an invocation/configuration failure, not a test or
+  implementation failure. Repeating the same three-file suite under the same
+  locked CPython 3.12 interpreter with the explicit source root returned 50/50
+  PASS. In the same checkpoint Ruff passed, pinned Pyright 1.1.413 remained
+  0/0/0, compileall passed, and the staged diff-check exited zero.

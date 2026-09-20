@@ -1,0 +1,8 @@
+# Byte-identity evidence must not vary with the checkout platform.
+locks/alc_r0/v1/*.lock text eol=lf
+locks/alc_r0/v1/*.json text eol=lf
+requirements/alc_r0/*.in text eol=lf
+schemas/alc_r0/v1/*.json text eol=lf
+experiments/alc_r0/v1/*.json text eol=lf
+results/alc_r0/**/*.json text eol=lf
+results/alc_r0/**/*.jsonl text eol=lf
