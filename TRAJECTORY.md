@@ -3204,3 +3204,34 @@ session can map each decision to the exact diff.
   errors, 0 warnings, 0 informations). A fresh frozen package and two new
   independent zero-finding verdicts are still mandatory before the terminal
   full suite; Task 2.8 and Task 2 remain OPEN.
+- The seventh frozen package covered
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..345e475b5570aa39fdf08dc6bca4a4ccd9c928d3`
+  (51 commits, 58 files, 1,770,419 bytes) with SHA-256
+  `5c0cd6efc6357563ae7f8b1bff0af5cb7bc5c811c001faa71b9e208f4042e0c0`.
+  Both independent reviewers returned HIGH release blockers against the same
+  root-only external-import policy. An otherwise allowed module such as
+  `typing`, `dataclasses`, `enum`, or `weakref` could re-export the real `sys`
+  module, so both `from <allowed> import sys` and `<allowed>.sys.modules`
+  recovered the Task 2 module namespace. Architecture also identified the
+  omitted frame member `f_builtins` and `_getframe` path. All sixth-round
+  direct namespace and comprehension regressions were independently confirmed
+  closed; the new block was the precision of the declared import policy.
+- The exact seventh-round probes supplied RED evidence. The root allowlist has
+  been replaced by two exact policies per ledger-dependent module: permitted
+  `from`-import symbols and permitted members of directly imported modules.
+  For example, `from typing import cast` and `weakref.WeakValueDictionary` are
+  allowed because production uses them, while `from typing import sys`,
+  `weakref.sys`, a renamed direct-module import, or passing an imported module
+  object into other runtime flow is rejected. The policy now also blocks
+  `f_builtins`, `_getframe`, `.sys`, and `.modules`. Tests cover the re-export
+  paths across all three governed modules, the current direct-module surface,
+  and the frame-builtins path.
+- The regenerated focused result is
+  `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
+  0 failures, 0 errors, 0 skipped, 85.044 seconds; SHA-256
+  `e5fa152498fa6368e46e21d664c82c0db85c510bc90b28642a4ab26f5e0c388a`.
+  Repository Ruff lint, architecture-oracle Ruff format, compileall over
+  `src`/`tests`/`scripts`, `git diff --check`, and pinned Pyright 1.1.413 with
+  `.venv313` all pass (0 errors, 0 warnings, 0 informations). The repaired
+  source still needs a fresh immutable package and two independent CLEAR
+  verdicts before the terminal full suite; Task 2.8 and Task 2 remain OPEN.

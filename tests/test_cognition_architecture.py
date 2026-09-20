@@ -29,28 +29,46 @@ LEDGER_DEPENDENT_TASK2_MODULES = frozenset(
     {"sensorium", "recollection", "reconsolidation"}
 )
 TASK2_MODULES = frozenset(TASK2_IMPORT_GRAPH)
-TASK2_ALLOWED_EXTERNAL_IMPORT_ROOTS = {
-    "sensorium": frozenset(
-        {"__future__", "dataclasses", "enum", "hashlib", "re", "struct", "typing"}
-    ),
-    "recollection": frozenset(
-        {
-            "__future__",
-            "dataclasses",
-            "enum",
-            "functools",
-            "hashlib",
-            "hmac",
-            "re",
-            "secrets",
-            "struct",
-            "typing",
-            "weakref",
-        }
-    ),
-    "reconsolidation": frozenset(
-        {"__future__", "dataclasses", "enum", "hashlib", "re", "struct", "typing"}
-    ),
+TASK2_ALLOWED_DIRECT_EXTERNAL_MODULE_MEMBERS = {
+    "sensorium": {
+        "hashlib": frozenset({"sha256"}),
+        "re": frozenset({"compile"}),
+        "struct": frozenset({"pack"}),
+    },
+    "recollection": {
+        "hashlib": frozenset({"sha256"}),
+        "hmac": frozenset({"compare_digest", "digest", "new"}),
+        "re": frozenset({"compile"}),
+        "secrets": frozenset({"token_bytes"}),
+        "struct": frozenset({"pack"}),
+        "weakref": frozenset({"WeakValueDictionary"}),
+    },
+    "reconsolidation": {
+        "hashlib": frozenset({"sha256"}),
+        "re": frozenset({"compile"}),
+        "struct": frozenset({"pack"}),
+    },
+}
+TASK2_ALLOWED_FROM_EXTERNAL_IMPORTS = {
+    "sensorium": {
+        "__future__": frozenset({"annotations"}),
+        "dataclasses": frozenset({"dataclass"}),
+        "enum": frozenset({"Enum"}),
+        "typing": frozenset({"cast"}),
+    },
+    "recollection": {
+        "__future__": frozenset({"annotations"}),
+        "dataclasses": frozenset({"dataclass", "field"}),
+        "enum": frozenset({"Enum"}),
+        "functools": frozenset({"cmp_to_key"}),
+        "typing": frozenset({"cast", "overload"}),
+    },
+    "reconsolidation": {
+        "__future__": frozenset({"annotations"}),
+        "dataclasses": frozenset({"dataclass"}),
+        "enum": frozenset({"Enum"}),
+        "typing": frozenset({"cast"}),
+    },
 }
 FORBIDDEN_LEDGER_LIFECYCLE_CALLS = frozenset({"unlock", "verified_session"})
 FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS = frozenset(
@@ -70,7 +88,18 @@ FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS = frozenset(
     }
 )
 FORBIDDEN_FRAME_NAMESPACE_ATTRIBUTES = frozenset(
-    {"f_globals", "f_locals", "gi_frame", "cr_frame", "ag_frame", "tb_frame"}
+    {
+        "f_globals",
+        "f_locals",
+        "f_builtins",
+        "gi_frame",
+        "cr_frame",
+        "ag_frame",
+        "tb_frame",
+        "_getframe",
+        "sys",
+        "modules",
+    }
 )
 ALLOWED_RUNTIME_DUNDER_ATTRIBUTES = frozenset(
     {("object", "__new__"), ("object", "__setattr__")}
@@ -516,7 +545,15 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
     allowed = TASK2_IMPORT_GRAPH[module_name]
     ledger_names: set[str] = set()
     session_constructor_runtime_uses = _session_constructor_runtime_uses(tree)
-    allowed_external_roots = TASK2_ALLOWED_EXTERNAL_IMPORT_ROOTS.get(module_name)
+    allowed_direct_modules = TASK2_ALLOWED_DIRECT_EXTERNAL_MODULE_MEMBERS.get(
+        module_name
+    )
+    allowed_from_imports = TASK2_ALLOWED_FROM_EXTERNAL_IMPORTS.get(module_name)
+    parents = {
+        child: parent
+        for parent in ast.walk(tree)
+        for child in ast.iter_child_nodes(parent)
+    }
 
     for imported_module, imported_names in _local_imports(tree):
         if imported_module not in allowed:
@@ -543,27 +580,46 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
             # the import itself keeps this architecture boundary fail-closed for
             # aliases, getattr(), __dict__, and future dynamic attribute forms.
             violations.append(f"{module_name} uses namespace introspection")
-        elif isinstance(node, ast.Import) and allowed_external_roots is not None:
-            forbidden_roots = {
-                imported.name.partition(".")[0]
-                for imported in node.names
-                if imported.name.partition(".")[0] not in allowed_external_roots
-            }
-            for root in forbidden_roots:
-                violations.append(
-                    f"{module_name} imports forbidden external module {root}"
-                )
+        elif isinstance(node, ast.Import) and allowed_direct_modules is not None:
+            for imported in node.names:
+                root = imported.name.partition(".")[0]
+                if (
+                    imported.name != root
+                    or root not in allowed_direct_modules
+                    or imported.asname is not None
+                ):
+                    violations.append(
+                        f"{module_name} imports forbidden external module {root}"
+                    )
         elif (
             isinstance(node, ast.ImportFrom)
-            and allowed_external_roots is not None
+            and allowed_from_imports is not None
             and node.level == 0
             and node.module is not None
-            and node.module.partition(".")[0] not in allowed_external_roots
         ):
-            violations.append(
-                f"{module_name} imports forbidden external module "
-                f"{node.module.partition('.')[0]}"
-            )
+            allowed_names = allowed_from_imports.get(node.module)
+            for imported in node.names:
+                if allowed_names is None or imported.name not in allowed_names:
+                    violations.append(
+                        f"{module_name} imports forbidden external member "
+                        f"{node.module}.{imported.name}"
+                    )
+        elif (
+            module_name in LEDGER_DEPENDENT_TASK2_MODULES
+            and allowed_direct_modules is not None
+            and isinstance(node, ast.Name)
+            and isinstance(node.ctx, ast.Load)
+            and node.id in allowed_direct_modules
+        ):
+            parent = parents.get(node)
+            if not (
+                isinstance(parent, ast.Attribute)
+                and parent.value is node
+                and parent.attr in allowed_direct_modules[node.id]
+            ):
+                violations.append(
+                    f"{module_name} uses forbidden external member {node.id}"
+                )
         elif (
             module_name in LEDGER_DEPENDENT_TASK2_MODULES
             and isinstance(node, ast.Name)
@@ -1041,6 +1097,53 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
             f"sensorium imports forbidden external module {forbidden_root}"
             in _task2_violations("sensorium", ast.parse(source))
         )
+
+    for module_name in sorted(LEDGER_DEPENDENT_TASK2_MODULES):
+        for external_module in ("typing", "dataclasses", "enum"):
+            source = (
+                f"from {external_module} import sys as approved\n"
+                "from .ledger import VerifiedLedgerSession as VLS\n"
+                "def violate():\n"
+                "    return approved.modules[__name__].VLS(None)\n"
+            )
+            assert (
+                f"{module_name} imports forbidden external member "
+                f"{external_module}.sys"
+                in _task2_violations(module_name, ast.parse(source))
+            )
+
+        direct_module_gateway = ast.parse(
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "import typing\n"
+            "def violate():\n"
+            "    return typing.sys.modules[__name__].VLS(None)\n"
+        )
+        assert (
+            f"{module_name} imports forbidden external module typing"
+            in _task2_violations(module_name, direct_module_gateway)
+        )
+
+    recollection_module_gateway = ast.parse(
+        "from .ledger import VerifiedLedgerSession as VLS\n"
+        "import weakref\n"
+        "def violate():\n"
+        "    return weakref.sys.modules[__name__].VLS(None)\n"
+    )
+    assert "recollection uses forbidden external member weakref" in _task2_violations(
+        "recollection", recollection_module_gateway
+    )
+
+    frame_builtins_gateway = ast.parse(
+        "import dataclasses\n"
+        "from .ledger import VerifiedLedgerSession as VLS\n"
+        "def violate():\n"
+        "    return (\n"
+        "        dataclasses.sys._getframe().f_builtins['globals']()['VLS'](None)\n"
+        "    )\n"
+    )
+    assert "sensorium uses namespace introspection" in _task2_violations(
+        "sensorium", frame_builtins_gateway
+    )
 
     for operation in (
         "session.close()",
