@@ -30,6 +30,9 @@ LEDGER_DEPENDENT_TASK2_MODULES = frozenset(
 )
 TASK2_MODULES = frozenset(TASK2_IMPORT_GRAPH)
 FORBIDDEN_LEDGER_LIFECYCLE_CALLS = frozenset({"unlock", "verified_session"})
+FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS = frozenset(
+    {"globals", "locals", "vars", "eval", "exec", "compile", "__import__"}
+)
 
 
 def _tree(module_name: str) -> ast.Module:
@@ -221,6 +224,59 @@ def _parameter_shadows_reference(
     return False
 
 
+def _target_bound_names(target: ast.AST) -> set[str]:
+    if isinstance(target, ast.Name):
+        return {target.id}
+    if isinstance(target, (ast.Tuple, ast.List)):
+        return {
+            name for element in target.elts for name in _target_bound_names(element)
+        }
+    if isinstance(target, ast.Starred):
+        return _target_bound_names(target.value)
+    return set()
+
+
+def _contains_node(root: ast.AST, candidate: ast.AST) -> bool:
+    return any(node is candidate for node in ast.walk(root))
+
+
+def _comprehension_shadows_reference(
+    reference: ast.AST,
+    alias: str,
+    parents: dict[ast.AST, ast.AST],
+) -> bool:
+    comprehension_types = (
+        ast.ListComp,
+        ast.SetComp,
+        ast.DictComp,
+        ast.GeneratorExp,
+    )
+    ancestor = parents.get(reference)
+    while ancestor is not None:
+        if isinstance(ancestor, comprehension_types):
+            bound: set[str] = set()
+            for generator in ancestor.generators:
+                if _contains_node(generator.iter, reference):
+                    return alias in bound
+                bound.update(_target_bound_names(generator.target))
+                if any(
+                    _contains_node(condition, reference) for condition in generator.ifs
+                ):
+                    return alias in bound
+            result_expressions = (
+                (ancestor.key, ancestor.value)
+                if isinstance(ancestor, ast.DictComp)
+                else (ancestor.elt,)
+            )
+            if any(
+                _contains_node(expression, reference)
+                for expression in result_expressions
+            ):
+                return alias in bound
+        ancestor = parents.get(ancestor)
+    return False
+
+
 def _is_type_call(node: ast.AST) -> bool:
     return (
         isinstance(node, ast.Call)
@@ -303,6 +359,7 @@ def _session_constructor_runtime_uses(tree: ast.Module) -> set[ast.AST]:
             isinstance(node, ast.Name)
             and isinstance(node.ctx, ast.Load)
             and node.id in aliases
+            and not _comprehension_shadows_reference(node, node.id, parents)
             and not _parameter_shadows_reference(node, node.id, parents)
         ):
             uses.add(node)
@@ -420,6 +477,12 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
     for node in ast.walk(tree):
         if isinstance(node, ast.Name) and node.id == "EncryptedLedger":
             violations.append(f"{module_name} references EncryptedLedger")
+        elif (
+            isinstance(node, ast.Name)
+            and isinstance(node.ctx, ast.Load)
+            and node.id in FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS
+        ):
+            violations.append(f"{module_name} uses namespace introspection")
         elif (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
@@ -653,9 +716,52 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
             "            return VLS(None)\n"
             "    return C\n"
         ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def allowed(VLS):\n"
+            "    return [VLS(None) for VLS in ()]\n"
+        ),
     )
     for source in allowed_lexical_shadows:
         assert "sensorium constructs VerifiedLedgerSession" not in _task2_violations(
+            "sensorium", ast.parse(source)
+        )
+
+    unsafe_comprehension = ast.parse(
+        "from .ledger import VerifiedLedgerSession as VLS\n"
+        "def violate():\n"
+        "    return [VLS(None) for _ in ()]\n"
+    )
+    assert "sensorium constructs VerifiedLedgerSession" in _task2_violations(
+        "sensorium", unsafe_comprehension
+    )
+
+    for source in (
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return globals()['VLS'](None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def outer(VLS):\n"
+            "    def violate(factory=globals()['VLS']):\n"
+            "        return factory(None)\n"
+            "    return violate\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return locals().__getitem__('VLS')(None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    namespace = globals\n"
+            "    return namespace()['VLS'](None)\n"
+        ),
+    ):
+        assert "sensorium uses namespace introspection" in _task2_violations(
             "sensorium", ast.parse(source)
         )
 

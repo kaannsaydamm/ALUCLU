@@ -3055,8 +3055,8 @@ session can map each decision to the exact diff.
 - The final-source focused regression over recollection, reconsolidation,
   sensorium, and the architecture oracle produced
   `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
-  0 failures, 0 errors, 0 skipped, 80.697 seconds; SHA-256
-  `cc5d63d8f47b9dfbeffb2f9fd304ceb66355e09ede52fa9a7413bf05cf6d9483`.
+  0 failures, 0 errors, 0 skipped, 91.871 seconds; SHA-256
+  `afd64cd336e61b6dec67e1cb4ce79367f2b7a3fa78aa3580946c1306ff180049`.
   Repository Ruff lint, architecture-oracle Ruff format, compileall over
   `src`/`tests`/`scripts`, and `git diff --check` pass. Pinned Pyright 1.1.413,
   bound to `.venv313` and scoped over the cognition package plus both changed
@@ -3111,3 +3111,27 @@ session can map each decision to the exact diff.
   above were regenerated after this repair. The source must now be frozen,
   independently rereviewed again, and covered by a terminal full suite before
   Task 2.8 can close.
+- The fourth frozen package covered
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..fddd2d4c801d18f7acc6f4494d1b5d474d8a3948`
+  (48 commits, 58 files, 1,749,453 bytes) with SHA-256
+  `7b37ef8e186e9223d090ba2b22cabcba9b0bf77509b3977dfd14c51fd55d3288`.
+  The code/security reviewer returned `REQUEST CHANGES`: direct module-
+  namespace lookup through `globals()["VLS"]`, including a default-argument
+  capture hidden behind an outer same-named parameter, bypassed the constructor
+  guard. The architecture reviewer classified a separate precision issue as
+  WATCH: a comprehension-local target named `VLS` was incorrectly treated as
+  the imported constructor. Exact reviewer probes established both results;
+  prior `global` bypasses were independently confirmed closed.
+- Task 2 now deliberately forbids runtime loads of the namespace-introspection
+  built-ins `globals`, `locals`, `vars`, `eval`, `exec`, `compile`, and
+  `__import__`. This is a conservative architecture policy, not a partial
+  attempt to propagate reflection taint; direct calls, `__getitem__`, default
+  capture, and function-alias variants are blocked under the same rule.
+  Comprehension scope handling now models generator targets and Python's
+  evaluation order: the first iterable remains in the enclosing scope, while
+  element/key/value expressions, filters, and later generators see the
+  applicable comprehension-local targets. Safe local-target and unsafe
+  imported-constructor controls are both frozen. The final-source focused
+  result and SHA-256 above were regenerated after these changes; Ruff, format,
+  compileall, diff-check, and pinned Pyright 1.1.413 remain clean. Another
+  immutable review package and two fresh clear verdicts remain mandatory.
