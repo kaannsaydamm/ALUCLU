@@ -3135,3 +3135,36 @@ session can map each decision to the exact diff.
   result and SHA-256 above were regenerated after these changes; Ruff, format,
   compileall, diff-check, and pinned Pyright 1.1.413 remain clean. Another
   immutable review package and two fresh clear verdicts remain mandatory.
+- The fifth frozen package covered
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..d5c3368b98880061e240955dfc576724d8d908e0`
+  (49 commits, 58 files, 1,754,980 bytes) with SHA-256
+  `bb2b9b403702e0cd2444530cd8cca51a2f168b278c0e42bbc94e8be926305833`.
+  Both independent reviewers blocked release. Code/security classified the
+  `builtins` namespace escape HIGH and nested-comprehension precision LOW;
+  architecture classified the same release blocker HIGH and the precision
+  defect MEDIUM. `import builtins` attribute, `__dict__`, `getattr`, and
+  `from builtins import globals as ...` variants all recovered the protected
+  constructor without a violation. The inner-comprehension resolver also
+  stopped at the nearest comprehension instead of continuing to an enclosing
+  target binding, rejecting valid nested list-comprehension code. These were
+  acceptance-oracle defects; neither reviewer found a current production
+  nested-session, lifecycle, canonical-slot, concurrency, or parsing defect.
+- The exact reviewer probes supplied RED evidence before this repair. Task 2
+  modules now conservatively reject any `builtins` import and any runtime
+  `__builtins__` load, closing module aliases, from-import aliases, `getattr`,
+  and `__dict__` access as a single fail-closed policy. Comprehension scope
+  resolution now continues through enclosing comprehensions when the nearest
+  evaluation point does not bind the constructor name. Exact nested-first-
+  iterable and result-expression controls plus list/set/dict/generator
+  variants remain allowed when an enclosing generator shadows the alias; an
+  unshadowed nested constructor call remains forbidden.
+- The regenerated final-source focused result is
+  `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
+  0 failures, 0 errors, 0 skipped, 83.240 seconds; SHA-256
+  `2401c905feaf29222333cf9e2f7b800fdac3da3a5af9df56900db7d0b94c9a53`.
+  The architecture/lifecycle subset is 7/7 PASS. Repository Ruff lint,
+  architecture-oracle Ruff format, compileall over `src`/`tests`/`scripts`,
+  `git diff --check`, and pinned Pyright 1.1.413 with `.venv313` all pass (0
+  errors, 0 warnings, 0 informations). This source still requires a fresh
+  immutable package and two independent CLEAR verdicts before starting the
+  terminal full suite; Task 2.8 and Task 2 therefore remain OPEN.
