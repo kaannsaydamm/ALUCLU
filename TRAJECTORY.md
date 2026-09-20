@@ -3235,3 +3235,41 @@ session can map each decision to the exact diff.
   `.venv313` all pass (0 errors, 0 warnings, 0 informations). The repaired
   source still needs a fresh immutable package and two independent CLEAR
   verdicts before the terminal full suite; Task 2.8 and Task 2 remain OPEN.
+- The eighth frozen package covers
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..934dc97bab40d34642f632429c3b3e120f380cdf`
+  (52 commits, 58 files, 1,776,542 bytes) with SHA-256
+  `24b4c7ed902218ee2a2f7f60e1671484c3c34ff43c4724a8783b9a6c09c2297f`.
+  Independent GPT-5.6 Sol rereviews of that exact immutable package returned
+  the literal zero-finding verdicts `FULL-BRANCH CODE/SECURITY VERDICT: CLEAR`
+  and `FULL-BRANCH ARCHITECTURE VERDICT: CLEAR`. The first attempts were
+  interrupted by reviewer usage limits and produced no verdict; only the
+  successful reruns count. These review verdicts do not replace a terminal
+  full-suite result or completion evidence.
+- With source HEAD and origin both at `934dc97`, no tracked changes, no active
+  older pytest process, and 48.02 GiB free on the host drive, a fresh detached
+  Windows CPython 3.13 full suite was started at 2026-09-20 04:38:11 +03:00.
+  Startup PID hints are wrapper 23940, pytest 4520, and child 22976. The
+  authoritative artifacts are
+  `results/cognition_task2_full_py313_final_v6_20260920` with `.stdout.log`,
+  `.stderr.log`, `.exit.log`, and `.xml` suffixes. The launch passed the
+  absolute JUnit target as one `--junitxml=...` argument. Process start is not
+  PASS evidence; Task 2.8 and Task 2 remain OPEN until terminal validation and
+  the independent completion-verifier gate.
+- The v6 run terminated normally at 2026-09-20 05:55:05 +03:00. The wrapper
+  recorded `pytest_exit_code=0`; JUnit independently parses as 1 suite and
+  1,060 testcases, 0 failures, 0 errors, 0 skipped, 4,611.033 seconds, with
+  exactly 1,060 testcase nodes and no failure/error/skipped child nodes. The
+  XML is 170,325 bytes with SHA-256
+  `5c067f7385ba599d617c8d7dcd594194b6268abc88a730ac4eb442a043266da4`.
+  Stdout reached 100% and contains only the expected pytest warning that
+  `record_property` is incompatible with JUnit `xunit2`; it is 3,322 bytes
+  with SHA-256
+  `c3bbd0115107906b1fe3f908751b08c3cc9d5b1f1e14fc828a3cda764bf106dd`.
+  Stderr is empty (0 bytes; SHA-256
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`).
+  The 20-byte exit record has SHA-256
+  `f9703120c10d0a5f1412f37914637ef68757293a74cdf0ab518f0dd4f865a2fd`.
+  This is terminal Windows CPython 3.13 whole-suite PASS evidence for frozen
+  source `934dc97`; it is not macOS/arm64 or broad-portability evidence. Task
+  2.8 and Task 2 remain OPEN until the independent completion-verifier remaps
+  every required gate against the final committed evidence.
