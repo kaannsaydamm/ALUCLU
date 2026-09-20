@@ -3273,3 +3273,37 @@ session can map each decision to the exact diff.
   source `934dc97`; it is not macOS/arm64 or broad-portability evidence. Task
   2.8 and Task 2 remain OPEN until the independent completion-verifier remaps
   every required gate against the final committed evidence.
+- A controller audit then found that the previously tracked formal scale JSON
+  embedded source commit `1150a30`, which predates the final recall-session and
+  position-integrity production repair in `3fc1063`. The v6 whole-suite PASS
+  includes the 8,192-record test, but it does not replace the plan's separate
+  process-isolated RSS, scan-ratio, direct-ID, restart, and canonical-JSON
+  benchmark. Task 2 therefore remained OPEN and the formal scale gate was
+  rerun without changing any threshold.
+- The replacement benchmark ran from a separate clean checkout of evidence
+  commit `fc6d2f57d256c4daca7c6735ec5d21797a3550b7` (`dirty: false`) using
+  Windows CPython 3.13.5, fixed counts `[2048, 4096, 8192]`, 512-byte content
+  payloads, three samples, and seed `20260916`. It terminated normally with
+  `benchmark_exit_code=0` and `success: true`. Every one of the 28 recorded
+  threshold checks is true. Scan medians were 98.5522623, 428.9717467, and
+  835.014083 seconds; the 8,192/4,096 ratio is 1.9465479706381792 against the
+  fixed maximum 2.75. Peak-RSS increments over the empty-process baseline were
+  11,931,648, 13,172,736, and 23,293,952 bytes; the 8,192 increment is below
+  64 MiB over empty and only 11,362,304 bytes above the 2,048 result, below the
+  16 MiB delta limit. Direct-ID p95 was 0.1047515 seconds versus Task 1 read
+  p95 0.1013534 seconds, within the fixed 2x limit. Full-verification delta is
+  zero, no duplicate records or plaintext sidecars were observed, and the
+  one-shot, paged, and fresh-process restarted digests are all exactly
+  `ca2c299cd49cb22f9bd51053ae04b485281b7ec62f03d1bbca7ad9813e1eb3b6`.
+  The canonical final artifact is
+  `results/cognition_task2_scale_final_fc6d2f5_20260920.json`,  with SHA-256
+  `54410023f6bf20caadda50c7dc6aa473a1321c7a168d161d5c775c74279a6e11`.
+  The progress, stdout, stderr, and exit evidence SHA-256 values are
+  `36ef5761ecdbe547215ee8511285aa898d3b0af3d7a32f6a23c807dfcf2ea4be`,
+  `29401f5dcbae4edfb3f04bd61ee81ae97c20048495ea118e844e2c88933262d8`,
+  `a3639af5e23464fc391dae127fd5493f02c8178068a35866d9c7fdd35dcd623f`,
+  and `5f25b143bea6eb808bc0aa481709af1ab26c17e5c212234c3aeb75727fc40c52`.
+  Stderr contains only PowerShell's CLIXML first-use progress record, not a
+  benchmark error. This closes the final-source Windows scale-evidence gap;
+  Task 2.8 and Task 2 remain OPEN until the independent completion-verifier
+  reviews the final committed evidence package.
