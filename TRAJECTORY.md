@@ -3720,3 +3720,56 @@ Task 2 sensorium/recollection gate: CLEAN
   matrix, validate closed-world result packages, provision/bind the dedicated
   Linux evaluator rootfs and sealer principal, or acquire the pinned model and
   data. Development training and held-out scoring therefore remain unauthorized.
+
+## 2026-09-20 — ALC-R0 R0.0 implementation checkpoint 3
+
+- Schema checkpoint `815f9cbf526c26cd243271dd5071bdb2806ad4dc` was
+  committed and pushed. The exact SmolLM2 revision was then queried with the
+  locked Hugging Face CLI in dry-run mode: it declared 10 files and about 272 MB,
+  with SafeTensors as the only weight format. The first real-download invocation
+  combined `--local-dir` and `--cache-dir`; Hugging Face Hub 1.32.0 rejects that
+  combination, so it exited 1 before downloading model content. The corrected
+  exact-revision invocation retained the dedicated `HF_HOME`, removed only the
+  incompatible flag, and completed successfully.
+- The packaged Windows runtime maps the requested external LocalAppData path to
+  its physical Codex `LocalCache` path; both names resolve, and the CLI reported
+  the physical location. Hugging Face added 13 local cache-metadata files beside
+  the 10 declared repository files. A new final snapshot directory was created
+  from only the 10 declared files, excluding all downloader metadata. No model
+  byte entered OneDrive or the Git repository. Free `C:` space after acquisition
+  was 43,499,671,552 bytes.
+- The final snapshot contains 10 files and 272,445,324 bytes. Every file was
+  inventoried and hashed. The four preregistered binding hashes for
+  `config.json`, `model.safetensors`, `tokenizer.json`, and
+  `tokenizer_config.json` all match exactly. The canonical inventory SHA-256 is
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`;
+  its current 1,616-byte acquisition receipt hashes to
+  `2a4baddc2bb8451811e199e7dd6f91512fad73d367083c833e117c3e4d09984a`
+  and passes the frozen acquisition schema plus semantic validator. This receipt
+  is not yet committed as authoritative evidence because the host-loader source
+  commit was still being formed.
+- The offline host-loader slice began with the expected missing-module RED. Its
+  implementation now requires all three offline flags, re-verifies the complete
+  snapshot, uses only an absolute local directory with
+  `local_files_only=True`, `trust_remote_code=False`, and
+  `use_safetensors=True`, checks the frozen architecture/config identity, loads
+  BF16, switches to eval mode, and freezes every base parameter. Dependency
+  injection keeps normal tests networkless without global monkeypatching.
+- A real offline load from the final snapshot returned
+  `transformers.models.llama.modeling_llama.LlamaForCausalLM`, exactly
+  134,515,008 base parameters, zero trainable parameters, eval mode, CPU BF16,
+  and all frozen config fields equal. Two separate fresh Python processes then
+  independently loaded the model and encoded `state_dict(keep_vars=False)`.
+  Both produced 273 entries, 272 storage groups, 325,706,271 combined stream
+  bytes, ALCBASE SHA-256
+  `ce7e8dd6a97ac4cc56bf4f1e38625817386e27af58f1ed63377741f7f2aab1ba`,
+  and alias-section SHA-256
+  `8efcc3120c19a1a0784811d4ae95d327849ad8e7bd9176d45c3a6b9b7f067a84`.
+- Six host contract tests pass and the combined R0.0 slice is 68/68 PASS. The
+  first static pass found two import/export-order lint findings and two
+  line-wrapping-only format findings; targeted mechanical fixes were applied.
+  The repeated gate is 68/68 tests, Ruff PASS, seven files already formatted,
+  pinned Pyright 1.1.413 at 0/0/0, compileall PASS, and diff-check exit zero with
+  only the known line-ending notice. R0.0 still lacks committed acquisition/base
+  receipts, the machine preregistration matrix, closed-world validator, datasets,
+  Linux evaluator rootfs, and sealer/broker proof; training remains blocked.
