@@ -60,7 +60,9 @@ def test_snapshot_expectation_rejects_moving_or_short_revision() -> None:
         SnapshotExpectation("example/model", "main", {"config.json": "0" * 64})
 
 
-def test_verify_model_snapshot_rejects_missing_or_changed_required_file(tmp_path: Path) -> None:
+def test_verify_model_snapshot_rejects_missing_or_changed_required_file(
+    tmp_path: Path,
+) -> None:
     root, expectation = _snapshot(tmp_path)
     (root / "config.json").unlink()
     with pytest.raises(AcquisitionError, match="missing"):

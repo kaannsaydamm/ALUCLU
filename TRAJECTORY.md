@@ -3677,3 +3677,46 @@ Task 2 sensorium/recollection gate: CLEAN
   locked CPython 3.12 interpreter with the explicit source root returned 50/50
   PASS. In the same checkpoint Ruff passed, pinned Pyright 1.1.413 remained
   0/0/0, compileall passed, and the staged diff-check exited zero.
+
+## 2026-09-20 — ALC-R0 R0.0 implementation checkpoint 2
+
+- Freeze-foundation checkpoint
+  `5fa4b63077cf2594d8133a270c2b780d6ac5f278` was committed and pushed to
+  `origin/codex/unified-lifelong-cognition`. It is explicitly an implementation
+  checkpoint, not an R0.0 validator PASS. Historical untracked Task 2 logs and
+  the root `uv.lock` remain untouched and outside the commit.
+- The next TDD slice began with an expected RED collection failure because
+  `aluclu.alc_r0.schema_validation` did not yet exist. Versioned Draft 2020-12
+  schemas and a fail-closed validator were then added for the two currently
+  materialized R0.0 documents: `lock-manifest` and `acquisition-receipt`.
+  Unknown schemas, noncanonical evidence, noncanonical/symlinked schema roots,
+  unknown fields, moving model revisions, reordered platform locks, unsafe or
+  colliding inventory paths, pinned model-file mismatches, and inventory-root
+  mismatches now fail validation.
+- Both schema sources are exact RFC-8785 JSON with no BOM, CRLF, whitespace, or
+  final newline. The acquisition schema is 1,095 bytes with SHA-256
+  `6b08e0be6a4713c9afff8ff51fcb792a5ce8b24110ea442bb27f2661eaec7735`;
+  the lock-manifest schema is 2,064 bytes with SHA-256
+  `9cc92a3e41dc845da357067b6e13c31c88e6b47fc6631764027dce0ad7e2db2f`.
+  A checked-in canonicalizer performs atomic exact-byte rewrites for future R0
+  JSON source files. The R0 optional dependency surface now names both pinned
+  RFC-8785 and JSON-Schema implementations explicitly.
+- The tracked real lock manifest, not only a synthetic fixture, validates as the
+  expected ordered Windows-training/Linux-eval pair. Focused schema validation
+  reached 12/12 PASS; the combined R0.0 slice reached 62/62 PASS. Ruff, pinned
+  Pyright 1.1.413 at 0/0/0, and compileall passed. A newly added format check
+  initially found six line-wrapping-only differences; targeted formatting made
+  the repeated check 10/10 files formatted, after which all 62 tests and every
+  static gate passed again. Diff-check exits zero with only Git's known
+  working-tree LF/CRLF notices.
+- An idempotence run of the checked-in canonicalizer reproduced both schema
+  files byte-for-byte and left no schema diff. A subsequent package check was
+  first invoked incorrectly as `python -m pip check`; the deliberately minimal
+  uv-managed environment contains no `pip` module, so that command exited 1
+  with `No module named pip`. Reissuing the check through the environment's
+  actual manager, `uv pip check --python <locked-python>`, inspected 50 packages
+  and reported all installed packages compatible.
+- This checkpoint does not yet enumerate the machine preregistration artifact
+  matrix, validate closed-world result packages, provision/bind the dedicated
+  Linux evaluator rootfs and sealer principal, or acquire the pinned model and
+  data. Development training and held-out scoring therefore remain unauthorized.

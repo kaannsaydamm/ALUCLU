@@ -118,5 +118,7 @@ def verify_model_snapshot(
         "safetensors_only": True,
         "files": inventory,
     }
-    receipt["inventory_sha256"] = hashlib.sha256(canonical_json_bytes(inventory)).hexdigest()
+    receipt["inventory_sha256"] = hashlib.sha256(
+        canonical_json_bytes(inventory)
+    ).hexdigest()
     return receipt

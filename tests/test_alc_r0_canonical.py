@@ -20,7 +20,12 @@ def test_canonical_json_matches_rfc8785_number_and_key_rules() -> None:
     encoded = canonical_json_bytes(value)
 
     assert encoded == b'{"\\r":"control","a":1,"z":0,"\xe2\x82\xac":"currency"}'
-    assert parse_canonical_json(encoded) == {"\r": "control", "a": 1, "z": 0, "\u20ac": "currency"}
+    assert parse_canonical_json(encoded) == {
+        "\r": "control",
+        "a": 1,
+        "z": 0,
+        "\u20ac": "currency",
+    }
 
 
 @pytest.mark.parametrize(
@@ -35,7 +40,9 @@ def test_canonical_json_matches_rfc8785_number_and_key_rules() -> None:
         b"\xff",
     ],
 )
-def test_parse_canonical_json_rejects_invalid_or_noncanonical_bytes(data: bytes) -> None:
+def test_parse_canonical_json_rejects_invalid_or_noncanonical_bytes(
+    data: bytes,
+) -> None:
     with pytest.raises(CanonicalEvidenceError):
         parse_canonical_json(data)
 
@@ -71,7 +78,10 @@ def test_parse_canonical_jsonl_rejects_boundary_violations(data: bytes) -> None:
 
 
 def test_sha256_bytes_hashes_exact_payload() -> None:
-    assert sha256_bytes(b"abc") == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    assert (
+        sha256_bytes(b"abc")
+        == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    )
 
 
 @pytest.mark.parametrize(
@@ -92,7 +102,9 @@ def test_sha256_bytes_hashes_exact_payload() -> None:
         "a/control\x1fb.json",
     ],
 )
-def test_normalize_evidence_path_rejects_unsafe_or_noncanonical_paths(path: str) -> None:
+def test_normalize_evidence_path_rejects_unsafe_or_noncanonical_paths(
+    path: str,
+) -> None:
     with pytest.raises(CanonicalEvidenceError):
         normalize_evidence_path(path)
 
