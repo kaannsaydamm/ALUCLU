@@ -3168,3 +3168,39 @@ session can map each decision to the exact diff.
   errors, 0 warnings, 0 informations). This source still requires a fresh
   immutable package and two independent CLEAR verdicts before starting the
   terminal full suite; Task 2.8 and Task 2 therefore remain OPEN.
+- The sixth frozen package covered
+  `f5a30e0d7c9e0e95a8d8a5533517a852c77e0d3c..8d750c2cca2c156b2a6aa04b5f4b0713def25ecb`
+  (50 commits, 58 files, 1,760,924 bytes) with SHA-256
+  `be4f34792fa06a7d86eaabcc27c24b4f9bb36162afaf6edd39b74d04045204b3`.
+  Both independent reviewers again blocked release. They independently
+  reproduced HIGH constructor recovery through function `.__globals__`;
+  literal `getattr(..., "__globals__")`, `sys.modules`, and `importlib` paths
+  also bypassed the syntactic boundary. Code/security additionally found a
+  LOW precision defect: in a multi-generator comprehension every target is
+  local throughout the implicit function after the first iterable, so a
+  later target can make an earlier read a local read-before-assignment rather
+  than an imported-constructor call. Prior `builtins` and enclosing-
+  comprehension repairs were independently confirmed closed.
+- The exact reviewer mutations supplied RED evidence. The repaired oracle now
+  gives ledger-dependent Task 2 modules an explicit per-module external-import
+  allowlist; `sys`, `importlib`, `inspect`, and other undeclared imports fail
+  closed. Runtime namespace/reflection built-ins, including dynamically named
+  `getattr`, are forbidden. Runtime dunder and frame-namespace attributes are
+  also forbidden except the two production-required `object.__new__` and
+  `object.__setattr__` operations. This explicitly bounds the oracle as a
+  conservative syntactic policy instead of claiming whole-Python reflection
+  or taint proof. Comprehension resolution now models the first iterable as
+  enclosing-scope code and all remaining expressions as one implicit function
+  whose complete generator-target set is local from entry. Exact reviewer
+  list/set/dict/generator examples and an additional dynamically composed
+  `__globals__` attribute probe are frozen as regressions.
+- The latest regenerated focused result is
+  `results/cognition_task28_oracle_repair_focused_20260920.xml`: 105 tests,
+  0 failures, 0 errors, 0 skipped, 80.078 seconds; SHA-256
+  `769376675e650457e0f85763d0b069f34cc648b89e7ffe985a7a030e56f8d7b8`.
+  The architecture/lifecycle subset remains 7/7 PASS. Repository Ruff lint,
+  architecture-oracle Ruff format, compileall over `src`/`tests`/`scripts`,
+  `git diff --check`, and pinned Pyright 1.1.413 with `.venv313` all pass (0
+  errors, 0 warnings, 0 informations). A fresh frozen package and two new
+  independent zero-finding verdicts are still mandatory before the terminal
+  full suite; Task 2.8 and Task 2 remain OPEN.

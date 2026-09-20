@@ -29,6 +29,29 @@ LEDGER_DEPENDENT_TASK2_MODULES = frozenset(
     {"sensorium", "recollection", "reconsolidation"}
 )
 TASK2_MODULES = frozenset(TASK2_IMPORT_GRAPH)
+TASK2_ALLOWED_EXTERNAL_IMPORT_ROOTS = {
+    "sensorium": frozenset(
+        {"__future__", "dataclasses", "enum", "hashlib", "re", "struct", "typing"}
+    ),
+    "recollection": frozenset(
+        {
+            "__future__",
+            "dataclasses",
+            "enum",
+            "functools",
+            "hashlib",
+            "hmac",
+            "re",
+            "secrets",
+            "struct",
+            "typing",
+            "weakref",
+        }
+    ),
+    "reconsolidation": frozenset(
+        {"__future__", "dataclasses", "enum", "hashlib", "re", "struct", "typing"}
+    ),
+}
 FORBIDDEN_LEDGER_LIFECYCLE_CALLS = frozenset({"unlock", "verified_session"})
 FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS = frozenset(
     {
@@ -40,7 +63,17 @@ FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS = frozenset(
         "compile",
         "__import__",
         "__builtins__",
+        "getattr",
+        "setattr",
+        "delattr",
+        "dir",
     }
+)
+FORBIDDEN_FRAME_NAMESPACE_ATTRIBUTES = frozenset(
+    {"f_globals", "f_locals", "gi_frame", "cr_frame", "ag_frame", "tb_frame"}
+)
+ALLOWED_RUNTIME_DUNDER_ATTRIBUTES = frozenset(
+    {("object", "__new__"), ("object", "__setattr__")}
 )
 
 
@@ -263,36 +296,39 @@ def _comprehension_shadows_reference(
     ancestor = parents.get(reference)
     while ancestor is not None:
         if isinstance(ancestor, comprehension_types):
-            bound: set[str] = set()
-            evaluation_point_found = False
-            for generator in ancestor.generators:
-                if _contains_node(generator.iter, reference):
-                    evaluation_point_found = True
-                    if alias in bound:
-                        return True
-                    break
-                bound.update(_target_bound_names(generator.target))
-                if any(
-                    _contains_node(condition, reference) for condition in generator.ifs
-                ):
-                    evaluation_point_found = True
-                    if alias in bound:
-                        return True
-                    break
-            if not evaluation_point_found:
-                result_expressions = (
-                    (ancestor.key, ancestor.value)
-                    if isinstance(ancestor, ast.DictComp)
-                    else (ancestor.elt,)
-                )
-                if any(
-                    _contains_node(expression, reference)
-                    for expression in result_expressions
-                ):
-                    if alias in bound:
-                        return True
+            # CPython evaluates only the first iterable in the enclosing scope.
+            # Every other expression runs in the implicit comprehension function,
+            # where every generator target is local even before its assignment.
+            first_iterable = ancestor.generators[0].iter
+            comprehension_locals = {
+                name
+                for generator in ancestor.generators
+                for name in _target_bound_names(generator.target)
+            }
+            if (
+                not _contains_node(first_iterable, reference)
+                and alias in comprehension_locals
+            ):
+                return True
         ancestor = parents.get(ancestor)
     return False
+
+
+def _is_forbidden_runtime_attribute(node: ast.Attribute) -> bool:
+    if node.attr in FORBIDDEN_FRAME_NAMESPACE_ATTRIBUTES:
+        return True
+    if not (node.attr.startswith("__") and node.attr.endswith("__")):
+        return False
+    return not (
+        isinstance(node.value, ast.Name)
+        and (node.value.id, node.attr) in ALLOWED_RUNTIME_DUNDER_ATTRIBUTES
+    )
+
+
+def _is_forbidden_dynamic_attribute(attribute_name: str) -> bool:
+    return attribute_name in FORBIDDEN_FRAME_NAMESPACE_ATTRIBUTES or (
+        attribute_name.startswith("__") and attribute_name.endswith("__")
+    )
 
 
 def _is_type_call(node: ast.AST) -> bool:
@@ -480,6 +516,7 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
     allowed = TASK2_IMPORT_GRAPH[module_name]
     ledger_names: set[str] = set()
     session_constructor_runtime_uses = _session_constructor_runtime_uses(tree)
+    allowed_external_roots = TASK2_ALLOWED_EXTERNAL_IMPORT_ROOTS.get(module_name)
 
     for imported_module, imported_names in _local_imports(tree):
         if imported_module not in allowed:
@@ -495,18 +532,49 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
     for node in ast.walk(tree):
         if isinstance(node, ast.Name) and node.id == "EncryptedLedger":
             violations.append(f"{module_name} references EncryptedLedger")
-        elif (
-            isinstance(node, ast.Import)
-            and any(imported.name == "builtins" for imported in node.names)
-        ) or (isinstance(node, ast.ImportFrom) and node.module == "builtins"):
+        elif module_name in LEDGER_DEPENDENT_TASK2_MODULES and (
+            (
+                isinstance(node, ast.Import)
+                and any(imported.name == "builtins" for imported in node.names)
+            )
+            or (isinstance(node, ast.ImportFrom) and node.module == "builtins")
+        ):
             # Task 2 modules do not need the reflective builtins namespace. Banning
             # the import itself keeps this architecture boundary fail-closed for
             # aliases, getattr(), __dict__, and future dynamic attribute forms.
             violations.append(f"{module_name} uses namespace introspection")
+        elif isinstance(node, ast.Import) and allowed_external_roots is not None:
+            forbidden_roots = {
+                imported.name.partition(".")[0]
+                for imported in node.names
+                if imported.name.partition(".")[0] not in allowed_external_roots
+            }
+            for root in forbidden_roots:
+                violations.append(
+                    f"{module_name} imports forbidden external module {root}"
+                )
         elif (
-            isinstance(node, ast.Name)
+            isinstance(node, ast.ImportFrom)
+            and allowed_external_roots is not None
+            and node.level == 0
+            and node.module is not None
+            and node.module.partition(".")[0] not in allowed_external_roots
+        ):
+            violations.append(
+                f"{module_name} imports forbidden external module "
+                f"{node.module.partition('.')[0]}"
+            )
+        elif (
+            module_name in LEDGER_DEPENDENT_TASK2_MODULES
+            and isinstance(node, ast.Name)
             and isinstance(node.ctx, ast.Load)
             and node.id in FORBIDDEN_NAMESPACE_INTROSPECTION_CALLS
+        ):
+            violations.append(f"{module_name} uses namespace introspection")
+        elif (
+            module_name in LEDGER_DEPENDENT_TASK2_MODULES
+            and isinstance(node, ast.Constant)
+            and node.value == "__builtins__"
         ):
             violations.append(f"{module_name} uses namespace introspection")
         elif (
@@ -518,6 +586,11 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
             and isinstance(node.args[1].value, str)
         ):
             attribute_name = node.args[1].value
+            if (
+                module_name in LEDGER_DEPENDENT_TASK2_MODULES
+                and _is_forbidden_dynamic_attribute(attribute_name)
+            ):
+                violations.append(f"{module_name} uses namespace introspection")
             if attribute_name in {"close", "__enter__", "__exit__"}:
                 violations.append(f"{module_name} takes ownership of caller session")
             if attribute_name in FORBIDDEN_LEDGER_LIFECYCLE_CALLS:
@@ -531,6 +604,14 @@ def _task2_violations(module_name: str, tree: ast.Module) -> tuple[str, ...]:
             and module_name in LEDGER_DEPENDENT_TASK2_MODULES
         ):
             violations.append(f"{module_name} takes ownership of caller session")
+        elif (
+            module_name in LEDGER_DEPENDENT_TASK2_MODULES
+            and isinstance(node, ast.Attribute)
+            and _is_forbidden_runtime_attribute(node)
+        ):
+            violations.append(f"{module_name} uses namespace introspection")
+            if node.attr in {"close", "__enter__", "__exit__"}:
+                violations.append(f"{module_name} takes ownership of caller session")
         elif (
             isinstance(node, ast.Attribute)
             and node.attr in {"close", "__enter__", "__exit__"}
@@ -777,6 +858,26 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
             "def allowed():\n"
             "    return [(VLS for x in ()) for VLS in ()]\n"
         ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def allowed():\n"
+            "    return [x for x in (1,) for VLS in VLS(None)]\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def allowed():\n"
+            "    return {x for x in (1,) for VLS in VLS(None)}\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def allowed():\n"
+            "    return {x: x for x in (1,) for VLS in VLS(None)}\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def allowed():\n"
+            "    return (x for x in (1,) for VLS in VLS(None))\n"
+        ),
     )
     for source in allowed_lexical_shadows:
         assert "sensorium constructs VerifiedLedgerSession" not in _task2_violations(
@@ -800,6 +901,32 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
     assert "sensorium constructs VerifiedLedgerSession" in _task2_violations(
         "sensorium", unsafe_nested_comprehension
     )
+
+    for source in (
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return [x for x in (1,) for y in VLS(None)]\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return {x for x in (1,) for y in VLS(None)}\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return {x: x for x in (1,) for y in VLS(None)}\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return (x for x in (1,) for y in VLS(None))\n"
+        ),
+    ):
+        assert "sensorium constructs VerifiedLedgerSession" in _task2_violations(
+            "sensorium", ast.parse(source)
+        )
 
     for source in (
         (
@@ -854,9 +981,65 @@ def test_architecture_guard_rejects_session_ownership_mutations() -> None:
             "def violate():\n"
             "    return __builtins__['globals']()['VLS'](None)\n"
         ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return (lambda: None).__globals__['VLS'](None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    return getattr(lambda: None, '__globals__')['VLS'](None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    attribute = '__' + 'globals__'\n"
+            "    return getattr(lambda: None, attribute)['VLS'](None)\n"
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "def violate():\n"
+            "    namespace = (lambda: None).__globals__\n"
+            "    builtins_value = namespace['__builtins__']\n"
+            "    globals_fn = (\n"
+            "        builtins_value['globals']\n"
+            "        if isinstance(builtins_value, dict)\n"
+            "        else builtins_value.globals\n"
+            "    )\n"
+            "    return globals_fn()['VLS'](None)\n"
+        ),
     ):
         assert "sensorium uses namespace introspection" in _task2_violations(
             "sensorium", ast.parse(source)
+        )
+
+    for source, forbidden_root in (
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "import importlib\n"
+            "def violate():\n"
+            "    return importlib.import_module('builtins').globals()['VLS'](None)\n",
+            "importlib",
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "import sys\n"
+            "def violate():\n"
+            "    return sys.modules['builtins'].globals()['VLS'](None)\n",
+            "sys",
+        ),
+        (
+            "from .ledger import VerifiedLedgerSession as VLS\n"
+            "import sys\n"
+            "def violate():\n"
+            "    return sys.modules[__name__].VLS(None)\n",
+            "sys",
+        ),
+    ):
+        assert (
+            f"sensorium imports forbidden external module {forbidden_root}"
+            in _task2_violations("sensorium", ast.parse(source))
         )
 
     for operation in (
