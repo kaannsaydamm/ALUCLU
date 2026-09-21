@@ -108,6 +108,29 @@ def test_run_ids_and_artifact_contracts_are_closed_and_deterministic() -> None:
     assert all(
         tuple(sorted(row.expected_artifacts)) == row.expected_artifacts for row in first
     )
+    by_kind = {
+        kind: {row.expected_artifacts for row in first if row.kind == kind}
+        for kind in ("attach-detach", "fresh-remount")
+    }
+    assert by_kind["attach-detach"] == {
+        (
+            "attach-detach-receipt.json",
+            "exit.json",
+            "run-events.jsonl",
+            "stderr.log",
+            "stdout.log",
+        )
+    }
+    assert by_kind["fresh-remount"] == {
+        (
+            "exit.json",
+            "fresh-remount-receipt.json",
+            "predictions.jsonl",
+            "run-events.jsonl",
+            "stderr.log",
+            "stdout.log",
+        )
+    }
 
 
 def test_tracked_matrix_is_reproducible_from_exact_plan_bytes() -> None:

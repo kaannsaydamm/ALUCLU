@@ -16,7 +16,10 @@ from typing import Any, NoReturn
 import rfc8785
 
 _DRIVE_PREFIX = re.compile(r"^[A-Za-z]:")
-_WINDOWS_DEVICE = re.compile(r"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$", re.I)
+_WINDOWS_DEVICE = re.compile(
+    r"^(con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])$",
+    re.I,
+)
 
 
 class CanonicalEvidenceError(ValueError):

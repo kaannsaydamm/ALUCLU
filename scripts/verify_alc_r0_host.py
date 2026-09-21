@@ -4,27 +4,21 @@ import argparse
 import contextlib
 import hashlib
 import os
+import re
 import stat
 import subprocess
 import sys
 import tempfile
 import zipfile
 from collections.abc import Iterator
-from pathlib import Path
-
-from aluclu.alc_r0.acquisition import verify_model_snapshot
-from aluclu.alc_r0.canonical import (
-    canonical_json_bytes,
-    parse_canonical_json,
-)
-from aluclu.alc_r0.host import load_verified_host
-from aluclu.alc_r0.host_evidence import (
-    build_host_evidence_receipt,
-    observe_verified_host,
-)
-from aluclu.alc_r0.schema_validation import validate_r0_document
+from pathlib import Path, PurePosixPath
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+_WINDOWS_DEVICE = re.compile(
+    r"^(con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])$",
+    re.IGNORECASE,
+)
+_COMMITTED_PARENT_ENV = "ALUCLU_R0_COMMITTED_PARENT_SHA"
 
 
 def _absolute_file(path: Path, *, label: str) -> Path:
@@ -109,18 +103,26 @@ def _export_source_commit(source_commit: str, destination: Path) -> None:
         raise RuntimeError(f"git archive exited {completed.returncode}")
     destination.mkdir()
     try:
+        seen_paths: set[str] = set()
         with zipfile.ZipFile(archive_path) as archive:
             for member in archive.infolist():
-                name = member.filename
-                if "\\" in name or name.startswith("/"):
-                    raise RuntimeError("commit archive contains an unsafe path")
-                parts = Path(name.rstrip("/")).parts
-                if not parts or any(part in {"", ".", ".."} for part in parts):
-                    raise RuntimeError("commit archive contains an unsafe path")
+                parts = _safe_archive_parts(member.filename)
+                folded = "/".join(parts).casefold()
+                if folded in seen_paths:
+                    raise RuntimeError("commit archive contains colliding paths")
+                seen_paths.add(folded)
                 mode = (member.external_attr >> 16) & 0xFFFF
                 if stat.S_ISLNK(mode):
                     raise RuntimeError("commit archive contains a symlink")
                 target = destination.joinpath(*parts)
+                try:
+                    target.resolve(strict=False).relative_to(
+                        destination.resolve(strict=True)
+                    )
+                except ValueError as exc:
+                    raise RuntimeError(
+                        "commit archive path escapes export root"
+                    ) from exc
                 if member.is_dir():
                     target.mkdir(parents=True, exist_ok=True)
                     continue
@@ -130,6 +132,30 @@ def _export_source_commit(source_commit: str, destination: Path) -> None:
                         output.write(chunk)
     finally:
         archive_path.unlink(missing_ok=True)
+
+
+def _safe_archive_parts(name: str) -> tuple[str, ...]:
+    stripped = name.rstrip("/")
+    candidate = PurePosixPath(stripped)
+    parts = candidate.parts
+    if (
+        not stripped
+        or "\\" in name
+        or ":" in name
+        or any(character in '<>"|?*' or ord(character) < 0x20 for character in name)
+        or candidate.is_absolute()
+        or not parts
+        or any(part in {"", ".", ".."} for part in parts)
+        or candidate.as_posix() != stripped
+    ):
+        raise RuntimeError("commit archive contains an unsafe path")
+    if any(
+        part.endswith((" ", "."))
+        or _WINDOWS_DEVICE.fullmatch(part.split(".", 1)[0].rstrip(" "))
+        for part in parts
+    ):
+        raise RuntimeError("commit archive contains a Windows-unsafe path")
+    return parts
 
 
 @contextlib.contextmanager
@@ -148,8 +174,12 @@ def _project_relative(path: Path, *, label: str) -> Path:
 
 
 def _worker(snapshot: Path) -> None:
-    observation = observe_verified_host(load_verified_host(snapshot))
-    sys.stdout.buffer.write(canonical_json_bytes(observation))
+    from aluclu.alc_r0 import canonical, host, host_evidence
+
+    _assert_module_origins(canonical, host, host_evidence)
+
+    observation = host_evidence.observe_verified_host(host.load_verified_host(snapshot))
+    sys.stdout.buffer.write(canonical.canonical_json_bytes(observation))
 
 
 def _fresh_observation(
@@ -157,6 +187,10 @@ def _fresh_observation(
     *,
     project_root: Path,
 ) -> dict[str, object]:
+    from aluclu.alc_r0 import canonical
+
+    _assert_module_origins(canonical)
+
     environment = dict(os.environ)
     environment.update(
         {
@@ -183,34 +217,25 @@ def _fresh_observation(
     sys.stderr.buffer.write(completed.stderr)
     if completed.returncode != 0:
         raise RuntimeError(f"fresh host worker exited {completed.returncode}")
-    observation = parse_canonical_json(completed.stdout)
+    observation = canonical.parse_canonical_json(completed.stdout)
     if not isinstance(observation, dict):
         raise RuntimeError("fresh host worker returned a non-object")
     return observation
 
 
-def _fresh_observations_from_commit(
-    snapshot: Path,
-    source_commit: str,
-) -> list[dict[str, object]]:
-    with _exported_source(source_commit) as project_root:
-        return [
-            _fresh_observation(snapshot, project_root=project_root),
-            _fresh_observation(snapshot, project_root=project_root),
-        ]
+def _committed_parent(args: argparse.Namespace) -> None:
+    from aluclu.alc_r0 import acquisition, canonical, host_evidence, schema_validation
 
+    if os.environ.get(_COMMITTED_PARENT_ENV) != args.expected_source_commit:
+        raise RuntimeError("committed parent bootstrap binding is missing")
+    if (PROJECT_ROOT / ".git").exists():
+        raise RuntimeError("committed parent must run from a Git-free export")
+    _assert_module_origins(acquisition, canonical, host_evidence, schema_validation)
 
-def _parent(args: argparse.Namespace) -> None:
     snapshot = _absolute_file(args.snapshot, label="snapshot")
     schema_root = _absolute_file(args.schema_root, label="schema root")
     windows_lock = _absolute_file(args.windows_lock, label="Windows lock")
     lock_manifest = _absolute_file(args.lock_manifest, label="lock manifest")
-    schema_relative = _project_relative(schema_root, label="schema root")
-    windows_lock_relative = _project_relative(windows_lock, label="Windows lock")
-    lock_manifest_relative = _project_relative(
-        lock_manifest,
-        label="lock manifest",
-    )
     acquisition_output = _new_output(
         args.acquisition_output,
         label="acquisition output",
@@ -218,51 +243,116 @@ def _parent(args: argparse.Namespace) -> None:
     base_output = _new_output(args.base_output, label="base output")
     if acquisition_output == base_output:
         raise ValueError("acquisition and base outputs must differ")
+    acquisition_bytes = canonical.canonical_json_bytes(
+        acquisition.verify_model_snapshot(snapshot)
+    )
+    schema_validation.validate_r0_document(
+        acquisition_bytes,
+        schema_name="acquisition-receipt",
+        schema_root=schema_root,
+    )
+    observations = [
+        _fresh_observation(snapshot, project_root=PROJECT_ROOT),
+        _fresh_observation(snapshot, project_root=PROJECT_ROOT),
+    ]
+    base_receipt = host_evidence.build_host_evidence_receipt(
+        observations,
+        source_commit=args.expected_source_commit,
+        acquisition_receipt_bytes=acquisition_bytes,
+        windows_lock_bytes=windows_lock.read_bytes(),
+        lock_manifest_bytes=lock_manifest.read_bytes(),
+    )
+    base_bytes = canonical.canonical_json_bytes(base_receipt)
+    schema_validation.validate_r0_document(
+        base_bytes,
+        schema_name="base-digest-receipt",
+        schema_root=schema_root,
+    )
+    _exclusive_write(acquisition_output, acquisition_bytes)
+    _exclusive_write(base_output, base_bytes)
+    summary = {
+        "acquisition_receipt_sha256": hashlib.sha256(acquisition_bytes).hexdigest(),
+        "base_digest_receipt_sha256": hashlib.sha256(base_bytes).hexdigest(),
+        "source_commit": args.expected_source_commit,
+    }
+    sys.stdout.buffer.write(canonical.canonical_json_bytes(summary) + b"\n")
+
+
+def _assert_module_origins(*modules: object) -> None:
+    root = PROJECT_ROOT.resolve(strict=True)
+    for module in modules:
+        origin = getattr(module, "__file__", None)
+        if not isinstance(origin, str):
+            raise RuntimeError("host proof module has no filesystem origin")
+        try:
+            Path(origin).resolve(strict=True).relative_to(root)
+        except ValueError as exc:
+            raise RuntimeError(
+                "host proof imported code outside commit export"
+            ) from exc
+
+
+def _bootstrap_parent(args: argparse.Namespace) -> None:
+    snapshot = _absolute_file(args.snapshot, label="snapshot")
+    schema_root = _absolute_file(args.schema_root, label="schema root")
+    windows_lock = _absolute_file(args.windows_lock, label="Windows lock")
+    lock_manifest = _absolute_file(args.lock_manifest, label="lock manifest")
+    acquisition_output = _new_output(
+        args.acquisition_output,
+        label="acquisition output",
+    )
+    base_output = _new_output(args.base_output, label="base output")
+    schema_relative = _project_relative(schema_root, label="schema root")
+    windows_lock_relative = _project_relative(windows_lock, label="Windows lock")
+    lock_manifest_relative = _project_relative(lock_manifest, label="lock manifest")
     _assert_tracked_clean()
     source_commit = _source_commit()
     if source_commit != args.expected_source_commit:
         raise RuntimeError("current HEAD does not match expected source commit")
 
     with _exported_source(source_commit) as project_root:
-        exported_schema_root = project_root / schema_relative
-        exported_windows_lock = project_root / windows_lock_relative
-        exported_lock_manifest = project_root / lock_manifest_relative
-        acquisition_bytes = canonical_json_bytes(verify_model_snapshot(snapshot))
-        validate_r0_document(
-            acquisition_bytes,
-            schema_name="acquisition-receipt",
-            schema_root=exported_schema_root,
+        environment = dict(os.environ)
+        environment["PYTHONPATH"] = str(project_root / "src")
+        environment[_COMMITTED_PARENT_ENV] = source_commit
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(project_root / "scripts" / "verify_alc_r0_host.py"),
+                "--committed-parent",
+                "--snapshot",
+                str(snapshot),
+                "--schema-root",
+                str(project_root / schema_relative),
+                "--windows-lock",
+                str(project_root / windows_lock_relative),
+                "--lock-manifest",
+                str(project_root / lock_manifest_relative),
+                "--acquisition-output",
+                str(acquisition_output),
+                "--base-output",
+                str(base_output),
+                "--expected-source-commit",
+                source_commit,
+            ],
+            cwd=project_root,
+            env=environment,
+            capture_output=True,
+            check=False,
         )
-        observations = [
-            _fresh_observation(snapshot, project_root=project_root),
-            _fresh_observation(snapshot, project_root=project_root),
-        ]
-        base_receipt = build_host_evidence_receipt(
-            observations,
-            source_commit=source_commit,
-            acquisition_receipt_bytes=acquisition_bytes,
-            windows_lock_bytes=exported_windows_lock.read_bytes(),
-            lock_manifest_bytes=exported_lock_manifest.read_bytes(),
-        )
-        base_bytes = canonical_json_bytes(base_receipt)
-        validate_r0_document(
-            base_bytes,
-            schema_name="base-digest-receipt",
-            schema_root=exported_schema_root,
-        )
-    _exclusive_write(acquisition_output, acquisition_bytes)
-    _exclusive_write(base_output, base_bytes)
-    summary = {
-        "acquisition_receipt_sha256": hashlib.sha256(acquisition_bytes).hexdigest(),
-        "base_digest_receipt_sha256": hashlib.sha256(base_bytes).hexdigest(),
-        "source_commit": source_commit,
-    }
-    sys.stdout.buffer.write(canonical_json_bytes(summary) + b"\n")
+        sys.stderr.buffer.write(completed.stderr)
+        sys.stdout.buffer.write(completed.stdout)
+        if completed.returncode != 0:
+            raise RuntimeError(f"committed host parent exited {completed.returncode}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Verify the pinned ALC-R0 host twice.")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument(
+        "--committed-parent",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
     parser.add_argument("--snapshot", type=Path, required=True)
     parser.add_argument("--schema-root", type=Path)
     parser.add_argument("--windows-lock", type=Path)
@@ -285,7 +375,10 @@ def main() -> None:
     missing = sorted(name for name, value in required.items() if value is None)
     if missing:
         parser.error("missing parent arguments: " + ", ".join(missing))
-    _parent(args)
+    if args.committed_parent:
+        _committed_parent(args)
+    else:
+        _bootstrap_parent(args)
 
 
 if __name__ == "__main__":

@@ -3980,3 +3980,58 @@ Task 2 sensorium/recollection gate: CLEAN
   logical-run-matrix component only. The full machine preregistration, package
   state machine/claim ledger, datasets, Linux evaluator/sealer, and final R0.0
   validator authority remain blocked and no training command is unlocked.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 9
+
+- The independent GPT-5.6 Sol rereview of exact committed checkpoint `8810e0e`
+  returned **BLOCKED**, not CLEAR. It verified the prior byte-length,
+  `$dynamicRef`, common Win32-character, dependency-extra, row-count, seed,
+  grid, and receipt-consistency repairs, but found four remaining contract
+  defects: parent-side receipt code was imported from the launching worktree
+  before commit export; ZIP extraction did not reject Windows drive-qualified
+  members; attach/remount matrix rows omitted the plan-required stdout/stderr
+  artifacts; and Windows reserved-device checks omitted the `COM¹/²/³` and
+  `LPT¹/²/³` aliases. The review separately confirmed that the remaining
+  dataset/evaluator/sealer/validator work is an open future gate, not a defect
+  misrepresented as complete.
+- The host harness is now a standard-library-only bootstrap until it exports the
+  exact expected commit. It re-executes the **entire parent proof**, not only the
+  two model workers, from that Git-free export with an export-only `PYTHONPATH`
+  and commit-binding environment token. The committed parent and workers verify
+  every imported R0 module origin is under the export root before acquisition,
+  canonicalization, schema validation, observation, or receipt construction.
+  Direct invocation of the hidden committed-parent mode without the bootstrap
+  binding fails closed. The regression exercises the actual bootstrap command,
+  cwd, environment, and hidden parent transition.
+- Archive extraction now treats members as POSIX paths, rejects colon/drive,
+  rooted, backslash, dot traversal, controls, Win32-invalid characters,
+  reserved devices including superscript aliases, symlinks, and casefold
+  collisions, and additionally proves each resolved target remains under the
+  resolved export root. Drive, ADS-like, traversal, rooted, backslash,
+  wildcard, and superscript-device malicious fixtures are all rejected.
+- Both attach/detach and fresh-remount logical rows now include exact
+  `stdout.log` and `stderr.log` requirements in addition to their receipts,
+  exits, events, and remount predictions. Tests compare the complete per-kind
+  artifact tuples rather than merely checking nonempty sorted lists. The
+  canonical matrix was regenerated atomically from the still-frozen plan and is
+  now 93,489 bytes with SHA-256
+  `bcc21a94b66f19ecd2796e4263b497c772e9990977e57b66f6aa0b9c04c736b1`;
+  this supersedes checkpoint 8's matrix hash before any development training.
+- The expanded repair gate is 114/114 pytest PASS. Ruff passes, all 18 scoped
+  files are formatted, and pinned Pyright 1.1.413 reports 0 errors, 0 warnings,
+  and 0 informations. A new exact-commit real host proof is still required
+  after committing these repairs; the previous receipt remains honestly
+  non-authorizing and no R0.0/training claim is made.
+- A read-only platform probe then confirmed WSL 2.7.12, kernel
+  `6.18.33.2-microsoft-standard-WSL2`, systemd, and the RTX 4050 visible inside
+  WSL with driver 610.78 and 6,141 MiB. The existing Kali 2026.1 distribution
+  is general-purpose, Python 3.13, and has no sealer account, so it was not
+  repurposed. A separate `ALC-R0-Evaluator` Ubuntu 24.04.5 LTS distribution was
+  installed outside OneDrive under LocalAppData. It currently has Python 3.12.3,
+  systemd, the same visible GPU, and a roughly 1.46 GB VHDX. Actual Windows `C:`
+  free space after installation is about 36.9 GB; WSL's sparse virtual 978 GB
+  figure is explicitly not treated as physical free disk. This is only a
+  dedicated evaluator-environment foundation. The current non-elevated Windows
+  token cannot create or ACL the required `ALUCLU_R0_SEALER` principal, and no
+  key, held-out data, scoring authority, or scientific result has entered the
+  new distribution.

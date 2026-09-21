@@ -62,7 +62,15 @@ _RETENTION_SCORE_ARTIFACTS = tuple(
     )
 )
 _ATTACH_ARTIFACTS = tuple(
-    sorted(("attach-detach-receipt.json", "exit.json", "run-events.jsonl"))
+    sorted(
+        (
+            "attach-detach-receipt.json",
+            "exit.json",
+            "run-events.jsonl",
+            "stderr.log",
+            "stdout.log",
+        )
+    )
 )
 _REMOUNT_ARTIFACTS = tuple(
     sorted(
@@ -71,6 +79,8 @@ _REMOUNT_ARTIFACTS = tuple(
             "fresh-remount-receipt.json",
             "predictions.jsonl",
             "run-events.jsonl",
+            "stderr.log",
+            "stdout.log",
         )
     )
 )
