@@ -13,6 +13,7 @@ from referencing import Registry
 from referencing.exceptions import NoSuchResource
 
 from aluclu.alc_r0.acquisition import SMOLLM2_135M
+from aluclu.alc_r0.artifact_contract import build_run_artifact_contract
 from aluclu.alc_r0.canonical import (
     CanonicalEvidenceError,
     canonical_json_bytes,
@@ -34,6 +35,7 @@ _SCHEMAS = {
     "linux-evaluator-bootstrap-receipt": (
         "linux-evaluator-bootstrap-receipt.schema.json"
     ),
+    "run-artifact-contract": "run-artifact-contract.schema.json",
 }
 
 
@@ -184,6 +186,20 @@ def _validate_linux_bootstrap_semantics(document: Mapping[str, Any]) -> None:
     _validate_package_inventory(python.get("packages"), label="Python")
 
 
+def _validate_run_artifact_contract_semantics(document: Mapping[str, Any]) -> None:
+    project_root = Path(__file__).parents[3]
+    matrix_path = project_root / "experiments/alc_r0/v1/logical-run-matrix.json"
+    try:
+        matrix_bytes = matrix_path.read_bytes()
+    except OSError as exc:
+        raise R0SchemaValidationError("logical matrix is unavailable") from exc
+    expected = build_run_artifact_contract(matrix_bytes)
+    if document != expected:
+        raise R0SchemaValidationError(
+            "run artifact contract differs from the frozen logical matrix"
+        )
+
+
 def _assert_local_schema_references(value: Any) -> None:
     if isinstance(value, dict):
         for keyword in ("$ref", "$dynamicRef"):
@@ -251,4 +267,6 @@ def validate_r0_document(
         _validate_logical_run_matrix_semantics(document)
     elif schema_name == "linux-evaluator-bootstrap-receipt":
         _validate_linux_bootstrap_semantics(document)
+    elif schema_name == "run-artifact-contract":
+        _validate_run_artifact_contract_semantics(document)
     return document

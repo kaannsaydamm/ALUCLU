@@ -26,6 +26,7 @@ _TRAIN_ARTIFACTS = tuple(
             "base-digest.json",
             "checkpoint-inventory.json",
             "exit.json",
+            "learned-artifact.safetensors",
             "metrics.json",
             "resource-usage.json",
             "run-events.jsonl",

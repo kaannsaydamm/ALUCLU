@@ -4150,3 +4150,36 @@ Task 2 sensorium/recollection gate: CLEAN
   schema and semantic contract. `linux-eval.lock` therefore remains honestly
   `provisional-until-rootfs-reproduced`; this receipt does not rename it
   `reproduced`.
+
+## 2026-09-22 — ALC-R0 R0.0 implementation checkpoint 12
+
+- Closed-world run-artifact work began with a new RED invariant: all 120 pilot,
+  development, and confirmatory training rows lacked the SafeTensors output
+  that later scoring/remount runs must consume. Without an allowed binary path,
+  the planned orphan detector would either reject the learned artifact or force
+  it outside the evidence graph. The fix adds exactly one
+  `learned-artifact.safetensors` to every training row and to no non-training
+  row. Pickle/Python/native payload extensions remain forbidden.
+- The 280 logical run IDs and every prior row cardinality are unchanged. The
+  regenerated canonical matrix is now 97,209 bytes with SHA-256
+  `07dbe9cd100846ffa4acffe60f847cc0c9d0cdf7ff8756524621492f6023c2ee`;
+  this pre-training repair supersedes the earlier 93,489-byte matrix before any
+  development command is authorized.
+- A new matrix-derived run-artifact contract freezes the run namespace to 20
+  exact filenames/extensions and 1,922 expected files. It binds the new matrix
+  bytes/hash, the approved source-plan hash, the exact run-path template, media
+  types, per-kind occurrence counts, and primary key
+  `(run_id, artifact_type, logical_id)`. JSONL records require explicit
+  `event_id`, `example_id`, or `sample_id`; singleton JSON, logs, and selected
+  SafeTensors receive closed constant logical IDs. The 6,732-byte canonical
+  contract has SHA-256
+  `604b961272040fe929ffa137be06a7d9e18d7265faf0e33a3282fee0aa362100`
+  and `training_authority=false`.
+- Exact regeneration plus dropped, renamed, extra-authority, wrong-count, and
+  missing-SafeTensor fixtures fail closed. The focused matrix/contract/schema
+  set is 39/39 PASS; the expanded R0 slice is 139/139 PASS. Scoped Ruff,
+  pinned Pyright 1.1.413 (0/0/0), compileall, canonical-schema checks, and
+  diff-check pass. This freezes only the **run** namespace. Control/final
+  namespace allowlists, state/attempt transitions, foreign keys, orphan scan,
+  claim ledger, completion artifact, datasets, sealer, and rootfs remain open;
+  no R0.0 or training authority is claimed.

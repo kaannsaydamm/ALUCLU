@@ -133,6 +133,23 @@ def test_run_ids_and_artifact_contracts_are_closed_and_deterministic() -> None:
     }
 
 
+def test_every_training_run_declares_its_safe_learned_artifact() -> None:
+    matrix = build_expected_run_matrix()
+    training_kinds = {"pilot-train", "dev-train", "confirm-train"}
+    training_rows = [row for row in matrix if row.kind in training_kinds]
+    nontraining_rows = [row for row in matrix if row.kind not in training_kinds]
+
+    assert len(training_rows) == 120
+    assert all(
+        "learned-artifact.safetensors" in row.expected_artifacts
+        for row in training_rows
+    )
+    assert all(
+        "learned-artifact.safetensors" not in row.expected_artifacts
+        for row in nontraining_rows
+    )
+
+
 def test_tracked_matrix_is_reproducible_from_exact_plan_bytes() -> None:
     project_root = Path(__file__).parents[1]
     plan_bytes = (project_root / SOURCE_PLAN_PATH).read_bytes()
