@@ -160,6 +160,30 @@ def test_tracked_lock_manifest_passes_the_frozen_schema() -> None:
 
 
 @pytest.mark.parametrize(
+    "schema_name,filename",
+    [
+        ("acquisition-receipt", "model-acquisition-receipt.json"),
+        ("base-digest-receipt", "base-digest-receipt.json"),
+    ],
+)
+def test_tracked_host_control_receipts_pass_their_frozen_schemas(
+    schema_name: str,
+    filename: str,
+) -> None:
+    receipt_path = (
+        Path(__file__).parents[1] / "results" / "alc_r0" / "control" / filename
+    )
+
+    decoded = validate_r0_document(
+        receipt_path.read_bytes(),
+        schema_name=schema_name,
+        schema_root=SCHEMA_ROOT,
+    )
+
+    assert decoded["experiment_id"] == "alc-r0-smollm2-135m-v1"
+
+
+@pytest.mark.parametrize(
     "mutation",
     [
         lambda receipt: receipt.update({"unexpected": True}),

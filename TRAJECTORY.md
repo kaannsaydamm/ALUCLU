@@ -3812,3 +3812,38 @@ Task 2 sensorium/recollection gate: CLEAN
   formatted, pinned Pyright 1.1.413 is 0/0/0, compileall passes, and diff-check
   exits zero apart from known line-ending notices. The harness has not yet been
   run as committed source, so no generated control receipt is claimed here.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 5
+
+- Host-evidence source checkpoint
+  `4efd7d5a1958abacea93a4bac664c0674cd678b8` was committed and pushed. The
+  committed harness then ran with that exact expected HEAD and no tracked or
+  staged diff. The checkout still contains historical untracked Task 2 logs and
+  root `uv.lock`, so this is intentionally a control proof with
+  `training_authority=false`, not the later fully untracked-clean R0.0 release
+  gate.
+- The harness spawned two fresh CPython processes under all three offline flags.
+  Each independently reverified the exact 10-file snapshot, loaded only local
+  SafeTensors with remote code disabled, froze the base, and recomputed the full
+  ALCBASE stream. Both observations are byte-identical and match the previously
+  observed 273 entries, 272 storage groups, 325,706,271 bytes, combined digest
+  `ce7e8dd6a97ac4cc56bf4f1e38625817386e27af58f1ed63377741f7f2aab1ba`,
+  and alias digest
+  `8efcc3120c19a1a0784811d4ae95d327849ad8e7bd9176d45c3a6b9b7f067a84`.
+- The generated model-acquisition control receipt is exact canonical JSON, 1,616
+  bytes, no final LF/CRLF, and SHA-256
+  `2a4baddc2bb8451811e199e7dd6f91512fad73d367083c833e117c3e4d09984a`.
+  The base-digest control receipt is 2,040 canonical bytes, no final LF/CRLF,
+  and SHA-256
+  `6d260faac2e527e34fe21a112e338be034e0b32894cf6e15c1c84f08fa6ff4e1`.
+  A separate post-run process rehashed both files and reran their schema plus
+  semantic validation successfully. These public metadata receipts contain no
+  model weights, local paths, credentials, or held-out data.
+- Regression coverage now loads both tracked control receipts through their
+  frozen schemas. The resulting R0.0 slice is 78/78 PASS; Ruff passes, all 15
+  scoped files are formatted, pinned Pyright 1.1.413 remains 0/0/0, compileall
+  passes, and diff-check exits zero with only known line-ending notices. Their
+  existence closes the model acquisition and same-host
+  base-identity control artifacts only; it does not close the machine
+  preregistration matrix, dataset freeze, Linux evaluator/sealer isolation,
+  closed-world package validator, or any neural-capability threshold.
