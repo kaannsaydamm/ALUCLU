@@ -3917,3 +3917,33 @@ Task 2 sensorium/recollection gate: CLEAN
   preregistration, dataset/split freeze, Linux evaluator and sealer isolation,
   closed-world evidence validator, authoritative freeze receipt, and final
   independent CLEAR verdicts.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 7
+
+- Run-matrix/security-repair checkpoint
+  `6ad99656be57771515335cd6dfdccdef0eeadc9c` was committed and pushed to
+  `origin/codex/unified-lifelong-cognition`. The first real host-proof launch
+  supplied a manually expanded commit hash whose short prefix was right but
+  remaining digits were wrong; the fail-closed expected-HEAD check rejected it
+  before either model worker ran and created no receipt. The launch was repeated
+  with `git rev-parse HEAD` as the exact authority, without weakening the check.
+- The corrected committed-source run completed both fresh offline SmolLM2 loads
+  from one ephemeral export of exact commit `6ad9965`. Both observations again
+  agree on 273 entries, 272 storage groups, 325,706,271 encoded bytes, base
+  digest `ce7e8dd6a97ac4cc56bf4f1e38625817386e27af58f1ed63377741f7f2aab1ba`,
+  and alias digest
+  `8efcc3120c19a1a0784811d4ae95d327849ad8e7bd9176d45c3a6b9b7f067a84`.
+  This directly exercises the immutable-source repair rather than inferring it
+  from unit tests.
+- The regenerated acquisition receipt is byte-identical to the tracked artifact:
+  1,616 canonical bytes, no CRLF/final LF, SHA-256
+  `2a4baddc2bb8451811e199e7dd6f91512fad73d367083c833e117c3e4d09984a`.
+  The regenerated base-digest receipt is 2,040 canonical bytes, no CRLF/final
+  LF, SHA-256
+  `d963fd85b5a3defd90391646323d6a3878e4f0dcb4c068e3e77a057990d4aa09`,
+  and differs from the previous control only by its new exact source commit.
+  A separate process revalidated both receipts against the frozen schemas and
+  semantic checks; it confirmed the inventory root, fresh-process equality,
+  `training_authority=false`, and source commit. The tracked base receipt is now
+  advanced to this new control proof. This remains a host/source binding
+  checkpoint, not R0.0 PASS or permission to train.
