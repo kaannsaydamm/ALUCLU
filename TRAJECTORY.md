@@ -4063,3 +4063,60 @@ Task 2 sensorium/recollection gate: CLEAN
   21/21 PASS after advancing the tracked control receipt. It remains explicitly
   `training_authority=false`; this closes the rereview's complete-parent
   provenance defect for the control proof, not the broader R0.0 gate.
+
+## 2026-09-22 — ALC-R0 R0.0 implementation checkpoint 11
+
+- The independent GPT-5.6 Sol rereview of exact checkpoint `addd213` returned
+  **CLEAR for that checkpoint**. It independently recomputed the 2,040-byte
+  base receipt and SHA-256
+  `3bc973d0003160ab24f2b26c519129d48d7094a025381b41b1ffe152645d1953`,
+  verified every receipt dependency against the `526786f` Git blobs, reproduced
+  the 280-row logical-matrix counts and canonical hash, and ran the exact R0
+  slice at 114/114 PASS. This closes the prior two HIGH and two MEDIUM review
+  findings; it is not an R0.0 or training-authority verdict.
+- The dedicated Ubuntu evaluator distribution was transferred to the plan's
+  literal name `ALUCLU-R0-EVAL`; Kali and `docker-desktop` were not modified.
+  The obsolete `ALC-R0-Evaluator` registration was removed only after the new
+  distro booted and its Ubuntu 24.04.5, Python 3.12.3, WSL2 kernel, and GPU
+  visibility were rechecked. Its temporary 1.25 GB transfer archive was moved
+  to the Windows Recycle Bin rather than irreversibly deleted. Consequently it
+  may still consume physical space until the user empties that bin; no claim of
+  recovered space is made.
+- Official `uv` 0.12.5 was installed at `/opt/aluclu-r0/tools/uv` from the
+  retained 71,225-byte installer whose SHA-256 is
+  `504511fbbbd811aeaba6738abc79408956b6c7da0ca35437b3dcc24a41efc111`.
+  The executable SHA-256 is
+  `b65f23a420c4acc96427efb30e5ed9bc0f7e25d2d712000f6ede77c1a0de5f46`.
+  The first sync command was invalid before package installation because a
+  PowerShell-to-WSL quoting error erased its shell variables. The corrected
+  literal-path command then resolved, hash-verified, and installed all 68
+  packages from `linux-eval.lock` in 10m48s. The lock itself remains 80,958
+  bytes with SHA-256
+  `4b6bb24c97a1accd301856f253957ded0fd3b8fed465c79f2bf37beafb3e1c65`.
+- The resulting isolated venv is CPython 3.12.3 with system site packages
+  disabled. `uv pip check` reports all 68 packages compatible. Critical pinned
+  versions are Torch `2.14.0+cu130`, Transformers `5.17.0`, SafeTensors `0.8.0`,
+  jsonschema `4.26.0`, and RFC 8785 `0.1.4`; inspected imports resolve under
+  `/opt/aluclu-r0/linux-eval`. A live RTX 4050 probe reports driver 610.78,
+  6,141 MiB, compute capability 8.9, CUDA runtime 13.0, cuDNN 92400, and BF16
+  support. An actual CUDA BF16 matrix multiplication returned
+  `[[5.0,-4.5],[2.0,15.0]]` with deterministic algorithms enabled and cuDNN,
+  matmul, and cuDNN TF32 disabled. The now-redundant dedicated uv download cache
+  was cleaned after installation; the venv remains 5.6 GiB and passes the same
+  dependency check. The ext4 filesystem was trimmed. Windows `C:` physical free
+  space measured about 30.43 GiB after these operations; WSL's sparse virtual
+  terabyte figure is still not treated as physical free disk.
+- TDD for a machine-readable Linux bootstrap receipt began with the expected
+  collection RED because `aluclu.alc_r0.linux_environment` did not exist. The
+  new builder, closed Draft 2020-12 schema, schema semantics, capture command,
+  and negative fixtures now pass 32 focused tests; the expanded R0 slice is
+  125/125 PASS, and scoped Ruff, pinned Pyright 1.1.413 (0/0/0), and compileall
+  also pass. The contract records exact distro/kernel/package/lock/runtime/GPU/
+  resource evidence and requires a real BF16 probe, sorted full package
+  inventories, dependency consistency, and import confinement. Crucially it
+  hard-codes `training_authority=false`, `sealer_authority=false`,
+  `held_out_data_present=false`, `dedicated_windows_principal_present=false`,
+  `immutable_rootfs_present=false`, and `rootfs_manifest_present=false`.
+  Therefore this checkpoint can prove a reproducible evaluator bootstrap only;
+  the Windows sealer principal/ACL boundary, immutable minimal rootfs and
+  transfer manifest, held-out sealer, and final R0.0 validator remain blocking.

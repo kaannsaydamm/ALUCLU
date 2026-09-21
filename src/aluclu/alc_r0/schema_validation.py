@@ -31,6 +31,9 @@ _SCHEMAS = {
     "base-digest-receipt": "base-digest-receipt.schema.json",
     "logical-run-matrix": "logical-run-matrix.schema.json",
     "lock-manifest": "lock-manifest.schema.json",
+    "linux-evaluator-bootstrap-receipt": (
+        "linux-evaluator-bootstrap-receipt.schema.json"
+    ),
 }
 
 
@@ -147,6 +150,40 @@ def _validate_logical_run_matrix_semantics(document: Mapping[str, Any]) -> None:
         raise R0SchemaValidationError("logical run matrix differs from preregistration")
 
 
+def _validate_package_inventory(raw_inventory: object, *, label: str) -> None:
+    if not isinstance(raw_inventory, Mapping):
+        raise R0SchemaValidationError(f"{label} inventory must be an object")
+    raw_items = raw_inventory.get("items")
+    if not isinstance(raw_items, list) or not raw_items:
+        raise R0SchemaValidationError(f"{label} inventory must contain packages")
+    items = [item for item in raw_items if isinstance(item, dict)]
+    if len(items) != len(raw_items):
+        raise R0SchemaValidationError(f"{label} package must be an object")
+    names: list[str] = []
+    for item in items:
+        name = item.get("name")
+        if not isinstance(name, str):
+            raise R0SchemaValidationError(f"{label} package name must be a string")
+        names.append(name)
+    if names != sorted(names, key=lambda item: item.encode("utf-8")):
+        raise R0SchemaValidationError(f"{label} packages are not UTF-8 sorted")
+    if len(set(names)) != len(names):
+        raise R0SchemaValidationError(f"{label} packages contain duplicates")
+    if raw_inventory.get("count") != len(items):
+        raise R0SchemaValidationError(f"{label} package count mismatch")
+    digest = hashlib.sha256(canonical_json_bytes(items)).hexdigest()
+    if raw_inventory.get("sha256") != digest:
+        raise R0SchemaValidationError(f"{label} package inventory digest mismatch")
+
+
+def _validate_linux_bootstrap_semantics(document: Mapping[str, Any]) -> None:
+    _validate_package_inventory(document.get("distro_packages"), label="distro")
+    python = document.get("python")
+    if not isinstance(python, Mapping):
+        raise R0SchemaValidationError("Python environment must be an object")
+    _validate_package_inventory(python.get("packages"), label="Python")
+
+
 def _assert_local_schema_references(value: Any) -> None:
     if isinstance(value, dict):
         for keyword in ("$ref", "$dynamicRef"):
@@ -212,4 +249,6 @@ def validate_r0_document(
         _validate_lock_semantics(document)
     elif schema_name == "logical-run-matrix":
         _validate_logical_run_matrix_semantics(document)
+    elif schema_name == "linux-evaluator-bootstrap-receipt":
+        _validate_linux_bootstrap_semantics(document)
     return document
