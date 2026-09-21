@@ -14,6 +14,7 @@ from aluclu.alc_r0.schema_validation import (
     R0SchemaValidationError,
     validate_r0_document,
 )
+from scripts import capture_alc_r0_linux_environment
 
 SCHEMA_ROOT = Path(__file__).parents[1] / "schemas" / "alc_r0" / "v1"
 LOCK_PATH = "locks/alc_r0/v1/linux-eval.lock"
@@ -278,3 +279,29 @@ def test_linux_bootstrap_schema_rejects_authority_and_inventory_mutations(
             schema_name="linux-evaluator-bootstrap-receipt",
             schema_root=SCHEMA_ROOT,
         )
+
+
+def test_dependency_check_uses_zero_exit_status_not_output_stream(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[tuple[str, ...]] = []
+
+    def successful_run(*arguments: str) -> str:
+        calls.append(arguments)
+        return ""
+
+    monkeypatch.setattr(capture_alc_r0_linux_environment, "_run", successful_run)
+
+    assert capture_alc_r0_linux_environment._dependency_check(Path("/opt/uv"))
+    normalized_calls = [
+        tuple(argument.replace("\\", "/") for argument in call) for call in calls
+    ]
+    assert normalized_calls == [
+        (
+            "/opt/uv",
+            "pip",
+            "check",
+            "--python",
+            "/opt/aluclu-r0/linux-eval/bin/python",
+        )
+    ]

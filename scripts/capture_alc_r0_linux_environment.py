@@ -139,6 +139,17 @@ def _system_site_packages_disabled() -> bool:
     return values.get("include-system-site-packages") == "false"
 
 
+def _dependency_check(uv_path: Path) -> bool:
+    _run(
+        str(uv_path),
+        "pip",
+        "check",
+        "--python",
+        str(_PYTHON_PREFIX / "bin/python"),
+    )
+    return True
+
+
 def _gpu_observation() -> tuple[dict[str, Any], dict[str, Any]]:
     raw = _run(
         "nvidia-smi",
@@ -223,10 +234,7 @@ def _capture(args: argparse.Namespace) -> dict[str, object]:
     if _run(str(uv_path), "--version") != "uv 0.12.5 (x86_64-unknown-linux-gnu)":
         raise CaptureError("uv executable identity mismatch")
 
-    dependency_output = _run(
-        str(uv_path), "pip", "check", "--python", str(_PYTHON_PREFIX / "bin/python")
-    )
-    dependency_check = "All installed packages are compatible" in dependency_output
+    dependency_check = _dependency_check(uv_path)
     python_packages, origins_under_prefix = _python_inventory()
     distro_packages = _distro_inventory()
     os_release = _os_release()

@@ -4109,8 +4109,8 @@ Task 2 sensorium/recollection gate: CLEAN
 - TDD for a machine-readable Linux bootstrap receipt began with the expected
   collection RED because `aluclu.alc_r0.linux_environment` did not exist. The
   new builder, closed Draft 2020-12 schema, schema semantics, capture command,
-  and negative fixtures now pass 32 focused tests; the expanded R0 slice is
-  125/125 PASS, and scoped Ruff, pinned Pyright 1.1.413 (0/0/0), and compileall
+  and negative fixtures now pass 33 focused tests; the expanded R0 slice is
+  126/126 PASS, and scoped Ruff, pinned Pyright 1.1.413 (0/0/0), and compileall
   also pass. The contract records exact distro/kernel/package/lock/runtime/GPU/
   resource evidence and requires a real BF16 probe, sorted full package
   inventories, dependency consistency, and import confinement. Crucially it
@@ -4120,3 +4120,10 @@ Task 2 sensorium/recollection gate: CLEAN
   Therefore this checkpoint can prove a reproducible evaluator bootstrap only;
   the Windows sealer principal/ACL boundary, immutable minimal rootfs and
   transfer manifest, held-out sealer, and final R0.0 validator remain blocking.
+- The first exact-commit capture attempt from a Git archive of `b4c42f4` failed
+  before writing a receipt. `uv pip check` exited zero but emitted its status on
+  stderr, while the capture code incorrectly searched stdout for a success
+  phrase. This was classified as an evidence-capture implementation bug, not an
+  environment or dependency failure. The check is now bound to the command's
+  zero exit status, with a regression fixture proving that empty stdout after a
+  successful invocation remains success; nonzero exit still raises and aborts.
