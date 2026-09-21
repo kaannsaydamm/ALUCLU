@@ -4109,8 +4109,8 @@ Task 2 sensorium/recollection gate: CLEAN
 - TDD for a machine-readable Linux bootstrap receipt began with the expected
   collection RED because `aluclu.alc_r0.linux_environment` did not exist. The
   new builder, closed Draft 2020-12 schema, schema semantics, capture command,
-  and negative fixtures now pass 33 focused tests; the expanded R0 slice is
-  126/126 PASS, and scoped Ruff, pinned Pyright 1.1.413 (0/0/0), and compileall
+  and negative fixtures now pass 34 focused tests; the expanded R0 slice is
+  127/127 PASS, and scoped Ruff, pinned Pyright 1.1.413 (0/0/0), and compileall
   also pass. The contract records exact distro/kernel/package/lock/runtime/GPU/
   resource evidence and requires a real BF16 probe, sorted full package
   inventories, dependency consistency, and import confinement. Crucially it
@@ -4127,3 +4127,26 @@ Task 2 sensorium/recollection gate: CLEAN
   environment or dependency failure. The check is now bound to the command's
   zero exit status, with a regression fixture proving that empty stdout after a
   successful invocation remains success; nonzero exit still raises and aborts.
+- The repaired capture was committed as `ad5190d` and executed from a clean Git
+  archive of that exact commit under `/var/tmp`, with only the archive's `src`
+  on `PYTHONPATH`. Two preceding orchestration-only extraction attempts produced
+  no receipt: WSL path conversion lost Windows backslashes, then a `/tmp` export
+  disappeared across distro restarts; the final persistent `/var/tmp` export
+  eliminated both conditions without changing the scientific contract.
+- The resulting tracked bootstrap receipt is 33,885 canonical bytes, has no
+  CRLF or final LF, and has SHA-256
+  `f3eb83630369a7b71f08005ed69648eb0007143cbd911be45b5cb556cab1208a`.
+  Independent Windows-side schema and semantic validation recomputed both
+  sorted inventory roots, the exact 80,958-byte Linux lock hash, and the lock
+  manifest hash. It records 68 venv distributions and 523 Ubuntu packages;
+  Python inventory SHA-256 is
+  `c1bbf35a04beb289acaf2098ccd3eac3a5dec7ecdaf6db5928e8d75891199739`
+  and distro inventory SHA-256 is
+  `ee10f55873b0921dbab0d21c2ac1195705f4c360cb54435d0650d1497a091494`.
+  The receipt binds Ubuntu 24.04.5, kernel
+  `6.18.33.2-microsoft-standard-WSL2`, ext4, CPython 3.12.3, the exact uv
+  installer/executable hashes, and the live RTX 4050 BF16 observation to source
+  commit `ad5190d`. All six authority/rootfs/held-out booleans remain false by
+  schema and semantic contract. `linux-eval.lock` therefore remains honestly
+  `provisional-until-rootfs-reproduced`; this receipt does not rename it
+  `reproduced`.

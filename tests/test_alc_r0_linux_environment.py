@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
@@ -131,21 +132,18 @@ def test_linux_bootstrap_receipt_is_closed_canonical_and_non_authorizing() -> No
 def test_linux_bootstrap_receipt_binds_sorted_package_inventories() -> None:
     receipt = _build_receipt()
 
-    python_inventory = receipt["python"]["packages"]  # type: ignore[index]
-    distro_inventory = receipt["distro_packages"]
-    assert python_inventory["count"] == 3  # type: ignore[index]
-    assert distro_inventory["count"] == 2  # type: ignore[index]
+    python_record = cast(dict[str, Any], receipt["python"])
+    python_inventory = cast(dict[str, Any], python_record["packages"])
+    distro_inventory = cast(dict[str, Any], receipt["distro_packages"])
+    assert python_inventory["count"] == 3
+    assert distro_inventory["count"] == 2
     assert (
         python_inventory["sha256"]
-        == hashlib.sha256(  # type: ignore[index]
-            canonical_json_bytes(_package_items())
-        ).hexdigest()
+        == hashlib.sha256(canonical_json_bytes(_package_items())).hexdigest()
     )
     assert (
         distro_inventory["sha256"]
-        == hashlib.sha256(  # type: ignore[index]
-            canonical_json_bytes(_distro_items())
-        ).hexdigest()
+        == hashlib.sha256(canonical_json_bytes(_distro_items())).hexdigest()
     )
 
 
@@ -305,3 +303,36 @@ def test_dependency_check_uses_zero_exit_status_not_output_stream(
             "/opt/aluclu-r0/linux-eval/bin/python",
         )
     ]
+
+
+def test_tracked_linux_bootstrap_receipt_is_exact_and_non_authorizing() -> None:
+    receipt_path = (
+        Path(__file__).parents[1]
+        / "results"
+        / "alc_r0"
+        / "control"
+        / "linux-evaluator-bootstrap-receipt.json"
+    )
+    encoded = receipt_path.read_bytes()
+    decoded = validate_r0_document(
+        encoded,
+        schema_name="linux-evaluator-bootstrap-receipt",
+        schema_root=SCHEMA_ROOT,
+    )
+
+    assert len(encoded) == 33_885
+    assert hashlib.sha256(encoded).hexdigest() == (
+        "f3eb83630369a7b71f08005ed69648eb0007143cbd911be45b5cb556cab1208a"
+    )
+    assert decoded["source_commit"] == ("ad5190d46889e2747698f3406073d0565208c286")
+    assert decoded["python"]["packages"]["count"] == 68  # type: ignore[index]
+    assert decoded["distro_packages"]["count"] == 523  # type: ignore[index]
+    for authority_field in (
+        "dedicated_windows_principal_present",
+        "held_out_data_present",
+        "immutable_rootfs_present",
+        "rootfs_manifest_present",
+        "sealer_authority",
+        "training_authority",
+    ):
+        assert decoded[authority_field] is False
