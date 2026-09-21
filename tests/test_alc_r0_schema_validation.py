@@ -183,6 +183,56 @@ def test_tracked_host_control_receipts_pass_their_frozen_schemas(
     assert decoded["experiment_id"] == "alc-r0-smollm2-135m-v1"
 
 
+def test_tracked_logical_run_matrix_is_canonical_and_exact() -> None:
+    matrix_path = (
+        Path(__file__).parents[1]
+        / "experiments"
+        / "alc_r0"
+        / "v1"
+        / "logical-run-matrix.json"
+    )
+
+    decoded = validate_r0_document(
+        matrix_path.read_bytes(),
+        schema_name="logical-run-matrix",
+        schema_root=SCHEMA_ROOT,
+    )
+
+    assert decoded["logical_run_count"] == 280
+    assert len(decoded["runs"]) == 280
+    assert decoded["training_authority"] is False
+    assert decoded["source_plan_sha256"] == (
+        "0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b"
+    )
+
+
+@pytest.mark.parametrize("mutation", ["missing-row", "extra-artifact", "wrong-plan"])
+def test_logical_run_matrix_rejects_closed_world_mutations(mutation: str) -> None:
+    matrix_path = (
+        Path(__file__).parents[1]
+        / "experiments"
+        / "alc_r0"
+        / "v1"
+        / "logical-run-matrix.json"
+    )
+    matrix = parse_canonical_json(matrix_path.read_bytes())
+    assert isinstance(matrix, dict)
+    if mutation == "missing-row":
+        matrix["runs"].pop()  # type: ignore[union-attr]
+        matrix["logical_run_count"] = 279
+    elif mutation == "extra-artifact":
+        matrix["runs"][0]["expected_artifacts"].append("undeclared.json")  # type: ignore[index]
+    else:
+        matrix["source_plan_sha256"] = "0" * 64
+
+    with pytest.raises(R0SchemaValidationError):
+        validate_r0_document(
+            canonical_json_bytes(matrix),
+            schema_name="logical-run-matrix",
+            schema_root=SCHEMA_ROOT,
+        )
+
+
 @pytest.mark.parametrize(
     "mutation",
     [

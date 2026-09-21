@@ -2,8 +2,16 @@ from __future__ import annotations
 
 import re
 from collections import Counter
+from pathlib import Path
 
-from aluclu.alc_r0.run_matrix import build_expected_run_matrix
+import pytest
+
+from aluclu.alc_r0.canonical import canonical_json_bytes
+from aluclu.alc_r0.run_matrix import (
+    SOURCE_PLAN_PATH,
+    build_expected_run_matrix,
+    build_logical_run_matrix_document,
+)
 
 RUN_ID = re.compile(r"^alc-r0-v1-(pilot|dev|confirm|eval)-[a-z0-9-]+-s[0-9]{8}$")
 
@@ -100,3 +108,19 @@ def test_run_ids_and_artifact_contracts_are_closed_and_deterministic() -> None:
     assert all(
         tuple(sorted(row.expected_artifacts)) == row.expected_artifacts for row in first
     )
+
+
+def test_tracked_matrix_is_reproducible_from_exact_plan_bytes() -> None:
+    project_root = Path(__file__).parents[1]
+    plan_bytes = (project_root / SOURCE_PLAN_PATH).read_bytes()
+    expected = canonical_json_bytes(build_logical_run_matrix_document(plan_bytes))
+
+    assert (
+        expected
+        == (project_root / "experiments/alc_r0/v1/logical-run-matrix.json").read_bytes()
+    )
+
+
+def test_matrix_generation_rejects_source_plan_drift() -> None:
+    with pytest.raises(ValueError, match="source plan"):
+        build_logical_run_matrix_document(b"changed plan")

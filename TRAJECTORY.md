@@ -3947,3 +3947,36 @@ Task 2 sensorium/recollection gate: CLEAN
   `training_authority=false`, and source commit. The tracked base receipt is now
   advanced to this new control proof. This remains a host/source binding
   checkpoint, not R0.0 PASS or permission to train.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 8
+
+- Canonical logical-matrix evidence began with four expected RED failures because
+  `experiments/alc_r0/v1/logical-run-matrix.json` did not yet exist. The matrix
+  builder is now bound to the exact 62,429-byte source plan SHA-256
+  `0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b`;
+  changed plan bytes abort generation rather than silently producing a matrix
+  from a different preregistration.
+- The tracked matrix is 92,969 exact RFC-8785 bytes with no CRLF/final LF and
+  SHA-256
+  `56c18ae9b43137015c266e204a7c35e30cb77ff5b7dd401fb6014a232e7e1877`.
+  It records all 280 closed logical rows, the source-plan path and digest,
+  schema/matrix versions, exact expected artifacts per row, and
+  `training_authority=false`. The build script requires an absolute new output,
+  verifies the source-plan digest, and creates the file exclusively so it cannot
+  overwrite prior evidence.
+- The corresponding Draft 2020-12 schema is 1,883 canonical bytes with no
+  CRLF/final LF and SHA-256
+  `b768793250368533a5c44a7c41b9c3582a83817d85909ab24bd0aaa3233e5c64`.
+  It closes top-level and row fields, count, enums, seed set, run-ID grammar,
+  source plan, and non-authorizing status. Semantic validation then compares the
+  complete row objects byte-for-meaning against the programmatically frozen
+  expected matrix. Missing rows, added artifact contracts, and changed plan
+  hashes are all negative fixtures and fail closed.
+- The artifact is reproducible byte-for-byte from the committed source plan and
+  builder. After two formatting-only findings were repaired, the full current
+  R0 slice is 100/100 pytest PASS; Ruff passes, all 18 scoped Python files are
+  formatted, pinned Pyright 1.1.413 is 0/0/0, compileall passes, and diff-check
+  exits zero apart from known working-tree line-ending notices. This closes the
+  logical-run-matrix component only. The full machine preregistration, package
+  state machine/claim ledger, datasets, Linux evaluator/sealer, and final R0.0
+  validator authority remain blocked and no training command is unlocked.

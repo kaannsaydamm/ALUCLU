@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass
 
 _FAMILIES = ("banking77", "devign")
@@ -76,6 +77,8 @@ _REMOUNT_ARTIFACTS = tuple(
 _BASE_DIGEST_ARTIFACTS = ("pre-post-base-digest.json",)
 _CAPSULE_SIZE_ARTIFACTS = ("capsule-size-receipt.json",)
 _RESOURCE_ARTIFACTS = ("resource-harness.json", "resource-samples.jsonl")
+SOURCE_PLAN_PATH = "docs/superpowers/plans/2026-09-20-alc-r0-neural-capability-proof.md"
+SOURCE_PLAN_SHA256 = "0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b"
 
 
 @dataclass(frozen=True, order=True)
@@ -333,3 +336,24 @@ def build_expected_run_matrix() -> tuple[RunSpec, ...]:
     if len(ordered) != 280 or len({row.run_id for row in ordered}) != 280:
         raise RuntimeError("internal ALC-R0 run matrix cardinality violation")
     return ordered
+
+
+def build_logical_run_matrix_document(plan_bytes: bytes) -> dict[str, object]:
+    """Bind the exact logical matrix to the independently reviewed source plan."""
+
+    if hashlib.sha256(plan_bytes).hexdigest() != SOURCE_PLAN_SHA256:
+        raise ValueError("ALC-R0 source plan bytes do not match the frozen digest")
+    runs = [row.to_json() for row in build_expected_run_matrix()]
+    return {
+        "experiment_id": "alc-r0-smollm2-135m-v1",
+        "logical_run_count": len(runs),
+        "matrix_version": 1,
+        "runs": runs,
+        "schema_id": (
+            "https://aluclu.org/schemas/alc_r0/v1/logical-run-matrix.schema.json"
+        ),
+        "schema_version": 1,
+        "source_plan_path": SOURCE_PLAN_PATH,
+        "source_plan_sha256": SOURCE_PLAN_SHA256,
+        "training_authority": False,
+    }

@@ -19,11 +19,17 @@ from aluclu.alc_r0.canonical import (
     parse_canonical_json,
     validate_evidence_paths,
 )
+from aluclu.alc_r0.run_matrix import (
+    SOURCE_PLAN_PATH,
+    SOURCE_PLAN_SHA256,
+    build_expected_run_matrix,
+)
 
 _SCHEMA_BASE = "https://aluclu.org/schemas/alc_r0/v1/"
 _SCHEMAS = {
     "acquisition-receipt": "acquisition-receipt.schema.json",
     "base-digest-receipt": "base-digest-receipt.schema.json",
+    "logical-run-matrix": "logical-run-matrix.schema.json",
     "lock-manifest": "lock-manifest.schema.json",
 }
 
@@ -129,6 +135,18 @@ def _validate_lock_semantics(document: Mapping[str, Any]) -> None:
         raise R0SchemaValidationError("lock path violation") from exc
 
 
+def _validate_logical_run_matrix_semantics(document: Mapping[str, Any]) -> None:
+    expected_runs = [row.to_json() for row in build_expected_run_matrix()]
+    if document.get("source_plan_path") != SOURCE_PLAN_PATH:
+        raise R0SchemaValidationError("logical run matrix source-plan path mismatch")
+    if document.get("source_plan_sha256") != SOURCE_PLAN_SHA256:
+        raise R0SchemaValidationError("logical run matrix source-plan digest mismatch")
+    if document.get("logical_run_count") != len(expected_runs):
+        raise R0SchemaValidationError("logical run matrix count mismatch")
+    if document.get("runs") != expected_runs:
+        raise R0SchemaValidationError("logical run matrix differs from preregistration")
+
+
 def _assert_local_schema_references(value: Any) -> None:
     if isinstance(value, dict):
         for keyword in ("$ref", "$dynamicRef"):
@@ -192,4 +210,6 @@ def validate_r0_document(
         _validate_base_digest_semantics(document)
     elif schema_name == "lock-manifest":
         _validate_lock_semantics(document)
+    elif schema_name == "logical-run-matrix":
+        _validate_logical_run_matrix_semantics(document)
     return document
