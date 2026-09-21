@@ -4035,3 +4035,31 @@ Task 2 sensorium/recollection gate: CLEAN
   token cannot create or ACL the required `ALUCLU_R0_SEALER` principal, and no
   key, held-out data, scoring authority, or scientific result has entered the
   new distribution.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 10
+
+- Commit-pure host-harness checkpoint
+  `526786fea7c4a4a9ed459a18b99eee2c646ea24f` was committed and pushed. The
+  harness was then launched from the normal checkout with that exact expected
+  HEAD. Its standard-library bootstrap exported `526786f`, re-executed the
+  complete parent receipt builder/validator from the Git-free export, and the
+  exported parent launched two further fresh offline workers from the same
+  export. The end-to-end run exited zero, directly proving that the parent and
+  worker provenance repair functions on the real pinned SmolLM2 snapshot.
+- Both fresh observations again report 273 state entries, 272 storage groups,
+  325,706,271 encoded ALCBASE bytes, combined digest
+  `ce7e8dd6a97ac4cc56bf4f1e38625817386e27af58f1ed63377741f7f2aab1ba`,
+  alias digest
+  `8efcc3120c19a1a0784811d4ae95d327849ad8e7bd9176d45c3a6b9b7f067a84`,
+  134,515,008 frozen parameters, zero trainable parameters, and eval mode. The
+  real run therefore reproduces the prior numerical/model observation under the
+  stronger complete-parent commit binding.
+- The acquisition receipt remains byte-identical: 1,616 canonical bytes,
+  SHA-256
+  `2a4baddc2bb8451811e199e7dd6f91512fad73d367083c833e117c3e4d09984a`.
+  The new base receipt is 2,040 canonical bytes, no CRLF/final LF, SHA-256
+  `3bc973d0003160ab24f2b26c519129d48d7094a025381b41b1ffe152645d1953`,
+  and binds source commit `526786f`. A separate schema/semantic test run is
+  21/21 PASS after advancing the tracked control receipt. It remains explicitly
+  `training_authority=false`; this closes the rereview's complete-parent
+  provenance defect for the control proof, not the broader R0.0 gate.
