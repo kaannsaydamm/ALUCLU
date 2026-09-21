@@ -9,6 +9,8 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import SchemaError
+from referencing import Registry
+from referencing.exceptions import NoSuchResource
 
 from aluclu.alc_r0.acquisition import SMOLLM2_135M
 from aluclu.alc_r0.canonical import (
@@ -24,6 +26,13 @@ _SCHEMAS = {
     "base-digest-receipt": "base-digest-receipt.schema.json",
     "lock-manifest": "lock-manifest.schema.json",
 }
+
+
+def _reject_schema_retrieval(uri: str):
+    raise NoSuchResource(ref=uri)
+
+
+_LOCAL_ONLY_REGISTRY = Registry(retrieve=_reject_schema_retrieval)
 
 
 class R0SchemaValidationError(ValueError):
@@ -94,6 +103,14 @@ def _validate_acquisition_semantics(document: Mapping[str, Any]) -> None:
         item = by_path.get(path)
         if item is None or item.get("sha256") != expected_sha256:
             raise R0SchemaValidationError(f"pinned acquisition file mismatch: {path}")
+        expected_byte_lengths = SMOLLM2_135M.required_byte_length
+        if (
+            expected_byte_lengths is None
+            or item.get("byte_length") != expected_byte_lengths[path]
+        ):
+            raise R0SchemaValidationError(
+                f"pinned acquisition byte length mismatch: {path}"
+            )
     expected_inventory = hashlib.sha256(canonical_json_bytes(files)).hexdigest()
     if document.get("inventory_sha256") != expected_inventory:
         raise R0SchemaValidationError("acquisition inventory digest mismatch")
@@ -114,11 +131,14 @@ def _validate_lock_semantics(document: Mapping[str, Any]) -> None:
 
 def _assert_local_schema_references(value: Any) -> None:
     if isinstance(value, dict):
-        reference = value.get("$ref")
-        if reference is not None and (
-            not isinstance(reference, str) or not reference.startswith("#")
-        ):
-            raise R0SchemaValidationError("remote or nonlocal schema $ref is forbidden")
+        for keyword in ("$ref", "$dynamicRef"):
+            reference = value.get(keyword)
+            if reference is not None and (
+                not isinstance(reference, str) or not reference.startswith("#")
+            ):
+                raise R0SchemaValidationError(
+                    f"remote or nonlocal schema {keyword} is forbidden"
+                )
         for child in value.values():
             _assert_local_schema_references(child)
     elif isinstance(value, list):
@@ -150,7 +170,11 @@ def validate_r0_document(
     if not isinstance(document, dict):
         raise R0SchemaValidationError("evidence document root must be an object")
 
-    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    validator = Draft202012Validator(
+        schema,
+        format_checker=FormatChecker(),
+        registry=_LOCAL_ONLY_REGISTRY,
+    )
     errors = sorted(
         validator.iter_errors(document),
         key=lambda error: tuple(str(part) for part in error.absolute_path),

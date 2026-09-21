@@ -3847,3 +3847,73 @@ Task 2 sensorium/recollection gate: CLEAN
   base-identity control artifacts only; it does not close the machine
   preregistration matrix, dataset freeze, Linux evaluator/sealer isolation,
   closed-world package validator, or any neural-capability threshold.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 6
+
+- The first machine-run-matrix TDD slice began with the expected collection RED:
+  `aluclu.alc_r0.run_matrix` did not yet exist. The implemented matrix now emits
+  280 unique UTF-8-run-ID-sorted logical rows: four pilot trains, 76 development
+  trains, 40 confirmatory trains, 58 held-out target-score rows, 22 retention
+  rows, ten attach/detach rows, ten fresh-remount rows, 40 base-digest rows, ten
+  capsule-size rows, and ten resource rows. Tests mechanically check the full
+  72-row development Cartesian product, four q+v development references, arm
+  cardinalities, frozen seeds/grid markers, unique normative run-ID grammar,
+  deterministic reconstruction, and closed sorted artifact contracts. Its
+  first focused GREEN was 4/4 PASS. This is the logical preregistration matrix,
+  not yet the complete machine preregistration or closed-world validator.
+- A subsequent attempt to select all R0 tests with the literal native-command
+  argument `tests/test_alc_r0*.py` exited 4 before collection because PowerShell
+  does not expand that wildcard for the Python process. The corrected command
+  materializes the test-file array with `Get-ChildItem`; no implementation
+  failure was inferred from the bad invocation.
+- An independent GPT-5.6 Sol read-only review of exact committed HEAD
+  `177ab33090fdbfbfd3a3b82dea267d0152757280` returned **BLOCKED**, not CLEAR.
+  It confirmed the 78 committed tests, Ruff, receipt canonicality, exact model
+  file set, ALCBASE grammar, and honest `training_authority=false` boundary, but
+  found three high and two medium defects: acquisition semantics did not pin
+  byte lengths; Draft 2020-12 `$dynamicRef` could escape the local-reference
+  guard; the two host workers imported mutable worktree source after only one
+  cleanliness check; evidence paths allowed Win32-illegal/glob characters; and
+  the `alc-r0` optional extra omitted the exported Transformers/SafeTensors host
+  runtime. The reviewer also reiterated that the matrix, datasets, Linux
+  evaluator/sealer, closed-world validator, and final fully clean checkout gate
+  remain open.
+- Regression tests reproduced those boundary failures before repair. A receipt
+  with `.gitattributes.byte_length = 999999` plus a recomputed inventory root was
+  wrongly accepted; a malicious remote `$dynamicRef` reached the resolver and
+  attempted DNS resolution; and all six of `<`, `>`, `"`, `|`, `?`, and `*`
+  were accepted in evidence paths. The targeted run therefore failed eight
+  cases exactly as expected. Production snapshot expectations now pin both
+  SHA-256 and byte length for all ten files, and semantic validation rejects a
+  false length even when the attacker recomputes the inventory root. Schema
+  loading rejects non-fragment `$ref` and `$dynamicRef` recursively, while an
+  explicit no-retrieval registry makes the network boundary independent of the
+  keyword scan. Evidence paths reject every Win32-invalid filename character
+  and device names after the relevant basename-space normalization, including
+  `CON .json` and `lpt1 .txt`.
+- Host proof workers no longer execute from the mutable working tree. The parent
+  verifies the expected clean HEAD, exports that exact commit once to an
+  ephemeral `.git`-free tree, derives the schema and lock inputs from the same
+  export, and launches both fresh offline workers with only that export on
+  `PYTHONPATH`. A new harness test first RED-failed because the export API did
+  not exist. Its initial exact-byte assertion then exposed Git archive's
+  deterministic checkout EOL conversion; the test was corrected to compare two
+  independent exports of the same commit rather than incorrectly equating
+  checkout bytes with Git blob bytes. Both harness tests now pass and verify one
+  shared ephemeral commit export, deterministic tracked content, cleanup, and no
+  `.git` directory. Existing control receipts remain non-authorizing; a new
+  committed-source run will be required after this repair is committed.
+- The `alc-r0` optional extra now explicitly provisions the pinned
+  `transformers==5.17.0` and `safetensors==0.8.0` runtime in addition to the
+  schema/canonical dependencies. The existing scientific Windows lock remains
+  the authoritative executable environment; its 50-package `uv pip check` is
+  clean. A later isolated-install fixture is still required as part of the
+  closed-world package validation rather than being inferred from metadata.
+- After the repairs and targeted formatting, the complete current R0 slice is
+  94/94 pytest PASS. Ruff passes, all 17 scoped files are formatted, pinned
+  Pyright 1.1.413 reports 0 errors/0 warnings/0 informations, compileall passes,
+  and diff-check exits zero with only known LF-to-CRLF working-tree notices.
+  R0.0 and all development training remain blocked on the rest of the machine
+  preregistration, dataset/split freeze, Linux evaluator and sealer isolation,
+  closed-world evidence validator, authoritative freeze receipt, and final
+  independent CLEAR verdicts.

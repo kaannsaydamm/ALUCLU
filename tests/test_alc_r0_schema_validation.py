@@ -207,6 +207,25 @@ def test_acquisition_receipt_rejects_schema_and_semantic_violations(mutation) ->
         )
 
 
+def test_acquisition_receipt_rejects_recomputed_inventory_with_false_byte_length() -> (
+    None
+):
+    receipt = _acquisition_receipt()
+    files = receipt["files"]
+    assert isinstance(files, list)
+    files[0]["byte_length"] = 999999
+    receipt["inventory_sha256"] = hashlib.sha256(
+        canonical_json_bytes(files)
+    ).hexdigest()
+
+    with pytest.raises(R0SchemaValidationError, match="byte length"):
+        validate_r0_document(
+            canonical_json_bytes(receipt),
+            schema_name="acquisition-receipt",
+            schema_root=SCHEMA_ROOT,
+        )
+
+
 def test_lock_manifest_rejects_reordered_roles_or_unknown_fields() -> None:
     manifest = _lock_manifest()
     manifest["locks"] = list(reversed(manifest["locks"]))  # type: ignore[arg-type]
@@ -263,8 +282,10 @@ def test_schema_root_must_be_absolute_and_symlink_free(tmp_path: Path) -> None:
         )
 
 
+@pytest.mark.parametrize("reference_keyword", ["$ref", "$dynamicRef"])
 def test_schema_loader_rejects_remote_references_before_resolution(
     tmp_path: Path,
+    reference_keyword: str,
 ) -> None:
     schema_root = tmp_path / "schemas"
     schema_root.mkdir()
@@ -272,7 +293,7 @@ def test_schema_loader_rejects_remote_references_before_resolution(
         canonical_json_bytes(
             {
                 "$id": "https://aluclu.org/schemas/alc_r0/v1/lock-manifest.schema.json",
-                "$ref": "https://attacker.invalid/schema.json",
+                reference_keyword: "https://attacker.invalid/schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
             }
         )

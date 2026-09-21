@@ -16,7 +16,7 @@ from typing import Any, NoReturn
 import rfc8785
 
 _DRIVE_PREFIX = re.compile(r"^[A-Za-z]:")
-_WINDOWS_DEVICE = re.compile(r"^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)", re.I)
+_WINDOWS_DEVICE = re.compile(r"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$", re.I)
 
 
 class CanonicalEvidenceError(ValueError):
@@ -113,6 +113,11 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def _is_windows_device_segment(segment: str) -> bool:
+    basename = segment.split(".", 1)[0].rstrip(" ")
+    return _WINDOWS_DEVICE.fullmatch(basename) is not None
+
+
 def normalize_evidence_path(path: str) -> str:
     """Validate one normalized repository-relative evidence path."""
 
@@ -122,7 +127,9 @@ def normalize_evidence_path(path: str) -> str:
         raise CanonicalEvidenceError("evidence path contains NUL")
     if "\\" in path:
         raise CanonicalEvidenceError("evidence path must use forward slashes")
-    if ":" in path or any(ord(character) < 0x20 for character in path):
+    if any(character in '<>:"|?*' for character in path) or any(
+        ord(character) < 0x20 for character in path
+    ):
         raise CanonicalEvidenceError("evidence path contains a forbidden character")
     if path.startswith("/") or _DRIVE_PREFIX.match(path):
         raise CanonicalEvidenceError("evidence path must be relative")
@@ -130,7 +137,9 @@ def normalize_evidence_path(path: str) -> str:
     parts = path.split("/")
     if any(part in {"", ".", ".."} for part in parts):
         raise CanonicalEvidenceError("evidence path contains an empty or dot segment")
-    if any(part.endswith((" ", ".")) or _WINDOWS_DEVICE.match(part) for part in parts):
+    if any(
+        part.endswith((" ", ".")) or _is_windows_device_segment(part) for part in parts
+    ):
         raise CanonicalEvidenceError("evidence path is unsafe on Windows")
     normalized = PurePosixPath(*parts).as_posix()
     if normalized != path:

@@ -25,7 +25,12 @@ aluclu-benchmark = "aluclu.cli.benchmark_stream:main"
 aluclu-benchmark-cognition-ledger = "aluclu.cli.benchmark_cognition_ledger:main"
 
 [project.optional-dependencies]
-alc-r0 = ["jsonschema==4.26.0", "rfc8785==0.1.4"]
+alc-r0 = [
+    "jsonschema==4.26.0",
+    "rfc8785==0.1.4",
+    "safetensors==0.8.0",
+    "transformers==5.17.0",
+]
 test = ["pytest>=8.3", "jsonschema==4.26.0", "rfc8785==0.1.4"]
 lint = ["ruff>=0.16,<0.17"]
 os-keyring = ["keyring>=25.7,<26"]

@@ -31,6 +31,7 @@ class SnapshotExpectation:
     repository: str
     revision: str
     required_sha256: Mapping[str, str]
+    required_byte_length: Mapping[str, int] | None = None
     exact_file_set: bool = False
 
     def __post_init__(self) -> None:
@@ -44,6 +45,19 @@ class SnapshotExpectation:
         for digest in self.required_sha256.values():
             if not re.fullmatch(r"[0-9a-f]{64}", digest):
                 raise AcquisitionError("expected SHA-256 must be lowercase 64-hex")
+        if self.required_byte_length is not None:
+            validate_evidence_paths(self.required_byte_length)
+            if set(self.required_byte_length) != set(self.required_sha256):
+                raise AcquisitionError(
+                    "expected byte-length paths must match SHA-256 paths"
+                )
+            if any(
+                type(byte_length) is not int or byte_length < 0
+                for byte_length in self.required_byte_length.values()
+            ):
+                raise AcquisitionError(
+                    "expected byte length must be a nonnegative integer"
+                )
 
 
 SMOLLM2_135M = SnapshotExpectation(
@@ -60,6 +74,18 @@ SMOLLM2_135M = SnapshotExpectation(
         "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
         "tokenizer_config.json": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
         "vocab.json": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
+    },
+    required_byte_length={
+        ".gitattributes": 1519,
+        "README.md": 6340,
+        "config.json": 704,
+        "generation_config.json": 111,
+        "merges.txt": 466391,
+        "model.safetensors": 269060552,
+        "special_tokens_map.json": 831,
+        "tokenizer.json": 2104556,
+        "tokenizer_config.json": 3658,
+        "vocab.json": 800662,
     },
     exact_file_set=True,
 )
@@ -119,6 +145,11 @@ def verify_model_snapshot(
             raise AcquisitionError(f"required snapshot file is missing: {relative}")
         if item["sha256"] != expected_digest:
             raise AcquisitionError(f"snapshot hash mismatch: {relative}")
+        if (
+            expectation.required_byte_length is not None
+            and item["byte_length"] != expectation.required_byte_length[relative]
+        ):
+            raise AcquisitionError(f"snapshot byte length mismatch: {relative}")
 
     receipt: dict[str, Any] = {
         "schema_id": "https://aluclu.org/schemas/alc_r0/v1/acquisition-receipt.schema.json",
