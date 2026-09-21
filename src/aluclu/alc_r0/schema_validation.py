@@ -21,6 +21,7 @@ from aluclu.alc_r0.canonical import (
 _SCHEMA_BASE = "https://aluclu.org/schemas/alc_r0/v1/"
 _SCHEMAS = {
     "acquisition-receipt": "acquisition-receipt.schema.json",
+    "base-digest-receipt": "base-digest-receipt.schema.json",
     "lock-manifest": "lock-manifest.schema.json",
 }
 
@@ -61,6 +62,7 @@ def _load_schema(schema_root: Path, schema_name: str) -> dict[str, Any]:
         raise R0SchemaValidationError(f"schema root is not an object: {filename}")
     if schema.get("$id") != _SCHEMA_BASE + filename:
         raise R0SchemaValidationError(f"schema ID mismatch: {filename}")
+    _assert_local_schema_references(schema)
     try:
         Draft202012Validator.check_schema(schema)
     except SchemaError as exc:
@@ -81,7 +83,13 @@ def _validate_acquisition_semantics(document: Mapping[str, Any]) -> None:
         paths = validate_evidence_paths(str(item["path"]) for item in files)
     except (CanonicalEvidenceError, KeyError) as exc:
         raise R0SchemaValidationError("acquisition inventory path violation") from exc
+    if paths != tuple(sorted(paths, key=lambda path: path.encode("utf-8"))):
+        raise R0SchemaValidationError(
+            "acquisition inventory paths are not UTF-8 sorted"
+        )
     by_path = {path: item for path, item in zip(paths, files, strict=True)}
+    if set(by_path) != set(SMOLLM2_135M.required_sha256):
+        raise R0SchemaValidationError("acquisition inventory file set mismatch")
     for path, expected_sha256 in SMOLLM2_135M.required_sha256.items():
         item = by_path.get(path)
         if item is None or item.get("sha256") != expected_sha256:
@@ -102,6 +110,28 @@ def _validate_lock_semantics(document: Mapping[str, Any]) -> None:
         validate_evidence_paths(str(item["relative_path"]) for item in locks)
     except (CanonicalEvidenceError, KeyError) as exc:
         raise R0SchemaValidationError("lock path violation") from exc
+
+
+def _assert_local_schema_references(value: Any) -> None:
+    if isinstance(value, dict):
+        reference = value.get("$ref")
+        if reference is not None and (
+            not isinstance(reference, str) or not reference.startswith("#")
+        ):
+            raise R0SchemaValidationError("remote or nonlocal schema $ref is forbidden")
+        for child in value.values():
+            _assert_local_schema_references(child)
+    elif isinstance(value, list):
+        for child in value:
+            _assert_local_schema_references(child)
+
+
+def _validate_base_digest_semantics(document: Mapping[str, Any]) -> None:
+    observations = document.get("observations")
+    if not isinstance(observations, list) or len(observations) != 2:
+        raise R0SchemaValidationError("base digest requires two observations")
+    if canonical_json_bytes(observations[0]) != canonical_json_bytes(observations[1]):
+        raise R0SchemaValidationError("fresh-process base observations differ")
 
 
 def validate_r0_document(
@@ -134,6 +164,8 @@ def validate_r0_document(
 
     if schema_name == "acquisition-receipt":
         _validate_acquisition_semantics(document)
+    elif schema_name == "base-digest-receipt":
+        _validate_base_digest_semantics(document)
     elif schema_name == "lock-manifest":
         _validate_lock_semantics(document)
     return document

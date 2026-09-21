@@ -17,24 +17,54 @@ SCHEMA_ROOT = Path(__file__).parents[1] / "schemas" / "alc_r0" / "v1"
 def _acquisition_receipt() -> dict[str, object]:
     files = [
         {
-            "byte_length": 2,
+            "byte_length": 1519,
+            "path": ".gitattributes",
+            "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+        },
+        {
+            "byte_length": 6340,
+            "path": "README.md",
+            "sha256": "d1ba68cae64a89b6b434b11526e6e2271ee5ffd2c914ec35ed515f9d84c6085c",
+        },
+        {
+            "byte_length": 704,
             "path": "config.json",
             "sha256": "1d556eab73b69c7f11f64c557a2f9c6f440bd4c6b89bb2584a6b498c92603843",
         },
         {
-            "byte_length": 4,
+            "byte_length": 111,
+            "path": "generation_config.json",
+            "sha256": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059",
+        },
+        {
+            "byte_length": 466391,
+            "path": "merges.txt",
+            "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+        },
+        {
+            "byte_length": 269060552,
             "path": "model.safetensors",
             "sha256": "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1",
         },
         {
-            "byte_length": 3,
+            "byte_length": 831,
+            "path": "special_tokens_map.json",
+            "sha256": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3",
+        },
+        {
+            "byte_length": 2104556,
             "path": "tokenizer.json",
             "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
         },
         {
-            "byte_length": 2,
+            "byte_length": 3658,
             "path": "tokenizer_config.json",
             "sha256": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
+        },
+        {
+            "byte_length": 800662,
+            "path": "vocab.json",
+            "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
         },
     ]
     return {
@@ -206,4 +236,27 @@ def test_schema_root_must_be_absolute_and_symlink_free(tmp_path: Path) -> None:
             canonical_json_bytes(_lock_manifest()),
             schema_name="lock-manifest",
             schema_root=link,
+        )
+
+
+def test_schema_loader_rejects_remote_references_before_resolution(
+    tmp_path: Path,
+) -> None:
+    schema_root = tmp_path / "schemas"
+    schema_root.mkdir()
+    (schema_root / "lock-manifest.schema.json").write_bytes(
+        canonical_json_bytes(
+            {
+                "$id": "https://aluclu.org/schemas/alc_r0/v1/lock-manifest.schema.json",
+                "$ref": "https://attacker.invalid/schema.json",
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+            }
+        )
+    )
+
+    with pytest.raises(R0SchemaValidationError, match="nonlocal"):
+        validate_r0_document(
+            canonical_json_bytes(_lock_manifest()),
+            schema_name="lock-manifest",
+            schema_root=schema_root.resolve(),
         )

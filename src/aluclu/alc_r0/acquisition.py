@@ -31,12 +31,15 @@ class SnapshotExpectation:
     repository: str
     revision: str
     required_sha256: Mapping[str, str]
+    exact_file_set: bool = False
 
     def __post_init__(self) -> None:
         if not self.repository or self.repository.strip() != self.repository:
             raise AcquisitionError("repository must be a normalized nonempty ID")
         if not _REVISION.fullmatch(self.revision):
             raise AcquisitionError("revision must be a full lowercase 40-hex commit")
+        if type(self.exact_file_set) is not bool:
+            raise AcquisitionError("exact_file_set must be a boolean")
         validate_evidence_paths(self.required_sha256)
         for digest in self.required_sha256.values():
             if not re.fullmatch(r"[0-9a-f]{64}", digest):
@@ -47,11 +50,18 @@ SMOLLM2_135M = SnapshotExpectation(
     repository="HuggingFaceTB/SmolLM2-135M",
     revision="93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
     required_sha256={
+        ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+        "README.md": "d1ba68cae64a89b6b434b11526e6e2271ee5ffd2c914ec35ed515f9d84c6085c",
         "config.json": "1d556eab73b69c7f11f64c557a2f9c6f440bd4c6b89bb2584a6b498c92603843",
+        "generation_config.json": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059",
+        "merges.txt": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
         "model.safetensors": "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1",
+        "special_tokens_map.json": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3",
         "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
         "tokenizer_config.json": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
+        "vocab.json": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
     },
+    exact_file_set=True,
 )
 
 
@@ -101,6 +111,8 @@ def verify_model_snapshot(
     by_path = {item["path"]: item for item in inventory}
     if len(by_path) != len(paths):
         raise AcquisitionError("snapshot contains colliding paths")
+    if expectation.exact_file_set and set(by_path) != set(expectation.required_sha256):
+        raise AcquisitionError("snapshot file set does not match the pinned revision")
     for relative, expected_digest in expectation.required_sha256.items():
         item = by_path.get(relative)
         if item is None:

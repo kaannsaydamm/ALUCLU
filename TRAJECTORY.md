@@ -3773,3 +3773,42 @@ Task 2 sensorium/recollection gate: CLEAN
   only the known line-ending notice. R0.0 still lacks committed acquisition/base
   receipts, the machine preregistration matrix, closed-world validator, datasets,
   Linux evaluator rootfs, and sealer/broker proof; training remains blocked.
+
+## 2026-09-21 — ALC-R0 R0.0 implementation checkpoint 4
+
+- Host-loader checkpoint `176d37652a857f4aabd230190e4cf71c0dca6fcb` was
+  committed and pushed. The prior GPT-5.6 Sol layout reviewer was then asked for
+  an independent read-only code/security rereview of `5fa4b63..176d376`, but the
+  agent terminated at the account usage limit before reviewing any code. No
+  independent CLEAR is claimed; the rereview remains open.
+- Receipt TDD began with the expected missing `host_evidence` module RED. During
+  implementation, the real acquired inventory exposed a contract weakness: the
+  first acquisition verifier bound the four preregistered core hashes but still
+  allowed drift in the other six exact-revision files or an eleventh file. R0 v1
+  now pins all 10 upstream files and rejects any missing, changed, colliding, or
+  extra path. Generic test expectations may still opt out of an exact file set;
+  the production SmolLM2 expectation cannot.
+- The acquisition schema is correspondingly closed to exactly 10 UTF-8-sorted
+  records. Its earlier 1,095-byte
+  `6b08e0be6a4713c9afff8ff51fcb792a5ce8b24110ea442bb27f2661eaec7735`
+  form is superseded before development training by the 1,110-byte schema with
+  SHA-256
+  `d54d253f04c451556bbd58699cafe585f07ad176b316a1ac490e673a67c8ba42`.
+  The acquisition receipt bytes themselves remain unchanged because the real
+  verifier had already inventoried those same 10 files.
+- A new 2,968-byte canonical base-digest receipt schema with SHA-256
+  `9280147b0183906f27d19d69daebf22e4d8ce01d314318c761abf44e9b21e1da`
+  freezes the observed model/config/runtime/count/digest identity, requires two
+  equal fresh-process observations, binds the acquisition receipt and Windows
+  lock/manifest hashes, and explicitly sets `training_authority=false`. Schema
+  loading now rejects every nonlocal `$ref` before JSON Schema resolution, so a
+  schema cannot introduce a network fetch. A dedicated host-evidence harness
+  will refuse tracked source changes, verify the expected HEAD, spawn two fresh
+  offline workers, validate both receipts, and create outputs without overwrite.
+- The first combined test run correctly failed one fixture because it still used
+  placeholder digest values while the new schema required the real ALCBASE and
+  alias hashes. Updating only that fixture to the already observed values made
+  the repeated R0.0 slice 76/76 PASS. Ruff passes, all 15 scoped files are
+  formatted, pinned Pyright 1.1.413 is 0/0/0, compileall passes, and diff-check
+  exits zero apart from known line-ending notices. The harness has not yet been
+  run as committed source, so no generated control receipt is claimed here.

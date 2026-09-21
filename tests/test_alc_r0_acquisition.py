@@ -103,3 +103,17 @@ def test_verify_model_snapshot_requires_absolute_root(tmp_path: Path) -> None:
     _, expectation = _snapshot(tmp_path)
     with pytest.raises(AcquisitionError, match="absolute"):
         verify_model_snapshot(Path("relative"), expectation=expectation)
+
+
+def test_exact_snapshot_expectation_rejects_an_extra_file(tmp_path: Path) -> None:
+    root, expectation = _snapshot(tmp_path)
+    exact = SnapshotExpectation(
+        repository=expectation.repository,
+        revision=expectation.revision,
+        required_sha256=expectation.required_sha256,
+        exact_file_set=True,
+    )
+    (root / "unexpected.json").write_bytes(b"{}")
+
+    with pytest.raises(AcquisitionError, match="file set"):
+        verify_model_snapshot(root.resolve(), expectation=exact)
