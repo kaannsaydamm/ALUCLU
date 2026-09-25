@@ -4317,3 +4317,24 @@ Task 2 sensorium/recollection gate: CLEAN
   Windows/Linux run manifests and claim-ledger evidence, exact matched native
   LoRA comparator, and later training gate are not discharged by this test.
   No optimizer step was run; `training_authority=false` remains in force.
+
+## 2026-09-25 — ALC-R0 CPU FP32 forward checkpoint 17
+
+- Expanded the same pinned real-host no-capsule CPU comparison from a partial
+  sample to 20 static cases: batch 1 at lengths 1/8/127/512 with
+  explicit/inferred position IDs, and batch 2 at lengths 8/127/512 with
+  left/right padding, unequal masks, and explicit/inferred positions. Added
+  four one-token incremental-cache comparisons at initial lengths
+  1/8/127/512. Official `LlamaForCausalLM.forward` and the unmounted wrapper
+  must produce **bitwise identical FP32 logits** in every asserted step; the
+  cache length must advance exactly by one.
+- The focused real-model CPU selection completed **24/24 PASS** in 74.69 s.
+  The full pinned Windows R0 regression, including the prior 24-case GPU
+  matrix and two-fresh-process check, completed **210/210 PASS, exit 0,
+  140.82 s** on CPython 3.12.13 / Torch 2.14.0+cu130 / Transformers 5.17.0.
+  Scoped Ruff, format, and Pyright 1.1.413 checks passed.
+- This strengthens local no-capsule CPU conformance only. It does not by itself
+  test every batch/padding combination under incremental cache, the complete
+  ten-cycle detach matrix on final artifacts, independent Linux evaluator
+  parity, or durable hashed run/claim-ledger evidence. P11 and R0.0 remain
+  **OPEN**; no training or neural-capability claim is authorized.

@@ -89,15 +89,25 @@ def deterministic_gpu_math() -> Iterator[None]:
 
 
 @pytest.mark.parametrize("length", [1, 8, 127, 512])
+@pytest.mark.parametrize("explicit_positions", [False, True])
 def test_unmounted_wrapper_matches_official_real_host_logits_bitwise(
-    pinned_host: VerifiedHost, length: int
+    pinned_host: VerifiedHost, length: int, explicit_positions: bool
 ) -> None:
     wrapper = PinnedLlamaCapsuleWrapper(pinned_host)
     input_ids = torch.arange(1, length + 1, dtype=torch.long).unsqueeze(0)
+    position_ids = (
+        torch.arange(length, dtype=torch.long).unsqueeze(0)
+        if explicit_positions
+        else None
+    )
 
     with torch.inference_mode():
-        official = pinned_host.model(input_ids=input_ids, use_cache=False)
-        wrapped = wrapper(input_ids=input_ids, use_cache=False)
+        official = pinned_host.model(
+            input_ids=input_ids, position_ids=position_ids, use_cache=False
+        )
+        wrapped = wrapper(
+            input_ids=input_ids, position_ids=position_ids, use_cache=False
+        )
 
     assert torch.equal(wrapped.logits, official.logits)
     assert wrapped.past_key_values is None
@@ -105,22 +115,27 @@ def test_unmounted_wrapper_matches_official_real_host_logits_bitwise(
 
 @pytest.mark.parametrize("padding_side", ["left", "right"])
 @pytest.mark.parametrize("explicit_positions", [False, True])
+@pytest.mark.parametrize("length", [8, 127, 512])
 def test_unmounted_wrapper_preserves_unequal_masks_and_positions(
-    pinned_host: VerifiedHost, padding_side: str, explicit_positions: bool
+    pinned_host: VerifiedHost,
+    padding_side: str,
+    explicit_positions: bool,
+    length: int,
 ) -> None:
     wrapper = PinnedLlamaCapsuleWrapper(pinned_host)
-    full = [10, 20, 30, 40]
-    short = [50, 60]
+    full = list(range(1, length + 1))
+    short = list(range(100, 100 + length // 2))
+    padding = [0] * (length - len(short))
     if padding_side == "left":
-        rows = [full, [0, 0, *short]]
-        masks = [[1, 1, 1, 1], [0, 0, 1, 1]]
+        rows = [full, padding + short]
+        masks = [[1] * length, [0] * len(padding) + [1] * len(short)]
     else:
-        rows = [full, [*short, 0, 0]]
-        masks = [[1, 1, 1, 1], [1, 1, 0, 0]]
+        rows = [full, short + padding]
+        masks = [[1] * length, [1] * len(short) + [0] * len(padding)]
     input_ids = torch.tensor(rows, dtype=torch.long)
     attention_mask = torch.tensor(masks, dtype=torch.long)
     position_ids = (
-        torch.arange(4, dtype=torch.long).unsqueeze(0).expand(2, -1)
+        torch.arange(length, dtype=torch.long).unsqueeze(0).expand(2, -1)
         if explicit_positions
         else None
     )
@@ -142,25 +157,27 @@ def test_unmounted_wrapper_preserves_unequal_masks_and_positions(
     assert torch.equal(wrapped.logits, official.logits)
 
 
+@pytest.mark.parametrize("initial_length", [1, 8, 127, 512])
 def test_unmounted_wrapper_preserves_incremental_cache_logits(
-    pinned_host: VerifiedHost,
+    pinned_host: VerifiedHost, initial_length: int
 ) -> None:
     wrapper = PinnedLlamaCapsuleWrapper(pinned_host)
-    initial_ids = torch.tensor([[10, 20, 30]], dtype=torch.long)
-    next_id = torch.tensor([[40]], dtype=torch.long)
+    initial_ids = torch.arange(1, initial_length + 1, dtype=torch.long).unsqueeze(0)
+    next_id = torch.tensor([[42]], dtype=torch.long)
+    attention_mask = torch.ones((1, initial_length + 1), dtype=torch.long)
 
     with torch.inference_mode():
         official_initial = pinned_host.model(input_ids=initial_ids, use_cache=True)
         wrapped_initial = wrapper(input_ids=initial_ids, use_cache=True)
         official_next = pinned_host.model(
             input_ids=next_id,
-            attention_mask=torch.ones((1, 4), dtype=torch.long),
+            attention_mask=attention_mask,
             past_key_values=official_initial.past_key_values,
             use_cache=True,
         )
         wrapped_next = wrapper(
             input_ids=next_id,
-            attention_mask=torch.ones((1, 4), dtype=torch.long),
+            attention_mask=attention_mask,
             past_key_values=wrapped_initial.past_key_values,
             use_cache=True,
         )
@@ -168,7 +185,7 @@ def test_unmounted_wrapper_preserves_incremental_cache_logits(
     assert torch.equal(wrapped_initial.logits, official_initial.logits)
     assert torch.equal(wrapped_next.logits, official_next.logits)
     assert wrapped_next.past_key_values is not None
-    assert wrapped_next.past_key_values.get_seq_length() == 4
+    assert wrapped_next.past_key_values.get_seq_length() == initial_length + 1
 
 
 _GPU_CASES = [
