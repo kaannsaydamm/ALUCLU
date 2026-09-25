@@ -4601,3 +4601,24 @@ Task 2 sensorium/recollection gate: CLEAN
 - This checkpoint establishes a usable local Desktop checkout and one Windows
   regression result, not cross-platform parity, training, or R0.0 PASS.
   `training_authority=false`; R0.0 remains **OPEN**.
+
+## 2026-09-25 — OneDrive deletion-safety audit checkpoint 25
+
+- Before advising any OneDrive cleanup, compared the old and local ALUCLU
+  repository trees. The old `.worktrees/task27_portability` is a separate clean
+  branch at `e4dea6e03344f8da199a6c4a05a4f0cfba9a7b88`, not present on
+  the remote. Fetched that branch into the local Desktop Git repository and
+  verified both sides resolve to the identical commit object. The roughly
+  596 MiB ignored `.venv` in that old worktree was *not* copied.
+- Preserved all 74 files under the old active worktree's ignored
+  `.superpowers`, `.omx`, and `.omc` directories at local
+  `.migration-preserve/onedrive-ignored-active-20260925`; every copied file
+  matched its source SHA-256. Also copied the old repository's entire `.git`
+  directory (1,091 files, 9.56 MiB) to
+  `.migration-preserve/onedrive-git-20260925` and verified every file hash.
+  The old main worktree's `.omc` files already matched the local main copy.
+- Did **not** copy ignored virtual environments, Python bytecode or tool
+  caches. Did not delete the OneDrive tree, the stale local worktree, or the
+  separate `.codex` worktree still registered against the old Git directory.
+  Therefore this is a verified source/history/evidence preservation step,
+  **not** a claim of a byte-for-byte clone of every regenerable environment.
