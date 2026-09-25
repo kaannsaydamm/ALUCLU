@@ -37,3 +37,30 @@ Jaccard confirmation, transitive union-find grouping, conflicting-label
 rejection, and train/validation root filtering. The official test split and
 its exclusion identities must stay in the independent sealer. The current
 source receipt does not authorize training or R0.0 PASS.
+
+## Development preprocessing candidate
+
+The source-level primitive is now implemented in
+`src/aluclu/alc_r0/devign_preprocess.py`. It strictly decodes UTF-8, applies
+Unicode NFC, converts CRLF and lone CR to LF, removes trailing ASCII space,
+HT, VT and FF from each line, then removes only outer blank lines. It does not
+strip comments, change identifier spelling, or collapse internal whitespace.
+The candidate regex tokenizes quoted string/character literals before numeric
+literals and ASCII C identifiers; remaining non-whitespace operator and
+punctuation characters are each individual tokens. Five-token shingles are
+sets of contiguous token tuples. The exact regex has SHA-256
+`dd2d786ac51ead8d75adc5e22d5b7b06f1a5a398dd31f74b685384f704b93d8d`.
+This is a *candidate* regex until the full R0.0 freeze and adversarial clone
+oracle are complete.
+
+The canonical LF metadata candidate is
+`results/alc_r0_devign_preprocess_candidate_20260925.json`, SHA-256
+`c23f2fd2c54a0fe648d8a08092b0bf9469b39444e47d0a1897b4d003edfe7e9f`.
+It binds source receipt, regex, ordered normalized-code digests, target labels,
+token/shingle counts and source IDs without committing code text. On all
+official-train/validation-derived development rows, 20,442/21,854 train and
+2,566/2,732 validation functions changed under the specified normalization.
+Token counts range 7–25,024 (train) and 7–10,464 (validation); none has an
+empty five-shingle set. These are preprocessing observations, not clone groups,
+model results, or an R0.0 PASS. MinHash/LSH, Jaccard confirmation, transitive
+grouping and train/validation root filtering remain mandatory next steps.

@@ -4723,3 +4723,43 @@ Task 2 sensorium/recollection gate: CLEAN
   independent test sealer, prompt and metrics contracts, full R0.0 validator,
   training, and held-out evaluation remain open. `training_authority=false`;
   R0.0 is **OPEN**.
+
+## 2026-09-26 — Devign normalization and shingle candidate checkpoint 29
+
+- Continued in the local Desktop worktree from source HEAD `bd24f76`, preserving
+  the earlier uncommitted normalization/receipt files. The byte-frozen R0 plan
+  still requires strict UTF-8, NFC, CRLF/lone-CR to LF, trailing ASCII
+  whitespace removal per line, outer blank-line removal, C-like tokenization,
+  five-token shingles, and later 256-permutation MinHash/LSH with exact Jaccard
+  confirmation. This checkpoint implements **only** the deterministic
+  normalization/token/shingle primitives and their development-source roots.
+- Tests began RED for absent `devign_preprocess` and
+  `devign_preprocess_receipt`. An initial hand-written normalization fixture
+  SHA-256 was incorrect and the receipt initially exposed a different root
+  field name than the fixture; both were repaired and the failures retained as
+  development observations. Adversarial fixtures cover invalid UTF-8, empty
+  code, wrong input type, NFC/LF/whitespace handling, literal/number and
+  individual-punctuation tokens, shingle invariance under token whitespace,
+  row-order mutation, code mutation, empty split, and authorizing-source
+  rejection. The regex SHA-256 is
+  `dd2d786ac51ead8d75adc5e22d5b7b06f1a5a398dd31f74b685384f704b93d8d`.
+- Ran the primitives across all 21,854 train and 2,732 validation functions
+  from the verified development source only. Normalization changed 20,442
+  train and 2,566 validation rows; token ranges were 7–25,024 and 7–10,464.
+  No row had an empty five-token shingle set. The canonical metadata-only
+  candidate receipt is
+  `results/alc_r0_devign_preprocess_candidate_20260925.json`, SHA-256
+  `c23f2fd2c54a0fe648d8a08092b0bf9469b39444e47d0a1897b4d003edfe7e9f`.
+  Its ordered normalized roots are train
+  `f72efab00d173c14de86d0bccefb06423a23281a4fc9daabab4c807048474a14`
+  and validation
+  `37687d42fffdbbd6e0a1c31a33818902267c29bf7b1bc99a89edcbeaeea80c4f`.
+  CLI regeneration matched its tracked canonical LF bytes; no code text or
+  official-test data was committed or read.
+- Final focused real-data tests passed **9/9**; scoped Ruff check/format and
+  Pyright 1.1.413 passed (0 errors/warnings/informations). The final-byte
+  pinned Windows R0 regression passed **298/298, exit 0, 255.22 s**. This is
+  not a clone-filtering PASS. MinHash coefficients/LSH rule, Jaccard/union-find,
+  validation root exclusion, independent test sealer, complete R0.0 validator,
+  training, and held-out evaluation remain open. `training_authority=false`;
+  R0.0 remains **OPEN**.
