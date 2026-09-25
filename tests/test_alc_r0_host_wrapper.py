@@ -11,6 +11,7 @@ import pytest
 import torch
 
 from aluclu.alc_r0.canonical import parse_canonical_json
+from aluclu.alc_r0.capsule_artifact import deserialize_capsule, serialize_capsule
 from aluclu.alc_r0.host import VerifiedHost, load_verified_host
 from aluclu.alc_r0.host_wrapper import HostWrapperError, PinnedLlamaCapsuleWrapper
 from aluclu.alc_r0.research_capsule import ResearchCapsuleV0
@@ -364,6 +365,28 @@ def test_real_host_capsule_mount_changes_logits_and_detach_restores_them(
         not parameter.requires_grad for parameter in pinned_host.model.parameters()
     )
     assert wrapper.capsule is None
+
+
+def test_serialized_zero_control_is_real_host_forward_noop(
+    pinned_host: VerifiedHost,
+) -> None:
+    wrapper = PinnedLlamaCapsuleWrapper(pinned_host)
+    manifest_bytes, tensor_bytes = serialize_capsule(
+        ResearchCapsuleV0.zero_control(ports=(14, 29), rank=16)
+    )
+    restored = deserialize_capsule(manifest_bytes, tensor_bytes)
+    input_ids = torch.tensor([[10, 20, 30, 40]], dtype=torch.long)
+
+    with torch.inference_mode():
+        official = pinned_host.model(input_ids=input_ids, use_cache=False).logits
+        wrapper.mount(restored)
+        mounted = wrapper(input_ids=input_ids, use_cache=False).logits
+        wrapper.detach()
+        detached = wrapper(input_ids=input_ids, use_cache=False).logits
+
+    assert torch.equal(mounted, official)
+    assert torch.equal(detached, official)
+    assert all(not parameter.requires_grad for parameter in restored.parameters())
 
 
 def test_wrapper_training_mode_never_changes_frozen_base_mode(

@@ -4338,3 +4338,40 @@ Task 2 sensorium/recollection gate: CLEAN
   ten-cycle detach matrix on final artifacts, independent Linux evaluator
   parity, or durable hashed run/claim-ledger evidence. P11 and R0.0 remain
   **OPEN**; no training or neural-capability claim is authorized.
+
+## 2026-09-25 — ALC-R0 canonical capsule artifact checkpoint 18
+
+- Started R0.1 serialization with a collection RED for the missing artifact
+  module. Added an in-memory reference encoder/decoder for the pinned
+  `ResearchCapsuleV0` factor set: RFC-8785 canonical JSON manifest plus
+  SafeTensors FP32 factors. The manifest binds the exact SmolLM2-135M
+  repository/revision/weight digest, identity-576 bridge, selected ports/rank,
+  `alpha=rank`, epsilon, initialization seed, control kind, factor count,
+  tensor byte length and SHA-256, and `training_authority=false`. The seed is
+  canonical decimal text so the signed 63-bit range survives RFC-8785 JSON
+  without IEEE-754 integer loss. The closed Draft 2020-12 schema is 1,549
+  bytes, SHA-256
+  `c81e55e0c4814a1737591fa63c7978f6cf86b0c872f34d34530b882f15dc4c82`.
+- The decoder rejects noncanonical/extra-field/wrong-host manifests, wrong
+  hashes or byte lengths, malformed/noncanonical SafeTensors, wrong factor
+  names/shapes/dtypes, nonfinite factors, and artifacts over 256 KiB. The
+  separate never-trained P6 zero control additionally requires frozen factors
+  whose every FP32 element is **positive zero**; negative zero is rejected.
+  The maximum grid's zero-control fixture has a 674-byte manifest and
+  147,776-byte SafeTensors payload. Their SHA-256 values are respectively
+  `c2dfcb53668db046195eda97a721cd43a49ebf5fbbd3ef6f3fa150d357d02084`
+  and `f251ab9a14f995dc446b90dc1873c3fa7745f5df5f29994c09dca9c124125800`;
+  these exact bytes matched local SafeTensors 0.7.0 and the pinned 0.8.0.
+- The focused artifact/schema group passed **30/30**, and the added real
+  SmolLM2 host integration test confirmed that a serialized-and-remounted
+  zero control leaves official CPU FP32 logits bitwise unchanged. The final
+  pinned Windows R0 regression incorporating that test passed **220/220,
+  exit 0, 109.80 s** on CPython 3.12.13 / Torch 2.14.0+cu130 /
+  Transformers 5.17.0. Scoped Ruff/format, pinned Pyright 1.1.413 (0/0/0),
+  and diff-check passed. Prior 219/219 was run before this last integration
+  test and is not used as final coverage evidence.
+- This is a non-authorizing reference serializer, not a trained or activated
+  neural identity. It does not establish a final learned-artifact namespace,
+  full manifest/host approval for future hosts, the matched LoRA arm, Linux
+  evaluator parity, claim ledger, sealer, or the R0.0 clean-checkout gate.
+  `training_authority=false`; no optimizer step was run.

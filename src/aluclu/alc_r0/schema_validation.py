@@ -36,6 +36,7 @@ _SCHEMAS = {
         "linux-evaluator-bootstrap-receipt.schema.json"
     ),
     "run-artifact-contract": "run-artifact-contract.schema.json",
+    "research-capsule-artifact": "research-capsule-artifact.schema.json",
 }
 
 
