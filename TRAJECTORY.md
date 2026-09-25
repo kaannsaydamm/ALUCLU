@@ -4375,3 +4375,41 @@ Task 2 sensorium/recollection gate: CLEAN
   full manifest/host approval for future hosts, the matched LoRA arm, Linux
   evaluator parity, claim ledger, sealer, or the R0.0 clean-checkout gate.
   `training_authority=false`; no optimizer step was run.
+
+## 2026-09-25 — ALC-R0 exact matched q-only LoRA checkpoint 19
+
+- Began the preregistered section-3.2 comparator with a collection RED for
+  the absent LoRA module. Implemented an explicit **non-merged** q-only path
+  at the selected decoder block outputs `{14}`, `{29}`, or `{14,29}` and
+  ranks `{4,8,16}`. It uses the pinned Transformers 5.17.0 attention
+  primitives without replacing/monkeypatching `q_proj`, changing base
+  weights, or installing forward hooks. Its FP32 `A[rank,576]` and
+  `B[576,rank]` per port have exactly `1,152 * rank` trainable parameters,
+  local-seeded Kaiming A identical to the capsule arm at the same seed,
+  exact-zero B, and `alpha=rank` multiplier one. FP32 factor math casts the
+  completed delta to the host q-projection dtype. The wrapper rejects capsule
+  co-mounting so this scientific control arm cannot silently combine methods.
+- On the real pinned SmolLM2 host, focused tests passed **12/12**: zero-init
+  CPU FP32 logits match official forward bitwise, nonzero LoRA changes logits,
+  detach restores baseline, mask plus one-token incremental cache preserves
+  bitwise parity, the base `q_proj` module identity is unchanged, gradients
+  reach only LoRA factors, and a real RTX 4050 BF16 no-op matches official
+  logits at `rtol=atol=1e-3` with identical argmax. Base parameters remained
+  frozen and in eval mode. No optimizer step was run.
+- The first expanded full R0 run reported **231 PASS / 1 FAIL** in 258.75 s:
+  the pre-existing two-fresh-GPU-process test saw its first child exit 1.
+  Its old `check=True` traceback did not expose the child stderr, so the
+  root cause is **unknown**, not classified as a LoRA failure. Worse, copying
+  the entire parent environment into that child caused pytest's traceback to
+  print an unrelated API credential from the environment. The credential
+  value is not recorded here; the user was advised to revoke/rotate it. The
+  child now receives only an explicit non-secret environment allowlist, and
+  a nonzero exit reports bounded child stderr. The isolated GPU subprocess
+  test then passed **1/1**, and the complete final pinned Windows R0 suite
+  passed **232/232, exit 0, 83.92 s**. The intermittent first failure remains
+  a recorded unresolved observation; one clean rerun does not prove it can
+  never recur.
+- Scoped Ruff/format and pinned Pyright 1.1.413 (0/0/0) passed. This is
+  structural and forward-equivalence evidence for the matched control, **not**
+  LoRA training/evaluation, matched optimizer-budget proof, P11 Linux parity,
+  or R0.0 authority. `training_authority=false` remains in force.

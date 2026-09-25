@@ -300,7 +300,19 @@ def test_two_fresh_gpu_processes_reproduce_full_forward_matrix() -> None:
         pytest.skip("pinned Transformers 5.17.0 and local model snapshot required")
     if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
         pytest.skip("CUDA BF16 host is unavailable")
-    environment = os.environ.copy()
+    safe_child_keys = (
+        "PATH",
+        "SYSTEMROOT",
+        "WINDIR",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "CUDA_PATH",
+        "CUDA_VISIBLE_DEVICES",
+    )
+    environment = {key: os.environ[key] for key in safe_child_keys if key in os.environ}
     environment.update(
         {
             "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
@@ -322,17 +334,19 @@ def test_two_fresh_gpu_processes_reproduce_full_forward_matrix() -> None:
         cwd=PROJECT_ROOT,
         env=environment,
         capture_output=True,
-        check=True,
+        check=False,
         timeout=300,
     )
+    assert first.returncode == 0, first.stderr.decode("utf-8", "replace")[-3000:]
     second = subprocess.run(
         command,
         cwd=PROJECT_ROOT,
         env=environment,
         capture_output=True,
-        check=True,
+        check=False,
         timeout=300,
     )
+    assert second.returncode == 0, second.stderr.decode("utf-8", "replace")[-3000:]
 
     assert first.stdout == second.stdout
     result = parse_canonical_json(first.stdout)

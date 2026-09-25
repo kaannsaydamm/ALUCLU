@@ -8,13 +8,14 @@ can be tested independently against the official Transformers forward.
 from __future__ import annotations
 
 from importlib.metadata import version
+from typing import cast
 
 import torch
 from torch import nn
 from transformers.cache_utils import Cache, DynamicCache
 from transformers.masking_utils import create_causal_mask
 from transformers.modeling_outputs import CausalLMOutputWithPast
-from transformers.models.llama.modeling_llama import LlamaForCausalLM
+from transformers.models.llama.modeling_llama import LlamaDecoderLayer, LlamaForCausalLM
 
 from aluclu.alc_r0.host import SMOLLM2_135M_CONFIG, VerifiedHost
 from aluclu.alc_r0.research_capsule import ResearchCapsuleV0
@@ -69,6 +70,27 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
     def detach(self) -> None:
         self.capsule = None
 
+    def _run_decoder_layer(
+        self,
+        index: int,
+        decoder_layer: LlamaDecoderLayer,
+        hidden_states: torch.Tensor,
+        *,
+        attention_mask: torch.Tensor | None,
+        position_embeddings: tuple[torch.Tensor, torch.Tensor],
+        position_ids: torch.Tensor,
+        past_key_values: Cache | None,
+        use_cache: bool,
+    ) -> torch.Tensor:
+        return decoder_layer(
+            hidden_states,
+            attention_mask=attention_mask,
+            position_embeddings=position_embeddings,
+            position_ids=position_ids,
+            past_key_values=past_key_values,
+            use_cache=use_cache,
+        )
+
     def forward(
         self,
         input_ids: torch.Tensor | None = None,
@@ -116,7 +138,9 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
         hidden_states = inputs_embeds
         position_embeddings = body.rotary_emb(hidden_states, position_ids=position_ids)
         for index, decoder_layer in enumerate(body.layers):
-            hidden_states = decoder_layer(
+            hidden_states = self._run_decoder_layer(
+                index,
+                cast(LlamaDecoderLayer, decoder_layer),
                 hidden_states,
                 attention_mask=causal_mask,
                 position_embeddings=position_embeddings,
