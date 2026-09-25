@@ -37,6 +37,7 @@ _SCHEMAS = {
     ),
     "run-artifact-contract": "run-artifact-contract.schema.json",
     "research-capsule-artifact": "research-capsule-artifact.schema.json",
+    "claim-ledger-candidate": "claim-ledger-candidate.schema.json",
 }
 
 

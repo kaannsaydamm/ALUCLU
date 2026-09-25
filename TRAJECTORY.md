@@ -4413,3 +4413,33 @@ Task 2 sensorium/recollection gate: CLEAN
   structural and forward-equivalence evidence for the matched control, **not**
   LoRA training/evaluation, matched optimizer-budget proof, P11 Linux parity,
   or R0.0 authority. `training_authority=false` remains in force.
+
+## 2026-09-25 — ALC-R0 non-authorizing claim-ledger candidate checkpoint 20
+
+- Began the evidence-root algorithm with a collection RED for a missing
+  ledger module. The reference candidate accepts an **exact caller-declared**
+  R0 evidence path/media set; rejects missing/extra, unsafe, case-colliding,
+  self-referential claim-ledger or completion paths; sorts files by UTF-8 path
+  bytes; records exact byte length, media/schema type, and SHA-256; then
+  computes `root_digest = SHA-256(RFC-8785 ledger without root_digest)`. Its
+  own canonical JSON has `claim=null`, `status=candidate-non-authorizing`,
+  and `training_authority=false`. Byte-for-byte verifier checks the candidate
+  against actual input evidence and cannot grant ALC-0 or issue completion.
+- Added a filesystem scanner for the same candidate: it checks the R0 tree
+  for missing/orphan/nonregular/symlink entries and hashes each declared file.
+  JSON must be canonical; JSONL records and UTF-8 logs are validated and
+  hashed in a streaming pass, while SafeTensors bytes are hashed as opaque
+  payloads at this layer. The closed Draft 2020-12 candidate schema is 1,246
+  bytes, SHA-256
+  `aef47f22b7e7eb5f1a7322acb29dc5f398f4a849ac53ee1ce60597548b60f0d9`.
+  Tests cover digest/ordering tamper, wrong length/media, duplicate entry,
+  malformed canonical bytes, case collision, orphan/missing file, symlink,
+  invalid JSONL newline, and invalid UTF-8 log.
+- Focused ledger/schema tests passed **33/33**. Full pinned Windows R0
+  regression passed **244/244, exit 0, 82.65 s**; scoped Ruff/format,
+  Pyright 1.1.413 (0/0/0), and diff-check passed. These tests prove the
+  candidate algorithm and fixture scanner only. The authoritative machine
+  preregistration still lacks the complete control/final artifact allowlist,
+  attempt/state and foreign-key validator, P1–P14 completion gate, and sealed
+  data/runtime receipts. Therefore no final claim ledger was generated,
+  `training_authority=false`, and R0.0 remains **OPEN**.
