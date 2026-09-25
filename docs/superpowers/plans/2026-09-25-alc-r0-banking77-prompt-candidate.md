@@ -51,3 +51,15 @@ source hashes, tokenizer bytes, exact prompt token IDs/roots and field order,
 the 512-token limit, all three split roots, and evaluator enforcement before
 training or held-out access is authorized. This document alone grants no
 training or confirmatory-evaluation authority.
+
+The development-only candidate receipt is
+`results/alc_r0_banking77_prompt_candidate_20260925.json` (exact LF bytes,
+SHA-256 `0a2c08ef5dee37e9a75e8fe088a05be36392a696c1bf63bc82c5341256874661`).
+It binds the source receipt, ordered labels and candidate IDs, prefix/suffix
+IDs, and ordered train/dev prompt-token streams by SHA-256 without storing raw
+utterances. It records 1,207 truncated train rows and 276 truncated dev rows.
+`banking_prompt_receipt.py` regenerates it from the verified development
+source and local tokenizer, and the pinned-asset test checks byte-for-byte
+equality. This receipt intentionally does **not** claim it has verified the
+model/tokenizer acquisition inventory or the evaluator environment; those
+checks belong to the later R0.0 validator.

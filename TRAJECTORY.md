@@ -4653,3 +4653,35 @@ Task 2 sensorium/recollection gate: CLEAN
   access, or confirmatory evaluation occurred. The prompt candidate still
   needs machine-readable R0.0 freeze/validator binding before it can authorize
   training. `training_authority=false`; R0.0 remains **OPEN**.
+
+## 2026-09-25 — Banking77 prompt-token receipt checkpoint 27
+
+- Began with a collection **RED** for missing `banking_prompt_receipt`.
+  Implemented a development-only candidate receipt that hashes the source
+  receipt, ordered labels, complete candidate-token map, fixed prefix/suffix
+  token IDs, and ordered per-row prompt-token streams for train and dev. The
+  stream roots bind source ID, canonical label, normalized-utterance digest,
+  and exact prompt IDs, with a canonical JSON+LF record separator. The receipt
+  stores no raw utterances or token lists. The verified-development loader in
+  the CLI accepts only the pinned `categories.json` and `train.csv`; no official
+  test split is read or acquired.
+- The actual candidate receipt is
+  `results/alc_r0_banking77_prompt_candidate_20260925.json` with SHA-256
+  `0a2c08ef5dee37e9a75e8fe088a05be36392a696c1bf63bc82c5341256874661`.
+  Its train/dev prompt roots are
+  `8575d83d2f2356807bd35a51d7e6e02cfc47ee4da2c5c68d9715a443e368686a`
+  and
+  `3885747387075700f6b292c55d66669bc607c425fcc6cd0a10642727a76d3cc4`.
+  The train/dev truncation counts are 1,207/276, summing to the previously
+  observed 1,483. Added `text eol=lf` for this byte-identity artifact.
+- Focused fake-only tests first passed 3/3 with one optional real-asset skip;
+  with pinned development source and tokenizer supplied, final focused tests
+  passed **5/5**, including a subprocess CLI byte-for-byte comparison against
+  the tracked canonical receipt. Ruff check/format passed, Pyright 1.1.413
+  reported 0 errors/warnings/informations, and the complete pinned Windows
+  R0 regression passed **280/280, exit 0, 108.72 s**.
+- This receipt is still **candidate/non-authorizing**. It does not independently
+  verify tokenizer acquisition bytes, bind the complete multisuite R0.0
+  preregistration, seal held-out data, or implement the R0.0 validator. No
+  training or confirmatory evaluation occurred. `training_authority=false`;
+  R0.0 remains **OPEN**.
