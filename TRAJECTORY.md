@@ -4473,3 +4473,33 @@ Task 2 sensorium/recollection gate: CLEAN
   independent sealer, full preregistration and validator are still pending.
   No model was trained or evaluated by this slice; `training_authority=false`
   and R0.0 remains **OPEN**.
+
+## 2026-09-25 — Banking77 pinned development-source inspection checkpoint 22
+
+- Inspected the upstream Git tree at pinned commit
+  `9d081458ff52e53cf7e848f414e6e9344e4e6696`. Its Banking77 subtree
+  contains `categories.json`, `train.csv`, and `test.csv`; the first two Git
+  blob IDs match the preregistered values. Downloaded **only** categories and
+  official train into the external local research cache (not this repository).
+  The official test file was neither downloaded nor opened in this checkpoint.
+- Verified exact raw bytes with `git hash-object --no-filters` because the
+  Windows Git text filter changes the default `train.csv` hash. Categories:
+  2,036 bytes, blob `cdd2a5c77a4079a455f8fb7e751d1ecee0e2a5a4`,
+  SHA-256 `53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63`.
+  Train: 839,073 bytes, blob `98e2543cf482d0dca7bfb175ebe35d98efad95be`,
+  SHA-256 `b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b`.
+- A strict CSV parse observed **77 labels and 10,003 official-train rows**.
+  Using provisional stable IDs `train:<zero-padded eight-digit row ordinal>`,
+  the new reference preprocessor produced **8,030 train / 1,969 dev** and
+  removed **4** same-label duplicate rows; no conflicting-label digest was
+  encountered. Exploratory roots: duplicate
+  `f789c0fd606467ed0daab68ebe370a9733189b964865b2e1ce8115fccd9036e8`,
+  ordered train IDs
+  `4b03398873873f7fb84cd3b3efd750d50354d7e28d990ef9ea904e05d6fb41f0`,
+  ordered dev IDs
+  `86da488d849d0fd4193f45bc2e2cde0b96066d5b3634c945939350b08e1231ea`.
+- This one-off inspection is **not yet** a committed dataset acquisition
+  command/receipt or frozen split manifest. The source-ID convention, parser,
+  byte checks, license provenance, and roots must become tested machine-readable
+  artifacts before any R0.0 validator or training authority can use them.
+  `training_authority=false`; R0.0 remains **OPEN**.
