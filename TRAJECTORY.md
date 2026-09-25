@@ -4503,3 +4503,58 @@ Task 2 sensorium/recollection gate: CLEAN
   byte checks, license provenance, and roots must become tested machine-readable
   artifacts before any R0.0 validator or training authority can use them.
   `training_authority=false`; R0.0 remains **OPEN**.
+
+## 2026-09-25 — Banking77 verified development-source receipt checkpoint 23
+
+- Began with a collection **RED** for absent source verifier. Implemented a
+  fail-closed loader for exactly `categories.json` and official `train.csv`
+  outside the repository. It rejects an extra `test.csv`, symlinks/nonregular
+  files, wrong byte lengths, SHA-256 or raw Git blob IDs, invalid UTF-8/BOM,
+  malformed JSON/CSV, wrong CSV header/column count, invalid categories, and
+  source categories missing from the pinned list. The CLI emits only canonical
+  JSON metadata, never raw utterances or a local absolute path. It does **not**
+  download, read, or seal an official test split.
+- The first real-data run failed: upstream labels include
+  `Refund_not_showing_up` and `reverted_card_payment?`, contradicting an
+  overly strict `[a-z0-9_]+` parser assumption. Added a failing fixture,
+  retained exact raw-category membership, then canonicalized by ASCII
+  lowercasing while preserving terminal `?`; collisions fail closed. This
+  clarifies the frozen plan's “canonical lowercase label” phrase without
+  changing its thresholds or seed. The original plan bytes are immutable and
+  SHA-256 `0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b`;
+  the explanation is in a separate development-source addendum. The raw-label
+  exploratory train/dev ID roots in checkpoint 22 are **superseded**.
+- On the pinned real source, the non-authorizing candidate receipt reports
+  77 labels, 10,003 source rows, 4 removed same-label duplicates, 8,030 train
+  and 1,969 dev. Canonical-label ordered ID roots are train
+  `919ff91cb563d343fded98bef53cbb7b11f6510390b54d6c1c0ba196ba6223a6`
+  and dev
+  `e79ce9e072cb79d512fc2dd992cad87706a7916301f1692184752139e1e48627`.
+  Ordered ID+label+normalized-digest roots are train
+  `abef9ee5d2090eff6e01e63f3e849231b80e80d0639d5ad66d27a32012cab26c`
+  and dev
+  `6821b3458a5519df1122b2e0cf1cc821bf103961665f8ee215148693cb0eff5d`.
+  The receipt is byte-for-byte reproducible from the locally verified source,
+  is canonical JSON plus LF, and has SHA-256
+  `398523ad80917277be7b1a94d6db4c26d86f403d12ec75559909af6408c60028`.
+  No dataset bytes are committed.
+- Focused source tests passed **8/8**. The first complete R0 run had **259
+  PASS / 2 FAIL**: one was caused by my temporary edit to the byte-frozen
+  source plan, the other was a first-child CUDA out-of-memory in the existing
+  two-fresh-process forward test. I restored the exact plan bytes, moved the
+  clarification to an addendum, and verified both failed tests **2/2** in a
+  targeted rerun. The second complete pinned Windows R0 run passed
+  **261/261, exit 0, 137.28 s**. Scoped Ruff/format, Pyright 1.1.413
+  (0/0/0), and diff-check passed. The intermittent GPU OOM remains a recorded
+  observation with undetermined cause; a later clean pass does not erase it.
+- After the staged diff review, the receipt's source-ID description was made
+  explicit about the zero-based data-row ordinal; this changed receipt bytes
+  but not IDs, split membership, or roots. The final receipt was verified
+  byte-for-byte against regenerated local source output (**1,494 bytes**),
+  focused source tests passed **8/8**, and the complete pinned Windows R0
+  regression on these final bytes passed **261/261, exit 0, 576.24 s**.
+- This receipt binds the **development** source and split only. No model
+  optimizer step or held-out evaluation occurred. The sealer/key broker,
+  complete preregistration and validator, acquisition receipts for other data,
+  Linux/Windows execution parity, and R0.0 clean-checkout gate remain open.
+  `training_authority=false`; R0.0 is **OPEN**.
