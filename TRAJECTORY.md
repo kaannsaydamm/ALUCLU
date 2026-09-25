@@ -4243,3 +4243,43 @@ Task 2 sensorium/recollection gate: CLEAN
   LoRA comparator, immutable manifest/SafeTensors serializer, trainer,
   control/final artifact namespaces, data/sealer/rootfs, and R0.0 machine gate
   remain open. `training_authority=false` remains in force; no training was run.
+
+## 2026-09-25 — ALC-R0 pinned host-wrapper checkpoint 15
+
+- TDD began with the expected missing-wrapper collection RED under the isolated
+  Windows research environment. The real pinned snapshot was reverified and
+  loaded through `load_verified_host` with offline flags, local SafeTensors,
+  remote code disabled, exact SmolLM2-135M config, eval mode, and frozen base.
+  The tested environment is CPython 3.12.13, Torch 2.14.0+cu130, and
+  Transformers 5.17.0; model bytes stayed outside the repository.
+- The reference wrapper explicitly iterates the pinned 30 decoder blocks and
+  applies a mounted ResearchCapsuleV0 only after its declared block-output
+  ports. It shares the existing verified base rather than instantiating another
+  model; it uses no monkeypatch or forward hook. The same decoder path runs
+  mounted and unmounted. On the real pinned host, unmounted CPU FP32 logits
+  matched the official `LlamaForCausalLM.forward` **bitwise** for batch 1 at
+  unpadded lengths 1, 8, 127, and 512; batch 2 with left/right EOS padding,
+  unequal masks, and explicit/inferred positions; and initial plus one-token
+  incremental cache decoding. A nonzero mounted capsule changed logits, while
+  detach restored the exact baseline. An RTX 4050 BF16 real-host case also
+  matched official logits at `rtol=atol=1e-3` with identical argmax tokens.
+- Independent GPT-6 Sol review caught a genuine mode bug: ordinary
+  `wrapper.train()` recursively turned the frozen base back to training mode.
+  A RED real-host test reproduced it. The wrapper now keeps the base in eval
+  mode through train/eval propagation, aligns the capsule's mode on mount, and
+  fail-closes on later external base-mode or `requires_grad` drift. A second RED
+  test reproduced the external-drift omission before the forward guard was
+  added. The independent reviewer returned CLEAR for this **narrow wrapper
+  slice**, and separately observed finite capsule gradients with zero base
+  gradients in a no-update backward probe.
+- Final pinned-environment R0 regression: 171/171 PASS; scoped Ruff PASS,
+  pinned Pyright 1.1.413 0/0/0, and diff-check PASS. The 14 wrapper tests
+  require the external pinned model and Transformers 5.17.0; they are skipped
+  when those prerequisites are absent, so this is not a generic CI portability
+  claim. No optimizer step or learning experiment was run.
+- Full section-3 conformance remains open: GPU BF16 parity over the complete
+  batch/length/padding/position/cache matrix, two fresh GPU processes, Linux
+  evaluator parity, manifest/SafeTensors round-trip, and the exact matched
+  native LoRA comparator are unproven. Control/final artifact namespaces and
+  the R0.0 validator/sealer/rootfs are also open. `training_authority=false`;
+  no ALC-0 neural-capability claim is authorized.
