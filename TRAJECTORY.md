@@ -4763,3 +4763,52 @@ Task 2 sensorium/recollection gate: CLEAN
   validation root exclusion, independent test sealer, complete R0.0 validator,
   training, and held-out evaluation remain open. `training_authority=false`;
   R0.0 remains **OPEN**.
+
+## 2026-09-26 — Devign exact-clone label-conflict preflight checkpoint 30
+
+- Continued in the local Desktop worktree from clean source HEAD `4d2e809`;
+  the old OneDrive checkout and official held-out test split were not touched.
+  Tests were first RED because the new `devign_clone` module was absent. An
+  initial test invocation without `PYTHONPATH=src` failed at collection for
+  the environment, not the implementation; the corrected invocation exposed
+  the intended missing-module RED. A later PowerShell `test_alc_r0_*.py`
+  wildcard launcher did not expand and ran no tests; the actual regression
+  used `pytest tests -k alc_r0`.
+- Implemented fixture-tested development-only 256-permutation affine-32
+  MinHash (seed `20260916`), 0.85 soft-threshold LSH candidate bands
+  `13 x 19`, exact five-shingle Jaccard `>= 0.90` confirmation, transitive
+  lexicographic union-find roots, conflicting-label fail-closed behavior,
+  one member per split, and train-root exclusion from validation. The fixed
+  coefficient digest is
+  `08ed1ca23b267dc9f06267b318f2e95990c72c0f2b06480647afcd79aeaf9e42`.
+  The adversarial fixtures include exact clones, formatting-only clones,
+  conflicting labels, transitive A-near-B-near-C, and exact 0.90 boundary.
+- The first full 24,586-row development-only filter stopped on a conflicting
+  label root. Independent exact normalized-SHA-256 audit then found **54**
+  duplicate groups and **54** opposite-label conflicts (108 members) among
+  24,532 exact groups. Direct byte comparison confirmed one pair,
+  `devign:00000817` and `devign:00015755`, has identical normalized UTF-8
+  but labels `False` and `True`. This is a source-label contradiction, not an
+  LSH false positive or threshold decision. No source code text was committed.
+- Canonical non-authorizing receipt
+  `results/alc_r0_devign_exact_conflict_preflight_20260926.json` regenerated
+  byte-identically from only the pinned train/validation source; SHA-256
+  `6741671a84c511179e666b21ef89e80fcc11607b10829b9bbb86c82e0675f0d9`.
+  Its conflict-ledger commitment is
+  `31ba36366cb0a11d0d56c77a8a6800a62587d2d9cc8a6a6f5caf0a06c3557390`.
+  The negative result and next decision boundary are documented in
+  `docs/superpowers/plans/2026-09-26-alc-r0-devign-exact-conflict-addendum.md`.
+- Final focused clone tests passed **7/7**; scoped Ruff check/format and
+  Pyright 1.1.413 passed with zero errors/warnings. Final Windows ALC-R0
+  regression after the last source/test edit passed **305 tests, 0 failures,
+  0 errors, 7 skipped, exit 0**, JUnit time `139.270 s`; XML SHA-256
+  `16f7dd454abf014f16d8e87e41ce7746c8f529e4daac2d1b96394b6353c75fc7`.
+  The earlier 304-test run was superseded by this final-byte run.
+- **Gate outcome:** the frozen plan explicitly says any conflicting-label
+  clone root fails R0.0. This Devign development source therefore fails data
+  qualification before training; the full-corpus LSH filter, independent test
+  sealer, training, and held-out evaluation were not run. This does not
+  falsify the capsule hypothesis or authorize a revised dataset. An explicit
+  preregistration amendment with an untouched confirmatory split is required
+  before trying another data protocol. `training_authority=false`; no ALC-0
+  claim is opened.
