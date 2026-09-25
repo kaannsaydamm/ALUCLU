@@ -4211,3 +4211,35 @@ Task 2 sensorium/recollection gate: CLEAN
   R0.0 machine gate remain open. The worktree's pre-existing untracked Task 2
   logs and root `uv.lock` remain untouched; this worktree is not clean-checkout
   training evidence.
+
+## 2026-09-25 — ALC-R0 reference neural math checkpoint 14
+
+- Implemented only the preregistered ResearchCapsuleV0 **reference factor math**:
+  width 576; port sets `{14}`, `{29}`, `{14,29}`; ranks `{4,8,16}`; per-port
+  FP32 factors `A[rank,576]`, `B[576,rank]`; local-seeded Kaiming-uniform A;
+  exact-zero B; RMS normalization with `1e-5`; and the `alpha=rank` residual
+  multiplier of one. Factor initialization uses a private CPU generator and
+  leaves global Torch RNG unchanged. The distinct P6 all-positive-zero control
+  zeros **and freezes** both factors at every selected port.
+- TDD began with the expected missing-module collection RED. The first GREEN
+  passed basic shape/count/no-op/gradient/math tests, but independent GPT-6 Sol
+  review reproduced two real scientific bugs: inherited BF16 autocast made
+  both linear intermediates BF16 instead of FP32, and the never-trained P6
+  zero control still had `requires_grad=True`. New RED tests reproduced both.
+  The repair disables autocast around normalization and both linear operations,
+  casts only the completed delta to the host activation dtype, and freezes P6
+  factors. Targeted independent rereview returned CLEAR for this narrow math
+  slice; host wrapping and training were explicitly outside its verdict.
+- The focused capsule file is 16/16 PASS on Windows CPython 3.13 with Torch
+  2.6.0+cu124, including an actual RTX 4050 CUDA BF16 forward under enabled
+  autocast. The expanded R0 test slice is 157/157 PASS. Scoped Ruff, Pyright
+  1.1.413 (0/0/0), and compileall pass. A separate CPython 3.12/Torch
+  2.14.0+cpu direct-module smoke confirmed a 4,608-parameter no-op; its full
+  pytest collection was unavailable because that existing environment lacks
+  `rfc8785`, so it is **not** claimed as a Torch 2.14 regression PASS. Neither
+  existing environment was changed to work around this limitation.
+- This is not a trained artifact or neural capability result. The official
+  SmolLM2 host wrapper and no-capsule forward conformance, parameter-matched
+  LoRA comparator, immutable manifest/SafeTensors serializer, trainer,
+  control/final artifact namespaces, data/sealer/rootfs, and R0.0 machine gate
+  remain open. `training_authority=false` remains in force; no training was run.
