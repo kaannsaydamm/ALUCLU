@@ -4685,3 +4685,41 @@ Task 2 sensorium/recollection gate: CLEAN
   preregistration, seal held-out data, or implement the R0.0 validator. No
   training or confirmatory evaluation occurred. `training_authority=false`;
   R0.0 remains **OPEN**.
+
+## 2026-09-25 — Devign development-source acquisition checkpoint 28
+
+- Moved beyond the Banking-only development lane to the second blocking real
+  target family. Queried the official Hugging Face dataset repository at the
+  plan-pinned commit `69bd48c03223c2104342acd9a807caf61ac3efb8` and
+  acquired **only** `data/train-00000-of-00001.parquet` (17,847,670 bytes,
+  SHA-256 `e319c83e2e816a10aeeebe78668aa95b757b04e555700bf5f826766b0e80bb06`)
+  and `data/validation-00000-of-00001.parquet` (2,214,315 bytes,
+  SHA-256 `a17a76ed040d7f8657d1ff741f967b44704c008101ac958e2990ad468203cfa4`)
+  into the frozen non-OneDrive research data tree. The source `data/`
+  directory contains exactly those two files; no official test file was
+  downloaded or read. The upstream card declares C-UDA, so no dataset bytes
+  are committed. C: free space after acquisition was about 39.17 GiB.
+- Started with test collection **RED** for absent `devign_source`. The first
+  implementation produced **2 FAIL / 3 PASS / 1 SKIP** because it incorrectly
+  assumed `pyarrow.Table.null_count` exists; fixed this by checking each
+  column's null count. The final verifier binds exact byte lengths/SHA-256,
+  Parquet schema and row counts, nonnull fields, permitted project names,
+  commit IDs, and globally distinct official IDs. A source ID is
+  `devign:<zero-padded eight-digit official id>`. It rejects a test/extra file,
+  same-length byte mutation, malformed schema, nulls, and cross-split ID
+  collision. The verified real source has 21,854 train and 2,732 validation
+  rows, 10,018/1,187 positive labels, and no source-ID overlap.
+- The canonical non-authorizing receipt is
+  `results/alc_r0_devign_development_candidate_20260925.json`, SHA-256
+  `09926c5742825b274efb9e00fb536c2950811c8c01615cf5ef8ad1826c1e7d73`.
+  The pinned-source test and subprocess CLI reproduce its exact bytes; the
+  artifact has an explicit LF checkout attribute. Added the already-locked
+  PyArrow 25.0.1 dependency to the `alc-r0` optional extras. Final focused
+  real-source tests passed **9/9**; scoped Ruff/format and Pyright 1.1.413
+  (0 errors/warnings/informations) passed. Complete pinned Windows R0
+  regression passed **289/289, exit 0, 112.01 s**.
+- This closes only a development-source acquisition slice. The plan's code
+  normalization, 256-permutation MinHash/LSH and Jaccard clone filtering,
+  independent test sealer, prompt and metrics contracts, full R0.0 validator,
+  training, and held-out evaluation remain open. `training_authority=false`;
+  R0.0 is **OPEN**.
