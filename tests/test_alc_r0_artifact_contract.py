@@ -39,6 +39,28 @@ def test_run_artifact_contract_is_closed_over_every_matrix_filename() -> None:
     assert contract["status"] == "run-namespace-frozen-non-authorizing"
 
 
+def test_run_artifact_path_template_renders_declared_filenames() -> None:
+    contract = build_run_artifact_contract(MATRIX_PATH.read_bytes())
+    matrix = parse_canonical_json(MATRIX_PATH.read_bytes())
+    by_filename = {item["filename"]: item for item in _artifacts(contract)}
+    template = cast(str, contract["run_path_template"])
+    checked = 0
+
+    for row in matrix["runs"]:
+        for filename in row["expected_artifacts"]:
+            artifact = by_filename[filename]
+            rendered = template.format(
+                phase=row["phase"],
+                run_id=row["run_id"],
+                artifact_type=artifact["artifact_type"],
+                extension=artifact["extension"],
+            )
+            assert rendered == f"results/alc_r0/{row['phase']}/{row['run_id']}/{filename}"
+            checked += 1
+
+    assert checked == contract["total_expected_file_count"] == 1922
+
+
 def test_learned_artifact_is_safe_closed_and_required_for_all_training_runs() -> None:
     contract = build_run_artifact_contract(MATRIX_PATH.read_bytes())
     by_filename = {item["filename"]: item for item in _artifacts(contract)}
@@ -91,7 +113,7 @@ def test_tracked_run_artifact_contract_is_reproducible_and_valid() -> None:
     ) == parse_canonical_json(tracked)
 
 
-@pytest.mark.parametrize("mutation", ["drop", "rename", "authority", "count"])
+@pytest.mark.parametrize("mutation", ["drop", "rename", "authority", "count", "path"])
 def test_run_artifact_contract_rejects_closed_world_mutations(mutation: str) -> None:
     contract = build_run_artifact_contract(MATRIX_PATH.read_bytes())
     if mutation == "drop":
@@ -100,6 +122,10 @@ def test_run_artifact_contract_rejects_closed_world_mutations(mutation: str) -> 
         _artifacts(contract)[0]["filename"] = "undeclared.json"
     elif mutation == "authority":
         contract["training_authority"] = True
+    elif mutation == "path":
+        contract["run_path_template"] = (
+            "results/alc_r0/{phase}/{run_id}/{artifact_type}.{extension}"
+        )
     else:
         contract["total_expected_file_count"] = 1
 

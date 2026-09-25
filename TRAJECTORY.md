@@ -4183,3 +4183,31 @@ Task 2 sensorium/recollection gate: CLEAN
   namespace allowlists, state/attempt transitions, foreign keys, orphan scan,
   claim ledger, completion artifact, datasets, sealer, and rootfs remain open;
   no R0.0 or training authority is claimed.
+
+## 2026-09-25 — ALC-R0 R0.0 implementation checkpoint 13
+
+- Independent GPT-6 Sol code/security and architecture reviews of `741b60f`
+  both found a blocking run-path contract defect: the descriptor extension
+  already included the leading dot, while the path template inserted a second
+  dot. Literal expansion produced `metrics..json` and other paths outside the
+  declared 20-filename allowlist. The preceding 139 PASS tests did not exercise
+  template expansion and therefore did not clear this issue.
+- A new RED test reproduced the double-dot path. The template now uses
+  `{artifact_type}{extension}`; the canonical run contract and its closed schema
+  were regenerated. The test expands every one of the 1,922 expected file slots
+  across all 280 matrix rows and checks each against the declared filename.
+  A negative mutation explicitly rejects the old double-dot template.
+- The repaired canonical run contract is 6,731 bytes, SHA-256
+  `e53a8c31d522afb51ab4ad218dd4ea606a681f56fe3e61a414df763725601ded`;
+  its canonical schema is 3,268 bytes, SHA-256
+  `f41e1069679dcef4c5ad0afab631cb1bbfe497d8283c231bcd403d42f263c6cb`.
+  The logical matrix itself is unchanged. The R0 test slice is 141/141 PASS on
+  CPython 3.13; scoped Ruff, Pyright 1.1.413 (0/0/0), compileall, and
+  `git diff --check` pass. Both independent reviewers returned CLEAR for this
+  four-file repair; those verdicts cover this defect, not the full R0.0 gate.
+- `training_authority=false` remains fixed. The control/final allowlists,
+  attempt/state and foreign-key validation, orphan scan, claim ledger,
+  completion artifact, datasets, sealer, immutable rootfs, and clean-checkout
+  R0.0 machine gate remain open. The worktree's pre-existing untracked Task 2
+  logs and root `uv.lock` remain untouched; this worktree is not clean-checkout
+  training evidence.

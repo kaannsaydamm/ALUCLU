@@ -126,7 +126,7 @@ def build_run_artifact_contract(matrix_bytes: bytes) -> dict[str, object]:
         "namespace": "run",
         "primary_key": ["run_id", "artifact_type", "logical_id"],
         "run_path_template": (
-            "results/alc_r0/{phase}/{run_id}/{artifact_type}.{extension}"
+            "results/alc_r0/{phase}/{run_id}/{artifact_type}{extension}"
         ),
         "schema_id": (
             "https://aluclu.org/schemas/alc_r0/v1/run-artifact-contract.schema.json"
