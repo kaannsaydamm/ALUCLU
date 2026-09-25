@@ -4283,3 +4283,37 @@ Task 2 sensorium/recollection gate: CLEAN
   native LoRA comparator are unproven. Control/final artifact namespaces and
   the R0.0 validator/sealer/rootfs are also open. `training_authority=false`;
   no ALC-0 neural-capability claim is authorized.
+
+## 2026-09-25 — ALC-R0 no-capsule GPU forward checkpoint 16
+
+- Extended the pinned SmolLM2-135M wrapper comparison on the real RTX 4050
+  CUDA BF16 host. The matrix now exercises 20 non-cache cases: batch 1 at
+  lengths 1/8/127/512 with explicit/inferred positions, and batch 2 at
+  lengths 8/127/512 with left/right padding, unequal attention masks, and
+  explicit/inferred positions. Four further cases exercise initial plus
+  one-token cache decoding at lengths 1/8/127/512. Every case compares the
+  official and unmounted wrapper logits at `rtol=atol=1e-3` and checks exact
+  argmax equality. This is forward parity, not learning or quality evidence.
+- Added a fresh-process worker that checks the same 24-case GPU matrix and
+  emits canonical per-case SHA-256 logits digests with
+  `training_authority=false`. The test starts two independent pinned-Python
+  processes and requires byte-identical canonical output. A first pinned run
+  passed with the host's unset cuBLAS setting; independent review reproduced
+  a deterministic-cuBLAS failure under a *different* Torch 2.6+cu124 runtime.
+  To make the child configuration explicit, the test now sets
+  `CUBLAS_WORKSPACE_CONFIG=:4096:8` before launching each child, and the worker
+  fail-closes if it is absent and records the value. This does not claim
+  portability to the reviewer's different runtime.
+- The final pinned Windows environment (CPython 3.12.13, Torch 2.14.0+cu130,
+  Transformers 5.17.0) completed the expanded R0 regression with **195/195
+  PASS, exit 0, 94.33 s** after that repair. Scoped Ruff and formatting pass;
+  Pyright 1.1.413 reports 0 errors, 0 warnings, 0 informations; diff-check
+  passes. Independent GPT-6 Sol rereview returned CLEAR for this *narrow*
+  no-capsule GPU forward slice and withdrew the earlier pinned-lane blocker.
+- P11 as a whole remains **OPEN**. The in-process GPU fixture may set the
+  cuBLAS variable after another fixture initializes CUDA; the fresh child
+  processes, not that fixture, provide the before-initialization guarantee.
+  The full CPU FP32 matrix, detached-cycle repetitions, independent hashed
+  Windows/Linux run manifests and claim-ledger evidence, exact matched native
+  LoRA comparator, and later training gate are not discharged by this test.
+  No optimizer step was run; `training_authority=false` remains in force.

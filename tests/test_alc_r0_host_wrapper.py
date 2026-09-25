@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import os
+import subprocess
+import sys
+from collections.abc import Iterator
 from importlib.metadata import version
 from pathlib import Path
 
 import pytest
 import torch
 
+from aluclu.alc_r0.canonical import parse_canonical_json
 from aluclu.alc_r0.host import VerifiedHost, load_verified_host
 from aluclu.alc_r0.host_wrapper import HostWrapperError, PinnedLlamaCapsuleWrapper
 from aluclu.alc_r0.research_capsule import ResearchCapsuleV0
@@ -18,6 +22,7 @@ SNAPSHOT = Path(
         "model/SmolLM2-135M-93efa2f",
     )
 )
+PROJECT_ROOT = Path(__file__).parents[1]
 
 
 @pytest.fixture(scope="module")
@@ -51,6 +56,36 @@ def pinned_gpu_host() -> VerifiedHost:
         device="cuda",
         dtype=torch.bfloat16,
     )
+
+
+@pytest.fixture(scope="module")
+def deterministic_gpu_math() -> Iterator[None]:
+    previous_workspace = os.environ.get("CUBLAS_WORKSPACE_CONFIG")
+    previous = (
+        torch.are_deterministic_algorithms_enabled(),
+        torch.backends.cuda.matmul.allow_tf32,
+        torch.backends.cudnn.allow_tf32,
+        torch.backends.cudnn.benchmark,
+        torch.backends.cudnn.deterministic,
+    )
+    try:
+        os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
+        torch.use_deterministic_algorithms(True)
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.deterministic = True
+        yield
+    finally:
+        if previous_workspace is None:
+            os.environ.pop("CUBLAS_WORKSPACE_CONFIG", None)
+        else:
+            os.environ["CUBLAS_WORKSPACE_CONFIG"] = previous_workspace
+        torch.use_deterministic_algorithms(previous[0])
+        torch.backends.cuda.matmul.allow_tf32 = previous[1]
+        torch.backends.cudnn.allow_tf32 = previous[2]
+        torch.backends.cudnn.benchmark = previous[3]
+        torch.backends.cudnn.deterministic = previous[4]
 
 
 @pytest.mark.parametrize("length", [1, 8, 127, 512])
@@ -136,18 +171,156 @@ def test_unmounted_wrapper_preserves_incremental_cache_logits(
     assert wrapped_next.past_key_values.get_seq_length() == 4
 
 
+_GPU_CASES = [
+    (1, length, "none", explicit_positions)
+    for length in (1, 8, 127, 512)
+    for explicit_positions in (False, True)
+] + [
+    (2, length, padding_side, explicit_positions)
+    for length in (8, 127, 512)
+    for padding_side in ("left", "right")
+    for explicit_positions in (False, True)
+]
+
+
+@pytest.mark.parametrize(
+    "batch_size,length,padding_side,explicit_positions", _GPU_CASES
+)
 def test_unmounted_wrapper_matches_real_host_gpu_bf16_logits(
     pinned_gpu_host: VerifiedHost,
+    deterministic_gpu_math: None,
+    batch_size: int,
+    length: int,
+    padding_side: str,
+    explicit_positions: bool,
 ) -> None:
     wrapper = PinnedLlamaCapsuleWrapper(pinned_gpu_host)
-    input_ids = torch.arange(1, 9, device="cuda", dtype=torch.long).unsqueeze(0)
+    full = torch.arange(1, length + 1, device="cuda", dtype=torch.long)
+    if batch_size == 1:
+        input_ids = full.unsqueeze(0)
+        attention_mask = None
+    else:
+        shorter = torch.arange(100, 100 + length // 2, device="cuda")
+        padding = torch.zeros(length - len(shorter), device="cuda", dtype=torch.long)
+        padded = (
+            torch.cat((padding, shorter))
+            if padding_side == "left"
+            else torch.cat((shorter, padding))
+        )
+        input_ids = torch.stack((full, padded))
+        attention_mask = input_ids.ne(0).long()
+    position_ids = (
+        torch.arange(length, device="cuda", dtype=torch.long)
+        .unsqueeze(0)
+        .expand(batch_size, -1)
+        if explicit_positions
+        else None
+    )
 
     with torch.inference_mode():
-        official = pinned_gpu_host.model(input_ids=input_ids, use_cache=False)
-        wrapped = wrapper(input_ids=input_ids, use_cache=False)
+        official = pinned_gpu_host.model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            position_ids=position_ids,
+            use_cache=False,
+        )
+        wrapped = wrapper(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            position_ids=position_ids,
+            use_cache=False,
+        )
 
     assert torch.allclose(wrapped.logits, official.logits, rtol=1e-3, atol=1e-3)
     assert torch.equal(wrapped.logits.argmax(-1), official.logits.argmax(-1))
+
+
+@pytest.mark.parametrize("initial_length", [1, 8, 127, 512])
+def test_unmounted_wrapper_matches_real_host_gpu_incremental_cache(
+    pinned_gpu_host: VerifiedHost,
+    deterministic_gpu_math: None,
+    initial_length: int,
+) -> None:
+    wrapper = PinnedLlamaCapsuleWrapper(pinned_gpu_host)
+    initial_ids = torch.arange(
+        1, initial_length + 1, device="cuda", dtype=torch.long
+    ).unsqueeze(0)
+    next_id = torch.tensor([[42]], device="cuda", dtype=torch.long)
+    attention_mask = torch.ones(
+        (1, initial_length + 1), device="cuda", dtype=torch.long
+    )
+
+    with torch.inference_mode():
+        official_initial = pinned_gpu_host.model(input_ids=initial_ids, use_cache=True)
+        wrapped_initial = wrapper(input_ids=initial_ids, use_cache=True)
+        official_next = pinned_gpu_host.model(
+            input_ids=next_id,
+            attention_mask=attention_mask,
+            past_key_values=official_initial.past_key_values,
+            use_cache=True,
+        )
+        wrapped_next = wrapper(
+            input_ids=next_id,
+            attention_mask=attention_mask,
+            past_key_values=wrapped_initial.past_key_values,
+            use_cache=True,
+        )
+
+    assert torch.allclose(
+        wrapped_initial.logits, official_initial.logits, rtol=1e-3, atol=1e-3
+    )
+    assert torch.allclose(
+        wrapped_next.logits, official_next.logits, rtol=1e-3, atol=1e-3
+    )
+    assert torch.equal(wrapped_next.logits.argmax(-1), official_next.logits.argmax(-1))
+    assert wrapped_next.past_key_values is not None
+    assert wrapped_next.past_key_values.get_seq_length() == initial_length + 1
+
+
+def test_two_fresh_gpu_processes_reproduce_full_forward_matrix() -> None:
+    if version("transformers") != "5.17.0" or not SNAPSHOT.is_dir():
+        pytest.skip("pinned Transformers 5.17.0 and local model snapshot required")
+    if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
+        pytest.skip("CUDA BF16 host is unavailable")
+    environment = os.environ.copy()
+    environment.update(
+        {
+            "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+            "HF_HUB_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+            "HF_DATASETS_OFFLINE": "1",
+            "PYTHONPATH": str(PROJECT_ROOT / "src"),
+        }
+    )
+    command = [
+        sys.executable,
+        str(PROJECT_ROOT / "scripts" / "verify_alc_r0_forward_worker.py"),
+        "--snapshot",
+        str(SNAPSHOT),
+    ]
+
+    first = subprocess.run(
+        command,
+        cwd=PROJECT_ROOT,
+        env=environment,
+        capture_output=True,
+        check=True,
+        timeout=300,
+    )
+    second = subprocess.run(
+        command,
+        cwd=PROJECT_ROOT,
+        env=environment,
+        capture_output=True,
+        check=True,
+        timeout=300,
+    )
+
+    assert first.stdout == second.stdout
+    result = parse_canonical_json(first.stdout)
+    assert result["case_count"] == 24
+    assert len(result["cases"]) == 24
+    assert result["training_authority"] is False
 
 
 def test_real_host_capsule_mount_changes_logits_and_detach_restores_them(
