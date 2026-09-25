@@ -1,0 +1,167 @@
+"""Fail-closed local snapshot verification for ALC-R0 acquisition."""
+
+from __future__ import annotations
+
+import hashlib
+import re
+from collections.abc import Mapping
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+from aluclu.alc_r0.canonical import canonical_json_bytes, validate_evidence_paths
+
+_REVISION = re.compile(r"^[0-9a-f]{40}$")
+_FORBIDDEN_WEIGHT_SUFFIXES = {
+    ".bin",
+    ".ckpt",
+    ".pickle",
+    ".pkl",
+    ".pt",
+    ".pth",
+}
+
+
+class AcquisitionError(ValueError):
+    """Raised when acquired source bytes violate the preregistration."""
+
+
+@dataclass(frozen=True)
+class SnapshotExpectation:
+    repository: str
+    revision: str
+    required_sha256: Mapping[str, str]
+    required_byte_length: Mapping[str, int] | None = None
+    exact_file_set: bool = False
+
+    def __post_init__(self) -> None:
+        if not self.repository or self.repository.strip() != self.repository:
+            raise AcquisitionError("repository must be a normalized nonempty ID")
+        if not _REVISION.fullmatch(self.revision):
+            raise AcquisitionError("revision must be a full lowercase 40-hex commit")
+        if type(self.exact_file_set) is not bool:
+            raise AcquisitionError("exact_file_set must be a boolean")
+        validate_evidence_paths(self.required_sha256)
+        for digest in self.required_sha256.values():
+            if not re.fullmatch(r"[0-9a-f]{64}", digest):
+                raise AcquisitionError("expected SHA-256 must be lowercase 64-hex")
+        if self.required_byte_length is not None:
+            validate_evidence_paths(self.required_byte_length)
+            if set(self.required_byte_length) != set(self.required_sha256):
+                raise AcquisitionError(
+                    "expected byte-length paths must match SHA-256 paths"
+                )
+            if any(
+                type(byte_length) is not int or byte_length < 0
+                for byte_length in self.required_byte_length.values()
+            ):
+                raise AcquisitionError(
+                    "expected byte length must be a nonnegative integer"
+                )
+
+
+SMOLLM2_135M = SnapshotExpectation(
+    repository="HuggingFaceTB/SmolLM2-135M",
+    revision="93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+    required_sha256={
+        ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+        "README.md": "d1ba68cae64a89b6b434b11526e6e2271ee5ffd2c914ec35ed515f9d84c6085c",
+        "config.json": "1d556eab73b69c7f11f64c557a2f9c6f440bd4c6b89bb2584a6b498c92603843",
+        "generation_config.json": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059",
+        "merges.txt": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+        "model.safetensors": "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1",
+        "special_tokens_map.json": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3",
+        "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+        "tokenizer_config.json": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
+        "vocab.json": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
+    },
+    required_byte_length={
+        ".gitattributes": 1519,
+        "README.md": 6340,
+        "config.json": 704,
+        "generation_config.json": 111,
+        "merges.txt": 466391,
+        "model.safetensors": 269060552,
+        "special_tokens_map.json": 831,
+        "tokenizer.json": 2104556,
+        "tokenizer_config.json": 3658,
+        "vocab.json": 800662,
+    },
+    exact_file_set=True,
+)
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        while chunk := stream.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def verify_model_snapshot(
+    snapshot_root: Path,
+    *,
+    expectation: SnapshotExpectation = SMOLLM2_135M,
+) -> dict[str, Any]:
+    """Inventory and verify one already-downloaded local model snapshot."""
+
+    if not snapshot_root.is_absolute():
+        raise AcquisitionError("snapshot root must be absolute")
+    if not snapshot_root.is_dir():
+        raise AcquisitionError("snapshot root is not a directory")
+    root = snapshot_root.resolve(strict=True)
+
+    inventory: list[dict[str, Any]] = []
+    for path in sorted(snapshot_root.rglob("*"), key=lambda value: value.as_posix()):
+        if path.is_symlink():
+            raise AcquisitionError(f"snapshot symlink is forbidden: {path}")
+        if not path.is_file():
+            continue
+        resolved = path.resolve(strict=True)
+        try:
+            relative = resolved.relative_to(root).as_posix()
+        except ValueError as exc:
+            raise AcquisitionError(f"snapshot path escapes root: {path}") from exc
+        if path.suffix.casefold() in _FORBIDDEN_WEIGHT_SUFFIXES:
+            raise AcquisitionError(f"unsafe weight format is forbidden: {relative}")
+        inventory.append(
+            {
+                "path": relative,
+                "byte_length": path.stat().st_size,
+                "sha256": _sha256_file(path),
+            }
+        )
+
+    paths = validate_evidence_paths(item["path"] for item in inventory)
+    by_path = {item["path"]: item for item in inventory}
+    if len(by_path) != len(paths):
+        raise AcquisitionError("snapshot contains colliding paths")
+    if expectation.exact_file_set and set(by_path) != set(expectation.required_sha256):
+        raise AcquisitionError("snapshot file set does not match the pinned revision")
+    for relative, expected_digest in expectation.required_sha256.items():
+        item = by_path.get(relative)
+        if item is None:
+            raise AcquisitionError(f"required snapshot file is missing: {relative}")
+        if item["sha256"] != expected_digest:
+            raise AcquisitionError(f"snapshot hash mismatch: {relative}")
+        if (
+            expectation.required_byte_length is not None
+            and item["byte_length"] != expectation.required_byte_length[relative]
+        ):
+            raise AcquisitionError(f"snapshot byte length mismatch: {relative}")
+
+    receipt: dict[str, Any] = {
+        "schema_id": "https://aluclu.org/schemas/alc_r0/v1/acquisition-receipt.schema.json",
+        "schema_version": 1,
+        "experiment_id": "alc-r0-smollm2-135m-v1",
+        "repository": expectation.repository,
+        "revision": expectation.revision,
+        "trust_remote_code": False,
+        "safetensors_only": True,
+        "files": inventory,
+    }
+    receipt["inventory_sha256"] = hashlib.sha256(
+        canonical_json_bytes(inventory)
+    ).hexdigest()
+    return receipt
