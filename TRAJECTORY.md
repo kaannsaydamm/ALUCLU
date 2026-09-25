@@ -4558,3 +4558,46 @@ Task 2 sensorium/recollection gate: CLEAN
   complete preregistration and validator, acquisition receipts for other data,
   Linux/Windows execution parity, and R0.0 clean-checkout gate remain open.
   `training_authority=false`; R0.0 is **OPEN**.
+
+## 2026-09-25 — Local Desktop migration and Banking77 scoring checkpoint 24
+
+- Per owner direction, active work moved out of the OneDrive Desktop tree to
+  `C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local`.
+  This is a new worktree backed by the local Desktop repository, on
+  `codex/unified-lifelong-cognition-desktop` at source HEAD `61202ae` before
+  this checkpoint. The pre-existing similarly named local worktree had a stale
+  `.git` pointer to OneDrive and many tracked deletions; it was left untouched.
+  The former OneDrive worktree was also left untouched as a recoverable copy.
+- Copied the two in-progress Banking77 scoring files into the local worktree;
+  source/destination SHA-256 matched exactly. Preserved the other 16 untracked
+  OneDrive files (old Task 2 logs and `uv.lock`, 212,074 bytes) under local
+  `.migration-preserve/onedrive-untracked-20260925`, with per-file SHA-256
+  comparison. The ordinal-sorted relative-path/hash inventory root was
+  `d526ba6b85648722614db6c44d5f3277ccf6b8d02d2a9d30a56ec535defba659`.
+  This is a copy-and-verify migration, not authorization to delete either old
+  tree or the separate external model/dataset cache.
+- Added fail-closed reference helpers for exact leading-space, no-special
+  candidate tokenization, ordered token-map hashing, candidate-only training
+  masks, separate full-candidate forward scores, conditional mean log
+  probability, and UTF-8 byte tie-breaking. On the pinned real tokenizer the
+  77-label candidate map root is
+  `ce33efdc137af58036402da1fff96ccdcea9663843fa564c6f64def7d0e31878`.
+  These helpers do not train a model or authorize the held-out evaluator.
+- A prompt-length feasibility inspection using a *tentative*, non-frozen
+  space-delimited 77-label template found 1,575 of 9,999 unique development
+  rows above the 512-token cap (max 589 including the longest candidate).
+  This is a design warning, not an accepted prompt/truncation policy or an
+  R0.0 result. The official held-out test split was not accessed.
+- First complete test run in the new local checkout: **268 PASS / 1 FAIL**.
+  Git global `core.autocrlf=true` had changed the byte-frozen plan and
+  candidate receipt to CRLF, breaking the exact-plan-byte oracle. Added
+  explicit `text eol=lf` attributes for those two files and restored their
+  checked-out LF bytes without changing the frozen content. Their SHA-256s
+  again match `0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b`
+  (plan) and
+  `398523ad80917277be7b1a94d6db4c26d86f403d12ec75559909af6408c60028`
+  (receipt). Targeted rerun: **9/9 PASS**. Complete pinned Windows R0
+  regression on the local checkout: **269/269 PASS, exit 0, 81.45 s**.
+- This checkpoint establishes a usable local Desktop checkout and one Windows
+  regression result, not cross-platform parity, training, or R0.0 PASS.
+  `training_authority=false`; R0.0 remains **OPEN**.

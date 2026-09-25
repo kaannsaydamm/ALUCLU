@@ -6,3 +6,5 @@ schemas/alc_r0/v1/*.json text eol=lf
 experiments/alc_r0/v1/*.json text eol=lf
 results/alc_r0/**/*.json text eol=lf
 results/alc_r0/**/*.jsonl text eol=lf
+docs/superpowers/plans/2026-09-20-alc-r0-neural-capability-proof.md text eol=lf
+results/alc_r0_banking77_development_candidate_20260925.json text eol=lf
