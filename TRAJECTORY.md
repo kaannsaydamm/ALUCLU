@@ -4443,3 +4443,33 @@ Task 2 sensorium/recollection gate: CLEAN
   attempt/state and foreign-key validator, P1–P14 completion gate, and sealed
   data/runtime receipts. Therefore no final claim ledger was generated,
   `training_authority=false`, and R0.0 remains **OPEN**.
+
+## 2026-09-25 — ALC-R0 Banking77 development preprocessing checkpoint 21
+
+- After checking the section-4.1 frozen plan, began with a collection **RED**:
+  the Banking77 preprocessing module was absent. A separate SHA-256 calculation
+  corrected the fixture's expected first dev ID to `intent_00-3` before the
+  implementation. No raw dataset or official test split was opened.
+- Added a pure official-*train*-row reference preprocessor. It applies Unicode
+  NFC, CRLF-to-LF, and outer whitespace stripping; groups globally by
+  normalized-utterance SHA-256; fails on conflicting labels or a hash
+  collision; retains the UTF-8 lexicographically smallest source ID for a
+  same-label duplicate; and records removed count plus a canonical JSON root
+  over removed/retained ID pairs and normalized digests. It then sorts unique
+  records independently within each of the 77 caller-declared labels using
+  `SHA-256(20260916 || NUL || label || NUL || normalized_utterance_UTF8)`;
+  the first `floor(0.20 * label_count)` are dev, the rest train. The supplied
+  label order defines the cross-label output order. Ordered train/dev source
+  ID lists each have their own RFC-8785 JSON SHA-256 root. No RNG or library
+  split is involved.
+- Synthetic fixtures cover Unicode/newline policy, frozen ID/root values,
+  input-order independence, duplicate retention/root, cross-label conflict,
+  malformed rows, invalid UTF-8 text, duplicate source IDs, and incomplete
+  label vocabulary. Focused tests passed **9/9**. The complete pinned Windows
+  ALC-R0 regression passed **253/253, exit 0, 81.89 s**. Scoped Ruff check,
+  Ruff format check, Pyright 1.1.413 (0/0/0), and diff-check passed.
+- This is algorithm/fixture evidence only. The pinned Banking77 source bytes,
+  license and source manifests, train/dev receipt, sealed official test,
+  independent sealer, full preregistration and validator are still pending.
+  No model was trained or evaluated by this slice; `training_authority=false`
+  and R0.0 remains **OPEN**.
