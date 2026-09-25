@@ -4622,3 +4622,34 @@ Task 2 sensorium/recollection gate: CLEAN
   separate `.codex` worktree still registered against the old Git directory.
   Therefore this is a verified source/history/evidence preservation step,
   **not** a claim of a byte-for-byte clone of every regenerable environment.
+
+## 2026-09-25 — Banking77 common-prompt reference checkpoint 26
+
+- Before touching held-out data or training, tested a small set of interface
+  separators on the pinned development tokenizer. Space-separated canonical
+  labels fit best among the tested delimiters; newline/comma/pipe variants
+  exceeded the 512-token common budget even for a short query. Chose a
+  development-only reference with ordered labels before the query, explicit
+  `Intent:` boundary, separately tokenized prefix/query/suffix, and separately
+  encoded leading-space candidate IDs. The original byte-frozen plan is not
+  changed. The exact candidate rule and limitations are documented in
+  `docs/superpowers/plans/2026-09-25-alc-r0-banking77-prompt-candidate.md`.
+- Initial focused collection was **RED** (`ModuleNotFoundError` for the absent
+  prompt module). Implemented a fail-closed template with a longest-candidate
+  reserve and deterministic query-ID head/tail truncation. The first fake-only
+  focused run was 4 PASS / 1 SKIP (real source paths not supplied); the pinned
+  real-source/tokenizer run on final fixture bytes was **6/6 PASS**. The
+  actual template measured prefix 472 IDs, suffix 4, maximum candidate 17,
+  leaving 19 query IDs. Across all 9,999 unique official-train-derived rows,
+  min/median/p95/p99/max query lengths were 3/11/34/49/96 IDs and
+  **1,483/9,999 (14.83%)** required truncation. Every built prompt plus
+  longest candidate was at most 512 IDs. This substantial truncation rate is
+  a recorded capability-quality risk, not a threshold relaxation or PASS.
+- Scoped Ruff check and format passed; Pyright 1.1.413 reported 0 errors,
+  0 warnings, 0 informations. A full Windows R0 run before the last fixture
+  assertion/formatting edit passed 275/275 in 121.60 s; it was not used as
+  final-byte evidence. The repeat on final source/test bytes passed
+  **275/275, exit 0, 80.29 s**. No model optimizer step, held-out split
+  access, or confirmatory evaluation occurred. The prompt candidate still
+  needs machine-readable R0.0 freeze/validator binding before it can authorize
+  training. `training_authority=false`; R0.0 remains **OPEN**.
