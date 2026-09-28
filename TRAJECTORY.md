@@ -4911,3 +4911,61 @@ Task 2 sensorium/recollection gate: CLEAN
   and ALC-0 remains **OPEN**. The negative result and alternative-source/
   preregistration decision boundary are documented in
   `docs/superpowers/plans/2026-09-28-alc-r0-primevul-candidate-note.md`.
+
+## 2026-09-28 — PrimeVul paired-development source and recovery design checkpoint 33
+
+- Continued from clean/pushed local Desktop source HEAD `6607879` after both
+  Devign and original PrimeVul had failed the **unchanged** conflicting-label
+  clone-root rule. Reviewed the PrimeVul authors' paper/repository: closely
+  related vulnerable/patched code and pair-wise evaluation are an intended
+  challenge, so the PrimeVul failure is an evaluation-design/data-protocol
+  mismatch, not evidence that all such opposite-label pairs are mislabeled.
+  The witness `primevul:7`/`primevul:11213` was **not** asserted to be one of
+  the authors' adjacent pairs; its two records have different commits.
+- Inspected only the authors' original-release folder metadata and acquired
+  **train/validation paired files only**, in a separate local research
+  directory outside Git. The paired test file was listed by name/ID but was
+  **not downloaded or read**, nor was the full test file. The first `gdown`
+  folder-list call used an unsupported argument and exited before acquisition;
+  the corrected metadata-only listing and two explicit-ID downloads succeeded.
+  Pair file IDs are train `1CYE_AZdZTIHPepOIxmPNZtMPdwB6cEt1` and
+  validation `1UBoDzBD9tXAieRlXYjjB-2HpPf9I83mg`.
+- Pinned paired train at **52,076,348 bytes**, SHA-256
+  `22d2f27ffda164d7de81f870f6a4907c66df2338f6a9fd01ee2300d7fb34f965`;
+  paired validation at **5,867,872 bytes**, SHA-256
+  `33b18631d7b5c075ee143527176fddf2180648901ed40952553d99f744c6c74f`.
+  Added a fail-closed development-only verifier for exact file set/hashes,
+  strict JSONL, ordered opposite-label same-commit/project pair edges,
+  repeated-ID consistency, and full-row equality against the already pinned
+  original development source. Every paired row matched its full-source row.
+- The train paired file has **4,354 edges** but **8,703 unique source IDs**:
+  4,344 pair-graph components of size 2 and five of size 3. Validation has
+  **562 edges** but **1,120 unique IDs**: 557 components of size 2 and one
+  of size 6. Thus pair edges cannot be treated as independent bootstrap
+  observations. These are author-pair **graph** counts only; the full
+  pair-plus-near-clone dependency graph has not been computed.
+- TDD started RED at the missing `primevul_pairs_source` module. Focused
+  PrimeVul tests passed **18/18** after implementation, covering malformed
+  duplicate keys, wrong labels/code, repeated-ID inconsistency, extra test
+  file, and source mutation. Ruff check/format and Pyright 1.1.413 passed
+  with zero reported issues. The first hand-copied receipt omitted
+  `validation_paired_sha256`; byte-for-byte regeneration detected it and the
+  artifact was corrected before commitment. Canonical receipt
+  `results/alc_r0_primevul_pairs_development_20260928.json` now regenerates
+  identically, SHA-256
+  `93d1c1dea9c30b6b4259830f158e2060797c16ac9f5a6e7b05f236fe943187e2`.
+  No raw function/code text was committed.
+- Final Windows ALC-R0 regression passed **323 tests, 0 failures, 0 errors,
+  7 skipped, exit 0**, JUnit time `189.085 s`;
+  `results/alc_r0_primevul_pairs_regression_20260928.xml` SHA-256
+  `e281dbf003fd300fe1ffa2026a60254a0d6796659d9fbc382edcaa2c24c33950`.
+- The comparative decision record
+  `docs/superpowers/plans/2026-09-28-alc-r0-code-task-recovery-decision.md`
+  rejects training despite the old fail gate and rejects discarding/relabeling
+  hard mixed-label components. It selects a **pair/clone-component-aware
+  PrimeVul protocol for next design work**, with another dataset/task reserved
+  as fallback. This is **not** a frozen preregistration amendment: dataset
+  license scope, full graph, explicit statistical/sealer changes, machine
+  validator, environment gates, and untouched confirmatory split remain open.
+  Frozen numeric P1–P14 floors are not lowered. `training_authority=false`;
+  ALC-0 remains **OPEN**.
