@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import os
 import subprocess
 import sys
@@ -10,7 +11,8 @@ from pathlib import Path
 import pytest
 import torch
 
-from aluclu.alc_r0.canonical import parse_canonical_json
+from aluclu.alc_r0.base_digest import encode_base_state
+from aluclu.alc_r0.canonical import canonical_json_bytes, parse_canonical_json
 from aluclu.alc_r0.capsule_artifact import deserialize_capsule, serialize_capsule
 from aluclu.alc_r0.host import VerifiedHost, load_verified_host
 from aluclu.alc_r0.host_wrapper import HostWrapperError, PinnedLlamaCapsuleWrapper
@@ -379,6 +381,141 @@ def test_real_host_capsule_mount_changes_logits_and_detach_restores_them(
         not parameter.requires_grad for parameter in pinned_host.model.parameters()
     )
     assert wrapper.capsule is None
+
+
+def test_real_frozen_host_synthetic_capsule_training_survives_serialization(
+    pinned_gpu_host: VerifiedHost,
+    deterministic_gpu_math: None,
+    tmp_path: Path,
+) -> None:
+    """Non-authorizing mechanism check, not an R0 capability evaluation."""
+
+    from torch.nn import functional as F
+
+    wrapper = PinnedLlamaCapsuleWrapper(pinned_gpu_host)
+    capsule = ResearchCapsuleV0(ports=(14, 29), rank=8, seed=20260916).to(device="cuda")
+    input_ids = torch.tensor([[2, 3, 5, 7, 11, 13, 17, 19]], device="cuda")
+    target = torch.tensor([23], device="cuda")
+    base_digest_before = encode_base_state(pinned_gpu_host.model.state_dict()).sha256
+
+    with torch.inference_mode():
+        baseline = wrapper(input_ids=input_ids, use_cache=False).logits[:, -1, :]
+    wrapper.mount(capsule)
+    wrapper.train()
+    optimizer = torch.optim.AdamW(
+        capsule.parameters(), lr=3e-4, betas=(0.9, 0.999), eps=1e-8, weight_decay=0.0
+    )
+    initial_loss = float(F.cross_entropy(baseline.float(), target).item())
+    for _ in range(40):
+        optimizer.zero_grad(set_to_none=True)
+        logits = wrapper(input_ids=input_ids, use_cache=False).logits[:, -1, :]
+        loss = F.cross_entropy(logits.float(), target)
+        assert torch.isfinite(loss).item()
+        loss.backward()
+        assert all(parameter.grad is not None for parameter in capsule.parameters())
+        grad_norm = torch.nn.utils.clip_grad_norm_(capsule.parameters(), max_norm=1.0)
+        assert torch.isfinite(grad_norm).item()
+        optimizer.step()
+
+    wrapper.eval()
+    with torch.inference_mode():
+        trained = wrapper(input_ids=input_ids, use_cache=False).logits[:, -1, :]
+    final_loss = float(F.cross_entropy(trained.float(), target).item())
+    assert final_loss < initial_loss - 0.1
+    assert not torch.equal(trained, baseline)
+
+    manifest_bytes, tensor_bytes = serialize_capsule(capsule)
+    wrapper.detach()
+    restored = deserialize_capsule(manifest_bytes, tensor_bytes).to(device="cuda")
+    wrapper.mount(restored)
+    with torch.inference_mode():
+        remounted = wrapper(input_ids=input_ids, use_cache=False).logits[:, -1, :]
+    assert torch.equal(remounted, trained)
+    wrapper.detach()
+    with torch.inference_mode():
+        detached = wrapper(input_ids=input_ids, use_cache=False).logits[:, -1, :]
+    assert torch.equal(detached, baseline)
+    assert (
+        encode_base_state(pinned_gpu_host.model.state_dict()).sha256
+        == base_digest_before
+    )
+    assert all(
+        not parameter.requires_grad for parameter in pinned_gpu_host.model.parameters()
+    )
+
+    manifest_path = tmp_path / "synthetic-capsule-manifest.json"
+    tensor_path = tmp_path / "synthetic-capsule.safetensors"
+    manifest_path.write_bytes(manifest_bytes)
+    tensor_path.write_bytes(tensor_bytes)
+    safe_child_keys = (
+        "PATH",
+        "SYSTEMROOT",
+        "WINDIR",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "CUDA_PATH",
+        "CUDA_VISIBLE_DEVICES",
+    )
+    environment = {key: os.environ[key] for key in safe_child_keys if key in os.environ}
+    environment.update(
+        {
+            "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+            "HF_HUB_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+            "HF_DATASETS_OFFLINE": "1",
+            "PYTHONPATH": str(PROJECT_ROOT / "src"),
+        }
+    )
+    child = subprocess.run(
+        [
+            sys.executable,
+            str(PROJECT_ROOT / "scripts" / "verify_alc_r0_synthetic_remount_worker.py"),
+            "--snapshot",
+            str(SNAPSHOT),
+            "--manifest",
+            str(manifest_path),
+            "--tensors",
+            str(tensor_path),
+        ],
+        cwd=PROJECT_ROOT,
+        env=environment,
+        capture_output=True,
+        check=False,
+        timeout=300,
+    )
+    assert child.returncode == 0, child.stderr.decode("utf-8", "replace")[-3000:]
+    observation = parse_canonical_json(child.stdout)
+    assert observation["status"] == "synthetic-remount-verified-non-authorizing"
+    assert observation["training_authority"] is False
+    assert observation["held_out_data_present"] is False
+    assert observation["base_state_sha256"] == base_digest_before
+    assert (
+        observation["baseline_logits_sha256"]
+        == hashlib.sha256(
+            baseline.contiguous().cpu().view(torch.uint8).numpy().tobytes()
+        ).hexdigest()
+    )
+    assert (
+        observation["remounted_logits_sha256"]
+        == hashlib.sha256(
+            trained.contiguous().cpu().view(torch.uint8).numpy().tobytes()
+        ).hexdigest()
+    )
+    print(
+        canonical_json_bytes(
+            {
+                "status": "synthetic-trainability-verified-non-authorizing",
+                "training_authority": False,
+                "initial_loss": initial_loss,
+                "final_loss": final_loss,
+                "base_state_sha256": base_digest_before,
+                "fresh_process_remount": True,
+            }
+        ).decode("utf-8")
+    )
 
 
 def test_serialized_zero_control_is_real_host_forward_noop(
