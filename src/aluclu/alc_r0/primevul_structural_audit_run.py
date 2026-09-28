@@ -1,7 +1,7 @@
-"""Rebuild the pinned development graph and structurally audit its receipt.
+"""Rebuild the development graph and audit its receipt and optional near edges.
 
-This is a separate, non-authorizing replay. Its checker does not independently
-discover near-clone edges, and it never reads held-out test files.
+This non-authorizing replay never reads held-out test files. The independent
+near-edge pass runs only when explicitly requested.
 """
 
 from __future__ import annotations
