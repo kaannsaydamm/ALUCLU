@@ -46,9 +46,11 @@ threshold is lowered because PrimeVul development data were inspected.
   is an input to review, not a training gate. It retained 22,157 validation
   components; 552 contain a positive and 22,087 contain a negative observation.
   The overlap (482 mixed components by inclusion-exclusion) counts in **both**
-  class-support sets, never as two independent components. The first run must
-  be compared byte-for-byte with the underway second run, then independently
-  audited before freeze.
+  class-support sets, never as two independent components. A second complete
+  development run reproduced the first run's canonical stdout byte-for-byte
+  (SHA-256 `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`);
+  this establishes deterministic replay, not graph correctness. Independent
+  audit is still required before freeze.
 
 ## Proposed point metric and uncertainty unit
 
@@ -70,7 +72,10 @@ threshold is lowered because PrimeVul development data were inspected.
   component, a two-observation same-label component, and an isolated component;
   it must prove that duplicate rows add no vote and resampling a mixed
   component copies both labels together. No final score may be used to choose
-  the weighting rule.
+  the weighting rule. A non-authorizing exact arithmetic reference now lives in
+  `src/aluclu/alc_r0/primevul_component_metric_reference.py`, with fixed-label
+  macro-F1 and duplicate/cluster hand fixtures. It does not implement the
+  10,000-replicate evaluator or confidence bounds.
 - Author-pair outcomes are diagnostic only until separately preregistered as a
   stricter gate. Paired rows may not enter bootstrap as independent samples.
 

@@ -118,8 +118,13 @@ process checks was approximately **1.35 GB**; a continuous peak monitor was
 not present. The canonical receipt and raw progress/exit evidence are under
 `results/alc_r0_primevul_full_graph_101c302_20260928.*`.
 
-The next gate is independent graph/receipt audit and a repeatability run or
-equivalent stronger cross-implementation check; then the v2 preregistration,
+The second complete development run exited 0 and reproduced the canonical
+stdout byte-for-byte (SHA-256
+`e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`);
+its raw evidence is under
+`results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.*`.
+Repeatability is now observed, but it does not establish graph correctness.
+The next gate is independent graph/receipt audit; then the v2 preregistration,
 dataset-rights review, independent test sealer, and R0.0 validator must be
 explicitly passed before training. If this protocol cannot preserve a valid
 untouched confirmatory unit or satisfy the predeclared test floor, use the

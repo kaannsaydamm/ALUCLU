@@ -5157,3 +5157,64 @@ Task 2 sensorium/recollection gate: CLEAN
   data, create a v2 machine preregistration, or grant training authority.
   A byte-identical second full-development run was live when drafted; its
   terminal outcome is a separate pending checkpoint. ALC-0 remains OPEN.
+
+## 2026-09-28 — Component-vote arithmetic reference checkpoint 41
+
+- Added a non-authorizing, exact-Fraction reference for proposed PrimeVul
+  component-class support and fixed-label macro-F1. It keeps one vote per
+  distinct normalized-code/label observation, rejects an identical code in
+  multiple roots or with opposite labels, and rejects duplicate prediction
+  disagreement. A bootstrap draw repeats **all** observations of each sampled
+  component, so mixed labels cannot be sampled independently.
+- RED was observed at the absent module; focused hand fixtures passed **7/7**.
+  The mixed-root fixture counts 3 total roots, 1 positive-containing, 3
+  negative-containing, and 1 mixed; exact duplicate contributes no vote.
+  Point macro-F1 is exactly `11/15`; drawing roots `(A,A,C)` yields exactly
+  5 scored observations and macro-F1 `1`. Ruff check/format and Pyright
+  1.1.413 passed. Windows ALC-R0 regression exited 0; JUnit **356 tests,
+  0 failures, 0 errors, 7 skipped**, time `231.775 s`;
+  `results/alc_r0_primevul_component_metric_regression_20260928.xml`
+  SHA-256 `5acecb0b33bf59039c42d4342b0e24ad789d804a9321ba3a4f8b5c8d44e19d34`.
+- This validates only arithmetic mechanics. It is not the final evaluator,
+  10,000-replicate bootstrap, uncertainty bound, independent sealer, training
+  permit, or ALC-0 capability evidence. The second full graph run was still
+  live at 193,537 / 209,857 when this checkpoint was prepared. ALC-0 OPEN.
+
+## 2026-09-28 — Full-development graph deterministic replay checkpoint 42
+
+- The second complete PrimeVul development-only graph run terminated with
+  `python_exit_code=0`; its parsed canonical receipt again records scope
+  `pinned-original-development`, **22,157** retained validation components,
+  **482** mixed-label validation components, and `training_authority=false`.
+  Its 206 monotone progress events end at **209,857/209,857** rows and
+  **19,874** LSH candidate pairs. The held-out test files were not read.
+- Raw second-run stdout is byte-identical to the first run. Both stdout
+  SHA-256 values are
+  `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`.
+  Second-run stderr SHA-256 is
+  `e3dd4fd47dff466370bec4ade4ed1910e57993e964612b54ebbd8352113b52b2`,
+  and exit-log SHA-256 is
+  `56b9a9582f37a38a8b037c8285a27b40b509df1bc0bc54e3adb84a65d10fa790`.
+  Raw evidence is in
+  `results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.*`.
+  Source graph code blobs were unchanged from frozen `101c302`; the second
+  run began after the first evidence commit. Byte-identical replay proves
+  determinism for these inputs/environment, not algorithmic or scientific
+  correctness. Independent audit and v2 protocol gates remain open.
+
+## 2026-09-28 — Component-vote reference final regression checkpoint 43
+
+- Added a second distinct, same-label observation within one component to
+  the hand fixture. It stays one bootstrap cluster; when that root is drawn
+  twice, both observations are repeated and exact macro-F1 is `1/3`.
+  Focused tests passed **8/8**. Ruff check/format and Pyright 1.1.413 were
+  clean after the implementation; the added test changed no production code.
+- After the added test, full Windows ALC-R0 regression exited 0 with JUnit
+  **357 tests, 0 failures, 0 errors, 7 skipped**, time `344.907 s`.
+  `results/alc_r0_primevul_component_metric_regression_v2_20260928.xml`
+  SHA-256 is
+  `34670b0cfea38b1e1f9b529d418a776de913fb3b39ad806eac696b72df112088`.
+  The earlier 356-test XML is retained as the preceding checkpoint, not
+  substituted for this final run. This is reference arithmetic evidence only;
+  no final 10,000-replicate evaluator, sealer, rights review, training, or
+  ALC-0 completion is implied. ALC-0 OPEN.
