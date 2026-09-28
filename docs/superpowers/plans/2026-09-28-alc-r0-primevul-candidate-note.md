@@ -29,15 +29,15 @@ authorize training, held-out access, R0.0 PASS, or an ALC-0 claim.
   validation eligibility after group exclusion, or sufficient sealed-test
   roots/class counts.
 
-## Required next gates before any model run
+## Candidate qualification requirements identified before the near-clone witness
 
 1. Resolve dataset-specific use/redistribution scope and record the source
    authority. Keep raw code and test examples out of repository artifacts.
-2. Run the preregistered 256-permutation MinHash/LSH plus exact five-shingle
-   Jaccard >= 0.90 clone audit on development data; fail closed on any
-   conflicting-label connected component. Recompute retained validation
-   roots and class counts after train-root exclusion. A clean exact-hash scan
-   alone does not satisfy this gate.
+2. Audit the preregistered 256-permutation MinHash/LSH plus exact five-shingle
+   Jaccard >= 0.90 rule on development data; fail closed on any
+   conflicting-label connected component. If no conflict appears, compute
+   retained validation roots and class counts after train-root exclusion.
+   A clean exact-hash scan alone does not satisfy this gate.
 3. Write an explicit versioned preregistration amendment that names PrimeVul,
    fixes its task metric/controls/prompt/split/sealer protocol and retains an
    untouched independent confirmatory split. Freeze and hash it **before**
@@ -47,6 +47,32 @@ authorize training, held-out access, R0.0 PASS, or an ALC-0 claim.
    reference, and resource prerequisites. `training_authority=false` until
    that gate passes; no test split has been used as development data.
 
-The frozen Devign negative result remains first-class evidence. PrimeVul is
-currently only a data-source **candidate**, not the selected task, a passed
-R0.0 source, or a neural capability result.
+These were necessary but not sufficient gates while PrimeVul was still a
+candidate. The negative witness below stopped the qualification path before
+the full-corpus LSH and later gates. The frozen Devign negative result remains
+first-class evidence as well.
+
+## Development-only near-clone witness (2026-09-28)
+
+The next diagnostic found an opposite-label **direct** near-clone pair within
+the first 10,000 train rows. Both rows were re-read from the hash-pinned
+original train file, and the validation file was re-hashed. Source IDs
+`primevul:7` (`target=1`) and `primevul:11213` (`target=0`) have different
+normalized-code SHA-256 values, five-token-shingle intersection/union
+**339/358** (about 0.947), and **four** common bands under the frozen
+256-permutation MinHash, 13-by-19 LSH policy. The committed metadata-only
+receipt is `results/alc_r0_primevul_near_conflict_witness_20260928.json`.
+The pair is not an exact duplicate; it satisfies both the LSH candidate rule
+and exact Jaccard >= 0.90 confirmation. No raw source text is published.
+
+The frozen plan rejects **any** clone root with conflicting labels. Therefore
+this original PrimeVul development artifact also **fails data qualification
+under the unchanged rule**. One verified violating edge is sufficient; a
+full 209,857-row LSH run is not claimed and cannot reverse that failure. This
+is a dataset/protocol mismatch, not a falsification of the neural-capsule
+hypothesis. `training_authority=false`; the test split remains untouched.
+
+An alternative code capability source, or a transparently preregistered
+different statistical unit/protocol that handles vulnerability/patch pairs,
+must be justified *before* training or confirmatory access. The original
+Devign and this PrimeVul failure may not be erased or relabeled as PASS.

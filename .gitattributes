@@ -15,3 +15,5 @@ results/alc_r0_devign_exact_conflict_preflight_20260926.json text eol=lf
 results/alc_r0_devign_exact_conflict_regression_20260926.xml text eol=lf
 results/alc_r0_primevul_development_candidate_20260926.json text eol=lf
 results/alc_r0_primevul_candidate_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_near_conflict_witness_20260928.json text eol=lf
+results/alc_r0_primevul_near_conflict_regression_20260928.xml text eol=lf

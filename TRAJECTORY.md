@@ -4863,3 +4863,51 @@ Task 2 sensorium/recollection gate: CLEAN
   evaluation remain undone. The decision boundary is documented in
   `docs/superpowers/plans/2026-09-28-alc-r0-primevul-candidate-note.md`.
   ALC-0 remains **OPEN**.
+
+## 2026-09-28 — PrimeVul near-clone negative witness checkpoint 32
+
+- Continued from clean, pushed local-Desktop source HEAD `8224185` with the
+  frozen Devign/PrimeVul receipts intact. No official held-out test file was
+  downloaded, read, or included in the worktree. The PrimeVul exact-code
+  preflight had zero conflicting groups but explicitly had not run LSH.
+- Measured the existing frozen MinHash/LSH implementation on development-only
+  PrimeVul samples before attempting a full 209,857-row run: the first 200
+  rows took 1.507 s for signatures (132.68 rows/s; shingle range 38–4,377);
+  a 2,000-row clone-filter pilot took 18.271 s, with 205 candidate pairs,
+  165 near joins, and no conflict. A 10,000-row train-only pilot took
+  47.115 s and failed on a conflicting-label clone root. These are resource
+  and counterexample diagnostics, **not** a full-corpus performance or
+  clone-filtering PASS. Host physical RAM was approximately 16 GiB.
+- Isolated a direct train/train witness: `primevul:7` has label 1 and
+  `primevul:11213` has label 0. Their normalized SHA-256 values are distinct
+  (`1b432cf2eb9bea6865e9edda1ee2adc7da376f62c999396a95a884ae842d65c5`
+  and `98d84b9c9bb9ccad14d9d33fb16cdd7cf25eba1579c3039e10f7855869017629`).
+  Under the frozen five-token-shingle rule, intersection/union is
+  **339/358** (greater than 0.90), and the deterministic 256-permutation
+  MinHash signatures share **four** of the 13 LSH bands. This is an
+  exact-Jaccard-confirmed *near* clone with opposite labels, not an
+  exact-hash duplicate or an LSH false positive.
+- Added a metadata-only, development-only witness verifier that revalidates
+  both pinned source files, locates the pair, recomputes normalization,
+  shingles, MinHash/bands and exact Jaccard, and refuses same-label,
+  below-threshold, missing, exact-conflict, or mutated-source witnesses.
+  TDD began RED with the absent module; final focused PrimeVul tests passed
+  **12/12**. The canonical receipt
+  `results/alc_r0_primevul_near_conflict_witness_20260928.json` regenerated
+  byte-identically, SHA-256
+  `4af94b174d6596494ee7aa5b2e9b91dd5f5932dd82b3e590cfc7aa1d360e0fc0`.
+  No raw code text was committed.
+- Scoped Ruff check/format and Pyright 1.1.413 passed with zero reported
+  issues. Final Windows ALC-R0 regression passed **317 tests, 0 failures,
+  0 errors, 7 skipped, exit 0**, JUnit time `147.263 s`;
+  `results/alc_r0_primevul_near_conflict_regression_20260928.xml` SHA-256
+  `13eadc95bc928d1ae23c4cc35d5a7f9115e5d303bdd5573ad6a6fc985de3564c`.
+- **Gate outcome:** under the unchanged frozen rule, any connected clone root
+  containing opposite labels fails R0.0. One verified violating edge is
+  sufficient; a full-corpus LSH run was **not** performed or claimed.
+  Original PrimeVul therefore also fails data qualification. This is a
+  dataset/protocol failure, not a falsification of the neural-capsule
+  hypothesis. PrimeVul is not silently promoted, `training_authority=false`,
+  and ALC-0 remains **OPEN**. The negative result and alternative-source/
+  preregistration decision boundary are documented in
+  `docs/superpowers/plans/2026-09-28-alc-r0-primevul-candidate-note.md`.
