@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="28.508" timestamp="2026-09-29T02:21:09.746714+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_defect_prompt" name="test_pinned_smolllm2_scores_both_defect_candidates_if_available" time="24.557" /></testsuite></testsuites>

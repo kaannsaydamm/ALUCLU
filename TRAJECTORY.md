@@ -5460,3 +5460,43 @@ Task 2 sensorium/recollection gate: CLEAN
   live self-consistency smoke for commit `595cfae`, not an independently
   frozen R0.0 receipt or permission to train. This later trajectory commit
   necessarily has a different source-tree digest.
+
+## 2026-09-29 — Family-B candidate prompt and actual-model inference checkpoint 51
+
+- Added `src/aluclu/alc_r0/defect_prompt.py`, a non-authorizing candidate
+  reference for the code-defect target shared by the frozen Devign plan and
+  proposed PrimeVul replacement. It uses the existing strict UTF-8/NFC/LF
+  code normalization, fixed ordered `safe/vulnerable` labels, no-special-token
+  candidate IDs with one leading ASCII space, head-ceil/tail-floor code token
+  truncation after reserving the answer boundary and longest candidate within
+  the 512-token common budget, candidate-only masked loss labels, and one
+  complete forward per candidate through the existing reference scorer. The
+  live model callback explicitly used `use_cache=False`; the reference API
+  relies on callers to preserve that setting. No source or held-out file is
+  read by this module. The exact prompt
+  format is a **candidate**, not a frozen machine preregistration.
+- TDD RED was module-import failure. Focused unit/negative coverage then
+  passed **9 tests, 1 optional model test skipped** without a snapshot path.
+  Cases include exact normalized prompt bytes, label order and token IDs,
+  budget/truncation, prompt/padding masking, separate full candidate forwards,
+  invalid/empty code, insufficient budget, and special-token rejection. Ruff
+  check and format check passed on both new files.
+- Separately supplied the pinned local SmolLM2-135M snapshot under offline
+  Hugging Face flags and ran the optional model test. It loaded through
+  `load_verified_host`, verified the pinned snapshot, kept all base parameters
+  frozen, and obtained finite scores for both full defect-label candidates
+  without training. Terminal pytest exit **0**; JUnit **1 test, 0 failures,
+  0 errors, 0 skipped**, time `28.508 s`.
+  `results/alc_r0_defect_prompt_model_smoke_20260929.xml` SHA-256 is
+  `3b3cf719a6e4af25e5662c92c860aabcd9878bf71989d428ca81feb87624ee6e`.
+- Windows ALC-R0 regression on the final source state exited **0**: JUnit
+  **396 tests, 0 failures, 0 errors, 8 skipped**, time `330.150 s`.
+  `results/alc_r0_defect_prompt_regression_20260929.xml` SHA-256 is
+  `8ee52c4848b7c10141da5962e26ee48ce74482e5d5be5a0042096df3109dd2a7`.
+  The eighth skip is the separately executed snapshot-gated model test.
+- This proves only prompt/scoring-path integration and frozen-base inference
+  on one synthetic C-function input. It proves no real-data training, target
+  accuracy, held-out transfer, persistent neural capability, longitudinal
+  learning, or ALC-0 PASS. The family-B source amendment, full-data prompt-ID
+  receipt, independent review, source rights, R0.0 freeze, and sealed evaluator
+  remain open. `training_authority=false`; ALC-0 OPEN.
