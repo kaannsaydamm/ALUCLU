@@ -5294,3 +5294,48 @@ Task 2 sensorium/recollection gate: CLEAN
   clearance, sealed-test support, a frozen v2 amendment, model training, or
   persistent neural learning. Independent code/science review and all R0.0
   blocking gates remain open. ALC-0 OPEN.
+
+## 2026-09-29 — Frozen-host synthetic capsule trainability checkpoint 47
+
+- Code commit `642bdc2707e3e79272fe943dd420a9e307bf9aca` adds a
+  **non-authorizing synthetic mechanism diagnostic** on the pinned, locally
+  verified SmolLM2-135M CUDA/BF16 host. The base stays frozen/eval; only a
+  `ResearchCapsuleV0` at ports `(14, 29)`, rank 8, initialization seed
+  `20260916`, receives 40 AdamW updates (learning rate `3e-4`, zero weight
+  decay, global gradient clipping 1.0). One fixed synthetic token sequence
+  `[2,3,5,7,11,13,17,19]` predicts fixed token ID `23`. This uses no
+  Banking77, PrimeVul, WikiText, LAMBADA, or held-out samples.
+- The final test measured synthetic cross-entropy **9.252828598022461 ->
+  6.193796157836914**. After serialization to canonical manifest plus
+  SafeTensors, both in-process and a separate fresh Python process produced
+  the trained logits byte-identically. Detach restored baseline logits
+  exactly. The canonical full base-state SHA-256 before training, after
+  training, and in the fresh process was
+  `ce7e8dd6a97ac4cc56bf4f1e38625817386e27af58f1ed63377741f7f2aab1ba`.
+  The diagnostic output explicitly has `training_authority=false` and
+  `held_out_data_present=false`.
+- Initial attempts exposed setup-only issues: global `py -3.13` lacked test
+  packages, then pytest collection lacked `PYTHONPATH=src`; neither was a
+  model or code failure. An initial passing JUnit run used `record_property`
+  and emitted a pytest xunit2 compatibility warning. That reporting choice
+  was removed, along with an unnecessary global RNG seed mutation, before
+  the final suite. Earlier passing XMLs are retained as intermediate evidence,
+  not substituted for the final source state: focused v1/v2 were each 1/1
+  (SHA-256 `727de856e20d34c395df6e467f6ec26e07a9330228d16e984ba778326a4b2e4b`
+  and `976b05a8bae3de530b7d8c5d8bea0af9866db0b1f961b5d5964c05b91a78194c`),
+  and the prior regression was 367 tests, 0 failures/errors, 7 skipped
+  (SHA-256 `aa3e84736c9e2fbcc47fb532472abb556049761d689ad990ffda1dff70bc1521`).
+- On the final source state, Ruff check/format and Pyright 1.1.413 passed
+  (0 errors/warnings). The Windows ALC-R0 regression exited **0** with JUnit
+  **367 tests, 0 failures, 0 errors, 7 skipped**, time `174.004 s`. Final XML
+  `results/alc_r0_synthetic_trainability_final_regression_20260928.xml`
+  SHA-256 is
+  `608c97d6cc6a245f25f95f7ece5ed5e0c74f6141e0bc31457e7520d9e57fefce`;
+  its captured stdout contains the numeric loss and non-authorizing status.
+- This proves a bounded capsule can be optimized and persist its effect on
+  **the same synthetic training prompt** on this host. It does **not** prove
+  held-out generalization, learning of either required real-data family,
+  longitudinal learning, portability, or ALC-0. R0.0 development-artifact
+  and sealed-shard receipts, independent scientific/data review, formal
+  200-step resource pilots, the full preregistered development grid, and
+  held-out confirmation remain open. No real target-data training was run.
