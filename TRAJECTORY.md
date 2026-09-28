@@ -5339,3 +5339,30 @@ Task 2 sensorium/recollection gate: CLEAN
   and sealed-shard receipts, independent scientific/data review, formal
   200-step resource pilots, the full preregistered development grid, and
   held-out confirmation remain open. No real target-data training was run.
+
+## 2026-09-29 — Independent near-edge audit implementation checkpoint 48
+
+- Code commit `0235af6bf2eda624a42f1420261e4d1ac2d07a48` adds a separate
+  development-only 256-permutation MinHash, 13-by-19-band LSH candidate,
+  and exact five-shingle Jaccard >= 0.90 edge rediscovery pass. It does not
+  call the graph builder's MinHash, band, candidate, Jaccard, or union
+  functions; it **does** share the frozen code normalization/tokenization
+  contract. Every independently found near edge must land in one reported
+  component, and the independently counted candidates/near edges must match
+  the graph receipt. It emits an ordered near-edge ledger hash, no source text,
+  and `training_authority=false`.
+- TDD RED: the new test module could not import the absent auditor. GREEN:
+  focused **10/10** tests passed after implementation. These include a scalar
+  MinHash arithmetic check, a near clone plus exact duplicate, a missing
+  component join, wrong candidate/near counts, a candidate resource cap, and
+  a prior-receipt-bound runner fixture. Ruff check/format and Pyright 1.1.413
+  passed with 0 errors/warnings. Windows ALC-R0 regression exited **0**:
+  JUnit **375 tests, 0 failures, 0 errors, 7 skipped**, time `303.531 s`.
+  `results/alc_r0_near_edge_audit_regression_20260929.xml` SHA-256 is
+  `6f2baed09ca947e99a149785990af969c3be8da0d2d0715296df0db6ade65c1c`.
+- This is **fixture and regression evidence only**. The new independent pass
+  has not yet traversed all 209,857 pinned PrimeVul development rows; do not
+  infer a full-corpus near-edge audit or R0.0 PASS. The only accessible source
+  files are the pinned train/validation and their paired-development files;
+  no held-out test file is present or read. Source rights, scientific review,
+  v2 amendment, independent sealer, and model training remain open. ALC-0 OPEN.
