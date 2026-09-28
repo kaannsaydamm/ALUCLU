@@ -106,7 +106,10 @@ threshold is lowered because PrimeVul development data were inspected.
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by
-   itself establish algorithmic correctness.
+   itself establish algorithmic correctness. A separate structural checker now
+   covers roots, exact groups, pair edges, overlap exclusion, and retained
+   representatives on bounded fixtures; it has not yet audited the full
+   corpus and does not rediscover near-clone edges independently.
 2. A versioned machine-readable preregistration and fail-closed validator for
    source/split/label/prompt/control hashes, exact estimator/bootstrap fixtures,
    all P1–P14 thresholds, sealer-only test acquisition and output schema,

@@ -5218,3 +5218,27 @@ Task 2 sensorium/recollection gate: CLEAN
   substituted for this final run. This is reference arithmetic evidence only;
   no final 10,000-replicate evaluator, sealer, rights review, training, or
   ALC-0 completion is implied. ALC-0 OPEN.
+
+## 2026-09-28 — Pair/clone structural audit harness checkpoint 44
+
+- Added `primevul_pair_clone_audit.py` as an independent *structural* checker
+  over a graph result: every input ID has one root; each root is its group's
+  lexicographically minimal ID; identical normalized-code hashes stay in one
+  same-label root; explicit author pairs stay in one component; validation
+  components touching train are fully excluded; retained per-root/code/label
+  representatives and reported overlap/exact/component counts agree with
+  independently recomputed expectations. It emits only metadata and hashes.
+- TDD RED: the absent audit module failed import/collection. GREEN: focused
+  **7/7** tests passed on both bounded reference and scalable backends and on
+  tampered root, representative, pair, overlap, and exact-count examples.
+  Ruff check/format passed; Pyright 1.1.413 reported 0 errors. Windows ALC-R0
+  regression exited 0 with JUnit **364 tests, 0 failures, 0 errors, 7 skipped**,
+  time `208.841 s`; XML SHA-256
+  `ba308afb24dc045a7ba9dc67d57a240a0632ffa25bc3a645ca4c6e1185f57377`
+  at `results/alc_r0_primevul_structural_audit_regression_20260928.xml`.
+- This checker has **not yet been applied to the full 209,857-row result** and
+  does not independently discover or refute omitted LSH near-clone edges.
+  Deterministic graph replay and structural audit are data/protocol evidence,
+  **not deterministic model output or proof of persistent neural learning**.
+  Model training, sealed held-out evaluation, independent scientific review,
+  and ALC-0 remain OPEN.
