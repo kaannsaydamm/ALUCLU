@@ -126,6 +126,10 @@ untouched confirmatory unit or satisfy the predeclared test floor, use the
 reserve new-source route rather than changing the threshold after seeing the
 result.
 
+A non-authorizing proposed family-B-only specification is recorded in
+`2026-09-28-alc-r0-primevul-v2-amendment-draft.md`. It is **not** the v2 freeze
+or machine preregistration and cannot override the 2026-09-20 v1 plan.
+
 ## Original-release data license scope — preliminary, unresolved
 
 As checked on 2026-09-28, the authors'

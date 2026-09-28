@@ -5140,3 +5140,20 @@ Task 2 sensorium/recollection gate: CLEAN
   **not** confirmatory test support, dataset rights, preregistration, training,
   neural capability, or ALC-0. Next: independent graph/receipt audit,
   reproducibility check, v2 protocol/license/sealer/R0.0 gates. ALC-0 OPEN.
+
+## 2026-09-28 — Family-B pair-aware v2 protocol draft checkpoint 40
+
+- Read frozen 2026-09-20 ALC-R0 plan sections 4.2, 8.1, 8.4, 8.6, P1–P14,
+  and R0.0 alongside the negative Devign/PrimeVul development outcomes.
+  Drafted `docs/superpowers/plans/2026-09-28-alc-r0-primevul-v2-amendment-draft.md`
+  as **non-authorizing**, with exact proposed family-B-only source/graph change,
+  mixed-label observation vote, component-cluster bootstrap, whole-component
+  sealer exclusion, component/class support rule, unchanged numeric floors,
+  and independent review/rights/sealer/validator prerequisites.
+- Development evidence of 22,157 validation components, 552 positive-containing
+  and 22,087 negative-containing implies 482 mixed-label components by
+  inclusion-exclusion. The draft makes this counting rule explicit before any
+  held-out test access. It does **not** modify the frozen v1 plan, inspect test
+  data, create a v2 machine preregistration, or grant training authority.
+  A byte-identical second full-development run was live when drafted; its
+  terminal outcome is a separate pending checkpoint. ALC-0 remains OPEN.
