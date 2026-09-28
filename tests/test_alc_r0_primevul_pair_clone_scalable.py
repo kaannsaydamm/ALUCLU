@@ -92,3 +92,17 @@ def test_scalable_graph_handles_more_rows_than_reference_limit() -> None:
     assert result.exact_joins == 4096
     assert result.train_components == 1
     assert result.training_authority is False
+
+
+def test_progress_reports_terminal_processed_row_count() -> None:
+    seen: list[tuple[int, int, int]] = []
+    train = (_row(1, "int x = 1;", 1), _row(2, "int x = 1;", 1))
+
+    build_pair_clone_scalable(
+        train=train,
+        validation=(),
+        pair_edges=(),
+        progress=lambda *values: seen.append(values),
+    )
+
+    assert seen[-1] == (2, 2, 0)

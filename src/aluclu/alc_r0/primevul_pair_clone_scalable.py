@@ -11,6 +11,7 @@ import hashlib
 import re
 from array import array
 from collections import OrderedDict
+from collections.abc import Callable
 
 from .devign_clone import _band_keys, _is_near_clone, minhash_signature
 from .devign_preprocess import (
@@ -37,6 +38,7 @@ def build_pair_clone_scalable(
     validation: tuple[PairCloneRecord, ...],
     pair_edges: tuple[tuple[str, str], ...],
     max_candidate_pairs: int = _MAX_CANDIDATE_PAIRS,
+    progress: Callable[[int, int, int], None] | None = None,
 ) -> PairCloneReferenceResult:
     """Build the full-development dependency graph without retaining all shingles."""
 
@@ -44,6 +46,8 @@ def build_pair_clone_scalable(
         raise PairCloneGraphError("tuple development splits required")
     if not isinstance(pair_edges, tuple):
         raise PairCloneGraphError("tuple pair edges required")
+    if progress is not None and not callable(progress):
+        raise PairCloneGraphError("progress callback must be callable")
     if (
         type(max_candidate_pairs) is not int
         or max_candidate_pairs < 0
@@ -143,9 +147,13 @@ def build_pair_clone_scalable(
                 raise PairCloneGraphError("conflicting exact normalized-code labels")
             union(index, earlier_exact)
             exact_joins += 1
+            if progress is not None and (index % 1024 == 0 or index + 1 == len(rows)):
+                progress(index + 1, len(rows), candidate_pairs)
             continue
         shingles = shingles_at(index)
         if not shingles:
+            if progress is not None and (index % 1024 == 0 or index + 1 == len(rows)):
+                progress(index + 1, len(rows), candidate_pairs)
             continue
         keys = tuple(
             bytes((band,)) + packed
@@ -167,6 +175,8 @@ def build_pair_clone_scalable(
                 buckets[key] = array("I", (index,))
             else:
                 bucket.append(index)
+        if progress is not None and (index % 1024 == 0 or index + 1 == len(rows)):
+            progress(index + 1, len(rows), candidate_pairs)
 
     pair_joins = 0
     for left, right in pair_edges:

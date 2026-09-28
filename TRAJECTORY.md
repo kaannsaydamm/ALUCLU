@@ -5044,3 +5044,27 @@ Task 2 sensorium/recollection gate: CLEAN
   commitments. No paired/full test source was read. This preflight neither
   freezes a v2 protocol nor authorizes training: `training_authority=false`;
   ALC-0 remains **OPEN**.
+
+## 2026-09-28 — Full-development graph runner preflight checkpoint 36
+
+- Continued from clean/pushed local Desktop `95ae96d`. Added a runner that
+  invokes the pinned development-source and author-pair verifiers, then
+  replays train/validation and pair-file SHA-256 while loading only their
+  development rows/edges. It passes the verified 209,857-row input shape to
+  the scalable graph and emits a canonical metadata-only receipt containing
+  input/retained counts, component-class support, exact/near/pair joins, and
+  source/edge/root/retained-ID commitments. Held-out test files remain outside
+  this path. It prints periodic graph progress without touching semantics.
+- RED at absent runner module preceded GREEN fixture integration. Focused
+  scalable+runner tests **8/8** cover source binding, metadata-only receipt,
+  progress, and mutation rejection. Ruff check/format clean; Pyright 1.1.413
+  0 errors. Windows ALC-R0 regression after final source/test edit: exit 0;
+  JUnit **348 tests, 0 failures, 0 errors, 7 skipped**, time `152.863 s`.
+  `results/alc_r0_pair_clone_full_runner_regression_20260928.xml` SHA-256
+  `a9748af607ff3a0e5a6b598b3ecab42bdc3aecd8357168d1f87b3535ada9459c`.
+- **Not yet run:** the pinned full development graph and its resource fit. A
+  passing fixture is not the full-data evidence. Next: freeze this code in a
+  clean commit, run the real 209,857-row development graph, inspect process
+  exit/receipt/resource use, then review retained validation support. No v2
+  preregistration amendment, training, or confirmatory test access has occurred.
+  `training_authority=false`; ALC-0 remains **OPEN**.
