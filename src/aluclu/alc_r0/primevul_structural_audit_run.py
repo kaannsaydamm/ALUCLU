@@ -14,7 +14,10 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from .acquisition import verify_model_snapshot
+from .banking_scoring import CandidateTokenizer
 from .canonical import canonical_json_bytes, sha256_bytes
+from .defect_prompt_receipt import build_defect_prompt_candidate_receipt
 from .primevul_near_edge_audit import audit_near_edges
 from .primevul_pair_clone_audit import audit_pair_clone_result
 from .primevul_pair_clone_full import _read_pair_edges, _read_source_split
@@ -46,6 +49,8 @@ def run_primevul_structural_audit(
     progress: Callable[[int, int, int], None] | None = None,
     include_near_edges: bool = False,
     near_progress: Callable[[int, int, int], None] | None = None,
+    prompt_tokenizer: CandidateTokenizer | None = None,
+    model_inventory_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Verify sources, rebuild the graph, audit structure, and bind old ledgers."""
 
@@ -55,6 +60,10 @@ def run_primevul_structural_audit(
     ):
         raise PrimeVulStructuralAuditError(
             "invalid independent near-edge audit options"
+        )
+    if (prompt_tokenizer is None) != (model_inventory_sha256 is None):
+        raise PrimeVulStructuralAuditError(
+            "prompt tokenizer and model inventory must be supplied together"
         )
     if (
         not isinstance(expected_receipt, dict)
@@ -164,6 +173,12 @@ def run_primevul_structural_audit(
     }
     if near_audit is not None:
         receipt["near_edge_audit"] = near_audit
+    if prompt_tokenizer is not None and model_inventory_sha256 is not None:
+        receipt["defect_prompt_audit"] = build_defect_prompt_candidate_receipt(
+            graph,
+            prompt_tokenizer,
+            model_inventory_sha256=model_inventory_sha256,
+        )
     return receipt
 
 
@@ -174,6 +189,11 @@ def main() -> None:
     parser.add_argument("prior_receipt_file", type=Path)
     parser.add_argument("--expected-receipt-sha256", required=True)
     parser.add_argument("--include-near-edges", action="store_true")
+    parser.add_argument(
+        "--tokenizer-snapshot",
+        type=Path,
+        help="verified local SmolLM2 snapshot for candidate prompt-ID audit",
+    )
     args = parser.parse_args()
     raw = args.prior_receipt_file.read_bytes()
     if hashlib.sha256(raw).hexdigest() != args.expected_receipt_sha256:
@@ -202,6 +222,19 @@ def main() -> None:
             flush=True,
         )
 
+    prompt_tokenizer = None
+    model_inventory_sha256 = None
+    if args.tokenizer_snapshot is not None:
+        snapshot_receipt = verify_model_snapshot(args.tokenizer_snapshot)
+        from transformers import AutoTokenizer
+
+        prompt_tokenizer = AutoTokenizer.from_pretrained(
+            str(args.tokenizer_snapshot),
+            local_files_only=True,
+            trust_remote_code=False,
+        )
+        model_inventory_sha256 = snapshot_receipt["inventory_sha256"]
+
     audit = run_primevul_structural_audit(
         args.development_data_dir,
         args.paired_development_data_dir,
@@ -209,6 +242,8 @@ def main() -> None:
         progress=report,
         include_near_edges=args.include_near_edges,
         near_progress=report_near if args.include_near_edges else None,
+        prompt_tokenizer=prompt_tokenizer,
+        model_inventory_sha256=model_inventory_sha256,
     )
     sys.stdout.buffer.write(canonical_json_bytes(audit) + b"\n")
 

@@ -5500,3 +5500,34 @@ Task 2 sensorium/recollection gate: CLEAN
   learning, or ALC-0 PASS. The family-B source amendment, full-data prompt-ID
   receipt, independent review, source rights, R0.0 freeze, and sealed evaluator
   remain open. `training_authority=false`; ALC-0 OPEN.
+
+## 2026-09-29 — Family-B retained prompt-ID receipt implementation checkpoint 52
+
+- Added a non-authorizing `defect_prompt_receipt` builder and optional
+  `--tokenizer-snapshot` branch in the existing PrimeVul structural-audit
+  runner. The runner first verifies the pinned local model snapshot and
+  train/validation-plus-pair source bytes, rebuilds and structurally audits
+  the dependency graph against the prior receipt, then binds only the retained
+  ordered train/validation rows to the fixed candidate prompt and tokenizer.
+  Metadata includes the verified model inventory hash, label/candidate/prefix/
+  suffix token-ID roots, row/label/truncation counts, and separate ordered
+  SHA-256 roots over source ID, component root, target, normalized-code hash,
+  prompt token IDs, and token counts. Raw function text and individual source
+  IDs are not emitted. The caller-supplied inventory hash alone is not proof;
+  the CLI recomputes it from the pinned snapshot. No held-out file is read and
+  the receipt fixes `training_authority=false`.
+- TDD RED: the missing helper module failed import; then two runner fixture
+  tests failed on the absent optional arguments. GREEN: **11/11** focused
+  helper/runner fixture tests passed. They cover mutation of code, label,
+  component root and tokenizer; malformed inventory hash; cross-split root
+  overlap; missing option pairing; and absence of raw source in the receipt.
+  Ruff check/format and `git diff --check` passed. Windows ALC-R0 regression
+  exited **0**: JUnit **404 tests, 0 failures, 0 errors, 8 skipped**, time
+  `139.485 s`; XML
+  `results/alc_r0_defect_prompt_receipt_regression_20260929.xml` SHA-256
+  `fc46dc4c04a5250e7f6ec6b745629e6f0e45a04df347a81f75e1d9ef56a7687e`.
+- This is **implementation and fixture/regression evidence only**. A full
+  pinned PrimeVul development prompt-ID pass has not yet finished at this
+  checkpoint. The exact prompt and family-B source amendment are still
+  candidate/non-frozen; rights, independent review, sealer, R0.0 validator,
+  and real-data model training remain open. No ALC-0 PASS.
