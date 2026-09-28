@@ -1,0 +1,55 @@
+from __future__ import annotations
+
+import pytest
+from test_alc_r0_primevul_pair_clone_full import _fixture
+
+from aluclu.alc_r0.primevul_pair_clone_full import run_primevul_full_graph
+from aluclu.alc_r0.primevul_structural_audit_run import (
+    PrimeVulStructuralAuditError,
+    run_primevul_structural_audit,
+)
+
+
+def test_full_fixture_receipt_is_bound_to_structural_audit(tmp_path) -> None:
+    full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
+    receipt = run_primevul_full_graph(
+        full,
+        paired,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+
+    audit = run_primevul_structural_audit(
+        full,
+        paired,
+        expected_receipt=receipt,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+
+    assert audit["status"] == "full-graph-structural-audit-clear-non-authorizing"
+    assert audit["source_scope"] == "fixture"
+    assert audit["input_rows"] == 4
+    assert audit["retained_validation_rows"] == 2
+    assert audit["training_authority"] is False
+    assert audit["held_out_data_present"] is False
+
+
+def test_full_fixture_rejects_tampered_prior_receipt(tmp_path) -> None:
+    full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
+    receipt = run_primevul_full_graph(
+        full,
+        paired,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+    receipt["component_root_ledger_sha256"] = "0" * 64
+
+    with pytest.raises(PrimeVulStructuralAuditError, match="receipt mismatch"):
+        run_primevul_structural_audit(
+            full,
+            paired,
+            expected_receipt=receipt,
+            source_expectation=source_expectation,
+            pair_expectation=pair_expectation,
+        )

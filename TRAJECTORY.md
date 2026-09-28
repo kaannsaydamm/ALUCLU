@@ -5242,3 +5242,27 @@ Task 2 sensorium/recollection gate: CLEAN
   **not deterministic model output or proof of persistent neural learning**.
   Model training, sealed held-out evaluation, independent scientific review,
   and ALC-0 remain OPEN.
+
+## 2026-09-28 — Receipt-bound full-graph structural audit runner checkpoint 45
+
+- Added `primevul_structural_audit_run.py` to verify the same pinned
+  development-only source and pair bytes, rebuild the graph, run the separate
+  structural checker, and compare its root/retained-ID ledger hashes plus
+  every prior graph count with a supplied canonical prior receipt. The CLI
+  requires that receipt's expected raw SHA-256 before any data processing;
+  output is metadata-only and never authorizes training or opens test files.
+- Tests were written first. The initial ordinary pytest RED attempt was
+  interrupted by Windows `0x8007000e` during Torch import under measured
+  ~115 MiB free RAM, so it was **not** a meaningful code-failure RED. After
+  memory recovered, the same focused fixture tests passed **2/2** under
+  standard pytest (and also 2/2 under a low-memory import-isolated run).
+  They cover a matching prior receipt and a tampered ledger receipt.
+  Ruff check/format and Pyright 1.1.413 (0 errors) passed. Full Windows
+  ALC-R0 regression exited 0: JUnit **366 tests, 0 failures, 0 errors,
+  7 skipped**, time `224.805 s`; XML SHA-256
+  `cb419f815de06a0e07fa47729852544233775d85598d03a1f813528d592059ca`
+  at `results/alc_r0_primevul_structural_audit_run_regression_20260928.xml`.
+- This checkpoint freezes a fixture-validated runner, **not** a real-corpus
+  audit result. Real 209,857-row execution must follow on the frozen commit;
+  omitted near-clone discovery, scientific review, rights, sealer, and neural
+  learning gates remain open. ALC-0 OPEN.
