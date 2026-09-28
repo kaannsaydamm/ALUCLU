@@ -35,6 +35,36 @@ def test_full_fixture_receipt_is_bound_to_structural_audit(tmp_path) -> None:
     assert audit["held_out_data_present"] is False
 
 
+def test_full_fixture_can_redetect_near_edges_in_separate_pass(tmp_path) -> None:
+    full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
+    receipt = run_primevul_full_graph(
+        full,
+        paired,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+
+    audit = run_primevul_structural_audit(
+        full,
+        paired,
+        expected_receipt=receipt,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+        include_near_edges=True,
+    )
+
+    assert (
+        audit["status"]
+        == "full-graph-structural-and-near-edge-audit-clear-non-authorizing"
+    )
+    assert (
+        audit["near_edge_audit"]["lsh_candidate_pairs"]
+        == receipt["lsh_candidate_pairs"]
+    )
+    assert audit["near_edge_audit"]["near_edges"] == receipt["near_joins"]
+    assert audit["training_authority"] is False
+
+
 def test_full_fixture_rejects_tampered_prior_receipt(tmp_path) -> None:
     full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
     receipt = run_primevul_full_graph(

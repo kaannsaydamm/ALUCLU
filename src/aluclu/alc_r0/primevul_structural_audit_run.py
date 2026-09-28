@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from .canonical import canonical_json_bytes, sha256_bytes
+from .primevul_near_edge_audit import audit_near_edges
 from .primevul_pair_clone_audit import audit_pair_clone_result
 from .primevul_pair_clone_full import _read_pair_edges, _read_source_split
 from .primevul_pair_clone_scalable import build_pair_clone_scalable
@@ -43,9 +44,18 @@ def run_primevul_structural_audit(
     source_expectation: PrimeVulDevelopmentExpectation = PRIMEVUL_ORIGINAL_DEVELOPMENT,
     pair_expectation: PrimeVulPairExpectation = PRIMEVUL_ORIGINAL_PAIRS,
     progress: Callable[[int, int, int], None] | None = None,
+    include_near_edges: bool = False,
+    near_progress: Callable[[int, int, int], None] | None = None,
 ) -> dict[str, Any]:
     """Verify sources, rebuild the graph, audit structure, and bind old ledgers."""
 
+    if type(include_near_edges) is not bool or (
+        near_progress is not None
+        and (not include_near_edges or not callable(near_progress))
+    ):
+        raise PrimeVulStructuralAuditError(
+            "invalid independent near-edge audit options"
+        )
     if (
         not isinstance(expected_receipt, dict)
         or expected_receipt.get("status") != "development-graph-non-authorizing"
@@ -127,9 +137,23 @@ def run_primevul_structural_audit(
         raise PrimeVulStructuralAuditError(
             "prior receipt mismatch: " + ", ".join(mismatches)
         )
-    return {
+    near_audit = (
+        audit_near_edges(
+            train=train,
+            validation=validation,
+            result=graph,
+            progress=near_progress,
+        )
+        if include_near_edges
+        else None
+    )
+    receipt = {
         **audit,
-        "status": "full-graph-structural-audit-clear-non-authorizing",
+        "status": (
+            "full-graph-structural-and-near-edge-audit-clear-non-authorizing"
+            if include_near_edges
+            else "full-graph-structural-audit-clear-non-authorizing"
+        ),
         "source_scope": checks["source_scope"],
         "training_authority": False,
         "held_out_data_present": False,
@@ -138,6 +162,9 @@ def run_primevul_structural_audit(
         ),
         "pair_source_receipt_sha256": checks["pair_source_receipt_sha256"],
     }
+    if near_audit is not None:
+        receipt["near_edge_audit"] = near_audit
+    return receipt
 
 
 def main() -> None:
@@ -146,6 +173,7 @@ def main() -> None:
     parser.add_argument("paired_development_data_dir", type=Path)
     parser.add_argument("prior_receipt_file", type=Path)
     parser.add_argument("--expected-receipt-sha256", required=True)
+    parser.add_argument("--include-near-edges", action="store_true")
     args = parser.parse_args()
     raw = args.prior_receipt_file.read_bytes()
     if hashlib.sha256(raw).hexdigest() != args.expected_receipt_sha256:
@@ -167,11 +195,20 @@ def main() -> None:
             flush=True,
         )
 
+    def report_near(processed: int, total: int, candidates: int) -> None:
+        print(
+            f"independent near audit progress {processed}/{total} candidates={candidates}",
+            file=sys.stderr,
+            flush=True,
+        )
+
     audit = run_primevul_structural_audit(
         args.development_data_dir,
         args.paired_development_data_dir,
         expected_receipt=expected_receipt,
         progress=report,
+        include_near_edges=args.include_near_edges,
+        near_progress=report_near if args.include_near_edges else None,
     )
     sys.stdout.buffer.write(canonical_json_bytes(audit) + b"\n")
 
