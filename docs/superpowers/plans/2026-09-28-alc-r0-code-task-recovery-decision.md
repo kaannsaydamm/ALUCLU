@@ -100,8 +100,16 @@ pilot is `results/alc_r0_primevul_pair_clone_pilot50_20260928.json`. These
 counts are a bounded integration proof, **not** a random sample, full graph,
 expected full-data rate, or training permit.
 
-The next implementation gate is a resource-bounded full 209,857-row graph with
-reference parity, retained validation counts, and explicit source/graph
-commitments. If this protocol cannot preserve a valid untouched confirmatory
+An in-memory scalable graph backend now preserves the reference result on
+bounded adversarial fixtures, with a 250,000-row limit, 10,000,000-candidate
+limit, compact bucket indices, and a 512-row shingle cache. It passed one
+4,097-row exact-duplicate stress fixture, but has **not** yet run the full
+209,857-row development source; these limits are implementation resource
+guards, not scientific acceptance changes.
+
+The next implementation gate is to bind the verified full source and pair
+edges to that backend, run the full 209,857-row graph, prove further reference
+parity, measure retained validation counts and resource fit, and publish
+explicit source/graph commitments. If this protocol cannot preserve a valid untouched confirmatory
 unit or satisfy the predeclared test floor, use the reserve new-source route
 rather than changing the threshold after seeing the result.

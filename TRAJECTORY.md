@@ -5017,3 +5017,30 @@ Task 2 sensorium/recollection gate: CLEAN
   still needs a versioned preregistration amendment, license review,
   independent sealer, R0.0 validator, and untouched confirmatory evaluation.
   `training_authority=false`; ALC-0 remains **OPEN**.
+
+## 2026-09-28 — Scalable pair/clone graph preflight checkpoint 35
+
+- Continued from pushed local Desktop commit `a1bd8d1`. The new scalable
+  development graph has the same frozen normalization, exact hash, 256-permutation
+  MinHash, 13-by-19 LSH, exact five-shingle Jaccard >= 0.90, lexical root,
+  pair-edge, duplicate-representative, and train/validation exclusion rules
+  as the bounded oracle. It uses compact bucket indices and a 512-row shingle
+  cache rather than retaining all shingle sets. Its explicit 250,000-row and
+  10,000,000-candidate caps are resource guards; they do not relax the
+  scientific threshold. No full-data graph has been run yet.
+- RED was observed at the absent scalable module. GREEN parity tests compare
+  the complete result object against the independent 4,096-row oracle for
+  cross-split overlap, author pair edges, duplicates, and repeated near-clone
+  candidates; exact conflicts and candidate-budget violations fail closed.
+  A 4,097-row exact-duplicate fixture passed beyond the oracle's row bound.
+  Focused tests **5/5**, Ruff check/format clean, Pyright 1.1.413 0 errors.
+- Windows ALC-R0 regression after the final source/test edit: process exit 0;
+  JUnit **345 tests, 0 failures, 0 errors, 7 skipped**, time `180.936 s`.
+  `results/alc_r0_pair_clone_scalable_regression_20260928.xml` SHA-256
+  `d704afb8244d10ba62db9a1d88e86fd7e06950b839a4986d8bc032a95c19ea67`.
+- **Next gate:** bind the pinned verified development files and pair edges to
+  the backend, prove stronger parity, execute all 209,857 development rows,
+  measure retained validation support and resource fit, and record graph
+  commitments. No paired/full test source was read. This preflight neither
+  freezes a v2 protocol nor authorizes training: `training_authority=false`;
+  ALC-0 remains **OPEN**.
