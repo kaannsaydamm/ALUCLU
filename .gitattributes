@@ -36,3 +36,7 @@ results/alc_r0_primevul_structural_audit_regression_20260928.xml text eol=lf
 results/alc_r0_primevul_structural_audit_run_regression_20260928.xml text eol=lf
 results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stdout.log text eol=lf
 results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_near_edge_audit_regression_20260929.xml text eol=lf
+results/alc_r0_primevul_near_edge_full_322cc73_20260929.stdout.log text eol=lf
+results/alc_r0_primevul_near_edge_full_322cc73_20260929.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_near_edge_full_322cc73_20260929.exit.log -text whitespace=-blank-at-eol

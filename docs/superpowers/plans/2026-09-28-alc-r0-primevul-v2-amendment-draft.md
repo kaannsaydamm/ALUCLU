@@ -113,14 +113,28 @@ threshold is lowered because PrimeVul development data were inspected.
    development rows from frozen code commit `323e1ea`; its canonical result
    and 206-event progress evidence are under
    `results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.*`.
-   Structural invariants and prior ledger hashes matched, but independent
-   near-edge discovery and scientific review remain separate gates.
+   Structural invariants and prior ledger hashes matched. A subsequent
+   independent MinHash/LSH/Jaccard implementation also traversed all 209,857
+   pinned development rows from frozen code commit `322cc73`; it rediscovered
+   19,874 candidates and 13,229 near edges, with every edge in one graph
+   component and counts matching the prior receipt. Raw metadata-only output
+   and progress evidence are in
+   `results/alc_r0_primevul_near_edge_full_322cc73_20260929.*`. This pass
+   shares the frozen normalization/tokenization functions and is not an
+   independent scientific review or held-out leakage proof.
 2. A versioned machine-readable preregistration and fail-closed validator for
    source/split/label/prompt/control hashes, exact estimator/bootstrap fixtures,
    all P1–P14 thresholds, sealer-only test acquisition and output schema,
    cardinality matrix, environment locks, and clean-checkout freeze.
 3. Original-release data and underlying-code rights/provenance review; the
    authors' repository MIT file alone does not resolve external JSONL scope.
+   On 2026-09-29, the [authors' README](https://github.com/DLVulDet/PrimeVul/blob/main/README.md)
+   was checked: it links the original release and gives training examples.
+   The [repository LICENSE](https://github.com/DLVulDet/PrimeVul/blob/main/LICENSE)
+   is MIT for the described software and associated documentation. Neither
+   page explicitly resolves licensing of the separate Google Drive JSONL
+   distribution or the rights of embedded third-party source snippets.
+   This is a provenance observation, not a legal conclusion or rights PASS.
 4. An independently controlled sealer/key broker and test-acquisition process
    satisfying the v1 isolation and denial tests. Do not read held-out data to
    decide whether this draft should be adopted.

@@ -5366,3 +5366,51 @@ Task 2 sensorium/recollection gate: CLEAN
   files are the pinned train/validation and their paired-development files;
   no held-out test file is present or read. Source rights, scientific review,
   v2 amendment, independent sealer, and model training remain open. ALC-0 OPEN.
+
+## 2026-09-29 — Full PrimeVul independent near-edge result checkpoint 49
+
+- From frozen code HEAD `322cc738a3c8895be185f525534c090a3abbcb23`
+  and a tracked-clean checkout, reran the pinned original PrimeVul
+  train/validation plus paired-development files. The prior graph receipt's
+  raw SHA-256 was required as
+  `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`.
+  A low-memory child-process launch omitted only the heavy top-level ALUCLU
+  package initializers; the graph, source verifiers, structural checker, and
+  independent near-edge auditor code paths were unchanged. The terminal
+  `python_exit_code=0` was recorded in
+  `results/alc_r0_primevul_near_edge_full_322cc73_20260929.exit.log`.
+- Parsed and independently checked the canonical JSON+LF stdout: source scope
+  `pinned-original-development`, `training_authority=false`,
+  `held_out_data_present=false`; **209,857** source rows, **4,916** author pair
+  edges, **8,373** exact duplicate rows, **177,291** retained train rows,
+  **22,772** retained validation rows, and **2,658** validation rows removed
+  for train overlap. The previous receipt SHA, source-pair receipt SHA,
+  component-root ledger SHA, retained-train-ID SHA, and
+  retained-validation-ID SHA all match the committed prior full-graph receipt.
+- The separate implementation independently rediscovered **19,874** LSH
+  candidate pairs and **13,229** exact-Jaccard-confirmed near edges. All
+  discovered near edges stayed within the graph's component roots; its
+  candidate/edge counts equal the prior graph's counts. Ordered near-edge
+  ledger SHA-256 is
+  `3ba8af8d535502e31451f67d061f4e82f968f72fe2bfc428366aa9d79096b068`.
+  Both graph and independent-audit phases have **206** monotone progress
+  events, each ending at **209,857/209,857** and **19,874** candidates;
+  stderr has no extra lines. The approximate wrapper wall time was **34 min**
+  (01:15:02 to 01:49:02 local). No continuous all-time RAM peak was measured.
+- Raw stdout SHA-256 is
+  `f19d5131253ce853adad4cdee75da36660e13b2e4bb5dea8138097f78d3526e1`;
+  stderr SHA-256 is
+  `3a7c6da33a56b74351a5d0e29088aad3cbb95b8cb6075a886d459a848fece478`;
+  exit-log SHA-256 is
+  `0c86842e0db90458dfda6a814ad055f061ce033213e06f59a5f69386e7e38d97`.
+- Rechecked the authors' [README](https://github.com/DLVulDet/PrimeVul/blob/main/README.md)
+  and [MIT repository LICENSE](https://github.com/DLVulDet/PrimeVul/blob/main/LICENSE).
+  README links the original release and describes model training; the LICENSE
+  text describes software and associated documentation. Explicit scope over
+  the external Drive JSONL files and third-party embedded source snippets was
+  not found in these sources. This is **not** a legal clearance or a basis to
+  authorize training. The independent near pass shares normalization and
+  tokenization with the graph; code/science review, a frozen v2 amendment,
+  rights resolution, sealer/isolation, R0.0 validator, and held-out evidence
+  remain open. No target model training or confirmatory evaluation was run.
+  ALC-0 OPEN.
