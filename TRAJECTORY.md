@@ -5449,3 +5449,14 @@ Task 2 sensorium/recollection gate: CLEAN
   source-rights resolution, and scientific review. No target-data model
   training, held-out evaluation, or ALC-0 capability claim occurred. ALC-0
   remains OPEN.
+- After committing the code/tests/regression in
+  `595cfaeb9f8d954abba5497745243a3ae4650ebc`, ran
+  `inspect_clean_source_checkout(Path.cwd())` from this exact clean local
+  worktree. It exited 0 and returned **302** tracked blobs and source-tree
+  SHA-256
+  `3905e9cdee79abd0b2f9e930afecfac4d13626ce0b21b19cb87d06681d8eea72`.
+  A separate call to `verify_frozen_source_checkout` with that explicit commit
+  and digest also exited 0 and returned the same evidence. This records a
+  live self-consistency smoke for commit `595cfae`, not an independently
+  frozen R0.0 receipt or permission to train. This later trajectory commit
+  necessarily has a different source-tree digest.
