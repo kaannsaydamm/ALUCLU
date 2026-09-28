@@ -106,3 +106,35 @@ def test_progress_reports_terminal_processed_row_count() -> None:
     )
 
     assert seen[-1] == (2, 2, 0)
+
+
+def test_scalable_graph_matches_reference_on_mixed_development_fixture() -> None:
+    base = [f"token{index:03d}" for index in range(100)]
+    rows: list[PairCloneRecord] = []
+    for index in range(1, 73):
+        tokens = base.copy()
+        if index % 7 == 0:
+            tokens = [f"other{index}_{position}" for position in range(100)]
+        else:
+            tokens[20 + index % 30] = f"changed{index}"
+        code = " ".join(tokens)
+        if index % 11 == 0:
+            code = rows[index - 3].function
+        rows.append(_row(index, code, index % 2))
+    edges = tuple(
+        (f"primevul:{index}", f"primevul:{index + 1}") for index in range(1, 73, 2)
+    )
+    train = tuple(rows[:60])
+    validation = tuple(rows[60:])
+
+    expected = build_pair_clone_reference(
+        train=train, validation=validation, pair_edges=edges
+    )
+    actual = build_pair_clone_scalable(
+        train=train, validation=validation, pair_edges=edges
+    )
+
+    assert actual == expected
+    assert actual.exact_joins > 0
+    assert actual.near_joins > 0
+    assert actual.validation_removed_train_overlap > 0

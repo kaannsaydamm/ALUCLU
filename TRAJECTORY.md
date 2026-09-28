@@ -5083,3 +5083,23 @@ Task 2 sensorium/recollection gate: CLEAN
   author-rights review. Local development-only graph analysis does not settle
   that question. No raw code or held-out test data was committed/read; no
   license or training PASS has been asserted. `training_authority=false`.
+
+## 2026-09-28 — Mixed-component scalable/reference parity checkpoint 38
+
+- Continued while the full pinned development graph from code commit `101c302`
+  remained live. Added a deterministic 72-record adversarial development
+  fixture combining 1/0 author pair edges, distinct-code near clones, exact
+  same-label duplicates, outliers, and train/validation overlap. The entire
+  scalable result object matched the bounded reference result; exact joins,
+  near joins, and validation overlap removal were all nonzero. This proves
+  another bounded parity case, **not** full-source parity or full-data PASS.
+- Focused scalable tests **7/7** passed after formatter-only cleanup; Ruff
+  check/format and Pyright 1.1.413 clean. The full Windows ALC-R0 regression
+  before that formatter-only change exited 0 with JUnit **349 tests, 0
+  failures, 0 errors, 7 skipped**, time `247.670 s`.
+  `results/alc_r0_pair_clone_mixed_parity_regression_20260928.xml` SHA-256
+  `01a827d09de4639eba2c05322a0fec2a29969f22cb8fba4fd430732f8e0bcfe2`.
+- The separate real-data process was observed at **128,001 / 209,857** rows
+  with 9,982 LSH candidate pairs, live worker PID 23928, and observed peak
+  working set ~1.35 GB. It had no terminal receipt/exit yet. `training_authority`
+  remains false; no held-out test data was accessed.

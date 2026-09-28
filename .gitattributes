@@ -23,3 +23,4 @@ results/alc_r0_primevul_pair_clone_pilot50_20260928.json text eol=lf
 results/alc_r0_pair_clone_reference_regression_20260928.xml text eol=lf
 results/alc_r0_pair_clone_scalable_regression_20260928.xml text eol=lf
 results/alc_r0_pair_clone_full_runner_regression_20260928.xml text eol=lf
+results/alc_r0_pair_clone_mixed_parity_regression_20260928.xml text eol=lf
