@@ -5103,3 +5103,40 @@ Task 2 sensorium/recollection gate: CLEAN
   with 9,982 LSH candidate pairs, live worker PID 23928, and observed peak
   working set ~1.35 GB. It had no terminal receipt/exit yet. `training_authority`
   remains false; no held-out test data was accessed.
+
+## 2026-09-28 — Pinned full PrimeVul development graph result checkpoint 39
+
+- Frozen graph-source commit `101c3026736c62ce0a16bc7d80fd4bc1a198c153`
+  ran the complete authors' pinned train+validation original release and their
+  paired development files; the held-out test files were absent/not read.
+  Detached wrapper/worker status was rechecked live, and the terminal
+  `results/alc_r0_primevul_full_graph_101c302_20260928.exit.log` records
+  `python_exit_code=0`. The canonical JSON stdout and 206 monotone stderr
+  progress events were independently parsed; final progress was
+  **209,857/209,857** with **19,874** LSH candidate pairs, matching receipt.
+- Receipt input: **184,427** train rows, **25,430** validation rows, **4,916**
+  author pair edges; source scope `pinned-original-development`; pair-source
+  receipt SHA-256 `e3d92be86e8f4e44c4db7c5afe3cc47ab3beeec89d5540c34dbcef4e562cbd5f`.
+  Graph: **8,373** exact joins, **13,229** exact-Jaccard-confirmed near joins,
+  **2,206** additional pair joins; **166,525** train components. Retained
+  **177,291** train rows and **22,772** validation rows in **22,157**
+  validation components; **2,658** validation rows in **2,524** train-overlap
+  roots were excluded. Retained validation has **552** components containing
+  positive examples and **22,087** containing negative examples; mixed-label
+  components contribute to both counts, so those figures are not additive.
+- The receipt binds pair edges, component roots, and retained ID ledgers by
+  SHA-256 and explicitly has `training_authority=false` and
+  `held_out_data_present=false`. Raw stdout SHA-256
+  `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`;
+  raw stderr SHA-256
+  `e3dd4fd47dff466370bec4ade4ed1910e57993e964612b54ebbd8352113b52b2`;
+  exit log SHA-256
+  `56b9a9582f37a38a8b037c8285a27b40b509df1bc0bc54e3adb84a65d10fa790`.
+- Approximate elapsed wall time from wrapper start to exit-log write was
+  **14m24s**. Sampled Windows process reports observed a peak working set of
+  about **1.35 GB** before termination; no continuous peak capture was made,
+  so this is not a proven all-time RSS upper bound. Free C: space after the run
+  was about **43.1 GB**. This evidence qualifies a development graph result,
+  **not** confirmatory test support, dataset rights, preregistration, training,
+  neural capability, or ALC-0. Next: independent graph/receipt audit,
+  reproducibility check, v2 protocol/license/sealer/R0.0 gates. ALC-0 OPEN.

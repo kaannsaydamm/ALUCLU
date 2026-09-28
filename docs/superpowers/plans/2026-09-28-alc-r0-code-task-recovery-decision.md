@@ -103,20 +103,28 @@ expected full-data rate, or training permit.
 An in-memory scalable graph backend now preserves the reference result on
 bounded adversarial fixtures, with a 250,000-row limit, 10,000,000-candidate
 limit, compact bucket indices, and a 512-row shingle cache. It passed one
-4,097-row exact-duplicate stress fixture, but has **not** yet run the full
-209,857-row development source; these limits are implementation resource
+4,097-row exact-duplicate stress fixture. These limits are implementation resource
 guards, not scientific acceptance changes. A full-development runner now
 re-verifies both pinned train/validation source files and the author pair files,
 replays their hashes while loading rows/edges, and emits only metadata and
-cryptographic commitments. Its fixture integration passed; real full-data
-execution and resource measurement remain open.
+cryptographic commitments. Its fixture integration passed. A frozen-code
+`101c302` execution of all **209,857** pinned development rows then exited 0:
+**177,291** retained train rows, **22,772** retained validation rows in
+**22,157** validation dependency components, including **552** components with
+positive examples and **22,087** with negative examples. This is development
+support evidence only; it neither qualifies untouched confirmatory data nor
+authorizes training. The observed Windows peak working set during sampled
+process checks was approximately **1.35 GB**; a continuous peak monitor was
+not present. The canonical receipt and raw progress/exit evidence are under
+`results/alc_r0_primevul_full_graph_101c302_20260928.*`.
 
-The next implementation gate is to bind the verified full source and pair
-edges to that backend, run the full 209,857-row graph, prove further reference
-parity, measure retained validation counts and resource fit, and publish
-explicit source/graph commitments. If this protocol cannot preserve a valid untouched confirmatory
-unit or satisfy the predeclared test floor, use the reserve new-source route
-rather than changing the threshold after seeing the result.
+The next gate is independent graph/receipt audit and a repeatability run or
+equivalent stronger cross-implementation check; then the v2 preregistration,
+dataset-rights review, independent test sealer, and R0.0 validator must be
+explicitly passed before training. If this protocol cannot preserve a valid
+untouched confirmatory unit or satisfy the predeclared test floor, use the
+reserve new-source route rather than changing the threshold after seeing the
+result.
 
 ## Original-release data license scope — preliminary, unresolved
 

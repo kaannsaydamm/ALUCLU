@@ -24,3 +24,6 @@ results/alc_r0_pair_clone_reference_regression_20260928.xml text eol=lf
 results/alc_r0_pair_clone_scalable_regression_20260928.xml text eol=lf
 results/alc_r0_pair_clone_full_runner_regression_20260928.xml text eol=lf
 results/alc_r0_pair_clone_mixed_parity_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_full_graph_101c302_20260928.stdout.log text eol=lf
+results/alc_r0_primevul_full_graph_101c302_20260928.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_full_graph_101c302_20260928.exit.log text eol=lf
