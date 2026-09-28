@@ -108,10 +108,13 @@ threshold is lowered because PrimeVul development data were inspected.
    scalable/reference parity. A repeatability run is necessary but cannot by
    itself establish algorithmic correctness. A separate structural checker now
    covers roots, exact groups, pair edges, overlap exclusion, and retained
-   representatives on bounded fixtures; it has not yet audited the full
-   corpus and does not rediscover near-clone edges independently. A pinned
-   full-development structural-audit runner is now fixture-tested; its real
-   corpus execution and independent scientific review remain separate gates.
+   representatives. It does not rediscover near-clone edges independently. A pinned
+   full-development structural-audit runner was run on all 209,857 pinned
+   development rows from frozen code commit `323e1ea`; its canonical result
+   and 206-event progress evidence are under
+   `results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.*`.
+   Structural invariants and prior ledger hashes matched, but independent
+   near-edge discovery and scientific review remain separate gates.
 2. A versioned machine-readable preregistration and fail-closed validator for
    source/split/label/prompt/control hashes, exact estimator/bootstrap fixtures,
    all P1–P14 thresholds, sealer-only test acquisition and output schema,

@@ -34,3 +34,5 @@ results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.stderr.log -text whi
 results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.exit.log text eol=lf
 results/alc_r0_primevul_structural_audit_regression_20260928.xml text eol=lf
 results/alc_r0_primevul_structural_audit_run_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stdout.log text eol=lf
+results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stderr.log -text whitespace=-blank-at-eol

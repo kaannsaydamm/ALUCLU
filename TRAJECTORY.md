@@ -5266,3 +5266,31 @@ Task 2 sensorium/recollection gate: CLEAN
   audit result. Real 209,857-row execution must follow on the frozen commit;
   omitted near-clone discovery, scientific review, rights, sealer, and neural
   learning gates remain open. ALC-0 OPEN.
+
+## 2026-09-28 — Full PrimeVul development structural audit result checkpoint 46
+
+- Frozen audit-runner code commit `323e1ea5c7e902e331e8fe1dda588523d8f83f0e`
+  read only the pinned original train/validation and paired-development files.
+  It used a low-memory Python launch that skipped unused top-level ALUCLU and
+  ALC-R0 package initializers (not the graph/audit modules); this prevented
+  an unrelated Torch import while preserving the graph's exact code path.
+  The process terminated with **exit code 0**. Raw evidence:
+  `results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stdout.log`
+  SHA-256 `a55ea520bfa43a055639f2e06e9b9292a41e56e74c25e01c71cb0ee59dcc6d51`;
+  corresponding stderr SHA-256
+  `f377b197ad54b7f8bd782011a16f5f74f22077aa91af01450fe11cfd21597925`.
+- Independently parsed the canonical JSON output: status
+  `full-graph-structural-audit-clear-non-authorizing`, source scope
+  `pinned-original-development`, `training_authority=false`, and
+  `held_out_data_present=false`. It checked **209,857** rows, **4,916** pair
+  edges, **8,373** exact duplicate rows, **177,291** retained train rows,
+  **22,772** retained validation rows, and **2,658** validation rows removed
+  for train overlap. Its prior-receipt SHA, root ledger SHA, retained-train-ID
+  SHA, and retained-validation-ID SHA match the committed first full-run
+  receipt. All **206** progress events are monotone, with no extra stderr
+  lines; terminal progress is **209,857/209,857** and **19,874** candidates.
+- This establishes the checked structural invariants on the full development
+  corpus, not independent discovery of all potential near-clone edges, rights
+  clearance, sealed-test support, a frozen v2 amendment, model training, or
+  persistent neural learning. Independent code/science review and all R0.0
+  blocking gates remain open. ALC-0 OPEN.
