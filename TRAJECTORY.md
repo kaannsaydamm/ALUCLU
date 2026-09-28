@@ -5414,3 +5414,38 @@ Task 2 sensorium/recollection gate: CLEAN
   rights resolution, sealer/isolation, R0.0 validator, and held-out evidence
   remain open. No target model training or confirmatory evaluation was run.
   ALC-0 OPEN.
+
+## 2026-09-29 — R0.0 committed-source freeze prerequisite checkpoint 50
+
+- Added a read-only `source_checkout` verifier for a future R0.0 freeze
+  validator. It requires an absolute repository root; empty Git porcelain
+  status with all untracked files and submodule changes visible; no
+  `assume-unchanged` or `skip-worktree` index flags; stable full HEAD before
+  and after inspection; safe, case-collision-free tracked paths; and supported
+  regular/symlink Git blob modes. It computes SHA-256 over RFC 8785 canonical
+  records of every committed blob's normalized path, Git mode, exact byte
+  length, and content SHA-256. Gitlinks fail closed until a separate submodule
+  state contract exists. An expected commit and tree digest must both match
+  for `verify_frozen_source_checkout` to return evidence. The module provides
+  **no training authority** and is not the full R0.0 validator.
+- TDD RED first observed missing module import. After initial GREEN, two new
+  negative tests demonstrated that Git `assume-unchanged` and `skip-worktree`
+  can conceal changed working bytes from ordinary porcelain status; the
+  implementation was tightened to reject those index flags. Final focused
+  tests **11/11** passed, including staged/unstaged/untracked rejection,
+  wrong commit/digest, same-tree and changed-tree commits, actual initialized
+  submodule rejection, and nested-root rejection. Ruff check and format check
+  passed on both new files; `git diff --check` passed. No Pyright result is
+  claimed for this checkpoint.
+- Windows ALC-R0 regression on this source state exited **0**: JUnit **386
+  tests, 0 failures, 0 errors, 7 skipped**, time `256.725 s`.
+  `results/alc_r0_source_checkout_regression_20260929.xml` SHA-256 is
+  `10bda54b817fc767b905cc6f7e64002c657c277b8f7ae272b050ba615e14adc1`.
+  This fixture/regression result does not itself inspect the eventual frozen
+  research checkout; that live check requires a committed clean source commit
+  and a separately frozen expected digest.
+- The freeze receipt still needs the exact machine preregistration, full
+  cross-artifact validator, independent sealer and isolated held-out state,
+  source-rights resolution, and scientific review. No target-data model
+  training, held-out evaluation, or ALC-0 capability claim occurred. ALC-0
+  remains OPEN.
