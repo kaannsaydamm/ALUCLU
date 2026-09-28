@@ -117,3 +117,21 @@ parity, measure retained validation counts and resource fit, and publish
 explicit source/graph commitments. If this protocol cannot preserve a valid untouched confirmatory
 unit or satisfy the predeclared test floor, use the reserve new-source route
 rather than changing the threshold after seeing the result.
+
+## Original-release data license scope — preliminary, unresolved
+
+As checked on 2026-09-28, the authors'
+[PrimeVul repository](https://github.com/DLVulDet/PrimeVul) contains an
+[MIT LICENSE](https://github.com/DLVulDet/PrimeVul/blob/main/LICENSE), whose
+text refers to the repository's software and associated documentation. Its
+[README](https://github.com/DLVulDet/PrimeVul/blob/main/README.md) links the
+original dataset through an external release and says PrimeVul combines/reconstructs
+earlier vulnerability datasets; it does not state an explicit, separate license
+for those external JSONL bytes. **Inference:** the GitHub repository's MIT
+badge alone is insufficient evidence that the externally hosted dataset and
+underlying source-code snippets may be redistributed, sublicensed, or used in
+commercial model training without further rights review. The author release,
+upstream project terms, attribution duties, and any needed permission require
+separate review before publishing raw data or treating dataset rights as clear.
+This is a rights/provenance gate, not a conclusion that local development-only
+analysis is forbidden or that training is authorized. No raw code is committed.

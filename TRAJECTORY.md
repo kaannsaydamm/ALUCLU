@@ -5068,3 +5068,18 @@ Task 2 sensorium/recollection gate: CLEAN
   exit/receipt/resource use, then review retained validation support. No v2
   preregistration amendment, training, or confirmatory test access has occurred.
   `training_authority=false`; ALC-0 remains **OPEN**.
+
+## 2026-09-28 — PrimeVul license-scope preliminary review checkpoint 37
+
+- While clean commit `101c302` ran the pinned full development graph, checked
+  the authors' current repository, root MIT LICENSE, and original-release README
+  (https://github.com/DLVulDet/PrimeVul). The repository license text covers
+  software/associated documentation; the README links dataset bytes externally
+  and says the dataset combines/reconstructs earlier sources. An explicit
+  separate grant for the external JSONL bytes was not identified in these
+  primary pages. This is a **scope uncertainty**, not a claim of prohibition.
+- The recovery decision now keeps dataset/underlying-code redistribution and
+  commercial-training rights unresolved pending release/upstream license or
+  author-rights review. Local development-only graph analysis does not settle
+  that question. No raw code or held-out test data was committed/read; no
+  license or training PASS has been asserted. `training_authority=false`.
