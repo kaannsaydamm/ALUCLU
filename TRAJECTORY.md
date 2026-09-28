@@ -4812,3 +4812,54 @@ Task 2 sensorium/recollection gate: CLEAN
   preregistration amendment with an untouched confirmatory split is required
   before trying another data protocol. `training_authority=false`; no ALC-0
   claim is opened.
+
+## 2026-09-28 — PrimeVul development-source candidate checkpoint 31
+
+- Continued from local Desktop worktree clean HEAD `447d8d8`; did not change
+  the OneDrive checkout, frozen Devign plan, or any official held-out test
+  content. The prior Devign exact-label contradiction remains a failed data
+  qualification gate, not a neural-capability result. Investigated the
+  authors' original PrimeVul release as a possible replacement code task,
+  acquiring **only** its train and validation JSONL files into a separate
+  local research directory outside the repository. Their source folder ID is
+  `19iLaNDS0z99N8kB_jBRTmDLehwZBolMY`; train file ID
+  `1qRO_Qdy7KXcZbJJAu5J3VZWkRVvT4Kbu`, validation file ID
+  `1CMQ185Ww_bsBWGbJe4sZW0vzceWnmNE7`. The test file was not downloaded
+  or inspected. Dataset-specific license scope is not yet resolved.
+- Added a development-only verifier with pinned raw SHA-256/byte length,
+  JSONL/UTF-8/field/label/source-ID validation, strict two-file directory
+  boundary, and exact normalized-code conflict audit. It emits a canonical
+  metadata-only receipt, explicitly `training_authority=false`,
+  `held_out_data_present=false`, and `lsh_executed=false`. RED began with the
+  absent module; two subsequent focused failures were fixture mistakes
+  (expected one positive where the fixture had two, and an accidental JSON
+  key mutation instead of code mutation), corrected without weakening source
+  validation. Final focused tests passed **7/7**, including extra test-file,
+  same-length byte mutation, malformed JSON/UTF-8/label, and cross-split ID
+  rejection.
+- Real development-only source: train **184,427** rows/**5,574** positive,
+  raw SHA-256 `9fea452f1b7c7ffafb28d6131789f722ad820c1032d3bcd90b7fc17da3d9b117`;
+  validation **25,430** rows/**699** positive, raw SHA-256
+  `56b91474fb7d75b313013766e0f5d1d8150c98e70961cf2b26df93875e87fb27`.
+  Across 209,857 source IDs, the verifier found **201,484** exact normalized
+  groups, **8,338** duplicate groups, **1,237** groups spanning
+  train/validation, and **0** exact opposite-label groups. CLI regeneration
+  matched `results/alc_r0_primevul_development_candidate_20260926.json`
+  byte-for-byte; receipt SHA-256
+  `9c7af77f1bedd6b73729df6d3907c510cc67379c8f6a74a52705b7abb191153c`.
+  No raw code or dataset rows were committed.
+- Scoped Ruff check/format passed; Pyright 1.1.413 with the pinned research
+  interpreter reported **0 errors/warnings/informations**. Final Windows
+  ALC-R0 regression after the last source/test edit passed **312 tests,
+  0 failures, 0 errors, 7 skipped, exit 0**, JUnit time `182.817 s`;
+  `results/alc_r0_primevul_candidate_regression_20260928.xml` SHA-256
+  `b6e856cb852960a4f44d3d1c8f0cdc6c0f7948811a44b94c93ccaaa3c5d7ea9b`.
+  Exact LF checkout rules were added for both canonical evidence files.
+- **Gate remains open:** PrimeVul is a non-authorizing *candidate*, not a
+  silent substitute for the frozen Devign task. The full development LSH and
+  exact-Jaccard connected-component audit, retained-validation counts,
+  dataset-specific license review, explicit preregistration amendment,
+  independent test sealer, R0.0 validator, training, and confirmatory
+  evaluation remain undone. The decision boundary is documented in
+  `docs/superpowers/plans/2026-09-28-alc-r0-primevul-candidate-note.md`.
+  ALC-0 remains **OPEN**.
