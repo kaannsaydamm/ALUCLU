@@ -89,9 +89,19 @@ hash, independently review, and machine-validate all of the following:
    environment checks. `training_authority=false` until this exact amended
    validator passes.
 
-The next concrete implementation slice is a development-only pair/clone
-component reference plus fixtures for overlapping and mixed-label components.
-The full 209,857-row graph and resource fit must then be measured. If this
-protocol cannot preserve a valid untouched confirmatory unit or satisfy the
-predeclared test floor, use the reserve new-source route rather than changing
-the threshold after seeing the result.
+The bounded development-only pair/clone component reference and overlapping,
+mixed-label, exact-conflict, and cross-split fixtures now exist in
+`src/aluclu/alc_r0/primevul_pair_clone_graph.py`. It is capped at 4,096 input
+rows and is **not** a full-corpus qualification backend. The first 50
+author-ordered train pair edges were run after re-verifying both development
+sources: 100 unique IDs formed 49 dependency components, with 40 LSH candidate
+pairs and 29 exact-Jaccard-confirmed near edges. The canonical metadata-only
+pilot is `results/alc_r0_primevul_pair_clone_pilot50_20260928.json`. These
+counts are a bounded integration proof, **not** a random sample, full graph,
+expected full-data rate, or training permit.
+
+The next implementation gate is a resource-bounded full 209,857-row graph with
+reference parity, retained validation counts, and explicit source/graph
+commitments. If this protocol cannot preserve a valid untouched confirmatory
+unit or satisfy the predeclared test floor, use the reserve new-source route
+rather than changing the threshold after seeing the result.

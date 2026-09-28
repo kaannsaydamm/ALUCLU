@@ -4969,3 +4969,51 @@ Task 2 sensorium/recollection gate: CLEAN
   validator, environment gates, and untouched confirmatory split remain open.
   Frozen numeric P1–P14 floors are not lowered. `training_authority=false`;
   ALC-0 remains **OPEN**.
+
+## 2026-09-28 — Pair/clone dependency reference and bounded pilot checkpoint 34
+
+- Continued from clean/pushed local Desktop HEAD `d235cfe` with both negative
+  data-source outcomes and the non-authorizing recovery decision intact.
+  No official full or paired test split was downloaded/read. The controlling
+  2026-09-20 frozen plan remains unchanged; no v2 preregistration amendment
+  or training authority was created.
+- Implemented a **reference-only** pair-plus-clone development graph with the
+  frozen normalization, exact normalized SHA-256, 256-permutation MinHash,
+  13-by-19 LSH candidate bands, exact five-shingle Jaccard >= 0.90, and
+  lexicographically minimal union-find roots. Explicit author pair edges
+  connect repeated source IDs transitively. Different-code opposite-label
+  near clones retain both labeled observations within one dependency root;
+  identical normalized code with opposite labels still fails. One
+  representative per identical normalized code/label is kept within a split;
+  any validation component connected to train is removed in full. Inputs
+  with malformed IDs/edges, cross-split pair edges, or over **4,096** rows
+  fail closed. This bound is a reference resource limit, **not** a relaxed
+  scientific acceptance threshold or a full-corpus implementation.
+- TDD began RED at the absent graph module. Final focused graph+pilot tests
+  passed **17/17** across mixed-label near clones, exact conflicts,
+  transitive shared pair endpoints, full-component validation exclusion,
+  duplicate representative selection, canonical IDs, malformed edges, and
+  resource bound. Ruff check/format and Pyright 1.1.413 reported no issues.
+- Added a reproducible non-authorizing pilot CLI that first re-verifies both
+  pinned development source directories, then selects the **first 50** train
+  pair edges by author file order, not by an observed metric. On those 100
+  unique source IDs it found **49** dependency components, **40** LSH
+  candidate pairs, **29** exact-Jaccard-confirmed near edges, **25** pair
+  edges that caused additional unions, and **0** exact duplicate joins.
+  The metadata-only source/edge/root-committed receipt
+  `results/alc_r0_primevul_pair_clone_pilot50_20260928.json` regenerated
+  byte-identically, SHA-256
+  `90e5cb18add2eef4f04da51de5d919502dac39765aa7c2509ff9d2b93ace9c60`.
+  This is a bounded integration pilot, **not** a representative full-data
+  estimate or a qualified training split. No raw code was committed.
+- Final Windows ALC-R0 regression after the last source/test edit passed
+  **340 tests, 0 failures, 0 errors, 7 skipped, exit 0**, JUnit time
+  `182.962 s`; `results/alc_r0_pair_clone_reference_regression_20260928.xml`
+  SHA-256 `dd07b8c290ad3ea2a6b9b5977ef3e1388f7e2220c002b5a9ea8589ab49c23b35`.
+  LF checkout rules were added for both byte-bound evidence files.
+- **Next gate:** implement a resource-bounded full 209,857-row graph and prove
+  parity against this reference on adversarial/sampled development fixtures;
+  then measure retained validation support. The pair-aware source/protocol
+  still needs a versioned preregistration amendment, license review,
+  independent sealer, R0.0 validator, and untouched confirmatory evaluation.
+  `training_authority=false`; ALC-0 remains **OPEN**.
