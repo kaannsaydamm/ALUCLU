@@ -42,7 +42,8 @@ from .source_checkout import inspect_clean_source_checkout
 
 _ARMS = ("capsule", "q_lora")
 _UPDATES = 16
-_LENGTH = 512
+_DEFAULT_LENGTH = 512
+_LENGTHS = (512, 2048)
 _MIN_FREE_BYTES = 20 * 1024**3
 _REPRO_TOLERANCE = 1e-4
 
@@ -51,10 +52,14 @@ class SyntheticUpdateProbeError(ValueError):
     """A synthetic update or remount violated the fixed diagnostic contract."""
 
 
-def validate_update_request(arm: str, updates: int) -> tuple[str, int]:
+def validate_update_request(
+    arm: str, updates: int, *, length: int = _DEFAULT_LENGTH
+) -> tuple[str, int, int]:
     if arm not in _ARMS or type(updates) is not int or updates != _UPDATES:
         raise SyntheticUpdateProbeError("arm or update count is outside declared cells")
-    return arm, updates
+    if type(length) is not int or length not in _LENGTHS:
+        raise SyntheticUpdateProbeError("length is outside declared cells")
+    return arm, updates, length
 
 
 def _base_parameters(wrapper: nn.Module) -> tuple[nn.Parameter, ...]:
@@ -208,9 +213,9 @@ def _verify_boundary(snapshot: Path, checkout, before_snapshot) -> None:
 
 
 def run_update_probe(
-    snapshot: Path, *, arm: str
+    snapshot: Path, *, arm: str, length: int = _DEFAULT_LENGTH
 ) -> tuple[dict[str, Any], tuple[bytes, bytes] | None]:
-    validate_update_request(arm, _UPDATES)
+    validate_update_request(arm, _UPDATES, length=length)
     checkout, snapshot_receipt, free_bytes = _boundary(snapshot)
     host = _load_host(snapshot)
     if arm == "capsule":
@@ -224,7 +229,7 @@ def run_update_probe(
         wrapper = PinnedLlamaLoRAWrapper(host)
         wrapper.mount_lora(factors)
     input_ids = make_synthetic_ids(
-        _LENGTH, vocab_size=host.config_identity["vocab_size"]
+        length, vocab_size=host.config_identity["vocab_size"]
     ).to("cuda")
     base_before = encode_base_state(host.model.state_dict()).sha256
     factors_before = _factor_digest(factors)
@@ -267,7 +272,7 @@ def run_update_probe(
         "model_inventory_sha256": snapshot_receipt["inventory_sha256"],
         "snapshot_root": str(snapshot.resolve(strict=True)),
         "arm": arm,
-        "sequence_length": _LENGTH,
+        "sequence_length": length,
         "batch_size": 1,
         "factor_initialization_seed": _SEED,
         "synthetic_id_rule": "arange_mod_vocab_minus_one_plus_one",
@@ -312,8 +317,13 @@ def run_update_probe(
 
 
 def run_remount_probe(
-    snapshot: Path, *, manifest_path: Path, tensor_path: Path
+    snapshot: Path,
+    *,
+    manifest_path: Path,
+    tensor_path: Path,
+    length: int = _DEFAULT_LENGTH,
 ) -> dict[str, Any]:
+    validate_update_request("capsule", _UPDATES, length=length)
     checkout, snapshot_receipt, free_bytes = _boundary(snapshot)
     for path in (manifest_path, tensor_path):
         if (
@@ -329,7 +339,7 @@ def run_remount_probe(
     host = _load_host(snapshot)
     wrapper = PinnedLlamaCapsuleWrapper(host)
     input_ids = make_synthetic_ids(
-        _LENGTH, vocab_size=host.config_identity["vocab_size"]
+        length, vocab_size=host.config_identity["vocab_size"]
     ).to("cuda")
     base_before = encode_base_state(host.model.state_dict()).sha256
     start_ns = time.perf_counter_ns()
@@ -353,7 +363,7 @@ def run_remount_probe(
         "source_checkout": asdict(checkout),
         "model_inventory_sha256": snapshot_receipt["inventory_sha256"],
         "arm": "capsule",
-        "sequence_length": _LENGTH,
+        "sequence_length": length,
         "target_token_id": _TARGET_ID,
         "optimizer_updates": 0,
         "detached_target_log_probability": detached,
@@ -381,11 +391,15 @@ def main() -> None:
     train = sub.add_parser("train")
     train.add_argument("snapshot", type=Path)
     train.add_argument("--arm", choices=_ARMS, required=True)
+    train.add_argument("--length", type=int, choices=_LENGTHS, default=_DEFAULT_LENGTH)
     train.add_argument("--artifact-dir", type=Path)
     remount = sub.add_parser("remount")
     remount.add_argument("snapshot", type=Path)
     remount.add_argument("manifest_path", type=Path)
     remount.add_argument("tensor_path", type=Path)
+    remount.add_argument(
+        "--length", type=int, choices=_LENGTHS, default=_DEFAULT_LENGTH
+    )
     args = parser.parse_args()
     if args.mode == "train":
         if (args.arm == "capsule") != (args.artifact_dir is not None):
@@ -401,7 +415,9 @@ def main() -> None:
                 raise SyntheticUpdateProbeError(
                     "artifact dir must be new and outside checkout"
                 )
-        receipt, artifact = run_update_probe(args.snapshot, arm=args.arm)
+        receipt, artifact = run_update_probe(
+            args.snapshot, arm=args.arm, length=args.length
+        )
         if artifact is not None:
             artifact_dir.mkdir()
             (artifact_dir / "manifest.json").write_bytes(artifact[0])
@@ -412,6 +428,7 @@ def main() -> None:
             args.snapshot,
             manifest_path=args.manifest_path,
             tensor_path=args.tensor_path,
+            length=args.length,
         )
     sys.stdout.buffer.write(canonical_json_bytes(receipt) + b"\n")
 

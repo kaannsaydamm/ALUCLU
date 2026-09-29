@@ -51,3 +51,19 @@ task-skill gains; one synthetic example and 16 updates cannot establish
 generalization. Exact receipts, SafeTensors artifact, hashes, and measured
 resources are in `results/alc_r0_synthetic_update_c4f147c_*` and
 `TRAJECTORY.md` checkpoint 68. R0.0/R0.4 and ALC-0 remain OPEN.
+
+## Predeclared long-context follow-up — NON-AUTHORIZING
+
+The completed 512-token diagnostic says nothing about whether the candidate
+2,048-token family-B context can sustain optimizer updates locally. Before
+running a longer cell, extend only the synthetic sequence length to **2,048**
+with the same deterministic ID rule and all other values above unchanged:
+capsule then matched q-only LoRA in fresh processes, exactly 16 successful
+updates per arm, and a third fresh-process capsule remount at 2,048. Require
+at least 20 GiB free C: and the unchanged frozen-base/model/source checks.
+Record all exits/OOMs, loss and gradient trajectories, target log probability,
+factor/base hashes, CUDA peak allocated/reserved bytes, and elapsed time.
+Do not retry at a shorter length, lower the step count, change dtype/rank,
+or treat a failed arm as feasible. A success shows only 16-update synthetic
+resource fit; it does not establish the full label-sequence, effective-batch-16,
+200-step R0.4 envelope or select a v2 prompt budget.

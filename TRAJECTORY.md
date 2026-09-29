@@ -6133,3 +6133,36 @@ Task 2 sensorium/recollection gate: CLEAN
   200-step stability, actual Banking77/PrimeVul learning, old-skill retention,
   or ALC-0. The v2 prompt/rights/independent review, R0.0 freeze, real-data
   R0.4 pilot, and confirmatory neural capability gate remain **OPEN**.
+
+## 2026-09-29 — Predeclared 2,048-token update-cell implementation checkpoint 69
+
+- The earlier 512-token synthetic update did not establish feasibility at the
+  longer family-B context. Before a new real-host run, extended the
+  non-authorizing diagnostic declaration to exactly **2,048 synthetic tokens**,
+  same capsule/matched q-only LoRA arms, 16 updates each, and third-process
+  capsule remount. Every other pinned hyperparameter, factor/base rule,
+  source/model check, and 20-GiB free-space floor remains unchanged. OOM or
+  failure will remain a negative result; no fallback length or smaller step
+  count is allowed. This still does not measure full label-sequence training,
+  effective batch 16, or the 200-step real-data R0.4 pilot.
+- TDD RED: the explicit `length=2048` fixture and six invalid-length cases
+  failed because the probe did not accept a length. The CLI now admits only
+  512 (preserved default) or 2,048, records the selected length in train and
+  remount receipts, and keeps the existing deterministic token-ID rule.
+  Focused JUnit `results/alc_r0_synthetic_update_long_focus_20260929.xml`
+  exited **0** with **36 tests, 0 failures, 0 errors, 0 skips**, time
+  **10.342 s**, SHA-256
+  `b9736944923f1cad255b47a52a3bd5fa3106bc597e609583678e0296d63ec6d6`.
+  Broader ALC-R0 regression
+  `results/alc_r0_synthetic_update_long_regression_20260929.xml` exited
+  **0** with **452 tests, 0 failures, 0 errors, 8 skips**, time **173.443 s**,
+  SHA-256
+  `e86e8b5e2650dcd30bab0be27579beac4da39c78114bfa9328b7f51efc601988`.
+  Ruff check/format and diff check passed. The 2,048-token real-host cells
+  have **not yet run** at this checkpoint.
+- Rechecked the [PrimeVul authors' README](https://github.com/DLVulDet/PrimeVul/blob/main/README.md)
+  and [repository MIT file](https://github.com/DLVulDet/PrimeVul/blob/main/LICENSE).
+  The README describes a research train/evaluate purpose and provides training
+  commands, but no explicit grant covering the separately hosted original
+  JSONL and embedded third-party code was found. This is not a legal ruling;
+  rights/provenance remain unresolved and `training_authority=false`.

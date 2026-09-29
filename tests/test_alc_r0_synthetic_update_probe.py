@@ -74,3 +74,17 @@ def test_nonfinite_loss_fails_closed_before_update() -> None:
 def test_undeclared_cell_fails_closed(arm, updates) -> None:
     with pytest.raises(SyntheticUpdateProbeError):
         validate_update_request(arm, updates)
+
+
+def test_predeclared_long_context_cell_is_explicit() -> None:
+    assert validate_update_request("capsule", 16, length=2048) == (
+        "capsule",
+        16,
+        2048,
+    )
+
+
+@pytest.mark.parametrize("length", [0, 511, 1024, 4096, True, "2048"])
+def test_other_update_lengths_fail_closed(length) -> None:
+    with pytest.raises(SyntheticUpdateProbeError, match="length"):
+        validate_update_request("capsule", 16, length=length)
