@@ -5531,3 +5531,61 @@ Task 2 sensorium/recollection gate: CLEAN
   checkpoint. The exact prompt and family-B source amendment are still
   candidate/non-frozen; rights, independent review, sealer, R0.0 validator,
   and real-data model training remain open. No ALC-0 PASS.
+
+## 2026-09-29 — Full PrimeVul retained prompt-ID result checkpoint 53
+
+- Froze code/tests at clean commit `ef37754` and ran the optional prompt
+  branch of `primevul_structural_audit_run` on only the pinned original
+  PrimeVul train/validation and paired-development files. The prior full
+  graph receipt was required by its exact raw SHA-256
+  `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`.
+  The local SmolLM2-135M snapshot was rehashed by `verify_model_snapshot`;
+  its model inventory root is
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`.
+  The command returned terminal `python_exit_code=0` in
+  `results/alc_r0_primevul_prompt_full_ef37754_20260929.exit.log`.
+- Independently parsed the canonical JSON+LF stdout and checked status
+  `full-graph-structural-audit-clear-non-authorizing`, source scope
+  `pinned-original-development`, and both `training_authority=false` and
+  `held_out_data_present=false`. It traversed **209,857** source rows and
+  **4,916** author pair edges, retained **177,291** train and **22,772**
+  validation rows, and removed **2,658** validation rows for train overlap.
+  Component-root, retained-train-ID, retained-validation-ID, counts, and pair
+  source roots matched the prior full-graph receipt. This run did not repeat
+  the separate independent near-edge pass; that remains the earlier
+  `322cc73` evidence.
+- Candidate prompt-ID SHA-256 roots over ordered retained rows are train
+  `0204d3eb3fa281ac557d88527d22ea9cbbae346e7e8d3a7af943304426f767c4`
+  and validation
+  `4bbf8797819d4d583a0ac5ba9d9a775181963be8e57e3c1dc9cc11b838bcd0bc`.
+  Candidate token-map root is
+  `e67b580805bae7a375285282d7f63057290ce19d0b26fee90a50575a9dea58c1`.
+  Fixed prompt budget: prefix **8**, suffix **4**, longest candidate **1**,
+  code budget **499**, total **512** tokens. Retained label counts: train
+  safe **171,717** / vulnerable **5,574**; validation safe **22,210** /
+  vulnerable **562**. Head/tail truncation affected **39,076** retained
+  train rows and **4,662** retained validation rows. The longest original
+  code-token sequences were **272,858** train and **30,934** validation,
+  before deterministic truncation. This is material task information-loss
+  risk for later model performance, not a license to alter the frozen rule.
+- Stderr contains exactly **206** monotone graph progress events, first
+  1/209857 and final **209857/209857** with **19,874** LSH candidates, plus
+  one Transformers warning that one original tokenization exceeded the host
+  8192-token maximum (`10382 > 8192`). The builder keeps final prompt plus
+  candidate within 512 tokens; the warning concerns pre-truncation
+  tokenization and is preserved as a warning, not suppressed or presented as
+  a model-forward failure. Raw stdout SHA-256 is
+  `eac59636e90c4a2f24b5dfc8d27cf1f6a878fe485b5eae4b1741e7841500f1b8`,
+  stderr SHA-256
+  `33ac93ce1867c81ec43a6c5ef4a4f710ce42bd587015d17ee95ae226747dc7b8b`,
+  and exit-log SHA-256
+  `56b9a9582f37a38a8b037c8285a27b40b509df1bc0bc54e3adb84a65d10fa790`.
+  Approximate wall time was **14 min 12 s** (02:43:26–02:57:38 local).
+  No continuous peak-RAM measurement is claimed.
+- This is a **development-only candidate prompt receipt**, not a frozen
+  machine preregistration, training permission, target accuracy, or neural
+  capability result. The high truncation share deserves scientific review;
+  do not tune the prompt after seeing held-out results. PrimeVul v2 amendment,
+  data rights, independent reviewer, isolated sealer, R0.0 cross-artifact
+  validator, real-data training, and held-out confirmation remain open.
+  ALC-0 OPEN.
