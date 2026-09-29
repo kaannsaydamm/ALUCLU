@@ -6215,3 +6215,49 @@ Task 2 sensorium/recollection gate: CLEAN
   or a complete R0.4 feasibility envelope. The family-B prompt/budget is
   **not frozen**; source-rights, independent science review, R0.0, R0.4,
   and ALC-0 remain **OPEN**.
+
+## 2026-09-30 — Full retained-cohort information audit implementation checkpoint 71
+
+- An independent GPT-6 Sol scientific read-only review classified freezing
+  the unchanged **2,048-token single-function family-B prompt as BLOCK**.
+  The retained author-pair grid still has **311/4,344 train** and **26/482
+  validation** opposite-label pairs with identical complete prompt IDs at
+  2,048 tokens; at 8,192 tokens the counts are still **37/4,344** and
+  **3/482**. This proves indistinguishability for those *pairs* under that
+  input, not a final-cohort macro-F1 ceiling or learnability verdict. The
+  2,048-token synthetic optimizer/remount result is resource/mechanism
+  evidence only. The reviewer recommended an actual graph-retained full-cohort
+  information audit before choosing a versioned pair-blind prompt candidate;
+  no held-out data, real training, or source-rights conclusion was involved.
+- Before full-data execution, added the exact non-authorizing diagnostic
+  specification to the v2 draft. For unchanged source/graph/prompt and budgets
+  **512, 1,024, 2,048, 4,096, 8,192**, the new tool computes complete prompt-ID
+  equivalence classes on every retained train/validation observation, per-label
+  truncation, opposite-label classes, affected components, and the exact
+  prompt-only minimum classification error `sum(min(n_safe,n_vulnerable))`.
+  It checks actual token-ID equality on repeated SHA-256 digests; source IDs,
+  code, prompt IDs, and class membership are not emitted. This error count is
+  **not** a macro-F1 bound, P1–P14 change, prompt selection, or training gate.
+- TDD RED: the new fixture suite initially failed collection because the
+  module did not exist. A later after-scan source-mutation fixture failed
+  because the runner did not reverify source bytes. Both were followed by
+  implementation and GREEN. Final focused JUnit
+  `results/alc_r0_retained_prompt_information_focus_v2_20260930.xml` exited
+  **0**, **19 tests, 0 failures/errors/skips**, time **3.394 s**, SHA-256
+  `d6452ec6d5edcc930935f5970a75ab4ffdd57e20156bec264703312506c904c4`.
+  Final broad ALC-R0 JUnit
+  `results/alc_r0_retained_prompt_information_regression_v2_20260930.xml`
+  exited **0**, **464 tests, 0 failures/errors, 8 skips**, time **218.710 s**,
+  SHA-256
+  `22e6230617f93b35bc77528313eccb1dc5b25c6b1f6865e0cbfcc33930b9f30b`.
+  Ruff check/format and diff check passed. The superseded pre-recheck XMLs
+  were local intermediate outputs and were removed before this checkpoint.
+- Independent GPT-6 Sol read-only code/method review found **no correctness
+  BLOCK** for the new exact-class/error arithmetic or pinned CLI provenance
+  checks. It marked the unmeasured 200,063-row × five-budget runtime/peak-RAM
+  as **WATCH** and noted that the direct Python helper accepts a caller-supplied
+  tokenizer/digest: provenance assurance belongs to the CLI. The pinned
+  full-development cohort tool has **not run** at this checkpoint; its receipt
+  cannot yet support an empirical error-bound claim. A clean-code commit and
+  fresh-process full-data CLI execution are next. R0.0, R0.4, and ALC-0 remain
+  **OPEN**.

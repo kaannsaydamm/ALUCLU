@@ -223,6 +223,31 @@ and hashes are in `results/alc_r0_retained_pair_c1996d2_20260929.*` and
 `TRAJECTORY.md` checkpoint 66. It remains a diagnostic conditional on
 author-pair survival, not a final learning or prompt-freeze gate.
 
+Before freezing or replacing the family-B prompt, run one further
+**development-only, non-authorizing information audit over every graph-retained
+observation**, not merely retained author pairs. This audit is declared before
+full-data execution. Rebuild the unchanged pinned train/validation graph and
+require all four previously committed graph-ledger hashes to match. For the
+unchanged pair-blind single-function prompt and the complete ordered common
+budget grid `512, 1024, 2048, 4096, 8192`, separately report for train and
+validation: retained row and per-label counts, per-label truncation counts,
+number of distinct complete-prompt-ID equivalence classes, classes containing
+both opposite labels, observations in those conflicting classes by label, the
+exact deterministic prompt-only *minimum error count*
+`sum(min(safe_count, vulnerable_count))` across all classes, and number of
+dependency components touched by conflicting classes. The observation, not
+the component, is the point-estimate unit; component counts are a separate
+dependence stratum. Check actual token-ID equality for every repeated digest,
+failing closed on a hash collision. Commit only aggregate counts and a
+canonical digest of ordered `(source ID, component root, label, prompt IDs)`
+records, never source text, source IDs, prompt IDs, or class memberships.
+Bind exact source/pair/model/graph/code hashes; rerun snapshot and clean-source
+checks before output. A zero-error lower bound is not proof of learnability,
+and a positive bound is not a macro-F1 ceiling. No result of this audit may
+change P1-P14, authorize training, access test, or mechanically choose a
+budget. Author-pair changed-token visibility and a separately versioned
+equalized-arm prompt policy still require scientific review before freeze.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by
