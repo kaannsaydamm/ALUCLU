@@ -127,6 +127,21 @@ pre-held-out single-function prompt proposal and matched-arm budget policy must
 be reviewed and tested on development data before any family-B freeze. The
 current v1 prompt and failed candidate evidence must remain in the ledger.
 
+Before a v2 prompt is proposed for freeze, run one additional *non-authorizing*
+development-only context-budget sensitivity grid using the same pinned original
+train/validation author pairs, tokenizer, normalization, head/tail rule, label
+candidates, and receipt checks. The complete prespecified grid is common
+candidate-sequence budgets **512, 1024, 2048, 4096, 8192** tokens, evaluated
+in that order. Report exact prompt-ID collision counts, both/one/neither
+truncation partitions, ordered pair-prompt roots, source/model roots, and local
+runtime/resource observations for each budget. Do not use held-out data, model
+forwards, or label outcomes to pick or tune a budget. These measurements test
+only an information-availability mechanism; they do not establish learnability,
+acceptable training memory, or a new acceptance threshold. Keep the 512 result
+and every grid result, including negative ones. A separate versioned,
+independently reviewed amendment must choose the single-function prompt and
+equalized-arm budget *before* training or confirmatory access.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

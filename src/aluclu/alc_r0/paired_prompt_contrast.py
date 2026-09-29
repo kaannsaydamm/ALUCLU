@@ -34,6 +34,7 @@ from .primevul_source import (
 from .source_checkout import inspect_clean_source_checkout
 
 _MAX_PAIRS = 10_000
+_DECLARED_COMMON_BUDGETS = (512, 1024, 2048, 4096, 8192)
 _HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -134,6 +135,7 @@ def run_pinned_paired_prompt_contrast(
     tokenizer: CandidateTokenizer,
     *,
     model_inventory_sha256: str,
+    max_common_tokens: int = 512,
     source_expectation: PrimeVulDevelopmentExpectation = PRIMEVUL_ORIGINAL_DEVELOPMENT,
     pair_expectation: PrimeVulPairExpectation = PRIMEVUL_ORIGINAL_PAIRS,
 ) -> dict[str, Any]:
@@ -143,6 +145,11 @@ def run_pinned_paired_prompt_contrast(
         model_inventory_sha256
     ):
         raise PairedPromptContrastError("invalid model inventory SHA-256")
+    if (
+        type(max_common_tokens) is not int
+        or max_common_tokens not in _DECLARED_COMMON_BUDGETS
+    ):
+        raise PairedPromptContrastError("common budget is outside declared grid")
     source_receipt = verify_primevul_development_pairs(
         source_dir,
         paired_dir,
@@ -174,9 +181,13 @@ def run_pinned_paired_prompt_contrast(
             canonical_json_bytes(source_receipt)
         ),
         "model_inventory_sha256": model_inventory_sha256,
-        "max_common_tokens": 512,
-        "train": audit_paired_prompt_contrast(train, tokenizer),
-        "validation": audit_paired_prompt_contrast(validation, tokenizer),
+        "max_common_tokens": max_common_tokens,
+        "train": audit_paired_prompt_contrast(
+            train, tokenizer, max_tokens=max_common_tokens
+        ),
+        "validation": audit_paired_prompt_contrast(
+            validation, tokenizer, max_tokens=max_common_tokens
+        ),
     }
 
 
@@ -185,6 +196,13 @@ def main() -> None:
     parser.add_argument("development_data_dir", type=Path)
     parser.add_argument("paired_development_data_dir", type=Path)
     parser.add_argument("tokenizer_snapshot", type=Path)
+    parser.add_argument(
+        "--max-common-tokens",
+        type=int,
+        choices=_DECLARED_COMMON_BUDGETS,
+        default=512,
+        help="development-only context-budget sensitivity grid value",
+    )
     args = parser.parse_args()
     checkout = inspect_clean_source_checkout(Path.cwd().resolve(strict=True))
     snapshot_receipt = verify_model_snapshot(args.tokenizer_snapshot)
@@ -198,6 +216,7 @@ def main() -> None:
         args.paired_development_data_dir,
         tokenizer,
         model_inventory_sha256=snapshot_receipt["inventory_sha256"],
+        max_common_tokens=args.max_common_tokens,
     )
     if (
         verify_model_snapshot(args.tokenizer_snapshot)["inventory_sha256"]

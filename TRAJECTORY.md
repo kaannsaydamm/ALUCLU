@@ -5801,3 +5801,33 @@ Task 2 sensorium/recollection gate: CLEAN
   warning, not a model forward. No prompt/budget or acceptance threshold was
   altered. The unchanged 512-token family-B prompt remains **BLOCK** for
   freeze, and the v2 draft, rights, sealer, and learning gates remain open.
+
+## 2026-09-29 — Predeclared prompt-budget sensitivity implementation checkpoint 61
+
+- Before running any new full-development comparison, the non-authorizing v2
+  draft declared the exact common-budget grid **512, 1024, 2048, 4096, 8192**
+  tokens, evaluated in that order with the same pinned original author pairs,
+  tokenizer, normalization, head/tail rule, and label candidates. This is a
+  mechanistic input-availability diagnostic, not a prompt freeze, training
+  authorization, acceptance-threshold change, or held-out evaluation. The
+  model snapshot declares 8,192 maximum positions; local machine observation
+  was RTX 4050 Laptop GPU (6,141 MiB reported total) and 16 GiB RAM. Larger
+  forward/training feasibility has **not** been demonstrated.
+- TDD RED: the fixture test for a declared 1,024-token common budget failed
+  with `TypeError: ... unexpected keyword argument 'max_common_tokens'`.
+  The pinned runner now accepts only the five declared values, preserves 512
+  as its default, passes the selected value to both train and validation pair
+  audits, and records it in the receipt. The CLI exposes the same constrained
+  option. Tests also require default-512 parity, reject non-grid/bool/string
+  values, and demonstrate a synthetic middle-only difference recovered by
+  larger context.
+- Focused prompt/pair-source regression exited **0**: JUnit **27 tests,
+  0 failures, 0 errors, 1 skipped**, time **6.152 s**; XML
+  `results/alc_r0_prompt_budget_grid_focus_20260929.xml` SHA-256
+  `3d4217482164e3dd58eb293eb703a6a823b65ca8b7a73669d56f661bea261a11`.
+  Broader `pytest tests -k alc_r0 -q --disable-warnings` exited **0**:
+  JUnit **420 tests, 0 failures, 0 errors, 8 skipped**, time **318.844 s**;
+  XML `results/alc_r0_prompt_budget_grid_regression_20260929.xml` SHA-256
+  `0bdee327d4c17635c1fa63b7382bd9f0a9e785e5d80bcf54d0c7111600d119b5`.
+  Ruff check/format and diff check passed. Full pinned grid runs remain to be
+  executed from a clean committed source checkout. ALC-0 remains OPEN.

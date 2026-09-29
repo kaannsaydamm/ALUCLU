@@ -56,6 +56,17 @@ def test_one_sided_truncation_is_counted() -> None:
     assert result["collapsed_pairs"] == 0
 
 
+def test_more_context_can_resolve_exact_middle_only_pair_collision() -> None:
+    pair = (("AAAA" + "x" * 20 + "ZZZZ", "AAAA" + "y" * 20 + "ZZZZ"),)
+
+    short = audit_paired_prompt_contrast(pair, _ByteTokenizer(), max_tokens=59)
+    long = audit_paired_prompt_contrast(pair, _ByteTokenizer(), max_tokens=1024)
+
+    assert short["collapsed_pairs"] == 1
+    assert long["collapsed_pairs"] == 0
+    assert long["neither_truncated_pairs"] == 1
+
+
 @pytest.mark.parametrize(
     "pairs",
     [(), (("same", "same"),), (("valid", ""),), (("valid", 5),)],
@@ -87,6 +98,56 @@ def test_fixture_runner_binds_verified_sources_and_emits_only_aggregates(
     assert receipt["held_out_data_present"] is False
     assert "red blue" not in str(receipt)
     assert "primevul:" not in str(receipt)
+
+
+def test_fixture_runner_records_requested_common_budget(tmp_path) -> None:
+    full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
+    default_receipt = run_pinned_paired_prompt_contrast(
+        full,
+        paired,
+        _ByteTokenizer(),
+        model_inventory_sha256="a" * 64,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+    receipt = run_pinned_paired_prompt_contrast(
+        full,
+        paired,
+        _ByteTokenizer(),
+        model_inventory_sha256="a" * 64,
+        max_common_tokens=1024,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+
+    assert default_receipt["max_common_tokens"] == 512
+    assert default_receipt["train"] == audit_paired_prompt_contrast(
+        (("red blue green yellow orange", "alpha beta gamma delta epsilon"),),
+        _ByteTokenizer(),
+        max_tokens=512,
+    )
+    assert receipt["max_common_tokens"] == 1024
+    assert receipt["train"] == audit_paired_prompt_contrast(
+        (("red blue green yellow orange", "alpha beta gamma delta epsilon"),),
+        _ByteTokenizer(),
+        max_tokens=1024,
+    )
+
+
+@pytest.mark.parametrize("budget", [511, 1536, 8193, True, "1024"])
+def test_fixture_runner_rejects_undeclared_common_budget(tmp_path, budget) -> None:
+    full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
+
+    with pytest.raises(PairedPromptContrastError, match="outside declared grid"):
+        run_pinned_paired_prompt_contrast(
+            full,
+            paired,
+            _ByteTokenizer(),
+            model_inventory_sha256="a" * 64,
+            max_common_tokens=budget,
+            source_expectation=source_expectation,
+            pair_expectation=pair_expectation,
+        )
 
 
 def test_fixture_runner_rejects_changed_paired_bytes(tmp_path) -> None:
