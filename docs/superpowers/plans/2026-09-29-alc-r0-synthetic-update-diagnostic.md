@@ -34,3 +34,20 @@ to match the training process pre-update base score within `1e-4`. The
 remount process may not see training examples (only the deterministic
 synthetic-ID rule) or use retrieval. If any check fails, report it as a
 negative result; do not call this ALC-0 PASS.
+
+## Observed local result, 2026-09-29
+
+Clean source commit `c4f147c` produced terminal exit zero for both separate
+16-update cells and the fresh-process capsule remount. Capsule target-token
+log probability moved from `-6.6672158241272` to `-6.34233427047729`
+(`+0.324881553649902`); matched q-only LoRA moved from the same baseline to
+`-6.5954794883728` (`+0.0717363357543945`). Both factor states changed,
+both base-state digests stayed identical, and both detached scores returned
+to the baseline. In a third fresh process, the canonical capsule artifact
+produced exactly the training post-update mounted score and the baseline
+detached score (both absolute differences `0`, below `1e-4`). No held-out
+data or task examples were used. The differences are not arm rankings or
+task-skill gains; one synthetic example and 16 updates cannot establish
+generalization. Exact receipts, SafeTensors artifact, hashes, and measured
+resources are in `results/alc_r0_synthetic_update_c4f147c_*` and
+`TRAJECTORY.md` checkpoint 68. R0.0/R0.4 and ALC-0 remain OPEN.

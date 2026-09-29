@@ -6078,3 +6078,58 @@ Task 2 sensorium/recollection gate: CLEAN
   locked research environment (`No module named pyright`), so no static-type
   PASS is claimed. At this checkpoint the real-host 16-update cells and
   fresh-process remount have **not yet run**; ALC-0 remains OPEN.
+
+## 2026-09-29 — Real-host synthetic neural update and remount checkpoint 68
+
+- From clean source commit `c4f147ca1cb9e3a88c651133dbf5ca229a1fdf56`,
+  ran the predeclared capsule and matched q-only LoRA cells in **separate
+  processes**, followed by a **third fresh-process** capsule remount. All
+  three Python processes exited **0**. The pinned model inventory root was
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`.
+  Receipts record `training_authority=false`, `held_out_data_present=false`,
+  `synthetic_only=true`, `retrieval_enabled=false`, 512 synthetic tokens,
+  fixed target ID 23, frozen BF16/eval base, FP32 rank-8 factors at ports
+  `(14, 29)`, eager attention, and exact optimizer settings. No task dataset
+  was opened; no R0.4 authority or held-out evaluation was invoked.
+- Each training process performed exactly **16** AdamW updates, with 16 finite
+  losses and nonzero finite pre-clip gradient norms. The capsule's target-token
+  log probability changed **-6.6672158241272 → -6.34233427047729**
+  (`+0.324881553649902`); q-only LoRA changed **-6.6672158241272 →
+  -6.5954794883728** (`+0.0717363357543945`). Both factor-state hashes
+  changed, while each frozen-base canonical state hash stayed identical
+  before/after and received no gradient. Detaching each arm returned exactly
+  to the original base score. Measured CUDA peak allocated/reserved was
+  **683.3/706.0 MiB** for capsule and **696.7/730.0 MiB** for LoRA;
+  update-loop elapsed times were **3.83 s** and **3.66 s**, excluding model
+  loading/digest verification. These are observed resource points, not
+  comparative throughput rankings.
+- The learned capsule serialized as a **676-byte canonical manifest** and a
+  **74,040-byte SafeTensors** payload. Artifact SHA-256s were respectively
+  `425dc4a852df8a24f79b66e3d16d7ad15becdef8072aaf67a65836cbdca715cc`
+  and
+  `d0da43da78b1d1a0f8258729bed91aff67fd30fb23d051e32d882567029f651a`.
+  The third process loaded the pinned base anew and remounted those exact
+  bytes: mounted score **-6.34233427047729** matched the training post-score
+  exactly; detached score **-6.6672158241272** matched the training
+  pre-score exactly. Both absolute differences are **0**, under the
+  predeclared `1e-4` tolerance. The fresh base digest remained unchanged.
+- Canonical metadata-only receipt SHA-256s (capsule, LoRA, remount) are
+  `dca7d0bf198fa4d3f771078023ae14f2c9e7f20936ecd795d68f8e665577a082`,
+  `4418f92e703a257de8b84290b2bacd5fe322db7ac60a1980aded8559fbf3bcc0`,
+  and `f68e10aae6702cf5c983d76c0917f5ac1fd98604284e0c662576dd708638cc1f`.
+  Stderr hashes are
+  `2fa348f5ac534fa7d941726275eb457af2092256e32d41cdf4a34e699f40fd20`,
+  `6dfb9e0345562dbb034cb07d2b7ea712dcdfdeb8e5225b7b1ca2e7cbab6f3b1a`,
+  and `059f6a4418556f9810c96ca3c198a1c103884cdbccb2957aea2fde07b7120d56`.
+  External-run and copied bytes matched; an initial PowerShell evidence-copy
+  mapping had a syntax error and created **no** target files, then the
+  corrected explicit eight-file copy passed SHA-256 equality. A separate
+  read-only receipt audit checked commit/model roots, all 16 finite updates,
+  unchanged bases, changed factors, detach/remount equality, artifact hashes,
+  and scope flags: PASS for this narrow diagnostic.
+- This is the first observed optimizer update stored in a remountable neural
+  capsule on the real host, but it is **one fixed synthetic next-token
+  example**, not a real capability suite. It does not prove generalization,
+  200-step stability, actual Banking77/PrimeVul learning, old-skill retention,
+  or ALC-0. The v2 prompt/rights/independent review, R0.0 freeze, real-data
+  R0.4 pilot, and confirmatory neural capability gate remain **OPEN**.
