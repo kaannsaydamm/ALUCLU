@@ -117,6 +117,16 @@ deduplicated/excluded retained cohort. It adds no acceptance threshold and
 cannot authorize training or test access; its result informs the independent
 pre-held-out scientific decision below.
 
+Development-only result from source commit `4bc8160`: **1,284/4,354 (29.49%)**
+train and **160/562 (28.47%)** validation author pairs collapsed to identical
+complete prompt IDs. Separate independent code and science reviews found the
+diagnostic suitable for this narrow inference; the science review marked
+freezing the **current 512-token head/tail family-B prompt unchanged BLOCK**.
+This is not a falsification of the broader ALC-0 hypothesis. A new versioned,
+pre-held-out single-function prompt proposal and matched-arm budget policy must
+be reviewed and tested on development data before any family-B freeze. The
+current v1 prompt and failed candidate evidence must remain in the ledger.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

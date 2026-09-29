@@ -199,6 +199,11 @@ def main() -> None:
         tokenizer,
         model_inventory_sha256=snapshot_receipt["inventory_sha256"],
     )
+    if (
+        verify_model_snapshot(args.tokenizer_snapshot)["inventory_sha256"]
+        != snapshot_receipt["inventory_sha256"]
+    ):
+        raise PairedPromptContrastError("tokenizer snapshot changed during run")
     if inspect_clean_source_checkout(Path.cwd().resolve(strict=True)) != checkout:
         raise PairedPromptContrastError("source checkout changed during run")
     receipt["source_checkout"] = asdict(checkout)

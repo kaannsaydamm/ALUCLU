@@ -35,7 +35,25 @@ def test_pair_prompt_collapse_and_retained_contrast_are_distinct() -> None:
     assert result["training_authority"] is False
     assert result["held_out_data_present"] is False
     assert len(result["ordered_pair_prompt_ids_sha256"]) == 64
+    assert (
+        result["ordered_pair_prompt_ids_sha256"]
+        != audit_paired_prompt_contrast(
+            tuple(reversed(pairs)), _ByteTokenizer(), max_tokens=59
+        )["ordered_pair_prompt_ids_sha256"]
+    )
     assert "AAAA" not in str(result)
+
+
+def test_one_sided_truncation_is_counted() -> None:
+    result = audit_paired_prompt_contrast(
+        (("a" * 30, "short"),), _ByteTokenizer(), max_tokens=59
+    )
+
+    assert result["pairs"] == 1
+    assert result["one_truncated_pairs"] == 1
+    assert result["both_truncated_pairs"] == 0
+    assert result["neither_truncated_pairs"] == 0
+    assert result["collapsed_pairs"] == 0
 
 
 @pytest.mark.parametrize(

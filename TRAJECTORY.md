@@ -5700,3 +5700,69 @@ Task 2 sensorium/recollection gate: CLEAN
 - This checkpoint is implementation plus fixture/regression evidence only.
   The pinned full development pair diagnostic has not run yet; no learning,
   confirmatory score, v2 amendment approval, or ALC-0 PASS is claimed.
+
+## 2026-09-29 — Pinned PrimeVul author-pair prompt collapse checkpoint 58
+
+- Ran the predeclared development-only pair diagnostic from clean source
+  commit `4bc8160a8b18786b76a264b3f125a9c105d5f80b`, source-tree SHA-256
+  `5f1d3f3c23cda992453a48f86c00c95dac2e31e7cc131cfb8daf8af7f8e6cef7`
+  (318 tracked files). The canonical stdout embeds this source checkout and
+  invocation, pinned original-development source scope, verified model
+  inventory root
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`,
+  and pair-source receipt root
+  `e3d92be86e8f4e44c4db7c5afe3cc47ab3beeec89d5540c34dbcef4e562cbd5f`.
+  The checkout was required clean before and after execution. Terminal Python
+  exit was **0**; `training_authority=false` and
+  `held_out_data_present=false`.
+- Among **4,354** author train vulnerable/patch pairs, **1,284 (29.49%)**
+  became *identical complete prompt token-ID sequences* under the candidate
+  512-token rule. Train truncation states were both **2,808**, one **126**,
+  neither **1,420**. Among **562** author validation pairs, **160 (28.47%)**
+  collapsed; truncation states were both **334**, one **24**, neither **204**.
+  Both partitions sum exactly to their respective pair counts. Ordered
+  pair-prompt roots are train
+  `2aec0e6843562b6bbee1a72b6bbdbe17e60fa4c4827687c63dc66791f6f61ae6`
+  and validation
+  `88752db8ef06fc014cad185612190d61c6bd0830afd55a89253e68140a912bc6`.
+- Evidence files `results/alc_r0_paired_prompt_contrast_4bc8160_20260929.stdout.log`
+  and `.stderr.log` have SHA-256 respectively
+  `9cb57a61cb14feb4c79aed58d81772c732fb3e3058fb9bbb7b43a6573659c3e6`
+  and `8685701b3daed0865b3e927f67cdb47f6fa3444d782a19ce29e445f65fc65e84`;
+  `.exit.log` records `python_exit_code=0`. Stderr has one original-tokenization
+  warning (`8733 > 8192`) before truncation, not evidence of an over-budget
+  model forward. Exact stdout bytes were copied from an external run directory
+  after terminal success and rehashed; no raw code or source IDs are emitted.
+- Different normalized code becoming identical prompt IDs proves that those
+  author pairs are non-identifiable to a retrieval-off model using this input.
+  It does **not** prove that every non-collapsed pair retains the vulnerability
+  signal, that the final retained train/validation cohort has the same rate,
+  or that ALC-0's overall neural-capability hypothesis is false. This is a
+  serious blocker to freezing the **current** family-B prompt unchanged;
+  independent code/science review and an explicit pre-held-out v2 decision are
+  pending. No threshold, data split, or prompt was silently changed; no
+  held-out access or model training occurred. ALC-0 OPEN.
+
+## 2026-09-29 — Pair prompt review and provenance repair checkpoint 59
+
+- Independent GPT-6 Sol code/security review returned **COMMENT** for source
+  commit `4bc8160`: no demonstrated count, source-boundary, held-out-access or
+  raw-code disclosure defect, but model snapshot was only verified before
+  several thousand tokenizer operations and tests lacked pair-order and
+  one-sided truncation coverage. Independent architecture/science review
+  returned **CLEAR** for the diagnostic itself, **WATCH** that author pairs are
+  not automatically the final retained cohort, and **BLOCK** for freezing the
+  unchanged 512-token family-B prompt. The v2 draft now records that negative
+  decision without changing any acceptance threshold or test split.
+- The CLI now re-verifies the model inventory after all pair tokenization and
+  fails if it changed. Tests now assert an order-sensitive prompt root and the
+  one-sided truncation branch. Focused diagnostic/prompt/paired-source tests
+  passed **21/21**; Ruff check/format and diff check passed. A full pinned
+  development-data rerun from this repaired code is still required, so the
+  previous `4bc8160` receipt remains valid historical evidence only.
+- Post-review Windows ALC-R0 regression exited **0**: JUnit **413 tests,
+  0 failures, 0 errors, 8 skipped**, time **628.315 s**. XML
+  `results/alc_r0_pair_prompt_contrast_postreview_regression_20260929.xml`
+  SHA-256 is
+  `7ab9d437220d5215ab92a8bb16cd605e654bc6ea55e076549b2e11a03ee4c58c`.
+  No real-data training, held-out access, or ALC-0 PASS occurred.
