@@ -49,3 +49,5 @@ results/alc_r0_context_gradient_probe_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_context_gradient_probe_*.log -text whitespace=-blank-at-eol
 results/alc_r0_retained_pair_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_retained_pair_*.log -text whitespace=-blank-at-eol
+results/alc_r0_synthetic_update_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_synthetic_update_*.log -text whitespace=-blank-at-eol

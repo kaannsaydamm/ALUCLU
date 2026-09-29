@@ -6046,3 +6046,35 @@ Task 2 sensorium/recollection gate: CLEAN
   optimizer update, real-data training, or held-out access occurred.
   `training_authority=false`; the v2 prompt, rights, sealer, and actual
   ALC-0 neural capability proof remain **OPEN**.
+
+## 2026-09-29 — Synthetic optimizer-update diagnostic implementation checkpoint 67
+
+- After the retained author-pair analysis, explicitly predeclared a separate
+  non-authorizing, synthetic-only **16-update** execution diagnostic for the
+  pinned SmolLM2-135M host. It holds ports `(14, 29)`, rank 8, seed
+  `20260916`, 512 synthetic tokens, target token ID 23, BF16 frozen/eval
+  base, FP32 factors, and existing AdamW values fixed. Capsule and exactly
+  parameter-matched q-only LoRA are separate fresh-process cells. The
+  capsule's learned SafeTensors artifact must then survive a separate-process
+  remount with target log-probability agreement within `1e-4` and detached
+  base-score agreement within `1e-4`. This does **not** replace R0.4's
+  200-step, real-data, effective-batch-16 feasibility pilot.
+- TDD RED: focused tests failed collection at missing
+  `aluclu.alc_r0.synthetic_update_probe`. Added a bounded AdamW update loop,
+  finite loss/gradient/factor checks, frozen-base and deterministic-CUDA
+  checks, before/after target-token log probability, factor/base digests,
+  memory/runtime measurements, and canonical capsule serialization/remount
+  CLI. No PrimeVul, Banking77, or held-out data are read by this diagnostic;
+  `training_authority=false`, `synthetic_only=true`, and retrieval is off.
+- Focused JUnit `results/alc_r0_synthetic_update_focus_20260929.xml` exited
+  **0** with **29 tests, 0 failures, 0 errors, 0 skips**, time **12.788 s**,
+  SHA-256
+  `07a34c91deff7e331d539f5310b4b8d99f0e36652e1eb9d376134cbbd43f111c`.
+  Broader ALC-R0 regression
+  `results/alc_r0_synthetic_update_regression_20260929.xml` exited **0**:
+  **445 tests, 0 failures, 0 errors, 8 skips**, time **194.126 s**, SHA-256
+  `0b6320c935a1503da5ee76d2a35aa13621520f5dd64092b105314b6b3245c84d`.
+  Ruff check/format and diff check passed. Pyright was unavailable in the
+  locked research environment (`No module named pyright`), so no static-type
+  PASS is claimed. At this checkpoint the real-host 16-update cells and
+  fresh-process remount have **not yet run**; ALC-0 remains OPEN.
