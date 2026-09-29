@@ -35,10 +35,11 @@ def _ordered_prompt_root(
     *,
     root_by_id: dict[str, str],
     template: DefectPromptTemplate,
-) -> tuple[str, int, dict[str, int], int]:
+) -> tuple[str, int, dict[str, int], dict[str, int], int]:
     digest = hashlib.sha256()
     truncated = 0
     label_counts = {label: 0 for label in DEFECT_LABELS}
+    truncated_labels = {label: 0 for label in DEFECT_LABELS}
     max_original_code_tokens = 0
     previous_id: str | None = None
     for row in rows:
@@ -61,7 +62,9 @@ def _ordered_prompt_root(
             raise DefectPromptReceiptError("invalid retained code prompt") from exc
         label = "vulnerable" if row.target == 1 else "safe"
         label_counts[label] += 1
-        truncated += prompt.original_code_tokens > prompt.retained_code_tokens
+        was_truncated = prompt.original_code_tokens > prompt.retained_code_tokens
+        truncated += was_truncated
+        truncated_labels[label] += was_truncated
         max_original_code_tokens = max(
             max_original_code_tokens, prompt.original_code_tokens
         )
@@ -81,7 +84,13 @@ def _ordered_prompt_root(
             )
             + b"\n"
         )
-    return digest.hexdigest(), truncated, label_counts, max_original_code_tokens
+    return (
+        digest.hexdigest(),
+        truncated,
+        label_counts,
+        truncated_labels,
+        max_original_code_tokens,
+    )
 
 
 def build_defect_prompt_candidate_receipt(
@@ -126,16 +135,22 @@ def build_defect_prompt_candidate_receipt(
         template = prepare_defect_prompt(tokenizer, max_tokens=max_tokens)
     except DefectPromptError as exc:
         raise DefectPromptReceiptError("defect prompt template is invalid") from exc
-    train_root, train_truncated, train_labels, train_max = _ordered_prompt_root(
-        graph.train, root_by_id=graph.root_by_id, template=template
-    )
-    validation_root, validation_truncated, validation_labels, validation_max = (
+    train_root, train_truncated, train_labels, train_truncated_labels, train_max = (
         _ordered_prompt_root(
-            graph.validation, root_by_id=graph.root_by_id, template=template
+            graph.train, root_by_id=graph.root_by_id, template=template
         )
     )
+    (
+        validation_root,
+        validation_truncated,
+        validation_labels,
+        validation_truncated_labels,
+        validation_max,
+    ) = _ordered_prompt_root(
+        graph.validation, root_by_id=graph.root_by_id, template=template
+    )
     return {
-        "receipt_version": 1,
+        "receipt_version": 2,
         "status": "candidate-non-authorizing",
         "training_authority": False,
         "held_out_data_present": False,
@@ -163,6 +178,8 @@ def build_defect_prompt_candidate_receipt(
         "validation_labels": validation_labels,
         "train_truncated_rows": train_truncated,
         "validation_truncated_rows": validation_truncated,
+        "train_truncated_labels": train_truncated_labels,
+        "validation_truncated_labels": validation_truncated_labels,
         "train_max_original_code_tokens": train_max,
         "validation_max_original_code_tokens": validation_max,
         "ordered_train_prompt_ids_sha256": train_root,

@@ -59,6 +59,9 @@ def test_candidate_receipt_binds_ordered_retained_rows_and_tokenizer() -> None:
     assert receipt["validation_rows"] == 1
     assert receipt["train_labels"] == {"safe": 1, "vulnerable": 1}
     assert receipt["validation_labels"] == {"safe": 1, "vulnerable": 0}
+    assert receipt["receipt_version"] == 2
+    assert receipt["train_truncated_labels"] == {"safe": 0, "vulnerable": 0}
+    assert receipt["validation_truncated_labels"] == {"safe": 0, "vulnerable": 0}
     assert receipt["model_inventory_sha256"] == "a" * 64
     assert (
         receipt["ordered_train_prompt_ids_sha256"]
@@ -67,6 +70,26 @@ def test_candidate_receipt_binds_ordered_retained_rows_and_tokenizer() -> None:
     assert len(receipt["candidate_token_map_sha256"]) == 64
     assert "int a" not in str(receipt)
     assert "primevul:1" not in str(receipt)
+
+
+def test_truncation_audit_counts_each_label_without_exposing_code() -> None:
+    graph = _graph()
+    graph = replace(
+        graph,
+        train=(
+            graph.train[0],
+            PairCloneRecord("primevul:2", "int b() { return " + "x" * 100 + "; }", 1),
+        ),
+    )
+
+    receipt = build_defect_prompt_candidate_receipt(
+        graph, _ByteTokenizer(), model_inventory_sha256="a" * 64, max_tokens=80
+    )
+
+    assert receipt["train_truncated_rows"] == 1
+    assert receipt["train_truncated_labels"] == {"safe": 0, "vulnerable": 1}
+    assert receipt["validation_truncated_labels"] == {"safe": 0, "vulnerable": 0}
+    assert "x" * 20 not in str(receipt)
 
 
 def test_receipt_changes_when_function_label_order_root_or_tokenizer_changes() -> None:

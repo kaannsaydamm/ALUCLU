@@ -5589,3 +5589,21 @@ Task 2 sensorium/recollection gate: CLEAN
   data rights, independent reviewer, isolated sealer, R0.0 cross-artifact
   validator, real-data training, and held-out confirmation remain open.
   ALC-0 OPEN.
+
+## 2026-09-29 — Family-B class-conditional truncation audit checkpoint 54
+
+- Extended the non-authorizing defect-prompt receipt to version 2 with
+  `train_truncated_labels` and `validation_truncated_labels`. These aggregate
+  counts expose whether the fixed 499-code-token head/tail rule removes a
+  disproportionate share of either class without emitting raw code or IDs.
+  The ordered prompt-ID roots and prompt policy are unchanged. This is a
+  development-data diagnostic, not a revised token budget or acceptance floor.
+- Added a synthetic mixed-length/label fixture. The focused receipt and runner
+  tests passed **12/12**. Ruff check and format check passed on the two changed
+  Python files. The broader Windows ALC-R0 `pytest tests -k alc_r0 -q
+  --disable-warnings` run exited **0** and reached 100%; it was not emitted as
+  JUnit, so no exact suite count is claimed here.
+- Full pinned-corpus v2 aggregate values are not yet established at this
+  checkpoint. The earlier version-1 full receipt remains valid historical
+  evidence but cannot answer the class-conditional truncation question.
+  `training_authority=false`; held-out data was not accessed; ALC-0 OPEN.
