@@ -5766,3 +5766,38 @@ Task 2 sensorium/recollection gate: CLEAN
   SHA-256 is
   `7ab9d437220d5215ab92a8bb16cd605e654bc6ea55e076549b2e11a03ee4c58c`.
   No real-data training, held-out access, or ALC-0 PASS occurred.
+
+## 2026-09-29 — Repaired PrimeVul pair prompt rerun checkpoint 60
+
+- Re-ran the complete pinned original-development author-pair diagnostic from
+  clean source commit `f42ac6dda90b43ea7d717f96d14a31a220357bf7` after the
+  end-of-run tokenizer-snapshot re-verification repair. The receipt embeds
+  source-tree SHA-256
+  `f0b93ba2f5cd424ecf552b94bc214213b964c336c5fb7647252c98ec3ec61acf`
+  (322 tracked files), unchanged model inventory root
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`,
+  and pinned pair-source root
+  `e3d92be86e8f4e44c4db7c5afe3cc47ab3beeec89d5540c34dbcef4e562cbd5f`.
+  CLI Python exit was **0**; checkout remained clean until evidence was copied
+  after the terminal result. `training_authority=false` and
+  `held_out_data_present=false`.
+- Train again had **1,284/4,354** collapsed pairs and truncation partition
+  **2,808 both / 126 one / 1,420 neither**. Validation again had
+  **160/562** collapsed pairs and **334 both / 24 one / 204 neither**.
+  Ordered pair-prompt roots exactly match checkpoint 58: train
+  `2aec0e6843562b6bbee1a72b6bbdbe17e60fa4c4827687c63dc66791f6f61ae6`,
+  validation
+  `88752db8ef06fc014cad185612190d61c6bd0830afd55a89253e68140a912bc6`.
+  This reproduces the negative development-only finding under the repaired
+  provenance check; it is not an ALC-0 neural result or final retained-cohort
+  rate.
+- Canonical evidence is
+  `results/alc_r0_paired_prompt_contrast_f42ac6d_20260929.{stdout,stderr,exit}.log`.
+  Stdout SHA-256 is
+  `d4101fc7549924284d81462b7f05d4344a5ec2e6b58da660af5625005ef37077`,
+  stderr SHA-256 is
+  `8685701b3daed0865b3e927f67cdb47f6fa3444d782a19ce29e445f65fc65e84`;
+  stderr contains only the same 8,733-versus-8,192 original-tokenization
+  warning, not a model forward. No prompt/budget or acceptance threshold was
+  altered. The unchanged 512-token family-B prompt remains **BLOCK** for
+  freeze, and the v2 draft, rights, sealer, and learning gates remain open.
