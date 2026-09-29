@@ -67,3 +67,17 @@ Do not retry at a shorter length, lower the step count, change dtype/rank,
 or treat a failed arm as feasible. A success shows only 16-update synthetic
 resource fit; it does not establish the full label-sequence, effective-batch-16,
 200-step R0.4 envelope or select a v2 prompt budget.
+
+The complete follow-up ran from clean source commit `3966c90` with terminal
+exit zero for all three fresh processes. The capsule's target-token log
+probability changed `-6.94224405288696 → -6.530837059021`
+(`+0.411406993865967`); matched q-only LoRA changed from the same baseline
+to `-6.83657646179199` (`+0.105667591094971`). All 16 losses/gradient
+norms per arm were finite; both factors changed and both base digests stayed
+identical. CUDA peaks allocated/reserved were **4,424.6/4,522 MiB** for
+capsule and **4,603.1/4,810 MiB** for q-only LoRA. The third fresh process
+reproduced the capsule's mounted post-update score and detached baseline
+score with zero measured difference. Receipts, artifact, hashes, and limits
+are in `results/alc_r0_synthetic_update_2048_3966c90_*` and trajectory
+checkpoint 70. This observed 16-update fit does not authorize a 2,048-token
+prompt freeze or imply 200-step/full-label feasibility.

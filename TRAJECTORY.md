@@ -6166,3 +6166,52 @@ Task 2 sensorium/recollection gate: CLEAN
   commands, but no explicit grant covering the separately hosted original
   JSONL and embedded third-party code was found. This is not a legal ruling;
   rights/provenance remain unresolved and `training_authority=false`.
+
+## 2026-09-29 — Real-host 2,048-token synthetic update checkpoint 70
+
+- Ran all three predeclared fresh processes from clean source commit
+  `3966c90ad67eb92c8035d1eaf94f57cbb494d463`: 2,048-token capsule,
+  2,048-token matched q-only LoRA, and canonical capsule remount. Each Python
+  process exited **0**; no OOM or retry occurred. The model inventory root
+  remained
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`.
+  All receipts report `training_authority=false`, `held_out_data_present=false`,
+  `synthetic_only=true`, `retrieval_enabled=false`; no real task data, held-out
+  data, or optimizer policy amendment was used.
+- Both arms performed exactly **16** successful AdamW updates with 16 finite
+  losses and positive finite pre-clip gradient norms. Capsule target-token
+  log probability changed **-6.94224405288696 → -6.530837059021**
+  (`+0.411406993865967`); matched q-only LoRA changed from the same baseline
+  to **-6.83657646179199** (`+0.105667591094971`). Each factor hash changed;
+  each frozen-base canonical digest remained identical and received no
+  gradient. Detached scores returned exactly to the baseline. CUDA peak
+  allocated/reserved was **4,424.6/4,522 MiB** for capsule and
+  **4,603.1/4,810 MiB** for LoRA. Update-loop elapsed time was **9.75/10.02
+  s**, excluding model load and digest checks; these are not arm rankings.
+- The new learned capsule artifact is a **676-byte canonical manifest** and
+  **74,040-byte SafeTensors** payload with SHA-256
+  `75c1638c77aba79cc6e0c0fb5a05556f06bb7e9fcd586ad1a71889a6523b3da9`
+  and
+  `e5990f6d90a29a72f1df1b7dc82e1242a3078f781d6af7221cdfc453975dad16`.
+  Fresh-process mounted score equaled the capsule training post-score and
+  detached score equaled the pre-score; both absolute differences were **0**,
+  below the predeclared `1e-4` tolerance. The fresh base digest was identical
+  before/after. A separate read-only receipt script checked exact
+  source/model identity, 16-step trajectories, scope flags, factor/base
+  hashes, copied artifact bytes, and remount equality: narrow audit PASS.
+- Metadata-only stdout SHA-256s (capsule, LoRA, remount) are
+  `03083a385dddf625af3c7acb5e724f94f43d03edfa1f12d40644bee18473e00d`,
+  `e0cae21caab3a0d6925bfa9a1709d70c5b16130de9add7db82f8e7a51c82ecc8`,
+  and `6ff92634fa1fd56daed0e1213a840e2f9dc0e16fc34455e09c6cdcf220317b7c`.
+  Stderr SHA-256s are
+  `0f94630a6f42fe65b0c5595a7f32ec353f94dd2b7f5a71cf754f0f4d494c5ad8`,
+  `419b108dcb2cc4051e5ecb8b2130016a38493a98febeaf7a6458b17e42e42761`,
+  and `5be770d6bd4adf51ff65ccaf2fc0353a9bb761d5fcdfaf8dee6b370f3beafc26`.
+  External-run and copied bytes matched by SHA-256; `.gitattributes` pins
+  committed raw bytes. C: free space was **27.57 GiB** after the cells.
+- This validates only local 16-update **synthetic** fit at 2,048 tokens on
+  this host. It does not exercise full label-sequence loss, batch-16 gradient
+  accumulation, 200 updates, real-data learning, held-out generalization,
+  or a complete R0.4 feasibility envelope. The family-B prompt/budget is
+  **not frozen**; source-rights, independent science review, R0.0, R0.4,
+  and ALC-0 remain **OPEN**.
