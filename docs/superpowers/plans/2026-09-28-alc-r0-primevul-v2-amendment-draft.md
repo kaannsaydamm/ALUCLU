@@ -159,6 +159,22 @@ The PrimeVul authors also note that some vulnerabilities span multiple
 functions, an additional limit on any single-function classifier
 ([paper](https://arxiv.org/html/2403.18624v2)).
 
+Before choosing a longer-context v2 candidate, run a separate **synthetic-only
+local gradient resource probe**, not the v1 R0.4 200-step pilot. Predeclared
+sequence lengths are **512, 1024, 2048** in ascending order; at each length,
+run `ResearchCapsuleV0` and exactly matched q-only LoRA, separately, with the
+pinned real SmolLM2-135M host/revision, BF16 host, FP32 rank-8 factors at ports
+14 and 29, batch 1, a deterministic synthetic token sequence, one final-token
+cross-entropy backward, `use_cache=False`, and **zero optimizer updates**.
+Use the locked Windows research environment and eager attention, requiring at
+least 20 GiB free on C: before each process. Record finite loss/gradients,
+frozen-base pre/post canonical digest, CUDA allocated/reserved peak, wall time,
+exact source/model/environment identity, and every failed/OOM attempt. Each
+arm/length is a fresh process; a failure does not become a PASS by silently
+reducing length, changing dtype, or altering the effective batch. This probe
+tests resource feasibility only: it neither licenses the PrimeVul data nor
+proves 200-step training, full task learning, retention, or portability.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

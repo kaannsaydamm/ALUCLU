@@ -5890,3 +5890,36 @@ Task 2 sensorium/recollection gate: CLEAN
   task. No budget, threshold, or prompt is selected for freeze. Independent
   scientific review, rights, sealer, training feasibility, and the actual
   neural capability test remain open; ALC-0 is **not PASS**.
+
+## 2026-09-29 — Synthetic real-host context-gradient probe implementation checkpoint 63
+
+- After the non-authorizing pair-prompt grid, the v2 draft explicitly declared
+  a separate synthetic-only resource probe at lengths **512, 1024, 2048**, in
+  that order, with both `ResearchCapsuleV0` and matched q-only LoRA at ports
+  (14, 29), rank 8, batch 1, BF16 pinned SmolLM2 host and FP32 factors. It
+  permits one final-token backward and **zero optimizer updates** per fresh
+  process, with no PrimeVul rows, held-out data, retrieval, or capability
+  claim. The frozen v1 target-task sequence/budget is not amended by this
+  probe; the declared v2 decision remains pending.
+- TDD RED: new tests failed collection because
+  `aluclu.alc_r0.context_gradient_probe` did not exist. Implemented a guarded
+  standalone CLI that accepts only the six declared arm/length cells, checks
+  clean committed source and >=20 GiB free space, verifies the pinned local
+  snapshot before/after, uses offline BF16 real-host loading and deterministic
+  eager CUDA math, performs one synthetic final-token cross-entropy backward,
+  and emits metadata-only loss/gradient/time/CUDA-memory and canonical
+  frozen-base pre/post digest evidence. OOM and nonfinite outcomes are explicit
+  failures; no optimizer is constructed. The source snapshot remains unchanged.
+- Focused JUnit `results/alc_r0_context_gradient_probe_focus_20260929.xml`
+  exited **0** with **15 tests, 0 failures, 0 errors, 0 skipped**, time
+  **29.734 s**, SHA-256
+  `3a7d146d47d8db5eb5856b58b69cdbbe3781d143a7f986143da28fa65cebe729`.
+  Broader `pytest tests -k alc_r0 -q --disable-warnings` exited **0**:
+  JUnit `results/alc_r0_context_gradient_probe_regression_20260929.xml`
+  **435 tests, 0 failures, 0 errors, 8 skipped**, time **294.676 s**,
+  SHA-256 `44f58afea177258222718c5865d8cf9d47eb0da1d273051f7e86501ad7d0f36d`.
+  Ruff check/format and diff check passed. `.gitattributes` preserves these
+  generated evidence bytes under Windows `core.autocrlf=true`.
+- This checkpoint proves implementation and regression only. No six-cell
+  real-host resource result has been executed yet, no 200-update pilot was
+  run, and ALC-0 remains OPEN.
