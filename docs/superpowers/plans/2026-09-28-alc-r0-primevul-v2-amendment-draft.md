@@ -175,6 +175,19 @@ reducing length, changing dtype, or altering the effective batch. This probe
 tests resource feasibility only: it neither licenses the PrimeVul data nor
 proves 200-step training, full task learning, retention, or portability.
 
+The six synthetic-only cells were run from clean source commit `d4fb2d1` and
+all returned exit zero with finite loss and gradients, identical pinned-base
+pre/post digests, and zero optimizer updates. CUDA peak allocated memory was
+**683.1 / 696.6 MiB** at 512, **1,483.3 / 1,535.4 MiB** at 1,024, and
+**4,423.5 / 4,602.0 MiB** at 2,048 for capsule / matched q-only LoRA,
+respectively. Receipts and exact hashes are recorded in
+`results/alc_r0_context_gradient_probe_d4fb2d1_20260929_*` and trajectory
+checkpoint 64. The tested loss supervises only a single final token; these
+numbers are **not** a full label-sequence training-memory bound. The 2,048
+cell fits one backward on the 6,141-MiB local GPU, but no optimizer step,
+microbatch sequence, 200-step stability, or real-data capability was proven.
+No longer budget was silently selected or authorized.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

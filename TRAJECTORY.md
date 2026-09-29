@@ -5923,3 +5923,50 @@ Task 2 sensorium/recollection gate: CLEAN
 - This checkpoint proves implementation and regression only. No six-cell
   real-host resource result has been executed yet, no 200-update pilot was
   run, and ALC-0 remains OPEN.
+
+## 2026-09-29 — Six-cell real-host synthetic gradient resource checkpoint 64
+
+- Ran all six predeclared cells in separate processes from clean source commit
+  `d4fb2d1bc166b74c38e27424585f43059025777e`, source-tree SHA-256
+  `11b4300847051169928e1ce1e57b9073b1fe29c5a0624d8bcd05e436b79486d9`
+  (342 tracked files). All receipts share pinned model inventory SHA-256
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`
+  and frozen-base canonical digest
+  `ce7e8dd6a97ac4cc56bf4f1e38625817386e27af58f1ed63377741f7f2aab1ba`.
+  Every base digest matched before/after, `training_authority=false`,
+  `held_out_data_present=false`, `synthetic_only=true`, and
+  `optimizer_updates=0`. The pinned Windows research environment reports
+  Python 3.12.13, Torch 2.14.0+cu130, Transformers 5.17.0, and an RTX 4050
+  Laptop GPU with 6,438,780,928 physical GPU bytes.
+- Every cell had terminal Python exit **0**, finite positive loss and gradient
+  norm, and no OOM. CUDA peak measured by PyTorch after allocator-cache clear
+  and peak reset, around one final-token cross-entropy backward, was:
+
+  | Sequence tokens | Capsule allocated / reserved MiB | Matched q-only LoRA allocated / reserved MiB |
+  | ---: | ---: | ---: |
+  | 512 | 683.1 / 706.0 | 696.6 / 730.0 |
+  | 1,024 | 1,483.3 / 1,510.0 | 1,535.4 / 1,564.0 |
+  | 2,048 | 4,423.5 / 4,522.0 | 4,602.0 / 4,810.0 |
+
+  These are one-shot observations, not continuous driver/process VRAM maxima
+  or multi-step benchmarks. Wall times including model load and digest checks
+  were respectively **81.819, 71.809, 73.893, 70.416, 71.628, 96.023 s**
+  in ascending length and capsule-then-LoRA order; they are not performance
+  rankings. The loss supervises only a single final token, so this is **not**
+  a full label-sequence training-memory upper bound. At 2,048, the measured
+  one-backward allocated peak is close to the 6-GiB hardware envelope; no
+  optimizer step, 200-step stability, full task training, or retention was
+  demonstrated. No prompt/budget selection is made.
+- Canonical metadata-only stdout receipts and model-loading-only stderr logs
+  are `results/alc_r0_context_gradient_probe_d4fb2d1_20260929_<length>-<arm>.*.log`.
+  `results/alc_r0_context_gradient_probe_d4fb2d1_20260929.execution.log`
+  records exact per-cell exit codes, wall times, stdout/stderr SHA-256s, source,
+  model, base, environment, and measurement limits. The external-run bytes
+  were copied with SHA-256 equality; `.gitattributes` preserves committed log
+  bytes. The wall times in the execution index were transcribed from terminal
+  stopwatch output, not emitted by the probe itself. A first index-validation
+  attempt caught a manually mistyped 1,024-capsule stderr hash; it was corrected
+  from the actual file before commit, and all six rows then passed exact
+  SHA-256/format checks. This resource evidence informs an independent v2
+  decision only.
+  The frozen v1 protocol is unchanged; ALC-0 remains OPEN.
