@@ -207,6 +207,22 @@ description of surviving *author pairs*, not of all retained observations;
 it cannot select a budget, establish vulnerability learnability, authorize
 training or held-out access, or alter any acceptance threshold.
 
+The predeclared audit ran from clean commit `c1996d2`; all four graph ledgers
+matched the prior full-development run. Of 4,354 train author pairs, **4,344**
+had both endpoints retained and **10** had only the vulnerable endpoint;
+none fell in the other two categories. Of 562 validation author pairs,
+**482** had both endpoints retained and **80** had neither; none had exactly
+one retained endpoint. Among both-retained pairs, exact prompt-ID collisions
+were train/validation **1,283/109 at 512**, **671/56 at 1,024**, **311/26 at
+2,048**, **124/7 at 4,096**, and **37/3 at 8,192**. At 512 this is
+1,283/4,344 (29.53%) train and 109/482 (22.61%) validation, versus the
+earlier all-author-pair 1,284/4,354 and 160/562. This difference is a
+population correction, not an improvement of the prompt. Complete
+truncation partitions, ordered prompt roots, source/model/graph roots, exit
+and hashes are in `results/alc_r0_retained_pair_c1996d2_20260929.*` and
+`TRAJECTORY.md` checkpoint 66. It remains a diagnostic conditional on
+author-pair survival, not a final learning or prompt-freeze gate.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

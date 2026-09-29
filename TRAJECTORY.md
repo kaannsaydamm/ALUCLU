@@ -5996,3 +5996,53 @@ Task 2 sensorium/recollection gate: CLEAN
   checkpoint; no survival fraction or graph-cleaned collision result is
   claimed. Source rights, v2 prompt review, sealer, training, and ALC-0
   capability proof remain OPEN.
+
+## 2026-09-29 — Full retained author-pair prompt audit checkpoint 66
+
+- From clean source commit `c1996d21537e582ec4491634f210351bfbe7536e`
+  (source-tree SHA-256
+  `bfcdd088515a13f6b372d5c6c07e0a44b39695c2788c044b9209db5c0c4ddd98`,
+  358 tracked files), ran the development-only pinned original graph and
+  complete predeclared **512, 1024, 2048, 4096, 8192** retained-author-pair
+  prompt grid. Terminal Python exit was **0**. Source pair root
+  `e3d92be86e8f4e44c4db7c5afe3cc47ab3beeec89d5540c34dbcef4e562cbd5f`
+  and model inventory root
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`
+  matched prior evidence. All four graph ledgers matched the pinned prior
+  full-graph receipt exactly; it retained **177,291** train and **22,772**
+  validation observations. The 206 graph progress events reached
+  **209,857/209,857** rows and **19,874** candidates.
+- Author-pair survival partition was exhaustive: train **4,344 both**, **10
+  vulnerable-only**, **0 safe-only**, **0 neither** out of 4,354; validation
+  **482 both**, **0 vulnerable-only**, **0 safe-only**, **80 neither** out of
+  562. The validation loss of complete pairs is consistent with whole
+  train-overlap component exclusion, but this audit does not assign a causal
+  reason to each pair. Both-retained prompt results were:
+
+  | Common budget | Train collisions / 4,344 | Train both / one / neither truncated | Validation collisions / 482 | Validation both / one / neither truncated |
+  | ---: | ---: | ---: | ---: | ---: |
+  | 512 | 1,283 | 2,800 / 126 / 1,418 | 109 | 260 / 22 / 200 |
+  | 1,024 | 671 | 1,815 / 88 / 2,441 | 56 | 157 / 9 / 316 |
+  | 2,048 | 311 | 941 / 44 / 3,359 | 26 | 73 / 5 / 404 |
+  | 4,096 | 124 | 418 / 10 / 3,916 | 7 | 23 / 1 / 458 |
+  | 8,192 | 37 | 155 / 3 / 4,186 | 3 | 10 / 0 / 472 |
+
+  Each truncation partition sums to the both-retained denominator. At 512,
+  the conditional exact-collision rates are **29.53% train** and **22.61%
+  validation**. The earlier all-author-pair grid had 1,284/4,354 and
+  160/562; its validation fraction must not be called the final retained
+  pair rate. These are conditional author-pair diagnostics, not collision
+  rates among all retained single-function observations or evidence that
+  non-collapsed prompts contain learnable vulnerability signal.
+- Canonical metadata-only stdout receipt
+  `results/alc_r0_retained_pair_c1996d2_20260929.stdout.log` has SHA-256
+  `9811197222444ab6a2bb3f5889d0b187805cb4aae3ad88ad1b9ae095d4e236d8`;
+  stderr progress/warning log
+  `results/alc_r0_retained_pair_c1996d2_20260929.stderr.log` has SHA-256
+  `cc802def1ec4295470c2412c15a60d00c1cc94ebd056e72bbec9cd0430c58dec`.
+  External-run and copied bytes matched exactly; `.gitattributes` preserves
+  committed log bytes. Stderr's original-tokenization warning (`8733 >
+  8192`) is the same kind observed in the prior grid; no model forward,
+  optimizer update, real-data training, or held-out access occurred.
+  `training_authority=false`; the v2 prompt, rights, sealer, and actual
+  ALC-0 neural capability proof remain **OPEN**.
