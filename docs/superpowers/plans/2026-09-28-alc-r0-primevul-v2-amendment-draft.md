@@ -103,6 +103,20 @@ threshold is lowered because PrimeVul development data were inspected.
 
 ## Required proof before this draft can become an amendment
 
+Development-only, non-authorizing pair-prompt contrast diagnostic (declared
+before its full-data execution): verify the pinned original train/validation
+and paired-development bytes, then encode each author-ordered vulnerable/patch
+pair with the same SmolLM2 tokenizer and fixed 512-token candidate prompt.
+Report train and validation pair counts, counts with both/one/neither code
+truncated, and the count whose **complete prompt token-ID sequences are
+identical**, plus ordered prompt-pair roots. An identical pair is provably
+indistinguishable from this input alone; a nonidentical pair is **not** proof
+that the vulnerability-bearing change survived or that a model can learn it.
+This diagnostic covers author development pairs, not necessarily the final
+deduplicated/excluded retained cohort. It adds no acceptance threshold and
+cannot authorize training or test access; its result informs the independent
+pre-held-out scientific decision below.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

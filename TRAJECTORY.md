@@ -5670,3 +5670,33 @@ Task 2 sensorium/recollection gate: CLEAN
   truncation but cannot prove semantic sufficiency where prompts differ.
   The v2 draft, rights, sealer, machine preregistration, R0.0 validator and
   training authority remain OPEN. No held-out access or model training.
+
+## 2026-09-29 — Development pair-prompt contrast diagnostic checkpoint 57
+
+- Before any full-data execution, the non-authorizing v2 draft now defines a
+  narrowly interpretable author-pair diagnostic: compare complete vulnerable
+  and patched-safe prompt token IDs under the unchanged 512-token candidate
+  rule. Exact equality proves that pair cannot be distinguished from this
+  prompt alone; inequality does **not** prove the security-relevant difference
+  survived. Counts are split by author train/validation and both/one/neither
+  code-truncation state. The author-pair population is not automatically the
+  final retained graph population; no acceptance threshold was added.
+- TDD RED was the missing `paired_prompt_contrast` module. Implemented a
+  bounded metadata-only reference plus a CLI that re-verifies the pinned
+  train/validation and paired-development bytes and model snapshot, requires
+  a clean committed source checkout before and after its run, and emits the
+  source commit/tree digest, exact invocation paths, aggregate counts, and
+  ordered pair-prompt root. It never opens held-out data and always emits
+  `training_authority=false`.
+- Focused synthetic/source-fixture tests passed **7/7**, including a pair
+  whose distinct raw functions collapse to identical prompt IDs, a pair whose
+  distinction survives, invalid/identical-code rejection, metadata-only
+  output, and source-byte tampering. The combined focused set (new diagnostic,
+  earlier prompt receipt and paired-source tests) passed **20/20**; Ruff check
+  and format passed. The broader Windows ALC-R0 regression exited **0**:
+  JUnit **412 tests, 0 failures, 0 errors, 8 skipped**, time **353.156 s**.
+  `results/alc_r0_pair_prompt_contrast_regression_20260929.xml` SHA-256 is
+  `61eda6fcf3af11968bdcc2d614d87348bc1ee4d5206a8ed03b4060241fbe53a5`.
+- This checkpoint is implementation plus fixture/regression evidence only.
+  The pinned full development pair diagnostic has not run yet; no learning,
+  confirmatory score, v2 amendment approval, or ALC-0 PASS is claimed.
