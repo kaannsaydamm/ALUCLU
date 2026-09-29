@@ -142,6 +142,23 @@ and every grid result, including negative ones. A separate versioned,
 independently reviewed amendment must choose the single-function prompt and
 equalized-arm budget *before* training or confirmatory access.
 
+The complete grid ran from clean source commit `e316531` with terminal exit
+zero at every budget. Exact prompt-ID collisions (train author pairs out of
+4,354 / validation author pairs out of 562) were **1,284/160 at 512**,
+**671/88 at 1,024**, **311/41 at 2,048**, **124/14 at 4,096**, and
+**37/4 at 8,192**. The last value equals the pinned model's maximum context;
+it does not mean that a larger single forward is available. Complete counts,
+truncation partitions, ordered roots, provenance, runtime observations, and
+hashes are in `results/alc_r0_prompt_budget_grid_e316531_20260929_*` and
+`TRAJECTORY.md` checkpoint 62. More context reduces exact input collisions,
+but nonidentical prompts do not prove that the vulnerability signal is intact
+or learnable. The author-pair population is not automatically the final
+retained cohort, and local training memory at these budgets remains untested.
+Thus the grid does **not** select a v2 budget or authorize ALC-0 training.
+The PrimeVul authors also note that some vulnerabilities span multiple
+functions, an additional limit on any single-function classifier
+([paper](https://arxiv.org/html/2403.18624v2)).
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

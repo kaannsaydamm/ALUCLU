@@ -5831,3 +5831,62 @@ Task 2 sensorium/recollection gate: CLEAN
   `0bdee327d4c17635c1fa63b7382bd9f0a9e785e5d80bcf54d0c7111600d119b5`.
   Ruff check/format and diff check passed. Full pinned grid runs remain to be
   executed from a clean committed source checkout. ALC-0 remains OPEN.
+
+## 2026-09-29 — Full development-only prompt-budget grid checkpoint 62
+
+- From clean source commit `e316531689f5db93a1667479e24907d3683e14ee`,
+  source-tree SHA-256
+  `396cbd65e38ee26df69201d815df827e337decca3ae2489ace7ae54f6215a627`
+  (327 tracked files), ran the complete predeclared **512, 1024, 2048, 4096,
+  8192** common-token grid in order. Each CLI receipt verifies the pinned
+  original train/validation and paired-development bytes, model snapshot
+  before/after, and clean checkout before/after. The pair-source root remained
+  `e3d92be86e8f4e44c4db7c5afe3cc47ab3beeec89d5540c34dbcef4e562cbd5f`;
+  model inventory root remained
+  `d9db0058a63990399f26b53ff7480f2e67bd5ef9a0398797fecfeb4ed9732b0e`.
+  Every Python exit code was **0**. All receipts say
+  `training_authority=false`, `held_out_data_present=false`; no model forward
+  or training occurred.
+- Complete prompt-ID collision and truncation results among **4,354** author
+  train pairs and **562** author validation pairs:
+
+  | Common budget | Train collisions | Train both / one / neither truncated | Validation collisions | Validation both / one / neither truncated | Wall seconds |
+  | ---: | ---: | ---: | ---: | ---: | ---: |
+  | 512 | 1,284 | 2,808 / 126 / 1,420 | 160 | 334 / 24 / 204 | 134.278 |
+  | 1,024 | 671 | 1,820 / 88 / 2,446 | 88 | 222 / 9 / 331 | 159.902 |
+  | 2,048 | 311 | 941 / 44 / 3,369 | 41 | 110 / 5 / 447 | 389.632 |
+  | 4,096 | 124 | 418 / 10 / 3,926 | 14 | 40 / 1 / 521 | 294.029 |
+  | 8,192 | 37 | 155 / 3 / 4,196 | 4 | 16 / 0 / 546 | 173.897 |
+
+  Every truncation partition sums to its pair count. The 512 train and
+  validation ordered prompt-ID roots exactly match checkpoints 58 and 60;
+  larger-budget roots are in their canonical stdout receipts. The 8,192 point
+  is the pinned SmolLM2 snapshot's `max_position_embeddings`, not a proven
+  local training configuration.
+- Canonical metadata-only receipts are
+  `results/alc_r0_prompt_budget_grid_e316531_20260929_<budget>.stdout.log`
+  with corresponding `.stderr.log`; exact SHA-256s, wall times, exit codes,
+  command template, offline variables, and GPU start/end snapshots are in
+  `results/alc_r0_prompt_budget_grid_e316531_20260929.execution.log`.
+  All five stderr files contain the same original-tokenization warning
+  (`8733 > 8192`), not a model forward. GPU free memory read 5,920 MiB at
+  both start and end on a 6,141 MiB RTX 4050 Laptop GPU; peak GPU or process
+  RSS was not continuously measured. Timing is diagnostic only, not a
+  monotonic performance benchmark. Source checkout remained clean until
+  terminal results were verified and copied into the repository.
+- `.gitattributes` pins these generated grid logs as byte-preserved (`-text`)
+  because the host has `core.autocrlf=true`; this protects the listed raw
+  SHA-256s across clean clones. All eleven staged grid-log blob OIDs matched
+  `git hash-object --no-filters` on the copied files; each copied stdout/stderr
+  SHA-256 also matched its external-run source before staging.
+- The mechanism is now clear within this scope: raising available context
+  reduces exact vulnerable/patch prompt collisions, yet **37 train and 4
+  validation author pairs still collide at the model's maximum one-pass
+  context**. This is not a final retained-cohort rate or proof that all
+  non-collapsed pairs retain vulnerability semantics. The PrimeVul authors
+  caution that some vulnerabilities span multiple functions
+  ([paper](https://arxiv.org/html/2403.18624v2)); that reinforces the
+  single-function scope limit but does not change this experiment's declared
+  task. No budget, threshold, or prompt is selected for freeze. Independent
+  scientific review, rights, sealer, training feasibility, and the actual
+  neural capability test remain open; ALC-0 is **not PASS**.
