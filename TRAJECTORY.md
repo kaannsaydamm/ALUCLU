@@ -5970,3 +5970,29 @@ Task 2 sensorium/recollection gate: CLEAN
   SHA-256/format checks. This resource evidence informs an independent v2
   decision only.
   The frozen v1 protocol is unchanged; ALC-0 remains OPEN.
+
+## 2026-09-29 — Retained author-pair prompt audit implementation checkpoint 65
+
+- Before inspecting a graph-cleaned prompt result, the non-authorizing v2
+  draft fixed the population and analysis: classify every pinned development
+  author pair by both / vulnerable-only / safe-only / neither endpoints
+  retained, then run the unchanged 512/1024/2048/4096/8192 prompt-ID grid
+  only on both-retained pairs. This is conditional on author-pair survival;
+  it does not measure all retained observations, select a prompt, authorize
+  training, or touch held-out files.
+- TDD RED: the new focused test failed collection because
+  `retained_paired_prompt_contrast` did not exist. The implementation verifies
+  original train/validation and pair bytes, rebuilds the development graph,
+  requires all four pinned graph ledgers to equal the prior full-graph run,
+  and emits only aggregate survival/collision/truncation counts plus roots.
+  It checks clean source and pinned tokenizer inventory before/after its CLI
+  run. An empty both-retained subset is an explicit zero-count diagnostic.
+- Focused tests passed **5/5**. Broader ALC-R0 regression exited **0**:
+  `results/alc_r0_retained_pair_regression_20260929.xml` has **440 tests,
+  0 failures, 0 errors, 8 skipped**, time **209.695 s**, SHA-256
+  `887298c0dd99d92c30aeaca05600b59f626532afbf8a087399af15a338492cf8`.
+  Ruff check/format and diff check passed after formatting. The pinned
+  full-development survivor-pair run has **not yet executed** at this
+  checkpoint; no survival fraction or graph-cleaned collision result is
+  claimed. Source rights, v2 prompt review, sealer, training, and ALC-0
+  capability proof remain OPEN.

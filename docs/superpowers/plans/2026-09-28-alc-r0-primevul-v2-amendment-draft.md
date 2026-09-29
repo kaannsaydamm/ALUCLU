@@ -188,6 +188,25 @@ cell fits one backward on the 6,141-MiB local GPU, but no optimizer step,
 microbatch sequence, 200-step stability, or real-data capability was proven.
 No longer budget was silently selected or authorized.
 
+Before using author-pair prompt collisions to judge the proposed graph-cleaned
+family-B cohort, run one additional **development-only, non-authorizing**
+survivor-pair audit. Rebuild the pinned train/validation graph with unchanged
+rules and require its pair-edge, component-root, retained-train-ID, and
+retained-validation-ID ledgers to match the prior full graph. For each split,
+classify every ordered author pair by whether both endpoints, only the
+vulnerable endpoint, only the safe endpoint, or neither endpoint survives in
+that split's retained observation set; these four counts must sum to the
+verified author-pair count. For the **both-retained** subset only, repeat the
+unchanged prompt-ID collision and both/one/neither truncation counts at the
+complete predeclared common-budget grid **512, 1024, 2048, 4096, 8192**, in
+that order, with the same pinned tokenizer and prompt. Preserve the ordered
+prompt-pair roots and source/model/graph provenance; emit only aggregates,
+not code or IDs. Zero surviving pairs, if encountered, must be reported as an
+empty diagnostic, not silently divided by zero. This is a conditional
+description of surviving *author pairs*, not of all retained observations;
+it cannot select a budget, establish vulnerability learnability, authorize
+training or held-out access, or alter any acceptance threshold.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by
