@@ -77,18 +77,25 @@ def test_truncation_audit_counts_each_label_without_exposing_code() -> None:
     graph = replace(
         graph,
         train=(
-            graph.train[0],
+            PairCloneRecord("primevul:1", "int a() { return " + "s" * 100 + "; }", 0),
             PairCloneRecord("primevul:2", "int b() { return " + "x" * 100 + "; }", 1),
         ),
+        validation=(
+            PairCloneRecord("primevul:3", "int c() { return " + "t" * 100 + "; }", 0),
+            PairCloneRecord("primevul:4", "int d() { return " + "y" * 100 + "; }", 1),
+        ),
+        root_by_id={**graph.root_by_id, "primevul:4": "primevul:4"},
+        validation_components=2,
     )
 
     receipt = build_defect_prompt_candidate_receipt(
         graph, _ByteTokenizer(), model_inventory_sha256="a" * 64, max_tokens=80
     )
 
-    assert receipt["train_truncated_rows"] == 1
-    assert receipt["train_truncated_labels"] == {"safe": 0, "vulnerable": 1}
-    assert receipt["validation_truncated_labels"] == {"safe": 0, "vulnerable": 0}
+    assert receipt["train_truncated_rows"] == 2
+    assert receipt["validation_truncated_rows"] == 2
+    assert receipt["train_truncated_labels"] == {"safe": 1, "vulnerable": 1}
+    assert receipt["validation_truncated_labels"] == {"safe": 1, "vulnerable": 1}
     assert "x" * 20 not in str(receipt)
 
 

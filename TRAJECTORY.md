@@ -5610,12 +5610,17 @@ Task 2 sensorium/recollection gate: CLEAN
 
 ## 2026-09-29 — Full class-conditional PrimeVul prompt audit checkpoint 55
 
-- Ran the v2 candidate receipt from clean source commit `f1b15e38c5d5b07a7211b57c12b593d48c14d412`
+- Ran the v2 candidate receipt after a session-level clean-status check at
+  source commit `f1b15e38c5d5b07a7211b57c12b593d48c14d412`
   against only the same pinned original PrimeVul train/validation, paired
   development files, prior full-graph receipt (raw SHA-256
   `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`),
   and verified local SmolLM2 tokenizer snapshot. Terminal exit was **0**;
-  stdout status is `full-graph-structural-audit-clear-non-authorizing`, source
+  the committed stdout/stderr/exit files do not themselves bind the exact
+  command, runtime HEAD, or clean status, so the clean-commit statement is
+  an operator observation rather than independently replayable provenance.
+  A future formal run must capture a bound launch manifest.
+  Stdout status is `full-graph-structural-audit-clear-non-authorizing`, source
   scope `pinned-original-development`, `training_authority=false`, and
   `held_out_data_present=false`. All 206 monotone graph progress events ended
   at **209857/209857** with **19,874** candidates. The original-tokenization
@@ -5641,3 +5646,27 @@ Task 2 sensorium/recollection gate: CLEAN
   pre-held-out reviewer decision; no threshold or prompt policy was silently
   changed. Rights, independent review, sealer, R0.0 validation, and model
   training remain open. ALC-0 OPEN.
+
+## 2026-09-29 — Independent prompt-audit review checkpoint 56
+
+- Two independent GPT-6 Sol read-only lanes reviewed diff `84c0503..34bc559`:
+  a code/security lane returned **COMMENT** (no new counter correctness or
+  security defect; one medium evidence-provenance issue and one low test-gap),
+  and an architecture/science lane returned **WATCH** for the diagnostic code
+  but **BLOCK** for family-B prompt freeze/training as-is. Combined review of
+  this diagnostic diff is **COMMENT**, not merge-ready scientific authority.
+- The code lane observed that the committed run files do not independently
+  prove the exact invocation or runtime clean commit. Checkpoint 55 is now
+  explicitly qualified as a session-level operator observation; future formal
+  evidence requires a bound launch manifest. The fixture now exercises
+  nonzero safe and vulnerable truncation in both train and validation. Focused
+  receipt/runner tests passed **12/12**; Ruff check/format and diff check
+  passed. This test-coverage repair does not alter receipt generation.
+- The science lane found no reason to reject the diagnostic code, but the
+  measured class-correlated truncation cannot establish whether the actual
+  vulnerable/patched distinction survives. Authors' 512 block-size example is
+  not proof for this tokenizer/head-tail rule. A development-only pair-contrast
+  diagnostic is the next safe step; it can identify identical prompts after
+  truncation but cannot prove semantic sufficiency where prompts differ.
+  The v2 draft, rights, sealer, machine preregistration, R0.0 validator and
+  training authority remain OPEN. No held-out access or model training.
