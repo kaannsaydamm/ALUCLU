@@ -126,6 +126,16 @@ threshold is lowered because PrimeVul development data were inspected.
    source/split/label/prompt/control hashes, exact estimator/bootstrap fixtures,
    all P1–P14 thresholds, sealer-only test acquisition and output schema,
    cardinality matrix, environment locks, and clean-checkout freeze.
+   Before freezing the family-B prompt, independent scientific review must
+   confront the development-only class-conditional truncation audit: under the
+   candidate 512-token common budget and 499-code-token head/tail rule,
+   3,608/5,574 vulnerable train observations (64.73%) and 299/562 vulnerable
+   validation observations (53.20%) are truncated, versus 35,468/171,717
+   safe train (20.65%) and 4,363/22,210 safe validation (19.64%). This does
+   not measure whether the vulnerability itself was removed. The reviewer must
+   explicitly accept this information-loss risk, require a fully prespecified
+   v2 prompt amendment before any held-out access, or reject this code task.
+   No test result may be used to tune the budget or truncation policy.
 3. Original-release data and underlying-code rights/provenance review; the
    authors' repository MIT file alone does not resolve external JSONL scope.
    On 2026-09-29, the [authors' README](https://github.com/DLVulDet/PrimeVul/blob/main/README.md)

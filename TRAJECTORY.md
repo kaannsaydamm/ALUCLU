@@ -5607,3 +5607,37 @@ Task 2 sensorium/recollection gate: CLEAN
   checkpoint. The earlier version-1 full receipt remains valid historical
   evidence but cannot answer the class-conditional truncation question.
   `training_authority=false`; held-out data was not accessed; ALC-0 OPEN.
+
+## 2026-09-29 — Full class-conditional PrimeVul prompt audit checkpoint 55
+
+- Ran the v2 candidate receipt from clean source commit `f1b15e38c5d5b07a7211b57c12b593d48c14d412`
+  against only the same pinned original PrimeVul train/validation, paired
+  development files, prior full-graph receipt (raw SHA-256
+  `e54c729d9c7d3ccaa3f50efcb6edcfc492c880131f0c5cf61df1db9714533243`),
+  and verified local SmolLM2 tokenizer snapshot. Terminal exit was **0**;
+  stdout status is `full-graph-structural-audit-clear-non-authorizing`, source
+  scope `pinned-original-development`, `training_authority=false`, and
+  `held_out_data_present=false`. All 206 monotone graph progress events ended
+  at **209857/209857** with **19,874** candidates. The original-tokenization
+  >8192 Transformers warning appeared once; no 512-token forward failure is
+  claimed.
+- The v1 and v2 ordered train and validation prompt-ID roots, verified model
+  inventory root, total/label row counts, and total truncation counts matched.
+  This run changes only aggregate diagnostics, not prompts or data splits.
+  New class-conditional counts: train safe **35,468/171,717 (20.65%)** and
+  vulnerable **3,608/5,574 (64.73%)** truncated; validation safe
+  **4,363/22,210 (19.64%)** and vulnerable **299/562 (53.20%)** truncated.
+  Both per-label sums exactly equal the preexisting total truncated rows
+  (**39,076** train; **4,662** validation).
+- Evidence files are
+  `results/alc_r0_primevul_prompt_class_audit_f1b15e3_20260929.stdout.log`
+  (SHA-256 `c00ac48e2b3d3591d8f39d1fe47df56b4eaf5ad7bf962cd3e3464315ca085dac`),
+  `.stderr.log` (SHA-256
+  `33ac93ce1867c81ec43a6c5ef4a4f710ce42bd587015d17ee95ae226747dcb8b`),
+  and `.exit.log` (`python_exit_code=0`). The prior v1 receipt is retained.
+- The substantially higher vulnerable-class truncation rate is a **blocking
+  scientific review concern**, not proof that the defect location was cut or
+  that the model will fail. The v2 amendment draft now requires an explicit
+  pre-held-out reviewer decision; no threshold or prompt policy was silently
+  changed. Rights, independent review, sealer, R0.0 validation, and model
+  training remain open. ALC-0 OPEN.
