@@ -7232,3 +7232,81 @@ Task 2 sensorium/recollection gate: CLEAN
   Worker has begun separate pure-layer
   closed mutation harness implementation; real mutant compilation/loading waits
   for independent review. No benchmark/corpus/model/training authority follows.
+
+## 2026-10-02 — Closed native mutation pure-layer RED checkpoint 93
+
+- Re-read the full unified ALUCLU/ALC goal, latest source/evidence and fixture
+  mutation declaration; continue the existing dependency chain, not a restart.
+  Worker owns only new mutation generator/classifier script and its unit tests.
+  No mutated DLL is compiled or loaded at this stage.
+- Root read the absent-module RED stdout/XML: FileNotFoundError for the not-yet
+  implemented script,1 collection error,0 failures/skips,0.323s. Worker reports
+  actual process exit2; its persisted exit/provenance and GREEN are pending root
+  validation. Preserve this negative attempt, not a native execution failure.
+- Initial pure layer generates unchanged control plus nine independent checked
+  substitutions and separates semantic disagreement from build/crash/transport/
+  invariant/canary failures. Source generation is explicitly unbuilt; classifier
+  unit tests cannot prove native mutants are detected. Complete fixed-schedule
+  oracle/metadata controls, strict provenance pins and independent reviews remain
+  required before generation/build/child-loader execution acceptance.
+
+## 2026-10-02 — Pure classifier independent prefreeze findings checkpoint 94
+
+- Root subsequently read actual persisted RED exit2 and copied raw RED XML/logs
+  into results with byte-identity checks. XML SHA-256
+  `53e46f13e278b3175bf92281bb60679f5737101f7d5cc9b4c8cb8293a5163572`.
+  This closes checkpoint93's exit-record observation gap, not the mutation gate.
+- Worker expanded controls to the complete1470-case binary grid plus declared
+  witnesses, independent original-position recursive oracle and all64 expected
+  output words. Strict case/observation typing excludes boolean-as-integer input;
+  plan/reference/Python-probe/detail-plan hashes are pinned before generation.
+  GREEN still awaits terminal validation and exact-byte independent reviews.
+- Architecture lane's preliminary inspection found that illegal presence bits,
+  unused/absent nonzero slots or inconsistent method/reason/presence could be
+  classified as semantic kills. Worker is adding RED/GREEN structural ABI checks:
+  invalid responses must never substitute for completed mathematical disagreement.
+  Preserve mathematical mutant differences (including over-threshold acceptance)
+  without applying baseline mathematical bounds that would hide them as invalid.
+  Pure local classification cannot establish aggregate control/artifact coverage;
+  future execution must revalidate provenance and all closed IDs/schedules.
+
+## 2026-10-02 — Reviewed pure mutation layer checkpoint 95
+
+- Worker STOP at script SHA-256
+  `466742508428b1d2cdadda088bab27429795d5dbe2faa4c4a312baa99ac6f6f7`
+  and tests `d432ea9f96c1cbc29e59402b7c805b53247174004ce1d96de1d004c4847992b6`.
+  Root read initial GREEN18 passed,0 failures/errors/skips,3.313s, exit0, XML
+  `82c8ac6c41043b980496767d136c55a63e15861805ec5b6e2f0ed5937792bcfb`.
+  Structural RED9 failed,0 errors/skips,3.668s,18 deselected,actual exit1, XML
+  `e91d22760768940a5678c778929fd346892a6a4e15dcac2c49d6df23e849bdc5`.
+  Final worker GREEN28 passed,0 failures/errors/skips,5.147s,exit0, XML
+  `c63e8f92882588936d979ea26ae46cf2cb99364ac5074c7ff77a3823855f966e`.
+- Root independently reran the stopped28 cases: actual exit0,28 passed,
+  0 failures/errors/skips,5.837s, XML SHA-256
+  `f88d441139364bc70d0c7f02d6961b83a82435c4467be16471eff7e945ccd50d`.
+  Independent GPT-6.1 Sol code lane APPROVE / architecture CLEAR exact stopped
+  bytes, scoped pure stage only. Full1470-grid plus3 distinct witnesses validate
+  reference/recursive oracle/geometry expectations, not actual native kills.
+- Root launched reference-plus-pure regression session3843 (28 reference plus28
+  pure cases); terminal result pending. Original native files remain unchanged.
+  Recorded next execution-layer implementation detail separately, leaving pinned
+  original/detail mutation plans unchanged. Build/isolated loader/aggregate
+  provenance implementation and independent review are required before actual
+  mutant compilation/loading. No CLI generation/build/load/timing/model claim.
+
+## 2026-10-02 — Pure-layer regression and execution design checkpoint 96
+
+- Session3843 completed normally, root observed actual pytest_exit_code=0.
+  Root reread XML: **56 passed,0 failures/errors/skips,137.660s**, SHA-256
+  `f739518c547c791324a38ddfc0b88269215d17aa032cdfd2ff0c7fb9d94fb146`.
+  Exactly28 immutable banded reference plus28 pure mutation cases; hashes of
+  both new files and immutable reference remain unchanged. This is relevant
+  pure/reference regression, not whole-project or native mutation acceptance.
+- Independent architecture design lane CLEAR next execution detail SHA-256
+  `041d8150f2035984ed8729d926a68bd4a53fda8892aaf1cd228d7a7677e5a723`.
+  Separate script/tests will implement closed build/child-load/aggregate logic;
+  implementation review precedes all new native compilation/loading. Native
+  source freeze, receipt source allowlist, ceilings and scientific gates unchanged.
+- Commit reviewed pure sources/tests and raw RED/GREEN/regression evidence plus
+  records/design. Next execution work is not completed by this commit and cannot
+  inherit the pure-stage APPROVE/CLEAR as its own implementation approval.

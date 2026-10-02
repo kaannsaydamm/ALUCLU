@@ -1,0 +1,12 @@
+Worker-observed Start-Process -NoNewWindow -Wait -PassThru exits; not independent watcher.
+cwd=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+PYTHONPATH=<cwd>\src
+PYTHONDONTWRITEBYTECODE=1
+executable=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+commonargs=-B -m pytest -p no:cacheprovider tests/test_alc_r0_native_mutation_fixture_probe.py
+RED absent-script --junitxml=<evidence>\mutation-pure-red.xml actualexit2, collection FileNotFoundError for absent native harness source.
+InitialGREEN --junitxml=<evidence>\mutation-pure-green-v1.xml actualexit0,18passed3.32s.
+StructuralRED extraargs=-k "structural_raw or unresolved_absent" --junitxml=<evidence>\mutation-structural-red.xml actualexit1,9failed18deselected3.67s. Found classifier counting invalid ABI presence/unused/absent/method fields as semantic mismatches.
+FinalGREEN --junitxml=<evidence>\mutation-pure-green-v2.xml actualexit0,28passed5.18s.
+Matching stems stdout/stderr redirects retained for all runs. Ruff format/check --no-cache on two ownedfiles PASS0.
+Pure stage only: byte-generation/schema/schedule/oracle/classifier unit tests. No actual mutant/control DLL build/load, no real semantic kills, no timing. Original product loader/ABI/kernel frozen sources not edited. Remaining reviewed build/child loader/aggregate control+9 artifact evidence stage is open.
