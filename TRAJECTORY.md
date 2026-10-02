@@ -6880,3 +6880,49 @@ Task 2 sensorium/recollection gate: CLEAN
   pre-commit launch limitation above. ALC-R0/ALC-0 and the whole program remain
   **OPEN**; source rights, sealer, prompt sufficiency and versioned freeze are
   not satisfied by completing this helper.
+
+## 2026-10-02 — Native fixture design revision checkpoint 82, no implementation
+
+- After the Python mathematical reference completed its declared synthetic
+  validation, drafted a CPU-native optimization slice before any native code,
+  tests, build or timing. The initial process-per-fixture standalone proposal
+  was challenged by root and independent review: thousands of fixture process
+  launches and bounded wire/capture machinery add avoidable overhead/surface
+  for a locally authored trusted analysis kernel. No timing outcome was used
+  to choose the revision; no speedup is presumed.
+- Preserved the original draft byte-for-byte as
+  `docs/superpowers/plans/2026-10-02-alc-r0-banded-native-standalone-draft-superseded.md`,
+  SHA-256 `eaf55dd06e82a4e51108b3f42051ba034d28c59b96e5ddda64f17cc8e6233a8f`.
+  Revised declaration
+  `docs/superpowers/plans/2026-10-02-alc-r0-banded-native-fixture-design.md`,
+  SHA-256 `0cac0b1ac5f70bc7a3167a43d232672d90aed5eec168d0bd1fd150380fa3e3f3`,
+  selects one locally built trusted DLL, a fixed C ABI and explicit ctypes
+  adapter. Root read the full final declaration. Independent GPT-6.1 Sol code
+  review returned **APPROVE for design readiness only**, after resolving exact
+  build-ID export, workspace alignment/capacity, empty-rank and no-write rejection
+  contracts. This is not native source/build or execution approval.
+- Preserve all existing endpoint/K/budget/cell/scratch ceilings and the reference
+  result semantics. Rank-map arbitrary Python integers bijectively, saturate
+  giant budgets without merging original slots, keep all shortest-path ties,
+  and validate checked ABI buffers/workspace/output independently. Unsafe
+  pointer/crash probes are child-isolated; no foreign artifact or arbitrary
+  native payload is accepted. Source/build/DLL/load identity and all overhead
+  exclusions must be explicit. The DLL is not a sandbox or host-compromise defense.
+- Declared RED-before-implementation, complete oracle/reference parity,
+  negative ABI/artifact/resource checks, and four fixed synthetic timing cases
+  (2 warmups / 5 measured repetitions). Kernel, mapping, marshalling, load and
+  end-to-end costs must remain separate; no corpus/learning/portability or
+  speedup claim exists before actual evidence and independent final review.
+- Local read-only tooling evidence: compiler file SHA-256
+  `88c8344236a27a6e727e0a8edc49aaa2690bdc7a9464b9d18cc7abe70a9f1c0d`,
+  linker `ca11e6c45debd34bf652dfe984c5360a531a005ed78bf72852330c9c2590cf0d`,
+  versions 19.44.35228.0 / 14.44.35228.0; Windows SDK include/lib 10.0.26100.0
+  directories exist. No compilation or installation was performed. Native
+  implementation/execution remains **PENDING** and has no corpus, tokenizer,
+  model, training, held-out or prompt-freeze authority.
+- Architecture final design verdict **CLEAR** applies to the same 0cac0b1a
+  bytes. Explicit implementation traps retained: endpoint rejection before
+  rank/buffer allocation, native oversized transport counts before scans,
+  pointer accessibility not inferred from count validation, and mathematical
+  signed floor/ceil rather than C++ negative division truncation. These require
+  actual RED/parity/negative-test evidence; they are not waived by design approval.
