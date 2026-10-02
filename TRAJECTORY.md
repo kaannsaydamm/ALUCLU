@@ -6445,3 +6445,35 @@ Task 2 sensorium/recollection gate: CLEAN
   lead to an exact scalable method or explicit unresolved reporting, not silent
   subset selection or full-endpoint truncation. The family-B prompt freeze
   remains **BLOCK**; R0.0, R0.4 and ALC-0 remain **OPEN**.
+
+## 2026-10-02 — Main-worktree integration checkpoint 74
+
+- Fetched the exact remote work branch before integration: local and remote
+  were both `66355527f9321b235084587855c23e3ec909fd30`, with the main Desktop
+  worktree clean. Fast-forwarded `codex/unified-lifelong-cognition-desktop`
+  through fixture commit `060d8bb`, full-audit evidence commit `304d3db`, and
+  raw-log attribute fix `8fb745c`. No user changes were overwritten, and no
+  live scientific process was stopped or replaced.
+- Personally rehashed the integrated helper/test and full-data stdout: exact
+  executed SHA-256s from checkpoints 72–73 were preserved. Explicit LF source
+  attributes prevented platform checkout conversion from changing helper bytes.
+- Main-worktree normal-package integration command on source commit
+  `8fb745c8e80a86395bdf2efa1c2cbc4a976317e1`:
+  `python -m pytest tests/test_alc_r0_edit_token_visibility_reference.py
+  tests/test_alc_r0_retained_prompt_information.py --junitxml=<external>/focused.xml
+  -p no:cacheprovider`, existing locked Python 3.12.13, `PYTHONPATH=src`.
+  Exit **0**, **55 tests, 0 failures/errors/skips**, JUnit **12.118 s**
+  (pytest summary 13.99 s). Byte-identical artifact:
+  `results/alc_r0_edit_token_visibility_integration_20261002.xml`, SHA-256
+  `6c5b04800fbaf84f572dd366afb235e9f95f6ee6505ae0d789c13b57f0b83eea`.
+  The final broad 507-test receipt remains the unchanged-helper regression
+  evidence from checkpoint 72; this integration check is additional evidence.
+- Ruff check/format on final helper, tests, and committed allocation script
+  passed. Root's allocation script reproduction exited 0 and reproduced the
+  earlier aggregate stdout byte-for-byte. Full source/evidence diff check and
+  staged byte identity checks passed after the narrow raw-EOF attribute fix.
+- Rechecked the current unified plan's literal Task 2 CLEAN record at commit
+  `4dca292`; the active dependency is still ALC-R0. The preceding diagnostics
+  neither close R0.0/ALC-0 nor permit downstream product phases. Next work is
+  the separately declared exact-DP resource-coverage census/protocol described
+  in checkpoint 73, while prompt/rights/sealer/freeze gates remain open.
