@@ -6613,3 +6613,34 @@ Task 2 sensorium/recollection gate: CLEAN
   gates. The census fixes prospective denominator/admission reporting only;
   `training_authority=false`, `held_out_data_present=false`. Family-B prompt
   freeze remains **BLOCK**; R0.0, R0.4 and ALC-0 remain **OPEN**.
+
+## 2026-10-02 — Census integration and execution freeze checkpoint 76
+
+- Root committed the reviewed census, preregistration, checkpoint 75, narrow
+  byte-preservation attributes and exact RED/failed/focused/broad evidence as
+  `139f62f890d7f20d22d79e3c20a69c8014707cb2`. Fetched the remote work branch
+  and fast-forwarded the clean main Desktop worktree from `59c936a` to this
+  commit; no reset, force push, unrelated changes or live-process replacement.
+- Personally rehashed the integrated module/test: executed reviewed bytes remain
+  `31c6bea82c5599f397e75351bb6cd845d6075f5fd960fdff7a5a587951308df5`
+  and `36c8c1a1442afb5d87a0d2eb898c9920475f714fdcb60daeae606ab2e435689d`.
+  Main-worktree normal-package integration covered census, exact edit helper
+  and retained-prompt information tests together, using the existing locked
+  Python 3.12 environment, `PYTHONPATH=src`, bytecode/cache disabled, serial
+  native stdout/stderr capture. Actual process exit **0**; **113 tests,
+  0 failures/errors/skips**, JUnit **9.684 s**, pytest **9.71 s**.
+- Preserved byte-identical integration evidence in
+  `results/alc_r0_pair_resource_census_main_integration_139f62f_20261002.*`.
+  XML SHA-256 `4205911ecfb28e365945db5ad1dfc690860b79a84b381753a60d9394f5723d9c`;
+  stdout SHA-256 `20ba154bf659887828701927b279c4aab7f84d30ee102c4aacc2ca32380c5fbf`;
+  stderr is empty. This is additional integration evidence, not a full-model
+  execution or neural capability result.
+- The isolated `codex/alc-r0-pair-resource-census` checkout remains clean at
+  `139f62f890d7f20d22d79e3c20a69c8014707cb2` for the forthcoming development
+  census. Main integration/evidence updates do not mutate that frozen checkout.
+  Final launcher SHA-256
+  `f39994cd9d0b7f24ef14d772e4eb975cce53e126233e867d64ac820e1aa2fd75`
+  has parser PASS and independent code-review APPROVE; it binds actual successful
+  receipt commit and terminal clean state, not merely a requested commit. No
+  full-data result exists at this checkpoint. The prospective policy stays fixed;
+  no DP, training, held-out access, prompt selection or threshold change is granted.
