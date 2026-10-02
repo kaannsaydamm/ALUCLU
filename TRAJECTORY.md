@@ -6836,3 +6836,47 @@ Task 2 sensorium/recollection gate: CLEAN
   remains explicit: an IndexError-killed parity mutant proves detection of that
   concrete corruption, not every similar incorrect algorithm. Broad regression
   is still pending, so this checkpoint is not overall validation completion.
+
+## 2026-10-02 — Banded reference terminal regression checkpoint 81
+
+- Preserved the same serial regression session 63515 until terminal completion;
+  root observed actual pytest exit **0**, then personally read stdout/stderr and
+  JUnit. **593 cases: 585 passed, 8 skipped, 0 failures/errors**, JUnit
+  **223.344 s**. The 8 skips are existing Banking77/Devign/real-model tests whose
+  asset paths were not supplied, not new-helper skips. The run includes all
+  28 banded tests plus the old rectangular helper, retained-pair census and
+  retained-prompt information tests. This is relevant ALC-R0 regression,
+  not the full project suite, model capability, corpus visibility or portability.
+- Archived exact terminal evidence as
+  `results/alc_r0_banded_edit_visibility_regression-v1_20261002.*`:
+  XML SHA-256 `43472ed12a6198ceeb314c24d756680364c09ea2ff5cee02fe6f561af5aeb32e`,
+  stdout `6212f8bc782f174d29b88fda955e6b7573cfadd511090e19aa4c0a81a85b4262`,
+  empty stderr `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+  Root recorded actual exit in the external receipt before copying. No
+  restarted/partial run is substituted for this completed attempt.
+- The regression started before checkpoint-80 commit, so it is not claimed as
+  a clean-start frozen-checkout run. Root rehashed source, tests and mutation
+  probe before/after terminal: reviewed bytes remained dff2a30a / 338605d6 /
+  e3c90674 respectively and were committed/pushed in
+  `cce8cbf1509f2c9e392a65c54e83344d9f883bd8`. No code/test change occurred
+  during execution; checkpoint/evidence commit did not replace their bytes.
+- Focused oracle/full-reference/geometric/allocation evidence, nine mutation
+  kills, relevant regression and exact-byte independent code/architecture
+  reviews support the **synthetic mathematical reference** only. Final terminal
+  evidence rereview is requested separately before recording its completion.
+  No inference of full-development coverage, semantic sufficiency, prompt
+  budget selection, freeze authority or neural learning follows.
+- Read-only native tooling preflight found Visual Studio 2022 Build Tools and
+  MSVC `14.44.35207/bin/Hostx64/x64/cl.exe`, file version `19.44.35228.0`.
+  This is installation evidence, not a successful compilation or performance
+  claim. A separately owned fixture-only native design is being prepared;
+  no compiler installation, native build or corpus/model execution occurred.
+- Independent GPT-6.1 Sol terminal evidence reviewer returned **CLEAR** after
+  personally checking exit, XML counts/included modules, all skip reasons,
+  logs/hashes and unchanged reviewed source bytes. The reviewer checked a clean
+  cce8cbf snapshot before root added this checkpoint/evidence; this is not a claim
+  that the later bookkeeping changes were absent. The fixture-only reference
+  validation scope is now complete. Source/evidence provenance retains the
+  pre-commit launch limitation above. ALC-R0/ALC-0 and the whole program remain
+  **OPEN**; source rights, sealer, prompt sufficiency and versioned freeze are
+  not satisfied by completing this helper.

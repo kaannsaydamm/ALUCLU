@@ -304,6 +304,18 @@ validated reference and a separately preregistered/reviewed development runner
 are still required before corpus exposure evidence exists. The prompt freeze,
 rights, sealer and machine-validator prerequisites below remain blocking.
 
+Subsequent fixture evidence is recorded in checkpoints 80-81: the bounded-band
+reference passed 28 focused cases including independent all-path and full-DP
+comparisons, and a separate unchanged control passed 1,470 cases while all nine
+declared mutation variants were killed. Independent exact-byte code review
+returned APPROVE and architecture CLEAR. Relevant ALC-R0 regression then
+completed with 593 cases, 585 passed, 8 existing unsupplied-asset skips and no
+failures/errors (actual exit 0). These establish the tested synthetic reference,
+not native performance, real-data exposure or prompt sufficiency. No corpus DP
+has been run; later native optimization or a data runner requires its own
+declaration, parity/resource checks and independent review. All training,
+held-out access and prompt-freeze restrictions remain unchanged.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by
