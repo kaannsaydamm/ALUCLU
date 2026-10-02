@@ -277,6 +277,33 @@ Before an exact full-data visibility runner is admitted, separately declare
 its full-token length/cell-cost census, deterministic resource admission rules,
 and explicit unresolved/zero-distance denominators and component strata.
 
+The separately preregistered resource census completed on 2026-10-02 from
+clean source commit `139f62f890d7f20d22d79e3c20a69c8014707cb2`, with Python
+and launcher exit **0**. It preserved the full both-retained pair universes
+of 4,344 train and 482 validation and all four graph roots. Under the fixed
+100,000,000 prospective rectangular-cell cap and permanent first-nonfit,
+train-then-validation admission policy, only **137 train / 0 validation**
+pairs were admitted, leaving **4,207 / 482 unresolved**. The complete universe
+would require 137,599,268,320 rectangular cells. The receipt is
+`results/alc_r0_pair_resource_census_full_139f62f_20261002.stdout.log`, SHA-256
+`f22d2ca92f9a012b6d2d1cea012b5d74649c2816b983825fa68f91bab1809aae`;
+terminal accounting and independent evidence review are in trajectory
+checkpoint 78. This is prospective resource admission, **not** edit resolution,
+representative sampling, prompt sufficiency, learnability or falsification.
+No exposure DP or model forward was run by the census.
+
+A separate fixture-only bounded-band method was declared and independently
+design-reviewed before implementation in
+`2026-10-02-alc-r0-banded-edit-visibility-reference.md` (checkpoint 79).
+It preserves all shortest-indel-path exposure alternatives when its terminal
+distance is within its explicit threshold, with independently declared band
+work and workspace limits. At this checkpoint its implementation/validation
+is pending, and its corpus coverage is unknown. It does not amend the old
+rectangular policy, choose a prompt budget, or authorize a full-data DP. A
+validated reference and a separately preregistered/reviewed development runner
+are still required before corpus exposure evidence exists. The prompt freeze,
+rights, sealer and machine-validator prerequisites below remain blocking.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

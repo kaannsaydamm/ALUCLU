@@ -6762,3 +6762,77 @@ Task 2 sensorium/recollection gate: CLEAN
 - No new test/code execution at this checkpoint; no dataset/tokenizer/model,
   training or held-out access. This diagnostic prerequisite does not satisfy
   Family-B freeze, R0.0, R0.4 or ALC-0; those remain BLOCK/OPEN as recorded.
+
+## 2026-10-02 — Bounded-band implementation checkpoint 80, validation OPEN
+
+- The implementation agent remained pending-init without creating code/test
+  files; a separate reviewer attempt returned a usage-limit infrastructure
+  error. Root verified the empty implementation state, interrupted the pending
+  agent and explicitly took ownership. No live pytest was replaced. Independent
+  final source review remains required; design approval is not source approval.
+- Root wrote the new test first and ran the absent-module RED in the existing
+  locked Windows Python 3.12 environment. Actual pytest exit **2**, expected
+  ModuleNotFoundError, one collection error. Only afterward wrote
+  `src/aluclu/alc_r0/banded_edit_token_visibility_reference.py`: compact packed
+  rolling rows, exact clipped parity-safe band, all primary-optimal ties,
+  direct totals and reachable signatures. The old helper remains unchanged.
+- Initial focused run: actual exit **0**, 10 cases passed. Then expanded tests
+  before rerunning to binary lengths 0..4, five budgets and all small thresholds
+  against both a separate recursive all-path oracle and the rectangular helper.
+  Added independently counted small band geometry, long length-10,000 identity,
+  repeated-token insertion, unique insertion, giant budgets and malformed inputs.
+  A traced five-budget unique-insertion fixture checked helper peak <= declared
+  scratch estimate; this is not process-RSS or corpus-resource evidence.
+- Expanded focused run actual exit **0**, 18 cases passed. Raw RED and v1/v2
+  stdout/stderr/XML/exit records are external under
+  `.research-evidence/alc_r0_banded_edit_visibility_20261002`. Root observed
+  process completion and read terminal outputs. Current source SHA-256
+  `dff2a30af16daa97dd0acd1ab39fe89403b35b6a4b181c95f7bf5db21f707f8d`;
+  tests `61e54792fb630a4edb898b1fae7b69dd516525ec315c0e1a70677615fc9ea9b1`.
+  Ruff formatting and lint passed after one import-order correction.
+- Root added narrow LF/source and raw XML/log Git attributes, and synchronized
+  the non-authorizing PrimeVul v2 draft with the completed census and pending
+  band-reference status. No thresholds, corpus authority or old policy changed.
+- Validation remains **OPEN**: independent implementation code/architecture
+  rereviews, serial relevant regressions, remaining preregistered boundary/
+  ternary/swap/allocation cases and targeted mutation checks are not yet fully
+  satisfied. No native backend or corpus DP, tokenizer/model call, training,
+  held-out access, prompt-freeze or learning PASS follows from these 18 cases.
+- Independent code review initially requested completing preregistered fixtures;
+  architecture found no source blocker but WATCH on validation. Root therefore
+  added ternary oracle, endpoint swaps/signature remapping, nested/all-retained
+  checks, invalid/relaxed limits, K=512, tighten-to-zero, endpoint 32,768/+1,
+  exact payload and traced empty/giant-budget/maximum-width-513 cases, without
+  changing implementation or preregistration. Expanded GREEN-v3 actual exit
+  **0**, **28 cases, zero failures/errors/skips**, JUnit **136.460 s**;
+  XML SHA-256 `76bf6a8dc4311904d375acf581202819d63cb2ab50b1bf13cba2a8bf5ec0b0b9`.
+  Final expanded test SHA-256
+  `338605d6d18c584e830305d24e22c85c2bd42d10a7519a3f07bd8af376835a79`.
+- The new isolated fixture mutation probe, SHA-256
+  `e3c90674dcaa0927e661a2b240d1a9773a71d03e6999c3a48f2ca3f1b05365f1`,
+  completed with actual exit **0**: unmodified control **1,470** cases and
+  all **nine** declared mutants killed. Each replacement anchor is checked
+  exactly once; malformed harness/import/infrastructure failure is not accepted
+  as a kill. It alters only in-memory, uniquely named disposable modules, never
+  production files, and compares dimensions/distance/complete exposure fields
+  against a recursive oracle. Stale-column mutation's observed first killer
+  is `(0,) / (1,1), K=2`. Output SHA-256
+  `33c17f29dfdd01ebc43fba5091260b8ecfea226883553073ebdba0797ec0b086`.
+- Preserved RED, GREEN-v1/v2/v3 and mutation raw XML/log/exit bytes as
+  `results/alc_r0_banded_edit_visibility_*_20261002.*`. RED XML
+  `28bbc0e3a38e2bcdc978031c690a1851c4a950de4a0c2bdc4ef76bb5e9fe563a`;
+  GREEN-v1 XML `91190684a897f63cf24d20f56a9586ce9a01ffd4cf94eb537b35d4b69931a696`;
+  GREEN-v2 XML `5d131fdc0de6a8de68a8c076e1f8ab1b32ee7a6fd476ac0aee3e981d8e63e545`.
+  Superseded smaller runs remain evidence, not final regression certification.
+- Serial relevant `pytest tests -k alc_r0` regression launched after focused and
+  mutation processes terminated, wrapper session **63515**, initial venv PID
+  **18456**; inspect actual processes and external `regression-v1.*` artifacts.
+  Final source/evidence independent rereviews requested. Broad regression and
+  final review completion are **PENDING**, not PASS; preserve the live run.
+- Final exact-byte independent GPT-6.1 Sol source/test/harness reviews returned
+  **APPROVE / architecture CLEAR**. The code lane also independently inspected
+  terminal focused/mutation receipts and hashes; the architecture lane inspected
+  source/hashes but did not inspect runtime artifacts. Its interpretation limit
+  remains explicit: an IndexError-killed parity mutant proves detection of that
+  concrete corruption, not every similar incorrect algorithm. Broad regression
+  is still pending, so this checkpoint is not overall validation completion.
