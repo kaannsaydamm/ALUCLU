@@ -1,0 +1,15 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_actual_reviewed_manifest_raw_byte_binding ________________
+
+    def test_actual_reviewed_manifest_raw_byte_binding():
+        import hashlib
+        raw = MANIFEST.read_bytes()
+>       binding = EXECUTION.capture_manifest_binding(MANIFEST)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'native_mutation_execution' has no attribute 'capture_manifest_binding'
+
+tests\test_alc_r0_native_mutation_execution.py:41: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_native_mutation_execution.py::test_actual_reviewed_manifest_raw_byte_binding
+1 failed, 8 deselected in 0.27s

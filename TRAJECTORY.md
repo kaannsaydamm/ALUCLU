@@ -7331,3 +7331,50 @@ Task 2 sensorium/recollection gate: CLEAN
   manifest as a real data-only positive control but must independently regenerate
   and verify it. No actual native mutant build/load/kill, timing, corpus/model,
   learning evidence or prompt/training authority follows from source generation.
+
+## 2026-10-02 — Execution absent-module RED and manifest bytes checkpoint 98
+
+- Execution worker added new tests before its implementation. Root read actual
+  absent-script RED stdout/XML:1 collection error,0 failures/skips,0.243s,
+  XML SHA-256 `9d474f2d16705ba468872a6b636baf2f9edf53e90bcec2fd7416f12b1fa53e6b`.
+  Persisted process exit/provenance and completed GREEN await root validation.
+  In-progress source implements closed generation/build verification; no native
+  compilation/loading is permitted before its independent implementation review.
+- Root inspection found a prebuild byte-binding defect: the initial build code
+  compared raw manifest SHA with freshly canonicalized JSON plus LF, although the
+  reviewed Windows generator had written CRLF. Root independently demonstrated
+  unchanged raw manifest hash9e7b7168 versus normalized-LF hash
+  `0f8d14d61573b2f85a879f4d99270b5b0af6ccde0f0c6ae65e15f1559373ea36`;
+  exactly1 CRLF and unequal hashes. Original manifest/source artifacts untouched.
+  Worker was directed to reproduce/check real data-only manifest binding and
+  compare captured original byte hash before/after, separately from regenerated
+  semantic document equality. This is a prebuild implementation defect, not a
+  native experiment result or reason to rewrite original evidence.
+
+## 2026-10-02 — Reviewed closed execution layer checkpoint 99
+
+- Root read both complete stopped execution files and independently reread all
+  worker exit logs, JUnit XML, stderr lengths and provenance. Absent-module RED:
+  exit2,1 collection error. New raw-binding helper RED: exit1,1 failure; new
+  allocation/history helper RED: exit1,5 failures. These are missing-helper TDD
+  failures, not actual native compiler/runtime failures. All original records
+  preserved byte-for-byte in results/alc_r0_banded_native_mutation-execution-*.
+- Worker final GREEN: exit0,36 tests,0 failures/errors/skips,23.328s XML time;
+  XML SHA256 c47470bd66ae7f56bbd3501167334be49bd4f9698a3c1518382dda48eed77a6e.
+  Root independently ran pure generator plus execution tests in session70255:
+  actual terminal exit0,64 passed,0 failures/errors/skips,20.737s XML time;
+  XML SHA256 9632051bb11e900a91695780ae5dbda0e16d6d3eba60072ef126a5fd124b5168.
+  Root session output was tool-captured, not redirected stdout/stderr files;
+  exit receipt is root-witnessed, not an independent watcher receipt.
+- Independent GPT-6.1 Sol code lane APPROVE and architecture lane CLEAR for
+  first synthetic build readiness only, both inspected complete files and hashes:
+  execution48f3b4350e02b37674efb16f944aef7e06f29bdb03d3e0230869867b598a7d44;
+  tests8c7c7f3735dec6725d291f1cf4f8cc2dabfc3601620a9b6b51e23e7bd63a3637.
+  Exact reference allocation checks and prior guard/no-write failure rejection
+  are included; raw CRLF manifest remains untouched. LF attributes bind new
+  committed sources to reviewed working bytes. Current free disk66,172,030,976B.
+- No real native mutation build/child/aggregate positive has happened yet.
+  Freeze clean reviewed sources before first build; subsequently verify all
+  actual compiler/dependency exits, control1473 and nine categories. Earlier
+  nonsemantic detections remain visible even if a later semantic kill occurs.
+  Fixture evidence never confers timing, corpus, held-out or training authority.
