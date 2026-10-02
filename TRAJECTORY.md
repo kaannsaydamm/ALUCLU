@@ -7153,3 +7153,36 @@ Task 2 sensorium/recollection gate: CLEAN
   external directory and clears process-local CL/_CL_; complete receipt must
   validate data-only before any load. Native mathematical and resource gates,
   mutations, further negatives and timing remain required.
+
+## 2026-10-02 — First real native build and runtime checkpoint 90
+
+- Reviewed source freeze `d739a35dc7d184c77fec893a22c972fb5d40cf34`
+  was clean and pushed before compilation. Fresh external output directory:
+  `.research-evidence/alc_r0_banded_native_20261002/build-d739a35-v1`.
+  Root cleared process-local CL and _CL_ and ran the locked Windows CPython
+  3.12 builder. Actual compiler, dependency inspection and launcher exits were0.
+  Receipt records source tree `8b7ff05b6d6fe5868116a2e5e6c1ab89ca2a698e`,
+  dirty-at-start/end false, MSVC19.44.35228.0 and SDK10.0.26100.0.
+  Dependency inspection lists KERNEL32.dll only; this is Windows evidence,
+  not native Linux/macOS portability or general environment reproducibility.
+- Before DLL loading, root successfully validated the complete real receipt
+  with read_build_receipt, exit0 (data-only positive control). Receipt SHA-256
+  `ec5463427664884af4c2315031733fe3eb9a496abc84322b5fefba46db4e8d61`;
+  DLL size106496, SHA-256
+  `d8d680420698a30d863748943d5b000d38facafc56b7081eb1dbfe004af0161a`.
+  Preserve raw receipt and build/dependency logs byte-for-byte; compiled binary
+  and intermediate objects remain external, not repository evidence artifacts.
+- Root then ran the original complete native test module with that exact receipt,
+  locked Python, PYTHONPATH=src and cache/bytecode disabled. Session96042 finished
+  normally; actual pytest_exit_code=0 observed. Independently reread XML:
+  **53 passed,0 failures/errors/skips,23.047 seconds**, SHA-256
+  `97f02c8089e2ecae9b6754bb04eb9e1cec0cb95764938fe854b60006bfa99130`.
+  This includes real native/reference/oracle parity, long synthetic fixtures,
+  resource cases, transport no-write negatives, corruption/receipt rejection and
+  an isolated unsafe-pointer rejection. Pytest console output was tool-captured;
+  do not claim raw persisted stdout/stderr files for this particular root run.
+- New contract-edge tests are being added in a separate module; they are NOT
+  covered by the original receipt's fixed source allowlist or the53-case result.
+  Native semantic mutation acceptance, remaining edge tests, final independent
+  review/regression and fixed synthetic timing remain OPEN. No corpus processing,
+  prompt sufficiency, training authority, model learning or ALC-0 PASS follows.
