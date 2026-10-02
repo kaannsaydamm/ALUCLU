@@ -6477,3 +6477,139 @@ Task 2 sensorium/recollection gate: CLEAN
   neither close R0.0/ALC-0 nor permit downstream product phases. Next work is
   the separately declared exact-DP resource-coverage census/protocol described
   in checkpoint 73, while prompt/rights/sealer/freeze gates remain open.
+
+## 2026-10-02 — Retained pair resource census prerequisite checkpoint 75
+
+- Implemented only in isolated Desktop checkout
+  `.worktrees/alc-r0-edit-visibility-reference`, branch
+  `codex/alc-r0-pair-resource-census`, base
+  `59c936a4623e37dc215c67211e61944154cf92da`. The main
+  `unified-lifelong-cognition-local` checkout was not edited. No commit, push,
+  dependency installation, network, held-out acquisition, full-data census,
+  dynamic program, model forward or training was performed by this work lane.
+- Wrote the separate declaration
+  `docs/superpowers/plans/2026-10-02-alc-r0-pair-resource-census.md` before code or
+  fixture execution. It fixes the unchanged common grid and helper ceilings,
+  complete normalized endpoint lengths/cell costs, and prospective global cap
+  **100,000,000 cells**. Admission is train then validation, author-file order;
+  the first locally eligible nonfitting pair permanently stops global admission.
+  Every later locally eligible pair has `total-cell-budget-exhausted`, even if
+  smaller than the remaining cap; local reasons retain endpoint/cell/scratch
+  precedence. This is a simulation, not executed or resolved edit evidence.
+- Added aggregate-only `src/aluclu/alc_r0/retained_pair_resource_census.py` and
+  focused fixtures. The runner binds pinned development and paired bytes,
+  rebuilds the unchanged graph, and requires all four prior ledgers. It keeps
+  all survival categories and selects only both original endpoints retained.
+  Full costs never truncate endpoints. Receipts preserve split-level universe,
+  eligible/admitted/unresolved pair counts and cell sums, reason strata,
+  disjoint fixed histograms and distinct-root unions. Component strata may
+  overlap, while unresolved uses their union. Ordered internal digests bind
+  source IDs/root, complete token commitments, lengths/cost and classification;
+  raw records/code/IDs/token sequences/length vectors are not emitted.
+- Independent GPT-6.1 Sol review fixes are incorporated: all author endpoints,
+  including unselected categories, fail closed on malformed normalization;
+  shared endpoints retain consistent content/label/split; full census cost
+  dimensions must be exact positive integers. The helper's empty mathematical
+  fixture support is unchanged, and an empty census universe has null coverage
+  fractions. CLI checks the actual module `__file__` belongs to the recorded
+  checkout both before work and before output; model bytes and clean Git state
+  are reverified through an explicit fixture-testable terminal seam. Source and
+  paired bytes are reverified after scanning. Synthetic snapshot/checkout
+  fixtures use no monkeypatch or implicit global mutation.
+- Preserved the actual absent-module RED and unsuccessful implementation-test
+  attempts. Root copied each available receipt/log byte-for-byte into
+  `results/alc_r0_pair_resource_census_*_20261002.*`, retaining these cases:
+
+  | Evidence | Python exit | Cases | Failures | Errors | Skips | JUnit seconds |
+  | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+  | `red` | 1 | 1 | 0 | 1 | 0 | 6.525 |
+  | `green_v1` | 1 | 48 | 1 | 0 | 0 | 6.731 |
+  | `green_v2` | 1 | 58 | 1 | 5 | 0 | 105.388 |
+  | `green_v3` | 0 | 58 | 0 | 0 | 0 | 53.529 |
+
+  RED is `ModuleNotFoundError` for the absent census module. Initial GREEN-v1
+  had 47 passing fixtures and one overbroad no-leak assertion: `tokens_` also
+  matched an allowed aggregate key. GREEN-v2 had 52 passing fixtures; Ruff's
+  removal of an unused imported fixture caused five missing-repository setup
+  errors, and a whitespace fixture expected a later error message although the
+  input was already rejected earlier. Fixed the assertion to forbid actual
+  fixture code strings, created an owned explicit repository fixture, and
+  asserted malformed-input rejection without depending on incidental wording.
+  These failures remain visible; they are not omitted from the evidence chain.
+- Exact preserved JUnit SHA-256s:
+  RED `0cae87c710afd4bcdbc438170a9e2cdaa945417e6aacf18eb8c29144ab0c76ab`;
+  GREEN-v1 `0c8c5a90e6d3bb545bca037f43cb859abd0e08b657da1ea3c730a1849a6d7ab9`;
+  GREEN-v2 `4fefc1396267b99ceb11651bfc3ba33399d1e77e4b174318a3ac0037fd08ca9b`;
+  final focused GREEN-v3
+  `74ba3b7ce25e0c541998e0d6b3a60e08dc5b2cc13d833e0a611bec9a815581ac`.
+  GREEN-v2 stdout SHA
+  `326681c68cf4720ed77ba52e2b1ff52ecc78b977e10aabce6909f3fe41189a91`;
+  GREEN-v3 stdout SHA
+  `9fcd4b5ed7d937389875c180a309e2fbc92b18e0220565e87e9509b479894f36`;
+  both stderr files are empty, SHA
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+  Original external artifacts are under `C:\Users\kaann\AppData\Local\Temp`
+  with the `alc-r0-pair-resource-census-...-20261002` prefix. Terminal exits were
+  captured from returned process results; later external `.exit.log` notes
+  transcribe those verified values and are not original launcher-generated logs.
+- Focused GREEN-v3 used the existing locked Windows Python 3.12 environment,
+  `PYTHONPATH=src`, `PYTHONDONTWRITEBYTECODE=1`, pytest cache disabled, and no
+  concurrent test workers. All 58 fixtures passed (pytest 54.04 seconds),
+  including exact 2047x2047/2048x2048 cell boundary, resource-reason precedence,
+  total-cap equality/exhaustion through validation, shared-endpoint root unions,
+  all survival categories, empty-universe null fractions, histogram boundaries,
+  ordered commitment/no raw leakage, source/pair/model changes and changed
+  source bytes/HEAD, normalization and module-origin rejection. Ruff check and
+  format check passed on final source/test bytes before this run.
+- Source SHA-256
+  `31c6bea82c5599f397e75351bb6cd845d6075f5fd960fdff7a5a587951308df5`;
+  test SHA-256
+  `36c8c1a1442afb5d87a0d2eb898c9920475f714fdcb60daeae606ab2e435689d`;
+  preregistration SHA-256
+  `f46f336b8c841248521801288e747c31abb837e99193ad13d72de3294f017480`.
+  Two independent GPT-6.1 Sol lanes returned final source **APPROVE** and
+  architecture **CLEAR** at these hashes, limited to this no-DP prerequisite.
+  Root personally checked final focused JUnit/hash evidence. Root added narrow
+  LF attributes for new source/test/preregistration and raw `-text` attributes
+  for census XML/log evidence without changing these executed source bytes.
+- Serial broad `python -m pytest tests -k alc_r0 -p no:cacheprovider
+  --junitxml=<external>/alc-r0-pair-resource-census-broad-v1-20261002.xml`
+  completed with actual process-handle Python exit **0**. Terminal JUnit has
+  **565 cases: 557 passed, 8 skipped, 0 failures/errors**, 346.243 seconds
+  (pytest 346.34 seconds; 1,060 deselected). No census fixture skipped. The
+  eight existing conditional skips require unspecified pinned Banking77/Devign
+  development assets or the real offline SmolLM2 snapshot; this regression
+  evidence makes no full-model or full-source execution claim. Worker command
+  line was revalidated while live (start local 18:48:24, Python PID 30688,
+  venv launcher PID 10508), with no restart or overlapping Torch-heavy tests.
+  Root personally checked the terminal JUnit and byte-copied broad receipts to
+  `results/alc_r0_pair_resource_census_broad_v1_20261002.*`. Broad XML SHA
+  `87c7abed8a00be6d1b46f9a14946bbf7c5b7765606977a1322af92696555d1d2`;
+  stdout SHA
+  `900960420d13d33a91a63ddd20438ca8eb7d5d2c703c50d9a7ec001ccd489e4b`;
+  empty stderr SHA
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+  Source/test bytes remain the final reviewed/focused-run hashes above; final
+  source/evidence diff whitespace check passed before handoff.
+- Root separately prepared an external production launcher under
+  `.research-evidence/alc_r0_pair_resource_census_20261002`. Supplementary review
+  found/fixed a preflight-versus-actual-commit receipt race: the final launcher
+  parses the successful stdout source commit and rechecks terminal HEAD/clean
+  state, distinguishing requested/receipt commit and Python/launcher exits.
+  Updated script SHA
+  `f39994cd9d0b7f24ef14d772e4eb975cce53e126233e867d64ac820e1aa2fd75`
+  has PowerShell parser PASS and final supplementary rereview **APPROVE**. Root
+  archived it byte-identically as
+  `results/alc_r0_pair_resource_census_launcher_20261002.ps1` with a raw `.ps1`
+  attribute. The prior
+  script SHA `bd8d9af0c03b93bd07875e9261bd136a905301baf36b1eb3898f6f342f5f1301`
+  was preserved with a requested-zero-commit rejection probe: launcher exit 125,
+  no worker launched, no scientific result. This census has not been executed
+  on development data. Launcher preparation/rejection evidence is distinct
+  from the focused fixture evidence above.
+- This prerequisite cannot authorize training or prompt freeze, choose a budget,
+  alter P1-P14, claim an admitted cohort representative, or resolve code-task
+  prompt sufficiency, rights/provenance, sealer, versioned validator or learning
+  gates. The census fixes prospective denominator/admission reporting only;
+  `training_authority=false`, `held_out_data_present=false`. Family-B prompt
+  freeze remains **BLOCK**; R0.0, R0.4 and ALC-0 remain **OPEN**.
