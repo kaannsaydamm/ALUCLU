@@ -6673,3 +6673,59 @@ Task 2 sensorium/recollection gate: CLEAN
   A resource-unresolved population must remain explicit; no coverage claim is
   inferred from the fixture pass. Keep the frozen checkout untouched and do not
   restart this attempt because an observation times out.
+
+## 2026-10-02 — Terminal resource census and negative coverage checkpoint 78
+
+- The frozen development census completed, not restarted: UTC
+  `2026-10-02T15:59:55.1817867Z` to `2026-10-02T16:08:04.7823639Z`
+  (489.601 s). Personally read the terminal receipt: Python exit **0**, launcher
+  exit **0**, requested and actual receipt source commit both
+  `139f62f890d7f20d22d79e3c20a69c8014707cb2`. The isolated checkout remains
+  clean at this commit; receipt source tree is
+  `d05ff530d4ec580653966c39150eb2631b8678466134e2063d37c7647b168cb8`
+  over 423 tracked files. No edit DP or neural model forward was executed.
+- Preserved raw terminal artifacts byte-identically as
+  `results/alc_r0_pair_resource_census_full_139f62f_20261002.*`.
+  SHA-256: stdout `f22d2ca92f9a012b6d2d1cea012b5d74649c2816b983825fa68f91bab1809aae`,
+  stderr `16b465baa4133be1dcdc062d5560d0e0b97478ab4598fca02bfb49ddae348438`,
+  exit `7017e6a46932ab52137496b9c3101345dd44c536060c454725b24a4f954f568c`,
+  launch `2f5ca77f364e1d96f0ce41184d343b90d04c787e2ab1fbf626e9553efdf83191`.
+- Both-original-endpoints-retained universes are **4,344 train / 482 validation**,
+  from 4,354 / 562 author pairs. Locally eligible counts are **3,384 / 408**.
+  Prospective admission is **137 / 0**; unresolved is **4,207 / 482**.
+  Unresolved reasons (train / validation): endpoint ceiling **7 / 0**, rectangular
+  cell ceiling **953 / 74**, scratch ceiling **0 / 0**, permanent global
+  exhaustion **3,247 / 408**. Admitted cells **99,371,935**, remaining
+  **628,065**, sum exactly the preregistered **100,000,000**; exhaustion is true.
+  Zero validation admission follows train-first ordering, not zero eligibility.
+- The complete rectangular universe totals **137,599,268,320 cells**. Maximum
+  endpoint lengths are **272,858 train / 24,941 validation**. Train component
+  unions: universe 4,129, admitted 135, unresolved 3,999; validation universe
+  and unresolved 476. These unions overlap and are not independent votes.
+  Only 137/4,826 pairs (approximately 2.839%) are prospectively admitted;
+  there is no representative-subset or whole-universe exposure claim.
+- Root terminal bookkeeping independently rechecked canonical RFC8785 bytes,
+  clean source identity, pinned model/pair commitments, all four graph roots,
+  policy hash `050b4dc1e7ec6164f510340adf60d838e9039b765adf97a2e556f8ae86cda815`,
+  survival/count/cell/histogram accounting, fractions and resource-cap totals.
+  External supplementary verifier (not a production or scientific gate),
+  `.research-evidence/alc_r0_pair_resource_census_terminal_verify_20261002.py`,
+  SHA-256 `cc359414888380c4a35bab1556ddcde65fd5b53377a64123ee76ea6a7770785a`,
+  reran with enabled-assertion guard and actual exit **0**. Independent GPT-6.1
+  Sol evidence review returned **CLEAR for recording the diagnostic** after
+  separate receipt/hash/arithmetic/source checks, without raw-data rebuild.
+- Stderr includes an 8,733-token tokenizer length warning against 8,192;
+  this execution encodes full endpoints only, never forwards them through the
+  model. It is not a model execution failure. All endpoint totals completed.
+- This is a negative **resource-coverage** result, not hypothesis falsification,
+  edit resolution, semantic visibility, prompt sufficiency, budget selection,
+  freeze permission or learning PASS. `training_authority=false` and
+  `held_out_data_present=false`. Family-B freeze remains **BLOCK**; R0.0,
+  R0.4 and ALC-0 remain **OPEN**. Do not spend an exposure run on the admitted
+  train prefix and infer population coverage from it.
+- Next: preregister and fixture-validate a separate exact indel-distance plus
+  all-optimal-path banded exposure method. The original rectangular policy and
+  negative evidence remain intact; new band/distance resource accounting is a
+  new method, not reinterpretation of the old cap. Corpus distance/exposure
+  execution, native execution and enlarged endpoint ceilings remain separately
+  unapproved until their prerequisites and independent reviews are satisfied.
