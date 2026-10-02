@@ -6729,3 +6729,36 @@ Task 2 sensorium/recollection gate: CLEAN
   new method, not reinterpretation of the old cap. Corpus distance/exposure
   execution, native execution and enlarged endpoint ceilings remain separately
   unapproved until their prerequisites and independent reviews are satisfied.
+
+## 2026-10-02 — Exact bounded-band fixture preregistration checkpoint 79
+
+- Before new helper code, tests or fixture execution, declared the separate
+  threshold-K reference in
+  `docs/superpowers/plans/2026-10-02-alc-r0-banded-edit-visibility-reference.md`,
+  SHA-256 `3cfe062e9cdcfdd0a4b46e8c106e6462d110f4feebdc3a2b9375a01b03dec611`.
+  Root read the full declaration and preserved its bytes with narrow LF
+  attributes. Both independent GPT-6.1 Sol lanes returned exact-byte design
+  **APPROVE / architecture CLEAR**. This is design readiness, not helper PASS.
+- Every path of cost <=K must satisfy |i-j|+|n-m-(i-j)|<=K. The clipped
+  parity-safe band therefore preserves all global optimal paths when the
+  computed terminal distance is <=K. Preserve all tied primary-optimal edges,
+  even at equal-ID cells; propagate marginal/direct-total bounds and genuine
+  joint signatures separately. No prefix/suffix stripping, selected traceback,
+  full-DP fallback or adaptive retry is permitted.
+- New per-call semantics: threshold 0..512, exact scheduled band cells <=
+  4,194,304, endpoints <=32,768, <=5 budgets, conservative scratch <=64 MiB.
+  The old rectangular helper/census remains unchanged. Compact two-row packed
+  buffers use guarded global-column intervals; scheduled versus visited work,
+  allocated payload versus scratch estimate, and preflight versus terminal
+  threshold failure remain explicit. Unresolved results disclose no partial
+  distance or exposure. No corpus-coverage or process-RSS claim follows.
+- Preregistered synthetic long cases include length-10,000 identity K=0
+  (10,001 cells versus 100,020,001 rectangular cells), a unique insertion K=1
+  (20,002 cells), and repeated-token all-alternative exposure. Independent
+  exhaustive path enumeration, unchanged-reference parity, geometric/resource
+  boundaries, allocation checks and targeted mutations are required before
+  validation. Next is absent-module RED, then implementation and focused/broad
+  regressions plus independent final source review, with all outcomes preserved.
+- No new test/code execution at this checkpoint; no dataset/tokenizer/model,
+  training or held-out access. This diagnostic prerequisite does not satisfy
+  Family-B freeze, R0.0, R0.4 or ALC-0; those remain BLOCK/OPEN as recorded.
