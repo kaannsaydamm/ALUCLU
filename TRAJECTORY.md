@@ -7444,3 +7444,28 @@ Task 2 sensorium/recollection gate: CLEAN
   The live48-module run is bf08b1c pre-timer regression and cannot claim coverage
   of tests/scripts added afterwards; new timer evidence and final source scope
   must be recorded separately before overall native acceptance.
+
+## 2026-10-02 — Partitioned ALC-R0 regression terminal checkpoint 102
+
+- Root observed session20756 terminal actual_pytest_exit_code=0,649 passed,
+  8 skipped,380.14s stdout. Independently reread JUnit657 total,0 failures,
+  0 errors,8 skipped,379.853s; XML SHA256
+  daecd99e9560e3214967f72c72ebf7b3f2667bc84e391089c1534f51edae2ae4.
+  Combined explicit disjoint partitions at bf08b1c source stage:764 passed,
+  8 skipped,772 total (53 original native +62 native edges +657 other cases).
+  This is ALC-R0 coverage, not whole-project pytest or later timer coverage.
+- All8 skips are asset-gated optional tests:3 BANKING development source/tokenizer,
+  1 defect-prompt snapshot path,4 Devign development source path. Do not infer
+  corpus/model proposal or acceptance from missing asset tests. Existing broad
+  suite also invokes verified local SmolLM2-135M host/wrapper CPU/GPU synthetic
+  conformance, capsule/LoRA update/remount contracts. These are existing regression
+  controls, not a new authorized corpus training/evaluation or learning claim.
+  Native mutation/timing fixture scope remains separate, CPU synthetic only.
+- Root compared working versus committed Git blob identities for all115 mutation
+  evidence files, exact matches; execution script/test SHA48f3b435/8c7c7f37 remain
+  unchanged. Initial a3fc294 push hit transient GitHub443 network failure; one
+  retry succeeded, verified remote bf08b1c..a3fc294. Free disk65,893,109,760B.
+- Timer worker has preserved absent-module RED and is implementing its separate
+  script/tests. No timer compilation/load/measurement has occurred. Retain the
+  independent two-lane implementation gate and final timer-inclusive source
+  regression before any native acceptance or renewed family-B research step.
