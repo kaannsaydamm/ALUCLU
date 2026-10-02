@@ -7310,3 +7310,24 @@ Task 2 sensorium/recollection gate: CLEAN
 - Commit reviewed pure sources/tests and raw RED/GREEN/regression evidence plus
   records/design. Next execution work is not completed by this commit and cannot
   inherit the pure-stage APPROVE/CLEAR as its own implementation approval.
+
+## 2026-10-02 — Actual pure generation CLI checkpoint 97
+
+- Root re-read full goal, current clean tracked HEAD5ed52f4, complete reviewed
+  generator and execution/detail declarations. Ran locked Python -B generator
+  with PYTHONPATH=src and bytecode disabled, actual generator_exit_code=0.
+  --baseline-receipt points to original build-d739a35-v1/receipt.json;
+  --output-dir fresh external mutation-sources-5ed52f4-v1 under the existing
+  .research-evidence/alc_r0_banded_native_20261002 directory. This command
+  validates full baseline receipt data-only; it never loads or compiles a DLL.
+- Independently checked manifest stage generated-only-unbuilt, literal false
+  authority flags, exactly10 closed IDs in declared order,10 distinct source
+  hashes matching actual files, unchanged control c577846b hash,1473 control
+  cases and11 files total (10 source snapshots plus manifest). Manifest SHA-256
+  `9e7b7168903640c5b2c94626877a375e503c9bc87f9c9080b5f0a63937b3eaca`;
+  original receipt ec546342 and generator46674250 hashes unchanged.
+- Preserve raw manifest and root-witnessed exit, leaving mutant source files
+  external. Worker continues separate execution script/tests; it may use this
+  manifest as a real data-only positive control but must independently regenerate
+  and verify it. No actual native mutant build/load/kill, timing, corpus/model,
+  learning evidence or prompt/training authority follows from source generation.
