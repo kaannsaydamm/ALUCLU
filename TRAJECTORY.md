@@ -7409,3 +7409,38 @@ Task 2 sensorium/recollection gate: CLEAN
 - Independent actual-evidence code/architecture rereviews are pending. Final
   partitioned regressions and fixed synthetic timing remain OPEN. This closes
   neither native acceptance nor neural learning/family-B/prompt/training gates.
+
+## 2026-10-02 — Mutation evidence rereview and regression checkpoint 101
+
+- Independent actual-artifact code lane APPROVE and architecture lane CLEAR,
+  each reread build/process/child/JSONL/aggregate identities, control1473 ordered
+  coverage, allnine completed semantic witnesses, guards and preserved prior
+  observations. Both explicitly retain unavailable outer build-launcher exit;
+  neither calls wrapper termination-1 compiler failure or invents build CLI0.
+- Final immutable native-source regression at tracked bf08b1c: original native
+  module separately executed session74778 actual_pytest_exit_code=0,53 passed,
+  0 failures/errors/skips,29.042s XML time, SHA256
+  10ca2b73e2be681569d6676d69a8c0ffe48477081fbeb454d9acf6a015801adf.
+  Extra native contract module in separate process session21080 actual exit0,
+  62 passed,0 failures/errors/skips,34.046s XML time, SHA256
+  a4336fae176b8e9c7b9a940f2a0d52179325627d882b9899835f19b4738108ad.
+  One-backend-per-process contract preserved, no combined native pytest claim.
+- Remaining48 ALC-R0 non-native modules running in session20756, explicit sorted
+  test-file list excludes exactly the above two native modules. No final broad
+  result inferred from progress. No source code changed after execution freeze.
+- Root declared separate fixed timing operational detail before timer code:
+  docs/superpowers/plans/2026-10-02-alc-r0-native-fixture-timing-detail.md SHA256
+  e21ee7e7caacfbd91a3caecfd3b11f924a34e6cafb28b90d5a8c198145d0820e.
+  Original cases/B5/warmup2/samples5 unchanged; public end-to-end includes its
+  per-call overhead, load reported separately, ctypes kernel not pure C++ time,
+  component timings not additive. Independent design review pending. No timing
+  code or measurement yet; full regression and implementation reviews precede
+  execution. No corpus/model/learning authority granted by any of these gates.
+
+- Timing-detail independent architecture design lane CLEAR on unchanged e21ee7e7
+  plan. Existing GPT-6.1 Sol worker assigned only separate timer script and its
+  data-only test module, with TDD and STOP for two independent implementation
+  reviews. No timing, DLL loading or native build authorized to that worker.
+  The live48-module run is bf08b1c pre-timer regression and cannot claim coverage
+  of tests/scripts added afterwards; new timer evidence and final source scope
+  must be recorded separately before overall native acceptance.
