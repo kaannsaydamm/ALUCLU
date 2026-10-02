@@ -6406,6 +6406,12 @@ Task 2 sensorium/recollection gate: CLEAN
   The actual Windows launcher is archived as `.run.ps1`. The tokenizer's
   original-sequence warning `10382 > 8192` preceded the frozen head/tail
   retention; this diagnostic ran no model forward and terminal exit was 0.
+- Evidence diff inspection reported the native v2 launcher error's preserved
+  blank line at EOF. The existing raw-log attribute excluded line-end whitespace
+  but not EOF whitespace. Added a narrow attribute for that exact archived log
+  to preserve its original bytes; no log content was reformatted and source-code
+  whitespace checks remain active. The full source/evidence diff check was then
+  rerun before integration.
 - Preserved unsuccessful execution attempts separately. The first session-
   coupled attempt produced empty stdout/stderr and no exit/receipt; its Python
   process vanished during a Codex sandbox-service interruption. A contemporaneous

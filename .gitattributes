@@ -52,6 +52,7 @@ results/alc_r0_retained_pair_*.log -text whitespace=-blank-at-eol
 results/alc_r0_retained_prompt_information_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_retained_prompt_information_*.log -text whitespace=-blank-at-eol
 results/alc_r0_retained_prompt_information_*.ps1 -text whitespace=-blank-at-eol
+results/alc_r0_retained_prompt_information_launcher_v2_20260930.launcher.log -text whitespace=-blank-at-eol,-blank-at-eof
 results/alc_r0_edit_token_visibility_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_edit_token_visibility_*.log -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/edit_token_visibility_reference.py text eol=lf
