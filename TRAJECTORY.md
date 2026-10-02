@@ -6261,3 +6261,101 @@ Task 2 sensorium/recollection gate: CLEAN
   cannot yet support an empirical error-bound claim. A clean-code commit and
   fresh-process full-data CLI execution are next. R0.0, R0.4, and ALC-0 remain
   **OPEN**.
+
+## 2026-09-30 — Bounded edit-token visibility reference checkpoint 72
+
+- Implemented only in isolated Desktop worktree
+  `.worktrees/alc-r0-edit-visibility-reference`, branch
+  `codex/alc-r0-edit-visibility-reference`, starting from clean
+  `66355527f9321b235084587855c23e3ec909fd30`. The separate live full-cohort
+  audit checkout was not edited. No commit, push, or merge was performed by
+  this implementation task; integration remains with the root coordinator.
+- Wrote the fixture-only specification before implementation/execution in
+  `docs/superpowers/plans/2026-09-30-alc-r0-edit-token-visibility-reference.md`.
+  New pure helper `src/aluclu/alc_r0/edit_token_visibility_reference.py` computes
+  all-shortest unit insertion/deletion distance, retained-edit endpoint marginal
+  extrema, **directly optimized total extrema**, and four-bit reachable joint
+  visibility signatures. Equal-token insertion/deletion alternatives remain
+  eligible; no arbitrary diff traceback, prefix stripping, or substitution
+  pairing is used. Both packed rows are reused; masks are exact-length buffers.
+  Huge positive budgets take an all-one-mask early return, avoiding unbounded
+  temporary-integer arithmetic. Returned metrics do not contain token tuples.
+- Hard ceilings are **32,768 tokens per endpoint**, **4,194,304 DP cells**
+  including boundaries, **five increasing positive code budgets**, and
+  **64 MiB** conservative helper-owned scratch estimate. Per-call limits can
+  only tighten them. Preflight cap failures return explicit resource-unresolved
+  results with no partial distance/bounds; hard-oversized endpoints have null
+  allocation estimates. Caller-owned inputs and whole-process RSS are outside
+  this scratch accounting. Full-cell runtime and full-development practicality
+  remain unmeasured; this helper contains no source-data runner or total-run cap.
+- The independent fixture oracle recursively enumerates legal edit paths and
+  filters complete paths to minimum distance; it shares neither DP recurrence
+  nor retention/signature helpers. Exhaustive binary tuples of lengths 0..4
+  give **961 endpoint pairs x five budgets = 4,805 comparisons**. Tests also
+  cover hand changes, insertion/deletion, repeated-token ambiguity, endpoint
+  symmetry, empty mathematical states, identity, full/nested retention,
+  budget/input/cap validation, scratch arithmetic, byte-tokenizer prompt parity,
+  and a million-bit positive budget. The decisive `[1,2]` versus `[2,1]` at
+  code budget 1 gives marginal intervals `[0,1]`, total `[1,1]`, and signatures
+  `{01,10}`: marginal maxima cannot establish simultaneous endpoint visibility.
+- An initial environment attempt used older `research-envs/task27-py310` and
+  failed collection on missing `rfc8785`; it was not a diagnostic RED or PASS.
+  No dependency installation occurred. Switched to existing locked Python
+  **3.12.13** at
+  `C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe`,
+  with `PYTHONPATH=src`, `PYTHONDONTWRITEBYTECODE=1`, and pytest cache disabled.
+  Intended RED then failed because the new module did not exist: exit **1**,
+  one collection error, JUnit time **9.210 s**, `red.xml` SHA-256
+  `e8c8e7643d75a43f5e9db7a65ea29d56a616b78cc3466204aa6195adf60c4b83`.
+- Final focused GREEN command was
+  `python -m pytest tests/test_alc_r0_edit_token_visibility_reference.py
+  --junitxml=<external>/focused.xml -p no:cacheprovider`: exit **0**, **43
+  tests**, no failures/errors/skips, JUnit **10.365 s**. SHA-256:
+  `a42a4aa31501e30e774c91f000ca7ca4ad952ee5042ae3c6d060191f7249732f`.
+  Final broad command was `python -m pytest tests -k alc_r0
+  --junitxml=<external>/regression.xml -p no:cacheprovider`: exit **0**, **507
+  tests**, **499 passed / 8 skipped**, no failures/errors, 1,060 deselected,
+  JUnit **449.312 s** (pytest summary **449.47 s**). SHA-256:
+  `786142468199c05286fe5a1cf9247b22988e8d21b1bdd5b67fd378c9707a98a7`.
+  These external XMLs are under
+  `C:\Users\kaann\AppData\Local\ALUCLU\evidence\edit-visibility-reference-20260930`.
+  The earlier **498-pass / 8-skip** broad run preceded the final mask hardening
+  and is preserved as `regression_pre_hardening.xml`, explicitly superseded.
+  Final source/test bytes stayed fixed throughout the serial final runs.
+- Final helper/test SHA-256s respectively are
+  `e89334ccf8bd35a32fbca97075c9d3d082a3c2c1119f14d690b956cf28114072`
+  and `217c5163e5d1a001539b49cca880bf35a0c5d32a05bcb0a57e0a4bcc92a0ecf8`.
+  Ruff check, Ruff format check, and Git diff check passed on final files.
+- Root's supplementary standard-library-only allocation probe loaded the
+  final helper bytes directly, avoiding package/Torch integration. Its Python
+  **3.12.13** metadata log was inspected and hash-verified: a two-million-bit
+  budget with 2/2 tokens peaked at **3,412 traced bytes** versus **67,172**
+  estimated; 0/32,768 tokens with five budgets peaked at **9,611,628** versus
+  **9,673,408** estimated. Both were exact results with false authority/scope
+  flags. Log:
+  `C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\edit_visibility_memory_probe_20260930\stdout.log`,
+  SHA-256 `fc85072da2699f6a0e96e21b7c6887ba35f39d72a441785dca8be9311d6ba343`.
+  This checks helper allocations in two fixtures, not process RSS, maximum-cell
+  runtime, tokenizer/graph memory, or full-development feasibility.
+- Root completion audit on 2026-10-02 re-read final helper/test bytes and
+  personally verified the RED/focused/regression JUnit counts and SHA-256s
+  above. Final XMLs are preserved byte-for-byte under
+  `results/alc_r0_edit_token_visibility_{red,focused,regression}_20260930.xml`;
+  the superseded pre-hardening broad XML is not promoted as final evidence.
+  The allocation probe is reproducible with
+  `scripts/alc_r0_edit_visibility_allocation_probe.py`; its aggregate stdout
+  is `results/alc_r0_edit_token_visibility_allocation_20260930.stdout.log`.
+  Independent GPT-6.1 Sol read-only code/method review returned **CLEAR** for
+  the final bounded fixture helper. Four supplementary selected helper checks
+  passed in 2.50 s using isolated module loading; ordinary reviewer package
+  collection hit Windows `WinError 1455` loading Torch during memory pressure.
+  That failed collection is not a helper-test result. Normal package execution
+  is evidenced separately by the final 43-test and 507-test runs above.
+- No raw development source or held-out data was accessed by this task; no
+  source-data acquisition, tokenizer/prompt modification, real model forward,
+  training, new dependency, threshold change, or final-budget choice occurred.
+  This is token-position exposure, not vulnerability localization, semantic
+  sufficiency, a macro-F1 bound, or learnability. A future both-retained-author-
+  pair development runner and versioned equalized-arm prompt policy require
+  separate review. Current family-B freeze remains **BLOCK**; P1-P14 are
+  unchanged and R0.0, R0.4, and ALC-0 remain **OPEN**.
