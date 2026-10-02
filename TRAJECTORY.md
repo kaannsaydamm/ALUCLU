@@ -7186,3 +7186,49 @@ Task 2 sensorium/recollection gate: CLEAN
   Native semantic mutation acceptance, remaining edge tests, final independent
   review/regression and fixed synthetic timing remain OPEN. No corpus processing,
   prompt sufficiency, training authority, model learning or ALC-0 PASS follows.
+
+## 2026-10-02 — Additional contract crash and mutation design checkpoint 91
+
+- Worker extra-contract run ended with actual Windows access violation
+  -1073741819 (0xC0000005),41 progress dots and no final XML. This is not PASS.
+  Candidate cause found in NEW test harness: empty-input direct ABI test discarded
+  the backing workspace/output owners while retaining non-owning offset pointers.
+  Worker corrected lifetime in its new test module only; isolated rerun and
+  independent exact-byte review pending. Frozen production files remain unchanged.
+  Do not classify the crash conclusively until corrected terminal evidence exists.
+- Independent architecture lane specified a separate closed native nine-mutation
+  harness; root read original full fixture plan and Python mutation probe, and
+  recorded implementation detail in
+  docs/superpowers/plans/2026-10-02-alc-r0-native-mutation-fixture-gate.md.
+  Keep unchanged control and independent oracle; crashes/build/transport/invariant
+  failures do not count as semantic kills. No arbitrary DLL loader or product
+  trust-boundary change. Harness implementation/review/execution still pending.
+
+## 2026-10-02 — Corrected native contract edges checkpoint 92
+
+- Worker retained all owning arrays across every direct ABI call and documented
+  the helper's non-owning offset-pointer contract. Frozen C++/adapter/builder
+  SHA-256 hashes independently rechecked by root: unchanged checkpoint88 bytes.
+  New separate test module stopped at SHA-256
+  `322513f39cd23f0e572ce381ec40192b9224f9a3f06062b6c6e6a109d2bfc9cb`.
+- Root independently read corrected isolated lifetime/receipt XML:22 passed,
+  0 failures/errors/skips,28.200s, SHA-256
+  `fd2eea68f1cadf6ebff958a33c0f44bf2d7283053dcc530518176f1c94f4a3f6`;
+ 40 deselected, worker actual exit0 persisted. Complete corrected module v3:
+  **62 passed,0 failures/errors/skips,40.149s**, SHA-256
+  `2d3925254d0138814e40b2cfdf7edd00b457bfacd5e5db76af63fc17dd82b0d7`.
+  Root read persisted actual exit0, stdout and provenance. First crash remains
+  failed raw evidence; corrected success does not erase it. Concrete cause was
+  caller-owned-buffer lifetime in the new test, not a frozen-kernel code repair.
+- Covers ternary/swap/nested/all-retained/crossed mathematics, endpoint/K bounds,
+  accepted logical/rounded workspace and output guards, safe ABI/null/count
+  rejections and build ID guards.18 deep negatives each start with full valid
+  actual receipt;3 copied-artifact semantic tamper cases establish a full valid
+  relocated clone before mutation. Original external artifacts preserved.
+- Independent GPT-6.1 Sol code lane APPROVE exact new-module bytes, scoped source
+  review (reviewer did not execute tests). Independent architecture rereview
+  **CLEAR** on the same stopped bytes; scoped this module only, not execution
+  or overall native acceptance. Combined final native gate remains open.
+  Worker has begun separate pure-layer
+  closed mutation harness implementation; real mutant compilation/loading waits
+  for independent review. No benchmark/corpus/model/training authority follows.
