@@ -6926,3 +6926,170 @@ Task 2 sensorium/recollection gate: CLEAN
   pointer accessibility not inferred from count validation, and mathematical
   signed floor/ceil rather than C++ negative division truncation. These require
   actual RED/parity/negative-test evidence; they are not waived by design approval.
+
+## 2026-10-02 — Native fixture implementation RED checkpoint 83, not acceptance
+
+- Continued from clean design commit `7db18f8e4450d029feea70df2ffd8df1d0e0ffb7`
+  in the authoritative non-OneDrive Desktop worktree. GPT-6.1 Sol implementation
+  ownership is restricted to the native translation unit, explicit Python
+  adapter, build script and fixture tests. No native compilation is authorized
+  before independent source review and a clean source commit.
+- Initial absent-backend test invocation had a package-path infrastructure
+  error; retain it as infrastructure evidence, not the intended RED. Corrected
+  `PYTHONPATH=src` invocation produced the intended missing
+  `aluclu.alc_r0.banded_edit_token_visibility_native` import error. Worker reports
+  actual pytest exit 2; root independently read stdout and JUnit XML: 1 case,
+  1 collection error, 0 failures/skips, time 2.549 seconds. Exit provenance is
+  worker-observed, not an independent exit watcher.
+- Raw RED evidence remains external in
+  `C:/Users/kaann/Desktop/03_Projeler_Arge/ALUCLU/.research-evidence/alc_r0_banded_native_20261002/`.
+  Corrected `native-red-v2.xml` SHA-256 is
+  `2ea7a02d00f84d09a992fd766cda8bad77e3a7ac511e0b738aeddc86bd1fb347`.
+  Preserve both attempted runs; do not replace the first with a fabricated
+  successful launch or reuse this collection failure as native parity evidence.
+- Added narrow LF attributes for the four authored source/test/build files and
+  raw-byte attributes for prospective native XML/log evidence. `git diff --check`
+  passed. This bookkeeping prevents checkout newline conversion from silently
+  changing source/build or evidence identity; no DLL receipt exists yet.
+- C++ and adapter implementation is in progress and is not review-ready.
+  Loader identity, impossible-output rejection, complete oracle/parity,
+  negative ABI/resource tests and mutation coverage remain required. No build,
+  native execution, benchmark, corpus access, model run or learning result is
+  claimed. Family-B freeze and ALC-R0/ALC-0 remain OPEN/BLOCK as previously recorded.
+- Root ran two Python-only prebuild tests against the in-progress adapter:
+  arbitrary-integer rank bijection and missing-receipt infrastructure rejection.
+  Actual pytest exit 0; independently read XML: 2 passed, 0 failures/errors/skips,
+  time 1.906 seconds; external `native-python-prebuild-v1.xml` SHA-256
+  `08bf9cbe5ed564970754aebf5c1353b34be0978b1c946267e15b28ee3173f88a`.
+  Command: locked Windows Python 3.12, `PYTHONPATH=src`,
+  `PYTHONDONTWRITEBYTECODE=1`, pytest `tests/test_alc_r0_banded_native.py`
+  `-k 'rank_bijection or missing_receipt' -q -p no:cacheprovider`, external
+  `--junitxml` path above. No native receipt/DLL was supplied or loaded. This
+  small check does not satisfy the still-pending native parity/security gates,
+  and its source was not frozen at launch.
+- Root explicitly probed the in-progress build script's dirty-checkout rejection
+  with `--output-dir` pointing to external `dirty-preflight-probe`. Observed
+  Python exit 1 and `RuntimeError: clean committed reviewed source required
+  before build`; output directory still did not exist afterward. The script
+  rejected before directory creation or compiler invocation. This proves that
+  particular dirty-launch guard, not build success or mid-build consistency.
+  Source review additionally requires start/end commit/tree/source-byte
+  consistency and complete compiler/linker/log/environment provenance.
+
+## 2026-10-02 — Native prebuild source review and decoder repairs checkpoint 84
+
+- Implementation worker stopped four authored files without compilation/load.
+  Root confirmed initial source hashes: C++ `c577846b7f5de113230b89224d96a707eceecaf7659cad2b316d2138201f96ad`,
+  adapter `892ea1d0803a9ffefaec973d0799b9b68c077c17c0650c1eb7925130f9d951b7`,
+  build script `8f83edff73ba8d82bc03f33b49df7e802abe19c631177fa7c44a01c58b0f7770`,
+  tests `3e706895de9ce6debbb1ce05e8faedba5f940bc04bbb0ea8b555b20264a606d7`.
+  Intended RED exit2/provenance files now exist externally and were read by root.
+- Independent GPT-6.1 Sol code review returned **REQUEST CHANGES** for prebuild
+  readiness: decoder lacked D<=n+m and independently bound preflight status/
+  reason precedence. Root reproduced impossible exact D=2 for two empty inputs
+  with a private fake transport, without a DLL/build/load. Architecture dispatch
+  failed with `agent thread limit reached`, including after idle phantom-agent
+  interruption. Independent architecture review is unavailable, not CLEAR;
+  first build/source acceptance remains gated, with no self-review fallback.
+- Root added data-only private-response decoder tests: 7 RED cases failed at
+  exit1 (0 errors/skips, 2.309 seconds), XML SHA-256
+  `f806f8a6911419263ae22983af19ee9190da4507b51dbc93444d5b3151207b56`.
+  Patched independently expected endpoint/threshold/cells/scratch rejection,
+  exact implies admission, admitted unresolved allows completed threshold only,
+  and D<=min(K,n+m). Intermediate GREEN passed9, exit0, time2.645 seconds,
+  XML `d75e0fd48bb416976b698fc512b8efbd0ee2f109178382b93cd7dad6c866adaa`.
+- Three additional exposure corruption tests failed before their fix (exit1,
+  3 failures, 0 errors/skips, 2.339 seconds), XML
+  `c6655f98dfaa80ae4210628fc498b26e212d3b3c474e01fa2c902606364b6691`.
+  Added necessary total/marginal and distance upper-bound constraints, not
+  inferred exact totals or joint signatures. Final data-only GREEN passed13,
+  exit0, 0 errors/failures/skips, 2.753 seconds, XML
+  `c7bba1e5bf7dde015b53ba9e8e117ebd4c1124635b0d38f7cae567a59854c5c7`.
+  Includes unmodified binary length0..3 response controls across thresholds,
+  preventing a reject-everything validator from satisfying only corruptions.
+- Tests/receipts remain external under the native evidence directory from
+  checkpoint83. Runs used locked Python3.12, PYTHONPATH=src, bytecode/cache off,
+  pytest selection `data_only or rank_bijection or missing_receipt`. Actual
+  exit codes were observed directly; XML counts/hashes independently reread.
+  After Ruff formatting/check success, repaired adapter SHA-256
+  `b1210fbdef91f53b0fa5dc485f9922aefe36e13b7069ec88059e5b5a4c219983`,
+  tests `38095b5505221c4df12acef3f3905796f327ea2089ed2ca732790877fe8d7ad4`.
+  C++/build hashes unchanged; exact-byte code rereview requested. Build start/
+  end identity checks detect persistent changes, not necessarily transient
+  changed-and-restored compiler input; do not claim stronger provenance.
+- Native nine semantic mutations, timing instrumentation, fuller ABI/resource/
+  corner tests, actual parity and broad regression remain OPEN. No native
+  acceptance, learning, corpus coverage, prompt-freeze or portability claim.
+- Independent code/spec/security rereview returned **APPROVE for prebuild
+  readiness only** on the repaired hashes above; both validator blockers are
+  resolved. Architecture remains unavailable, so combined approval is withheld.
+  Root launched a serial prebuild regression including all28 banded reference
+  tests plus13 selected data-only native-adapter tests, with no DLL receipt/load.
+  Session94507 was observed live; terminal outcome is not yet recorded here.
+
+## 2026-10-02 — Native prebuild regression terminal checkpoint 85
+
+- Resumed the same session94507 rather than restarting. Root confirmed actual
+  live Python command lines and unchanged reviewed source hashes before the
+  terminal check. Final shell output recorded `pytest_exit_code=0`; session
+  completed normally with exit0. Root then read the completed XML independently:
+  **41 passed, 0 failures/errors/skips, 80.929 seconds**. Module counts are
+  exactly28 banded reference tests and13 selected data-only native-adapter tests.
+  XML SHA-256 `2acdba2fa72955f2f662fc7e85568954081ae56c9087ea249ceaff96671d6483`.
+- Canonical external evidence is `native-prebuild-regression-v1.xml` under
+  checkpoint83's evidence directory. Selection was
+  `test_alc_r0_banded_edit_token_visibility_reference or data_only or
+  rank_bijection or missing_receipt`, cache/bytecode off, locked Python3.12.
+  This is a prebuild reference/decoder regression, not actual DLL parity or
+  the entire ALUCLU suite. No native receipt/DLL was supplied or loaded.
+- Independent GPT-6.1 Sol architecture lane successfully launched on the same
+  corrected source hashes after previous agent-thread-limit dispatch failures.
+  Its verdict is pending. Preserve the earlier unavailable state as historical
+  evidence; successful dispatch alone is not CLEAR. No native build started.
+- Root preserved 15 raw RED/GREEN/regression/provenance artifacts in `results/`
+  under prefix `alc_r0_banded_native_`, verifying each copy's SHA-256 against
+  the external original. Added raw-byte attributes for the provenance `.txt`.
+  Initial package-path failure is retained separately; later successful tests
+  do not overwrite RED evidence. Regression exit record SHA-256
+  `9c1b214135fe0e1519ffeb9d3a57b48192be2a354b09660a92112dab17ef53da`
+  explicitly identifies a root-witnessed terminal record, not a separate watcher.
+
+## 2026-10-02 — Independent native architecture WATCH checkpoint 86
+
+- Independent GPT-6.1 Sol architecture reviewer read design, all four source/test/
+  build files and immutable Python reference; hashes matched checkpoint84's
+  repaired bytes. Verdict: **WATCH scoped first synthetic build readiness**,
+  no architectural blocker in all-ties mathematics, ABI, checked workspace or
+  caller-owned buffer path. This is not CLEAR or native acceptance. Combined
+  code-review skill verdict is **COMMENT**, not APPROVE, while WATCH remains.
+- Three explicit residuals: successful backend instances retain Windows handles
+  and locks for process lifetime without a release API; loader validates fewer
+  receipt provenance fields than build records; compiler/linker hash sampling
+  occurs after execution. Trusted local DLL loading is not a sandbox or safe
+  acceptance of arbitrary external DLLs. No administrator-compromise guarantee.
+- Root resumed the GPT-6.1 Sol implementation worker on the same four-file scope
+  to document bounded fixture-process lifetime, validate strict required build
+  provenance before native load, and capture/compare tool identity before/after
+  build. An external exact-byte C++ source snapshot can close the reviewed
+  transient-input ambiguity without changing kernel semantics or ceilings.
+  Require data-only RED/GREEN tests and fresh exact-byte independent reviews.
+  No build/load/commit/push is authorized in that worker handoff. Root retains
+  trajectory ownership. Native acceptance and all scientific gates remain OPEN.
+
+## 2026-10-02 — Receipt validation RED checkpoint 87, bookkeeping only
+
+- Root read the new external `receipt-red.stdout.log` and JUnit XML. Collection
+  failed on absent `read_build_receipt`, before native build/load: 1 case,
+  1 error, 0 failures/skips, time1.994 seconds, XML SHA-256
+  `e44c3615b0be33f98fb5e51d5e091a763526edb50a231a4ec1243cf9706077d5`.
+  Actual worker exit/provenance still needs separate verification; XML alone
+  is not proof of that exit code. This RED is distinct from the old absent
+  adapter RED and does not establish successful provenance validation.
+- Receipt/tool-source snapshot repairs are still authored in the four owned
+  files. Root requested private per-test native proxies instead of mutating the
+  shared module-scoped DLL function. No worker trajectory edits or native build.
+- Preserve prior completed reference/decoder test evidence and checkpoints83–87
+  in a bookkeeping-only commit, excluding all four in-progress source/test/build
+  files. This changes HEAD but is not a clean native source freeze, approval,
+  native acceptance, model run or prompt/training authority. Re-run current
+  data-only tests and exact-byte independent review after the repairs stabilize.
