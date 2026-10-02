@@ -7378,3 +7378,34 @@ Task 2 sensorium/recollection gate: CLEAN
   actual compiler/dependency exits, control1473 and nine categories. Earlier
   nonsemantic detections remain visible even if a later semantic kill occurs.
   Fixture evidence never confers timing, corpus, held-out or training authority.
+
+## 2026-10-02 — Genuine native mutation run checkpoint 100
+
+- Reviewed execution source freeze ed3cfb6 and separate worker-provenance record
+  c5d0f02 were pushed explicitly to origin/codex/unified-lifelong-cognition;
+  default git push rejected the differently named upstream, not the commit.
+  Actual execution provenance is clean c5d0f02ea876356d281a3d18343ca8e86b17d34e,
+  tree4d43f2c3d667730994651958316386cf4d88e545, distinct from baseline d739a35.
+- First real ten-artifact build at fresh external mutation-build-c5d0f02-v1:
+  all10 actual compiler exits0 and dependency exits0. Original manifest9e7b7168
+  and all reviewed sources preserved. Start-Process -Wait launcher stalled after
+  Python/compiler completion; root verified/stopped only its orphan console19732
+  and stale wrapper19544. Tool session42762 exited-1 after that intervention;
+  overall build CLI exit is UNAVAILABLE, never inferred0. No build retried.
+  Separate full data-only verify_build on all10 actual records in session20164
+  exited0. Raw launcher diagnostic/logs preserve this infrastructure limitation.
+- Direct run session2548 completed normally with actual_run_exit_code=0.
+  Control1473 ordered cases survived; allnine isolated mutant children exit0,
+  no timeout, each has a semantic counterexample with intact guards/no-write.
+  Inward-parity reaches its kill at row72; stale-column at row93; other seven
+  at row1. Preserve earlier18 invariant-detected and145 survived mutant rows;
+  these are not semantic kills and are not erased by terminal classifications.
+- Aggregate SHA256 cb3385f954aa6792429318fae3a2ddbf5c928690fecddd188bb99c62f24dc53d,
+  status all-nine-semantic-killed-non-authorizing; training_authority=false,
+  held_out_data_present=false. Root independently read category counts, allnine
+  exits/timeouts/witnesses and zero guard/no-write violations. Preserve all110
+  build/process/child/observation/log artifacts, aggregate, launcher diagnostic
+  and root-witnessed run exit. JSONL raw-byte attributes prevent normalization.
+- Independent actual-evidence code/architecture rereviews are pending. Final
+  partitioned regressions and fixed synthetic timing remain OPEN. This closes
+  neither native acceptance nor neural learning/family-B/prompt/training gates.
