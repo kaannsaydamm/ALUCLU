@@ -6359,3 +6359,83 @@ Task 2 sensorium/recollection gate: CLEAN
   pair development runner and versioned equalized-arm prompt policy require
   separate review. Current family-B freeze remains **BLOCK**; P1-P14 are
   unchanged and R0.0, R0.4, and ALC-0 remain **OPEN**.
+
+## 2026-10-02 — Full retained-cohort information audit terminal checkpoint 73
+
+- Resumed by reading the full user objective and rechecking both Desktop
+  worktrees, current command lines and durable artifacts. The 2026-09-30
+  detached v3 audit was already terminal; no duplicate run was started.
+  Root personally verified `status=python-exited`, `python_exit_code=0`, UTC
+  start `2026-09-30T00:35:19.9471382Z`, end
+  `2026-09-30T01:29:28.6304973Z` (about 54 minutes 9 seconds), every terminal
+  split/budget progress line, and the complete canonical receipt.
+- The receipt binds frozen source
+  `66355527f9321b235084587855c23e3ec909fd30`, source-tree SHA-256
+  `a22ef067d19fd7aba19f8c70c7a8b85418e0eef9359327cbf2241f1b169eb4c7`
+  and 387 tracked files. The source checkout was still clean at that commit
+  before evidence integration. Pinned source/pair/model and all four graph
+  ledger hashes match earlier evidence. Graph progress ended at **209,857**
+  rows and **19,874** candidates; retained populations are **177,291 train**
+  (171,717 safe / 5,574 vulnerable) and **22,772 validation**
+  (22,210 safe / 562 vulnerable). All ten ordered budget cells are present.
+- Exact deterministic prompt-only minimum errors across the full retained
+  populations, with complete-prompt opposing-label class counts in parentheses:
+
+  | Common budget | Train minimum errors (classes) | Validation minimum errors (classes) |
+  | ---: | ---: | ---: |
+  | 512 | 1,463 (1,368) | 113 (112) |
+  | 1,024 | 769 (728) | 56 (55) |
+  | 2,048 | 353 (336) | 26 (26) |
+  | 4,096 | 141 (135) | 7 (7) |
+  | 8,192 | 41 (39) | 3 (3) |
+
+  All per-label truncation, conflicting-observation/component counts and
+  ordered-record roots are in the raw aggregate receipt. Root checked fixed
+  budgets, population/label arithmetic, scope flags, digest format, terminal
+  progress, and nonincreasing truncation/error counts. No raw code, IDs or
+  prompt token sequences were emitted. `training_authority=false` and
+  `held_out_data_present=false` throughout.
+- Preserved byte-identical terminal evidence under
+  `results/alc_r0_retained_prompt_information_6635552_20260930.*`:
+  stdout SHA-256
+  `9f2a0bec51c102be9c8588e9494f4b96013e56b9996aeb6b8eda45c4e9f0576c`;
+  stderr SHA-256
+  `c10ffe7be3b58beefb3824eb34ff2c8d1d1e811d079250f7120ea1fc779b7cbe`;
+  exit-log SHA-256
+  `f65721c0a2dd600cf9685be55a7f2628cedf2446df3ca4dff6d0f6c80d6afb8b`.
+  The actual Windows launcher is archived as `.run.ps1`. The tokenizer's
+  original-sequence warning `10382 > 8192` preceded the frozen head/tail
+  retention; this diagnostic ran no model forward and terminal exit was 0.
+- Preserved unsuccessful execution attempts separately. The first session-
+  coupled attempt produced empty stdout/stderr and no exit/receipt; its Python
+  process vanished during a Codex sandbox-service interruption. A contemporaneous
+  sandbox-service event was observed, but does not prove the termination cause.
+  Its empty logs are `..._interrupted_20260930.*`. Detached v2 stopped at the
+  first graph progress message because PowerShell `ErrorActionPreference=Stop`
+  treated native stderr as `NativeCommandError`; its recorded launcher code
+  **125** is not a pytest/model/scientific failure. Exact v2 logs and launcher
+  are `..._launcher_v2_20260930.*`. Corrected v3 redirected native stdout/stderr
+  directly, waited for the worker and captured its actual exit code; stdout-
+  plus-stderr and intentional exit-3 probes had verified the launcher behavior.
+- Independent GPT-6.1 Sol terminal/code/scientific-interpretation review returned
+  **CLEAR for recording this diagnostic**, with **WATCH** on class imbalance
+  and subsequent resource coverage. Safe observations comprise about 96.86%
+  train / 97.53% validation: small overall error floors do not prove minority
+  recall, macro-F1, semantic sufficiency, learnability or a preferred budget.
+  This audit bounds deterministic same-prompt classification only. No new
+  prompt policy, numerical threshold, test acquisition or training was approved.
+- The fixture helper and final test evidence from checkpoint 72 were committed
+  separately as `060d8bbec64781d8c29998a2112653b0938c708d`. Root reproduced its
+  allocation probe from the committed script with exit 0 and byte-identical
+  aggregate stdout. Explicit LF attributes now preserve helper/test/script
+  executed byte identity across checkouts; raw evidence remains unfiltered.
+  Relevant source/test hashes and final JUnit values remain those in checkpoint
+  72. No helper logic or test was changed after those final runs.
+- Next prerequisite is a separately declared metadata-only full-token length/
+  cell-cost census of the same **4,344 train / 482 validation** both-retained
+  author pairs, plus exact admission/unresolved semantics before a full edit-
+  exposure runner. The 4,194,304-cell helper cap and proposed 100-million-cell
+  total cap cannot be presumed to cover this population. Poor coverage must
+  lead to an exact scalable method or explicit unresolved reporting, not silent
+  subset selection or full-endpoint truncation. The family-B prompt freeze
+  remains **BLOCK**; R0.0, R0.4 and ALC-0 remain **OPEN**.

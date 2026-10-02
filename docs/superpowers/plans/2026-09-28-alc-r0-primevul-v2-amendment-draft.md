@@ -248,6 +248,35 @@ change P1-P14, authorize training, access test, or mechanically choose a
 budget. Author-pair changed-token visibility and a separately versioned
 equalized-arm prompt policy still require scientific review before freeze.
 
+The declared full-cohort audit completed from clean source commit
+`66355527f9321b235084587855c23e3ec909fd30` on 2026-09-30, with Python exit
+**0** and all ten split/budget cells complete. Root verification on 2026-10-02
+confirmed 177,291 retained train and 22,772 retained validation observations,
+all four graph roots, pinned source/model provenance, and false training/test
+authority flags. The exact minimum deterministic prompt-only error counts are:
+
+| Common token budget | Train minimum errors | Validation minimum errors |
+| ---: | ---: | ---: |
+| 512 | 1,463 | 113 |
+| 1,024 | 769 | 56 |
+| 2,048 | 353 | 26 |
+| 4,096 | 141 | 7 |
+| 8,192 | 41 | 3 |
+
+Complete per-label truncation, conflicting-class/observation/component counts,
+and ordered record roots are preserved in
+`results/alc_r0_retained_prompt_information_6635552_20260930.stdout.log`,
+SHA-256 `9f2a0bec51c102be9c8588e9494f4b96013e56b9996aeb6b8eda45c4e9f0576c`.
+Independent GPT-6.1 Sol terminal review returned **CLEAR for recording this
+diagnostic**, with **WATCH** on interpretation: vulnerable support is only
+5,574 train and 562 validation observations; a small overall error fraction
+does not establish minority recall, macro-F1, semantic sufficiency, or learning.
+The audit does not select a budget, resolve the prompt freeze, or alter P1–P14.
+The completed fixture-only edit-token reference has not been run on these data.
+Before an exact full-data visibility runner is admitted, separately declare
+its full-token length/cell-cost census, deterministic resource admission rules,
+and explicit unresolved/zero-distance denominators and component strata.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by

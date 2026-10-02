@@ -1,0 +1,8 @@
+python.exe : graph progress 1/209857 candidates=0
+At C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\alc_r0_retained_prompt_info_6635552_detached_v2_20
+260930\run.ps1:40 char:9
++         & $python -m aluclu.alc_r0.retained_prompt_information $sourc ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (graph progress 1/209857 candidates=0:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
