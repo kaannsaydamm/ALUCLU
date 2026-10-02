@@ -1,0 +1,11 @@
+Worker-observed Start-Process -NoNewWindow -Wait -PassThru ExitCodes, not independent watcher.
+cwd=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+PYTHONPATH=<cwd>\src
+PYTHONDONTWRITEBYTECODE=1
+executable=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+RED args=-B -m pytest -p no:cacheprovider tests/test_alc_r0_banded_native.py -k data_only_invalid_receipts_or_build_snapshot_pure_bytes --junitxml=<evidence>\receipt-red.xml
+RED collection import of absent read_build_receipt failed before selector evaluation. Exit2.
+GREEN args=-B -m pytest -p no:cacheprovider tests/test_alc_r0_banded_native.py -k "data_only or build_snapshot or rank_bijection or missing_receipt" --junitxml=<evidence>\receipt-green.xml
+GREEN initial18passed25deselected exit0.
+GREEN v2 same selector --junitxml=<evidence>\receipt-green-v2.xml; final26passed25deselected exit0.
+Each run redirected stdout/stderr to matching evidence stem logs. No native compile, native load, model/corpus/tokenizer/training/heldout action.

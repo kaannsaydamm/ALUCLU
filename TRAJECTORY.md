@@ -7093,3 +7093,63 @@ Task 2 sensorium/recollection gate: CLEAN
   files. This changes HEAD but is not a clean native source freeze, approval,
   native acceptance, model run or prompt/training authority. Re-run current
   data-only tests and exact-byte independent review after the repairs stabilize.
+
+## 2026-10-02 — Native provenance repairs and Windows byte-format checkpoint 88
+
+- Worker completed strict data-only receipt parsing/provenance validation before
+  loading; exact source allowlist/current and committed bytes/tree, false flags,
+  snapshot/include/tool/log/command/environment/status binding. Bounded fixture
+  process retains one backend (including post-load failures); no premature close.
+  Private per-test proxy replaced shared DLL monkeypatch. Build compiles an
+  external exact-byte C++ snapshot with snapshot/include deny-write/delete read
+  handles and compares compiler/linker hashes/versions before/after execution.
+- Root read worker exit records, stdout/provenance and XML: receipt RED exit2,
+  1 collection error1.994s, e44c3615 hash from checkpoint87; first GREEN exit0,
+  18 passed4.008s, XML `90b31fdd38b6838ed80c716628fb37777253f5c18f1db04adec8cedeef53200a`;
+  final worker GREEN exit0,26 passed3.209s, XML
+  `dbe39beda1418a3d3a0260418600bd3acf03196919ed36e07bd44352483af120`.
+  Zero failures/errors/skips for GREEN. Malformed/basic full-key receipts exercise
+  early rejection only: no complete successful receipt positive control exists
+  before the actual first build. Do not infer deep acceptance from those tests.
+- Both independent review lanes found a new Windows producer/consumer mismatch:
+  default Path.write_text generated CRLF while receipt validator required LF.
+  Root extracted the unchanged production writer into write_build_exit and
+  reproduced actual temporary-file mismatches for exit codes0 and4: RED exit1,
+  2 failures,0 errors/skips,3.831s, XML
+  `e26a53f969dccfab96295380626bc7fba4433fc0ba6ed2a5d59df1ea48539885`.
+  Fixed explicit ASCII write_bytes plus LF; main calls the tested helper.
+  After Ruff format/check passed, root independently ran all28 Python controls:
+  exit0,28 passed,0 failures/errors/skips,2.996s, XML
+  `289305ad7ea7863fe1b7f75e0421e2cf088b2e3daef457f936f1243c0a40555c`.
+- Final source hashes: C++ `c577846b7f5de113230b89224d96a707eceecaf7659cad2b316d2138201f96ad`;
+  adapter `a8dec598fb796b2703d8bfe01d7358e43edb90f9c85c4e58d2a276a9949452d2`;
+  build `b6b541aebbd0840104cbba9b50dd3992b8b536c0c64c1c2ff4719871dbba8620`;
+  tests `8c7ea654f67584be1665b54f5d094d028a127f9b094a0560fe8d7e7a005c79e9`.
+  Independent GPT-6.1 Sol code rereview **APPROVE**, architecture **CLEAR** on
+  these exact bytes, scoped first synthetic build readiness only. Previous
+  REQUEST CHANGES/BLOCK remain historical evidence, not erased by this repair.
+- Root launched serial final prebuild regression session52551: all28 immutable
+  banded reference tests plus28 selected Python adapter/build controls. No DLL
+  receipt supplied or loaded; terminal result pending. First build additionally
+  requires clean committed source, fresh external output directory, explicit
+  process-local CL/_CL_ clearing and recorded launch provenance. Validate actual
+  complete receipt data-only immediately after build and before native loading.
+  No full-environment reproducibility, native correctness/performance, learning,
+  corpus sufficiency or prompt/training authority claim follows.
+
+## 2026-10-02 — Final native source prebuild regression checkpoint 89
+
+- Session52551 completed normally, actual `pytest_exit_code=0` observed by root.
+  Root reread final XML: **56 passed,0 failures/errors/skips,93.820 seconds**;
+  exactly28 immutable banded reference cases plus28 selected Python adapter/
+  build cases. XML SHA-256
+  `8c6cd571a645e9b2fdef727f6be7aebaf3eb87c1975142ed356fabd55784e45e`.
+  Source hashes still match independently reviewed checkpoint88 bytes.
+- Preserve regression XML and explicit root-witnessed exit record. Commit the
+  reviewed four source/test/build files with related test evidence/trajectory
+  as the initial native source freeze. This is a build-readiness checkpoint,
+  not a claim that a DLL exists or native acceptance passed. Confirm clean
+  status before the builder's own clean-source checks. First build uses a fresh
+  external directory and clears process-local CL/_CL_; complete receipt must
+  validate data-only before any load. Native mathematical and resource gates,
+  mutations, further negatives and timing remain required.
