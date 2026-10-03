@@ -7624,3 +7624,61 @@ Task 2 sensorium/recollection gate: CLEAN
   reviews required before RED/implementation; code/regression/clean-source and
   exact invocation review required before any pinned execution. Design gates
   pending, no new module or census exists yet. All scientific gates remain OPEN.
+
+## 2026-10-03 — Banded census design and RED checkpoint 109
+
+- Independent GPT-6.1 Sol design code APPROVE / architecture CLEAR exact
+  declarationa14ed9fcc5ee018699e50249a55d1be5962d902045d3b779ec65aac4f9daf0b8;
+  frozen declaration committedf95812f before implementation. Both lanes
+  explicitly require distinguishing hypothetical payload from reference actual
+  allocated payload on rejected inputs. No implementation/data acceptance.
+- Root owns new module/tests. Absent-module RED session69944 actual pytest2 and
+  shell2,1 collection error; XML SHA256
+  585b42631e6351b34e19131d58079c9e0efc53ff38fad45bee468f2e9eb9f37c.
+  Only afterward implemented full-token geometry, aggregate cohort accounting,
+  immutable helper reuse, verified development reader/graph and guarded CLI.
+  No frozen native/reference/rectangular files changed; no real data run.
+- First implementation check session19953 actual pytest1/shell1:33 passed,
+  1 failed; XML SHA256
+  198cd783bb2754b22637d2ab5493c11868a44b44ef079df53a628434d7321044.
+  Failure was overbroad raw-leak fixture search `tokens_`, matching allowed
+  endpoint_tokens_sum aggregate key. Repair searches a JSON string value prefix
+  instead. No raw code/token/ID output permission was widened. Preserve v1.
+- Ruff format/check succeeded. Added explicit rejected hypothetical-vs-allocated
+  payload test, known-zero/unknown histogram accounting, shared-root unions,
+  callback metadata snapshot, source and paired-byte terminal mutation,
+  frozen token validation and dependency-pin mutation coverage. Final GREEN,
+  relevant regression and independent implementation gates still pending.
+
+## 2026-10-03 — Banded census fixture and implementation gate checkpoint 110
+
+- Corrected focused GREEN session50379 actual pytest0/shell0:44 passed,
+  0 failures/errors/skips,16.033s XML time, SHA256
+  39c7d1ba6ad3b6acfd7252e34f3be2351dd8d62646ca8d29251bc9ec3d6bbced.
+  Root personally parsed terminal JUnit, not progress or anticipated count.
+- Relevant nine-module regression session74155 actual pytest0/shell0:
+  175 passed/1 skipped,176 total,312.257s XML time, SHA256
+  3ab26d6dc0e00ad3e916d10a8f959703e81825e19e8b193796056141417ccfb1.
+  Covers new/rectangular census, banded reference, scalable/full graph, paired
+  source, source-checkout/model-inventory mutation controls, acquisition and
+  defect prompt. Only skip is optional pinned offline model path not supplied
+  for defect candidate scoring. No claim from that skipped integration control.
+  Traced reference allocation control was CPU-active while terminal output was
+  quiet; root verified live process16000 and continued same session, no restart.
+- Separate GPT-6.1 Sol implementation code APPROVE and architecture CLEAR:
+  module4e21e3f544f9e7e7d6a948dc564fe26e4c4b4d0824edb4b57479483c41fce230,
+  tests157315b772ffc00c6df1ef1b4587d8aace2341236198b431ba2738270012cece.
+  Full files inspected independently; no reviewer-executed tests were invented.
+  Root rehashed final bytes after regression, unchanged. Frozen reference,
+  native, builder, timing and rectangular census files have no diff.
+- Architecture notes actual run must verify4344/482 emitted universes even
+  though input/graph commitments plus deterministic selection bind them. Code
+  review requires retaining old terminal inventory/checkout/shared-cohort tests;
+  the relevant regression does so. Both scope geometry only, no distance proof.
+- Preserve all four raw XMLs byte-for-byte plus root-witnessed exit notes,
+  including absent-module RED and overbroad fixture assertion failure. Test
+  sources were uncommitted working bytes during these runs; do not invent an
+  already-clean committed-source provenance. Freeze these exact reviewed and
+  tested bytes now. Exact pinned CLI launch review and subsequent verified
+  full-development receipt remain OPEN; no real census or edit DP has run.
+  Free disk60,138,205,184B; free physical memory3776MiB at inspected snapshot.
