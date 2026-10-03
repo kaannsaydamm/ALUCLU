@@ -22,6 +22,7 @@ from transformers.models.llama.modeling_llama import (
     eager_attention_forward,
 )
 
+from aluclu.alc_r0.checkpoint_execution import CheckpointExecutionError
 from aluclu.alc_r0.host import VerifiedHost
 from aluclu.alc_r0.host_wrapper import HostWrapperError, PinnedLlamaCapsuleWrapper
 from aluclu.alc_r0.research_capsule import (
@@ -108,9 +109,16 @@ class PinnedLlamaLoRAWrapper(PinnedLlamaCapsuleWrapper):
         self.lora: MatchedQProjLoRA | None = None
 
     def mount(self, capsule: ResearchCapsuleV0) -> None:
+        self._assert_checkpoint_mutation_allowed()
         raise HostWrapperError("matched LoRA arm cannot co-mount a capsule")
 
+    def _checkpoint_factors(self) -> nn.Module:
+        if self.lora is None:
+            raise CheckpointExecutionError("checkpoint requires mounted LoRA")
+        return self.lora
+
     def mount_lora(self, lora: MatchedQProjLoRA) -> None:
+        self._assert_checkpoint_mutation_allowed()
         if not isinstance(lora, MatchedQProjLoRA):
             raise TypeError("mount requires MatchedQProjLoRA")
         base_parameter = next(self.base.parameters())
@@ -123,6 +131,7 @@ class PinnedLlamaLoRAWrapper(PinnedLlamaCapsuleWrapper):
         lora.train(self.training)
 
     def detach_lora(self) -> None:
+        self._assert_checkpoint_mutation_allowed()
         self.lora = None
 
     def detach(self) -> None:

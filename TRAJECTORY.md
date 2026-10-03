@@ -8361,3 +8361,71 @@ Task 2 sensorium/recollection gate: CLEAN
   Ruff passed; root reconfirmed27binding cases and zero excluded cases in v4.
   All four attempts retained. Publishing only checkpoint124 changes; full unified
   learning/ALC objective remains ACTIVE and actual-host integration remains next.
+
+### Checkpoint 125 — wrapper checkpoint lifecycle bridge (2026-10-04)
+
+- Prior goal turn PROGRESS: binding prerequisite committed/pushed5bc1118.
+  Revalidated clean authoritative Desktop checkout and full unified objective.
+- Added fake-base CPU wrapper lifecycle RED tests before implementation: one
+  controller, live capsule/LoRA getters, nested denial, pre-mutation checks for
+  train/eval/_apply/mount/detach/replacement/controller, no default-forward bypass,
+  release and missing-arm denial. Fixtures bypass host constructor explicitly;
+  they certify NO VerifiedHost/model/parity/resource/learning behavior.
+- Scope is lifecycle portion of detail section C. Actual opt-in forward loop and
+  complete host computational inventory remain subsequent integration obligations;
+  no checkpoint forward authorization is inferred from a session factory.
+- Actual REDv1 pytest/shell1:25 failures,0errors/skips,11.837s, missing initializer;
+  root parsed XML SHA60132eef624976b82d229b5ca06760b770ebcf1f871aaea57820d6c91f85610b.
+  Added one persistent owner controller, arm-specific factor getters, explicit
+  session factory and pre-mutation guards including protected attribute deletion/
+  replacement. Default forward denies active lease; opt-in path not implemented.
+  GREEN and relevant regression/review remain pending, full goal ACTIVE.
+- GREENv2 actual pytest/shell0:25passed,0failure/error/skip,10.108s, XML
+  0efe2c0426e5055909d96ce9712478a7fc3adfff7f476562c33f2d2a4f5a5824.
+  Added direct state-load/requires-grad/zero-grad/module/parameter/buffer mutator
+  counterexamples plus protected deletion and closed-controller preservation.
+  Actual expanded-mutator RED precedes repairs; no host run or forward PASS.
+- Actual mutator REDv3 pytest/shell1:12 failures DID NOT RAISE,0errors/skips,
+  9.985s, XML0448a93cd2e84d628df824d7b294c37b55337b03139ce7b58a9802dcccde0668.
+  Added prechecks on state load/requires_grad/zero_grad/module registration and
+  parameter/buffer registration, plus register_module alias/set_submodule bypass
+  prevention. Expanded alias tests before final regression. Raw child/.data writes
+  still rely on engine guards; hostile Python interception not claimed.
+- Regressionv4 actual0:419passed,45lifecycle cases,0failure/error/skip,16.038s,
+  root parsed XML61ac84469eb70eb51829f3e58665e213a1d951badd734037adb55bce5039b4a4.
+  Independent code review identified ordinary nonprotected Module assignment/
+  deletion bypassing add_module override via nn.Module.__setattr__. Added six
+  arbitrary module/parameter/buffer/plain-attribute counterexamples before repair.
+  Prior regression not final; approval withheld pending RED/repair/rereview.
+- First review synthesis REQUEST CHANGES (code REQUEST CHANGES despite architecture
+  CLEAR). Actual attribute REDv5 exit1:4failures/2passes,0errors/skips,12.819s,
+  XMLd43e8a2ff9d2060c9a0aaf1240efbab6abc92d95dca718d76d3f1bd173a28662.
+  Parameter/buffer setters already delegated to guarded registration; module/plain
+  setters and module/buffer deletion did not. Guard all ordinary wrapper attribute
+  writes/deletes before nn.Module implementation. Final regression/rereview next.
+- Added positive no-lease delegation fixtures for both arms (state loading,
+  gradients/dtype changes, register_module/set_submodule strict flag, nonpersistent
+  buffers, parameters and attribute deletion) to check compatibility as well as
+  rejection. Existing v6 running attempt remains separate; finalv7 will include
+  these additions. No recorded artifact is overwritten/reinterpreted.
+- Final formatted regressionv7 actual pytest/shell0:427passed,53lifecycle,
+  0failures/errors/skips,41.449s. Root verified counts and absent excluded assets,
+  XML2ae67e256a61b943134ec494c42354066c266337e1782b83917872e09c2b3b61.
+  Both repaired-byte independent reviews dispatched; added seven-attempt evidence
+  and reproduction record plus LF/rawXML attributes. Not wholewrapper/learning
+  PASS. Full objective ACTIVE; opt-in loop and host inventory are next.
+- Final exact-byte rereviews: code APPROVE, architecture CLEAR; synthesis APPROVE
+  LIFECYCLE BRIDGE ONLY. Reviewer findings/first rejection/repairs retained in
+  evidence record. Root will verify staged source/test/XML bytes before scoped
+  commit/push. This turn PROGRESS; full neural/portable/longitudinal goal remains
+  ACTIVE with actual forward/inventory/parity/resource/scientific gates still OPEN.
+- Publication raw-byte precheck stopped before commit: host_wrapper retained CRLF
+  despite formatting, while new LF attribute normalizes index bytes. Mechanically
+  normalize host_wrapper only to LF; final source hash/rereview/regressionv8 refresh
+  required before publication. No semantic change or prior attempt deletion.
+- FinalLFv8 actual pytest/shell0:427passed,53lifecycle,0failure/error/skip,13.100s,
+  XML9ea94d45d88b6db68400b85fced2cf1c15443484a3e4919ec106303f2e12057c.
+  Both finalLF byte rereviews returned code APPROVE/architecture CLEAR on host
+  8ac521e9eaa7265b9a801ad2d5517450320c8fd943d66be53219a990859e36fa.
+  Root parsed terminal counters/hash/excluded cases; raw staged verification and
+  scoped publication next. No actual-host forward/learning claim; objective ACTIVE.

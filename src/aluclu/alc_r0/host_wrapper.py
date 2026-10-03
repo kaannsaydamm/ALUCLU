@@ -17,6 +17,11 @@ from transformers.masking_utils import create_causal_mask
 from transformers.modeling_outputs import CausalLMOutputWithPast
 from transformers.models.llama.modeling_llama import LlamaDecoderLayer, LlamaForCausalLM
 
+from aluclu.alc_r0.checkpoint_execution import (
+    CheckpointController,
+    CheckpointExecutionError,
+    CheckpointSession,
+)
 from aluclu.alc_r0.host import SMOLLM2_135M_CONFIG, VerifiedHost
 from aluclu.alc_r0.research_capsule import ResearchCapsuleV0
 
@@ -45,14 +50,94 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
 
         self.base = host.model
         self.capsule: ResearchCapsuleV0 | None = None
+        self._initialize_checkpoint_controller()
         self.eval()
 
+    def _initialize_checkpoint_controller(self) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        if "_checkpoint_controller" in self.__dict__:
+            raise CheckpointExecutionError("checkpoint controller already initialized")
+        self._checkpoint_controller = CheckpointController(
+            self,
+            base_getter=lambda: self.base,
+            factor_getter=self._checkpoint_factors,
+            layer_count=30,
+        )
+
+    def _checkpoint_factors(self) -> nn.Module:
+        if self.capsule is None:
+            raise CheckpointExecutionError("checkpoint requires mounted capsule")
+        return self.capsule
+
+    def checkpoint_session(self) -> CheckpointSession:
+        """Create an owner-local lease; this does not authorize model training.
+
+        The checkpoint forward path and host computational inventory are separate
+        integration gates. Default forward is denied during an active lease.
+        """
+        return self._checkpoint_controller.session()
+
+    def _assert_checkpoint_mutation_allowed(self) -> None:
+        controller = self.__dict__.get("_checkpoint_controller")
+        if controller is not None:
+            controller.assert_mutation_allowed()
+
+    def __setattr__(self, name, value) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        if name == "_checkpoint_controller" and name in self.__dict__:
+            raise CheckpointExecutionError("checkpoint controller already initialized")
+        super().__setattr__(name, value)
+
+    def __delattr__(self, name) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        if name == "_checkpoint_controller":
+            raise CheckpointExecutionError("checkpoint controller cannot be deleted")
+        super().__delattr__(name)
+
+    def _apply(self, fn, recurse=True):
+        self._assert_checkpoint_mutation_allowed()
+        return super()._apply(fn, recurse=recurse)
+
+    def load_state_dict(self, state_dict, strict=True, assign=False):
+        self._assert_checkpoint_mutation_allowed()
+        return super().load_state_dict(state_dict, strict=strict, assign=assign)
+
+    def requires_grad_(self, requires_grad=True):
+        self._assert_checkpoint_mutation_allowed()
+        return super().requires_grad_(requires_grad)
+
+    def zero_grad(self, set_to_none=True) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        super().zero_grad(set_to_none=set_to_none)
+
+    def add_module(self, name, module) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        super().add_module(name, module)
+
+    def register_module(self, name, module) -> None:
+        # nn.Module's alias otherwise bypasses this class's add_module override.
+        self.add_module(name, module)
+
+    def set_submodule(self, target, module, strict=False) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        super().set_submodule(target, module, strict=strict)
+
+    def register_parameter(self, name, param) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        super().register_parameter(name, param)
+
+    def register_buffer(self, name, tensor, persistent=True) -> None:
+        self._assert_checkpoint_mutation_allowed()
+        super().register_buffer(name, tensor, persistent=persistent)
+
     def train(self, mode: bool = True) -> PinnedLlamaCapsuleWrapper:
+        self._assert_checkpoint_mutation_allowed()
         super().train(mode)
         self.base.eval()
         return self
 
     def mount(self, capsule: ResearchCapsuleV0) -> None:
+        self._assert_checkpoint_mutation_allowed()
         if not isinstance(capsule, ResearchCapsuleV0):
             raise TypeError("mount requires ResearchCapsuleV0")
         base_parameter = next(self.base.parameters())
@@ -68,6 +153,7 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
         capsule.train(self.training)
 
     def detach(self) -> None:
+        self._assert_checkpoint_mutation_allowed()
         self.capsule = None
 
     def _run_decoder_layer(
@@ -102,6 +188,8 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
         use_cache: bool | None = None,
         logits_to_keep: int | torch.Tensor = 0,
     ) -> CausalLMOutputWithPast:
+        # No default-forward escape hatch while a checkpoint lease is active.
+        self._assert_checkpoint_mutation_allowed()
         if self.base.training or any(p.requires_grad for p in self.base.parameters()):
             raise HostWrapperError("host base mode or frozen parameters drifted")
         if (input_ids is None) ^ (inputs_embeds is not None):
