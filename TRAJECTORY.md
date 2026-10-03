@@ -8086,3 +8086,73 @@ Task 2 sensorium/recollection gate: CLEAN
   matrix, runtime/receipt policy), then TDD. No extra generic corpus audit is
   required to specify that detail. Dataset rights/sealer/R0.0 gates remain open,
   actual host fit is unmeasured, unchanged512 freeze BLOCK, full roadmap ACTIVE.
+
+## 2026-10-03 — Checkpoint implementation detail checkpoint 121
+
+- Re-read complete user objective (truncated combined output repaired with EOF
+  tail), candidate, actual wrapper tests and frozen optimizer/q+v contracts.
+  Clean Desktop HEAD2b716a5 confirmed. Previous turn changed authoritative
+  reviewed candidate/state and published evidence, so classified progress.
+- Added prospective implementation/parity/resource detail: first pure tensor
+  fidelity arithmetic, then explicit leased wrapper replay/ticket lifetime,
+  fixed actual-host CPU/GPU synthetic parity and full-loss16-accum/two-update
+  resource qualification. Frozen small-gradient mutation/zero patterns and
+  base/optimizer-state parity; default/cache evaluation path remains unchanged.
+- Primary resource matrix18cells plus two distinct profile/RAG inference cells;
+  all-layer q+v reference is separately OPEN, never inferred from q-only. Actual
+  host runs require future exact-byte/invocation review and source freeze plus
+  existing resource budget journal; no model/task/training run authorized now.
+  Detail independent code/science review is pending before implementation.
+- Independent detail code APPROVE and architecture CLEAR for SHA256
+  9eedbade26957c0105841ca5438abb75162db80fcfb4369cc27f810bc0ca4a1e.
+  First pure fidelity TDD may proceed; later wrapper/model gates remain separate.
+  Review clarifications: scaled ratios/cosine avoid reconstructed subnormal
+  norm errors; exact mode compares original contiguous logical bytes. Resource
+  peaks are absolute with separate baseline, never baseline added twice.
+- Added first pure CPU fidelity RED tests before module implementation, covering
+  small-gradient mutations, signed zero/layout, subnormals, invalid tensors,
+  exhaustive named gradients and accumulated-gradient failure. No model,
+  checkpoint execution, optimizer update or corpus access is in these fixtures.
+  Actual RED execution is the next step, not yet claimed passed.
+- Actual RED session23470 terminated pytest/shell2 with one collection error:
+  checkpoint_fidelity module missing, as intended. Added model-free implementation
+  afterwards. Relative/cosine arithmetic uses separately scaled vectors, not
+  rounded reconstructed subnormal norms; original logical bytes preserve signed
+  zero under exact mode. First GREEN/regression execution remains pending.
+- First GREEN actual0:38passed,0failures/errors/skips,2.940s; XML
+  acc2ef5ff771c78cfd06e6bdc34ecd18aa1537e4b18e92b876b406ccb84883b3.
+  RED XML1collection error/8.863s,
+  1411d2029a2a332a1090ae2df4ccaec98eae64a4d8259adf45c4f20def9798e2.
+- First regression actual0:131passed,0failures/errors/skips,28.586s; XML
+  a110208a736726938860678fea338e0912e0ac3856be18aafdf04b021e5ac96c.
+  Important scope exception: an existing Banking-scoring real-tokenizer case
+  was inadvertently included. It read the pinned Banking development labels
+  and local tokenizer; it actually passed, not skipped. No host forward,
+  optimizer step or held-out access occurred, but do NOT label that entire
+  regression model/asset-free. The first new component fixtures remain pure.
+  A corrected explicit deselection is required for the intended pure boundary.
+- Expanded pure negative tests for reference validation, supported dtypes,
+  finite-input/nonfinite-difference and malformed named containers; sparse
+  fixture explicitly checks its construction invariants to remove the warning.
+  Final-byte pure GREEN/regression and independent code review are next.
+- Final-byte pure regression actual pytest/shell0:143passed,0failures/errors/
+  skips,3.052s, one real-tokenizer asset test explicitly deselected, not skipped.
+  Root personally parsed XML/hash474c4ccf48485f611e4ad3c5beefd61b1136b55bcbd68321369aaf12ed6ca910;
+  Ruff format/check passed. Source SHA256
+  1a847beb3f7d6da8c9d6e74baf3ed150e972a823f5c1802973d7c0c4b2c675fb;
+  test8a9d90af58e26f138df4b86aeeed02b0d3fa118d0cbcf370eb98f66720bafac4.
+  Both independent exact-byte implementation review lanes dispatched. This
+  component implements compare_tensor/named_tensors only; canonical AdamW state
+  adapter, session/wrapper and actual-host runs remain separate unfinished work.
+  XMLs are persisted; stdout/stderr are tool-captured, not redirected raw logs.
+- Exact-byte implementation reviews returned independent code/spec APPROVE and
+  architecture CLEAR; synthesis APPROVE only compare_tensor/named_tensors.
+  No actionable findings; both did read-only inspection without rerunning tests.
+  Recorded verdicts and strongest residual caller/snapshot/lifecycle objection
+  in docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-fidelity-pure.md.
+  Added LF attributes for source/test/detail and -text XML evidence; verify
+  staged byte identity before publication. Scope is not whole-checkpoint PASS.
+- Next: canonical complete AdamW state/name/step/hyperparameter adapter TDD,
+  then outstanding-graph/session replay implementation and wrapper integration.
+  Actual-host parity/resource invocation, v3 adoption, source rights, sealer,
+  R0.0 validator and real neural capability remain OPEN. Full goal ACTIVE.
