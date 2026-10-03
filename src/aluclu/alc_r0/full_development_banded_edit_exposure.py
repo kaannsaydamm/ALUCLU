@@ -5,7 +5,9 @@ reviewed pinned-source CLI is required before any real development execution.
 """
 
 import hashlib
+import re
 from dataclasses import asdict
+from pathlib import Path
 
 from .banded_edit_token_visibility_reference import (
     BandedEditVisibilityLimits,
@@ -17,10 +19,23 @@ from .banded_pair_resource_census import (
     _summary,
     audit_banded_pair_resource_census,
     banded_pair_resource_cost,
+    verify_geometry_dependencies,
 )
 from .canonical import canonical_json_bytes, sha256_bytes
 from .edit_token_visibility_reference import BudgetExposure
+from .primevul_pair_clone_full import _read_source_split
+from .primevul_pair_clone_scalable import build_pair_clone_scalable
+from .primevul_pairs_source import (
+    PRIMEVUL_ORIGINAL_PAIRS,
+    PrimeVulPairExpectation,
+    verify_primevul_development_pairs,
+)
+from .primevul_source import (
+    PRIMEVUL_ORIGINAL_DEVELOPMENT,
+    PrimeVulDevelopmentExpectation,
+)
 from .retained_pair_resource_census import _full_code_ids
+from .retained_paired_prompt_contrast import _PINNED_GRAPH_LEDGERS, _read_pair_rows
 
 MAX_EXPOSURE_CELLS = 3_000_000_000
 _FIELDS = (
@@ -427,4 +442,191 @@ def audit_full_development_banded_edit_exposure(
     )
     out["ordered_internal_records_sha256"] = ordered.hexdigest()
     out["geometry_prepass"] = prepass
+    return out
+
+
+def run_verified_development_edit_exposure(
+    source_dir,
+    paired_dir,
+    tokenizer,
+    *,
+    geometry_receipt,
+    backend_factory,
+    model_inventory_sha256,
+    source_expectation=PRIMEVUL_ORIGINAL_DEVELOPMENT,
+    pair_expectation=PRIMEVUL_ORIGINAL_PAIRS,
+    limits=BandedEditVisibilityLimits(),
+    distance_threshold=512,
+    total_cell_cap=MAX_EXPOSURE_CELLS,
+    graph_progress=None,
+    progress=None,
+):
+    """Verified development readers and one graph; explicit fixture backend seam.
+
+    Production CLI must supply a pinned native factory and independently bind
+    receipt bytes, model inventory and clean source before/after this call.
+    """
+    _require(
+        type(total_cell_cap) is int and 0 < total_cell_cap <= MAX_EXPOSURE_CELLS,
+        "invalid new exposure workload cap",
+    )
+    _validate((), (), (1, 2, 3, 4, 5), distance_threshold, limits)
+    _require(callable(backend_factory), "explicit backend factory required")
+    _require(
+        type(source_expectation) is PrimeVulDevelopmentExpectation
+        and type(pair_expectation) is PrimeVulPairExpectation,
+        "source expectations required",
+    )
+    pinned = source_expectation == PRIMEVUL_ORIGINAL_DEVELOPMENT
+    _require(
+        pinned == (pair_expectation == PRIMEVUL_ORIGINAL_PAIRS),
+        "mixed source expectations",
+    )
+    if pinned:
+        _require(
+            limits == BandedEditVisibilityLimits()
+            and distance_threshold == 512
+            and total_cell_cap == MAX_EXPOSURE_CELLS,
+            "pinned exposure policy changed",
+        )
+        verify_geometry_dependencies(Path(__file__).resolve().parents[3])
+    _require(
+        type(model_inventory_sha256) is str
+        and re.fullmatch("[a-f0-9]{64}", model_inventory_sha256) is not None,
+        "model inventory hash required",
+    )
+    _require(type(geometry_receipt) is dict, "geometry provenance receipt required")
+    # Snapshot external receipt before graph/tokenizer/backend callbacks.
+    import json
+
+    prior = json.loads(canonical_json_bytes(geometry_receipt))
+    _require(
+        source_expectation.train_rows + source_expectation.validation_rows <= 250000
+        and pair_expectation.train_pairs + pair_expectation.validation_pairs <= 250000,
+        "development graph/census bound exceeded",
+    )
+    source_dir, paired_dir = Path(source_dir), Path(paired_dir)
+    original = verify_primevul_development_pairs(
+        source_dir,
+        paired_dir,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+    train = _read_source_split(
+        source_dir / "primevul_train.jsonl",
+        expected_sha256=source_expectation.train_sha256,
+        expected_rows=source_expectation.train_rows,
+    )
+    validation = _read_source_split(
+        source_dir / "primevul_valid.jsonl",
+        expected_sha256=source_expectation.validation_sha256,
+        expected_rows=source_expectation.validation_rows,
+    )
+    train_pairs = _read_pair_rows(
+        paired_dir / "primevul_train_paired.jsonl",
+        expected_sha256=pair_expectation.train_sha256,
+        expected_pairs=pair_expectation.train_pairs,
+    )
+    validation_pairs = _read_pair_rows(
+        paired_dir / "primevul_valid_paired.jsonl",
+        expected_sha256=pair_expectation.validation_sha256,
+        expected_pairs=pair_expectation.validation_pairs,
+    )
+    edges = tuple(row[:2] for row in train_pairs + validation_pairs)
+    graph = build_pair_clone_scalable(
+        train=train, validation=validation, pair_edges=edges, progress=graph_progress
+    )
+    ledgers = dict(
+        pair_edge_ledger_sha256=sha256_bytes(canonical_json_bytes(edges)),
+        component_root_ledger_sha256=sha256_bytes(
+            canonical_json_bytes(sorted(graph.root_by_id.items()))
+        ),
+        retained_train_id_ledger_sha256=sha256_bytes(
+            canonical_json_bytes([r.source_id for r in graph.train])
+        ),
+        retained_validation_id_ledger_sha256=sha256_bytes(
+            canonical_json_bytes([r.source_id for r in graph.validation])
+        ),
+    )
+    if pinned:
+        _require(ledgers == _PINNED_GRAPH_LEDGERS, "pinned graph provenance changed")
+    provenance = dict(
+        source_scope="pinned-original-development" if pinned else "fixture",
+        source_expectation=asdict(source_expectation),
+        pair_expectation=asdict(pair_expectation),
+        pair_source_receipt_sha256=sha256_bytes(canonical_json_bytes(original)),
+        model_inventory_sha256=model_inventory_sha256,
+        graph_ledgers=ledgers,
+        retained_train_rows=len(graph.train),
+        retained_validation_rows=len(graph.validation),
+    )
+    _require(
+        canonical_json_bytes({key: prior.get(key) for key in provenance})
+        == canonical_json_bytes(provenance),
+        "geometry provenance mismatch",
+    )
+    core_keys = (
+        "receipt_version",
+        "status",
+        "training_authority",
+        "held_out_data_present",
+        "policy",
+        "policy_sha256",
+        "train",
+        "validation",
+        "ordered_internal_records_sha256",
+        "admission",
+    )
+    _require(
+        all(key in prior for key in core_keys), "geometry provenance core incomplete"
+    )
+    retained_train = {r.source_id for r in graph.train}
+    retained_validation = {r.source_id for r in graph.validation}
+    if pinned:
+        _require(
+            (len(graph.train), len(graph.validation)) == (177291, 22772),
+            "pinned retained row counts changed",
+        )
+        _require(
+            (len(train_pairs), len(validation_pairs)) == (4354, 562),
+            "pinned author counts changed",
+        )
+        _require(
+            tuple(
+                sum(row[0] in ids and row[1] in ids for row in rows)
+                for rows, ids in (
+                    (train_pairs, retained_train),
+                    (validation_pairs, retained_validation),
+                )
+            )
+            == (4344, 482),
+            "pinned both-retained universe changed",
+        )
+    out = audit_full_development_banded_edit_exposure(
+        train_pairs,
+        validation_pairs,
+        retained_train,
+        retained_validation,
+        graph.root_by_id,
+        tokenizer,
+        expected_geometry={key: prior[key] for key in core_keys},
+        backend_factory=backend_factory,
+        limits=limits,
+        distance_threshold=distance_threshold,
+        total_cell_cap=total_cell_cap,
+        progress=progress,
+    )
+    final = verify_primevul_development_pairs(
+        source_dir,
+        paired_dir,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+    _require(
+        canonical_json_bytes(final) == canonical_json_bytes(original),
+        "development sources changed during exposure",
+    )
+    if pinned:
+        verify_geometry_dependencies(Path(__file__).resolve().parents[3])
+    out.update(provenance)
     return out

@@ -14,6 +14,7 @@ from aluclu.alc_r0.canonical import canonical_json_bytes
 from aluclu.alc_r0.full_development_banded_edit_exposure import (
     EditExposureError,
     audit_full_development_banded_edit_exposure,
+    run_verified_development_edit_exposure,
     validate_completed_result,
 )
 
@@ -314,4 +315,111 @@ def test_impossible_retained_mask_capacity_rejected(exposed):
             (pair(0, (1, 2, 3), (8, 9, 10)),),
             backend=Backend(corruption),
             code_budgets=(1, 2, 3, 4, 5),
+        )
+
+
+def source_fixture(tmp_path):
+    from test_alc_r0_primevul_pair_clone_full import _fixture
+
+    from aluclu.alc_r0.banded_pair_resource_census import (
+        run_banded_pair_resource_census,
+    )
+
+    full, paired, source_expectation, pair_expectation = _fixture(tmp_path)
+    receipt = run_banded_pair_resource_census(
+        full,
+        paired,
+        Tokenizer(),
+        model_inventory_sha256="a" * 64,
+        source_expectation=source_expectation,
+        pair_expectation=pair_expectation,
+    )
+    return full, paired, source_expectation, pair_expectation, receipt
+
+
+def test_verified_reader_reuses_exact_cohort_and_provenance(tmp_path):
+    full, paired, se, pe, receipt = source_fixture(tmp_path)
+    backend = Backend()
+    out = run_verified_development_edit_exposure(
+        full,
+        paired,
+        Tokenizer(),
+        geometry_receipt=receipt,
+        backend_factory=lambda: backend,
+        model_inventory_sha256="a" * 64,
+        source_expectation=se,
+        pair_expectation=pe,
+    )
+    assert out["source_scope"] == "fixture"
+    assert out["source_expectation"] == receipt["source_expectation"]
+    assert out["graph_ledgers"] == receipt["graph_ledgers"]
+    assert out["pair_source_receipt_sha256"] == receipt["pair_source_receipt_sha256"]
+    assert out["train"]["strata"]["universe"]["pairs"] == 1
+    assert out["validation"]["strata"]["universe"]["pairs"] == 1
+    assert backend.calls == 2 and backend.verified
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "model_inventory_sha256",
+        "graph_ledgers",
+        "source_expectation",
+        "retained_train_rows",
+    ],
+)
+def test_receipt_provenance_mismatch_precedes_backend_factory(tmp_path, field):
+    full, paired, se, pe, receipt = source_fixture(tmp_path)
+    receipt[field] = None
+
+    def forbidden():
+        raise AssertionError("backend constructed")
+
+    with pytest.raises(EditExposureError, match="provenance"):
+        run_verified_development_edit_exposure(
+            full,
+            paired,
+            Tokenizer(),
+            geometry_receipt=receipt,
+            backend_factory=forbidden,
+            model_inventory_sha256="a" * 64,
+            source_expectation=se,
+            pair_expectation=pe,
+        )
+
+
+@pytest.mark.parametrize(
+    "relative", ["full/primevul_train.jsonl", "paired/primevul_train_paired.jsonl"]
+)
+def test_source_mutation_during_compute_rejects_receipt(tmp_path, relative):
+    full, paired, se, pe, receipt = source_fixture(tmp_path)
+
+    class Mutator(Backend):
+        def verify_terminal(self):
+            path = tmp_path / relative
+            path.write_bytes(path.read_bytes() + b"\n")
+
+    with pytest.raises(ValueError):
+        run_verified_development_edit_exposure(
+            full,
+            paired,
+            Tokenizer(),
+            geometry_receipt=receipt,
+            backend_factory=Mutator,
+            model_inventory_sha256="a" * 64,
+            source_expectation=se,
+            pair_expectation=pe,
+        )
+
+
+def test_reader_rejects_invalid_policy_before_filesystem_access():
+    with pytest.raises(EditExposureError):
+        run_verified_development_edit_exposure(
+            "missing",
+            "missing",
+            Tokenizer(),
+            geometry_receipt={},
+            backend_factory=Backend,
+            model_inventory_sha256="a" * 64,
+            total_cell_cap=3000000001,
         )

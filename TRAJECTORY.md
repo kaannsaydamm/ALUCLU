@@ -7805,3 +7805,34 @@ Task 2 sensorium/recollection gate: CLEAN
   were witnessed in tool output. Added LF source/test and binary XML attributes.
   Production reader/native-wrapper/CLI and later integration/freeze/launch gates
   remain OPEN. No corpus edit DP or neural training executed; full goal ACTIVE.
+
+## 2026-10-03 — Verified development reader checkpoint 115
+
+- Continued from38d33ac in authoritative Desktop local worktree; preserved
+  frozen native/geometry/reference sources. Added explicit verified development
+  reader, one source load/one graph build, canonical prior-receipt provenance
+  comparison before the backend factory and terminal source/pair revalidation.
+  Pinned production policy, four graph ledgers, retained rows, author counts and
+  both-retained universe must match; fixture expectations remain explicit.
+- Absent-reader API RED actual exit2,1collection error,8.504s; raw XML
+  5d87183f7e408def574abd5ba7e2378ad1241f58e9e61ea39dcbf9d8c1b721a2.
+  The first artifact named reader-green-v1 actually FAILED: exit1,37cases,
+  36passed/1failed,2.361s; XML
+  d8dc95f18511c19c2a4ffef9e7539afda81d9f88b370c3261decd84ab5c4d98d.
+  Root misplaced the prior retained-mask test tail inside a new test, causing
+  NameError; restored the original test body and removed the misplaced tail.
+  Preserve this implementation/test-edit failure without relabeling it PASS.
+- Corrected Ruff format/check passed. New reader/core, geometry, paired source,
+  scalable graph and full-development graph regressions actual exit0:
+  96passed,0failures/errors/skips,4.658s; XML
+  9924c675d51c46001c75c699f0c57de31250fb0ac91b6e7b4d3c0fb46a5a34cd.
+  Root parsed all three XMLs and verified byte-identical results copies. Raw
+  stdout/stderr was tool-captured only; no redirected logs are claimed.
+- Reader module SHA85fcaaee45d74b46c2956a55d2b5eddf7f62694ad3e49b1794b499d9d767b301;
+  tests d59b84545f5203b78f3adaf24c1e430d227daed77b224a5598169a5d4bb781a2.
+  Independent GPT-6.1 Sol code APPROVE and architecture CLEAR for these exact
+  reader bytes; scoped synthesis APPROVE. Neither reviewer reran tests.
+  Reader approval does not cover production CLI/native wrapper,
+  receipt-byte/model/origin/clean-checkout binding or fresh-child native checks.
+  These implementation and final launch gates remain OPEN; no corpus edit DP,
+  model forward, training, held-out access or neural learning PASS occurred.
