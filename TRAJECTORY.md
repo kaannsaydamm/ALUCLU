@@ -7750,3 +7750,58 @@ Task 2 sensorium/recollection gate: CLEAN
   runner implementation, RED/GREEN, corpus DP, model forward or training.
   Freeze declaration before absent-module RED. Source rights, scientific prompt
   freeze, machine validator and sealer remain separate OPEN.
+
+## 2026-10-03 — Edit-exposure fixture core checkpoint 113
+
+- Root re-read full user goal and inspected3f5f8f7 plus clean state before new
+  runner/tests. Absent-module RED actual pytest/shell exit2,1 collection error,
+  XMLd00af38952f8b5a7ef1a922f4351f51a7e66934e221c48ec537cb1d8588c5940.
+  Only then implemented explicit fixture aggregation/backend-factory seams,
+  result validation, complete strata, independent global admission states and
+  full second-pass token/geometry commitments. Production source reader, native
+  wrapper and CLI still missing; this core is not a completed corpus runner.
+- First focused GREEN actual exit0:23tests,2.851s JUnit,
+  XMLb314be1398a63c07a858877a86e2554730c6020fda3df4bef091e59aac8aa2c7.
+  Added four meaningful controls. RED actual exit1:25passed/2failed,27tests,
+  10.457s,XML2c888fb42f04ad18a5e35ad2a69495afc0b5ccd1ac99e601091467d69afea6e2.
+  Reproduced missing tuple contract on unresolved output and false D>K for
+  identical endpoints. Repair requires tuple before status branching and rejects
+  terminal threshold claims for identical pairs or n+m<=K. Terminal artifact
+  failure and all four survival categories/overlapping-root controls also tested.
+- Ruff format/check passed. Same-session core plus frozen geometry regression
+  session70020 actually exit0:71passed,0failures/errors/skips,48.513s,
+  XML7a232ffcbdfbdc5df8384c25aa6cc02e6022db9f8b20f1c9fe2167ed66e260ec.
+  Root personally parsed all four terminal XMLs and hashes. A read-only
+  PowerShell foreach-pipeline parser error during reporting was corrected;
+  it did not launch or change tests. Raw test output is tool-captured, not
+  redirected stdout/stderr files. Existing raw XMLs stay external unchanged.
+- Current core SHA256ff1daa8e04848f4b7fb086ca81cbb278d2126c9cc78a85dc60f14033aa95f700;
+  tests a59fbd1be0aded3bd86181335dca3c0f39f19fee43bf135a6f8b3e88dcdab32b.
+  Independent two-lane GPT-6.1 Sol intermediate core review pending. No native
+  load, corpus DP, model forward/training or whole-runner acceptance occurred.
+
+## 2026-10-03 — Edit-exposure retained-mask repair checkpoint 114
+
+- Intermediate code review REQUEST CHANGES found missing retained-mask capacity
+  validation; architecture CLEAR applied only to previous core bytes. Root
+  reproduced upper/lower impossibility with disjoint length3 endpoints and
+  budget1 returning2 or0 visible edits per endpoint. Actual RED session59817
+  exit1,27passed/2failed,29cases,12.198s; XML
+  41efdd71a77de3908ad1d35048fe9b0d3d0d159644ee68d9269fabebb8a7ecfb.
+- Added bounds max(0,edit_count-unretained_positions)<=minimum<=maximum<=
+  retained_positions for each endpoint, in addition to existing edit-count,
+  direct-total, signature, saturation and monotonicity constraints. A failed
+  apply_patch due to formatted context changed no bytes; retried exact context.
+- Ruff format/check passed. Corrected core plus geometry regression actual
+  pytest/shell exit0:73passed,0failures/errors/skips,3.085s; root personally
+  parsed XML37b22444b67c249676c25e950f20041b2fe0ced8c8cf263784a8ab9ebf4f6aa9.
+  Moduleb66beaef7626570309ac93c5f51f79d26052f78d45576cb0ed3bc146792674e3;
+  tests6a347bbffb88677ae5d26fc1bdec04a449abf0e65cd377ef20dcd2424e6ba559.
+  Independent GPT-6.1 Sol repaired-byte code APPROVE / architecture CLEAR,
+  synthesis APPROVE for fixture core only. Both inspected exact hashes and
+  closed retained-mask finding; no reviewer-executed tests were claimed.
+- Preserve six actual raw XMLs, including both negative bug checkpoints, as
+  byte copies in results. No redirected raw test stdout/stderr existed; exits
+  were witnessed in tool output. Added LF source/test and binary XML attributes.
+  Production reader/native-wrapper/CLI and later integration/freeze/launch gates
+  remain OPEN. No corpus edit DP or neural training executed; full goal ACTIVE.

@@ -102,3 +102,6 @@ tests/test_alc_r0_banded_pair_resource_census.py text eol=lf
 results/alc_r0_banded_pair_resource_census_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_banded_pair_resource_census_*.log -text whitespace=-blank-at-eol
 docs/superpowers/plans/2026-10-03-alc-r0-full-development-banded-edit-exposure.md text eol=lf
+src/aluclu/alc_r0/full_development_banded_edit_exposure.py text eol=lf
+tests/test_alc_r0_full_development_banded_edit_exposure.py text eol=lf
+results/alc_r0_full_edit_exposure_*.xml -text whitespace=-blank-at-eol
