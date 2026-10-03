@@ -8429,3 +8429,62 @@ Task 2 sensorium/recollection gate: CLEAN
   8ac521e9eaa7265b9a801ad2d5517450320c8fd943d66be53219a990859e36fa.
   Root parsed terminal counters/hash/excluded cases; raw staged verification and
   scoped publication next. No actual-host forward/learning claim; objective ACTIVE.
+
+### Checkpoint126 — computational-state fingerprint bridge (2026-10-04)
+
+- Prior goal turn PROGRESS: lifecycle bridge4fd9468 committed/pushed. Current
+  authoritative checkout clean and objective reread. Pinned Transformers source
+  confirms original_inv_freq is registered Buffer in5.17; no stale unregistered
+  tensor claim. Epsilon/scaling/config/callables/hooks still require state binding.
+- Added CPU computational-state RED fixtures before implementation. Prospective
+  optional immutable SHA256 getter on engine binds caller-owned additional state;
+  module attribute fingerprint rejects unsupported/cyclic/unbounded state, hooks,
+  dynamic RoPE and implicit HF checkpointing. Real host completeness/parity and
+  opt-in forward remain separate OPEN gates; no host assets/corpus/update executed.
+- Actual REDv1 pytest/shell2:missing checkpoint_state module,one collection error.
+  Added bounded fingerprint helper and optional getter/identity binding in engine;
+  every existing guard compares immutable digest. Defaults preserve old pure engine.
+  Helper covers actual attributes/config/forward identities/small nontrainable
+  tensors and rejects unsupported objects/hooks/implicit HF checkpoint/dynamicRoPE.
+  Full host coverage/wrapper attachment not yet established. GREEN next.
+- GREENv2 actual0:23passed,0failure/error/skip,9.139s, XML
+  dc5bc8b818f76176b1ea73e5eb60ecebde1d9966e7c118bedc31604a11107dac;
+  REDv1 XML e0615e3f33f09592c05b644d93ff5007f432b198c5795d8bb262919c7253302b.
+  Root found ephemeral bound-method IDs could enter memo references, and foreign
+  bound methods hide untracked self state. Added stable-many-method and foreign
+  callback rejection tests before repair; initial Ruff lambda issue fixed in tests.
+- Actual methodREDv3 exit1:1foreign-methodfailure/1stabilitypass,0errors/skips,
+  10.671s, XMLb7e88cc8cb11a7f9613fcc9bd504d4a5181cddb17407db9dac16769487337295.
+  Ephemeral-method issue was static risk, NOT claimed reproduced failure. Removed
+  ephemeral method memo identities, bound methods restricted to inventoried module
+  self IDs. Added positive owned fake forward/backward+reacquisition and global-hook
+  denial/cleanup, invalid getter-construction fixtures before final regression.
+- Regressionv4 actual0:457passed,30state cases,0failure/error/skip,12.751s,
+  root parsed XML5605054e49b10c723688f744f567cfbb14a5c8332fc6cd3d4af668ecbc92578b.
+  First independent code COMMENT/architecture CLEAR: callable globals outside
+  inventory; root/module enumeration and scalar/serialized bytes not bounded by
+  existing counters. Added explicit known-global-limitation fixture (not acceptance)
+  and five fixed bound negatives before repair. Full host audit still OPEN.
+- Actual boundsREDv5 exit1:all5failures,0errors/skips,9.690s, XML
+  170c53e3b4e6f316075e434762b0df0ce139f57ff7219ca68a62acdd7f4eaed7.
+  Replaced unbounded recursive module enumeration with iterative roots16/modules
+  4096/depth64/children2048 checks; scalar64KiB/256bit bounds and16MiB streaming
+  serialization. These component caps are not measured peak RSS/latency guarantees.
+  Documented excluded function globals/class/property/external state explicitly;
+  known-global fixture records counterexample, not complete inventory acceptance.
+- Continuation: removed temporary one-iteration indentation scaffold from bounded
+  module recording before validation. No host/corpus/optimizer execution; final
+  bounded-state regression and independent rereviews remain required.
+- BoundsGREENv6 actual pytest/shell0:36passed,0failure/error/skip,9.833s,
+  XML0d0f5b44c693bca725c6e5af27bb3792ab16aa07d3807828a85a4730063d7b94.
+  Regressionv7 actual0:463passed,36state cases,0failure/error/skip,13.981s,
+  XMLf1ac790ffcc6f9a27db8002edb4f5512f5b3ae5d1bb9333be53462a1f2bce2cf.
+  Root independently parsed counters/hashes and confirmed excluded real-host/
+  tokenizer cases absent. Ruff clean; repaired-byte dual rereviews dispatched.
+  Added attempt/reproduction record and raw-XML/LF attributes. No complete-host
+  coverage, resource-fit or learning claim; full program remains ACTIVE.
+- Final exact-byte code APPROVE and architecture CLEAR; synthesis APPROVE
+  PREREQUISITE BRIDGE ONLY. Both lanes verified source/test hashes independently,
+  with no execution. Actual host-global/class/property/external audit, opt-in loop,
+  parity/resource and scientific gates remain OPEN. Scoped raw-byte verification
+  and publication next; this continuation is PROGRESS, not full completion.

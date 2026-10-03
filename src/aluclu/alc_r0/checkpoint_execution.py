@@ -61,6 +61,7 @@ class CheckpointController:
         base_getter: Callable[[], nn.Module],
         factor_getter: Callable[[], nn.Module],
         layer_count: int,
+        state_fingerprint_getter: Callable[[], str] | None = None,
     ) -> None:
         if (
             not isinstance(owner, nn.Module)
@@ -68,12 +69,17 @@ class CheckpointController:
             or not callable(factor_getter)
             or type(layer_count) is not int
             or not 1 <= layer_count <= 30
+            or (
+                state_fingerprint_getter is not None
+                and not callable(state_fingerprint_getter)
+            )
         ):
             raise CheckpointExecutionError("invalid owner/getters/layer count")
         self.owner = owner
         self.base_getter = base_getter
         self.factor_getter = factor_getter
         self.layer_count = layer_count
+        self.state_fingerprint_getter = state_fingerprint_getter
         self._lock = threading.Lock()
         self._active: CheckpointSession | None = None
 
@@ -187,6 +193,22 @@ class CheckpointSession:
             for name, module in controller.owner.named_modules()
         )
         self._fingerprint = self._state_digest()
+        self._state_getter = controller.state_fingerprint_getter
+        self._extra_fingerprint = self._read_extra_fingerprint()
+
+    def _read_extra_fingerprint(self):
+        if self._state_getter is None:
+            return None
+        value = self._state_getter()
+        if (
+            type(value) is not str
+            or len(value) != 64
+            or any(c not in "0123456789abcdef" for c in value)
+        ):
+            raise CheckpointExecutionError(
+                "canonical SHA256 state fingerprint required"
+            )
+        return value
 
     def _state_digest(self) -> str:
         return _digest(
@@ -205,6 +227,11 @@ class CheckpointSession:
     def _guard(self) -> None:
         self._require_owner()
         controller = self._controller
+        if (
+            controller.state_fingerprint_getter is not self._state_getter
+            or self._read_extra_fingerprint() != self._extra_fingerprint
+        ):
+            raise CheckpointExecutionError("computational state fingerprint drifted")
         parameters = tuple(controller.owner.named_parameters())
         buffers = tuple(controller.owner.named_buffers())
         modules = tuple(
