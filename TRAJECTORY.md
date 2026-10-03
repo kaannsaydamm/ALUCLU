@@ -7526,3 +7526,80 @@ Task 2 sensorium/recollection gate: CLEAN
 - Genuine fixed timing has not run. No measured benefit, optimization acceptance,
   corpus, neural capability, portability or training authority follows from these
   static/code/unit gates. Full roadmap remains active in dependency order.
+
+## 2026-10-03 — Final timer-inclusive regression checkpoint 105
+
+- Frozen clean source968e92f7ec198bd095ecc607d9e8e7383836d3cd, tree
+  82ef4029def5c23964670e57f5d7fdb50613a20b. First v1 launcher exited4 before
+  any tests: PowerShell if-expression unrolled the one-file array and splatting
+  supplied invalid test path `t`. Preserve empty XML and honest failure note.
+  Direct branch array assignments repaired launcher only; no implementation,
+  test, threshold, fixture or artifact changes. Corrected run uses fresh v2 paths.
+- Root session43194 terminal shell0; independently witnessed actual pytest0
+  for each disjoint process. Native53 passed,21.199s XML time, SHA256
+  ac45253dcada57f6b441f4b40cafd0b535b9c82e7395cbd2453301b12c081898.
+  Edges62 passed,33.833s, SHA256
+  4d7dc41879a08ec215ab7c9292e50646b2060fd0828893c5448ef8c50b692a74.
+  Other49 modules671 passed/8 skipped,679 cases,360.392s, SHA256
+  82fb3d96fee384b7cb188a2be36ce7940c4db66e824564f6694dccc74edbde32.
+  Total786 passed/8 skipped/794 cases,0 failures/errors. Root personally read
+  all JUnit counts and SHA256s. Existing optional-asset skips remain limitations.
+  This is final ALC-R0 subset regression, not full-project or portability PASS.
+- Tool-captured stdout is not a redirected raw log. Separate root-witnessed exit
+  notes say so explicitly. Original two native modules remain process-isolated;
+  no retained DLL owner workaround or repeated run was introduced.
+
+## 2026-10-03 — Genuine fixed native timing checkpoint 106
+
+- After all final-source regression partitions succeeded, actual fresh timer
+  session71675 ran once on the same clean968e92f source. Root witnessed CLI0
+  and shell0. No edit, commit, corpus read or heavy parallel execution occurred
+  during measurement. Output published successfully through reviewed exclusive
+  hard-link path. Original build d739a35/DLLd8d68042 remained unchanged.
+- Raw report SHA256 d51b92889bb0469cab39e01465d35f09a542166728a804cbcf2cf96d81a8d13f.
+  Four exact cases/B5/K0,1,1,512;2 warmups and5 measured repetitions for each
+  of5 methods. Root separately recomputed all100 retained integer-ns sample
+  statistics and verified all140 actual schedule entries, source pins,64-word
+  outputs, false authority/held-out flags, cells/scratch limits and clean freeze.
+- Python/public-native median milliseconds respectively:
+  unique identity10000/K0:185.1969/14.2545, native/Python0.07696943091380039;
+  unique insertion10000/K1:549.0741/16.4394,0.02994022118326106;
+  repeated insertion10000/K1:467.9574/19.6668,0.04202690244881265;
+  identity600/K512:4991.7213/32.1125,0.006433151626474018.
+  Public native was faster in each declared fixture. One-time constructor
+  validation plus load431.9715ms is separate. All samples, including variability,
+  remain visible; no exclusion, subtraction or heterogeneous global speed ratio.
+  Raw ctypes timing is not pure C++ compute; component intervals are nonadditive.
+- Independent GPT-6.1 Sol code and architecture actual-evidence rereviews are
+  running. Their verdicts are not inferred from pre-execution readiness reviews.
+  Until terminal verdicts, fixture evidence final synthesis stays OPEN. No
+  corpus coverage, family-B prompt freeze, model kernel, training authority,
+  portability or neural learning claim follows from this local timing result.
+
+## 2026-10-03 — Actual fixture evidence independent gate checkpoint 107
+
+- Separate GPT-6.1 Sol code lane APPROVE and architecture lane CLEAR actual
+  timing evidence d51b9288, not just implementation readiness. Both independently
+  read the complete report, recomputed all20 statistics and140-entry schedule,
+  inspected source/receipt/DLL provenance and parsed final regression XML.
+  Code lane also verified all794 test identities are disjoint. Root-observed
+  process exits were not represented as independent reviewer executions.
+- Architecture initially described CLEAR with a measurement WATCH; root requested
+  exactly one contract status rather than inferring approval. Clarified terminal
+  status CLEAR: variability/causal limits are qualifications of the accurately
+  bounded observation, not unresolved architecture findings. Deterministic
+  two-lane final synthesis APPROVE for local synthetic fixture evidence only.
+- Keep all sample variability: K512 raw ctypes median37.1447ms is greater than
+  separately sampled full-public median32.1125ms. Independent intervals are not
+  additive; fixed serial order/one run/five samples cannot isolate scheduling,
+  thermal/cache effects or establish repeatability. No inferred component
+  subtraction, causal kernel-only speed claim or global/corpus ratio is valid.
+- Original native fixture correctness/resource/mutation/timing evidence now has
+  final-source ALC-R0 regression and independent scoped review. This closes this
+  fixture-validation substep, NOT ALC-R0 or a research/native-product acceptance.
+  Next: separately preregister/review bounded full-token band-geometry census
+  before any corpus edit DP; retain full retained-pair universe denominators,
+  fixed K/endpoint/cell/scratch limits and explicit unresolved counts. Existing
+  rectangular137-train/0-validation first-fit result stays immutable. The
+  family-B amendment/prompt freeze, corpus rights and full neural experiment
+  prerequisites remain OPEN. Full roadmap goal remains active.
