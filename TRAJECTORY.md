@@ -7906,3 +7906,94 @@ Task 2 sensorium/recollection gate: CLEAN
   corpus receipt, runtime/memory observations, scientific prompt review, source
   rights, machine preregistration/validator and sealer are still OPEN. No
   training, held-out, neural learning, ALC-R0 or later phase acceptance follows.
+
+## 2026-10-03 — Actual full-development edit-exposure checkpoint 118
+
+- Checkpoint117 committed/pushed62b5c7b6577078db5aa79fd2822a9b2381286597.
+  Separate GPT-6.1 Sol code/security APPROVE and architecture CLEAR accepted
+  the exact launch boundary before execution. Frozen design SHA256
+  db2ca120d692222e6527fbaa9e73aa1e69c063771f485fc50dae28c595309132;
+  source0e14a062d61d88e9412840f52dae7cde1f8768e8c0880ccb790a33e18a7415fe;
+  testsdc80d31c317cd4394cfa642da451d8fb8781ca035b1c0cd99d6b21d2ae49b571.
+  Original native build receipt ec5463427664884af4c2315031733fe3eb9a496abc84322b5fefba46db4e8d61
+  and DLLd8d680420698a30d863748943d5b000d38facafc56b7081eb1dbfe004af0161a
+  stayed unchanged. No recompile, fallback, trimming or threshold relaxation.
+- Ran the full original development graph once, using the prospectively frozen
+  3B-cell cap, K512, five code budgets499/1011/2035/4083/8179 and original
+  source/pair/tokenizer/native/geometry receipts. The old100M geometry prepass
+  remains unchanged, exhausted and negative; it is not relabeled as this run.
+  Second-pass split geometry digests and all four graph ledgers match that
+  prior receipt. Policy SHA256
+  dcfbd0362527fb04af203c0aa918c6dec4256b286c8023c1b5eb4f7cb0077c7a;
+  exposure ordered digest18d583777e9dbab3df7379994f6dea4ec91779681133fae2a4d23969d90ea1c9.
+- Original live session84878 was followed to terminal shell0, never restarted.
+  Wrapper32516/venv30076/module8972 were subsequently verified absent.
+  Start2026-10-03T19:28:23.9315987Z; finish19:59:57.5374821Z;
+  persisted actual_exposure_exit_code=0; elapsed1893.5970206s.
+  Root independently parsed terminal JSON, canonical stdout, source/hash pins,
+  counts and logs, and ran the unchanged prospective data-only verifier:
+  actual shell0. HelperSHA256
+  76ceba70a58a6549569e7beaeb4db5b83c449b8bf7036ba3624701a95035d0d8.
+  This is aggregate/canonical validation, not an independent whole-corpus DP
+  oracle. Native correctness rests on prior reference/mutation/integration gates.
+- Pair accounting (no global-budget unresolved pairs):
+
+  | Split | Universe | Attempted | Exact positive | D0 | Local unresolved | D>K |
+  | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+  | Train | 4344 | 4160 | 4118 | 0 | 184 | 42 |
+  | Validation | 482 | 469 | 464 | 0 | 13 | 5 |
+
+  Local train184 =7 endpoint-unknown +34 length-gap +143 band-cell rejection;
+  local validation13 =3 length-gap +10 band-cell rejection. Scratch rejection0.
+  Attempted scheduled cells equal visited cells: train2494753540,
+  validation210458744, total2705212284. Remaining294787716; exhausted=false.
+  Exact-positive cells2458465820/204606926; D>K cells36287720/5851818.
+  Known full-universe hypothetical cells3498941446/281217858 are not visited
+  work. Root strata are overlapping unions and must not be summed as partitions.
+- Conditional changed-token exposure (denominators4118 train/464 validation):
+
+  | Total/code budget | Train all optima hide all | Validation all optima hide all | Train mean min retained/D | Validation mean min retained/D |
+  | --- | ---: | ---: | ---: | ---: |
+  | 512/499 | 1148 | 100 | 0.6135911530873144 | 0.6847882693202717 |
+  | 1024/1011 | 546 | 48 | 0.8076943486965632 | 0.8577118181102484 |
+  | 2048/2035 | 205 | 18 | 0.9285704922953121 | 0.9452048570582654 |
+  | 4096/4083 | 48 | 2 | 0.983010352596865 | 0.9927056987389569 |
+  | 8192/8179 | 0 | 0 | 1.0 | 1.0 |
+
+  At8179 all4582 resolved-positive pairs expose every edit along every optimum,
+  but244/4826 universe pairs remain unresolved:197 local +47 terminal D>K.
+  Outcome-dependent resolution prevents whole-population sufficiency claims.
+  Changed tokens are not established vulnerability-bearing edits. No budget
+  selection, new information-loss acceptance threshold or prompt freeze follows.
+- Sampled exact-module worker maxima: working-set1476063232B,
+  private3011993600B; last observed CPU1537.796875s. These exclude Git children,
+  are not guaranteed OS peaks and last CPU is not guaranteed final CPU time.
+  Terminal unavailable observation reflects worker exit, not zero memory.
+  Stderr contains progress and tokenizer8733>8192 warning: full tokens retained,
+  no model forward, so not a model-execution failure. No error traceback.
+- Before results were available, verifier failed as expected on absent terminal
+  artifacts. An inline PowerShell/Python quoting self-test failed with SyntaxError;
+  explicit --parser-self-test subsequently exited0. These transport/control
+  outcomes are preserved in monitoring-note, not misreported as corpus results.
+- Independent final GPT-6.1 Sol code/security APPROVE and architecture CLEAR
+  each read complete terminal artifacts, independently reconciled provenance,
+  partitions, histograms, predicates, ratio means and resource sample scope,
+  and verified clean62b5c7b source before documentation/evidence edits.
+  Scoped synthesis APPROVE for this completed DEVELOPMENT DIAGNOSTIC only.
+  Neither reviewer reran corpus DP or reopened raw corpus/model files.
+- Raw artifacts are copied byte-identically under
+  results/alc_r0_full_edit_exposure_development_62b5c7b_v1.* with -text attributes.
+  StdoutSHA2568bc7eb3e96d96a1292181557dd6e44d46de6d00a857c188dafccc48c67b50a46;
+  stderr c6b8e66951862a6a98da4bcd920130b8d998c2e297f16e56ff88a1d6e0a32b77;
+  exit f4937fa7b69688f6f4a8388518f01281abf652416e5e75f5b861815963f3d056;
+  launch e6cd56f0c1fb4579393321da79e951e579b46e70aacdc2fa04dadda34a27ba77;
+  observations c6c71a08d938058980e51db54b9030707de83c94d2f72ffdc8061fe26755aa39;
+  launcher255d73c3bc5da7a5cf165d935938b6a4fd62bd26fff90caa218b1d68603dd9ad.
+  Current evidence-only commit is not a rerun at its new HEAD; source stays62b5c7b.
+- Scientific family-B512 remains BLOCK from prior class-conditional truncation
+  and prompt contradictions. Existing five-budget contradiction evidence is
+  not superseded by these conditional changed-token results. Next: independent
+  scientific prompt reassessment before any prospective amendment/freeze.
+  Source rights, machine preregistration/validator, independent sealer and real
+  training feasibility remain OPEN. training_authority=false and held-out=false;
+  no learning, R0.0/ALC-0, broad portability or later phase PASS is claimed.
