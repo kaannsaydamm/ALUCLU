@@ -8156,3 +8156,65 @@ Task 2 sensorium/recollection gate: CLEAN
   then outstanding-graph/session replay implementation and wrapper integration.
   Actual-host parity/resource invocation, v3 adoption, source rights, sealer,
   R0.0 validator and real neural capability remain OPEN. Full goal ACTIVE.
+
+## Checkpoint 122 — 2026-10-04 — canonical AdamW adapter TDD
+
+- Continued from clean published3fda5eb in the authoritative Desktop local
+  worktree. Added prospective model-free AdamW comparison tests BEFORE code.
+  Fixtures construct AdamW and manually populate synthetic moments; no step,
+  model/assets, task data or checkpoint execution. Complete caller-owned factor
+  and frozen-base bindings are required; one fixed parameter group, canonical
+  name bijection, populated state for every factor and required step1/2.
+  Cross-arm shared factors cannot masquerade as independent parity evidence.
+  Tests exercise every moment/factor, invalid bindings, base leakage, state
+  cardinality and fixed hyperparameter drift. Actual RED execution is next.
+  This does not authorize later model/update runs or claim optimizer parity.
+- RED v1 produced the expected missing-module collection error but PowerShell
+  surfaced shell1 without preserving pytest's native code. Repeated the same
+  pre-implementation RED with explicit LASTEXITCODE: actual pytest/shell2 and
+  one collection error in v2. Both XML attempts retained. Added read-only
+  canonical adapter afterwards; it clones factors/moments, rejects aliased
+  arm/state/base storage and pins the locked Torch2.14 group schema. Caller
+  completeness/concurrency and actual step execution remain runner obligations.
+  GREEN and independent exact-byte review are pending.
+- First GREEN actual pytest/shell0,103 tests passed. Expanded negatives for
+  distinct objects sharing storage, cross-arm aliasing, explicit zero moments,
+  malformed containers, wrong step on both sides and complete shape mismatch.
+  Added explicit adapter contract documenting pinned schema, caller completeness,
+  quiescence and CPU exact-mode obligation. Final-byte regression/review pending.
+- First-byte pure regression actual0:267passed (124 adapter cases),0 failures/
+  errors/skips,4.212s; XMLa205ec168e5d13ea6c5160c69ffb880da69351fd49143b88b59a77213b9304fd.
+  Root personally parsed counts/hash and confirmed excluded asset case absent.
+  Independent code lane REQUEST CHANGES: a factor/moment/step can alias the
+  opposite arm's base, escaping local-base and owned/owned checks. This is a
+  real unresolved adapter defect despite green tests, not an accepted PASS.
+  Added eight symmetric negative fixtures before repair; actual failing run next.
+- Both independent lanes rejected first bytes (code REQUEST CHANGES, architecture
+  BLOCK). Actual alias REDv3 pytest/shell1: all eight fixtures failed because
+  expected rejection did NOT occur, confirming factor/moment/step opposite-base
+  aliases in both directions. Retained failed XML. Repaired snapshots to retain
+  base storage and validate all comparison-owned storage against both bases'
+  union. Base/base sharing remains allowed. Final corrected regression next.
+- Corrected v4 actual pytest/shell0:275passed,0failures/errors/skips,4.530s;
+  Ruff format check still flagged one line, so this was not called final-byte.
+  Applied format then reran v5: actual0,275passed (132 adapter cases including
+  all8 cross-base regressions),0failures/errors/skips,4.058s. Ruff check passed.
+  Root parsed XML/hash3744ae4716f55b0e9e4798b856078384714a8744ed013183e1179f84ec933525,
+  confirmed all8 cases present and excluded asset case absent; v3 RED XML
+  2b943b86b68fbb5cf8b57bc4aa6a53259f8f3904a4fd2662c2d2d51f0a5ad6ba.
+  Exact-byte repaired source6d36db5abe0a57693db894f733e4c2ed384d90e0fb1a434e6b216f8a40f29726,
+  testsceee10e977f123c563d68030fc9a8d2ba85ba7c81e714bd542e621095ce9bbfd,
+  contractbd62dee04f5d98268cddb726ca7e5000c8b16ef2702db6f8b175dabe4e634c48.
+  Both GPT-6.1 Sol lanes rereview dispatched; no self-approval substitution.
+  Added LF/raw-XML attributes for byte-preserving publication. All seven run
+  XML attempts retained; stdout/stderr remain tool-captured, not raw log files.
+- Final exact-byte rereview returned code APPROVE and architecture CLEAR, both
+  confirming cross-base blocker closure; scoped synthesis APPROVE only this
+  comparison adapter. Recorded initial rejection, actual eight RED failures,
+  repair and final evidence/limits in the independent review record. No real
+  optimizer step/model/corpus execution occurred. Remaining strongest objection:
+  runner must prove complete bindings, real updates, correct lifecycle snapshot,
+  quiescence and explicit CPU exact=True. Next implementation is explicit scoped
+  session/outstanding graph tickets/replay guards, then wrapper integration.
+  All real-host parity/resource, adoption/rights/sealer/validator and neural
+  learning gates remain OPEN. Preparing byte-verified commit/push; full goal ACTIVE.
