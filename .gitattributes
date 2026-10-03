@@ -106,3 +106,4 @@ src/aluclu/alc_r0/full_development_banded_edit_exposure.py text eol=lf
 tests/test_alc_r0_full_development_banded_edit_exposure.py text eol=lf
 results/alc_r0_full_edit_exposure_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_full_edit_exposure_development_62b5c7b_v1.* -text whitespace=-blank-at-eol,-blank-at-eof
+docs/superpowers/plans/2026-10-03-alc-r0-family-b-prompt-resource-v3-draft.md text eol=lf

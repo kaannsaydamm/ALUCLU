@@ -8031,3 +8031,58 @@ Task 2 sensorium/recollection gate: CLEAN
   not mechanically select8192 or add generic infrastructure. No new budget,
   acceptance threshold, prompt freeze, rights/sealer or training authority
   was adopted. Existing R0.0 validator and four-job200-update pilot remain gates.
+
+## 2026-10-03 — Prospective prompt/resource candidate checkpoint 120
+
+- Re-read full user objective and verified clean authoritative Desktop worktree
+  HEAD5fc0056, preserving the complete roadmap and prior checkpoints. Previous
+  goal turn was progress (actual terminal evidence, independent scientific
+  decision and two published commits), not a wait or status-only turn.
+- Read actual prompt, wrapper, matched-LoRA, gradient-probe and frozen v1
+  query/control/optimizer/resource contracts. Resolved retained-information
+  receipt grid directly. First PowerShell foreach pipeline parse failed before
+  any command ran; assigned emitted rows then formatted, actual0. This transport
+  error is not a corpus/model failure. No model/native/corpus execution occurred.
+- Checked primary PyTorch2.14 checkpoint and official Transformers explanatory
+  documentation. Explicit custom block traversal means an HF flag alone cannot
+  checkpoint our wrappers. Proposed non-reentrant block recomputation preserves
+  eager attention; local fit/gradient fidelity remains unproven.
+- Added NON-AUTHORIZING v3 prompt/resource draft: propose one4096 common query,
+  unchanged512 control allowance/4608 total for familyB, Banking unchanged.
+  This explicitly amends v1 common/total contracts if later adopted; no automatic
+ 8192 selection, scoring/threshold/grid changes, pair-aware input, example drops,
+  hidden attention replacement, training or held-out authority. Documented
+  residual minority-class contradictions/truncation and244 unresolved pairs.
+- Proposed explicit checkpoint parity/TDD and full-candidate/accumulation/
+  optimizer resource qualification gates, separated from dataset learning and
+  original R0.4 pilot. Implementation/execution detail must freeze exact synthetic
+  state, update count and runtime before runs. New independent dual review of
+  actual candidate risk/allocation is pending; prior draft approval does not
+  approve this new candidate. Current unchanged512 scientific BLOCK remains.
+- First candidate review: scientific architecture CLEAR for prospective
+  synthetic qualification only; code/spec COMMENT identified too-weak absolute
+  gradient tolerance and pending control/state-guard detail. Initial reviewed
+  draft SHA838e85ab84eedfc5343146bbef0f194711de9cbb59d383fc59056bb11b4ce943.
+  Tightened per-factor/accumulated gradient relative-norm and direction checks,
+  explicit zero patterns and optimizer-state comparison; require killing a
+  small-gradient mutation that passes ordinary allclose. Added proposed explicit
+  control-before-common ID composition with separator/framing within512 and
+  whole-prefix stop, without query retokenization. State guards must cover
+  outstanding graphs and execute before recomputation, including early-stop.
+  One doc-only patch attempt failed context matching without changes; corrected
+  after reading actual lines. No tests/model/resource run was attempted.
+  Exact revised-byte independent re-review is pending before draft acceptance.
+- Revised-byte rereview returned code/spec APPROVE and scientific architecture
+  CLEAR, with residual risk accepted for prospective synthetic qualification
+  only. Final candidate SHA256
+  3c7e56cd33ffa6aaec0a5baa7cead146bc7a0ca2688c447c1ecf63424e0cdf38.
+  Scoped synthesis APPROVE for detailed specification, not prompt adoption,
+  actual-host execution or scientific freeze. Added exact review record under
+  docs/superpowers/reviews/2026-10-03-alc-r0-family-b-prompt-resource-candidate.md
+  and eol=lf attribute for byte-stable candidate replay. Existing control framing
+  is retained as independently encoded ID blocks, not decode/re-encoded text.
+- Next available safe step: freeze exact checkpoint implementation/parity/
+  resource detail (fixtures, factor states, lengths, update counts, complete
+  matrix, runtime/receipt policy), then TDD. No extra generic corpus audit is
+  required to specify that detail. Dataset rights/sealer/R0.0 gates remain open,
+  actual host fit is unmeasured, unchanged512 freeze BLOCK, full roadmap ACTIVE.
