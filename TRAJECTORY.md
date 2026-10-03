@@ -7997,3 +7997,37 @@ Task 2 sensorium/recollection gate: CLEAN
   Source rights, machine preregistration/validator, independent sealer and real
   training feasibility remain OPEN. training_authority=false and held-out=false;
   no learning, R0.0/ALC-0, broad portability or later phase PASS is claimed.
+
+## 2026-10-03 — Evidence publication and scientific handoff checkpoint 119
+
+- Checkpoint118 committed9be86615fddebf57876fa1db9a4d84cd6f991480.
+  Root verified every staged raw artifact blob equals its unfiltered working
+  bytes; diff whitespace passed. Initial push failed to connect to GitHub443
+  after21.220s. One unchanged retry succeeded; root independently queried
+  remote ref and verified exact9be86615 HEAD equality with clean local tree.
+  Network failure was publication infrastructure, not a diagnostic failure.
+- Updated the NON-AUTHORIZING v2 draft with the new terminal development result
+  and explicit supersession of its historical no-corpus-DP statements. Kept
+  original negative resource censuses, all prior prompt/contradiction results,
+  conditional/unresolved limits and family-B512 BLOCK. No budget, threshold,
+  prompt construction, training/test authority or scientific freeze changed.
+- Next independent scientific reassessment is scoped to these retained
+  aggregate artifacts and the proposed decision boundary. Existing GPT-6.1 Sol
+  lanes are reused; no corpus/native/model/training execution is requested.
+  Their evidence acceptance verdicts at118 are not reused as prompt approval.
+  Scientific outcome remains pending until both lanes return this new scope.
+- Both new scoped reviews subsequently returned: evidence/spec APPROVE for
+  draft interpretation; architecture CLEAR for its decision boundary. Exact
+  reviewed v2 draft SHA256
+  ca72c59c62cef563bfb15455add7742b9a64c17dca04375f0e1777d30d18abc8.
+  Synthesis APPROVE for recording the non-authorizing interpretation only.
+  Both separately BLOCK freezing unchanged512 family-B; future amendmentOPEN.
+  Full verdicts/limits and actionable next requirements are recorded in
+  docs/superpowers/reviews/2026-10-03-alc-r0-family-b-scientific-reassessment.md.
+- Next implementation-independent task is one versioned prospective pair-blind
+  single-function prompt-and-resource amendment with matched query/control
+  allocations, total sequence ceiling and actual loss/optimizer qualification.
+  It must explicitly amend original512+512 within1024 contracts if changed,
+  not mechanically select8192 or add generic infrastructure. No new budget,
+  acceptance threshold, prompt freeze, rights/sealer or training authority
+  was adopted. Existing R0.0 validator and four-job200-update pilot remain gates.

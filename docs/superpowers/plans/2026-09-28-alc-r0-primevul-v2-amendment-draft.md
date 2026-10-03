@@ -316,6 +316,55 @@ has been run; later native optimization or a data runner requires its own
 declaration, parity/resource checks and independent review. All training,
 held-out access and prompt-freeze restrictions remain unchanged.
 
+### Subsequent full-development changed-token evidence and next decision
+
+Checkpoint118 supersedes the historical statements above that corpus exposure
+had not yet run. The prior rectangular100M and bounded-band100M resource
+censuses remain preserved negative admission evidence; their caps were not
+silently relaxed. After independent reference/native/mutation/timing and
+fresh-child synthetic integration gates, the separately declared
+`2026-10-03-alc-r0-full-development-banded-edit-exposure.md` froze a prospective
+3B-cell workload before any full-development DP outcomes were available.
+
+That complete run at clean source commit
+`62b5c7b6577078db5aa79fd2822a9b2381286597` finished with actual exit0. Original
+source/pair/model/native and all four graph commitments reconciled with the
+previous geometry receipt. Scheduled and visited cells both equal2705212284;
+the 3B cap was not exhausted and no pair was globally skipped. Of4344 train
+and482 validation both-retained author pairs,4118/464 were resolved with
+positive exact distance,184/13 were locally unresolved and42/5 completed with
+terminal distance above K512. Exact-zero counts were0/0.
+
+At the existing512-total/499-code candidate budget, all optimal edit paths
+hide every edit for1148/4118 train and100/464 validation resolved-positive
+pairs. Mean minimum retained edit fractions are0.6135911530873144 and
+0.6847882693202717. At8192-total/8179-code, all4582 resolved-positive pairs
+expose every edit along every optimum, but244 of the complete4826 universe
+remain unresolved. Representativeness of the outcome-dependent resolved subset
+is not established; it cannot prove whole-population information sufficiency.
+These are changed tokens, not independently localized vulnerability-bearing
+edits. Neither increasing context nor exposing edits proves learnability.
+
+Raw receipt SHA256 is
+`8bc7eb3e96d96a1292181557dd6e44d46de6d00a857c188dafccc48c67b50a46`,
+under `results/alc_r0_full_edit_exposure_development_62b5c7b_v1.*`.
+Independent terminal code/security APPROVE and architecture CLEAR accept this
+development evidence only; review limitations are in
+`../reviews/2026-10-03-alc-r0-full-development-edit-exposure-terminal.md`.
+No model forward, training, held-out access or prompt selection occurred.
+
+The next gate is independent scientific reassessment of the unchanged512
+candidate, combining this conditional edit-exposure evidence with retained
+observation-level contradictions, class-conditional truncation, single-function
+limits and measured synthetic gradient resources. This reassessment must
+separate evidence acceptance from prompt acceptance and training authority.
+It must explicitly say whether the existing information-loss objection remains
+blocking and what a future prospective equalized-arm prompt amendment would
+need. It may not select8192 mechanically from these outcomes, tune P1-P14,
+silently exclude unresolved pairs, add held-out access or grant source rights.
+Until a separately reviewed amendment is actually frozen, family-B512 remains
+BLOCK and this v2 draft stays NON-AUTHORIZING.
+
 1. Independent code/science review of source binding, clone graph, pair graph,
    mixed-label handling, cross-split exclusion, deterministic ledgers, and
    scalable/reference parity. A repeatability run is necessary but cannot by
