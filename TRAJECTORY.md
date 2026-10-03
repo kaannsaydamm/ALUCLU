@@ -8218,3 +8218,98 @@ Task 2 sensorium/recollection gate: CLEAN
   session/outstanding graph tickets/replay guards, then wrapper integration.
   All real-host parity/resource, adoption/rights/sealer/validator and neural
   learning gates remain OPEN. Preparing byte-verified commit/push; full goal ACTIVE.
+
+## Checkpoint 123 — 2026-10-04 — explicit checkpoint session engine TDD
+
+- Prior checkpoint122 is published as feff85153d8ceac12f621af54bd586a17068299b,
+  remote equality and clean Desktop worktree verified. Last goal turn PROGRESS.
+  Reread full active objective and prospective detailC; continue reusable session
+  engine first, preserving actual wrappers/default path unchanged. Added explicit
+  engine contract and RED fake-block tests BEFORE implementation. Tests will run
+  tiny CPU autograd/checkpoint only, no host/assets/optimizer.step/corpus/training.
+  Tickets require ordered layers, final and gradient-bearing block traversal;
+  caller-owned complete bindings and correct port placement remain later wrapper
+  review requirements. Entry/exit fingerprints do not claim hostile-host security.
+  Actual missing-module RED and implementation are next; full goal ACTIVE.
+- Actual missing-module REDv1 pytest/shell2,one collection error. Added explicit
+  controller/session/ticket engine after RED. No wrapper/global monkeypatch;
+  nonreentrant calls bind entry guards/private metadata and layer traversal hooks.
+  Failure invalidates/release and clears factor gradients; fingerprints stream
+  parameter bytes at lease boundaries. GREEN/regression/review remain pending.
+- First attemptv2 actual pytest/shell1:21passed/1failed. The failing fixture
+  incorrectly expected normal exit after catching consumed-graph reuse; the
+  preregistered contract already requires invalidation on that owner operation.
+  Strengthened test to require invalid exit/cleared gradients, plus a separate
+  successful-close old-graph denial. No engine denial/threshold was weakened.
+  Added foreign raw-backward lease isolation, retired graph/fresh gradient
+  isolation and actual recompute-entry drift counterexamples before further run.
+- Actual foreign raw-backward REDv3 pytest/shell1:1 failure, pending_count became
+  0 after a foreign thread's rejected backward. Root identified the hook's catch
+  path incorrectly aborted the owner lease. Moved thread/active precondition
+  outside hook abort handling; owner-thread lifecycle violations still invalidate.
+  Corrected GREEN/regression and independent review remain pending.
+- Corrected focused GREENv4 actual pytest/shell0:25passed. Expanded tests before
+  final regression for output unrelated to executed blocks, raw intermediate
+  backward, prior accumulated gradients cleared on failure, private metadata
+  mutation, invalid entry bindings and nongrad early frozen blocks without an
+  input-grad workaround. Pure relevant regression/review are next; not model
+  parity, resource qualification or neural capability evidence.
+- Pure regressionv5 actual0:320passed including45session cases,0failure/error/
+  skip,4.280s, XML4ae8a1739e532a3bd2e219b786e8bdb70d8e788293d85730e047c808f3c503b8.
+  Root parsed counts/hash and excluded asset fixture absence. First independent
+  code lane APPROVE but architecture BLOCK: registered buffers absent from
+  replay stamps/byte fingerprints can drift via ordinary in-place mutation.
+  Combined review therefore REQUEST CHANGES, not approved. Added buffer version/
+  replacement/data counterexamples and an empty gradient-block traversal case
+  identified by root; actual RED reproduction precedes repairs.
+- Actual binding REDv6 pytest/shell1:all4 counterexamples failed DID NOT RAISE,
+  proving ordinary buffer version/replacement/unversioned bytes and vacuous
+  no-gradient-block output acceptance. Added full registered-buffer roster/stamps
+  and boundary bytes, storage stride/offset stamps, nontrainable buffer constraint,
+  and mandatory at-least-one gradient-bearing block at output binding. No wrapper
+  integration or acceptance criterion was removed. Final regression/rereview next.
+- First repaired regressionv7 actual0:324passed,0failures/errors/skips. Added
+  positive scalar/integer/bool buffer coverage and negative trainable buffer/
+  factor alias to frozen-base buffer cases before final byte review. Base-buffer
+  alias must not allow later outside-lease factor updates to alter frozen state.
+  Alias RED is next; registered state expansion preserves real-host integration
+  as a separate gate, including unregistered attributes and full base inventory.
+- Actual buffer-alias REDv8 pytest/shell1:1failure DID NOT RAISE. Extended base
+  storage separation to registered base buffers with device-aware allocation
+  identities; factor parameter aliases are denied at lease entry. Positive
+  static buffers remain allowed. Final formatted regression/review next.
+- Finalv9 actual0:327passed/52session,0failure/error/skip,4.659s, XML
+  451fbcda71abf8d3818f0011c245b79ef14bf2c2cb733222b9db9c114355712a.
+  Independent repaired-byte code APPROVE/architecture CLEAR. Before publication
+  root found one additional engine configuration drift risk: mutable controller
+  layer_count could shrink inside a lease and accept a shortened traversal.
+  Added explicit negative test before repair; prior byte approval remains scoped
+  to its reviewed bytes and does not automatically approve upcoming changes.
+- Actual layer-count REDv10 pytest/shell1:1failure DID NOT RAISE. Captured and
+  revalidated declared count at entry/replay/completion; ticket bounds use the
+  captured count, never mutable controller state. Final regression and both
+  independent final-byte rereviews required before publication.
+- Final formatted pure regressionv11 actual pytest/shell0:328passed including
+  53session cases,0failures/errors/skips,6.264s. Root personally parsed XML/hash
+  82ccbf84f5ddd7d327e6c29417bb27bf29b1adbb82cc514fe08b5b43ad831288,
+  confirmed53cases and absent explicitly deselected real-tokenizer asset case.
+  Ruff check passed; sourceba0cbbbb3a1a1109439d7a9220e154620839217130d9e2782c3af50fba886d6a,
+  tests492ac5aa6c81d9d2db1d8f45b40e411e48606e1edb3ff0be6a3d12629fbaff6b,
+  contractc28d8382da909df010315e9c1ec9d96b53433210aa212bb7962ba74d3ea2d4ea.
+  Both independent final-byte rereviews dispatched. Added LF/raw XML attributes;
+  all11 attempts retained, stderr/stdout tool-captured only. No real wrapper,
+  assets/corpus, model/update, resource qualification or learning run occurred.
+- User reaffirmed durable learning from personal interactions and learned state
+  in future .alc, not manual whole-base fine-tuning per message. Existing unified
+  objective retains bounded neural updates/frozen base plus governed generations;
+  this explanation does not adopt v3, authorize dataset training, bypass R0 or
+  claim implemented online learning. Active program still requires real neural
+  capability evidence before dependent product/container investment.
+- Final exact-byte rereviews returned independent code APPROVE and architecture
+  CLEAR for ba0cbbbb source, closing captured-layer-count gap and preserving all
+  prior buffer/alias/nonvacuous-traversal repairs. Synthesis APPROVE ENGINE ONLY.
+  Added full review/11-attempt evidence record and residual integration limits.
+  Next: opt-in host_wrapper/matched_lora integration TDD and complete computational
+  inventory/port/cache/input/mutation/autograd audit. This is not learned neural
+  capability, actual-host checkpoint PASS or resource fit. Preparing exact-byte
+  stage/commit/push of this checkpoint; full unified objective remains ACTIVE.

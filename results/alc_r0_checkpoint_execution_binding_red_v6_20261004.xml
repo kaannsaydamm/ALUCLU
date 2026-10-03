@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="3.351" timestamp="2026-10-04T01:43:57.509878+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_registered_buffer_drift_cannot_change_replay[version]" time="1.239"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">mutation = 'version'
+
+    @pytest.mark.parametrize("mutation", ["version", "replacement", "data"])
+    def test_registered_buffer_drift_cannot_change_replay(mutation):
+        class BufferedBase(nn.Linear):
+            def __init__(self):
+                super().__init__(2, 2, bias=False)
+                self.register_buffer("scale", torch.ones(2))
+            def forward(self, value):
+                return super().forward(value) * self.scale
+        owner, calls = Owner(), []
+        buffered = BufferedBase()
+        buffered.weight.data.copy_(owner.base.weight)
+        buffered.requires_grad_(False).eval()
+        owner.base = buffered
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_checkpoint_execution.py:485: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_registered_buffer_drift_cannot_change_replay[replacement]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">mutation = 'replacement'
+
+    @pytest.mark.parametrize("mutation", ["version", "replacement", "data"])
+    def test_registered_buffer_drift_cannot_change_replay(mutation):
+        class BufferedBase(nn.Linear):
+            def __init__(self):
+                super().__init__(2, 2, bias=False)
+                self.register_buffer("scale", torch.ones(2))
+            def forward(self, value):
+                return super().forward(value) * self.scale
+        owner, calls = Owner(), []
+        buffered = BufferedBase()
+        buffered.weight.data.copy_(owner.base.weight)
+        buffered.requires_grad_(False).eval()
+        owner.base = buffered
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_checkpoint_execution.py:485: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_registered_buffer_drift_cannot_change_replay[data]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">mutation = 'data'
+
+    @pytest.mark.parametrize("mutation", ["version", "replacement", "data"])
+    def test_registered_buffer_drift_cannot_change_replay(mutation):
+        class BufferedBase(nn.Linear):
+            def __init__(self):
+                super().__init__(2, 2, bias=False)
+                self.register_buffer("scale", torch.ones(2))
+            def forward(self, value):
+                return super().forward(value) * self.scale
+        owner, calls = Owner(), []
+        buffered = BufferedBase()
+        buffered.weight.data.copy_(owner.base.weight)
+        buffered.requires_grad_(False).eval()
+        owner.base = buffered
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_checkpoint_execution.py:485: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_no_gradient_bearing_checkpoint_cannot_accept_unrelated_output" time="0.002"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">def test_no_gradient_bearing_checkpoint_cannot_accept_unrelated_output():
+        owner = Owner()
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_checkpoint_execution.py:507: Failed</failure></testcase></testsuite></testsuites>
