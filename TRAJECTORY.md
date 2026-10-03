@@ -7723,3 +7723,30 @@ Task 2 sensorium/recollection gate: CLEAN
   Next corpus edit-exposure execution/new cap must be separately preregistered
   and independently reviewed before any DP outcomes. Disk snapshot59097690112B
   free; no cleanup or unrelated process intervention was needed.
+
+## 2026-10-03 — Prospective full development edit-exposure checkpoint 112
+
+- Prior turn completed actual geometry evidence, not an unexecuted plan. Root
+  re-read full user goal and inspected cleancaea70d before new changes.
+- Added separate development-only full-token banded edit-exposure proposal,
+  before runner/tests/corpus DP. Proposed NEW3B scheduled-cell envelope derives
+  from geometry-only2705212284cell workload rounded to next billion; previous
+  100M receipts/policies and169/0 plus137/0 negative results stay immutable.
+  K512/B5 and all per-pair limits stay unchanged. No scientific gate weakened.
+- Proposal binds complete4344/482universes, exact same geometry prepass,
+  original sources/tokenizer/graph, existing trusted native artifact and serial
+  named-owner lifetime. Exhaustive unresolved/D0/Dpositive/component strata,
+  full denominators and all-optimal-path direct exposure/signature aggregates
+  are explicit. No semantic vulnerability localization or prompt sufficiency.
+- Independent GPT-6.1 Sol design code APPROVE and architecture CLEAR on final
+  declaration SHA256
+  db2ca120d692222e6527fbaa9e73aa1e69c063771f485fc50dae28c595309132.
+  Root applied explicit review clarifications before final exact-byte rereview:
+  original native receipt hash, second-pass full-token/old100Mrecord digest
+  reconciliation, complete prepass before native construction/load, per-pair
+  conditional ratio interpretation and fresh-child real backend checks at
+  production499/1011/2035/4083/8179budgets,D0,D=K,D>K and saturation.
+  Added LF attribute to preserve declaration bytes. Design-only APPROVE; no
+  runner implementation, RED/GREEN, corpus DP, model forward or training.
+  Freeze declaration before absent-module RED. Source rights, scientific prompt
+  freeze, machine validator and sealer remain separate OPEN.
