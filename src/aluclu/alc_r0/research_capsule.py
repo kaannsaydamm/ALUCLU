@@ -7,6 +7,7 @@ Its parameters are research-only until those independent contracts are proven.
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from typing import cast
 
 import torch
@@ -65,24 +66,37 @@ class ResearchCapsuleV0(nn.Module):
     def apply_port(self, port: int, hidden: torch.Tensor) -> torch.Tensor:
         """Return h + B(A(RMS(h))) with FP32 math and host-dtype residual."""
 
+        return self.bind_port(port)(hidden)
+
+    def bind_port(self, port: int) -> Callable[[torch.Tensor], torch.Tensor]:
+        """Capture the actual factors for a later checkpoint block operation.
+
+        References are bound, not copied or made immutable. The caller must
+        enforce session identity/version guards before execution and replay.
+        """
+
         if port not in self.ports:
             raise ValueError("port is not mounted in this capsule")
-        if hidden.ndim != 3 or hidden.shape[-1] != CANONICAL_WIDTH:
-            raise ValueError("hidden state must have [batch, sequence, 576] shape")
-        if hidden.dtype not in (torch.float32, torch.bfloat16):
-            raise ValueError("hidden state must be FP32 or BF16")
-
         factors = cast(_PortFactors, self.factors[str(port)])
-        if factors.A.dtype != torch.float32 or factors.B.dtype != torch.float32:
-            raise ValueError("capsule factors must remain FP32")
-        if factors.A.device != hidden.device or factors.B.device != hidden.device:
-            raise ValueError("capsule factors and hidden state must share a device")
+        factor_a, factor_b = factors.A, factors.B
 
-        with torch.autocast(device_type=hidden.device.type, enabled=False):
-            fp32 = hidden.float()
-            normalized = fp32 / torch.sqrt(
-                fp32.square().mean(dim=-1, keepdim=True) + NORMALIZATION_EPSILON
-            )
-            low_rank = F.linear(normalized, factors.A)
-            delta = F.linear(low_rank, factors.B)
-        return hidden + delta.to(dtype=hidden.dtype)
+        def apply(hidden: torch.Tensor) -> torch.Tensor:
+            if hidden.ndim != 3 or hidden.shape[-1] != CANONICAL_WIDTH:
+                raise ValueError("hidden state must have [batch, sequence, 576] shape")
+            if hidden.dtype not in (torch.float32, torch.bfloat16):
+                raise ValueError("hidden state must be FP32 or BF16")
+            if factor_a.dtype != torch.float32 or factor_b.dtype != torch.float32:
+                raise ValueError("capsule factors must remain FP32")
+            if factor_a.device != hidden.device or factor_b.device != hidden.device:
+                raise ValueError("capsule factors and hidden state must share a device")
+
+            with torch.autocast(device_type=hidden.device.type, enabled=False):
+                fp32 = hidden.float()
+                normalized = fp32 / torch.sqrt(
+                    fp32.square().mean(dim=-1, keepdim=True) + NORMALIZATION_EPSILON
+                )
+                low_rank = F.linear(normalized, factor_a)
+                delta = F.linear(low_rank, factor_b)
+            return hidden + delta.to(dtype=hidden.dtype)
+
+        return apply

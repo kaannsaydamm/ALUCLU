@@ -7,6 +7,7 @@ path reproduces only the pinned Transformers 5.17.0 Llama attention semantics.
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from typing import cast
 
 import torch
@@ -63,23 +64,40 @@ class MatchedQProjLoRA(nn.Module):
     ) -> torch.Tensor:
         """Return frozen q projection plus alpha/rank=1 low-rank delta."""
 
+        return self.bind_q_projection(port, attention)(hidden_states)
+
+    def bind_q_projection(
+        self, port: int, attention: LlamaAttention
+    ) -> Callable[[torch.Tensor], torch.Tensor]:
+        """Capture A/B and q_proj references, not mutable mount lookups.
+
+        This is not an integrity snapshot. The checkpoint session must guard
+        captured module/parameter bindings before execution and recomputation.
+        """
+
         if port not in self.ports:
             raise ValueError("port is not selected by the matched LoRA grid")
         factors = cast(_QFactors, self.factors[str(port)])
-        if (
-            factors.A.device != hidden_states.device
-            or factors.B.device != hidden_states.device
-        ):
-            raise HostWrapperError(
-                "LoRA factors and attention input must share a device"
-            )
-        if factors.A.dtype != torch.float32 or factors.B.dtype != torch.float32:
-            raise HostWrapperError("LoRA master factors must remain FP32")
-        base = attention.q_proj(hidden_states)
-        with torch.autocast(device_type=hidden_states.device.type, enabled=False):
-            low_rank = F.linear(hidden_states.float(), factors.A)
-            delta = F.linear(low_rank, factors.B)
-        return base + delta.to(dtype=base.dtype)
+        factor_a, factor_b = factors.A, factors.B
+        q_proj = attention.q_proj
+
+        def project(hidden_states: torch.Tensor) -> torch.Tensor:
+            if (
+                factor_a.device != hidden_states.device
+                or factor_b.device != hidden_states.device
+            ):
+                raise HostWrapperError(
+                    "LoRA factors and attention input must share a device"
+                )
+            if factor_a.dtype != torch.float32 or factor_b.dtype != torch.float32:
+                raise HostWrapperError("LoRA master factors must remain FP32")
+            base = q_proj(hidden_states)
+            with torch.autocast(device_type=hidden_states.device.type, enabled=False):
+                low_rank = F.linear(hidden_states.float(), factor_a)
+                delta = F.linear(low_rank, factor_b)
+            return base + delta.to(dtype=base.dtype)
+
+        return project
 
 
 class PinnedLlamaLoRAWrapper(PinnedLlamaCapsuleWrapper):

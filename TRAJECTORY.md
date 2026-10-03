@@ -8313,3 +8313,51 @@ Task 2 sensorium/recollection gate: CLEAN
   inventory/port/cache/input/mutation/autograd audit. This is not learned neural
   capability, actual-host checkpoint PASS or resource fit. Preparing exact-byte
   stage/commit/push of this checkpoint; full unified objective remains ACTIVE.
+
+### Checkpoint 124 — captured factor operations (2026-10-04)
+
+- Previous goal implementation turn made PROGRESS (session engine); intervening
+  user question was explanation only, not implementation progress. Revalidated
+  clean authoritative Desktop worktree at c3e185f and reread full objective.
+- Added CPU-only binding counterexamples before implementation: exact live math/
+  gradients, first/last ports, FP32/BF16, same-module parameter replacement,
+  q-projection replacement and nonreentrant replay with frozen input. No model
+  assets, corpus, optimizer update or neural capability claim. Actual RED run
+  currently observed through exec session30706; result not yet assumed.
+- Binding captures actual A/B references and q-projection module for later wrapper
+  checkpoint callables. It is NOT a lease, mutation guard or immutable snapshot;
+  checkpoint-session identity/version guards remain mandatory at integration.
+  Default host forward/cache paths remain unchanged. Full objective stays ACTIVE.
+- Actual REDv1 pytest/shell1:21 failures,0errors/skips,32.125s; all missing
+  bind APIs. Root parsed XML SHA256
+  863e8a37b78bd23579532eee1e8580fa258a320fcdd8c7183528fb2bee49df3a.
+  Added bind_port/bind_q_projection with actual tensor/module captures, delegating
+  existing live APIs to the same math. No host loop/cache/session integration yet.
+  Revalidation occurs against captured factors at execution. GREEN next.
+- GREENv2 actual pytest/shell0:21passed. Added independent (not shared bound/live)
+  formula and gradient comparisons under CPU BF16 autocast, plus device mismatch
+  denial before math. Relevant final CPU regression and dual review next.
+- Final formatted regressionv3 actual pytest/shell0:374passed,27binding cases,
+  0failures/errors/skips,13.954s. Root parsed XML and excluded-case absence,
+  SHA256999283ebecd5abb940efd617c1795f578f67d821b146ee0bd0fe1b4b6b8c687d.
+  Ruff passed after test-only lambda replacement/formatting. Both independent
+  GPT-6.1 Sol lanes dispatched on fixed source/test bytes. Added exact artifact
+  record and raw XML attributes. Review pending; no actual-host/learning PASS.
+- Both independent exact-byte lanes returned: code/security APPROVE, architecture
+  CLEAR, all3source/test hashes independently verified. Synthesis APPROVE BINDING
+  PREREQUISITE ONLY. Added full reproduction command and captured-reference limits
+  to review record. This is implementation PROGRESS, not neural capability or
+  whole-goal completion. Next: opt-in wrapper/session integration and host inventory,
+  then separately reviewed actual-host parity/resource invocation. Preparing scoped
+  evidence/source/trajectory commit and remote publication; objective ACTIVE.
+- Publication precheck detected source CRLF-to-LF index normalization, so no
+  commit/push occurred. Mechanically normalize both reviewed source files to LF
+  and pin attributes; semantics unchanged, but final byte hashes/review references
+  and regression artifact must be refreshed before publication.
+- Final LF regressionv4 actual pytest/shell0:374passed,0failure/error/skip,19.033s;
+  root parsed XML SHA07a7f6c241732a8c4148ca1a231f06a62148e42c8c370644a332bafec726e7d1.
+  Source hashes updated in review; both lanes revalidating final LF bytes.
+- Final LF exact-byte rereviews returned code APPROVE and architecture CLEAR.
+  Ruff passed; root reconfirmed27binding cases and zero excluded cases in v4.
+  All four attempts retained. Publishing only checkpoint124 changes; full unified
+  learning/ALC objective remains ACTIVE and actual-host integration remains next.
