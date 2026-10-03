@@ -7682,3 +7682,44 @@ Task 2 sensorium/recollection gate: CLEAN
   tested bytes now. Exact pinned CLI launch review and subsequent verified
   full-development receipt remain OPEN; no real census or edit DP has run.
   Free disk60,138,205,184B; free physical memory3776MiB at inspected snapshot.
+
+## 2026-10-03 — Full development band geometry census checkpoint 111
+
+- Exact CLI launch on clean frozenf7af513 was independently code APPROVE /
+  architecture CLEAR before execution. Same original development/paired sources,
+  SmolLM2 tokenizer snapshot and fixed K512/B5/local ceilings/100M prospective
+  cap; only length/geometry accounting. No corpus edit DP or model forward.
+- Preserved live session9009 across continuation; wrapper22688, launcher26376
+  and worker2192 were inspected as hints, not evidence of completion. Graph
+  finished209857/209857,candidates19874; pair progress4344/4344train and482/482
+  validation. Actual terminal session exit0 and persisted actual_census_exit_code0
+  sourcef7af51351cd66017a3c438af473b9eb17b0b7839, not inferred from process death.
+  Started20:58:44+03:00; terminal stdout last-write21:21:13+03:00. Tokenizer
+  overlength warning is preserved; no model forward/truncation occurred.
+- Root read full JSON, canonical bytes and actual exit. Independent read-only
+  verification session57547 exit0 checked clean exact source/tree721files,
+  source/pair/model/template/four-graph commitments equal rectangular metadata,
+  fixed policy, false authority flags, every accounting partition, histogram,
+  fraction and total cap balance. Source tree
+  cae2990a5ac4c73bc7af7c5351a7b2f27b9298e01536e77a8725bceea629f17e.
+  Raw stdout SHA256
+  6ffd5f601d2aef5df092307b24dc21a7aefc12b211e849fadd4042d87e28adc7.
+- Complete universe4344train/482validation; preflight eligible4160/469;
+  admitted169/0; unresolved4175/482. Local rejections184/13, including7train
+  endpoint-unknown geometries,34/3 known-C0 length-gap rejections and143/10
+  band-cell rejections. No scratch rejection. Unknown is not zero cost/distance.
+  Full eligible work2705212284known band cells across4629pairs. Ordered100M
+  simulation admits99685082cells and leaves314918, permanently exhausted;
+  global-cap unresolved3991train/469validation. Only3.8904%train/0%validation
+  admitted; this prefix is not representative and no exposure has been resolved.
+- Two independent GPT-6.1 Sol terminal reviews returned code APPROVE and
+  architecture CLEAR, scoped receipt synthesis APPROVE. Both personally read
+  full artifacts and reconciled evidence; neither reopened corpus/tokenizer or
+  reconstructed hidden ordered rows. Root preserved exact raw stdout/stderr,
+  actual exit and launcher byte-copy plus explicit verification notes in results.
+- This closes only prospective geometry-census implementation/terminal evidence.
+  Old rectangular negative evidence is unchanged. No prompt freeze, rights,
+  sealer, training or learning acceptance; ALC-R0 and the full goal remain OPEN.
+  Next corpus edit-exposure execution/new cap must be separately preregistered
+  and independently reviewed before any DP outcomes. Disk snapshot59097690112B
+  free; no cleanup or unrelated process intervention was needed.
