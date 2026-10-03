@@ -94,3 +94,5 @@ docs/superpowers/plans/2026-10-02-alc-r0-native-mutation-execution-detail.md tex
 scripts/alc_r0_native_mutation_execution.py text eol=lf
 tests/test_alc_r0_native_mutation_execution.py text eol=lf
 docs/superpowers/plans/2026-10-02-alc-r0-native-fixture-timing-detail.md text eol=lf
+scripts/alc_r0_banded_native_fixture_timing.py text eol=lf
+tests/test_alc_r0_banded_native_fixture_timing.py text eol=lf

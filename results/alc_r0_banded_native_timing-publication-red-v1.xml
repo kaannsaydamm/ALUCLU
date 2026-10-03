@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="0.609" timestamp="2026-10-03T20:06:31.811537+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_banded_native_fixture_timing" name="test_final_verification_failure_cannot_publish_success" time="0.016"><failure message="AttributeError: module 'banded_native_fixture_timing' has no attribute 'publish_completed_report'">tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-28/test_final_verification_failur0')
+
+    def test_final_verification_failure_cannot_publish_success(tmp_path):
+        output = tmp_path / "timing.json"
+    
+        def verification_failure():
+            assert not output.exists()
+            raise RuntimeError("held artifact verification failed")
+    
+        with pytest.raises(RuntimeError, match="held artifact"):
+&gt;           TIMER.publish_completed_report(output, {"status": "success"}, verification_failure)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'banded_native_fixture_timing' has no attribute 'publish_completed_report'
+
+tests\test_alc_r0_banded_native_fixture_timing.py:188: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_banded_native_fixture_timing" name="test_serialization_failure_cannot_leave_final_report" time="0.004"><failure message="AttributeError: module 'banded_native_fixture_timing' has no attribute 'publish_completed_report'">tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-28/test_serialization_failure_can0')
+
+    def test_serialization_failure_cannot_leave_final_report(tmp_path):
+        output = tmp_path / "timing.json"
+        with pytest.raises(TypeError):
+&gt;           TIMER.publish_completed_report(output, {"invalid": object()}, lambda: None)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'banded_native_fixture_timing' has no attribute 'publish_completed_report'
+
+tests\test_alc_r0_banded_native_fixture_timing.py:196: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_banded_native_fixture_timing" name="test_complete_publication_is_exclusive_and_checked_first" time="0.003"><failure message="AttributeError: module 'banded_native_fixture_timing' has no attribute 'publish_completed_report'">tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-28/test_complete_publication_is_e0')
+
+    def test_complete_publication_is_exclusive_and_checked_first(tmp_path):
+        import json
+    
+        output = tmp_path / "timing.json"
+        checks = []
+    
+        def verify():
+            assert not output.exists()
+            checks.append("verified")
+    
+        report = {"status": "unit-only", "samples": [1, 2, 3]}
+&gt;       assert TIMER.publish_completed_report(output, report, verify) == report
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'banded_native_fixture_timing' has no attribute 'publish_completed_report'
+
+tests\test_alc_r0_banded_native_fixture_timing.py:212: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_banded_native_fixture_timing" name="test_execute_publishes_only_after_fallible_finally_checks" time="0.005"><failure message="assert not True&#10; +  where True = any(&lt;generator object test_execute_publishes_only_after_fallible_finally_checks.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001F9173B5F30&gt;)">def test_execute_publishes_only_after_fallible_finally_checks():
+        import ast
+        import inspect
+    
+        function = ast.parse(inspect.getsource(TIMER.execute)).body[0]
+        guarded = next(node for node in function.body if isinstance(node, ast.Try))
+        assert guarded.finalbody
+        # Publication in the try body would precede its mandatory finally checks.
+&gt;       assert not any(
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "open"
+            for statement in guarded.body
+            for node in ast.walk(statement)
+        )
+E       assert not True
+E        +  where True = any(&lt;generator object test_execute_publishes_only_after_fallible_finally_checks.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001F9173B5F30&gt;)
+
+tests\test_alc_r0_banded_native_fixture_timing.py:231: AssertionError</failure></testcase></testsuite></testsuites>

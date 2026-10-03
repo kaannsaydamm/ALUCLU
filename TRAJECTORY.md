@@ -7469,3 +7469,60 @@ Task 2 sensorium/recollection gate: CLEAN
   script/tests. No timer compilation/load/measurement has occurred. Retain the
   independent two-lane implementation gate and final timer-inclusive source
   regression before any native acceptance or renewed family-B research step.
+
+## 2026-10-03 — Timer publication RED/GREEN/review checkpoint 103
+
+- Previous turn made concrete progress: targeted publication repair and tests,
+  not a status-only wait. Resumed goal read in full; source hashes/live session
+  revalidated, no test restarted merely because the turn was interrupted.
+- Original timer author remained pending_init after one interruption request;
+  root took ownership of the targeted repair and notified it not to edit.
+  Original absent-module RED raw logs/XML preserved:1 collection error,
+  0.396s XML time, SHA256 dcaff5ae8108c095be0199fcb070af923e6e4bf42db482727c620fe397bf8b3e.
+  Author process exit receipt unavailable; do not invent exit2. Root first
+  data-only test run session46669 exit0:18 passed,20.939s XML time, SHA256
+  194dc685056869c1e1a8d51c72d71630fdc63d95bf1da6a6c5e27abab5b1b816.
+- Two fresh independent GPT-6.1 Sol reviews REQUEST_CHANGES/BLOCK original
+  timerbc106a4f/tests6115a869: success report publication preceded a fallible
+  finally artifact verification; direct final writes could also leave partial
+  files. No actual timer/DLL load was allowed under those verdicts.
+- Root added4 data-only publication tests before repair. Actual RED exit1,
+  4 failures/18 deselected,0.609s XML time, SHA256
+  e09ed79274d6fa27d9ed5576d29c8535ca0d06faad936793d0cc33447ac184cc.
+  Three failures are missing new publication helper; one AST test specifically
+  detects the old publish-before-finally ordering. This is static/control-flow
+  regression, not a claimed actual timed experiment failure.
+- Publication now occurs outside verified try/finally. The helper performs final
+  verification and serialization before private staged write/flush/fsync/close,
+  then exclusively os.link publishes complete bytes without overwrite.
+  Stage-name cleanup is nonmandatory best-effort, never a later acceptance check.
+  Real filesystem data-only tests cover verify/serialization failures leaving
+  no final file, complete publication and preservation of an existing target.
+- GREEN session42945 actual exit0:22 passed,17.925s XML time (21.48s stdout),
+  SHA256 96bfbdfbb0708774d28bafbb26317d1d1cad8915c30f7c4b0824d5e18aec5a3f.
+  Ruff format/check --no-cache exit0; final stopped script518291e03b29594998ea77ef00b6242ad93f7b75b4eb160ccefb77f48482c7d6,
+  tests1f1f64cbcbac59291cdee635a8794d82a7a41adf865343742db63ed6281dfd34.
+- Post-format pure generator/execution/timer regression session13516 terminal
+  actual exit0:86 passed,0 failures/errors/skips,40.794s XML time, SHA256
+  cb81922445733b309e01970bfd2089ea78039a686cb98e303a4ed08bc31d0f8e.
+  Independent code rereview APPROVE final bytes. Architecture rereview was
+  interrupted and has been resumed; CLEAR not inferred. Clean source freeze,
+  timer-inclusive broad regression and genuine fixed measurement remain OPEN.
+
+## 2026-10-03 — Timer first-measurement review checkpoint 104
+
+- Interrupted architecture lane resumed and independently reread complete final
+  script518291e0/tests1f1f64cb, returned CLEAR. Separate code lane APPROVE;
+  no author/root fallback was used. Both prior publication findings resolved.
+  Successful exclusive hard-link publication was exercised by data-only tests;
+  unsupported filesystem linking remains infrastructure failure with no final
+  report. Stage-name cleanup is not an acceptance check after publication.
+- Preserve all RED/GREEN/raw records and root-witnessed exits; original absent
+  RED's missing author exit remains explicitly unavailable. Freeze reviewed timer
+  code/tests with LF attributes before the actual run. Final timer-inclusive
+  ALC-R0 regression uses distinct original-native and native-edge processes plus
+  all49 other modules, with new committed source provenance. Do not reuse the
+  pre-timer764-pass result as final timer-inclusive evidence.
+- Genuine fixed timing has not run. No measured benefit, optimization acceptance,
+  corpus, neural capability, portability or training authority follows from these
+  static/code/unit gates. Full roadmap remains active in dependency order.
