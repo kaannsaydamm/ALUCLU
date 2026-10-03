@@ -1,14 +1,19 @@
-"""Development exposure aggregation. No implicit corpus reader or native load.
+"""Development-only exposure with explicit pinned paths; no import-time native load.
 
 The fixture core is not a production execution entry point. A separately
 reviewed pinned-source CLI is required before any real development execution.
 """
 
+import argparse
 import hashlib
+import json
+import platform
 import re
+import sys
 from dataclasses import asdict
 from pathlib import Path
 
+from .acquisition import verify_model_snapshot
 from .banded_edit_token_visibility_reference import (
     BandedEditVisibilityLimits,
     BandedEditVisibilityResult,
@@ -34,10 +39,18 @@ from .primevul_source import (
     PRIMEVUL_ORIGINAL_DEVELOPMENT,
     PrimeVulDevelopmentExpectation,
 )
-from .retained_pair_resource_census import _full_code_ids
+from .retained_pair_resource_census import _full_code_ids, verify_terminal_census_state
 from .retained_paired_prompt_contrast import _PINNED_GRAPH_LEDGERS, _read_pair_rows
+from .source_checkout import inspect_clean_source_checkout
 
 MAX_EXPOSURE_CELLS = 3_000_000_000
+GEOMETRY_RECEIPT_SHA256 = (
+    "6ffd5f601d2aef5df092307b24dc21a7aefc12b211e849fadd4042d87e28adc7"
+)
+NATIVE_RECEIPT_SHA256 = (
+    "ec5463427664884af4c2315031733fe3eb9a496abc84322b5fefba46db4e8d61"
+)
+NATIVE_DLL_SHA256 = "d8d680420698a30d863748943d5b000d38facafc56b7081eb1dbfe004af0161a"
 _FIELDS = (
     "first_min",
     "first_max",
@@ -497,8 +510,6 @@ def run_verified_development_edit_exposure(
     )
     _require(type(geometry_receipt) is dict, "geometry provenance receipt required")
     # Snapshot external receipt before graph/tokenizer/backend callbacks.
-    import json
-
     prior = json.loads(canonical_json_bytes(geometry_receipt))
     _require(
         source_expectation.train_rows + source_expectation.validation_rows <= 250000
@@ -630,3 +641,196 @@ def run_verified_development_edit_exposure(
         verify_geometry_dependencies(Path(__file__).resolve().parents[3])
     out.update(provenance)
     return out
+
+
+def verify_edit_exposure_module_origin(repo_root, module_path):
+    root = Path(repo_root).resolve(strict=True)
+    expected = root / "src/aluclu/alc_r0/full_development_banded_edit_exposure.py"
+    _require(
+        expected.is_file()
+        and expected.resolve(strict=True) == expected
+        and Path(module_path).resolve(strict=True) == expected,
+        "edit exposure module does not originate in source checkout",
+    )
+
+
+def load_pinned_geometry_receipt(receipt_path):
+    """Data-only exact committed geometry receipt; no source/model/DLL access."""
+    raw = Path(receipt_path).read_bytes()
+    _require(
+        sha256_bytes(raw) == GEOMETRY_RECEIPT_SHA256, "geometry receipt bytes changed"
+    )
+    receipt = json.loads(raw)
+    _require(
+        canonical_json_bytes(receipt) + b"\n" == raw, "noncanonical geometry receipt"
+    )
+    _require(
+        receipt["source_checkout"]
+        == {
+            "source_commit": "f7af51351cd66017a3c438af473b9eb17b0b7839",
+            "source_tree_sha256": "cae2990a5ac4c73bc7af7c5351a7b2f27b9298e01536e77a8725bceea629f17e",
+            "tracked_file_count": 721,
+        },
+        "geometry receipt source freeze changed",
+    )
+    return receipt
+
+
+def verify_pinned_native_build(receipt_path):
+    """Data-only original build validation; never loads or compiles a DLL."""
+    path = Path(receipt_path).resolve(strict=True)
+    _require(
+        sha256_bytes(path.read_bytes()) == NATIVE_RECEIPT_SHA256,
+        "native receipt bytes changed",
+    )
+    from .banded_edit_token_visibility_native import read_build_receipt
+
+    receipt = read_build_receipt(path)
+    _require(receipt["dll_sha256"] == NATIVE_DLL_SHA256, "native artifact changed")
+    # Re-read after metadata/source/toolchain validation to reject receipt races.
+    _require(
+        sha256_bytes(path.read_bytes()) == NATIVE_RECEIPT_SHA256,
+        "native receipt changed during verification",
+    )
+    return receipt
+
+
+class PinnedDevelopmentNativeBackend:
+    """One named original native owner, constructed only after the full prepass."""
+
+    def __init__(self, receipt_path):
+        self.receipt_path = Path(receipt_path).resolve(strict=True)
+        self.receipt = verify_pinned_native_build(self.receipt_path)
+        from .banded_edit_token_visibility_native import NativeBandedBackend
+
+        self.owner = NativeBandedBackend(self.receipt_path)
+        _require(
+            canonical_json_bytes(self.owner.receipt)
+            == canonical_json_bytes(self.receipt),
+            "native owner receipt mismatch",
+        )
+
+    def audit(self, first, second, **kwargs):
+        return self.owner.audit(first, second, **kwargs)
+
+    def verify_terminal(self):
+        import ctypes
+
+        self.owner._verify_artifact()
+        identifier = (ctypes.c_uint8 * 32)()
+        _require(
+            self.owner.dll.aluclu_banded_abi_v1() == 1
+            and self.owner.dll.aluclu_banded_build_id_v1(identifier, 32) == 0
+            and bytes(identifier).hex() == self.receipt["native_source_sha256"],
+            "native terminal ABI/build identifier changed",
+        )
+        _require(
+            canonical_json_bytes(verify_pinned_native_build(self.receipt_path))
+            == canonical_json_bytes(self.receipt),
+            "native terminal provenance changed",
+        )
+
+
+def _argument_parser():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in (
+        "development_data_dir",
+        "paired_development_data_dir",
+        "tokenizer_snapshot",
+        "native_build_receipt",
+        "geometry_receipt",
+    ):
+        parser.add_argument(name, type=Path)
+    return parser
+
+
+def main():
+    args = _argument_parser().parse_args()
+    root = Path.cwd().resolve(strict=True)
+    verify_edit_exposure_module_origin(root, Path(__file__))
+    verify_geometry_dependencies(root)
+    checkout = inspect_clean_source_checkout(root)
+    geometry = load_pinned_geometry_receipt(args.geometry_receipt)
+    native = verify_pinned_native_build(args.native_build_receipt)
+    snapshot = verify_model_snapshot(args.tokenizer_snapshot)
+    _require(
+        snapshot["inventory_sha256"] == geometry["model_inventory_sha256"],
+        "geometry tokenizer inventory mismatch",
+    )
+    from transformers import AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        str(args.tokenizer_snapshot), local_files_only=True, trust_remote_code=False
+    )
+
+    def graph_progress(processed, total, candidates):
+        print(
+            f"graph progress {processed}/{total} candidates={candidates}",
+            file=sys.stderr,
+            flush=True,
+        )
+
+    def progress(split, processed, total):
+        print(
+            f"edit exposure progress {split} {processed}/{total}",
+            file=sys.stderr,
+            flush=True,
+        )
+
+    result = run_verified_development_edit_exposure(
+        args.development_data_dir,
+        args.paired_development_data_dir,
+        tokenizer,
+        geometry_receipt=geometry,
+        backend_factory=lambda: PinnedDevelopmentNativeBackend(
+            args.native_build_receipt
+        ),
+        model_inventory_sha256=snapshot["inventory_sha256"],
+        graph_progress=graph_progress,
+        progress=progress,
+    )
+    verify_terminal_census_state(
+        args.tokenizer_snapshot,
+        root,
+        model_inventory_sha256=snapshot["inventory_sha256"],
+        source_checkout=checkout,
+    )
+    verify_edit_exposure_module_origin(root, Path(__file__))
+    verify_geometry_dependencies(root)
+    _require(
+        canonical_json_bytes(load_pinned_geometry_receipt(args.geometry_receipt))
+        == canonical_json_bytes(geometry),
+        "terminal geometry provenance changed",
+    )
+    _require(
+        canonical_json_bytes(verify_pinned_native_build(args.native_build_receipt))
+        == canonical_json_bytes(native),
+        "terminal native provenance changed",
+    )
+    result.update(
+        source_checkout=asdict(checkout),
+        geometry_receipt_sha256=GEOMETRY_RECEIPT_SHA256,
+        geometry_source_checkout=geometry["source_checkout"],
+        native_build_receipt_sha256=NATIVE_RECEIPT_SHA256,
+        native_dll_sha256=native["dll_sha256"],
+        native_build_identifier=native["native_source_sha256"],
+        native_source_hashes=native["source_hashes"],
+        model_repository=snapshot["repository"],
+        model_revision=snapshot["revision"],
+        model_snapshot_receipt_sha256=sha256_bytes(canonical_json_bytes(snapshot)),
+        invocation={
+            "module": "aluclu.alc_r0.full_development_banded_edit_exposure",
+            **{
+                name: str(value.resolve(strict=True))
+                for name, value in vars(args).items()
+            },
+            "python_executable": str(Path(sys.executable).resolve(strict=True)),
+            "python_version": sys.version,
+            "platform": platform.platform(),
+        },
+    )
+    sys.stdout.buffer.write(canonical_json_bytes(result) + b"\n")
+
+
+if __name__ == "__main__":
+    main()

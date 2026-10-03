@@ -1,5 +1,7 @@
+import os
 from dataclasses import replace
 from itertools import product
+from pathlib import Path
 
 import pytest
 from test_alc_r0_edit_token_visibility_reference import _oracle
@@ -13,9 +15,14 @@ from aluclu.alc_r0.banded_pair_resource_census import audit_banded_pair_resource
 from aluclu.alc_r0.canonical import canonical_json_bytes
 from aluclu.alc_r0.full_development_banded_edit_exposure import (
     EditExposureError,
+    PinnedDevelopmentNativeBackend,
+    _argument_parser,
     audit_full_development_banded_edit_exposure,
+    load_pinned_geometry_receipt,
     run_verified_development_edit_exposure,
     validate_completed_result,
+    verify_edit_exposure_module_origin,
+    verify_pinned_native_build,
 )
 
 
@@ -423,3 +430,100 @@ def test_reader_rejects_invalid_policy_before_filesystem_access():
             model_inventory_sha256="a" * 64,
             total_cell_cap=3000000001,
         )
+
+
+def test_cli_exposes_only_five_fixed_paths():
+    names = (
+        "development_data_dir",
+        "paired_development_data_dir",
+        "tokenizer_snapshot",
+        "native_build_receipt",
+        "geometry_receipt",
+    )
+    values = _argument_parser().parse_args(
+        ["data", "pairs", "tokenizer", "native", "geometry"]
+    )
+    assert tuple(vars(values)) == names
+    assert all(type(value) is type(Path("data")) for value in vars(values).values())
+    for option in (
+        "--total-cell-cap",
+        "--distance-threshold",
+        "--source-expectation",
+        "--backend",
+    ):
+        with pytest.raises(SystemExit) as error:
+            _argument_parser().parse_args(
+                ["data", "pairs", "tokenizer", "native", "geometry", option, "1"]
+            )
+        assert error.value.code == 2
+
+
+def test_module_origin_rejects_other_checkout(tmp_path):
+    expected = tmp_path / "src/aluclu/alc_r0/full_development_banded_edit_exposure.py"
+    expected.parent.mkdir(parents=True)
+    expected.write_text("# fixture\n", encoding="utf-8")
+    verify_edit_exposure_module_origin(tmp_path, expected)
+    with pytest.raises(EditExposureError, match="originate"):
+        verify_edit_exposure_module_origin(tmp_path, Path(__file__))
+
+
+def test_exact_geometry_receipt_and_frozen_source_identity():
+    root = Path(__file__).resolve().parents[1]
+    receipt = load_pinned_geometry_receipt(
+        root
+        / "results/alc_r0_banded_pair_resource_census_full_f7af513_20261003.stdout.log"
+    )
+    assert (
+        receipt["source_checkout"]["source_commit"]
+        == "f7af51351cd66017a3c438af473b9eb17b0b7839"
+    )
+    assert receipt["training_authority"] is False
+    assert receipt["held_out_data_present"] is False
+
+
+@pytest.mark.parametrize("suffix", [b"\n", b" ", b"{}"])
+def test_geometry_receipt_byte_mutation_rejected(tmp_path, suffix):
+    root = Path(__file__).resolve().parents[1]
+    raw = (
+        root
+        / "results/alc_r0_banded_pair_resource_census_full_f7af513_20261003.stdout.log"
+    ).read_bytes()
+    target = tmp_path / "receipt.json"
+    target.write_bytes(raw + suffix)
+    with pytest.raises(EditExposureError, match="bytes changed"):
+        load_pinned_geometry_receipt(target)
+
+
+def test_native_receipt_rejected_before_loader_or_metadata(tmp_path):
+    target = tmp_path / "receipt.json"
+    target.write_bytes(b"{}")
+    with pytest.raises(EditExposureError, match="native receipt bytes"):
+        verify_pinned_native_build(target)
+    with pytest.raises(EditExposureError, match="native receipt bytes"):
+        PinnedDevelopmentNativeBackend(target)
+
+
+def test_explicit_fresh_child_native_integration():
+    receipt = os.environ.get("ALUCLU_FULL_EXPOSURE_NATIVE_RECEIPT")
+    if receipt is None:
+        pytest.skip(
+            "explicit reviewed native integration only; this skip is not gate evidence"
+        )
+    # Run this test alone in its own child; the native owner is process-bound.
+    backend = PinnedDevelopmentNativeBackend(receipt)
+    budgets = (499, 1011, 2035, 4083, 8179)
+    limits = BandedEditVisibilityLimits()
+    cases = (
+        ((1,) * 600, (1,) * 600, "exact-non-authorizing", 0),
+        ((1,) * 600, (1,) * 599 + (2,), "exact-non-authorizing", 2),
+        ((1,) * 256, (2,) * 256, "exact-non-authorizing", 512),
+        ((1,) * 257, (2,) * 256, "resource-unresolved-non-authorizing", None),
+    )
+    for first, second, status, distance in cases:
+        kwargs = dict(code_budgets=budgets, distance_threshold=512, limits=limits)
+        actual = backend.audit(first, second, **kwargs)
+        expected = audit_banded_edit_token_visibility(first, second, **kwargs)
+        assert actual == expected
+        assert (actual.status, actual.edit_distance) == (status, distance)
+        validate_completed_result(actual, first, second, budgets, 512, limits)
+    backend.verify_terminal()

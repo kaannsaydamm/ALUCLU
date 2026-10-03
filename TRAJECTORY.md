@@ -7836,3 +7836,73 @@ Task 2 sensorium/recollection gate: CLEAN
   receipt-byte/model/origin/clean-checkout binding or fresh-child native checks.
   These implementation and final launch gates remain OPEN; no corpus edit DP,
   model forward, training, held-out access or neural learning PASS occurred.
+
+## 2026-10-03 — Pinned execution boundary checkpoint 116
+
+- Reader checkpoint committed/pushed8d4ce14c4d6ace544debc8e9910721fcc04e72d5;
+  root verified remote branch matches local HEAD. Then added the five-path CLI,
+  exact committed geometry-byte/source-freeze pin and original native-receipt
+  pin, data-only native validation and one retained lazy public backend owner.
+  No import-time DLL construction, compilation or Python fallback. Core prepass
+  still completes before native construction. Terminal held-artifact, ABI/build
+  ID, source/receipt, model inventory, module/dependencies and clean-checkout
+  verification all precede canonical output; original native sources unchanged.
+- Missing boundary API RED: shell exit1,1collection error,2.296s,XML
+  cc993a2207a91b734f5acd99ea74fe89cdfbf268262e5418a5b430a372060da7.
+  The first artifact named boundary-green-v1 also FAILED: actual pytest2,
+  1collection error,2.389s,XML
+  f56a6ab29a5da7faff10dbd48f0a78f869504218ff90541a6e26e379bdf6cb76.
+  Root used a nonexistent model_snapshot import; corrected to the actual
+  acquisition module after checking the existing census import. An intermediate
+  unexecuted model_source spelling was immediately corrected too. Shell0 after
+  Write-Output is not pytest success; preserve printed pytest_exit_code=2.
+- Corrected focused pytest0:44passed,0failures/errors/skips,3.968s,XML
+  bdfcafe94f8e41e56465d7123a168f078edf771ef29810b63b97f4fcf6943411.
+  Added terminal ABI/build-ID verification. Nine relevant regression modules
+  actual pytest/shell0:224passed,0failures/errors/skips,11.259s,XML
+  e5fbc65e88eeb8d7dafd41e74a9f10fd2764c0eda365bd5a38841f131f60d902.
+  Root personally parsed terminal XMLs and hashes; Ruff format/check passed.
+- Implementation source0e14a062d61d88e9412840f52dae7cde1f8768e8c0880ccb790a33e18a7415fe;
+  tests at reviewbd8e92452fc811c6946c56b9d55c26bb0ad4b775e5f3e867c007cca227e25b2f.
+  Independent GPT-6.1 Sol code APPROVE / architecture CLEAR; implementation
+  synthesis APPROVE, with actual native integration and final launch OPEN.
+- Added explicit synthetic integration target; final tests
+  dc80d31c317cd4394cfa642da451d8fb8781ca035b1c0cd99d6b21d2ae49b571.
+  Both independent lanes separately approved its isolated fresh-child launch:
+  one pinned native owner, production budgets499/1011/2035/4083/8179,
+  D0,D2 partial/saturation,D=K512,D513>K, full reference/result parity and
+  terminal verification. Its absent-env skip is explicitly not gate evidence.
+  Launched only this target with explicit original receipt in fresh CPython
+  child session75589; currently awaiting terminal result, not claiming PASS.
+  No corpus DP, model forward, training or held-out access authorized/executed.
+
+## 2026-10-03 — Native integration and final-byte regression checkpoint 117
+
+- Isolated native session75589 terminal actual pytest/shell0:1passed,
+  0failures/errors/skips,22.737s; root parsed XML and SHA256
+  04e498378780bc8e36766f621dc7b9c50466580e5abf5b510e90b24ef90f6431.
+  All four synthetic cases matched frozen reference including all metadata/
+  exposure slots and terminal artifact/ABI/build identifier. One named backend
+  in a fresh process, explicit original build receipt, no corpus/model access.
+  This result supersedes checkpoint116's awaiting-terminal state.
+- Final exact test bytes were rerun in separate pure regression session71627,
+  explicitly deselecting the separately executed native target, not counting
+  its absent-env skip as success. Actual pytest/shell0:224passed,0failures/
+  errors/skips,11.385s; XML
+  6e8cb73510f5cfdfaf924ecede53c15cab15385631bce628cb0cb39c6e53fdd7.
+  Model acquisition and clean-source checkout helper regressions session50915
+  actual pytest/shell0:21passed,0failures/errors/skips,14.640s; XML
+  bf47e2377ac0dd8d5f75d9421bd0021a19d61d7e555f61c51b1d9d4921cb9e05.
+  These are relevant suites, not a whole-project/full-platform PASS.
+- Root rechecked exact implementation/test hashes, parsed all seven boundary/
+  integration XMLs, copied them byte-identically into results including both
+  negative collection-error artifacts, and verified diff whitespace. Test
+  stdout/stderr is tool-captured only; no redirected raw logs claimed. Required
+  independent code APPROVE / architecture CLEAR cover the exact source and
+  final integration test; implementation/synthetic-integration gates passed.
+- Freeze this checkpoint before separate full-development launch review. No
+  full-development edit DP has started. The new prospective3B workload is
+  distinct from the preserved original100M geometry negative result. Actual
+  corpus receipt, runtime/memory observations, scientific prompt review, source
+  rights, machine preregistration/validator and sealer are still OPEN. No
+  training, held-out, neural learning, ALC-R0 or later phase acceptance follows.
