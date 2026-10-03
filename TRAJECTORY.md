@@ -7603,3 +7603,24 @@ Task 2 sensorium/recollection gate: CLEAN
   rectangular137-train/0-validation first-fit result stays immutable. The
   family-B amendment/prompt freeze, corpus rights and full neural experiment
   prerequisites remain OPEN. Full roadmap goal remains active.
+
+## 2026-10-03 — Banded prospective census declaration checkpoint 108
+
+- Previous goal turn was progress: final regression/timing evidence checkpoint
+  105-107 committed0279cec and remote hash personally matched. Current worktree
+  revalidated clean at that commit; full user goal reread before continuing.
+- Declared new bounded full-token geometry census before implementation or data
+  execution. Same complete both-retained author-pair denominators, pinned sources,
+  tokenizer, graph ledgers and template provenance. Production K512/B5 and fixed
+  local limits; global100M band-cell prospective simulation with permanent
+  first-nonfit. This does not amend the immutable rectangular policy/result.
+- Explicit distinction: eligible geometry is not a resolved edit, distance or
+  exposure. Endpoint-rejected geometry is null/unknown; length-gap rejection has
+  known C0. Full population, root unions, known/unknown cost accounting and ordered
+  digests prevent subset/null-cost reinterpretation. No native load, edit DP,
+  model forward, training or held-out access is permitted by this declaration.
+- Reuse immutable cohort/tokenization/template helpers with explicit source pin
+  rather than replacing normalization or graph semantics. Independent design
+  reviews required before RED/implementation; code/regression/clean-source and
+  exact invocation review required before any pinned execution. Design gates
+  pending, no new module or census exists yet. All scientific gates remain OPEN.
