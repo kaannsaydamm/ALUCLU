@@ -8773,3 +8773,29 @@ Task 2 sensorium/recollection gate: CLEAN
   Synthesis APPROVE CONFIG-ONLY META INVENTORY DIAGNOSTIC. Source/test hashes
   unchanged after invocation. This turn PROGRESS through actual config-derived
   skeleton inventory; scoped receipt publication next, full goal ACTIVE.
+
+### Checkpoint137 — explicit attention helper dependency binding (in progress)
+
+- Previous goal turn PROGRESS:f40f705 published; clean Desktop checkout verified,
+  full objective reread. Added26 tiny CPU preparation/replay helper/route-flag
+  drift cases plus numerical rotate_half counterexample. No loaded host, model
+  weights/corpus/optimizer/CUDA or training. RED execution pending; existing
+  meta structural compatibility does not imply complete helper-global coverage.
+- REDv1 actualpytest1:27failures;13 preparation cases reached side effects,
+  13 replay cases failed to deny drift, numerical rotary output changed with
+  unchanged fingerprint. Added enumerated rotary/q-arm/repeat/GQA/bias helper
+  functions, three SDPA flags and selected framework endpoint identities.
+  Unknown helper/namespace/flag schemas fail; no native/kernel completeness claim.
+- FocusedGREENv2 actual0:73passed,9.731s. Added eager/SDPA unchanged complete
+  factor-gradient positives, six malformed helper/flag negatives, same-function
+  default mutation and actual GQA-route counterexample, total37 new cases.
+- Final fullpurev3 actual0:680passed,0failure/error/skip,16.826s;
+  XML0ec8224ff222f8bc6dbfbfd7f5f9b74fe234e82c07d2d22562b0638c7972c436.
+  Root verified37 new cases and unchanged exact reviewed source/test hashes.
+  Independent GPT6.1Sol code APPROVE, architecture CLEAR; synthesis APPROVE
+  ENUMERATED ATTENTION DEPENDENCIES ONLY. Transitive globals, mask/decorator/
+  class/native semantics, actual wrapper qualification/parity/resources/learning
+  OPEN. Earlier136 meta receipt remains evidence for its old frozen source only;
+  no new meta/host invocation or current-branch host acceptance inferred.
+  Ruff/diff clean; all RED/GREEN/final receipts and reproduction record preserved.
+  This turn PROGRESS; scoped publication next, full unified goal ACTIVE.

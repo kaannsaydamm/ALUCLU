@@ -28,6 +28,7 @@ from transformers.models.llama.modeling_llama import (
     eager_attention_forward,
 )
 
+from .checkpoint_attention import attention_dependencies
 from .checkpoint_context import CONTEXT_CLASSES, no_grad_factory_dependencies
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
@@ -450,6 +451,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 implementation,
                 freeze(attention),
                 freeze(mask),
+                attention_dependencies(implementation, attention, freeze),
             ]
         records.append(
             [

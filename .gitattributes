@@ -164,3 +164,7 @@ tests/test_alc_r0_meta_inventory_preflight.py text eol=lf
 results/alc_r0_meta_inventory_preflight_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-meta-host-inventory.md text eol=lf
 results/alc_r0_meta_host_inventory_v1_20261004.json -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_attention.py text eol=lf
+tests/test_alc_r0_attention_dependencies.py text eol=lf
+results/alc_r0_attention_dependencies_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-attention-dependencies.md text eol=lf
