@@ -8616,3 +8616,27 @@ Task 2 sensorium/recollection gate: CLEAN
   Root verified6new cases,0excluded asset cases, unchanged reviewed source/test
   hashes and clean diff check. Current turn PROGRESS; raw evidence index-byte
   check and scoped commit/push next. Full unified goal and neural capability OPEN.
+
+### Checkpoint132 — explicit factor computational dependencies (in progress)
+
+- Previous turn PROGRESS:ce5bfac published; clean Desktop checkout verified,
+  full objective reread. Added13 CPU factor-global drift/counterexample fixtures
+  for capsule epsilon/width and capsule/LoRA linear/autocast bindings, covering
+  preparation and replay. No host weights/assets/corpus/optimizer execution.
+  RED evidence pending. Full host/global/runtime coverage and learning OPEN.
+- REDv1 actualpytest1,13failures: six preparation cases reached a side effect,
+  five replay cases failed to deny drift, width drift raised a late ValueError,
+  and epsilon changed actual bound math while leaving the digest unchanged.
+  Added explicit known-factor factory/global/namespace/linear/sqrt/dtype/autocast
+  bindings; builtin callable identity is not native implementation certification.
+- FocusedGREENv2 actual0:86passes. Added two complete unmodified-factor lease
+  positives and14 unsupported namespace/callable/factory/scalar negatives before
+  final broad pure regression. No arbitrary callback or complete-host claim.
+- Final fullpurev3 actual0:556passed,0failure/error/skip,19.121s,
+  XML5ca849e013a00672af31a3f2bcdb51f9b1be364ed401b09448daf4d25473c8c7.
+  Root parsed29new cases,0excluded asset cases and verified unchanged exact bytes.
+  Independent GPT6.1Sol code APPROVE, architecture CLEAR; synthesis APPROVE
+  ENUMERATED FACTOR BINDINGS ONLY. Current-factory versus captured-closure origin,
+  transitive/helpers/native/runtime/full-host dependencies remain explicit OPEN.
+  Added reproduction/negative evidence/claim-boundary record and raw XML rules.
+  This turn PROGRESS; scoped publication next, full unified/learning goal ACTIVE.

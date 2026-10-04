@@ -29,6 +29,75 @@ from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_sta
 from .checkpoint_fidelity import _canonical_keys
 
 
+def _factor_dependencies(module, freeze, factor_classes):
+    """Bind enumerated factor globals; not generic transitive global traversal."""
+    factory_name = None
+    for cls, name in factor_classes:
+        if isinstance(module, cls):
+            factory_name = name
+            break
+    if factory_name is None:
+        return None
+    factory = getattr(module, factory_name)
+    if not isinstance(factory, types.MethodType) or factory.__self__ is not module:
+        raise CheckpointExecutionError("unsupported factor factory binding")
+    namespace = factory.__func__.__globals__
+    functional, runtime = namespace.get("F"), namespace.get("torch")
+    if (
+        type(functional) is not types.ModuleType
+        or type(runtime) is not types.ModuleType
+    ):
+        raise CheckpointExecutionError("unsupported factor runtime namespace")
+
+    def callable_binding(value):
+        if not isinstance(value, (types.FunctionType, types.BuiltinFunctionType)):
+            raise CheckpointExecutionError("unsupported factor runtime callable")
+        return freeze(value)
+
+    autocast = vars(runtime).get("autocast")
+    if isinstance(autocast, type):
+        autocast_binding = [
+            id(autocast),
+            [
+                callable_binding(getattr(autocast, name, None))
+                for name in ("__init__", "__enter__", "__exit__")
+            ],
+        ]
+    else:
+        autocast_binding = callable_binding(autocast)
+    result = [
+        freeze(factory),
+        id(namespace),
+        id(functional),
+        id(runtime),
+        callable_binding(vars(functional).get("linear")),
+        autocast_binding,
+    ]
+    dtype = vars(runtime).get("float32")
+    if not isinstance(dtype, torch.dtype):
+        raise CheckpointExecutionError("unsupported factor runtime dtype")
+    result.append(freeze(dtype))
+    if factory_name == "bind_port":
+        width, epsilon = (
+            namespace.get("CANONICAL_WIDTH"),
+            namespace.get("NORMALIZATION_EPSILON"),
+        )
+        if type(width) is not int or type(epsilon) is not float:
+            raise CheckpointExecutionError("unsupported factor scalar binding")
+        bf16 = vars(runtime).get("bfloat16")
+        if not isinstance(bf16, torch.dtype):
+            raise CheckpointExecutionError("unsupported factor runtime dtype")
+        result.extend(
+            [
+                freeze(width),
+                freeze(epsilon),
+                freeze(bf16),
+                callable_binding(vars(runtime).get("sqrt")),
+            ]
+        )
+    return result
+
+
 def _module_inventory(roots, names):
     inventory = []
     for root_name in names:
@@ -77,6 +146,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     Class call/dispatch bindings are identity-bound, not fully inventoried.
     Eager/SDPA selected attention and mask callables are bound, not their global
     helper dependencies or native kernels. Other attention routes are rejected.
+    Capsule/LoRA factor factories bind enumerated scalar/namespace/math/autocast
+    dependencies. Builtin callables are identity-bound, not native-code audited.
     Function globals, arbitrary class/property dependencies and external state
     are NOT inventoried; later host-specific audit must separately bind/reject them.
     No fallback repr/pickle or arbitrary object attribute traversal.
@@ -87,6 +158,15 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     if any(type(name) is not str or len(name) > 256 for name in roots):
         raise CheckpointExecutionError("root name bound/type violation")
     names = _canonical_keys(roots)
+    # Lazy imports avoid a wrapper/state/matched-LoRA import cycle. Only known
+    # factor classes receive this explicit dependency inventory.
+    from .matched_lora import MatchedQProjLoRA
+    from .research_capsule import ResearchCapsuleV0
+
+    factor_classes = (
+        (ResearchCapsuleV0, "bind_port"),
+        (MatchedQProjLoRA, "bind_q_projection"),
+    )
     active = set()
     memo = {}
     nodes = 0
@@ -176,6 +256,10 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                     freeze(value.__kwdefaults__, depth + 1),
                     [freeze(item, depth + 1) for item in closure],
                 ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
             elif isinstance(value, functools.partial):
                 result = [
                     "partial",
@@ -268,6 +352,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 ],
                 freeze(module.forward),
                 interface,
+                _factor_dependencies(module, freeze, factor_classes),
                 state,
             ]
         )

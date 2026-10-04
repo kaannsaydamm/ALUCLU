@@ -144,3 +144,6 @@ results/alc_r0_checkpoint_dispatch_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-dispatch.md text eol=lf
 results/alc_r0_mask_binding_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-selected-mask-binding.md text eol=lf
+results/alc_r0_factor_dependencies_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_factor_dependency_state.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-factor-dependencies.md text eol=lf
