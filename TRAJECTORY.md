@@ -9020,3 +9020,25 @@ Task 2 sensorium/recollection gate: CLEAN
   discard/rebuild, not rollback. Ruff/diff clean; negative evidence preserved,
   XML raw bytes protected by attributes, review record added. No actual-host,
   full D/E, launch/training or durable-learning acceptance. Goal ACTIVE.
+
+### Checkpoint145 — wrapper computational callback coverage audit (in progress)
+
+- Previous turn PROGRESS:61e2775 published, clean Desktop checkout verified.
+  Full objective and prospective C/D/E requirements reread. Inspected actual
+  wrapper/controller/state/attention/mask/fake-forward source and exact hashes.
+  Default callback remains absent; fake forward's constant callback is NOT
+  qualification. Base+factor roots omit wrapper dispatch/extra instance state;
+  full wrapper naively includes unsupported controller. Existing mask/q-helper
+  aliases are already inventoried, not falsely classified missing. Added bounded
+  explicit opt-in integration candidate and negative-test requirements before
+  changing production. Two independent GPT6.1Sol source audits pending.
+  No model/data/config imports or executions, no threshold/scope change.
+- Independent source audits returned BLOCK for base/factor-only qualification:
+  wrapper routing absent; qLoRA actual registry/fallback distinct from state
+  inventory alias; Python dispatch/container lookup code/default mutation;
+  wrapper namespace aliases; unlocked check-then-install race. Existing mask
+  and q-helper coverage retained, not discarded. Integration candidate updated
+  with concrete negative tests and repair order; audits cover inspected sources/
+  proposal, not final document-byte approval. No production callback installed.
+  Repairable engineering gaps, not neural falsification or external blocker.
+  Next: q registry/dispatch closure RED->GREEN before wrapper opt-in bridge.
