@@ -154,3 +154,6 @@ results/alc_r0_runtime_dependencies_*.xml -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/checkpoint_runtime.py text eol=lf
 tests/test_alc_r0_runtime_dependency_state.py text eol=lf
 docs/superpowers/reviews/2026-10-04-alc-r0-runtime-dependencies.md text eol=lf
+results/alc_r0_decorated_dependencies_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_decorated_dependencies.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-decorated-dependencies-red.md text eol=lf

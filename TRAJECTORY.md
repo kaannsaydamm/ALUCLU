@@ -8697,3 +8697,26 @@ Task 2 sensorium/recollection gate: CLEAN
   goal implementation turn PROGRESS; intervening user question read-only, not a
   new acceptance result. This continuation finishes scoped evidence publication;
   full unified goal ACTIVE, thresholds unchanged, host/learning gates OPEN.
+
+### Checkpoint135 — actual rotary decorator compatibility (RED in progress)
+
+- Previous goal turn PROGRESS:de885aa published; clean Desktop checkout verified,
+  full objective reread. Read-only installed-callable inventory exited0 and found
+  LlamaRotaryEmbedding.forward's outer Torch no_grad closure captures a foreign
+  bound _DecoratorContextManager.clone method; nested RoPE wrapper also captured.
+  No model construction/forward, weights/assets/corpus/optimizer/CUDA execution.
+- Minimal nn.Module with only the actual decorated rotary callable bound as
+  forward reproduced CheckpointExecutionError:foreign bound method state
+  unsupported, actual diagnostic exit0 confirming the expected rejection.
+  This is an implementation compatibility gap, not neural falsification.
+  Added explicit compatibility RED test plus arbitrary-foreign-method denial
+  control; no bypass/unwrap/identity fallback or production repair applied yet.
+- REDv1 actualpytest1:2tests,1failure,0errors/skips,10.954s. Actual decorated
+  callable failed at checkpoint_state.py:292 foreign-bound-method rejection;
+  arbitrary foreign method control passed. XML SHA256
+  a40e8e33cc8288dc8435815a54b1d951319b42bb546ef1034a4772d2b66d35da.
+  Ruff/diff passed; test hash1817c97b8a859673c5c8033d129e02dada5738b552dda60a8b4e9d939536bbbb.
+  No new full regression/acceptance/review approval claimed. Preserve this RED
+  before narrowly schema-bound decorator repair, mutation controls and broad
+  regression/exact-byte review. Whole goal ACTIVE; this turn PROGRESS through
+  observed actual-callable evidence and executable failing requirement.
