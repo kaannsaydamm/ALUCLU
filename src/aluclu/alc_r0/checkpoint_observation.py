@@ -1,4 +1,4 @@
-"""Single synthetic parity observation; not a host authenticator or launch gate.
+"""Bounded synthetic parity observations; not host authentication/launch gates.
 
 The separately reviewed runner must authenticate host/tokenizer/callback and
 execute the complete matrix. This component accepts a cooperating wrapper and
@@ -44,6 +44,14 @@ class PendingObservation:
 
     summed_loss: torch.Tensor
     forwards: tuple[Observation, Observation]
+
+
+@dataclass(frozen=True)
+class AccumulationObservation:
+    """Every forward contains final accumulated gradients, not individual ones."""
+
+    averaged_loss: torch.Tensor
+    forwards: tuple[Observation, ...]
 
 
 def _fixture(fixture, vocab):
@@ -162,7 +170,7 @@ def observe_forward_backward(wrapper, fixture, *, checkpoint, state):
     return forwards[0]
 
 
-def _observe_group(wrapper, fixtures, *, checkpoint, state):
+def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
     if (
         type(checkpoint) is not bool
         or type(state) is not str
@@ -199,18 +207,13 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state):
     try:
         if checkpoint:
             with wrapper.checkpoint_session() as session:
-                results = tuple(
-                    wrapper(**arguments, use_cache=False, checkpoint_session=session)
-                    for arguments in arguments_group
+                results, loss = _run_group(
+                    wrapper, arguments_group, session=session, accumulate=accumulate
                 )
-                loss = _summed_loss(results)
-                session.backward(loss)
         else:
-            results = tuple(
-                wrapper(**arguments, use_cache=False) for arguments in arguments_group
+            results, loss = _run_group(
+                wrapper, arguments_group, session=None, accumulate=accumulate
             )
-            loss = _summed_loss(results)
-            loss.backward()
         live_base, live_factors, live_named, live_device = _bindings(wrapper, state)
         if (
             live_base is not base
@@ -288,6 +291,32 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state):
         raise
 
 
+def _run_group(wrapper, arguments_group, *, session, accumulate):
+    results = []
+    total = None
+    for arguments in arguments_group:
+        kwargs = {} if session is None else {"checkpoint_session": session}
+        result = wrapper(**arguments, use_cache=False, **kwargs)
+        results.append(result)
+        if accumulate:
+            loss = _summed_loss((result,)) / 16
+            if session is None:
+                loss.backward()
+            else:
+                session.backward(loss)
+            detached = loss.detach().clone()
+            total = detached if total is None else total + detached
+    if not accumulate:
+        total = _summed_loss(results)
+        if session is None:
+            total.backward()
+        else:
+            session.backward(total)
+    if not torch.isfinite(total).item():
+        raise ObservationError("finite total loss required")
+    return tuple(results), total
+
+
 def _summed_loss(results):
     for result in results:
         if (
@@ -345,6 +374,50 @@ def compare_pending_observations(reference, actual, *, exact):
     ):
         raise ObservationError("matched two-forward observations required")
     compare_tensor(reference.summed_loss, actual.summed_loss, exact=exact)
+    for left, right in zip(reference.forwards, actual.forwards, strict=True):
+        compare_observations(left, right, exact=exact)
+
+
+def observe_accumulation(wrapper, fixtures, *, checkpoint):
+    """Exactly16 alternating common-length64 candidates, sequential loss/16.
+
+    Returns before clipping/optimizer mutation. Caller must compare arms BEFORE
+    stepping, and consume ONE final gradient roster rather than summing copies.
+    This is synthetic parity machinery, not task-training/launch authority.
+    """
+    if type(fixtures) is not tuple or len(fixtures) != 16:
+        raise ObservationError("exactly16 immutable fixtures required")
+    base, _, _, _ = _bindings(wrapper, "nonzero")
+    for fixture in fixtures:
+        _fixture(fixture, base.config.vocab_size)
+    left, right = fixtures[:2]
+    if (
+        max(len(left.input_ids), len(right.input_ids)) != 64
+        or any(0 in fixture.attention_mask for fixture in fixtures)
+        or left.prompt_length != right.prompt_length
+        or left.input_ids[: left.prompt_length]
+        != right.input_ids[: right.prompt_length]
+        or left.candidate_ids == right.candidate_ids
+        or any(fixture != fixtures[index % 2] for index, fixture in enumerate(fixtures))
+    ):
+        raise ObservationError("fixed alternating common-length64 candidates required")
+    forwards, averaged_loss = _observe_group(
+        wrapper, fixtures, checkpoint=checkpoint, state="nonzero", accumulate=True
+    )
+    return AccumulationObservation(averaged_loss, forwards)
+
+
+def compare_accumulations(reference, actual, *, exact):
+    if (
+        type(reference) is not AccumulationObservation
+        or type(actual) is not AccumulationObservation
+        or type(reference.forwards) is not tuple
+        or type(actual.forwards) is not tuple
+        or len(reference.forwards) != 16
+        or len(actual.forwards) != 16
+    ):
+        raise ObservationError("matched16-forward accumulations required")
+    compare_tensor(reference.averaged_loss, actual.averaged_loss, exact=exact)
     for left, right in zip(reference.forwards, actual.forwards, strict=True):
         compare_observations(left, right, exact=exact)
 

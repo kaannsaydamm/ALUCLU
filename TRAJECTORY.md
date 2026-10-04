@@ -8952,3 +8952,36 @@ Task 2 sensorium/recollection gate: CLEAN
   evidence preserved. No model/optimizer/training/learning acceptance; full
   runner/callback/actual D matrix/16-accum/AdamW/E resource gates remain OPEN.
   Scoped publication next, full unified goal ACTIVE.
+
+### Checkpoint143 — 16-microbatch accumulation and fixed synthetic step (in progress)
+
+- Previous turn PROGRESS:ea3c93d published. Clean Desktop checkout verified,
+  full objective and fixed D optimizer contract reread. Implementing exactly16
+  length64 alternating candidate microbatches, loss/16 backward each, full
+  gradient comparison BEFORE clipping, followed by fixed norm1/AdamW step1.
+  Tiny synthetic optimizer tests added; RED pending. No actual language-model
+  assets/tokenizer/task/held-out/GPU or neural capability/learning acceptance.
+- REDv1 actualpytest2: missing new step module, collection error only.
+  RED startup silence revalidated against owned live Python31256/9180; no
+  restart. Shared observation group extended with sequential loss/16 backward;
+  distinct pre-clip comparison and fixed norm1/AdamW step implemented. Tiny
+  optimizer execution is synthetic implementation evidence only, not real-host
+  task training. Initial focused GREEN live; final mutations/reference controls
+  and independent review remain pending.
+- InitialGREENv2 actual0:56cases,0failure/error/skip,48.299s before added
+  lease/base-mutation/reference controls and gradient-layout validation.
+  All intermediate receipts preserved. Finalregressionv3 and independent
+  GPT6.1Sol code/architecture review live; no full host/learning inference.
+- Finalregressionv3 actualpytest0:890pass,0failure/error/skip,99.976s;
+  root parsed17new cases, XML SHA256
+  bb270958a4060df4d32be1d4dc74f749bb4a2de23d9540d5384ae32e35fa182c,
+  and unchanged reviewed three source/test hashes. Independent GPT6.1Sol code
+  APPROVE/architecture CLEAR; synthesis APPROVE ACCUMULATION/DISPOSABLE-STEP
+  COMPONENTS ONLY. Caller must compare BOTH pre-clip observations before either
+  step; post-step comparison does not retroactively prove this phase ordering.
+  Mutable artifacts/live states require exclusive quiescent ownership; use one
+  aggregate gradient roster and discard/rebuild on failure. Ruff/diff clean.
+  All negative/intermediate/final evidence preserved. Tiny optimizer execution
+  is not real language-model training/learning acceptance. Actual runner,
+  qualified callback, full host D/E and scientific R0 remain OPEN. Scoped
+  publication next; full unified goal ACTIVE.
