@@ -8737,3 +8737,21 @@ Task 2 sensorium/recollection gate: CLEAN
   No actual host/rotary execution, callback attachment, parity/resource or learning
   PASS. Added all intermediate/final receipts and reproduction record; original
   RED preserved. This turn PROGRESS; scoped publication next, full goal ACTIVE.
+
+### Checkpoint136 — separately reviewed config-only meta host inventory
+
+- Previous turn PROGRESS:9c48db8 published, clean Desktop checkout verified,
+  full objective reread. Preparing exact inventory invocation for pinned704-byte
+  SmolLM2 config, eager/SDPA meta-only skeletons, no weights/forward/optimizer.
+  Added bounded read-only diagnostic and pure config-preflight rejection tests.
+  No actual host construction yet; independent launch review and source freeze
+  required before run. No training or acceptance authorization implied.
+- Purepreflightv1 actual0:3passed,0failure/error/skip,0.151s,
+  XML917c45365bbe03babac2e1557cdb8cd0b4bf42aac39a1471e8af2d24d4368a16.
+  Ruff/diff clean. Independent GPT6.1Sol code APPROVE and architecture CLEAR
+  conditional on clean frozen exact source, existing interpreter/offline/hidden
+  CUDA environment, new raw outputs and owned-child180s ceiling. Source-only
+  freeze next. Logs must be outside checkout: local results/*.log are NOT ignored
+  (root checked), and creating them before child's clean check would invalidate
+  invocation. Desktop ALUCLU/.research-evidence dedicated output directory chosen;
+  source/script bytes unchanged. No meta construction performed yet.

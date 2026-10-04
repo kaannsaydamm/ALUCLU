@@ -159,3 +159,7 @@ tests/test_alc_r0_decorated_dependencies.py text eol=lf
 docs/superpowers/reviews/2026-10-04-alc-r0-decorated-dependencies-red.md text eol=lf
 src/aluclu/alc_r0/checkpoint_context.py text eol=lf
 docs/superpowers/reviews/2026-10-04-alc-r0-decorated-dependencies.md text eol=lf
+scripts/inventory_alc_r0_meta_host.py text eol=lf
+tests/test_alc_r0_meta_inventory_preflight.py text eol=lf
+results/alc_r0_meta_inventory_preflight_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-meta-host-inventory.md text eol=lf
