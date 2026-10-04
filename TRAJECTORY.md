@@ -8825,3 +8825,34 @@ Task 2 sensorium/recollection gate: CLEAN
   transitive globals and actual-host callback/parity/resources remain OPEN.
   Earlier meta inventory proves its old source only. No learning acceptance.
   All negative/intermediate/final receipts preserved; full unified goal ACTIVE.
+
+### Checkpoint139 — mask subroutes and endpoints (in progress)
+
+- Previous turn PROGRESS:003c152 published. Clean Desktop checkout verified,
+  full objective reread. Added52 preparation/replay drift cases for nine mask
+  subhelpers and four runtime endpoints, two actual tiny packed-mask and one
+  block-padding numeric counterexamples. RED pending. No loaded weights, corpus,
+  held-out/training, GPU or learning acceptance; earlier evidence preserved.
+- REDv1 actualpytest1:55failures,11.757s.52 drift fixtures reproduce the gap;
+  three numeric fixtures failed on test argument mistakes, NOT numeric evidence.
+  Fixed missing past_key_values=None and a lambda argument/value keyword clash;
+  preserving original receipt and rerunning RED before implementation.
+- CorrectedREDv2 actualpytest1:55failures,0error/skip,6.862s.26 preparation
+  side effects,26 missed replay denials and three actual numeric changes with
+  unchanged fingerprint. Added nine helper bindings, strict F namespace and
+  four callable endpoints; no native semantics proof. GREENv3 actual0:211pass,
+  7.976s before Ruff blank-line fix. Finalv4 XML808pass12.175s,61newcases;
+  session handle missing on terminal poll, no matching live Python remains,
+  so actual exit code unobserved (not assumed0). Preserved receipt; newv5 exact
+  same scope launched, confirmed live owned session66643 and Python28720/21208.
+  Prior review handles disappeared after continuation; fresh GPT6.1Sol independent
+  lanes launched. v5 terminal/code+architecture review pending. Goal ACTIVE.
+- v5 owned session terminal actualpytest0:808passed,0failure/error/skip,
+  116.143s; root parsed61 new cases, XML SHA256
+  4aa7f3ae03f8a61cd207e3dbf6ef3469f656e236a0fb096b2e401443141fc5fb.
+  Source/test hashes unchanged. Independent GPT6.1Sol code APPROVE,
+  architecture CLEAR; synthesis APPROVE ENUMERATED MASK SUBROUTES/ENDPOINTS
+  ONLY. Ruff/diff clean. All RED/intermediate/final receipts and fixture mistakes
+  preserved. No resource/latency claim from varying suite times; no actual-host
+  callback/parity/resources, native/class/transitive coverage or learning PASS.
+  Scoped publication next; full unified goal remains ACTIVE.

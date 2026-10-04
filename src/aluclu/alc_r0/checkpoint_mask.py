@@ -3,6 +3,7 @@
 import types
 
 import torch
+from torch.nn import functional as F
 from transformers import masking_utils as masks
 from transformers.models.llama import modeling_llama as llama
 
@@ -17,6 +18,8 @@ def mask_dependencies(freeze):
     namespace = vars(masks)
     if namespace.get("torch") is not torch:
         raise CheckpointExecutionError("unsupported mask Torch namespace")
+    if namespace.get("F") is not F:
+        raise CheckpointExecutionError("unsupported mask functional namespace")
     result = [id(namespace)]
     names = (
         "prepare_padding_mask",
@@ -32,6 +35,15 @@ def mask_dependencies(freeze):
         "create_causal_mask",
         "sdpa_mask",
         "eager_mask",
+        "find_packed_sequence_indices",
+        "packed_sequence_mask_function",
+        "or_masks",
+        "blockwise_overlay",
+        "maybe_pad_block_sequence_ids",
+        "_can_skip_bidirectional_mask_xpu",
+        "bidirectional_mask_function",
+        "create_bidirectional_mask",
+        "_vmap_expansion_sdpa",
     )
     bindings = [(namespace, name) for name in names]
     bindings.extend(
@@ -47,6 +59,10 @@ def mask_dependencies(freeze):
         if type(value) is not bool:
             raise CheckpointExecutionError("unsupported mask route flag")
         result.append([name, value])
-    # Explicitly bounded: vmap context classes, packed/blockwise/bidirectional
-    # subhelpers, registry dispatch and native operations need separate coverage.
+    for operation in (torch.arange, torch.diff, torch.where, F.pad):
+        if not isinstance(operation, (types.FunctionType, types.BuiltinFunctionType)):
+            raise CheckpointExecutionError("unsupported mask runtime operation")
+        result.append(freeze(operation))
+    # Endpoint binding is not native semantics coverage. Vmap context classes,
+    # registry dispatch, tensor methods and transitive globals remain separate.
     return result
