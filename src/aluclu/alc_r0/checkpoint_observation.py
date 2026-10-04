@@ -38,6 +38,14 @@ class Observation:
     factor_digest: str
 
 
+@dataclass(frozen=True)
+class PendingObservation:
+    """Each forward carries the SAME summed-backward gradients, not individual ones."""
+
+    summed_loss: torch.Tensor
+    forwards: tuple[Observation, Observation]
+
+
 def _fixture(fixture, vocab):
     if (
         type(fixture) is not ParityInput
@@ -148,6 +156,13 @@ def _roster_stamp(named):
 
 
 def observe_forward_backward(wrapper, fixture, *, checkpoint, state):
+    forwards, _ = _observe_group(
+        wrapper, (fixture,), checkpoint=checkpoint, state=state
+    )
+    return forwards[0]
+
+
+def _observe_group(wrapper, fixtures, *, checkpoint, state):
     if (
         type(checkpoint) is not bool
         or type(state) is not str
@@ -160,33 +175,42 @@ def observe_forward_backward(wrapper, fixture, *, checkpoint, state):
     base_roster = _roster_stamp(base.named_parameters())
     buffer_roster = _roster_stamp(base.named_buffers())
     factor_roster = _roster_stamp(named)
-    _fixture(fixture, base.config.vocab_size)
+    for fixture in fixtures:
+        _fixture(fixture, base.config.vocab_size)
     before_base, before_factor = _base_digest(base), _digest(named)
-    arguments = {
-        name: torch.tensor([getattr(fixture, name)], dtype=torch.int64, device=device)
-        for name in ("input_ids", "labels", "attention_mask", "position_ids")
-    }
-    inputs_before = {name: value.clone() for name, value in arguments.items()}
-    input_stamps = _roster_stamp(arguments.items())
+    arguments_group = tuple(
+        {
+            name: torch.tensor(
+                [getattr(fixture, name)], dtype=torch.int64, device=device
+            )
+            for name in ("input_ids", "labels", "attention_mask", "position_ids")
+        }
+        for fixture in fixtures
+    )
+    inputs_before = tuple(
+        {name: value.clone() for name, value in arguments.items()}
+        for arguments in arguments_group
+    )
+    input_stamps = tuple(
+        _roster_stamp(arguments.items()) for arguments in arguments_group
+    )
     for _, parameter in named:
         parameter.grad = None
     try:
         if checkpoint:
             with wrapper.checkpoint_session() as session:
-                result = wrapper(
-                    **arguments, use_cache=False, checkpoint_session=session
+                results = tuple(
+                    wrapper(**arguments, use_cache=False, checkpoint_session=session)
+                    for arguments in arguments_group
                 )
-                session.backward(result.loss)
+                loss = _summed_loss(results)
+                session.backward(loss)
         else:
-            result = wrapper(**arguments, use_cache=False)
-            if (
-                not isinstance(result.loss, torch.Tensor)
-                or result.loss.ndim != 0
-                or not result.loss.requires_grad
-                or not torch.isfinite(result.loss).item()
-            ):
-                raise ObservationError("finite differentiable scalar loss required")
-            result.loss.backward()
+            results = tuple(
+                wrapper(**arguments, use_cache=False) for arguments in arguments_group
+            )
+            loss = _summed_loss(results)
+            loss.backward()
         live_base, live_factors, live_named, live_device = _bindings(wrapper, state)
         if (
             live_base is not base
@@ -195,21 +219,30 @@ def observe_forward_backward(wrapper, fixture, *, checkpoint, state):
             or _roster_stamp(live_named) != factor_roster
             or _roster_stamp(base.named_parameters()) != base_roster
             or _roster_stamp(base.named_buffers()) != buffer_roster
-            or _roster_stamp(arguments.items()) != input_stamps
+            or tuple(_roster_stamp(arguments.items()) for arguments in arguments_group)
+            != input_stamps
         ):
             raise ObservationError("live bindings changed during observation")
         if (
-            result.logits.shape != (1, len(fixture.input_ids), base.config.vocab_size)
-            or not torch.isfinite(result.logits).all().item()
-            or any(
-                not torch.equal(value, inputs_before[name])
-                for name, value in arguments.items()
-            )
-            or before_base != _base_digest(base)
+            before_base != _base_digest(base)
             or before_factor != _digest(named)
             or any(p.grad is not None or p.requires_grad for p in base.parameters())
         ):
             raise ObservationError("output/input/frozen-state invariant failed")
+        for fixture, result, arguments, original in zip(
+            fixtures, results, arguments_group, inputs_before, strict=True
+        ):
+            if (
+                not isinstance(result.logits, torch.Tensor)
+                or result.logits.shape
+                != (1, len(fixture.input_ids), base.config.vocab_size)
+                or not torch.isfinite(result.logits).all().item()
+                or any(
+                    not torch.equal(value, original[name])
+                    for name, value in arguments.items()
+                )
+            ):
+                raise ObservationError("output/input invariant failed")
         gradients = []
         for name, parameter in named:
             gradient = parameter.grad
@@ -226,27 +259,94 @@ def observe_forward_backward(wrapper, fixture, *, checkpoint, state):
                     "individual factor gradient zero/nonzero rule failed"
                 )
             gradients.append((name, gradient.detach().cpu().clone()))
-        end = fixture.prompt_length + len(fixture.candidate_ids)
-        score = score_banking_candidate(
-            result.logits[0, :end], fixture.prompt_length, fixture.candidate_ids
+        forwards = tuple(
+            Observation(
+                fixture,
+                checkpoint,
+                state,
+                str(device),
+                str(next(base.parameters()).dtype),
+                result.loss.detach().cpu().clone(),
+                result.logits.detach().cpu().clone(),
+                score_banking_candidate(
+                    result.logits[
+                        0, : fixture.prompt_length + len(fixture.candidate_ids)
+                    ],
+                    fixture.prompt_length,
+                    fixture.candidate_ids,
+                ),
+                tuple((name, value.clone()) for name, value in gradients),
+                before_base,
+                before_factor,
+            )
+            for fixture, result in zip(fixtures, results, strict=True)
         )
-        return Observation(
-            fixture,
-            checkpoint,
-            state,
-            str(device),
-            str(next(base.parameters()).dtype),
-            result.loss.detach().cpu().clone(),
-            result.logits.detach().cpu().clone(),
-            score,
-            tuple(gradients),
-            before_base,
-            before_factor,
-        )
+        return forwards, loss.detach().cpu().clone()
     except BaseException:
         for _, parameter in named:
             parameter.grad = None
         raise
+
+
+def _summed_loss(results):
+    for result in results:
+        if (
+            not isinstance(result.loss, torch.Tensor)
+            or result.loss.ndim != 0
+            or not result.loss.requires_grad
+            or not torch.isfinite(result.loss).item()
+        ):
+            raise ObservationError("finite differentiable scalar losses required")
+    loss = results[0].loss
+    for result in results[1:]:
+        loss = loss + result.loss
+    if not torch.isfinite(loss).item():
+        raise ObservationError("finite summed loss required")
+    return loss
+
+
+def observe_pending_pair(wrapper, fixtures, *, checkpoint):
+    """Section-D length32 nonzero-state pair, both graphs BEFORE one backward.
+
+    Same ownership, provenance and failure discard/rebuild limits as single mode.
+    No optimizer, accumulation, full matrix or launch authority is supplied.
+    """
+    if type(fixtures) is not tuple or len(fixtures) != 2:
+        raise ObservationError("exactly two immutable fixtures required")
+    base, _, _, _ = _bindings(wrapper, "nonzero")
+    for fixture in fixtures:
+        _fixture(fixture, base.config.vocab_size)
+    left, right = fixtures
+    if (
+        max(len(left.input_ids), len(right.input_ids)) != 32
+        or any(0 in fixture.attention_mask for fixture in fixtures)
+        or left.prompt_length != right.prompt_length
+        or left.input_ids[: left.prompt_length]
+        != right.input_ids[: right.prompt_length]
+        or left.candidate_ids == right.candidate_ids
+    ):
+        raise ObservationError(
+            "distinct complete candidates with common length32 prompt required"
+        )
+    forwards, summed_loss = _observe_group(
+        wrapper, fixtures, checkpoint=checkpoint, state="nonzero"
+    )
+    return PendingObservation(summed_loss, forwards)
+
+
+def compare_pending_observations(reference, actual, *, exact):
+    if (
+        type(reference) is not PendingObservation
+        or type(actual) is not PendingObservation
+        or type(reference.forwards) is not tuple
+        or type(actual.forwards) is not tuple
+        or len(reference.forwards) != 2
+        or len(actual.forwards) != 2
+    ):
+        raise ObservationError("matched two-forward observations required")
+    compare_tensor(reference.summed_loss, actual.summed_loss, exact=exact)
+    for left, right in zip(reference.forwards, actual.forwards, strict=True):
+        compare_observations(left, right, exact=exact)
 
 
 def _gradient_mapping(gradients):

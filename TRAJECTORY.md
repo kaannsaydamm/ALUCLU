@@ -8921,3 +8921,34 @@ Task 2 sensorium/recollection gate: CLEAN
   clean. Full D runner/matrix, actual-host callback, accumulation/AdamW and E
   resource gates remain OPEN, no neural learning/ALC-0 acceptance. Scoped
   publication next; full dependency-ordered unified goal ACTIVE.
+
+### Checkpoint142 — two-pending-forward observations (in progress)
+
+- Previous turn PROGRESS:f557a47 published. Clean Desktop checkout verified;
+  full unified objective reread. Extending the observation core to retain two
+  length32 candidate graphs before one summed-loss backward, as section D
+  requires. Added tiny harness controls for ordering, summed gradients, off/on,
+  malformed pairs, second-forward failure and comparison. RED pending. No
+  host assets/tokenizer/corpus/held-out/optimizer/GPU or learning acceptance.
+- REDv1 actualpytest2: missing public pending APIs, collection error only.
+  Shared bounded group core implemented without duplicating frozen-state checks;
+  two forwards are retained before one backward and each per-forward capture
+  carries the summed-backward gradient explicitly, not individual gradients.
+  GREENv2 actual0:38cases, before extra omitted-graph/nonfinite/zero-state tests
+  and direct summed-loss capture fix. Initial Ruff import-order issue corrected;
+  intermediate evidence retained, final regression/review pending.
+- Independent GPT6.1Sol code APPROVE and architecture CLEAR for exact final
+  source/test bytes; root still awaiting actual regressionv3 terminal. Command
+  lines and live owned Python processes19980/32732 revalidated; silence/timeouts
+  not treated as failure or grounds to restart. Caller must use ONE summed
+  gradient roster, not sum the two per-forward aggregate copies again. No
+  actual-host/learning acceptance inferred from static review.
+- Finalregressionv3 actualpytest0:873pass,0failure/error/skip,206.398s;
+  root verified17new cases, unchanged reviewed production/new-test hashes and
+  unchanged prior single test bytes. XML SHA256
+  ab6147af13399e2e16b0564c37c8244bd1bb845b5281daf7af01e68e66701e31.
+  Synthesis APPROVE TWO-PENDING-FORWARD OBSERVATION COMPONENT ONLY; independent
+  code APPROVE/architecture CLEAR and Ruff/diff clean. Negative/intermediate
+  evidence preserved. No model/optimizer/training/learning acceptance; full
+  runner/callback/actual D matrix/16-accum/AdamW/E resource gates remain OPEN.
+  Scoped publication next, full unified goal ACTIVE.
