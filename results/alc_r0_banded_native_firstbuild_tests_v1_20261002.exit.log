@@ -1,0 +1,6 @@
+pytest_exit_code=0
+record_kind=root-witnessed-terminal-tool-result
+session_id=96042
+source_commit=d739a35dc7d184c77fec893a22c972fb5d40cf34
+xml_sha256=97f02c8089e2ecae9b6754bb04eb9e1cec0cb95764938fe854b60006bfa99130
+not_a_detached_exit_watcher_record=true

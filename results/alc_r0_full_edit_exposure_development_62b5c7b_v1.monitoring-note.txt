@@ -1,0 +1,26 @@
+2026-10-03 root full-development exposure execution checkpoint (external while source must stay clean).
+Source worktree: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+Frozen clean commit: 62b5c7b6577078db5aa79fd2822a9b2381286597.
+Launcher: full-edit-exposure-development-62b5c7b-v1.ps1, SHA256 255d73c3bc5da7a5cf165d935938b6a4fd62bd26fff90caa218b1d68603dd9ad.
+Required independent GPT-6.1 Sol exact-launch code APPROVE / architecture CLEAR were received before launch.
+Root read full user goal, verified current clean source and source/test/native/geometry hashes, and performed PreflightOnly actual0.
+Actual start: 2026-10-03T19:28:23.9315987Z (22:28:23 Istanbul).
+Tool session84878; initial wrapper PID32516, venv launcher PID30076, actual module worker PID8972.
+PIDs are hints only; revalidate parent/command line and launch.json plus live handle, never restart on observation timeout.
+One module worker command line was personally verified with the exact five paths and CPython3.12 uv worker executable.
+Artifacts .launch.json, .observations.jsonl, .stdout.log, .stderr.log, .exit.log share this stem outside the tracked worktree.
+No tracked files may change until terminal acceptance checks complete. Add final trajectory and evidence only afterward.
+Initial successful worker observations: CPU6.234375s, working set491704320B, private1394327552B; later CPU18.328125s, working set561143808B, private1457537024B.
+Resource fields are sampled MODULE-worker-only observations, not guaranteed peaks or whole process-tree CPU. No observations means unavailable, not zero memory.
+This is development-only full4344train/482validation changed-token exposure under fixedK512/B5 and new prospective3Bcap.
+Original100M geometry negative evidence remains unchanged and must reconcile before native construction. No skipahead, trimming, cap/order/K amendment, retry/resume or fallback.
+No model forward, training, held-out access, prompt acceptance, source-rights permission, sealer pass or ALC-R0/learning claim follows.
+Current state at note creation: worker confirmed live, stdout empty, no exit artifact; no terminal success claim.
+At terminal require actual exit0, complete canonical JSON+LF, exhaustive count/cost/root accounting, token/prepass digests, graph/source/model/native/freeze provenance and false authority flags.
+If wrapper/storage observation fails, inspect existing live worker and artifacts; a missing exit receipt is incomplete evidence, not permission to restart or infer success.
+
+Continuation checkpoint at2026-10-03T19:40:24Z: same worker8972 live, graph100353/209857 candidates7535, CPU491.890625s, working set928231424B, private2541981696B, elapsed720.0731634s. Graph percentage is not whole-run percentage. No exit receipt/final JSON yet; tracked checkout still clean62b5c7b.
+Root prepared data-only terminal checker verify-full-edit-exposure-development-62b5c7b-v1.py BEFORE any final DP outcome. SHA25676ceba70a58a6549569e7beaeb4db5b83c449b8bf7036ba3624701a95035d0d8.
+It checks actual exit/raw hashes/canonical JSON, full prepass/source/model/native/freeze provenance, universe/known-unknown/DP partitions, scheduled+visited2705212284, conditional denominators, direct totals, histogram/predicate/ratio accounting and aggregate-only output. It is not an independent DP oracle or prompt/learning acceptance.
+Running checker without terminal result correctly rejected with actual exit1: actual terminal exit receipt missing; still incomplete. No corpus result was interpreted.
+First inline Python parser-control invocation failed due PowerShell quote transport (SyntaxError, actual1); not a checker-math/corpus failure. Added explicit --parser-self-test mode instead; actual0 with valid JSON, duplicate-key/nonfinite rejection and boolean-vs-int controls. Ruff formatting/check completed. Freeze helper before terminal results; later independent result review remains mandatory.

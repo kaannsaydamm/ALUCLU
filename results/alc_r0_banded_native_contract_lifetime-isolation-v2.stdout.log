@@ -1,0 +1,11 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collected 62 items / 40 deselected / 22 selected
+
+tests\test_alc_r0_banded_native_contract_edges.py ...................... [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\alc_r0_banded_native_20261002\contract-lifetime-isolation-v2.xml -
+===================== 22 passed, 40 deselected in 28.21s ======================

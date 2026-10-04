@@ -1,0 +1,3 @@
+actual_pytest_exit_code=1
+root_observed_terminal_command=publication-focused pytest
+4 failed,18 deselected; tool-captured stdout, not redirected stdout/stderr files

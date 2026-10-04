@@ -1,0 +1,20 @@
+Microsoft (R) COFF/PE Dumper Version 14.44.35228.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\alc_r0_banded_native_20261002\mutation-build-c5d0f02-v1\control\variant.dll
+
+File Type: DLL
+
+  Image has the following dependencies:
+
+    KERNEL32.dll
+
+  Summary
+
+        2000 .data
+        1000 .fptable
+        1000 .pdata
+        A000 .rdata
+        1000 .reloc
+        E000 .text

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.320" timestamp="2026-10-04T01:49:07.946937+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_declared_layer_count_cannot_shrink_during_lease" time="1.322"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">def test_declared_layer_count_cannot_shrink_during_lease():
+        owner = Owner()
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_checkpoint_execution.py:549: Failed</failure></testcase></testsuite></testsuites>

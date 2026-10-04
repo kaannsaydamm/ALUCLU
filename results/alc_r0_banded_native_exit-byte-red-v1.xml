@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="3.831" timestamp="2026-10-02T20:46:05.715127+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_banded_native" name="test_build_exit_canonical_bytes[0]" time="0.019"><failure message="AssertionError: assert b'0\r\n' == b'0\n'&#10;  &#10;  At index 1 diff: b'\r' != b'\n'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-11/test_build_exit_canonical_byte0')
+exit_code = 0
+
+    @pytest.mark.parametrize("exit_code", [0, 4])
+    def test_build_exit_canonical_bytes(tmp_path, exit_code):
+        import importlib.util
+        from pathlib import Path
+    
+        script = Path(__file__).resolve().parents[1] / "scripts/alc_r0_build_banded_native.py"
+        spec = importlib.util.spec_from_file_location("banded_exit_fixture", script)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        path = tmp_path / "build.exit.log"
+        module.write_build_exit(path, exit_code)
+&gt;       assert path.read_bytes() == str(exit_code).encode("ascii") + b"\n"
+E       AssertionError: assert b'0\r\n' == b'0\n'
+E         
+E         At index 1 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+tests\test_alc_r0_banded_native.py:128: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_build_exit_canonical_bytes[4]" time="0.006"><failure message="AssertionError: assert b'4\r\n' == b'4\n'&#10;  &#10;  At index 1 diff: b'\r' != b'\n'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-11/test_build_exit_canonical_byte1')
+exit_code = 4
+
+    @pytest.mark.parametrize("exit_code", [0, 4])
+    def test_build_exit_canonical_bytes(tmp_path, exit_code):
+        import importlib.util
+        from pathlib import Path
+    
+        script = Path(__file__).resolve().parents[1] / "scripts/alc_r0_build_banded_native.py"
+        spec = importlib.util.spec_from_file_location("banded_exit_fixture", script)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        path = tmp_path / "build.exit.log"
+        module.write_build_exit(path, exit_code)
+&gt;       assert path.read_bytes() == str(exit_code).encode("ascii") + b"\n"
+E       AssertionError: assert b'4\r\n' == b'4\n'
+E         
+E         At index 1 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+tests\test_alc_r0_banded_native.py:128: AssertionError</failure></testcase></testsuite></testsuites>

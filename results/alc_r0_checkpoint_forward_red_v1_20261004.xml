@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="28" skipped="0" tests="28" time="7.396" timestamp="2026-10-04T03:02:49.309695+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_full_checkpoint_forward_matches_default_loss_logits_and_gradients[1-PinnedLlamaCapsuleWrapper]" time="0.052"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:62: in test_full_checkpoint_forward_matches_default_loss_logits_and_gradients
+    outputs = [wrapper(ids, attention_mask=mask, position_ids=positions,
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_full_checkpoint_forward_matches_default_loss_logits_and_gradients[1-PinnedLlamaLoRAWrapper]" time="0.024"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:62: in test_full_checkpoint_forward_matches_default_loss_logits_and_gradients
+    outputs = [wrapper(ids, attention_mask=mask, position_ids=positions,
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_full_checkpoint_forward_matches_default_loss_logits_and_gradients[2-PinnedLlamaCapsuleWrapper]" time="0.008"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:62: in test_full_checkpoint_forward_matches_default_loss_logits_and_gradients
+    outputs = [wrapper(ids, attention_mask=mask, position_ids=positions,
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_full_checkpoint_forward_matches_default_loss_logits_and_gradients[2-PinnedLlamaLoRAWrapper]" time="0.032"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:62: in test_full_checkpoint_forward_matches_default_loss_logits_and_gradients
+    outputs = [wrapper(ids, attention_mask=mask, position_ids=positions,
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[cache-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[cache-PinnedLlamaLoRAWrapper]" time="0.026"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[implicit_cache-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[implicit_cache-PinnedLlamaLoRAWrapper]" time="0.094"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[past-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[past-PinnedLlamaLoRAWrapper]" time="0.016"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[embeds-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[embeds-PinnedLlamaLoRAWrapper]" time="0.018"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[batch-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[batch-PinnedLlamaLoRAWrapper]" time="0.020"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[dtype-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[dtype-PinnedLlamaLoRAWrapper]" time="0.016"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[mask-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[mask-PinnedLlamaLoRAWrapper]" time="0.016"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[position-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[position-PinnedLlamaLoRAWrapper]" time="0.016"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[labels-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[labels-PinnedLlamaLoRAWrapper]" time="0.017"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[logits-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[logits-PinnedLlamaLoRAWrapper]" time="0.017"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[inventory-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_checkpoint_forward_invalid_input_aborts_owned_scope[inventory-PinnedLlamaLoRAWrapper]" time="0.019"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:98: in test_checkpoint_forward_invalid_input_aborts_owned_scope
+    wrapper(**kwargs, checkpoint_session=session)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_foreign_session_rejection_does_not_abort_its_owner" time="0.005"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:109: in test_foreign_session_rejection_does_not_abort_its_owner
+    wrapper(torch.tensor([[1, 2]]), checkpoint_session=session, use_cache=False)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_forward" name="test_missing_backward_keeps_graph_outstanding_and_denies_clean_exit" time="0.003"><failure message="TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'">tests\test_alc_r0_checkpoint_forward.py:117: in test_missing_backward_keeps_graph_outstanding_and_denies_clean_exit
+    wrapper(torch.tensor([[1, 2]]), checkpoint_session=session, use_cache=False)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: PinnedLlamaCapsuleWrapper.forward() got an unexpected keyword argument 'checkpoint_session'</failure></testcase></testsuite></testsuites>
