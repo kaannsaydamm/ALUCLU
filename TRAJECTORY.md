@@ -9559,3 +9559,72 @@ Task 2 sensorium/recollection gate: CLEAN
   repair verified; actual D worker/source-runtime authentication and reconciled
   ledger/exact launch are next. Full unified research goal remains ACTIVE;
   interaction learning, durable ALC and scientific R0 are still unproven.
+
+### Checkpoint159 — pinned full D qualification composition (in progress)
+
+- Previous goal turn PROGRESS: checkpoint158 committed/pushed726af79 and1313
+  selected component tests passed. Revalidated clean Desktop checkout, reread
+  full objective and implementation detail/old forward worker/host loader.
+  Next missing actual-run dependency is a fixed one-base snapshot-tokenizer /
+  official-forward / checkpoint-matrix composition with cross-stage integrity
+  and terminal partial evidence, not a new scientific experiment variant.
+- Added stub controls before production code for complete immutable result,
+  pre-access path/device/offline/determinism/grad context checks, all stage
+  failures/interruption/cause/partial receipt/no retry, fixture/asset binding,
+  base/environment drift and malformed/incomplete component receipts. No actual
+  snapshot/model/tokenizer/corpus/GPU/learning run. RED pending. Exact-source /
+  runtime/resource ledger/owned timeout/journal/launch review remain external
+  mandatory gates; no CLI or launch authority inferred from this composition.
+- REDv1 original48159 terminal personally consumed actualpytest1:47 setup
+  errors for missing composition module,47/0/47/0,74.535s, XML SHA256
+  c668f7aeaf222199912a39c7a9ef8bfa3e4681c6aa13e1da3a8057ccd167dfca.
+  Implemented fixed offline tokenizer -> single pinned host -> full official
+  suite -> full D matrix -> terminal snapshot check, typed schedule receipts,
+  cross-stage base/config/acquisition/frozen state checks and chained partial
+  failure/interruption. Initial47-case focusedv2 actualpytest0, terminal1176;
+  final GPU-policy/route controls not covered by this intermediate result.
+- Inspection identified implicit attention selection in existing default loader
+  versus declared eager reference route. Preserve old default and workers;
+  add explicit opt-in eager backend and verify observed route, not a global
+  patch or silent default change. Added8 backend stubs +2 route-drift controls
+  before repair, REDv3 original28468 live. Added simulated CUDA-policy and
+  BF16/tolerance wiring tests (no CUDA initialization/allocation). No source
+  edits during live RED; resource/source/runtime/launch/scientific gates OPEN.
+- Initialfocusedv2 personally parsed47/0/0/0,123.484s SHA256
+  b05d1043c68c4f3d882e7696343943e8c5d6390d7d20fd8d76eba4541c760692.
+  RouteREDv3 original28468 actualpytest1 with10cases9failures1pass; exact
+  default compatibility passed, remaining controls reproduced absent explicit
+  route/admission checks. Added eager-only opt-in to existing production backend
+  (defaultNone preserves historical kwargs), request and verify eager in D;
+  no second loader/global patch/default change. Finalfocusv4 original38657
+  live, source/tests frozen; includes simulated GPU controls and old host tests.
+- Independent GPT6.1Sol code/architecture whole-file review requested at source
+  9eb1d13edd3ee9a2e1b0b3954a3499f257571c4a38a06178fad68fb265a5e148,
+  hostb21953f91854df74f9c89d622cd78a3b387254939fb8e6496a843d3dd3e2d9a9,
+  qualificationtests7e6d96d27a7b4a31316218ae98e91f297f292dae06f5abf476a480c3710901ae,
+  backendtests2e491dc4728aa6ba10c9e7e4af26de45a3ecbdd2898d6382e04676e7ff946d5f.
+  Final broad regression and verdicts pending; no inferred host/learning PASS.
+- RouteREDv3 personally parsed10/9/0/0,86.523s SHA256
+  0793755003c33f5cbefc3084f241607a1253f0c26bceadc1bafe8fda92e20788.
+  Focusv4 original38657 terminal personally consumed actualpytest0:
+  76/0/0/0,180.415s SHA256
+  54bf4e8903d030347c14fdc4d0772841ebe8d7cedfa7f52df97c0857e1c33085.
+  Includes62 composition/8 backend/6 existing host tests. Afterwards normalized
+  host CRLF->LF mechanically through Ruff to exact committed/exported bytes.
+  Final host SHA48dda7e6dc7d6a7f338f00610bb2ba15647b35c6451a423d3839f7cf5520dc83;
+  all other hashes unchanged. Both independent lanes reread complete finalhost,
+  verified all4 hashes and reaffirmed code APPROVE / architecture CLEAR; no
+  model/test execution or inter-lane consultation. Final regressionv5 original
+  90567 live on finalbytes; no edits/restart. Claims still component-only.
+- Finalregressionv5 original90567 terminal personally consumed actualpytest0:
+  1389/0/0/0,229.373s, root parsed62qualification/8backend/6oldhost cases. XML
+  SHA25630e342826b6e81d5b095c049c62bc3c28b5a241ec9f745066693b1ed4144c2bc.
+  All4 final hashes unchanged; Ruff check/format and diff checks passed. Exact
+  command/scope/exclusions, historical RED/intermediate results and final dual
+  verdicts recorded. One-base pinned D/official composition and explicit eager
+  opt-in verified only through stubs/simulated GPU controls. No actual snapshot,
+  model/tokenizer/corpus/CUDA or scientific training run. Cfree54631174144
+  observed, no deletion or resource-fit claim. Next implement enforceable exact
+  source/runtime/resource/journal/owned-timeout invocation boundary; no real
+  launch until accounting/approval complete. Full unified research goal ACTIVE;
+  actual D/E, R0 proof, durable interaction learning and portable ALC stay OPEN.

@@ -87,6 +87,16 @@ class HostBackend(Protocol):
 class TransformersHostBackend:
     """The production backend; all Hub fallbacks are disabled explicitly."""
 
+    def __init__(self, *, attention_implementation: str | None = None) -> None:
+        # Preserve the historical default. The D reference opts into eager
+        # explicitly; arbitrary alternative execution routes are not admitted.
+        if attention_implementation is not None and (
+            type(attention_implementation) is not str
+            or attention_implementation != "eager"
+        ):
+            raise HostLoadError("only explicit eager reference attention is supported")
+        self._attention_implementation = attention_implementation
+
     def load_config(self, snapshot_root: Path) -> object:
         from transformers import AutoConfig
 
@@ -105,6 +115,11 @@ class TransformersHostBackend:
     ) -> nn.Module:
         from transformers import AutoModelForCausalLM
 
+        attention_arguments = (
+            {"attn_implementation": self._attention_implementation}
+            if self._attention_implementation is not None
+            else {}
+        )
         model = AutoModelForCausalLM.from_pretrained(
             str(snapshot_root),
             config=config,
@@ -112,9 +127,15 @@ class TransformersHostBackend:
             trust_remote_code=False,
             use_safetensors=True,
             dtype=dtype,
+            **attention_arguments,
         )
         if not isinstance(model, nn.Module):
             raise HostLoadError("Transformers backend did not return a torch module")
+        if self._attention_implementation is not None and (
+            getattr(getattr(model, "config", None), "_attn_implementation", None)
+            != "eager"
+        ):
+            raise HostLoadError("loaded model did not retain explicit eager attention")
         return model
 
 
