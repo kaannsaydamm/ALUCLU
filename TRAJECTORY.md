@@ -9507,3 +9507,55 @@ Task 2 sensorium/recollection gate: CLEAN
   integrate official-forward regressions and actual D worker/launcher with
   source/runtime authentication and reconciled program resource ledger. Actual
   D/E/scientific R0/durable interaction learning/ALC remain OPEN; goal ACTIVE.
+
+### Checkpoint158 — official-forward regression orchestration (in progress)
+
+- Previous turn PROGRESS: tokenizer-bound fixtures committed4113ce3. Revalidated
+  clean source and full unified objective; inspected original official-forward
+  P11 contract/tests. Preserve old workers/evidence. Added CPU/stub RED controls
+  before new suite; actualpytest1 missing module. No actual host/tokenizer run.
+- Added one-base, fixed grid/arm order and unmounted/zero/detached phases; each
+  phase retains original20 uncached +4 incremental-cache cases.1296 cases across
+  18 grid/arms, plus18 nonzero mount witnesses using the existing fixed B=.125
+  detach fixture. This is NOT the D parity nonzero B pattern or a new scientific
+  search. CPU bitwise/GPU fixed1e-3 +argmax, separate owned caches, exact lengths,
+  base bytes/freeze invariant and terminal prefix/unrun errors. No loader/CLI,
+  optimizer/checkpoint/dataset or launch authority. Focused/regression/review
+  pending; two fresh GPU-process and Linux P11 evidence remain separate OPEN.
+- REDv1:19/0/19/0,18.278s SHA256
+  fded73dba4678649d8f166b06df4c2ecea6789c94d61e2d3fc5a0f367138a383.
+  Initialfocusedv2 actualpytest0:19/0/0/0,96.394s SHA256
+  2d4414862c6f73c75248ec8385465817cf5c6f21a6a4634d5cc6cdfee5ada3bf.
+  Independent code REQUEST CHANGES/architecture WATCH: effective zero-mount
+  condition can drift despite matching logits; typed receipt validation and
+  preparation/witness versus case failure attribution also needed. Added15
+  negative controls before repair, REDv3 live original96785; no restart. Keep
+  initial reviews/negative evidence, ordinary factor tensors needed for stamps.
+- Resumed after conceptual user-learning clarification (no authoritative code
+  progress in that question-only turn); revalidated current4113ce3 Desktop
+  checkout and unchanged candidate bytes, reread full objective and review
+  skill. Phase REDv3 personally parsed15/14/0/0,153.150s SHA256
+  645542ca2515d798556743eab7e7ea540816fc912849d1a54a8d9a44ec06fb2c;
+  mode was already caught, A/B late failures were not first-row protection.
+  Repairedfocusedv4 actualpytest0:34/0/0/0,47.946s SHA256
+  00f2c794f5ae8e773fecd7a2a8d483019c59f6c1d8041a1146260b615699bc94.
+  Final version adds8 q-arm controls and mechanical cleanup, not covered byv4.
+- Both independent GPT6.1Sol final whole-file rereviews returned code APPROVE /
+  architecture CLEAR at sourceae997430bb9e9e29acf090234b4df508ae719aeec1b8b16373ebc5639bfd90fe
+  and tests0bd547f8ec87fb14075e65341fb570ce156f0bca0518c6ec0b502b48bf0df52e.
+  Per-row/witness effective mount/factor/byte/mode guards, ordinary construction,
+  stage-aware unrun suffix and typed receipt validation repaired prior findings.
+  Broadcomponentregressionv5 live original86085; no source/test edits while live,
+  same handle only. Actual D/E/learning/ALC and source/runtime/resource/launch
+  gates remain OPEN. Reviewer CLEAR is not actual-host or launch acceptance.
+- Finalregressionv5 original86085 personally consumed actualpytest0:
+  1313/0/0/0,107.503s, root parsed42newcases. XML SHA256
+  a7f7b09fe62ee96a8ad42866d15d086944529a87b4bddc5f8ebd4544d22179b9.
+  Final source/tests stayed byte-identical to dual rereview; Ruff/check-format
+  and diff checks passed. Exact command, exclusions, negative/intermediate
+  results and residual boundaries persisted in provenance/review docs. No
+  actual model/tokenizer/corpus/GPU run; selected stub/component regression
+  only. Cfree55260798976 observed, no deletion or resource-fit claim. Component
+  repair verified; actual D worker/source-runtime authentication and reconciled
+  ledger/exact launch are next. Full unified research goal remains ACTIVE;
+  interaction learning, durable ALC and scientific R0 are still unproven.

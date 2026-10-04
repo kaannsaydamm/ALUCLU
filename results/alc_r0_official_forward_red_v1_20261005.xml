@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="19" failures="0" skipped="0" tests="19" time="18.278" timestamp="2026-10-05T01:23:10.137900+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_complete_suite_order_grid_phases_and_small_receipts" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_failure_keeps_completed_prefix_and_unrun_without_retry[0]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_failure_keeps_completed_prefix_and_unrun_without_retry[29]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_failure_keeps_completed_prefix_and_unrun_without_retry[1295]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_keyboard_interrupt_preserves_kind_and_partial_state" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_changed_base_cannot_join_success_prefix" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_cpu_requires_exact_boolean_mode_before_construction[False]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_cpu_requires_exact_boolean_mode_before_construction[1]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_cpu_requires_exact_boolean_mode_before_construction[None]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_fixed_inputs_reproduce_existing_no_mount_matrix" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_cpu_logit_comparison_is_bitwise_and_finite" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_invalid_or_nonidentical_logits_rejected[shape]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_invalid_or_nonidentical_logits_rejected[dtype]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_invalid_or_nonidentical_logits_rejected[nonfinite]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_invalid_or_nonidentical_logits_rejected[changed]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_invalid_or_nonidentical_logits_rejected[grad]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_cache_pair_requires_distinct_correct_length_objects" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_cached_case_passes_own_cache_to_each_incremental_branch" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase><testcase classname="tests.test_alc_r0_official_forward_suite" name="test_nonzero_witness_must_actually_change_official_logits" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'&quot;">tests\test_alc_r0_official_forward_suite.py:16: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_official_forward")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_official_forward'</error></testcase></testsuite></testsuites>

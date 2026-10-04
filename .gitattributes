@@ -237,3 +237,7 @@ src/aluclu/alc_r0/checkpoint_parity_tokenizer.py text eol=lf
 tests/test_alc_r0_parity_tokenizer.py text eol=lf
 results/alc_r0_parity_tokenizer_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-05-alc-r0-parity-tokenizer.md text eol=lf
+src/aluclu/alc_r0/checkpoint_official_forward.py text eol=lf
+tests/test_alc_r0_official_forward_suite.py text eol=lf
+results/alc_r0_official_forward_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-official-forward.md text eol=lf
