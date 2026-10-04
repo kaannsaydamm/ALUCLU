@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="13.612" timestamp="2026-10-04T15:27:16.215044+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_factor_registration_order_is_not_state_drift" time="0.477"><failure message="aluclu.alc_r0.checkpoint_observation.ObservationError: factory changed state or reused comparison arm">tests\test_alc_r0_accumulation_pair.py:47: in test_factor_registration_order_is_not_state_drift
+    result = run_accumulation_pair(reversed_roster, fixtures(), exact=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_accumulation_pair.py:86: in run_accumulation_pair
+    raise ObservationError("factory changed state or reused comparison arm")
+E   aluclu.alc_r0.checkpoint_observation.ObservationError: factory changed state or reused comparison arm</failure></testcase></testsuite></testsuites>

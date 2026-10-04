@@ -8985,3 +8985,38 @@ Task 2 sensorium/recollection gate: CLEAN
   is not real language-model training/learning acceptance. Actual runner,
   qualified callback, full host D/E and scientific R0 remain OPEN. Scoped
   publication next; full unified goal ACTIVE.
+
+### Checkpoint144 — enforced accumulation-pair phase ordering (in progress)
+
+- Previous turn PROGRESS:8b10df7 published. Clean Desktop checkout verified;
+  full unified objective and current wrapper/factor/meta inventory interfaces
+  reread. Actual host callback is still absent by default. Integrating both
+  accumulation arms with shared-base/fresh-factor checks and enforced pre-clip
+  parity BEFORE either optimizer step; not substituting this for full D matrix,
+  authenticated factory, qualified callback or launch review. Tiny integration
+  RED pending, no model assets/tokenizer/task/held-out/GPU or learning acceptance.
+- Initial REDv1 collection error:1error,112.880s, XML SHA256
+  fd0775924ba5d0f21157841ef379d61964e342b37d1dcd215c6c5b1b462fd16e.
+  Focused GREENv2 actualpytest0:30pass,0failure/error/skip,31.304s, XML
+  44e7273f8a913f13bcc00c9a32075df5ca4be13fe45ea3ba07343eaac52a2dec.
+  Original live handle41659 consumed terminal exit0; no restart. Added factor
+  registration-order reproducer before repair: canonical named-state comparison
+  must not treat unchanged noncanonical registration order as state mutation.
+  Actual host/learning acceptance remains OPEN; independent review pending.
+- OrderREDv3 actualpytest1 reproduced unchanged B-before-A registration falsely
+  rejected as drift. Canonical UTF8 sorting with non-deduplicated parameters
+  now matches the validated binding roster; no acceptance threshold changed.
+  Full scoped regression and two independent GPT6.1Sol reviews next.
+- OrderREDv3:1failure,13.612s, XML SHA256
+  7c2da52859e46e26351375067bcd31cc3491c62b9305c7932b0313ce8a4d11fb.
+  Finalregressionv4 actualpytest0:904pass,0failure/error/skip,32.128s,
+  including14new cases; XML SHA256
+  5d8c48b01117f756df2ec18f1ebc14f418c8fbe586f7dbc5f916aabe677a2c47.
+  Root consumed original92041 terminal and checked unchanged reviewed source/
+  test hashes. Independent GPT6.1Sol code APPROVE/architecture CLEAR; synthesis
+  APPROVE BOUNDED PAIR COMPONENT ONLY. Pre-clip comparison now enforced before
+  either optimizer step, rather than relying solely on caller attention.
+  Factory authentication and exclusive ownership remain required; failure is
+  discard/rebuild, not rollback. Ruff/diff clean; negative evidence preserved,
+  XML raw bytes protected by attributes, review record added. No actual-host,
+  full D/E, launch/training or durable-learning acceptance. Goal ACTIVE.

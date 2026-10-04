@@ -190,3 +190,7 @@ src/aluclu/alc_r0/checkpoint_accumulation_step.py text eol=lf
 tests/test_alc_r0_accumulation_observation.py text eol=lf
 results/alc_r0_accumulation_observation_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-accumulation-observation.md text eol=lf
+src/aluclu/alc_r0/checkpoint_accumulation_pair.py text eol=lf
+tests/test_alc_r0_accumulation_pair.py text eol=lf
+results/alc_r0_accumulation_pair_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-accumulation-pair.md text eol=lf
