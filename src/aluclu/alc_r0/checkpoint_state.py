@@ -73,6 +73,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     Bounds: roots16, modules4096/depth64, value depth32/nodes100000, containers2048,
     UTF8 strings64KiB/integers256bits, unregistered tensors64KiB, JSON stream16MiB.
     These are component limits, NOT a measured peak-memory/latency guarantee.
+    Class call/dispatch bindings are identity-bound, not fully inventoried.
     Function globals, arbitrary class/property dependencies and external state
     are NOT inventoried; later host-specific audit must separately bind/reject them.
     No fallback repr/pickle or arbitrary object attribute traversal.
@@ -238,6 +239,15 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 id(module),
                 id(type(module)),
                 id(type(module).forward),
+                [
+                    (key, id(getattr(type(module), key)))
+                    for key in (
+                        "__call__",
+                        "_call_impl",
+                        "_wrapped_call_impl",
+                        "__getattribute__",
+                    )
+                ],
                 freeze(module.forward),
                 interface,
                 state,

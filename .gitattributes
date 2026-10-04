@@ -140,3 +140,5 @@ docs/superpowers/reviews/2026-10-04-alc-r0-bound-decoder-blocks.md text eol=lf
 tests/test_alc_r0_checkpoint_forward.py text eol=lf
 results/alc_r0_checkpoint_forward_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-forward.md text eol=lf
+results/alc_r0_checkpoint_dispatch_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-dispatch.md text eol=lf

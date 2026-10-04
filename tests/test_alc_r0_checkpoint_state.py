@@ -265,3 +265,39 @@ def test_function_globals_are_explicitly_outside_this_inventory():
         assert getter() == before
     finally:
         _TEST_GLOBAL_SCALE = original
+
+
+@pytest.mark.parametrize(
+    "dispatch", ["__call__", "_call_impl", "_wrapped_call_impl", "__getattribute__"]
+)
+def test_module_class_call_dispatch_drift_is_fingerprinted(dispatch):
+    class LocalDispatch(nn.Module):
+        def forward(self, hidden):
+            return hidden * 2
+
+    owner, _, getter = make_owner()
+    owner.base.dispatch_fixture = LocalDispatch()
+    before = getter()
+    original = getattr(LocalDispatch, dispatch)
+    try:
+
+        def changed_call(self, hidden):
+            return hidden * 3
+
+        if dispatch == "__getattribute__":
+
+            def changed_lookup(self, name):
+                return original(self, name)
+
+            replacement = changed_lookup
+        else:
+            replacement = changed_call
+        setattr(LocalDispatch, dispatch, replacement)
+        if dispatch == "__call__":
+            assert torch.equal(
+                owner.base.dispatch_fixture(torch.ones(1)), torch.tensor([3.0])
+            )
+        assert getter() != before
+    finally:
+        delattr(LocalDispatch, dispatch)
+    assert getter() == before

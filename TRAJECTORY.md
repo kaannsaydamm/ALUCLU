@@ -8555,3 +8555,26 @@ Task 2 sensorium/recollection gate: CLEAN
   and rawXML/LF attributes. Raw index byte verification and scoped publication
   next. This continuation PROGRESS; pinned host audit/attachment/parity/resource
   and scientific/user-learning/full unified program remain ACTIVE/OPEN.
+
+### Checkpoint129 — class dispatch binding audit (2026-10-04)
+
+- Previous turn PROGRESS:6502393 published; current clean checkout verified.
+  Installed Transformers GradientCheckpointingLayer.__call__ is a computational
+  class-level dispatch dependency, not only forward. Existing helper does not
+  bind class __call__ identity. Added local fixture RED changing its class call
+  while preserving forward; restored in finally. No production monkeypatch,
+  real model/assets/corpus/optimizer execution. Complete host audit still OPEN.
+- DispatchREDv1 actual1:changed output with unchanged fingerprint reproduced.
+  Added class __call__/_call_impl/_wrapped_call_impl/__getattribute__ identity
+  bindings, not full callable/global-state traversal. No complete host coverage
+  claim. Existing unknown class/property/global dependencies remain explicit.
+- Regressionv2 actual0:197passes. Expanded localdispatch fixture to allfour
+  bindings; final focusedregressionv3 actual0:200passes,0failure/error/skip,7.897s,
+  XML0806ccfc1076b53565dc0805ce9f9cf1ad729e3b1a5ae9cf459ad454cd8ab699.
+  Ruff clean; independent dual exact-byte review dispatched. This focused suite
+  is not the prior517 full pure regression, nor actualhost evidence. Added
+  reproducible attempt record; global/classproperty/host qualification OPEN.
+- Final exact-byte independent code APPROVE, architecture CLEAR. Synthesis
+  APPROVE DISPATCH IDENTITY REPAIR ONLY; samefunction code/default/global mutation
+  remains outside identity-only binding. Scoped evidence and trajectory publication
+  next. Full objective ACTIVE, not complete-host or learning acceptance.
