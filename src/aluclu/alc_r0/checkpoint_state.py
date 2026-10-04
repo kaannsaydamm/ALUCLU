@@ -15,6 +15,7 @@ import math
 import types
 from collections import OrderedDict
 from collections.abc import Mapping
+from typing import cast
 
 import torch
 from torch import nn
@@ -38,6 +39,7 @@ from .checkpoint_runtime import read_runtime_state
 
 _CAUSAL_LOSS_PROPERTY = PreTrainedModel.loss_function
 _MISSING = object()
+_TYPING_CAST = cast
 
 
 def _loss_dependencies(module, freeze):
@@ -136,6 +138,9 @@ def _factor_dependencies(module, freeze, factor_classes):
     if not isinstance(factory, types.MethodType) or factory.__self__ is not module:
         raise CheckpointExecutionError("unsupported factor factory binding")
     namespace = factory.__func__.__globals__
+    cast_binding = namespace.get("cast")
+    if cast_binding is not _TYPING_CAST:
+        raise CheckpointExecutionError("unreviewed factor cast binding")
     functional, runtime = namespace.get("F"), namespace.get("torch")
     if (
         type(functional) is not types.ModuleType
@@ -161,6 +166,7 @@ def _factor_dependencies(module, freeze, factor_classes):
         autocast_binding = callable_binding(autocast)
     result = [
         freeze(factory),
+        freeze(cast_binding),
         id(namespace),
         id(functional),
         id(runtime),
@@ -231,13 +237,39 @@ def _module_inventory(roots, names):
     return inventory
 
 
+def _dispatch_dependencies(module, freeze):
+    """Enumerated Python dispatch/lookup state; native descriptors identity only."""
+    names = ["__call__", "_call_impl", "_wrapped_call_impl", "__getattribute__"]
+    if isinstance(module, (nn.ModuleDict, nn.ModuleList)):
+        names.extend(("__getitem__", "__len__", "__iter__"))
+    if isinstance(module, nn.ModuleDict):
+        names.append("__contains__")
+    if isinstance(module, nn.ModuleList):
+        names.append("_get_abs_string_index")
+    records = []
+    for name in names:
+        operation = inspect.getattr_static(type(module), name)
+        if isinstance(operation, types.FunctionType):
+            binding = freeze(operation)
+        elif isinstance(
+            operation, (types.WrapperDescriptorType, types.MethodDescriptorType)
+        ):
+            binding = ["native_descriptor", id(operation), id(operation.__objclass__)]
+        else:
+            raise CheckpointExecutionError("unsupported module dispatch/lookup")
+        records.append([name, binding])
+    return records
+
+
 def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     """Fingerprint module attributes, config, forward bindings and small tensors.
 
     Bounds: roots16, modules4096/depth64, value depth32/nodes100000, containers2048,
     UTF8 strings64KiB/integers256bits, unregistered tensors64KiB, JSON stream16MiB.
     These are component limits, NOT a measured peak-memory/latency guarantee.
-    Class call/dispatch bindings are identity-bound, not fully inventoried.
+    Enumerated Python module dispatch and ModuleDict/ModuleList lookup functions
+    bind code/default/closure state; native descriptors are identity-bound only.
+    This is not all module methods, lookup builtins/globals or native semantics.
     Eager/SDPA selected attention and mask callables are bound, not their global
     helper dependencies or native kernels. Other attention routes are rejected.
     State/upstream/q attention registry aliases, pinned Python resolver code,
@@ -375,6 +407,12 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 # Python cannot expose native implementation state here. This
                 # binds the resolved callable only; runtime qualification is separate.
                 result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
             elif isinstance(value, functools.partial):
                 result = [
                     "partial",
@@ -470,15 +508,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 id(module),
                 id(type(module)),
                 id(type(module).forward),
-                [
-                    (key, id(getattr(type(module), key)))
-                    for key in (
-                        "__call__",
-                        "_call_impl",
-                        "_wrapped_call_impl",
-                        "__getattribute__",
-                    )
-                ],
+                _dispatch_dependencies(module, freeze),
                 freeze(module.forward),
                 interface,
                 _factor_dependencies(module, freeze, factor_classes),

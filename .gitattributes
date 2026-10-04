@@ -198,3 +198,6 @@ src/aluclu/alc_r0/checkpoint_registry.py text eol=lf
 tests/test_alc_r0_q_registry_dependencies.py text eol=lf
 results/alc_r0_q_registry_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-q-registry-dependencies.md text eol=lf
+tests/test_alc_r0_module_dispatch_state.py text eol=lf
+results/alc_r0_module_dispatch_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-module-dispatch-state.md text eol=lf

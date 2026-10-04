@@ -9099,3 +9099,37 @@ Task 2 sensorium/recollection gate: CLEAN
   protected by attributes. Full wrapper/ModuleDict/module dispatch/maskresolver/
   atomic opt-in/actual D/E/scientific R0 gates remain OPEN. No neural acquisition
   or durable-learning acceptance, full unified objective remains ACTIVE.
+
+### Checkpoint147 — Python module dispatch and factor lookup state (in progress)
+
+- Previous turn PROGRESS:ce47190 published; clean Desktop checkout verified.
+  Full unified objective reread. Inspected installed Torch dispatch/container
+  source and factor factory lookups. Added same-function code mutation controls
+  for four module dispatch methods, ModuleDict lookup and both arms' cast alias,
+  plus preparation/replay lookup denial. RED pending. No actual host/config/
+  tokenizer/corpus/held-out/GPU or optimizer execution; remaining callback gate
+  stays OPEN, no acceptance thresholds changed.
+- REDv1 actualpytest1:12failures reproduced same-object dispatch/ModuleDict code
+  and cast-alias gaps. Added static enumerated Python dispatch/ModuleDict and
+  ModuleList lookup method fingerprints; native descriptors identity-only.
+  Factor factories now require the pinned typing.cast alias and fingerprint its
+  state. No generic transitive-global/native proof inferred. GREEN pending.
+- REDv1:12failures,17.221s, XML
+  9909050729536066028e0e840f36a00e83175c1222b022a0cfed96982b516291.
+  Initialv2 actualpytest1:87cases/1failure; existing wrapped __getattribute__
+  control captures original native descriptor in closure. Added explicit bounded
+  native-descriptor identity records so that Python closure remains inventoried
+  without executing native endpoint; not a native semantics claim. Expanded
+  container/default/cast-code/descriptor controls, final regression pending.
+- Initialv2 remained FAILURE despite its historical green_v2 filename:
+  87/1/0/0,11.480s, XML SHA256
+  410454572ae51bac4e88b8635a9d50ed9e4ff7a52518d28c72cc66c2892592c7.
+  Finalregressionv3 actualpytest0:977/0/0/0,28.817s; root consumed original4149
+  terminal and parsed28new cases. XML SHA256
+  22e1100f4ebe0467a12c46458f656513dfa4e1883384d8da0e2fb3ad63c2c9ce.
+  Reviewed source/test hashes unchanged. Independent GPT6.1Sol code APPROVE
+  and architecture CLEAR apply only to enumerated Python dispatch/lookup and
+  factor-cast state. Native descriptors remain identity-only; effective globals/
+  builtins, all methods, wrapper inventory/atomic opt-in/mask resolver and actual
+  host D/E remain OPEN. Existing tiny optimizer tests are synthetic, not neural
+  acquisition or durable-learning evidence. Full unified goal remains ACTIVE.
