@@ -9367,3 +9367,46 @@ Task 2 sensorium/recollection gate: CLEAN
   Ruff/diff clean. One-base fresh-cell construction and positional factory
   interface implemented; real host/source/matrix/invocation/resource/scientific
   R0/durable learning/ALC gates remain OPEN. Full unified goal ACTIVE.
+
+### Checkpoint154 — full synthetic parity cell orchestration (in progress)
+
+- Revalidated clean ff7ce4e and reread full unified objective and D/E detail.
+  Previous conversational status turn was no implementation progress. Added
+  complete-cell schedule/factory/repeat negative tests before implementation;
+  preserve six fixtures, both states, repeated nonzero, pending pair and fixed
+  16-microbatch optimizer parity. Tiny tests are NOT actual-host D or learning.
+  Full 18-cell matrix/invocation authentication/resource/scientific gates OPEN.
+- Initial RED actualpytest1:15/15/0/0,83.516s SHA256
+  a634e03dce3b62e2a3169a3a2e005083853bf36e8afdf07724c060d9633a0941.
+  Initial implementation focusedv2 actualpytest1:15cases/2failures; Tensor
+  WeakSet equality raises ambiguous bool on reused parameters. Independent
+  code lane also identified cross-attempt storage sharing; architecture WATCH
+  identified cross-state A/B relationship. Added explicit negative controls
+  before repairing these invariants; preserve intermediate failed receipts.
+- New REDv3 actualpytest1:4cases/4failures reproduced shared-storage stages
+  being accepted until accumulation, Tensor WeakSet equality failure, changed A
+  across zero/nonzero, and constant nonzero B accepted instead of fixed pattern.
+  Replaced tensor weak-set membership with identity-keyed weak references;
+  reject live parameter/storage aliases before forward, require identical A
+  across states and byte-exact prescribed B. Added single AND pending alias
+  controls; original seeded-A/tokenizer/source authentication remains external.
+- Focusedv2:15/2/0/0,69.681s SHA256
+  3cda517c9e205e10f78d83dd12fe9ae14e6a46e3b3711bf854caff67c4ac64e0.
+  AliasREDv3:4/4/0/0,28.847s SHA256
+  46c88c253e8178cd1a3290eb15c8e364041242d4bcf4192b186b2f94be92701a.
+  Repairedfocusedv4 actualpytest0:77/0/0/0,50.924s SHA256
+  728e5a90e47b715625634a462f08ffe58461685e20fc8334a517236d16188284.
+  Added final3 order/repetition/interruption controls; final independent code
+  APPROVE/architecture CLEAR at source b7bdcf9... and tests5971e0a... . Final
+  wide component regression v5 live; do not reuse v4 for final test additions.
+  Actual D/full matrix/resource/scientific learning gates remain OPEN.
+- Finalregressionv5 actualpytest0:1207/0/0/0,118.795s; original31343 terminal
+  consumed; root parsed24new cases including ordering/repetition/interruption.
+  XML SHA256 7b7706e21aaa8855e14d99ebc7bf573c36966bf947c51d104fda82174574b1da.
+  Exact reviewed source/test hashes unchanged, independent final code APPROVE/
+  architecture CLEAR; prior REQUEST CHANGES/WATCH and allRED receipts retained.
+  Ruff/diff clean. Complete-cell synthetic schedule is implemented/verified on
+  tiny cooperating wrappers; full18-cell matrix, authenticated invocation,
+  actual D/E/scientific R0/durable interaction learning/ALC remain OPEN.
+  Next integrate this cell with the fixed one-base nine-grid/two-arm factory
+  matrix, then qualify/review the exact invocation. Full unified goal ACTIVE.

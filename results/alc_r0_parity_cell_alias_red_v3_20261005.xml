@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="28.847" timestamp="2026-10-05T00:29:52.703850+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_cell" name="test_fresh_modules_cannot_share_live_factor_storage[storage]" time="1.397"><failure message="AssertionError: assert 40 == 2&#10; +  where 40 = len([('zero', False, TinyWrapper(\n  (base): Linear(in_features=2, out_features=2, bias=True)\n  (factors): Module()\n)), ('z..., ('zero', True, TinyWrapper(\n  (base): Linear(in_features=2, out_features=2, bias=True)\n  (factors): Module()\n)), ...])">tests\test_alc_r0_parity_cell.py:150: in test_fresh_modules_cannot_share_live_factor_storage
+    assert len(created) == 2
+E   AssertionError: assert 40 == 2
+E    +  where 40 = len([('zero', False, TinyWrapper(\n  (base): Linear(in_features=2, out_features=2, bias=True)\n  (factors): Module()\n)), ('z..., ('zero', True, TinyWrapper(\n  (base): Linear(in_features=2, out_features=2, bias=True)\n  (factors): Module()\n)), ...])</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell" name="test_fresh_modules_cannot_share_live_factor_storage[parameter]" time="0.010"><failure message="RuntimeError: Boolean value of Tensor with more than one value is ambiguous">tests\test_alc_r0_parity_cell.py:149: in test_fresh_modules_cannot_share_live_factor_storage
+    runner().run_parity_cell(aliased, fixtures(), exact=True)
+src\aluclu\alc_r0\checkpoint_parity_cell.py:213: in run_parity_cell
+    cases = _singles(guard, fixtures)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:160: in _singles
+    on = guard.make(state, True)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:97: in make
+    self.parameters.update(factors.parameters())
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\_weakrefset.py:124: in update
+    self.add(element)
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\_weakrefset.py:88: in add
+    self.data.add(ref(item, self._remove))
+E   RuntimeError: Boolean value of Tensor with more than one value is ambiguous</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell" name="test_nonzero_state_must_keep_zero_state_A" time="2.384"><failure message="Failed: DID NOT RAISE ValueError">tests\test_alc_r0_parity_cell.py:162: in test_nonzero_state_must_keep_zero_state_A
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell" name="test_nonzero_B_requires_prescribed_pattern" time="1.761"><failure message="Failed: DID NOT RAISE ValueError">tests\test_alc_r0_parity_cell.py:170: in test_nonzero_B_requires_prescribed_pattern
+    with pytest.raises(ValueError, match="pattern"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError</failure></testcase></testsuite></testsuites>
