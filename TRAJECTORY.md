@@ -8878,3 +8878,46 @@ Task 2 sensorium/recollection gate: CLEAN
   Ruff/diff clean. Tokenizer provenance, qualified callback, actual D runner,
   full host matrix/gradient/AdamW parity, resource fit and learning remain OPEN.
   Scoped publication next; full unified goal ACTIVE, no ALC-0 acceptance.
+
+### Checkpoint141 — prospective parity observation core (in progress)
+
+- Previous turn PROGRESS:d37bc1d published. Clean Desktop state verified,
+  full objective and host/optimizer interfaces inspected. Implementing a single
+  forward/backward observation core for loss/logits/candidate score/all factor
+  gradients and frozen-base/factor invariants, checkpoint off/on. Full D matrix,
+  qualified actual host callback and launch remain OPEN. Tiny harness RED pending;
+  no loaded host/assets/tokenizer/corpus/optimizer/GPU or training authorization.
+- REDv1 actualpytest2: test syntax typo else32, not implementation evidence.
+  Corrected spacing and retained original receipt; proper RED rerun pending.
+- REDv2 actualpytest2: missing implementation module, collection error only.
+  Initial GREENv3 actual0:9pass. Additional binding/duplicate-name REDv4
+  actual1:13tests,4failures,0error/skip. Captured stale object references
+  missed same-value base/factor replacements and wrapper mode changes;
+  dict conversion silently collapsed duplicate gradient names. Added live
+  binding/parameter/buffer roster validation and unique gradient schema.
+  Added mutation, alias and malformed fixture controls; verification pending.
+  Previous interactive explanation was status-only, not implementation progress.
+- GREENv5 actual0:13pass,39.859s. Expanded regressionv6 actual0:
+  854pass,0failure/error/skip,89.992s, XML
+  0c563e469a93b62e376930862cf6a2ee61d5803be165d0570834245ccbf7d864.
+  Independent code lane REQUEST CHANGES: identical-byte tensor metadata drift
+  could evade id/byte checks. Architecture WATCH: cloned observation tensors
+  remain mutable; detected failures clear original grads, not rollback state.
+  Added shape-drift RED; metadata repair and final reviewed regression pending.
+- MetadataREDv7 actual1:1failure,0error/skip,37.354s, reproducing the
+  independently identified same-object/same-byte base shape gap. Added complete
+  tensor metadata stamps for base parameters/buffers,factors and inputs, plus
+  parameter/buffer shape controls. Explicit caller obligations: mutable cloned
+  artifacts require exclusive ownership; failure requires discard/rebuild,
+  not catch-and-continue or implied rollback. Finalv8 regression live; no host
+  assets/tokenizer/task data/optimizer/GPU or neural learning acceptance.
+- Finalv8 actualpytest0:856pass,0failure/error/skip,66.996s, root verified25
+  new cases and unchanged reviewed source/test hashes. XML SHA256
+  e9c7ec407ab2eefbc703a0160648f01578352131f9b34bfca87a6e7d6a866408.
+  Independent GPT6.1Sol final code APPROVE, architecture CLEAR; initial
+  REQUEST CHANGES/WATCH and all RED/intermediate receipts preserved. Synthesis
+  APPROVE SINGLE OBSERVATION/COMPARISON COMPONENT ONLY. Caller ownership and
+  failure discard/rebuild remain mandatory future runner obligations. Ruff/diff
+  clean. Full D runner/matrix, actual-host callback, accumulation/AdamW and E
+  resource gates remain OPEN, no neural learning/ALC-0 acceptance. Scoped
+  publication next; full dependency-ordered unified goal ACTIVE.
