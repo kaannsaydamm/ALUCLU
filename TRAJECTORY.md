@@ -9472,3 +9472,38 @@ Task 2 sensorium/recollection gate: CLEAN
   is necessary alongside exact worker/launcher implementation, not a guessed
   remaining allowance. Pure development remains available. No D/E/learning PASS
   or invocation approval; full unified goal ACTIVE.
+
+### Checkpoint157 — tokenizer-bound fixed D fixtures (in progress)
+
+- Previous goal turn PROGRESS: checkpoint156 resource/asset evidence audit.
+  Revalidated clean bfa7149...; reviewed actual host loader and fixed D fixture
+  consumer. Added22 stub-tokenizer tests before implementation. RED actualpytest1
+  with22 setup errors reproduces absent tokenizer-binding module. No actual
+  tokenizer/snapshot/model/corpus execution; old evidence retained.
+- Added production offline-only pinned snapshot verification before tokenizer
+  loading and after repeated unchanged framing/candidate encoding; exact pinned
+  metadata, six ordered complete-label synthetic fixtures, immutable receipt and
+  canonical fixture digest. No caller-supplied token IDs/backend in this entry.
+  Pure tests patch loader/verifier explicitly; not actual-host qualification.
+  Focused/regression and dual exact-byte code/architecture review pending.
+  Launcher/accounting/runtime/source/official-forward/D/E/scientific gates OPEN.
+- REDv1:22/0/22/0,9.249s SHA256
+  582ff4a794da47ca13c99b104430944d143619903754a8c12cbc1efb22de8f59.
+  Focusedv2 actualpytest0:65/0/0/1,5.195s SHA256
+  817f841b017e885755a54760b21a3e65be616db695bc8809aa3646e685ffccab;
+  skip is existing actual-host defect test with no snapshot path, NOT executed.
+  Final independent GPT6.1Sol code APPROVE/architecture CLEAR at source
+  c1fbd60be5814ca8ced0239e5ec95a127601d93def465404451dbbe027fb57ac
+  and testsb170c7d71543221e3aaa456ce647c7cbe196738d3d560a280ffb5bd88ab0e194.
+  Ruff/diff checks clean; broad component regressionv3 live original47336.
+  Three real snapshot/GPU tests explicitly excluded, no actual D inference.
+- Finalregressionv3 personally consumed original47336 actualpytest0:
+  1271/0/0/0,103.009s, root parsed22newcases. XML SHA256
+  d75fecb6a2b6c4c159ca70fd35526469bb9207ae300a3c0a70fa46cf015f74e3.
+  Final source/test hashes unchanged; independent code APPROVE/architecture
+  CLEAR, Ruff/diff clean. Exact reproduction command/evidence scope persisted.
+  Tokenizer-to-six-fixture production binding implemented with stub-only tests;
+  real snapshot execution requires separate exact invocation approval. Next
+  integrate official-forward regressions and actual D worker/launcher with
+  source/runtime authentication and reconciled program resource ledger. Actual
+  D/E/scientific R0/durable interaction learning/ALC remain OPEN; goal ACTIVE.
