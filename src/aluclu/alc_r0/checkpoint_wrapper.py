@@ -37,6 +37,7 @@ _METHODS = (
     "_bind_checkpoint_block",
     "_run_decoder_layer",
     "checkpoint_session",
+    "enable_checkpoint_inventory",
     "_assert_checkpoint_mutation_allowed",
     "__getattr__",
 )

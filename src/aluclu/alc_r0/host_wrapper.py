@@ -69,6 +69,16 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
             raise CheckpointExecutionError("checkpoint requires mounted capsule")
         return self.capsule
 
+    def enable_checkpoint_inventory(self) -> None:
+        """Opt into bounded live inventory; no host or training qualification.
+
+        Default remains disabled. Requires mounted exact factors and exclusive
+        quiescent ownership; installation during an active lease is denied.
+        """
+        from .checkpoint_inventory import enable_wrapper_inventory
+
+        enable_wrapper_inventory(self)
+
     def checkpoint_session(self) -> CheckpointSession:
         """Create an owner-local lease; this does not authorize model training.
 

@@ -9254,3 +9254,32 @@ Task 2 sensorium/recollection gate: CLEAN
   importtime references are not source authentication. Ruff/diff clean.
   Full transitive/class/controller/mask-resolver/explicit wrapper opt-in/actual
   D/E/scientific R0/durable-learning gates OPEN. Full unified goal ACTIVE.
+
+### Checkpoint151 — explicit wrapper inventory opt-in (in progress)
+
+- Revalidated clean checkpoint150 and reread full unified objective. Previous
+  explanatory turn was no implementation progress; resumed next integration step.
+  Added12 tiny both-arm controls for default-off opt-in, original-controller and
+  callback preservation, repeat/active lease denial, schema/factor/foreign getter
+  rejection and current-factor lookup between leases. RED launched; no host,
+  corpus, GPU or training run. Actual D/E and scientific learning gates OPEN.
+- RED actualpytest1:12/12 failures, missing explicit API. Added lazy observational
+  current-wrapper getter, exact owned partial recognition, preflight outside lock
+  and existing atomic one-time installer. Added enable method to method inventory;
+  no new wrapper field or controller replacement. Exclusive quiescent mutation
+  required; racing first installs may reject. Focused GREEN/reviews pending.
+- RED12/12/0/0,33.597s SHA256
+  f9292ab4e70ac819c939630f5f1f0e793ae901977750fdb4bef2b223e0227641.
+  Focused GREEN actualpytest0:64/0/0/0,30.285s SHA256
+  54a82c2844865402ce701662fc6aa72ef04d0d7afddde9cdd392b2288e293a55.
+  Added6 boundary/subclass controls after initial focused run; corrected misplaced
+  active-lease assertion during test editing before execution. Raw XML protected.
+  Both initial independent lanes APPROVE/CLEAR; expanded test bytes require rereview.
+- Finalregressionv2 actualpytest0:1078/0/0/0,62.507s; original79844 terminal
+  consumed; root parsed18new cases. XML SHA256
+  cc01f57c7ffd351326658e2772641020487df9f7f567604f393cff0c2e844f0f.
+  All4 final source/test hashes unchanged. Independent GPT6.1Sol final code
+  APPROVE/architecture CLEAR after expanded-test rereview. Ruff/diff clean.
+  Scoped opt-in now implemented; exclusive quiescent ownership remains required.
+  Full transitive/import/class/controller/maskresolver qualification and actual
+  D/E/scientific R0/durable learning/ALC gates remain OPEN. Goal ACTIVE.
