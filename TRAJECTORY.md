@@ -9446,3 +9446,29 @@ Task 2 sensorium/recollection gate: CLEAN
   launcher/journal/resource/source/runtime/tokenizer qualification and official
   forward regression integration; no actual-host/scientific learning claim.
   All prior evidence retained. Full unified goal ACTIVE.
+
+### Checkpoint156 — actual-host launch evidence reconciliation
+
+- Previous goal turn was a status answer, NO implementation progress. Re-read
+  full unified objective and D/E detail, revalidated clean bf2acc94... on the
+  Desktop checkout. No live ALUCLU Windows Python worker; two unrelated
+  localhost http.server processes preserved. No model import/run or restart.
+- Rehashed all10 pinned model/tokenizer files against acquisition inventory:
+  exact lengths/SHA256 match, file reparse flags false. This does not certify
+  imported runtime or parent-directory provenance. Inspected research child
+  directories total4389404058 logical bytes; Cfree55541108736 bytes. No cleanup,
+  installations or dataset content reads. Disk measurements are point-in-time.
+- Revalidated12 historical synthetic stdout receipts, raw SHA256 and explicit
+  non-training/no-held-out/unchanged-base fields. Phase durations sum38295783800ns
+  but are NOT whole-program GPU consumption. Found no named budget ledger in
+  bounded current tracked-file/control/research-evidence search. Remaining
+  measured600-hour budget and first development-job date remain UNKNOWN, not
+  newly reset. Preserve all prior failed/interrupted attempts in reconstruction.
+- Added docs/superpowers/reviews/2026-10-05-alc-r0-launch-evidence-audit.md with
+  exact snapshot/receipt hashes, observed resources, search scope, limitations
+  and launcher prerequisites. An initial PowerShell receipt-enumeration command
+  hit a parser error before execution; corrected read-only enumeration passed.
+  This audit changes the next launch action: historical accounting reconciliation
+  is necessary alongside exact worker/launcher implementation, not a guessed
+  remaining allowance. Pure development remains available. No D/E/learning PASS
+  or invocation approval; full unified goal ACTIVE.
