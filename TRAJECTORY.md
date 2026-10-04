@@ -8578,3 +8578,18 @@ Task 2 sensorium/recollection gate: CLEAN
   APPROVE DISPATCH IDENTITY REPAIR ONLY; samefunction code/default/global mutation
   remains outside identity-only binding. Scoped evidence and trajectory publication
   next. Full objective ACTIVE, not complete-host or learning acceptance.
+
+### Checkpoint130 — observed host dependency inventory (2026-10-04)
+
+- Previous turn PROGRESS:86551f0 published; clean checkout/current HEAD verified.
+  Reread full objective. Two read-only source-inspection diagnostics actualexit0
+  inspected19 unwrapped callable bodies and2 captured factor closures; hashed
+  installed Llama/masking/SDPA/loss/dispatch sources. No hostweights/assets/corpus,
+  actual forward/optimizer/CUDA workload or acquisition. Tool-captured evidence.
+- Observed separate ALL_MASK_ATTENTION_FUNCTIONS dispatch, SDPA GQA route globals,
+  nested capsule epsilon/width/F.linear globals and loss-property/helper closure.
+  These are outside prior module-only inventory and must be bound before actual
+  invocation. Recorded source hashes/line matrix, ambient settings and explicit
+  unwrap/unbound/transitive limitations in host-dependency-inventory review record.
+  This is source evidence changing next action, not model acceptance or tests.
+  Fullhost callback/qualification/scientific gates remain OPEN, full goal ACTIVE.
