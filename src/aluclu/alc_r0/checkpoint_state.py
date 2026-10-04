@@ -34,6 +34,7 @@ from .checkpoint_context import CONTEXT_CLASSES, no_grad_factory_dependencies
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
 from .checkpoint_mask import mask_dependencies
+from .checkpoint_mask_registry import mask_registry_dependencies
 from .checkpoint_registry import attention_registry_dependencies
 from .checkpoint_runtime import read_runtime_state
 from .checkpoint_wrapper import wrapper_method_dependencies
@@ -275,7 +276,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     helper dependencies or native kernels. Other attention routes are rejected.
     State/upstream/q attention registry aliases, pinned Python resolver code,
     defaults/closures and bounded ASCII maps are enumerated without resolver
-    execution. Mask-registry dispatch and full wrapper coverage remain separate.
+    execution. Eager/SDPA mask registry aliases/lookup/maps and actual producer/
+    preprocessor globals are bound without invoking registry selection methods.
     Capsule/LoRA factor factories bind enumerated scalar/namespace/math/autocast
     dependencies. Builtin callables are identity-bound, not native-code audited.
     Llama causal loss binds its reviewed property/route/helpers and enumerated
@@ -504,7 +506,9 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                     eager_attention_forward,
                     freeze,
                 )
-                mask = ALL_MASK_ATTENTION_FUNCTIONS[implementation]
+                mask, mask_registry_state = mask_registry_dependencies(
+                    implementation, ALL_MASK_ATTENTION_FUNCTIONS, freeze
+                )
             except KeyError as error:
                 raise CheckpointExecutionError(
                     "missing selected attention/mask route"
@@ -520,6 +524,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 attention_dependencies(implementation, attention, freeze),
                 mask_dependencies(freeze),
                 registry_state,
+                mask_registry_state,
             ]
         records.append(
             [

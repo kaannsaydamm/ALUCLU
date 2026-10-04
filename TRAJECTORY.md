@@ -9283,3 +9283,35 @@ Task 2 sensorium/recollection gate: CLEAN
   Scoped opt-in now implemented; exclusive quiescent ownership remains required.
   Full transitive/import/class/controller/maskresolver qualification and actual
   D/E/scientific R0/durable learning/ALC gates remain OPEN. Goal ACTIVE.
+
+### Checkpoint152 — actual mask registry dispatch (in progress)
+
+- Revalidated clean published151 1f4b3c3, full objective reread; previous turn
+  PROGRESS. Pinned installed mask producer resolves its own registry alias;
+  current state helper invokes an independently imported registry __getitem__.
+  Added33 tiny alias/dispatch/schema/descriptor/global-presence/boundary controls
+  before implementation. RED pending; no host, corpus, optimizer or GPU launch.
+  Actual D/E/scientific neural learning and complete qualification remain OPEN.
+- Initial RED actualpytest1:33cases/32failures; schema cleanup control passed.
+  Nonempty boundary controls explicitly reject unrelated unconsumed-ticket
+  errors, exposing missed drift rather than false PASS. Added direct bounded
+  static registry lookup/dispatch/maps, actual producer/preprocessor namespaces
+  and global-route presence; removed resolver invocation from state inventory.
+  Focused GREEN and independent exact-byte reviews pending.
+- RED33/32/0/0,52.441s SHA256
+  e2050c23566490934e10b2dc41ae5560fd97682509a8224ca16decb654ee25f6.
+  Initial focused GREEN actualpytest0; added8 actual copied-function namespace,
+  lookup-side-effect denial and admitted exact-alias stability controls. Fixed
+  local import ordering before final review/regression. Final41new cases pending.
+- Focused206/0/0/0,34.277s XML SHA256
+  6da530b26a0a1c58a2bd57a5a09a7304c2ceb960c63ba04fdac2bc99f88f6579.
+  Final independent GPT6.1Sol code APPROVE/architecture CLEAR at the exact3
+  source/test hashes; static reviews do not verify running regression or host.
+  Protected raw XML. Final1119-case component regression live; no launch claim.
+- Finalregressionv3 actualpytest0:1119/0/0/0,67.189s; original56391 terminal
+  consumed; root parsed41new cases. XML SHA256
+  d4d9876ac18c08d84fd0662a1350b86df9c867b164328358d73ce0e40f3354c4.
+  All3 exact reviewed hashes unchanged; Ruff/diff clean. Mask resolver/actual
+  registry alias/map gap repaired for eager/SDPA only. Importtime provenance,
+  transitive/vmap/tensor/native/class/controller coverage and real D/E/scientific
+  R0/durable neural learning/ALC gates remain OPEN. Full unified goal ACTIVE.

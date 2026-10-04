@@ -217,3 +217,7 @@ src/aluclu/alc_r0/checkpoint_inventory.py text eol=lf
 tests/test_alc_r0_wrapper_inventory_enable.py text eol=lf
 results/alc_r0_wrapper_inventory_enable_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-wrapper-inventory-enable.md text eol=lf
+src/aluclu/alc_r0/checkpoint_mask_registry.py text eol=lf
+tests/test_alc_r0_mask_registry_dependencies.py text eol=lf
+results/alc_r0_mask_registry_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-mask-registry.md text eol=lf
