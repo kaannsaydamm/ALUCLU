@@ -8488,3 +8488,40 @@ Task 2 sensorium/recollection gate: CLEAN
   with no execution. Actual host-global/class/property/external audit, opt-in loop,
   parity/resource and scientific gates remain OPEN. Scoped raw-byte verification
   and publication next; this continuation is PROGRESS, not full completion.
+
+### Checkpoint127 — bound decoder checkpoint callables (2026-10-04)
+
+- Previous turn PROGRESS: c2ddf9c committed/pushed, clean checkout revalidated.
+  Reread unified objective and prospective checkpoint detail. Installed Llama
+  source shows act_fn modules, attention interface and rotary callable/global
+  dependencies; complete pinned host audit remains OPEN, no model launch.
+- Added CPU fake decoder RED fixtures for exact layer/index capture, post-block
+  capsule placement, q-only LoRA equality and captured-factor replay without
+  mutable mount reads. These are block integration fixtures, not actual host
+  parity or learned capability. RED invocation precedes production implementation.
+- Actual decoderREDv1 exit1:16 failures for missing binding API. Added capsule
+  closure with captured decoder/post-block operation and LoRA closure with captured
+  q factors and norm/MLP references. Extracted identical attention arithmetic into
+  a shared function for default and captured paths. No opt-in forward attached;
+  session guards and real host dependency audit remain caller obligations.
+- FocusedGREENv2 actual0:16passed. Added full30-layer fake traversal through the
+  owned engine for both arms, one/two pending forwards, input-metadata isolation,
+  exact reference gradients and factor-drift abort/reacquisition. New final
+  regression must include these six additions; GREENv2 is not final evidence.
+- Enginev3 actual1:21passes/1failure (two pending LoRA gradient exact equality).
+  Reference incorrectly multiplied one graph loss by2 rather than constructing
+  two independent reference graphs with the same summation schedule. Corrected
+  reference graph cardinality; exact CPU comparison remains unchanged, no
+  tolerance relaxation or actual-host/scientific threshold change. Preserve v3.
+- Regressionv4 actual pytest/shell0:485passed,22decoder cases,0failure/error/skip,
+  9.265s, XML9e4b39eef57c3ab529a6501d0808a001f5d07984772de7859469260bc5a3470a.
+  Root parsed counters/hash/new-case count and excluded real asset cases absent.
+  Ruff clean. Dual exact-byte rereviews dispatched; prerequisite block binding
+  only. Real-host computational audit/opt-in full forward/parity/resource OPEN.
+- Exact-byte final code APPROVE and architecture CLEAR; synthesis APPROVE BOUND
+  CALLABLE COMPONENT ONLY. Shared attention-helper fake comparisons are capture/
+  placement evidence, not independent pinned-host attention parity. Module refs
+  are not immutable snapshots; full host inventory/index binding remain OPEN.
+  Added four-attempt reproduction/review record and rawXML/LF attributes. Next
+  safe implementation is complete host dependency binding and full opt-in forward,
+  not dataset training or later product infrastructure. Full goal ACTIVE.

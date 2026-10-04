@@ -188,34 +188,78 @@ class PinnedLlamaLoRAWrapper(PinnedLlamaCapsuleWrapper):
         past_key_values: Cache | None,
     ) -> torch.Tensor:
         assert self.lora is not None
-        input_shape = hidden_states.shape[:-1]
-        hidden_shape = (*input_shape, -1, attention.head_dim)
-        query_states = self.lora.q_projection(index, attention, hidden_states)
-        query_states = query_states.view(hidden_shape).transpose(1, 2)
-        key_states = attention.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-        value_states = (
-            attention.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+        return _q_attention_with_projection(
+            attention,
+            hidden_states,
+            q_projection=self.lora.bind_q_projection(index, attention),
+            attention_mask=attention_mask,
+            position_embeddings=position_embeddings,
+            past_key_values=past_key_values,
         )
 
-        cos, sin = position_embeddings
-        query_states, key_states = apply_rotary_pos_emb(
-            query_states, key_states, cos, sin
-        )
-        if past_key_values is not None:
-            key_states, value_states = past_key_values.update(
-                key_states, value_states, attention.layer_idx
+    def _bind_checkpoint_block(self, index: int, decoder_layer: nn.Module):
+        """Capture q-only factors inside a complete cache-free decoder block."""
+        if type(index) is not int or not 0 <= index < 30:
+            raise CheckpointExecutionError("bound decoder index outside host depth")
+        if not isinstance(decoder_layer, nn.Module):
+            raise CheckpointExecutionError("bound decoder module required")
+        lora = self.lora
+        if lora is None or index not in lora.ports:
+            return super()._bind_checkpoint_block(index, decoder_layer)
+        attention = decoder_layer.self_attn
+        projection = lora.bind_q_projection(index, attention)
+        input_norm = decoder_layer.input_layernorm
+        post_norm, mlp = decoder_layer.post_attention_layernorm, decoder_layer.mlp
+        attention_operation = _q_attention_with_projection
+
+        def block(hidden, metadata):
+            attended = attention_operation(
+                attention,
+                input_norm(hidden),
+                q_projection=projection,
+                attention_mask=metadata["attention_mask"],
+                position_embeddings=(metadata["cos"], metadata["sin"]),
+                past_key_values=None,
             )
-        attention_interface = ALL_ATTENTION_FUNCTIONS.get_interface(
-            attention.config._attn_implementation or "eager", eager_attention_forward
+            residual = hidden + attended
+            return residual + mlp(post_norm(residual))
+
+        return block
+
+
+def _q_attention_with_projection(
+    attention: LlamaAttention,
+    hidden_states: torch.Tensor,
+    *,
+    q_projection: Callable[[torch.Tensor], torch.Tensor],
+    attention_mask: torch.Tensor | None,
+    position_embeddings: tuple[torch.Tensor, torch.Tensor],
+    past_key_values: Cache | None,
+) -> torch.Tensor:
+    input_shape = hidden_states.shape[:-1]
+    hidden_shape = (*input_shape, -1, attention.head_dim)
+    query_states = q_projection(hidden_states)
+    query_states = query_states.view(hidden_shape).transpose(1, 2)
+    key_states = attention.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+    value_states = attention.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+
+    cos, sin = position_embeddings
+    query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+    if past_key_values is not None:
+        key_states, value_states = past_key_values.update(
+            key_states, value_states, attention.layer_idx
         )
-        attention_output, _ = attention_interface(
-            attention,
-            query_states,
-            key_states,
-            value_states,
-            attention_mask,
-            dropout=0.0 if not attention.training else attention.attention_dropout,
-            scaling=attention.scaling,
-        )
-        attention_output = attention_output.reshape(*input_shape, -1).contiguous()
-        return attention.o_proj(attention_output)
+    attention_interface = ALL_ATTENTION_FUNCTIONS.get_interface(
+        attention.config._attn_implementation or "eager", eager_attention_forward
+    )
+    attention_output, _ = attention_interface(
+        attention,
+        query_states,
+        key_states,
+        value_states,
+        attention_mask,
+        dropout=0.0 if not attention.training else attention.attention_dropout,
+        scaling=attention.scaling,
+    )
+    attention_output = attention_output.reshape(*input_shape, -1).contiguous()
+    return attention.o_proj(attention_output)

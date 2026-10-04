@@ -177,6 +177,36 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
             use_cache=use_cache,
         )
 
+    def _bind_checkpoint_block(self, index: int, decoder_layer: nn.Module):
+        """Bind a layer and post-block factors, never a current-mount lookup.
+
+        The caller must run this through a guarded session ticket. This builder
+        does not validate a real host inventory or authorize model execution.
+        """
+        if type(index) is not int or not 0 <= index < 30:
+            raise CheckpointExecutionError("bound decoder index outside host depth")
+        if not isinstance(decoder_layer, nn.Module):
+            raise CheckpointExecutionError("bound decoder module required")
+        capsule = self.capsule
+        operation = (
+            capsule.bind_port(index)
+            if capsule is not None and index in capsule.ports
+            else None
+        )
+
+        def block(hidden, metadata):
+            output = decoder_layer(
+                hidden,
+                attention_mask=metadata["attention_mask"],
+                position_embeddings=(metadata["cos"], metadata["sin"]),
+                position_ids=metadata["position_ids"],
+                past_key_values=None,
+                use_cache=False,
+            )
+            return output if operation is None else operation(output)
+
+        return block
+
     def forward(
         self,
         input_ids: torch.Tensor | None = None,

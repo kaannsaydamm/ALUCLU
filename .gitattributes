@@ -134,3 +134,6 @@ src/aluclu/alc_r0/checkpoint_state.py text eol=lf
 tests/test_alc_r0_checkpoint_state.py text eol=lf
 results/alc_r0_checkpoint_state_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-state.md text eol=lf
+tests/test_alc_r0_bound_decoder_blocks.py text eol=lf
+results/alc_r0_bound_decoder_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-bound-decoder-blocks.md text eol=lf
