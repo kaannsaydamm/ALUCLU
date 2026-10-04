@@ -404,6 +404,48 @@ class _ForwardTicket:
             self._session._abort()
             raise
 
+    def _extend_metadata(self, metadata) -> None:
+        """Internal wrapper prelude: bind derived tensors before the first block.
+
+        Original caller metadata is already cloned. Derived mask/RoPE tensors
+        are separately cloned once and cannot replace the original input keys.
+        """
+        self._session._require_owner()
+        try:
+            self._guard()
+            if (
+                self._next_layer
+                or self._sealed
+                or not isinstance(metadata, Mapping)
+                or not metadata
+            ):
+                raise CheckpointExecutionError(
+                    "metadata extension before blocks required"
+                )
+            private = dict(self._metadata)
+            for name in _canonical_keys(metadata):
+                value = metadata[name]
+                if name in private:
+                    raise CheckpointExecutionError("metadata replacement denied")
+                if value is not None:
+                    if not isinstance(value, torch.Tensor) or value.requires_grad:
+                        raise CheckpointExecutionError(
+                            "detached derived metadata required"
+                        )
+                    _tensor_stamp(value)
+                    value = value.detach().clone()
+                private[name] = value
+            self._metadata = MappingProxyType(private)
+            self._metadata_stamps = tuple(
+                (name, _tensor_stamp(value))
+                for name, value in private.items()
+                if value is not None
+            )
+            self._guard()
+        except BaseException:
+            self._session._abort()
+            raise
+
     def run(self, index: int, block: Callable, hidden: torch.Tensor) -> torch.Tensor:
         self._session._require_owner()
         try:

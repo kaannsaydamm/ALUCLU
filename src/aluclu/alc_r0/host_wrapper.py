@@ -217,7 +217,20 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
         labels: torch.Tensor | None = None,
         use_cache: bool | None = None,
         logits_to_keep: int | torch.Tensor = 0,
+        checkpoint_session: CheckpointSession | None = None,
     ) -> CausalLMOutputWithPast:
+        if checkpoint_session is not None:
+            return self._checkpoint_forward(
+                checkpoint_session,
+                input_ids,
+                attention_mask,
+                position_ids,
+                past_key_values,
+                inputs_embeds,
+                labels,
+                use_cache,
+                logits_to_keep,
+            )
         # No default-forward escape hatch while a checkpoint lease is active.
         self._assert_checkpoint_mutation_allowed()
         if self.base.training or any(p.requires_grad for p in self.base.parameters()):
@@ -286,3 +299,132 @@ class PinnedLlamaCapsuleWrapper(nn.Module):
             logits=logits,
             past_key_values=past_key_values,
         )
+
+    def _checkpoint_forward(
+        self,
+        session,
+        input_ids,
+        attention_mask,
+        position_ids,
+        past_key_values,
+        inputs_embeds,
+        labels,
+        use_cache,
+        logits_to_keep,
+    ):
+        # Foreign/non-session misuse must not abort another owner's lease.
+        if not isinstance(session, CheckpointSession):
+            raise CheckpointExecutionError("owned checkpoint session required")
+        session._require_owner(self)
+        if session._controller is not self._checkpoint_controller:
+            raise CheckpointExecutionError("wrapper controller mismatch")
+        try:
+            session._guard()
+            if session._controller.state_fingerprint_getter is None:
+                raise CheckpointExecutionError(
+                    "computational inventory callback required"
+                )
+            if (
+                use_cache is not False
+                or past_key_values is not None
+                or inputs_embeds is not None
+            ):
+                raise CheckpointExecutionError("explicit cache-free IDs path required")
+            if type(logits_to_keep) is not int or logits_to_keep != 0:
+                raise CheckpointExecutionError("full logits required")
+            base = self.base
+            device = next(base.parameters()).device
+            vocab = base.config.vocab_size
+            if (
+                not isinstance(input_ids, torch.Tensor)
+                or input_ids.dtype != torch.int64
+                or input_ids.ndim != 2
+                or input_ids.shape[0] != 1
+                or input_ids.shape[1] < 1
+                or input_ids.device != device
+                or input_ids.requires_grad
+                or input_ids.layout != torch.strided
+                or not ((input_ids >= 0) & (input_ids < vocab)).all().item()
+            ):
+                raise CheckpointExecutionError("batch-one valid int64 IDs required")
+            shape = input_ids.shape
+            if attention_mask is not None and (
+                not isinstance(attention_mask, torch.Tensor)
+                or attention_mask.shape != shape
+                or attention_mask.device != device
+                or attention_mask.requires_grad
+                or attention_mask.layout != torch.strided
+                or not ((attention_mask == 0) | (attention_mask == 1)).all().item()
+            ):
+                raise CheckpointExecutionError(
+                    "binary matching attention mask required"
+                )
+            if position_ids is None:
+                position_ids = torch.arange(shape[1], device=device).unsqueeze(0)
+            if (
+                not isinstance(position_ids, torch.Tensor)
+                or position_ids.shape != shape
+                or position_ids.dtype != torch.int64
+                or position_ids.device != device
+                or position_ids.layout != torch.strided
+                or not (position_ids >= 0).all().item()
+            ):
+                raise CheckpointExecutionError(
+                    "matching nonnegative int64 positions required"
+                )
+            if labels is not None and (
+                not isinstance(labels, torch.Tensor)
+                or labels.shape != shape
+                or labels.dtype != torch.int64
+                or labels.device != device
+                or labels.layout != torch.strided
+                or not ((labels == -100) | ((labels >= 0) & (labels < vocab)))
+                .all()
+                .item()
+            ):
+                raise CheckpointExecutionError(
+                    "matching supervised int64 labels required"
+                )
+            body = base.model
+            layers = tuple(body.layers)
+            if len(layers) != session._layer_count:
+                raise CheckpointExecutionError("actual decoder depth mismatch")
+            ticket = session.begin_forward(
+                self,
+                {
+                    "input_ids": input_ids,
+                    "source_mask": attention_mask,
+                    "position_ids": position_ids,
+                    "labels": labels,
+                },
+            )
+            private = ticket._metadata
+            hidden = body.embed_tokens(private["input_ids"])
+            causal = create_causal_mask(
+                config=base.config,
+                inputs_embeds=hidden,
+                attention_mask=private["source_mask"],
+                past_key_values=None,
+                position_ids=private["position_ids"],
+            )
+            cos, sin = body.rotary_emb(hidden, position_ids=private["position_ids"])
+            ticket._extend_metadata({"attention_mask": causal, "cos": cos, "sin": sin})
+            for index, layer in enumerate(layers):
+                hidden = ticket.run(
+                    index, self._bind_checkpoint_block(index, layer), hidden
+                )
+            session._guard()
+            logits = base.lm_head(body.norm(hidden))
+            ticket.bind_output(logits)
+            loss = None
+            if private["labels"] is not None:
+                loss = base.loss_function(
+                    logits=logits, labels=private["labels"], vocab_size=vocab
+                )
+            session._guard()
+            return CausalLMOutputWithPast(
+                loss=loss, logits=logits, past_key_values=None
+            )
+        except BaseException:
+            session._abort()
+            raise

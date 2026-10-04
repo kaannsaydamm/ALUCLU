@@ -8525,3 +8525,33 @@ Task 2 sensorium/recollection gate: CLEAN
   Added four-attempt reproduction/review record and rawXML/LF attributes. Next
   safe implementation is complete host dependency binding and full opt-in forward,
   not dataset training or later product infrastructure. Full goal ACTIVE.
+
+### Checkpoint128 — full opt-in forward orchestration (2026-10-04)
+
+- Previous turn PROGRESS:29883c7 committed/pushed, clean state verified. Added
+  fake CPU host RED fixtures for full wrapper output/loss/factor gradients, two
+  pending forwards, caller input isolation, foreign-session preservation and
+  cache/input/inventory rejection. No real model/assets/corpus/optimizer run.
+  Production path must reject absent computational callback; a FAKE-only constant
+  callback is not a complete host inventory certificate or launch authority.
+- Actual forwardREDv1 exit1:28failures, missing checkpoint_session keyword.
+  Added explicit opt-in path, owner/controller preflight outside abort, cache/IDs/
+  mask/position/labels/full-logits validation, private input ticket then derived
+  mask/RoPE metadata extension before first block. Uses full captured layer tuple
+  and binds output traversal before optional loss; owned failures abort/clear.
+  Default path remains unchanged. Complete actual host audit/launch still OPEN.
+- FocusedGREENv2 actual0:28passes; initial Ruff style warnings were resolved by
+  formatting and final check passed (initial pre-format check not claimed clean).
+  Added derived-metadata replacement/trainable/late-extension negatives plus
+  no-label/default-position owned-logit-loss positive before final regression.
+- Regressionv3 actual pytest/shell0:517passed,32forward cases,0failure/error/skip,
+  9.658s, XML913a6e2ee553faf242391875ddc66b7dd89489c070fb06d4fff801a8077c0e63.
+  Independent code lane first failed with provider usage-limit error, no verdict.
+  Retried same lane and dispatched architecture lane on unchanged exact bytes.
+  No unavailable review is converted into approval; publication remains pending.
+- Retry independent code APPROVE; architecture CLEAR on verified exact bytes.
+  Synthesis APPROVE ORCHESTRATION ONLY, not real-host launch. Root parsed32new
+  forward cases and0excluded asset cases. Added full attempt/reproduction record
+  and rawXML/LF attributes. Raw index byte verification and scoped publication
+  next. This continuation PROGRESS; pinned host audit/attachment/parity/resource
+  and scientific/user-learning/full unified program remain ACTIVE/OPEN.
