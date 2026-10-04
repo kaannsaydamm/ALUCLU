@@ -32,6 +32,7 @@ from .checkpoint_attention import attention_dependencies
 from .checkpoint_context import CONTEXT_CLASSES, no_grad_factory_dependencies
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
+from .checkpoint_mask import mask_dependencies
 from .checkpoint_runtime import read_runtime_state
 
 _CAUSAL_LOSS_PROPERTY = PreTrainedModel.loss_function
@@ -452,6 +453,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 freeze(attention),
                 freeze(mask),
                 attention_dependencies(implementation, attention, freeze),
+                mask_dependencies(freeze),
             ]
         records.append(
             [

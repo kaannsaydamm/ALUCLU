@@ -168,3 +168,7 @@ src/aluclu/alc_r0/checkpoint_attention.py text eol=lf
 tests/test_alc_r0_attention_dependencies.py text eol=lf
 results/alc_r0_attention_dependencies_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-04-alc-r0-attention-dependencies.md text eol=lf
+src/aluclu/alc_r0/checkpoint_mask.py text eol=lf
+tests/test_alc_r0_mask_dependencies.py text eol=lf
+results/alc_r0_mask_dependencies_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-mask-dependencies.md text eol=lf

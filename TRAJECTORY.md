@@ -8799,3 +8799,29 @@ Task 2 sensorium/recollection gate: CLEAN
   no new meta/host invocation or current-branch host acceptance inferred.
   Ruff/diff clean; all RED/GREEN/final receipts and reproduction record preserved.
   This turn PROGRESS; scoped publication next, full unified goal ACTIVE.
+
+### Checkpoint138 — mask helper dependency counterexamples (in progress)
+
+- Continuing from clean db0e859. Read the full unified objective and installed
+  masking helper bodies. Added preparation/replay drift fixtures for twelve
+  mask helpers/flags and wrapper/Llama mask aliases on eager/SDPA, plus two
+  actual tiny numeric padding-mask counterexamples. RED run pending. No loaded
+  language-model weights, corpus, optimizer, GPU or learning acceptance.
+- REDv1 actualpytest1:58failures,0error/skip,10.971s;28 preparation cases
+  reached side effects,28 replay cases missed drift, two numeric mask changes
+  left the fingerprint unchanged. XML7bcf3389358e42eca053101fc01c29381aa95f71b005ec11b9bf4f601a724ebc.
+  Added thirteen explicit masking function bindings, wrapper/Llama aliases and
+  two strict boolean flags. Unsupported helper/flag/Torch schemas fail closed.
+- FocusedGREENv2 actual0:141passed,7.831s. Added eight malformed-schema cases
+  and one same-function default mutation case; total67 new cases. Expandedv3
+  actual0:747passed,14.754s before final Ruff blank-line correction; retained
+  intermediate evidence, not final reviewed bytes.
+- Final fullpurev4 actual0:747passed,0failure/error/skip,15.655s;
+  XML9c8f5ea44b46efc021ecc11812ce2502b0ccd549bc24bda17f475236b93bd3c7.
+  Root verified67 new cases and unchanged source/test hashes. Independent
+  GPT6.1Sol code APPROVE, architecture CLEAR; synthesis APPROVE ENUMERATED
+  CAUSAL-MASK DEPENDENCIES ONLY. Ruff/diff clean. Native operations, vmap
+  contexts, packed/blockwise/bidirectional subhelpers, registry/class dispatch,
+  transitive globals and actual-host callback/parity/resources remain OPEN.
+  Earlier meta inventory proves its old source only. No learning acceptance.
+  All negative/intermediate/final receipts preserved; full unified goal ACTIVE.
