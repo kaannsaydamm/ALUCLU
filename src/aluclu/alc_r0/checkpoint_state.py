@@ -36,6 +36,7 @@ from .checkpoint_fidelity import _canonical_keys
 from .checkpoint_mask import mask_dependencies
 from .checkpoint_registry import attention_registry_dependencies
 from .checkpoint_runtime import read_runtime_state
+from .checkpoint_wrapper import wrapper_method_dependencies
 
 _CAUSAL_LOSS_PROPERTY = PreTrainedModel.loss_function
 _MISSING = object()
@@ -283,6 +284,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     autocast and grad context are intentionally not ambient drift fields.
     Function globals, arbitrary class/property dependencies and external state
     are NOT inventoried; later host-specific audit must separately bind/reject them.
+    Exact wrapper method/schema/controller binding records are supported; their
+    effective namespaces and complete controller semantics remain separate.
     No fallback repr/pickle or arbitrary object attribute traversal.
     The result binds identity and state inside one process, not a portable hash.
     """
@@ -293,7 +296,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     names = _canonical_keys(roots)
     # Lazy imports avoid a wrapper/state/matched-LoRA import cycle. Only known
     # factor classes receive this explicit dependency inventory.
-    from .matched_lora import MatchedQProjLoRA
+    from .host_wrapper import PinnedLlamaCapsuleWrapper
+    from .matched_lora import MatchedQProjLoRA, PinnedLlamaLoRAWrapper
     from .research_capsule import ResearchCapsuleV0
 
     factor_classes = (
@@ -305,6 +309,10 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     nodes = 0
     inventory = _module_inventory(roots, names)
     module_ids = {id(module) for _, _, module in inventory}
+    wrapper_classes = (PinnedLlamaCapsuleWrapper, PinnedLlamaLoRAWrapper)
+    wrapper_ids = {
+        id(module) for _, _, module in inventory if type(module) in wrapper_classes
+    }
 
     def freeze(value, depth=0):
         nonlocal nodes
@@ -326,6 +334,13 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
             return ["float", value.hex()]
         if isinstance(value, (torch.dtype, torch.device)):
             return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
         if isinstance(value, types.MethodType):
             if id(value.__self__) not in module_ids:
                 previous, functions, getters, dispatch = no_grad_factory_dependencies(
@@ -455,9 +470,14 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
         if len(vars(module)) > 2048:
             raise CheckpointExecutionError("module attribute bound exceeded")
         attributes = {}
+        wrapper_state = wrapper_method_dependencies(
+            module, freeze, wrapper_classes, factor_classes
+        )
         for key, value in vars(module).items():
             if key in {"_parameters", "_buffers", "_modules"}:
                 continue
+            if wrapper_state is not None and key == "_checkpoint_controller":
+                continue  # Enumerated above; never generic private-field skipping.
             if "hook" in key and value:
                 raise CheckpointExecutionError("module hooks unsupported")
             if key == "_compiled_call_impl" and value is not None:
@@ -513,6 +533,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 interface,
                 _factor_dependencies(module, freeze, factor_classes),
                 _loss_dependencies(module, freeze),
+                wrapper_state,
                 state,
             ]
         )

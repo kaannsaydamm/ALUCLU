@@ -9167,3 +9167,47 @@ Task 2 sensorium/recollection gate: CLEAN
   outside cooperating installation contract. Ruff clean. C free55,705,935,872B.
   No actual wrapper callback installed; wrapper inventory/mask resolver/actual
   D/E/scientific R0/durable-learning gates remain OPEN, unified goal ACTIVE.
+
+### Checkpoint149 — exact-wrapper method inventory (in progress)
+
+- Published148 e4e11ec verified clean; full unified objective reread. Prior turn
+  was PROGRESS. Added30 tiny-module controls for both wrapper method code/default
+  drift, stable inventory without callback activation, overrides, unknown fields,
+  foreign controllers and subclass rejection. RED pending. No actual host/model
+  assets/corpus/held-out/GPU/training execution; wrapper namespace/mask resolver
+  and explicit opt-in remain separate open dependencies, no gate weakened.
+- REDv1 actualpytest1:30cases/22failures;8 rejection controls already passed
+  because any controller object was unsupported, not wrapper-specific coverage.
+  Implemented exact wrapper schema/method records plus explicit controller stable
+  bindings and narrowly known owner/superclass closure references. No callback
+  installed; effective method namespaces/builtins/controller semantics remain
+  separate qualification work. Focused GREEN pending.
+- REDv1:30/22/0/0,22.728s, XML SHA256
+  7ead8b7984da4db97ee48daf1ce8912c2357fdf45c68ca4f0a3bb4a130603b51.
+  InitialGREENv2 actualpytest0:76/0/0/0,17.751s, XML SHA256
+  e5aa17eae42b8aa22712b0e77a844fce050ad9ff315e832c63401b949e86a39b.
+  Added14 descriptor/q-method/missing-wrong-arm/owned-boundary controls (44new
+  total). Static class-field shadows rejected without getter execution; actual
+  __getattr__ inventoried. Ruff import ordering corrected. Expanded regression
+  and independent exact-byte code/architecture reviews pending.
+- Independent code REQUEST CHANGES/architecture BLOCK: using None as missing
+  sentinel accepts a present class field=None, hiding registered base/mount
+  without changing registered inventory. Added4 dedicated both-arm/base/mount
+  RED controls showing effective lookup changed while registry retained original.
+  Currentv3 remains intermediate, not final repaired evidence; RED pending.
+- Intermediatev3 actualpytest0:1029/0/0/0,71.723s, XML SHA256
+  22d6b93a67c70f74e118440816803a54875aae78af6b0a1449c9de7662fd47a3.
+  That PASS does not cover reviewer gap. ShadowREDv4 actualpytest1:4failures
+  reproduced it. Repaired static field check with unique missing sentinel;
+  explicitNone now rejected. Final48new controls/regression/rereview pending.
+- ShadowREDv4:4/4/0/0,14.050s, XML SHA256
+  129c4bae4f699e3206bcac3ee337f92bbd8a04fa8c4b06270e37343650c371df.
+  Finalregressionv5 actualpytest0:1033/0/0/0,25.173s; original25534 terminal
+  consumed; root parsed48new cases. XML SHA256
+  dddb108b6b87682448714e3edda0b12d0c769e3d39c21d9756535beeafdc7051.
+  All4 reviewed source/test hashes unchanged. Final independent GPT6.1Sol code
+  APPROVE/architecture CLEAR, bounded method/schema/controller-bindings only;
+  initial REQUEST CHANGES/BLOCK and all intermediate receipts preserved.
+  Ruff/diff clean, raw receipts protected. No default wrapper callback activated.
+  Namespace/builtin/controller-semantics/maskresolver/explicit wrapper opt-in,
+  actual D/E/scientific R0/learning/ALC generations gates remain OPEN. Goal ACTIVE.
