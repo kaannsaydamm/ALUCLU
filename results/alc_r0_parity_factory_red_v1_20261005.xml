@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="56" skipped="0" tests="56" time="47.475" timestamp="2026-10-05T00:04:18.752021+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports0-zero-capsule]" time="0.056"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports0-zero-q_lora]" time="0.006"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports0-nonzero-capsule]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports0-nonzero-q_lora]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports1-zero-capsule]" time="0.006"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports1-zero-q_lora]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports1-nonzero-capsule]" time="0.004"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports1-nonzero-q_lora]" time="0.009"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports2-zero-capsule]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports2-zero-q_lora]" time="0.009"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports2-nonzero-capsule]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[4-ports2-nonzero-q_lora]" time="0.006"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports0-zero-capsule]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports0-zero-q_lora]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports0-nonzero-capsule]" time="0.009"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports0-nonzero-q_lora]" time="0.010"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports1-zero-capsule]" time="0.011"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports1-zero-q_lora]" time="0.009"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports1-nonzero-capsule]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports1-nonzero-q_lora]" time="0.011"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports2-zero-capsule]" time="0.014"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports2-zero-q_lora]" time="0.015"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports2-nonzero-capsule]" time="0.010"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[8-ports2-nonzero-q_lora]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports0-zero-capsule]" time="0.009"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports0-zero-q_lora]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports0-nonzero-capsule]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports0-nonzero-q_lora]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports1-zero-capsule]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports1-zero-q_lora]" time="0.006"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports1-nonzero-capsule]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports1-nonzero-q_lora]" time="0.009"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports2-zero-capsule]" time="0.012"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports2-zero-q_lora]" time="0.010"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports2-nonzero-capsule]" time="0.011"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_all_cells_share_base_and_independent_identical_factors[16-ports2-nonzero-q_lora]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:48: in test_all_cells_share_base_and_independent_identical_factors
+    off = make(fake_host, checkpoint=False, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_parameter_matched_arms_have_exact_same_seeded_A[zero]" time="0.010"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:86: in test_parameter_matched_arms_have_exact_same_seeded_A
+    capsule = make(fake_host, arm="capsule", **common)._checkpoint_factors()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_parameter_matched_arms_have_exact_same_seeded_A[nonzero]" time="0.006"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:86: in test_parameter_matched_arms_have_exact_same_seeded_A
+    capsule = make(fake_host, arm="capsule", **common)._checkpoint_factors()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[arm-lora]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[arm-None]" time="0.010"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[state-trained]" time="0.008"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[state-True]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[ports-value4]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[ports-value5]" time="0.004"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[rank-True]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[rank-4.0]" time="0.004"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[rank-2]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[checkpoint-1]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_cell_rejected_before_base_mutation[checkpoint-None]" time="0.005"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:102: in test_invalid_cell_rejected_before_base_mutation
+    make(fake_host, **kwargs)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[host]" time="0.004"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[mode]" time="0.004"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[child_mode]" time="0.004"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[trainable]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[grad]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[dtype]" time="0.014"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_invalid_base_rejected_without_silent_repair[meta]" time="0.007"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'">tests\test_alc_r0_parity_factory.py:127: in test_invalid_base_rejected_without_silent_repair
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:34: in make
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_factory")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_factory'</failure></testcase></testsuite></testsuites>

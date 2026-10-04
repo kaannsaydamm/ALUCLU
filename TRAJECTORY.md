@@ -9315,3 +9315,55 @@ Task 2 sensorium/recollection gate: CLEAN
   registry alias/map gap repaired for eager/SDPA only. Importtime provenance,
   transitive/vmap/tensor/native/class/controller coverage and real D/E/scientific
   R0/durable neural learning/ALC gates remain OPEN. Full unified goal ACTIVE.
+
+### Checkpoint153 — one-base parity cell factory (in progress)
+
+- Revalidated clean152 422fb5c and reread full objective/actual D requirements;
+  previous turn PROGRESS. Implement next missing runner boundary: fresh exact
+  wrappers/factors over ONE supplied verified host, fixed seed/grid/B states,
+  checkpoint callback off/on explicitly, no host acquisition or forward.
+  Added56 CPU fake-base/real-factor controls before implementation; RED pending.
+  Actual D/E, invocation qualification and scientific neural learning OPEN.
+- RED actualpytest1:56 failures reproduce missing factory module. Implemented
+  fresh wrapper construction with fixed seed20260916, original A/B0 vs exact
+  nonzero FP32 B pattern, one shared supplied base and explicit off/on callback.
+  Reject live grads/training child modules/device/dtype/metadata drift rather
+  than silently repairing base. No loader/forward/backward/optimizer in factory;
+  source/host authentication, quiescent ownership and launch gates remain external.
+- Initial focused56cases actualpytest0. Added6 metadata/buffer/default-device
+  preflight controls; malformed VerifiedHost.model needs explicit typed rejection
+  rather than accidental AttributeError. Running that new RED before repair.
+- Metadata RED actualpytest1:6cases/1failure, malformed model AttributeError
+  reproduced. Added explicit module preflight before accessing model methods;
+  no relaxation of scientific thresholds. Formatted new files before exact-byte
+  independent review and final62case regression. All failed receipts preserved.
+- Initial independent code APPROVE, architecture WATCH: documented direct partial
+  factory composition incompatible with accumulation-pair positional flag calls
+  because checkpoint is keyword-only. Preserve current regression as intermediate;
+  reproduce exact composition with RED before fixing signature/reviewing new bytes.
+- Intermediate regressionv4 actualpytest0:1181/0/0/0,77.418s SHA256
+  8ce3b15f98688041e759a39946fe67f9e8e4fcfe7da9445f209eb6fb0bd01a50;
+  original25488 terminal consumed. Does NOT cover positional partial contract;
+  added2 exact both-arm callback composition controls and launched REDv5.
+- Partial REDv5 actualpytest1:2failures reproduce TypeError for both arms.
+  Moved checkpoint flag before keyword-only grid args; existing keyword callers
+  remain valid and direct partial now matches accumulation-pair callback contract.
+  Final64new controls/regression and independent exact-byte rereviews pending.
+- InitialRED56/56/0/0,47.475s SHA256
+  1f886894ba43930c1b899e2c87680c2ebaebd476e01cea089274bcd46bfc0503.
+  FocusedGREEN56/0/0/0,53.305s SHA256
+  60165b5aabdf6bd1f53faafee6a6bfcb67732af20c9ac326940279fc96d090ee.
+  MetadataRED6/1/0/0,31.597s SHA256
+  bff7856d2ca18bec312aea014500a2b46881dbcc7976e384e9df3a36d9c78b99.
+  PartialRED2/2/0/0,22.281s SHA256
+  d728aa3b5306042836b5e5bd85ae13990945aa176503c8c4b4008229c1cb643b.
+  Final independent GPT6.1Sol rereviews code APPROVE/architecture CLEAR; initial
+  WATCH preserved. Final1183-case regression still live; raw XML protected.
+- Finalregressionv6 actualpytest0:1183/0/0/0,76.541s; original8319 terminal
+  consumed; root parsed64new cases. XML SHA256
+  25768f145e63b021cecb02c6729e925e213c41ee3275bd50eba30a6e80a71cde.
+  Both exact final source/test hashes unchanged; final independent code APPROVE/
+  architecture CLEAR, initial WATCH and allRED/intermediate receipts preserved.
+  Ruff/diff clean. One-base fresh-cell construction and positional factory
+  interface implemented; real host/source/matrix/invocation/resource/scientific
+  R0/durable learning/ALC gates remain OPEN. Full unified goal ACTIVE.
