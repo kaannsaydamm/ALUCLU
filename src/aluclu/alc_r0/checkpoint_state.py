@@ -28,6 +28,7 @@ from transformers.models.llama.modeling_llama import (
     eager_attention_forward,
 )
 
+from .checkpoint_context import CONTEXT_CLASSES, no_grad_factory_dependencies
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
 from .checkpoint_runtime import read_runtime_state
@@ -289,10 +290,24 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
             return [type(value).__name__, str(value)]
         if isinstance(value, types.MethodType):
             if id(value.__self__) not in module_ids:
-                raise CheckpointExecutionError("foreign bound method state unsupported")
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
             # Attribute access constructs ephemeral method objects; never memoize
             # their recycled IDs. Their stable binding is self plus function.
             return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
         identity = id(value)
         if identity in active:
             raise CheckpointExecutionError("computational state cycle")

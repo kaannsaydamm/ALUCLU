@@ -8720,3 +8720,20 @@ Task 2 sensorium/recollection gate: CLEAN
   before narrowly schema-bound decorator repair, mutation controls and broad
   regression/exact-byte review. Whole goal ACTIVE; this turn PROGRESS through
   observed actual-callable evidence and executable failing requirement.
+- Continued135 from clean0ae416d; objective reread. Added explicit exact no_grad
+  clone-owner schema and enumerated construction/enter/exit/grad-operation binding.
+  Unknown methods/context/state remain errors. No actual host/forward launch.
+  GREEN and mutation/regression evidence pending; no completion claim yet.
+- FocusedGREENv2 actual0:48passed,35.970s. Expanded to13 decorator cases.
+  Intermediate fullpurev3 actual0:640passed,20.490s; preceding Ruff import-order
+  warning fixed, captured clone and native descriptor/namespace IDs additionally
+  bound before final rerun. v3 is retained intermediate evidence, not final bytes.
+- Final fullpurev4 actual0:640passed,0failure/error/skip,23.736s;
+  XML7742ea9901027543bb26093168d7534b8ef7cf275ed5d885fe2ffe153f5b5c63.
+  Root verified13 new cases and unchanged exact reviewed source/test hashes.
+  Ruff/diff clean. Independent GPT6.1Sol code APPROVE, architecture CLEAR;
+  synthesis APPROVE EXPLICIT NO_GRAD SCHEMA ONLY. Context class cells and native
+  dispatch identity are not complete class/native/transitive certification.
+  No actual host/rotary execution, callback attachment, parity/resource or learning
+  PASS. Added all intermediate/final receipts and reproduction record; original
+  RED preserved. This turn PROGRESS; scoped publication next, full goal ACTIVE.
