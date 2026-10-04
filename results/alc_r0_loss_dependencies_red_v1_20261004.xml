@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="11" time="58.933" timestamp="2026-10-04T04:20:26.320971+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[preparation-property]" time="0.186"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_loss_dependency_state.py:89: in test_loss_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[preparation-mapping]" time="0.008"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_loss_dependency_state.py:89: in test_loss_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[preparation-fixed]" time="0.011"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_loss_dependency_state.py:89: in test_loss_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[preparation-cross_entropy]" time="0.010"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_loss_dependency_state.py:89: in test_loss_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[preparation-pad]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_loss_dependency_state.py:89: in test_loss_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[replay-property]" time="0.364"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_loss_dependency_state.py:69: in test_loss_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[replay-mapping]" time="0.027"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_loss_dependency_state.py:69: in test_loss_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[replay-fixed]" time="0.029"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_loss_dependency_state.py:69: in test_loss_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[replay-cross_entropy]" time="0.030"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_loss_dependency_state.py:69: in test_loss_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_dependency_drift_denied_before_side_effect[replay-pad]" time="0.033"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_loss_dependency_state.py:69: in test_loss_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_loss_dependency_state" name="test_loss_helper_counterexample_changes_numeric_loss_and_is_detected" time="0.029"><failure message="AssertionError: assert 'd674172aefda3261de5f182b10966302450914ff3d28229b005daa8d895235ea' != 'd674172aefda3261de5f182b10966302450914ff3d28229b005daa8d895235ea'">tests\test_alc_r0_loss_dependency_state.py:106: in test_loss_helper_counterexample_changes_numeric_loss_and_is_detected
+    assert changed != before
+E   AssertionError: assert 'd674172aefda3261de5f182b10966302450914ff3d28229b005daa8d895235ea' != 'd674172aefda3261de5f182b10966302450914ff3d28229b005daa8d895235ea'</failure></testcase></testsuite></testsuites>

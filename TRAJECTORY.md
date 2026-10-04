@@ -8640,3 +8640,27 @@ Task 2 sensorium/recollection gate: CLEAN
   transitive/helpers/native/runtime/full-host dependencies remain explicit OPEN.
   Added reproduction/negative evidence/claim-boundary record and raw XML rules.
   This turn PROGRESS; scoped publication next, full unified/learning goal ACTIVE.
+
+### Checkpoint133 — causal loss dependency binding (in progress)
+
+- Previous turn PROGRESS:8d12dec published, clean checkout verified. Full objective
+  reread. Added11 pure CPU loss-property/registry/fixed-helper/functional drift
+  fixtures, preparation/replay guards and numerical loss counterexample. The
+  fixture bypasses Llama model construction and denies model forward; no host
+  weights/assets/corpus/optimizer/CUDA execution. RED pending; learning OPEN.
+- REDv1 actualpytest1,11failures reproduced five preparation side effects, five
+  missing replay denials, and doubled numerical loss with an unchanged digest.
+  Added static property/route resolution and enumerated causal loss/helper/NN/
+  functional/Torch/native callable bindings; no arbitrary loss property execution.
+  Native callable identity is not native implementation or full host certification.
+- FocusedGREENv2 actual0:86passed. Added two unmodified complete-gradient positives,
+  nine route/registry/override negatives and three same-function default/property
+  code mutation fixtures before final regression. Actual pinned-host construction,
+  numeric host parity/resource and scientific learning acceptance remain OPEN.
+- Final fullpurev3 actual0:581passed,0failure/error/skip,53.926s,
+  XML5272f071fffcb8b9af0203a33b31425cec809600d5e343dbfd364bc8b214ee72.
+  Root verified25new cases,0excluded asset cases, unchanged reviewed source/test
+  hashes and clean Ruff/diff. Independent GPT6.1Sol code APPROVE, architecture
+  CLEAR; synthesis APPROVE ENUMERATED LOSS BINDINGS ONLY. Whole-host/runtime/native
+  implementation/parity/resource/learning claims remain OPEN. Added reproduction
+  and all negative/positive receipts; scoped raw-index check/publication next.

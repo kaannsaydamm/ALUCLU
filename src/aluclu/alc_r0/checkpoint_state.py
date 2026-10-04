@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import functools
 import hashlib
+import inspect
 import json
 import math
 import types
@@ -17,16 +18,104 @@ from collections.abc import Mapping
 
 import torch
 from torch import nn
-from transformers import GenerationConfig, PretrainedConfig
+from transformers import GenerationConfig, PretrainedConfig, PreTrainedModel
+from transformers.loss.loss_utils import ForCausalLMLoss, fixed_cross_entropy
 from transformers.masking_utils import ALL_MASK_ATTENTION_FUNCTIONS
 from transformers.modeling_utils import ALL_ATTENTION_FUNCTIONS
 from transformers.models.llama.modeling_llama import (
     LlamaAttention,
+    LlamaForCausalLM,
     eager_attention_forward,
 )
 
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
+
+_CAUSAL_LOSS_PROPERTY = PreTrainedModel.loss_function
+_MISSING = object()
+
+
+def _loss_dependencies(module, freeze):
+    """Bind the enumerated causal-loss route without invoking its property."""
+    if not isinstance(module, LlamaForCausalLM):
+        return None
+    descriptor = inspect.getattr_static(type(module), "loss_function", None)
+    if descriptor is not _CAUSAL_LOSS_PROPERTY:
+        raise CheckpointExecutionError("unreviewed loss property")
+    namespace = descriptor.fget.__globals__
+    mapping = namespace.get("LOSS_MAPPING")
+    if type(mapping) is not dict or len(mapping) > 2048:
+        raise CheckpointExecutionError("unsupported loss registry")
+    override = inspect.getattr_static(module, "_loss_function", _MISSING)
+    loss_type = inspect.getattr_static(module, "loss_type", None)
+    if override is _MISSING:
+        if type(loss_type) is not str or loss_type != "ForCausalLM":
+            raise CheckpointExecutionError("unreviewed loss route")
+        selected = mapping.get(loss_type)
+    else:
+        selected = override
+    if selected is not ForCausalLMLoss:
+        raise CheckpointExecutionError("unreviewed selected causal loss")
+    loss_namespace = selected.__globals__
+    helper = loss_namespace.get("fixed_cross_entropy")
+    if helper is not fixed_cross_entropy:
+        raise CheckpointExecutionError("unreviewed causal loss helper")
+    helper_namespace = helper.__globals__
+    neural, runtime = loss_namespace.get("nn"), helper_namespace.get("torch")
+    if type(neural) is not types.ModuleType or type(runtime) is not types.ModuleType:
+        raise CheckpointExecutionError("unsupported loss runtime namespace")
+    # Both functions are reviewed as sharing the same loss_utils globals.
+    if helper_namespace is not loss_namespace:
+        raise CheckpointExecutionError("unreviewed causal loss namespace")
+    functional = vars(neural).get("functional")
+    if type(functional) is not types.ModuleType:
+        raise CheckpointExecutionError("unsupported loss functional namespace")
+    operations = []
+    for name, native_name in (("pad", "pad"), ("cross_entropy", "cross_entropy_loss")):
+        operation = vars(functional).get(name)
+        if not isinstance(operation, types.FunctionType):
+            raise CheckpointExecutionError("unsupported loss functional callable")
+        op_runtime = operation.__globals__.get("torch")
+        if type(op_runtime) is not types.ModuleType:
+            raise CheckpointExecutionError("unsupported loss operation namespace")
+        native = vars(op_runtime).get("_C")
+        if type(native) is not types.ModuleType:
+            raise CheckpointExecutionError("unsupported loss native namespace")
+        native_nn = vars(native).get("_nn")
+        if type(native_nn) is not types.ModuleType:
+            raise CheckpointExecutionError("unsupported loss native namespace")
+        native_operation = vars(native_nn).get(native_name)
+        if not isinstance(native_operation, types.BuiltinFunctionType):
+            raise CheckpointExecutionError("unsupported loss native callable")
+        operations.append(
+            [
+                name,
+                freeze(operation),
+                id(op_runtime),
+                id(native),
+                id(native_nn),
+                freeze(native_operation),
+            ]
+        )
+    is_tensor = vars(runtime).get("is_tensor")
+    if not isinstance(is_tensor, types.FunctionType):
+        raise CheckpointExecutionError("unsupported loss runtime callable")
+    return [
+        id(descriptor),
+        freeze(descriptor.fget),
+        id(namespace),
+        id(mapping),
+        freeze(loss_type),
+        override is not _MISSING,
+        freeze(selected),
+        freeze(helper),
+        id(loss_namespace),
+        id(neural),
+        id(functional),
+        id(runtime),
+        freeze(is_tensor),
+        operations,
+    ]
 
 
 def _factor_dependencies(module, freeze, factor_classes):
@@ -148,6 +237,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     helper dependencies or native kernels. Other attention routes are rejected.
     Capsule/LoRA factor factories bind enumerated scalar/namespace/math/autocast
     dependencies. Builtin callables are identity-bound, not native-code audited.
+    Llama causal loss binds its reviewed property/route/helpers and enumerated
+    functional/native callable identities, not generic Torch execution semantics.
     Function globals, arbitrary class/property dependencies and external state
     are NOT inventoried; later host-specific audit must separately bind/reject them.
     No fallback repr/pickle or arbitrary object attribute traversal.
@@ -353,6 +444,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 freeze(module.forward),
                 interface,
                 _factor_dependencies(module, freeze, factor_classes),
+                _loss_dependencies(module, freeze),
                 state,
             ]
         )
