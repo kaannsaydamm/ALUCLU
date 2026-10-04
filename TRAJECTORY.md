@@ -8856,3 +8856,25 @@ Task 2 sensorium/recollection gate: CLEAN
   preserved. No resource/latency claim from varying suite times; no actual-host
   callback/parity/resources, native/class/transitive coverage or learning PASS.
   Scoped publication next; full unified goal remains ACTIVE.
+
+### Checkpoint140 — prospective real-host parity token fixtures (in progress)
+
+- Previous turn PROGRESS:db089ab published. Clean Desktop checkout verified,
+  full objective and existing D parity contract reread. Actual D runner absent;
+  default host controller still has no computational callback. These are not
+  replaced by808 component tests. Implementing token-only D fixture construction
+  for32/64 common budgets, both complete candidates and64-only right EOS pad7.
+  Pure RED pending; no tokenizer/assets/model/corpus/optimizer/GPU execution.
+- REDv1 actualpytest2: missing new module, collection error (not numerical
+  parity failure). Implemented bounded token-only immutable fixture builder,
+  no Torch/tokenizer/model import. Fixed synthetic ID formula, longest complete
+  candidate reserve, full unshifted target labels and64-only EOS pad7. Framing
+  provenance still belongs to later verified runner; GREEN pending.
+- GREENv2 actualpytest0:23pass,0failure/error/skip,17.490s. Final purev3
+  actualpytest0:831pass,0failure/error/skip,90.981s; root verified23 new cases,
+  XMLb667250716560b0ff43f6b27aa00adfcdee6b4b2cf602191ca924dca51212432.
+  Reviewed source/test hashes unchanged. Independent GPT6.1Sol code APPROVE,
+  architecture CLEAR; synthesis APPROVE TOKEN-FIXTURE CONSTRUCTION ONLY.
+  Ruff/diff clean. Tokenizer provenance, qualified callback, actual D runner,
+  full host matrix/gradient/AdamW parity, resource fit and learning remain OPEN.
+  Scoped publication next; full unified goal ACTIVE, no ALC-0 acceptance.
