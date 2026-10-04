@@ -33,6 +33,7 @@ from .checkpoint_context import CONTEXT_CLASSES, no_grad_factory_dependencies
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
 from .checkpoint_mask import mask_dependencies
+from .checkpoint_registry import attention_registry_dependencies
 from .checkpoint_runtime import read_runtime_state
 
 _CAUSAL_LOSS_PROPERTY = PreTrainedModel.loss_function
@@ -239,6 +240,9 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     Class call/dispatch bindings are identity-bound, not fully inventoried.
     Eager/SDPA selected attention and mask callables are bound, not their global
     helper dependencies or native kernels. Other attention routes are rejected.
+    State/upstream/q attention registry aliases, pinned Python resolver code,
+    defaults/closures and bounded ASCII maps are enumerated without resolver
+    execution. Mask-registry dispatch and full wrapper coverage remain separate.
     Capsule/LoRA factor factories bind enumerated scalar/namespace/math/autocast
     dependencies. Builtin callables are identity-bound, not native-code audited.
     Llama causal loss binds its reviewed property/route/helpers and enumerated
@@ -436,8 +440,11 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
             }:
                 raise CheckpointExecutionError("unreviewed attention route")
             try:
-                attention = ALL_ATTENTION_FUNCTIONS.get_interface(
-                    implementation, eager_attention_forward
+                attention, registry_state = attention_registry_dependencies(
+                    implementation,
+                    ALL_ATTENTION_FUNCTIONS,
+                    eager_attention_forward,
+                    freeze,
                 )
                 mask = ALL_MASK_ATTENTION_FUNCTIONS[implementation]
             except KeyError as error:
@@ -454,6 +461,7 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
                 freeze(mask),
                 attention_dependencies(implementation, attention, freeze),
                 mask_dependencies(freeze),
+                registry_state,
             ]
         records.append(
             [

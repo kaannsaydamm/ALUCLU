@@ -9042,3 +9042,60 @@ Task 2 sensorium/recollection gate: CLEAN
   proposal, not final document-byte approval. No production callback installed.
   Repairable engineering gaps, not neural falsification or external blocker.
   Next: q registry/dispatch closure RED->GREEN before wrapper opt-in bridge.
+
+### Checkpoint146 — actual q registry closure repair (in progress)
+
+- Previous turn PROGRESS:f5938cd published; clean Desktop checkout verified,
+  full objective reread. Added eager/SDPA preparation/replay controls for q-local
+  registry and fallback drift plus foreign-resolver no-call checks. RED pending.
+  Read actual installed AttentionInterface/GeneralInterface source, no model,
+  tokenizer/config/corpus/GPU or optimizer execution. This repairs the specific
+  audit gap, not the remaining wrapper/dispatch/launch/learning gates.
+- REDv1 actualpytest1:10failures, showing q registry/fallback drift missed before
+  preparation/replay and foreign registry accepted. Implemented bounded pinned
+  registry inventory BEFORE resolver selection; it does not execute resolver
+  methods. Captures state/upstream/q aliases, local/global maps, dispatch code/
+  defaults/closures and builtin bindings; rejects unreviewed classes/overrides/
+  selections. Initial GREEN pending; full wrapper callback remains uninstalled.
+- REDv1:10failures,20.435s, XML SHA256
+  20a89e091aad3ea854cf1162eaa7adb946ec4c2f6df35861139e1d236e79c726.
+  InitialGREENv2 actualpytest0:47pass,53.774s, XML
+  33c15b9cbc84ab1639bce9d43ac30fc99e9a347639ff134efdc51ab351530d03.
+  GREEN precedes expanded dispatch/default/table/schema tests. Added descriptor
+  redirect RED controls: live object attribute resolution must agree with the
+  local mapping read statically, without invoking a replaced property. Pending.
+- DescriptorREDv3 actualpytest1:2failures, proving a data-descriptor could redirect
+  actual lookup while inventory read the old instance dict. Added static lookup
+  identity check without executing the property; table keys ASCII/max256 are
+  bounded before serialization. Final regression and independent review pending.
+- Independent code lane identified actual Python function.__builtins__ can
+  differ from rebound globals['__builtins__']; current helper tracked advertised
+  table, potentially missing actual builtin drift. Added isolated own-table RED
+  fixtures, no processwide builtin mutation. Current v4 regression remains an
+  intermediate run, not final reviewed repaired evidence; source repair next.
+- Intermediate regressionv4 actualpytest1:944cases,103failures,53.918s;
+  XML9ede11b2d5eb52f9fba8f00f97f45a268295c1b543011b9f404b74f044a3c92e.
+  Diagnosed test isolation bug: monkeypatch.setattr on inherited bound resolver
+  restores it as an instance attribute, polluting shared registry. Fixture now
+  patches instance dict so teardown removes the newly inserted override; added
+  explicit no-override postcondition. Production failclosed rejection retained.
+  Independent code REQUEST CHANGES builtin gap and architecture scoped CLEAR
+  preserved; final repaired-byte review and fresh regression still required.
+- BuiltinsREDv5 actualpytest1:2failures reproducing the reviewer gap with isolated
+  builtin dictionaries, no processwide mutation. Resolver binding now checks
+  effective global shadow then function.__builtins__ and records actual table/
+  shadow presence. Healthy rebound-advertised-table and shadow rejection controls
+  added. Final45new cases and949-case regression to run on repaired bytes.
+- BuiltinsREDv5:2failures,50.305s, XML
+  308ebace60625154553c1ddbf4e98bfcadd5643a94d62d86f242c794bab4f84d.
+  Finalregressionv6 actualpytest0:949pass,0failure/error/skip,25.790s,
+  root parsed45new cases; XML SHA256
+  050c931a17d44e2edb1254bc447b6eb9e280092a74dc1c4529164f9842ebae47.
+  Original96489 terminal consumed, reviewed source/test hashes unchanged.
+  Final independent GPT6.1Sol code APPROVE/architecture CLEAR; architecture
+  rereview inspected actual lockedCPython3.12 installed registry source.
+  Initial REQUEST CHANGES and every RED/intermediate failure preserved.
+  Synthesis APPROVE BOUNDED REGISTRY COMPONENT ONLY, Ruff/diff clean, raw XML
+  protected by attributes. Full wrapper/ModuleDict/module dispatch/maskresolver/
+  atomic opt-in/actual D/E/scientific R0 gates remain OPEN. No neural acquisition
+  or durable-learning acceptance, full unified objective remains ACTIVE.
