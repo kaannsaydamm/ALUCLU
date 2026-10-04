@@ -8755,3 +8755,21 @@ Task 2 sensorium/recollection gate: CLEAN
   (root checked), and creating them before child's clean check would invalidate
   invocation. Desktop ALUCLU/.research-evidence dedicated output directory chosen;
   source/script bytes unchanged. No meta construction performed yet.
+- Frozen source737626a4b0b768d8715651e35247ddf731e89e17. Single declared
+  meta inventory PID32568 actualexit0, wrapper45.6211575s<180, stderr empty.
+  Torch2.14.0+cu130/Transformers5.17.0; pinned config hash rechecked by worker.
+  Eager and SDPA each397 modules,397 stable rows,0 rejected/unstable rows;
+  each134515008 unique parameter numel, all registered tensors meta. No weights,
+  forward/optimizer/training/model-run acceptance; all authority flags false.
+  Root parsed/validated raw receipt then copied bytes unchanged to tracked JSON,
+  SHAec54e33279b2e74da455a2e99f05a3cff85308b920b1dccc298fbe12b79ab094.
+  This supports config-derived structural compatibility only, not complete
+  globals/native/class/math inventory, actual weight state or wrapper callback
+  qualification. No transient allocation/resource claim. Terminal independent
+  review pending; full unified and scientific learning goal ACTIVE.
+- Independent terminal receipt review: GPT6.1Sol code APPROVE, architecture
+  CLEAR, both independently inspected raw JSON/hash/fields. Process exit/time
+  remain root-witnessed tool evidence, not independently reexecuted by reviewers.
+  Synthesis APPROVE CONFIG-ONLY META INVENTORY DIAGNOSTIC. Source/test hashes
+  unchanged after invocation. This turn PROGRESS through actual config-derived
+  skeleton inventory; scoped receipt publication next, full goal ACTIVE.

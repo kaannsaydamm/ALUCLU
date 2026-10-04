@@ -63,3 +63,35 @@ Output authority flags explicitly deny forward/optimizer/training/model-run
 acceptance. Terminal result pending at source freeze; actual host qualification,
 callback attachment, synthetic CPU/GPU parity/resource and scientific neural
 capability remain OPEN. Full unified goal ACTIVE; no threshold changed.
+
+## Executed terminal diagnostic, not model acceptance
+
+Source frozen737626a4b0b768d8715651e35247ddf731e89e17; exact script hash checked
+before launch, source clean before/after child. Owned PID32568, actual exit0,
+wrapper-inclusive45.6211575s below180s; no timeout/retry/process termination.
+Empty stderr SHA256e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.
+Runtime reported Torch2.14.0+cu130 and Transformers5.17.0. Config digest matched.
+
+Each declared route eager/SDPA had397 modules,397 stable repeated-fingerprint
+rows,0 rejected/unstable rows,134515008 unique parameter numel and all registered
+tensors meta. Authority flags weights_loaded/forward_executed/optimizer_executed/
+training_authority/model_run_acceptance are all false. Root checked route/row
+cardinality, parameter count, device state, source commit and every authority flag.
+
+Raw stdout800082bytes preserved under the declared Desktop output directory and
+copied byte-identically to results/alc_r0_meta_host_inventory_v1_20261004.json.
+SHA256ec54e33279b2e74da455a2e99f05a3cff85308b920b1dccc298fbe12b79ab094.
+Raw stdout is valid parsed JSON, not just a progress message. Wrapper exit/wall
+receipt is tool-captured rather than a standalone persisted exit file; stderr
+remains in the declared raw output directory. No model-weight checksum, tensor
+value/math comparison, peak-memory benchmark or full-source closure proof exists
+in this inventory and none is inferred from the stable rows. Independent terminal
+receipt review pending before final publication synthesis.
+
+Independent terminal reviews inspected the actual copied JSON/hash/fields:
+GPT6.1Sol code APPROVE and architecture CLEAR. Neither lane reexecuted the
+diagnostic or independently read live process/exit/time facts; root's terminal
+tool evidence remains their source for those facts. Synthesis APPROVE CONFIG-ONLY
+META INVENTORY DIAGNOSTIC. Script/test hashes rechecked unchanged after execution.
+This closes this separately reviewed structural diagnostic only, not the open
+actual weight-bearing host/complete dependency/callback/parity/resource gates.
