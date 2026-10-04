@@ -9211,3 +9211,46 @@ Task 2 sensorium/recollection gate: CLEAN
   Ruff/diff clean, raw receipts protected. No default wrapper callback activated.
   Namespace/builtin/controller-semantics/maskresolver/explicit wrapper opt-in,
   actual D/E/scientific R0/learning/ALC generations gates remain OPEN. Goal ACTIVE.
+
+### Checkpoint150 — actual wrapper namespaces (in progress)
+
+- Published149 3b7b11a verified clean; prior turn PROGRESS, full objective reread.
+  Added23 tiny controls for host/q aliases, arange endpoint, effective builtin
+  global shadows and isolated actual function builtin table, plus owned-boundary
+  denial. RED pending. No processwide builtin mutation, host/model/corpus/GPU or
+  training run; actual callback integration/scientific gates remain OPEN.
+- InitialREDv1 actualpytest1:23cases/20failures. Matched Torch alias was already
+  covered by factor helper. Two boundary fixtures passed for wrong reason: empty
+  metadata rejected before intended assertion. Fixed nonempty metadata and exact
+  namespace/drift error match; rerunning those RED controls before implementation.
+- BoundaryREDv2 actualpytest1:2failures now prove intended missing namespace
+  denial. Implemented per-method actual-global aliases, selected actual function
+  builtin table/global shadow precedence and arange/class/dtype identities.
+  Function aliases bind bounded code/default/closure; module/classes and native
+  semantics remain identity-only. No resolver/alias execution or callback opt-in.
+  Focused GREEN and independent review pending; no scientific gate claim.
+- InitialGREENv3 actualpytest1:71cases/1failure, exposing LoRA super() fallback
+  host nn alias not inventoried. Added4 parent-method code/default RED controls
+  for base block builder/ordinary decoder methods reached via super. RED pending;
+  existing selected-method evidence cannot substitute for parent-route coverage.
+- FallbackREDv4 actualpytest1:4failures reproduced same-function parent-code/
+  default drift not detected on LoRA. Added explicit static parent-method bodies
+  and actual parent namespaces, no super invocation. Expanded27 controls and
+  final regression/review pending; all earlier failures remain first-class.
+- InitialREDv1:23/20/0/0,9.909s, XML SHA256
+  8750927eef58fa330674ed4e640ec9cf684333385a9094f4c9396b0aac5af3c1.
+  BoundaryREDv2:2/2/0/0,10.167s, SHA256
+  223656b677cd08d4e01712570f39d84eeaf55695076f6281a4b1585b32cb4abd.
+  InitialGREENv3 FAILURE:71/1/0/0,10.229s, SHA256
+  d2a307d478f8c1794a371ce3a6e6c5c7d39914b48d0d17cf7fcba59cb53ec15b.
+  FallbackREDv4:4/4/0/0,8.603s, SHA256
+  2d50dd51f23fe6ecd737cba6e94b9c75c965b1a5ecd7dfdde77705c32f63cfee.
+  Finalregressionv5 actualpytest0:1060/0/0/0,29.423s, original82962 terminal
+  consumed; root parsed27new cases; XML SHA256
+  c6736ed693d99fc3c774e3d12736dc37b48b4eebd8ee9e7f3a7977fd4819cbee.
+  Final exact source/test hashes unchanged. Independent GPT6.1Sol code APPROVE
+  and architecture CLEAR for enumerated alias/13builtin/parent-route coverage
+  only. Classes/modules/native endpoints retain identity-only semantics;
+  importtime references are not source authentication. Ruff/diff clean.
+  Full transitive/class/controller/mask-resolver/explicit wrapper opt-in/actual
+  D/E/scientific R0/durable-learning gates OPEN. Full unified goal ACTIVE.

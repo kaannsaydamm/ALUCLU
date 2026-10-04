@@ -5,6 +5,7 @@ import types
 from _thread import LockType
 
 from .checkpoint_execution import CheckpointController, CheckpointExecutionError
+from .checkpoint_wrapper_namespaces import wrapper_namespace_dependencies
 
 _MISSING = object()
 
@@ -46,8 +47,8 @@ def wrapper_method_dependencies(module, freeze, wrapper_classes, factor_classes)
 
     Only the controller's enumerated stable bindings are recorded. Its active
     lease/thread/ticket bookkeeping is intentionally not computational drift.
-    This does not inventory effective method globals/builtins or controller
-    implementation semantics and does not install any callback.
+    Selected actual aliases/builtins are enumerated, not all transitive globals
+    or controller implementation semantics. This does not install any callback.
     """
     if not isinstance(module, wrapper_classes[0]):
         return None
@@ -81,7 +82,27 @@ def wrapper_method_dependencies(module, freeze, wrapper_classes, factor_classes)
         function = inspect.getattr_static(type(module), name)
         if type(function) is not types.FunctionType:
             raise CheckpointExecutionError("unsupported wrapper method descriptor")
-        methods.append([name, id(function.__globals__), freeze(function)])
+        methods.append(
+            [
+                name,
+                freeze(function),
+                wrapper_namespace_dependencies(function, name, is_lora, freeze),
+            ]
+        )
+    if is_lora:
+        # super() resolves these parent bodies on unselected ports. Binding the
+        # selected override and a class-cell identity alone misses that route.
+        for name in ("_bind_checkpoint_block", "_run_decoder_layer"):
+            function = inspect.getattr_static(wrapper_classes[0], name)
+            if type(function) is not types.FunctionType:
+                raise CheckpointExecutionError("unsupported wrapper fallback method")
+            methods.append(
+                [
+                    "super:" + name,
+                    freeze(function),
+                    wrapper_namespace_dependencies(function, name, False, freeze),
+                ]
+            )
     controller = state.get("_checkpoint_controller")
     if type(controller) is not CheckpointController or controller.owner is not module:
         raise CheckpointExecutionError("owned exact wrapper controller required")

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="10.167" timestamp="2026-10-04T23:30:13.867670+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_namespace_drift_denied_before_owned_preparation[PinnedLlamaCapsuleWrapper]" time="0.007"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'namespace|fingerprint drifted'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_wrapper_namespaces.py:76: in test_wrapper_namespace_drift_denied_before_owned_preparation
+    with pytest.raises(CheckpointExecutionError, match="namespace|fingerprint drifted"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'namespace|fingerprint drifted'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_namespace_drift_denied_before_owned_preparation[PinnedLlamaLoRAWrapper]" time="0.009"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'namespace|fingerprint drifted'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_wrapper_namespaces.py:76: in test_wrapper_namespace_drift_denied_before_owned_preparation
+    with pytest.raises(CheckpointExecutionError, match="namespace|fingerprint drifted"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'namespace|fingerprint drifted'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase></testsuite></testsuites>
