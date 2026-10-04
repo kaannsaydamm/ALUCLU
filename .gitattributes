@@ -229,3 +229,7 @@ src/aluclu/alc_r0/checkpoint_parity_cell.py text eol=lf
 tests/test_alc_r0_parity_cell.py text eol=lf
 results/alc_r0_parity_cell_*.xml -text whitespace=-blank-at-eol
 docs/superpowers/reviews/2026-10-05-alc-r0-parity-cell.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_matrix.py text eol=lf
+tests/test_alc_r0_parity_matrix.py text eol=lf
+results/alc_r0_parity_matrix_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-parity-matrix.md text eol=lf

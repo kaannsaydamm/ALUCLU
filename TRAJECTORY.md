@@ -9410,3 +9410,39 @@ Task 2 sensorium/recollection gate: CLEAN
   actual D/E/scientific R0/durable interaction learning/ALC remain OPEN.
   Next integrate this cell with the fixed one-base nine-grid/two-arm factory
   matrix, then qualify/review the exact invocation. Full unified goal ACTIVE.
+
+### Checkpoint155 — fixed one-base parity matrix (in progress)
+
+- Revalidated clean a119ebd, full objective, D/E detail and v1 grid order.
+  Prior turn PROGRESS. Added matrix wiring/failure-prefix/interruption/receipt
+  tests before implementation. Use real seeded factor/wrapper construction
+  over fake base with STUB cell execution, not actual-host/full-D evidence.
+  Fixed order M/L/ML each r4/r8/r16, capsule then q-only LoRA. RED pending.
+- RED actualpytest1:14cases/14failures reproduce absent matrix module. Added
+  fixed18-cell composition over exact factory/cell functions, no injectable
+  production callbacks/loader/retry. Validate shapes/names/counts and matching
+  original A across capsule/LoRA before observations; immutable prefix/current/
+  unrun evidence on terminal exception and preserved KeyboardInterrupt kind.
+  Launcher/journaling/limits/asset/source authentication remain separate OPEN.
+- Focusedv2 actualpytest0:102cases. Initial independent GPT6.1Sol code APPROVE/
+  architecture CLEAR; added9 guard/receipt controls from review recommendation:
+  same-numel wrong shapes, seed/names, cross-arm A drift, base byte/buffer drift,
+  missing optimizer keys, bool schedule metadata and NaN pending loss. Source
+  unchanged; final test-byte rereviews/wide regression pending. No actual D PASS.
+- REDv1:14/14/0/0,90.195s SHA256
+  bdebf59f7ed008dbab46b15a3ff5fc0d9dfbc7bbd26924987bacbff80c2d34b1.
+  Focusedv2:102/0/0/0,130.505s SHA256
+  a749d225a3f67d4ea459c39f5b3c4a259d4d5d1c0f5594171eefded1c7381fc6.
+  Final regressionv3 live original15643; no restart. Final architecture CLEAR
+  also verifies originalv1 ordering source; code test-only rereview first usage
+  errored, one retry pending. No author self-approval. Cfree55496175616bytes,
+  no cleanup. All actual-host/invocation/resource/scientific gates still OPEN.
+- Final code rereview retry returned APPROVE, final architecture CLEAR at exact
+  sourcec7aa8a7.../tests7c06032... unchanged bytes. Finalregressionv3 personally
+  consumed original15643 actualpytest0:1230/0/0/0,109.356s, root parsed23newcases.
+  XML SHA256668278b8f769dd16bd0abe437554642cf2cea223db9e98f981a9f9eaca09a66c.
+  Ruff/diff clean. Matrix construction/order/validation/failure-prefix wiring
+  verified with STUB cell; real model D has NOT run. Next exact invocation
+  launcher/journal/resource/source/runtime/tokenizer qualification and official
+  forward regression integration; no actual-host/scientific learning claim.
+  All prior evidence retained. Full unified goal ACTIVE.
