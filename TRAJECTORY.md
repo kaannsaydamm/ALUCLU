@@ -9133,3 +9133,37 @@ Task 2 sensorium/recollection gate: CLEAN
   builtins, all methods, wrapper inventory/atomic opt-in/mask resolver and actual
   host D/E remain OPEN. Existing tiny optimizer tests are synthetic, not neural
   acquisition or durable-learning evidence. Full unified goal remains ACTIVE.
+
+### Checkpoint148 — atomic inventory installation prerequisite (in progress)
+
+- Published147 e9a0210 verified clean. Full objective and checkpoint145 candidate
+  reread. Controller currently has no atomic installation primitive; wrapper
+  inventory is still absent, default callback remains None. Added8 synthetic
+  controls for one-time/idempotent installation, invalid candidates, active
+  lease denial and serialization with session capture before active publication.
+  RED pending. This prerequisite is not callback qualification or host launch;
+  no scientific thresholds, datasets, assets or training authority changed.
+- REDv1 actualpytest1:8 failures (missing installation primitive). Implemented
+  callable validation plus active-check/one-time assignment under original lock;
+  same binding is idempotent only outside a lease. Getter is not invoked during
+  installation and arbitrary callback acceptance is NOT qualification. Wrapper
+  remains unchanged/default-disabled. Focused GREEN/regression/review pending.
+- Initialv2 actualpytest1:114cases/3failures. New fixture incorrectly returned
+  noncanonical 'synthetic' instead of64hex; capture correctly rejected it, so
+  race never reached active publication. Independent code lane also identified
+  this test defect. Repaired fixture to explicit synthetic64hex; production
+  fingerprint validation unchanged. Failed receipt retained; rerun pending.
+- REDv1:8/8/0/0,18.035s, SHA256
+  425177d57c6a9546bc5ca197161ca01c990a475df706da583da3c7ec4db9182b.
+  Initialv2 FAILURE (historical green filename):114/3/0/0,69.055s, SHA256
+  594f4b902e2fa263988bfea1ba635aabf93e16f041a513893813b2fb6f915196.
+  Initial independent code REQUEST CHANGES/architecture WATCH preserved.
+  Repaired regressionv3 actualpytest0:985/0/0/0,59.116s; original31814 terminal
+  consumed; root parsed8new cases. XML SHA256
+  2a5af88e6c4c7a5a8a112409d69d6bccdbcbbce77a49cbc5a19b8ece18498c94.
+  Exact reviewed production/test hashes unchanged; final independent GPT6.1Sol
+  code APPROVE/architecture CLEAR, bounded primitive only. Getter must remain
+  observational and never reenter controller lock; direct-field mutation remains
+  outside cooperating installation contract. Ruff clean. C free55,705,935,872B.
+  No actual wrapper callback installed; wrapper inventory/mask resolver/actual
+  D/E/scientific R0/durable-learning gates remain OPEN, unified goal ACTIVE.

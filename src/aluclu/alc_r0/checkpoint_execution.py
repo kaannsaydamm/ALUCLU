@@ -91,6 +91,29 @@ class CheckpointController:
             if self._active is not None:
                 raise CheckpointExecutionError("owner mutation denied during lease")
 
+    def _install_state_fingerprint_getter(self, getter: Callable[[], str]) -> None:
+        """Atomic one-time binding, not callback qualification or authority.
+
+        Integration must prepare and review an observational getter separately.
+        It is not executed here; session capture executes it under this lock, so
+        it must not acquire the controller lock. Direct attribute mutation is
+        outside this cooperating-process installation contract.
+        """
+        if not callable(getter):
+            raise CheckpointExecutionError("invalid computational state getter")
+        with self._lock:
+            if self._active is not None:
+                raise CheckpointExecutionError(
+                    "inventory installation denied during lease"
+                )
+            if self.state_fingerprint_getter is not None:
+                if self.state_fingerprint_getter is getter:
+                    return
+                raise CheckpointExecutionError(
+                    "computational state getter already installed"
+                )
+            self.state_fingerprint_getter = getter
+
 
 class CheckpointSession:
     """One-shot context; only session.backward may traverse ticket graphs."""
