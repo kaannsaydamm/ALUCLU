@@ -4,6 +4,8 @@ import pytest
 import torch
 from torch import nn
 from transformers import LlamaConfig
+from transformers.masking_utils import ALL_MASK_ATTENTION_FUNCTIONS
+from transformers.models.llama.modeling_llama import LlamaAttention
 
 from aluclu.alc_r0.checkpoint_execution import (
     CheckpointController,
@@ -301,3 +303,67 @@ def test_module_class_call_dispatch_drift_is_fingerprinted(dispatch):
     finally:
         delattr(LocalDispatch, dispatch)
     assert getter() == before
+
+
+def make_attention_owner(implementation):
+    owner, controller, getter = make_owner()
+    config = LlamaConfig(
+        hidden_size=4,
+        num_attention_heads=2,
+        num_key_value_heads=2,
+        intermediate_size=8,
+    )
+    config._attn_implementation = implementation
+    owner.base.attention = LlamaAttention(config, layer_idx=0)
+    owner.base.requires_grad_(False).eval()
+    return owner, controller, getter
+
+
+@pytest.mark.parametrize("implementation", ["eager", "sdpa"])
+@pytest.mark.parametrize("phase", ["preparation", "replay"])
+def test_selected_mask_drift_denied_before_side_effects(
+    implementation, phase, monkeypatch
+):
+    owner, controller, getter = make_attention_owner(implementation)
+    before = getter()
+    calls = []
+    with pytest.raises(CheckpointExecutionError):
+        with controller.session() as session:
+            if phase == "replay":
+                ticket = session.begin_forward(owner, {"position_ids": torch.zeros(1)})
+
+                def block(hidden, metadata):
+                    calls.append(1)
+                    return owner.factors(hidden).square()
+
+                output = ticket.run(0, block, torch.ones(1, 2))
+                ticket.bind_output(output)
+            monkeypatch.setitem(
+                ALL_MASK_ATTENTION_FUNCTIONS._global_mapping,
+                implementation,
+                lambda *args, **kwargs: None,
+            )
+            assert getter() != before
+            for parameter in owner.factors.parameters():
+                parameter.grad = torch.ones_like(parameter)
+            if phase == "preparation":
+                session.begin_forward(owner, {"position_ids": torch.zeros(1)})
+                calls.append(1)
+            else:
+                session.backward(output.sum())
+    assert calls == ([] if phase == "preparation" else [1])
+    assert controller._active is None
+    assert all(parameter.grad is None for parameter in owner.factors.parameters())
+
+
+def test_unreviewed_attention_route_rejected_without_fallback():
+    _, _, getter = make_attention_owner("unreviewed")
+    with pytest.raises(CheckpointExecutionError, match="route"):
+        getter()
+
+
+def test_missing_selected_mask_rejected(monkeypatch):
+    _, _, getter = make_attention_owner("eager")
+    monkeypatch.delitem(ALL_MASK_ATTENTION_FUNCTIONS._global_mapping, "eager")
+    with pytest.raises(CheckpointExecutionError, match="mask"):
+        getter()

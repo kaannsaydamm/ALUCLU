@@ -18,6 +18,7 @@ from collections.abc import Mapping
 import torch
 from torch import nn
 from transformers import GenerationConfig, PretrainedConfig
+from transformers.masking_utils import ALL_MASK_ATTENTION_FUNCTIONS
 from transformers.modeling_utils import ALL_ATTENTION_FUNCTIONS
 from transformers.models.llama.modeling_llama import (
     LlamaAttention,
@@ -74,6 +75,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     UTF8 strings64KiB/integers256bits, unregistered tensors64KiB, JSON stream16MiB.
     These are component limits, NOT a measured peak-memory/latency guarantee.
     Class call/dispatch bindings are identity-bound, not fully inventoried.
+    Eager/SDPA selected attention and mask callables are bound, not their global
+    helper dependencies or native kernels. Other attention routes are rejected.
     Function globals, arbitrary class/property dependencies and external state
     are NOT inventoried; later host-specific audit must separately bind/reject them.
     No fallback repr/pickle or arbitrary object attribute traversal.
@@ -223,14 +226,29 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
         state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
         interface = None
         if isinstance(module, LlamaAttention):
-            implementation = module.config._attn_implementation or "eager"
+            implementation = module.config._attn_implementation
+            if type(implementation) is not str or implementation not in {
+                "eager",
+                "sdpa",
+            }:
+                raise CheckpointExecutionError("unreviewed attention route")
+            try:
+                attention = ALL_ATTENTION_FUNCTIONS.get_interface(
+                    implementation, eager_attention_forward
+                )
+                mask = ALL_MASK_ATTENTION_FUNCTIONS[implementation]
+            except KeyError as error:
+                raise CheckpointExecutionError(
+                    "missing selected attention/mask route"
+                ) from error
+            if not isinstance(attention, types.FunctionType) or not isinstance(
+                mask, types.FunctionType
+            ):
+                raise CheckpointExecutionError("unsupported attention/mask callable")
             interface = [
                 implementation,
-                id(
-                    ALL_ATTENTION_FUNCTIONS.get_interface(
-                        implementation, eager_attention_forward
-                    )
-                ),
+                freeze(attention),
+                freeze(mask),
             ]
         records.append(
             [

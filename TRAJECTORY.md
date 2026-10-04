@@ -8593,3 +8593,26 @@ Task 2 sensorium/recollection gate: CLEAN
   unwrap/unbound/transitive limitations in host-dependency-inventory review record.
   This is source evidence changing next action, not model acceptance or tests.
   Fullhost callback/qualification/scientific gates remain OPEN, full goal ACTIVE.
+
+### Checkpoint131 — selected mask binding (2026-10-04, in progress)
+
+- Previous goal turn was an explanatory status answer, NO IMPLEMENTATION PROGRESS.
+  Revalidated clean dde9970 and reread full objective. Added six pure selected-mask
+  drift/rejection fixtures; REDv1 is live, process command line revalidated.
+  No host assets/corpus/optimizer or actual language-model forward execution.
+  Selected-mask binding is only one part of complete host qualification, not an
+  actual learning or model-launch gate. Independent review required before approval.
+- REDv1 actual pytest1,6failures reproduced selected-mask drift invisibility and
+  missing/unknown route rejection gaps. Added explicit eager/SDPA selected mask
+  and attention callable freeze; no production monkeypatch or fallback route.
+  Focused regressionv2 actual0,206passed,0failure/error/skip,62.812s. Formatting
+  occurred in flight, so final pure v3 rerun started after exact-byte freeze.
+- Independent exact-byte code APPROVE and architecture CLEAR, selected-callable
+  binding ONLY. Remaining transitive globals/registry namespace/class/runtime
+  dependencies and whole host acceptance OPEN. Reproduction/attempt/review record
+  added; broader pure regression terminal result and scoped publication pending.
+- Final pure regressionv3 actual0:527passed,0failure/error/skip,41.131s,
+  XML bdea5d8aea65868e2bd901365d9d19860162d7cba8f229a06e7059c5fd0974ce.
+  Root verified6new cases,0excluded asset cases, unchanged reviewed source/test
+  hashes and clean diff check. Current turn PROGRESS; raw evidence index-byte
+  check and scoped commit/push next. Full unified goal and neural capability OPEN.
