@@ -8664,3 +8664,36 @@ Task 2 sensorium/recollection gate: CLEAN
   CLEAR; synthesis APPROVE ENUMERATED LOSS BINDINGS ONLY. Whole-host/runtime/native
   implementation/parity/resource/learning claims remain OPEN. Added reproduction
   and all negative/positive receipts; scoped raw-index check/publication next.
+
+### Checkpoint134 — ambient backend dependency binding (in progress)
+
+- Previous turn PROGRESS:5d758aa published; clean Desktop checkout verified,
+  full objective reread. Added32 pure CPU preparation/replay setting-drift
+  fixtures for dtype, precision, deterministic, threads and SDP/matmul/cuDNN
+  flags. Flags restored in finally; no GPU kernels/host/assets/corpus/optimizer.
+  RED pending. Expected checkpoint autocast/grad/RNG context must not be confused
+  with mutable backend settings. Full host and learning gates remain OPEN.
+- REDv1 actualpytest1:32failures reproduced16 preparation side effects and16
+  missing replay denials. Added separate read-only runtime snapshot schema for
+  default dtype/device, precision, deterministic/warn flags, CPU threads and
+  SDP/matmul/cuDNN flags; getter code/identity and validated values fingerprinted.
+  Fresh snapshot dict identities excluded; no RNG/grad/autocast-state freeze.
+- FocusedGREENv2 actual0:103passed. Added CPU autocast on/off complete backward
+  positives, explicit RNG/no_grad exclusion positive, equal-value getter binding
+  drift denials, and nine malformed setting negatives before final regression.
+  This is ambient-setting/schema evidence, not GPU math/native/runtime acceptance.
+
+- Final fullpurev3 actual0:627passed,0failure/error/skip,32.069s,
+  XML7762baee761b5afd0bd1a018e9362bc5863c854f66e6270cc7e2e5bfa31e6d01.
+  Root revalidated all three receipts and exact reviewed source/test hashes on
+  continuation. Final scope includes46 new cases, not a full repository/host suite.
+  Independent GPT6.1Sol code APPROVE and architecture CLEAR; both reconfirmed
+  retained inspected verdicts for unchanged hashes without claiming new inspection.
+  Reviewers' initial20-field count corrected to19; verdicts unchanged. Synthesis
+  APPROVE ENUMERATED RUNTIME BINDINGS ONLY. No atomic thread isolation, complete
+  backend/native/property/helper coverage, allocation-free getter guarantee,
+  actual-host attachment/parity/resource or learned-capability acceptance.
+  Added reproduction/negative receipts and raw XML preservation rules. Previous
+  goal implementation turn PROGRESS; intervening user question read-only, not a
+  new acceptance result. This continuation finishes scoped evidence publication;
+  full unified goal ACTIVE, thresholds unchanged, host/learning gates OPEN.

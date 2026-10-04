@@ -30,6 +30,7 @@ from transformers.models.llama.modeling_llama import (
 
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
+from .checkpoint_runtime import read_runtime_state
 
 _CAUSAL_LOSS_PROPERTY = PreTrainedModel.loss_function
 _MISSING = object()
@@ -239,6 +240,8 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     dependencies. Builtin callables are identity-bound, not native-code audited.
     Llama causal loss binds its reviewed property/route/helpers and enumerated
     functional/native callable identities, not generic Torch execution semantics.
+    Enumerated backend settings/getters are bound; checkpoint-preserved RNG,
+    autocast and grad context are intentionally not ambient drift fields.
     Function globals, arbitrary class/property dependencies and external state
     are NOT inventoried; later host-specific audit must separately bind/reject them.
     No fallback repr/pickle or arbitrary object attribute traversal.
@@ -380,7 +383,15 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     ):
         if getattr(framework, name):
             raise CheckpointExecutionError("global module hooks unsupported")
-    records = []
+    runtime_values, runtime_getters = read_runtime_state()
+    # Newly created snapshot dict identities are not process state.
+    records = [
+        [
+            "runtime",
+            [(key, freeze(runtime_values[key])) for key in sorted(runtime_values)],
+            [(key, freeze(runtime_getters[key])) for key in sorted(runtime_getters)],
+        ]
+    ]
     for root_name, name, module in inventory:
         if len(vars(module)) > 2048:
             raise CheckpointExecutionError("module attribute bound exceeded")
