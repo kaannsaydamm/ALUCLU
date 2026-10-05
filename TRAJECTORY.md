@@ -10536,3 +10536,30 @@ Task 2 sensorium/recollection gate: CLEAN
   docs-only scopedreviewclosed, globalhistoryUNKNOWN/resourceadmissionBLOCK.
   Current source/test/XML untouched, nofreshpytest/learning/GPUrun. FullgoalACTIVE;
   next contemporaneoussource/runtime andfailed/interruptedrecord joins remain.
+
+### Checkpoint176 - historical CPU host control joins verified; global gates OPEN
+
+- Previous175 PROGRESS:2b6ac0e exactremote/cleanDesktop verified. Fullobjective
+  reread. BoundedSep21private-session discovery joined3successfulhostcontrols
+  andonewrongexpectedcommit rejection beforeworkers, notGPUtrainingfailure.
+  Originalsource4efd7d5/6ad9965/526786f and3rawGit2040byte receiptroots/runtime/
+  locks matched terminal summaries. Historicalhostloader defaultCPU/BF16 and
+  workerwithoutdeviceoverride verified; TorchCUDA build doesnotmakeGPUjob.
+  Firstmutable-worktree proof remains weaker thanlaterimmutableexport receipts.
+  Recorded4exactIDs/status/handles/envelopetimes/decodedoutputroots; commandwall
+  sum101.000479100s NOTGPUconsumption. Earlier broadformattedoutput truncated;
+  repeatedcompactexact-ID fields andrawGit receiptreads suppliedselectedfacts.
+  No oldcommand executed, assets/model/corpus/GPU acquiredorinvoked, source/tests
+  changed, cleanup performed orprivatehistoryexported. Firstdevelopmentinstant/
+  fullattemptcoverage/measuredbudget/currentlaunch/scientificgates stillOPEN.
+- Final independentcodeAPPROVE andarchitectureCLEAR verifiedexactoriginal4IDs,
+  8envelopetimes/4outputroots/3rawGit2040byte receipts/sourceCPUdefaults andscript
+  export distinction. Bothprimarysession accessesavailable, nolocklimitation.
+  Reviewed report97b65b6445889a236d99cf42d470c05860004ad14deab44bf66be1f145e6a32e.
+  Separateprovenance/LFattributes added; docs-onlyscopeclosed notruntimebinary
+  attestation, completeattemptinventory ormeasuredbudget. No newpytest/workload.
+- Next reconstruction lead: boundedSep20search foundearlierbareCPUhostload and
+  twofreshdigest commands9533e824/8c5f0d26/3b7d0cbe (allterminalexit0). Parent
+  inspectedexact3records andCPU/BF16/zerotrainable or273/272digestoutput; these
+  predateSep21receiptcontrols but donotestablishglobalfirstdevelopmentinstant.
+  Keepasnextaudit inputs, notreviewedscientific/resourceauthority. FullgoalACTIVE.
