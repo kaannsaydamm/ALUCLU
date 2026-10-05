@@ -349,3 +349,4 @@ tests/test_alc_r0_reference_qv_optimizer.py text eol=lf
 tests/test_alc_r0_reference_qv_accumulation.py text eol=lf
 tests/test_alc_r0_reference_qv_factory.py text eol=lf
 tests/test_alc_r0_reference_qv_forward.py text eol=lf
+tests/test_alc_r0_reference_qv_update_remount.py text eol=lf

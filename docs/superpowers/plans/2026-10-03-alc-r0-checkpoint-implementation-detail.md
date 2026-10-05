@@ -217,6 +217,13 @@ After complete actual-host parity, declare exact-byte launcher and run:
   positions; summed-loss/all120-gradient parity remains a shared-helper oracle,
   not independent model correctness or proof of each original input's replay
   sensitivity. No real-host update/resume, CUDA/BF16, E3 or learning qualification.
+  Checkpoint188 connects full fake30-block CPU off/on forwards to two disposable
+  fixed AdamW steps and factor-only SafeTensors remount in a new same-process
+  wrapper. Complete120-factor/moment step1/2 equality and unchanged base digest
+  are checked; record inequality proves some factor change, not every tensor.
+  Single-forward updates bypass the16-microbatch runner; factor-only remount
+  does not restore optimizer moments or prove continued training/process restart.
+  Actual host, E3 fit, learning/generalization and final .alc remain unqualified.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
