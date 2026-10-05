@@ -188,6 +188,11 @@ After complete actual-host parity, declare exact-byte launcher and run:
   and unchanged mount placement; it is not an execution/host qualification gate.
   Independent code APPROVE plus architecture WATCH yields synthesis COMMENT,
   not merge-ready approval. Optimizer-state/resume/step integration remains OPEN.
+  Checkpoint183 adds wrapper-bound read-only comparison of all120 q/v factor and
+  AdamW moment records at synthetic step1/2. CPU tests explicitly use exact=True;
+  populated moments are manual fixtures, not optimizer execution receipts. It
+  preserves the fixed runtime/placement/provenance limits (architecture WATCH).
+  Actual updates, optimizer-state restoration and E3 qualification remain OPEN.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

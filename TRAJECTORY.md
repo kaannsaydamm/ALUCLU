@@ -10771,3 +10771,36 @@ Task 2 sensorium/recollection gate: CLEAN
   guarded disposable update path with synthetic parity, then separate actual-
   host/E3 qualification only after authority/resource gate. Fullgoal ACTIVE;
   no ALC-R0, learning, .alc or portability PASS; checkpoint records preparation.
+
+### Checkpoint183 - complete wrapper-bound q/v optimizer fidelity
+
+- Previous182 PROGRESS43b1787 committed/pushed and clean verified. Objective
+  fully reread. Preserved original dependency order and unadopted accounting
+  draft/global launch BLOCK. No model/tokenizer/corpus/GPU or optimizer step.
+- Added thin read-only reference_qv_optimizer adapter deriving complete exact
+  wrapper factor/base bindings independently for both arms before delegating
+  existing fixed Torch2.14 AdamW comparison. No caller factor subset, serialized
+  parameter IDs, state restoration or duplicate optimizer schema. All120factor/
+  first/second-moment records compared; independent storage/base alias guards
+  inherited intact. Host/base byte identity and execution provenance separate.
+- TDD module-absent RED observed exit2,1collectionerror,14.555s, personally
+  parsed/rehashedc4f17a495529655da2a8666ce049d6027547a1eba4d0d2dd0da1df8780cb0a21.
+  New nine synthetic tests manually populate moments for step1/2 and target
+  layer29vB missing state/alias/moment/factor/step/group drift/shared-arm failures.
+  No optimizer.step() executed; equality is NOT evidence an update occurred.
+  Three-file GREEN observed exit0,170/0/0/0,12.245s XML root
+  7494407fb5faa7747a67d0facea4b0dcd5a9247778c8627eafb86668db831ed1.
+  Eight-file CPU regression observed exit0,271/0/0/0,27.230s XML root
+  d2e9dc55323da2857b6b2f079ac6981d329da714fb9a1af5efa0a6e23eef201d.
+  Both XMLs personally parsed/rehashed. Ruff --no-cache passed.
+- Independent defaultGPT6.1Sol code APPROVE; architecture WATCH/no scoped
+  blocker, synthesis COMMENT not merge-ready. WATCH inherited fixedTorch2.14
+  schema, unchanged placement/host-provenance separation and CPU exact=True
+  caller obligation. exact=False remains tolerance comparison, never exact
+  CPU parity. Parent rehashed same source3b4e922e4a3ea9acff122e4d79b8b93179be96903d8c0ff7b77c15758f63e6ef
+  and testb52250d542819be6eb39e00df68b0d9b206ffa16706fdffb72793e5ffcfa7585.
+- Original scientific plan0493eeed... personally rehashed unchanged; Oct3 status
+  note only updated. Next is guarded q/v accumulation/update path integration
+  and synthetic off/on update parity, then separately authorized actual-host/E3
+  qualification. Fullgoal ACTIVE; optimizer resume, actual learning, .alc and
+  portability gates remain OPEN; no partial-test substitute for neural proof.
