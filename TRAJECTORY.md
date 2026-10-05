@@ -10508,3 +10508,31 @@ Task 2 sensorium/recollection gate: CLEAN
   historical accounting/launch UNKNOWN/BLOCK. AddedLF attributes fornewdocs.
   No tests/source/XML changed or actualexperiment launched. FullobjectiveACTIVE;
   next bounded joins must include failed/OOM/otherGPU invocations, notsuccessonly.
+
+### Checkpoint175 - original failed suite terminal joins verified; launch OPEN
+
+- Previous174 docs committed/pushed7b8116c5087e39fc231e91071c44acfbe1e7e2e6;
+  remote exactHEAD andcleanDesktop verified. Bounded private-session inspection
+  recovered originalSep25 fullsuiteexit1:259passed/2failed,451.41pytestseconds;
+  actualfirstchildCUDAOOM andexactplan-byte matrixfailure bothpresent inoutput.
+  Also originaltargeted2pass andsubsequent261pass/261pass terminalexit0 records.
+  Recorded exactexecutionIDs/toolhandles/eventUTC/outputUTF8roots anddurations;
+  1293.153135100commandwallseconds NOTGPUhours. Initialdraft incorrectlyclaimed
+  no start/endmsfields because onlynesteditems inspected, notpayloadenvelopes.
+  Newhistorical-failure-joins report preserves historicalOneDrivecwd onlyas
+  provenance, notnewworklocation. No oldcommand/process rerun, noXMLinferred,
+  no source/test/model/assets/heldout/GPU/installation/cleanup operation.
+  Globalhistory/measuredbudget/currentauthority/native160/scientificgatesOPEN.
+- Independentcode review REQUESTCHANGES caughtoriginalpayload start/endmsfields
+  presentforall4records. Personallyreparsed exactsameIDs, verified8numericvalues;
+  correctedreport withoriginalenvelope table andnesting distinction. Do not infer
+  authenticatedOS/GPUtiming fromtooltimestamps orsubtracttoinventmissingstarts.
+  Negativeinitialdraft/review finding retained, finalbyte rereview next.
+- Final independentcodeAPPROVE/architectureCLEAR bothconfirmed reportroot
+  1c3bea65dc2bae53405ce51e09e5f81756007101a9e86d411cd43e797e21d41e.
+  Architecture accessedexactoriginalrecords withsharedread, all4outputroots and
+  8envelopetimestamps matched; prior174locklimitation doesnotapply tothischeck.
+  Personallyfinaltable/rootrevalidated. Separateprovenance andLFattributesadded;
+  docs-only scopedreviewclosed, globalhistoryUNKNOWN/resourceadmissionBLOCK.
+  Current source/test/XML untouched, nofreshpytest/learning/GPUrun. FullgoalACTIVE;
+  next contemporaneoussource/runtime andfailed/interruptedrecord joins remain.
