@@ -11274,3 +11274,54 @@ Task 2 sensorium/recollection gate: CLEAN
   Original scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
   personally rehashed unchanged. Next pure separateStressInput TDD can proceed
   without launching host/tokenizer/GPU. Full unified objective remains ACTIVE.
+
+### Checkpoint195 - pure bounded E3 stress-input schedule
+
+- Previous194 committed/pushed f63dcca; clean Desktop verified, full objective and
+  final E3 contract reread. Previous turn made reviewed engineering-design progress.
+  New executable token-only component/tests, no actual host/model/tokenizer/assets/
+  task data/GPU launch, installs or scientific/resource amendment.
+- Added separate frozen StressInput/StressSchedule, constructor, bounded exact
+  reconstruction validator and canonical consistency digest. Framing/candidates
+  exact immutable1..64-token tuples, vocab49152/EOS0, no bools/EOS/out-of-range.
+  Longest complete candidate reserves space in common4096, identical synthetic
+  prompt for both labels, all-ones masks/unshifted complete candidate labels and
+  contiguous positions. Shorter actual sequences remain shorter without padding.
+  Frozen safe-first alternating pair repeated8times yields16inputs; digest binds
+  two updates but does not execute/enforce them. Immutable object sharing is safe.
+- Validator checks exact dataclass/tuple/int/bounds before constructing expected
+  bounded schedule, then compares complete fields. Malformed/changed schedules
+  never reach asdict/canonical hash. Synthetic code rule unchanged from D;
+  existing D ParityInput/length/state/gradient contracts untouched. Caller needs
+  separate tokenizer provenance: plausible IDs/hash are not authentication.
+- TDD missing-module RED observed exit2,1/0/1/0,2.936s; XML
+  27f3ad258f53470e553ee4ef1bb1f7fdcf8cd806da197d3e1e1dc4f877f9bde1.
+  Focused observed exit0,53/0/0/0,2.869s; XML personally parsed/rehashed
+  e160ff16258e52228ea23060bfeed049ba26f43a90c3a58d65d2bcac4d1ce09b.
+  Covers unequal/max candidate lengths, deterministiccode/reserve/full labels,
+  immutable records, supplied-field malformed types/bounds and forged schedule
+  count/order/framing/tokens/labels/masks/positions/candidates; digest rejects too.
+- First four-file regression observed exit0,134tests/0fail/0error/1skip,2.890s;
+  XML c1bfb58cca6be2969804bc1f4e158ae8292b4411b7da166e41e6cc2e9acc45cc.
+  Existing optional test_pinned_smolllm2_scores_both_defect_candidates_if_available
+  skipped because no snapshot path supplied; not actual-host evidence. Preserved
+  artifact. Final explicit pure selection excludes that exact real-host test:
+  four-file133/0/0/0 observed exit0,3.005s; XML
+  ab02c72f5c796184180e13cd6f786e967d6a73b814e59fbfa0a28892f51af0db.
+  Excluded coverage remains OPEN, not skipped-to-PASS reinterpretation.
+- Parent corrected docstring after inspecting package __init__ -> host.py:
+  component has no directTorchcalls/tensorallocation, but package initialization
+  imports existingTorch. No behavior change or false Torch-free runtime claim.
+  Final pure regression ran after correction; no source edits while process live.
+  Ruffcheck/formatcheck/diffcheck passed, trackedLF/rawXML attributes added.
+- Code-review skill independent GPT6.1Sol code APPROVE/architecture CLEAR, synthesis
+  APPROVE only scoped pure token component. Re-reviewed finaldocstring bytes;
+  source fc470077730bbf45f1957c7f621abf08fb3df9979267370855eb16be8f0027b3;
+  test722aa66a4e8be5d4c7c87c8b361e596e393e1b51c99428eff1fc5ff9fe215698
+  matched parent/bothlanes. Serialization/validation bounded CPUcopies not peakRAM
+  admission; digest updatecount not executor evidence. No performance/E3 claim.
+- Original scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+  personally rehashed unchanged. Next persistent-optimizer two-update stress
+  executor/fakeordering/failure tests, then actual-host q/v parity/invocation remain
+  OPEN. Historical resource admission still blocked; accountingdraft NOT adopted.
+  No E3, learning/.alc or whole-program PASS; full unified goal remains ACTIVE.

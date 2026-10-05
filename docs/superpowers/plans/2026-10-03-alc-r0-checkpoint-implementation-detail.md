@@ -268,6 +268,12 @@ After complete actual-host parity, declare exact-byte launcher and run:
   seeded A/B0 two-update stress without changing their contract. Separate typed
   input schedule and persistent optimizer execution are required; no changes to
   D/scientific grids or resource authority. E3 remains unimplemented/unqualified.
+  Checkpoint195 implements only the pure separate StressInput/StressSchedule
+  constructor, bounded exact reconstruction validator and canonical schedule
+  digest. Supplied framing/candidates need independent tokenizer provenance;
+  two-update reuse in the digest does not execute/count/enforce optimizer steps.
+  Module makes no tensor/model calls; existing package initialization imports
+  Torch. Actual E3 executor, q/v actual-host parity and admitted run remain OPEN.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
