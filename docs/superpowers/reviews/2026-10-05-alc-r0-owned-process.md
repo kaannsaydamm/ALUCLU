@@ -151,6 +151,34 @@ merged4a846f2 with the query-string copy already present in3.12.13. Therefore
 the source comparison is not evidence that this interpreter lacks that published
 fix. Any remaining struct-lifetime issue and its connection to this native crash
 still require stronger evidence; do not label v9 a confirmed upstream bug.
+Subsequent official history identifies [PR134313](https://github.com/python/cpython/pull/134313),
+commit e4fbfb12889013fd52565cd2598a366754cb677b, as the separate full-struct-copy
+repair on2025-05-20. Its actual patch changes the stack pointer to a value copy;
+the upstream author reports invalid-handle races under load and backports are
+listed for3.13/3.14. The inspected3.12.13 source retains the pointer. This
+strengthens the candidate but does not map the exact uv binary or prove v9's
+cause. No runtime replacement is authorized by that comparison.
+
+The subsequent direct-WMI v12 control completed ten queries successfully in
+15-47ms each, child exit0/no timeout,344ms wrapper; stderr empty. This separates
+direct WMI from platform caching/fallback but does not reproduce the race or
+establish its absence. The negative v11 incomplete control remains preserved.
+
+The exact v9 crashdump exists locally as `python.exe.25056.dmp`,724276790bytes,
+SHA256 `a6967e9da60fc9a34bc1950e02a9ea6d2441eae08368ffc5a6af147878258d6c`.
+It was not copied, staged or uploaded. Bounded metadata reads used Microsoft's
+[exception stream](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ns-minidumpapiset-minidump_exception_stream)
+and [module layout](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ns-minidumpapiset-minidump_module):
+thread2992,exception0xc000070a,params
+`[0xffffffffc0000008,0x2c,0x1ec17751cf0,0,0x7ff9ea621ad0]`;
+ntdll address0x7ff9ea6687a4/base0x7ff9ea5a0000 gives offset0xc87a4,
+matching the Application Error event. This establishes an invalid-handle result
+for threadpool wait handle0x2c, not which component closed it. `_wmi.pyd` and
+python312.dll are loaded; presence is not causality. No handle-history stream is
+present. Native stack unwinding and exact build mapping remain required.
+The initial bounded reader incorrectly rejected repeated reserved0directory
+entries; the corrected reader ignored unrelated/reserved streams per contract
+and personally returned0. That diagnostic defect is not dump corruption.
 
 Final source SHA256:
 `5265eebafb79f56c57f495e769ce941c2f6eacbfabeef560f52c734d84188565`.

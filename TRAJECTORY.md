@@ -9772,3 +9772,46 @@ Task 2 sensorium/recollection gate: CLEAN
   matches, not evidence of absent metadata elsewhere. Binary/source mapping
   remains unverified. Preserve this checkpoint as OPEN working evidence, not a
   completion claim; no model launch or runtime mutation permitted by these tests.
+- Checkpoint preservation committed3f8ff8fff88cec8f2568c9926389d745edf7d008
+  and pushed to existing origin/codex/unified-lifelong-cognition; remote exactSHA
+  personally verified and worktree clean immediately afterwards. This preserves
+  OPEN diagnosis, not a final checkpoint acceptance or scientific completion.
+- Upstream history now identifies the precise subsequent struct-copy repair:
+  CPython PR134313/issue130727, commit
+  e4fbfb12889013fd52565cd2598a366754cb677b,2025-05-20. Official patch changes
+  caller-stack pointer to by-value struct and all handle accesses accordingly;
+  upstream author reproduced invalid-handle races under CPU load. Backports
+  listed3.13/3.14, while inspected3.12.13 source retains pointer. This strengthens
+  dependency candidate, but exact uv binary and our v9 causal link remain OPEN.
+- Next bounded diagnostic preregistered: standalone same owned supervisor and
+  exact existing interpreter, direct _wmi.exec_query SELECT Version FROM
+  Win32_OperatingSystem ten times; record duration/result length or OSError
+  winerror,30s absolute deadline. Unlike platform loop, no platform cache or
+  cmd/ver fallback. No injected load/permission/service change, model or Torch.
+  Completion/non-reproduction does not prove healthy runtime; preserve outcome.
+- DirectWMIv12 terminal tool0dfcb1 personally consumed child0/timed_outFalse,
+  root14312,total_processes2/active0,344ms wrapper. All ten direct queries
+  succeeded in15-47ms each,18-character result; completion marker observed and
+  stderr empty. No native crash reproduced; no exact-runtime health/absence-of-
+  race or v9 causal inference. stdout SHA256
+  97761d45d3973bde2f8111b64bb57f74b1460a6c0fe2167cb52698bccbd9d6eb;
+  stderr emptySHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.
+- Located exact v9 local crashdump python.exe.25056.dmp724276790bytes in user
+  CrashDumps. Kept local, no copying/staging/upload or arbitrary memory output.
+  Read only bounded header/directory/exception/module records against official
+  Microsoft MINIDUMP layouts. First reader rejected duplicate reserved0streams;
+  corrected to ignore unrelated/reserved types and reject duplicates only for
+  selected exception/module streams. Reader failure was diagnostic-tool defect,
+  not dump corruption or product failure. Corrected tool5d2b6a actualreader0:
+  exceptionthread2992,code0xc000070a,flags129,address0x7ff9ea6687a4,
+  params[0xffffffffc0000008,0x2c,0x1ec17751cf0,0,0x7ff9ea621ad0].
+  ntdllbase0x7ff9ea5a0000/offset0xc87a4 matches Application Error event;
+  python312.dll and _wmi.pyd present. This directly establishes invalid-handle
+  status for threadpool wait on0x2c, not who closed it or a WMI causal chain.
+  Handle-history stream not present among14directory entries; native callstack
+  unwinding/exact binary mapping remain needed before assigning root cause.
+- Local v9 dump SHA256 independently computed read-only:
+  a6967e9da60fc9a34bc1950e02a9ea6d2441eae08368ffc5a6af147878258d6c.
+  Only metadata summary/hash enters repo;724MBdump stays local. Current work
+  advances runtime diagnosis without model/GPU execution or scope/threshold
+  changes; full scientific and lifelong-learning objective remains ACTIVE.
