@@ -10259,3 +10259,58 @@ Task 2 sensorium/recollection gate: CLEAN
   next implement durableintent/ownerlockedcoordinator plus exact-state reflush
   for uncertainappend and explicit old/new recovery. Fullprogram active and
   originalbudgets/matrix/native160/neuralgates OPEN. Scopedcommit/push follow.
+
+### Checkpoint170 - cooperative append integration verified; wider gates OPEN
+
+- Parent dfb78d8257befd23949369b2ecd7bbe593262db9 verified clean on authoritative
+  Desktop checkout. Full unified objective reread. Previous question-only turn
+  was no implementation progress; this turn implements the missing coordinator,
+  preserving Task2 CLEAN and original scientific/resource gates.
+- New tests FIRST: missing owned_append module produced actual pytest exit2,
+  collection error, retained RED XML. Initial six integration cases then actual
+  pytest0: first page, explicit rotation, durable-intent-only restart, appended
+  page before publication restart, semantic rejection and stale predecessor.
+- OwnedAppend persists bounded exact reconstructed intention before page mutation;
+  owner lock spans preflight/intent/create/append/full extension/publication.
+  Exact-state journal reconciliation scans then flushes/fsyncs without appending.
+  Explicit resume handles absent/empty/prior/next target and exact candidate owner;
+  divergent or unrecorded pages reject, no truncation/latest discovery/adoption.
+  Completed intentions retained in separate closed bounded namespace. Lower-level
+  journal remains cooperative and can bypass owner lock; external current authority,
+  total research growth/resource history and scientific launch are NOT supplied.
+- Expanded focusedv2 original67514 running on current source: same-page/thread
+  competition, rehashed intent rejection, empty/published-no-response recovery,
+  partial page rejection and actual65536-record coordinator rotation with all65536
+  declared work retained. Not yet terminal; no integrated writer/crash qualification
+  claimed. Isolated real-process coordinator fault controls still required later.
+- Focusedv2 original67514 personally consumed terminal actualpytest0:72total/
+  0failures/0errors/1nativeFIFOskip,168.475s (71passed). XML SHA
+  26dcce70095c85f24882c4f5d60ec85605e4da127ac7fe9dbfa21e6b02f0fcc6.
+  Actual65536 boundary preserved65538events/all65536declared work and frozenfirst
+  page bytes, rotating through real coordinator for finaltwoevents. Bulk prior
+  fixture explicitly NOT65536 sequential writer throughput qualification.
+- Independent codeAPPROVE/scopedarchitectureCLEAR; strengthened two coverage
+  comments with forcedpublication competitorblocking and realfsyncEBADF after
+  owneddescriptor close. Controls v3 original46139 terminal actual0,17/0/0/0,
+  8.030s; XML SHA d8f33f3c7b988d3f94ba681bcc157a40cc6f048ec3b591ffc0fe513838b205a4.
+  Ownerold/pageunchanged on error; subsequent normalresume exactlyoneevent.
+  Source unchanged; bothlanes matched finaltesthash and confirmedcommentsclosed.
+- Review WATCH retained historychain/completeness/globalgrowth/fullscan cost/
+  capacitymessage/realcoordinatorkill/nativepowerloss; broadlaunchBLOCK. Regression
+  original89191 launched56targets on frozenfinalsource/tests, includes slowboundary,
+  same3actualasset/GPUdeselections, pendingterminal. No scientificadoption/learning
+  claim or newbudget. Original historicalaccounting/authority/native160 gatesOPEN.
+- Regression original89191 terminal personally consumed actualpytest0; JUnit
+  personally parsed1726total/0failures/0errors/1nativeFIFOskip,336.326s (1725passed).
+  XML SHA ebec60f9923100cbecf40608c48f9e10162360e32e24c9091d331b63c2655c9b.
+  Includes final18coordinator tests and actual65536boundary. Same3actualasset/GPU
+  deselections, no learning/model/launch evidence substituted. Finalsource/tests
+  roots unchanged; Ruffformat/check anddiffcheckPASS. Cfree62359158784bytes
+  observed, not globalresearch-fit qualification. Code+allRED/positiveevidence+
+  review+trajectory scopedcommit/push next. Next realcoordinatorprocess-boundary
+  fault/kill qualification; retained evidence/fullmatrix/resourcehistory/current
+  authority/native160/checkpointrestore/scientificgates remainOPEN. FullgoalACTIVE.
+- Final Gitblob vs local --no-filters comparison verified exactsource/test/XML
+  bytes. Added explicit LF attributes for new hashed source/tests/review/provenance
+  and rawXML -text, preserving futurecheckout roots. No runtime/testbytes changed;
+  all three final SHA256 roots unchanged, no rerun claim for metadata-only changes.

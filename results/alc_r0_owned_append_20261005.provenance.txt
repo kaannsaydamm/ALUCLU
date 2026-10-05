@@ -1,0 +1,34 @@
+checkpoint=170
+parent_commit=dfb78d8257befd23949369b2ecd7bbe593262db9
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+owned_append_sha256=3314c46315af2398a02320cb69ab6288d9d51f85b24a4e7ebd58fac14a30ebbb
+journal_sha256=ef67264099b52b97291088a724fcd07d920c89fe41341db03800bb9d9e57f2dd
+final_tests_sha256=afe0d1a8c150b987118cfc82ad5c661b2c4e52eb6dd89bef324367bf5e7e7fc3
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+environment=PYTHONPATH=src; PYTHONDONTWRITEBYTECODE=1; ALUCLU_R0_SNAPSHOT unset
+pytest_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<specific retained XML>
+red_original_chunk=7f6f34; actual_pytest_exit_code=2; missing owned_append before production implementation
+red_junit=1/0/1/0; time=7.198; sha256=35ae2dfbf2e12c3838438dfd0b24c8049e58222334e4d1c5e0b9a9cd549e2240
+focused_v1_original_chunk=f5d823; actual_pytest_exit_code=0; initial6tests only
+focused_v1_junit=6/0/0/0; time=5.333; sha256=a80fa6ab6a84e11bfef1b1bd68acc09eed686292631763bac2e03b66ea54718f
+focused_v2_original_session=67514; terminal personally consumed, actual_pytest_exit_code=0
+focused_v2_targets=tests/test_alc_r0_owned_append.py tests/test_alc_r0_journal_plan.py tests/test_alc_r0_attempt_journal.py
+focused_v2_test_sha256=692fe29753b73a94ec5b229f445ab2ba647c4debd951eb02e876d9fdbb76919f
+focused_v2_junit=72/0/0/1; time=168.475; sha256=26dcce70095c85f24882c4f5d60ec85605e4da127ac7fe9dbfa21e6b02f0fcc6
+controls_v3_original_session=46139; terminal personally consumed, actual_pytest_exit_code=0
+controls_v3_targets=tests/test_alc_r0_owned_append.py -k 'not actual_65536'
+controls_v3_junit=17/0/0/0; time=8.030; sha256=d8f33f3c7b988d3f94ba681bcc157a40cc6f048ec3b591ffc0fe513838b205a4
+review=independent GPT6.1Sol code APPROVE; scoped architecture CLEAR with mandatory WATCH; broad readiness BLOCK
+regression_v4_original_session=89191; terminal personally consumed; actual_pytest_exit_code=0
+regression_v4_targets=9 explicit checkpoint/persistence/resource targets plus47 quoted tests/targets extracted from tracked results/alc_r0_parity_qualification_20261005.provenance.txt command line; saved command NEVER executed
+regression_v4_exact_target_count=56
+regression_v4_explicit_targets=tests/test_alc_r0_owned_append.py tests/test_alc_r0_journal_plan.py tests/test_alc_r0_manifest_publication.py tests/test_alc_r0_paged_history.py tests/test_alc_r0_attempt_state.py tests/test_alc_r0_attempt_journal.py tests/test_cognition_persistence.py tests/test_alc_r0_resource_admission.py tests/test_alc_r0_owned_process.py
+regression_v4_prior_extraction=read tracked provenance command= line; regex 'tests/[^']+'; trim surrounding single quotes; assert47; append to9explicit; assert56; never evaluate saved PowerShell command
+regression_v4_prior_provenance_sha256=dd64ecc1312ddda73d53abcbe4702aecfc0c7829a45547ddb0e422d2cdd9f8be
+regression_v4_junit=1726/0/0/1; time=336.326; passed=1725
+regression_v4_xml_sha256=ebec60f9923100cbecf40608c48f9e10162360e32e24c9091d331b63c2655c9b
+regression_v4_only_skip=tests.test_alc_r0_attempt_journal.test_posix_fifo_rejected_without_opening_other_end; native POSIX unavailable on Windows
+final_checks=three frozen source/tests roots unchanged; Ruff format/check PASS; git diff --check PASS; Cfree62359158784bytes observed, NOT broader resource-fit approval
+regression_v4_deselections=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors; tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present; tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+limits=no model/tokenizer/corpus/GPU/heldout/assets/acquisition/launch; original historical GPU/calendar/resource/matrix/native160/neural gates OPEN
+qualification=cooperative transaction semantics, real65536 rotation boundary, descriptor-error propagation; NOT coordinator process-kill/powerloss/historical-intent-chain/global-budget/throughput qualification

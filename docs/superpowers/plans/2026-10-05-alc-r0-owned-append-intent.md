@@ -45,3 +45,44 @@ Planner alone is NOT integrated coordinator or recovery. Implementation/review/
 regression/crash controls required before integrated writer qualification. No
 model/tokenizer/corpus/GPU/heldout/launch; original resource history/global matrix,
 external monotone authority, native160 and neural experiment remain OPEN.
+
+## Checkpoint170 implementation and remaining acceptance
+
+Implemented OwnedAppend(owner, separate existing intentions directory): prepare
+returns exact immutable AppendIntent bytes/root; commit persists it before page
+mutation under owner lock; resume accepts only independently supplied exact
+intention and exact previous/candidate owner. Page identity/old/new heads, full
+previous/candidate envelopes, canonical event, rotation and review root are
+reconstructed and compared, not accepted as opaque authority. No latest discovery.
+
+Recovery explicitly re-fsyncs exact visible next page before publishing. Existing
+empty genesis is also re-fsynced before append. Candidate-owner recovery rewrites
+identical owner generation through existing reconciliation, never a new event.
+Malformed/partial/extra/unrecorded/divergent state rejects without reset/repair.
+
+Checkpoint170 scoped acceptance cases now include first/same/rotated pages,
+logical interruption before page creation, after empty creation, after durable
+append and after publication without response; exact completed repeated recovery;
+stale/competing writer, forced owner-lock hold inside publication, real os.fsync
+descriptor-error propagation without owner advancement, rehashed invalid intent,
+partial page rejection and actual65536-record rotation preserving entire schedule.
+The large test bulk-builds prior65536records then uses actual coordinator for the
+finaltwo work events: boundary correctness, NOT sustained sequential throughput.
+
+Next real coordinator qualification must use the actual imported source with
+explicit isolated child instrumentation and precise Popen worker/runtime/source
+hash assertions, applying checkpoint168's Windows venv-redirector lessons.
+Exercise durable intent acknowledgement, new page creation acknowledgement,
+journal before/after fsync, and owner replacement before response. Only kill
+the exact created owned child; bounded pause/reap, no unrelated process changes.
+Compare all resulting owner/intent/page bytes to exact allowed old/new state.
+Partial writes reject, never truncate or pretend absence. Faults at native syscall
+interiors/power loss remain separate, not implied by Python boundary tracing.
+
+Other open acceptance: retained intentions historical chain/content/completeness
+and external freshness authentication; original global research storage/time
+reservation and historical accounting; full matrix evidence inventory; native160
+and owned launch/restore binding; actual frozen host neural experiment. Current
+inventory is only bounded old-file name/type/size plus exact supplied current
+intent, NOT an authenticated audit history. Coordinator changes no scientific
+schedule, seed, threshold, dataset, prompts, model assets or invocation authority.

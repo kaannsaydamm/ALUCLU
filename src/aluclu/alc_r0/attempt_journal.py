@@ -253,3 +253,15 @@ class AttemptJournal:
                 handle.flush()
                 os.fsync(handle.fileno())
             return planned.head
+
+    def reconcile(self, expected: JournalHead) -> JournalSnapshot:
+        """Verify and re-fsync EXACT visible state; never append or repair bytes."""
+        _head(expected)
+        with exclusive_file_lock(self._lock_path()):
+            with self._open("r+b") as handle:
+                snapshot = self._scan(handle)
+                if snapshot.head != expected:
+                    raise JournalConflict("journal differs from expected head")
+                handle.flush()
+                os.fsync(handle.fileno())
+            return snapshot
