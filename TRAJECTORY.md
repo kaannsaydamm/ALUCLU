@@ -10067,3 +10067,38 @@ Task 2 sensorium/recollection gate: CLEAN
   Personally revalidated counts/samples/equality flags/median arithmetic and
   imported source/script roots. Ruff format/check and diff checks passed. Scoped
  164 acceptance only; program active, no actual neural experiment or learning PASS.
+
+### Checkpoint165 - manifest-bound per-run paged history (in progress)
+
+- Prior164 committed/pushed eeaa037; current authoritative Desktop checkout
+  clean. Full goal and original R0 attempt/budget/evidence rules read. Prospective
+  page contract: declaration/order/predecessor identities, external expected
+  manifest root, exact inventory and all-page validation before returning state.
+  Added RED controls before source. No witness freshness, actual launch/model/
+  task/heldout/GPU work or full matrix completion assumed.
+- REDv1 actualpytest2 missingmodule personally consumed. Added canonical manifest
+  bounds/hash/declaration validation, page identity derivation, exact dedicated
+  inventory checks, existing locked full-page reads, and private incremental
+  replay with immutable result only after every page and final inventory check.
+  Caller witness freshness and closed trusted namespace remain prerequisites.
+- Focusedv2 actualpytest0/27controls personally consumed. Added exact schema/
+  index/path/hardlink negatives and real65536+4record cross-page fixture preserving
+  all65536declared work/events. Bulk synthetic fixture construction is not a
+  rotating writer or resource-fit qualification. Wider focused/regression next.
+- Focusedv3 original16402 actualpytest0/37/0/0/0 personally consumed,19.497s,
+  XML SHAf4a1675d5a0b6e49e26234a1612b8f338fa516a2d4d7f933862f75a5a9439b98.
+  Large65536+4record fixture actually executed13.887s; fullwork/events retained,
+  no timing/RSS/rotating-writer claim. Both independent GPT6.1Sol lanes verify
+  final hashes/codeAPPROVE/componentarchitectureCLEAR; freshness/capacity/global
+  accounting WATCH and writer/launch BLOCK remain explicit. Regression27949
+  launched53targets on frozen finalbytes; terminal not yet inferred.
+- Regression original27949 terminal actualpytest0 personally consumed:
+  1653tests/0failures/0errors/1skip,140.536s (1652passed), only native POSIXFIFO
+  unavailable on Windows. XML SHA
+  7d61b8aa3fa9ec609e540ec7fdd65d8e086085eba6fc94d31c326918056566fd.
+  Actual65536+4record fixture reran13.374s, no throughput claim. Source/tests
+  rehashed unchanged, Ruff format/check and diff checks passed. Scoped165
+  acceptance: every page selected by current externally trusted manifest;
+  freshness/witness publication/uncertainty/rotation/reservations/globaloriginal
+  accounting/matrix completeness/launch and native160 remain OPEN. Program
+  active; no actual model/learning PASS. Scoped commit/push follow.

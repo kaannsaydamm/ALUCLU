@@ -1,0 +1,31 @@
+checkpoint=165
+parent_commit=eeaa0377d0a7a4a70100e1b1a2a6247a81d152a9
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_sha256=fe9d4d689bed2236fff5f90628f4889054f2bc9cbbc071e8bbddddcbea53df06
+tests_sha256=6270c7242bf0f121fc1e43b8bee79cffdb5e6f2c4b5c1146bc05af542d93edaa
+red_v1_actual_pytest_exit_code=2
+red_v1_junit=1tests;0failures;1error;0skipped;5.486s;missingmodule
+red_v1_xml_sha256=a984f1a90f5a7f79bd9a031f1e2f7b20f5b578e124cc217e206985c9d6eb8108
+focused_v2_actual_pytest_exit_code=0
+focused_v2_junit=27tests;0failures;0errors;0skipped;5.019s
+focused_v2_xml_sha256=61e695bb4a2bc9e88f40806fb00180abb18cac382effe7a9ed5ab246ca1fe16c
+focused_v3_original_session=16402; terminal personally consumed
+focused_v3_actual_pytest_exit_code=0
+focused_v3_junit=37tests;0failures;0errors;0skipped;19.497s
+focused_v3_xml_sha256=f4a1675d5a0b6e49e26234a1612b8f338fa516a2d4d7f933862f75a5a9439b98
+large_fixture=65536+4actual canonical journal records;65536ordered work IDs;exact event preservation;case13.887s;functional fixture NOT rotating writer/throughput/RSS/model qualification
+regression_v4_original_session=27949; terminal personally consumed
+regression_v4_actual_pytest_exit_code=0
+regression_v4_junit=1653tests;0failures;0errors;1skipped;140.536s
+regression_v4_xml_sha256=7d61b8aa3fa9ec609e540ec7fdd65d8e086085eba6fc94d31c326918056566fd
+regression_v4_skip=tests.test_alc_r0_attempt_journal::test_posix_fifo_rejected_without_opening_other_end;native POSIX FIFO unavailable
+regression_v4_large_fixture=executed again13.374s;not throughput benchmark
+regression_v4_final_bytes=source/tests rehashed unchanged after terminal;Ruff format/check and git diff --check passed
+regression_scope=53targets; paged_history plus prior16452targets (five attempt_state/journal/persistence/resource_admission/owned_process plus47quoted tests/targets extracted from tracked checkpoint159 provenance; never execute saved command)
+regression_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<newpath> <53targets>
+exclusions=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors;tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present;tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+environment=PYTHONPATH=src;PYTHONDONTWRITEBYTECODE=1;ALUCLU_R0_SNAPSHOT unset
+review=independent GPT6.1Sol code APPROVE/component architecture CLEAR; mandatory integration WATCH/launch BLOCK remains
+final_focused_bytes=source/tests personally rehashed unchanged after focused terminal and independently matched by both lanes
+claim=per-run manifest-bound closed-page reading only; caller owns current independent monotone witness; no original-budget reconciliation, rotation/reservation/launch or scientific learning PASS
