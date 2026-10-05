@@ -199,6 +199,11 @@ After complete actual-host parity, declare exact-byte launcher and run:
   thirty decoder blocks, token semantics or host computation is exercised. Both
   arms match exactly after16 microbatches/one update; this is full-factor plumbing
   evidence only. Actual-host q/v updates/restoration/E3 remain unqualified.
+  Checkpoint185 adds separate make_reference_wrapper construction over one
+  caller-supplied frozen host with independent seeded factors/controllers and
+  optional inventory. Existing D arm/grid acceptance is unchanged. Fake CPU
+  tests share one projection roster across30 positions, not independent decoder
+  execution. Factory readiness is not actual host/resource/E3 qualification.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

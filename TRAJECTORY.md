@@ -10843,3 +10843,43 @@ Task 2 sensorium/recollection gate: CLEAN
   reviewed actual-host invocation and resource/accounting authority before E3.
   Restore/resume, E3, real neural learning and later .alc remain OPEN. Fullgoal
   ACTIVE; no learning/ALC-R0/portability PASS from this fixture.
+
+### Checkpoint185 - separate real-wrapper q/v reference factory preparation
+
+- Previous184 PROGRESSfac3e68 committed/pushed; clean Desktop verified and full
+  objective reread. Issued explicit async question on pending accounting-method
+  approval; question delivery is NOT human approval. Draft remains NOT adopted,
+  history numeric charge/first clock unresolved; global launch BLOCK unchanged.
+- Existing D make_parity_wrapper remains byte-identical in body/arm/grid logic.
+  Added only two imports and separate make_reference_wrapper(host,checkpoint,
+  state): original frozen-base/count/device/buffer preflight, fixed20260916 seed,
+  all30rank8q/v460800 factors, zero or explicit deterministic nonzero parity B,
+  FP32 masters on base device, exact pinned q/v wrapper constructor/mount and
+  optional inventory. No base loader/copy/forward/backward/optimizer execution.
+  Nonzero pattern is parity-only, not task training initialization. Construction
+  is NOT proof of actual host provenance, E3 fit or launch authority.
+- Tests substitute constructor model-type check with FakeBase and attach ONE
+  shared fake q/v projection roster to30 identity positions. This does NOT
+  independently exercise thirty decoders or only layer29 geometry mutation.
+  Tests cover both states, shared unchanged frozen base, independent factor
+  storage/controllers, seed/count/exactB pattern, global RNG unchanged, inventory
+  opt-in/empty session, invalid arguments/count/trainability/dtype/geometry denial.
+- TDD missingfunction import RED observed exit2/1collectionerror38.310s, root
+  d3a3ec217939388afd5a467bb036ed0f852eab4f51b22f8f4f96d540aec42abb.
+  Existing+newfactory GREEN observed exit0,74/0/0/0,35.604s, root
+  490c356189d11dcbefb20a94d6b42f38b5d7a48313d2bfd4ae77638224212106.
+  Thirteen-file CPU regression observed exit0,379/0/0/0,56.262s, root
+  cc575ca29dbb231d4ea337b802b4797959831f9593f5bfa277de22ecd927efc8.
+  All XML counts/time/SHA personally verified. Ruff check --no-cache and format
+  check passed; no actual model/assets/GPU/held-out work launched.
+- Independent defaultGPT6.1Sol code APPROVE/architecture WATCH,no scoped blocker,
+  synthesis COMMENT not merge-ready. WATCH: named factory in D module shares
+  engineering conventions but is NOT matched/D-grid evidence; shared fake
+  projection roster not distinct-layer wiring/actual-host proof. Parent bytes
+  match reviewers source0d671d19a26831336ee7dd9137fa71576fb627efc6e508695803b73def92f3ca
+  and test5943f7e619832d10704c6b8cf005b14b9d2236f17634baa30c760e65143625f5.
+- Original plan0493eeed... personally rehashed unchanged, Oct3 status note only.
+  Next full q/v forward/replay integration must preserve distinct decoder/host
+  semantics and separately review actual invocation/resource authority; factory
+  construction is not a replacement. Restore/resume, E3 and neural learning
+  remain OPEN. Fullgoal ACTIVE, no ALC-R0/.alc/portability PASS claim.

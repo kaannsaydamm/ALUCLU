@@ -10,6 +10,8 @@ from torch import nn
 from .host import VerifiedHost
 from .host_wrapper import PinnedLlamaCapsuleWrapper
 from .matched_lora import MatchedQProjLoRA, PinnedLlamaLoRAWrapper
+from .reference_qv_lora import ReferenceQVLoRA
+from .reference_qv_wrapper import PinnedLlamaQVReferenceWrapper
 from .research_capsule import ALLOWED_PORTS, ALLOWED_RANKS, ResearchCapsuleV0
 
 PARITY_SEED = 20260916
@@ -91,6 +93,37 @@ def make_parity_wrapper(host, checkpoint, *, arm, ports, rank, state):
         wrapper.mount(factors)
     else:
         wrapper.mount_lora(factors)
+    if checkpoint:
+        wrapper.enable_checkpoint_inventory()
+    return wrapper
+
+
+def make_reference_wrapper(host, checkpoint, *, state):
+    """Prepare the separate larger q/v reference, never expand the D arm/grid.
+
+    Shares only the existing caller-supplied frozen base. All30 rank8 q/v factors
+    are fresh, private-seeded CPU FP32 masters, then moved to the base device.
+    Nonzero is a deterministic parity fixture, not task training initialization.
+    No forward/update/asset load, host certification or launch authority here.
+    """
+    if (
+        type(checkpoint) is not bool
+        or type(state) is not str
+        or state not in {"zero", "nonzero"}
+    ):
+        raise ValueError("exact reference state/checkpoint arguments required")
+    device = _base_device(host)
+    factors = ReferenceQVLoRA(seed=PARITY_SEED)
+    if state == "nonzero":
+        with torch.no_grad():
+            for layer in factors.factors.values():
+                for block in layer.values():
+                    values = (torch.arange(block.B.numel()) % 17 - 8).float() * 1e-4
+                    block.B.copy_(values.reshape(block.B.shape))
+    factors.to(device=device, dtype=torch.float32)
+    wrapper = PinnedLlamaQVReferenceWrapper(host)
+    wrapper.train()
+    wrapper.mount_reference(factors)
     if checkpoint:
         wrapper.enable_checkpoint_inventory()
     return wrapper
