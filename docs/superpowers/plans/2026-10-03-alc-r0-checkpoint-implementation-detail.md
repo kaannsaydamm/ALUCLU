@@ -179,8 +179,15 @@ After complete actual-host parity, declare exact-byte launcher and run:
   adds opt-in bounded q/v inventory and owner-local fake-block replay controls.
   Versioned/registry drift is rejected before replay; unversioned `.data` byte
   mutations are rejected by lease-exit digest (not before replay). Real-host
-  parity, complete host checkpoint replay, optimizer/serialization integration
-  and E3 stress remain unqualified.
+  parity, complete host checkpoint replay and E3 stress remain unqualified.
+  Checkpoint182 adds a separate bounded q/v factor record and fixed AdamW
+  construction, tested only with synthetic CPU factors. Its 2MiB record bound
+  does NOT change the original capsule256KiB limit. It does not restore optimizer
+  state or execute updates. Geometry is checked before loading; full canonical
+  payload equality follows bounded loading. Construction assumes fixed Torch2.14
+  and unchanged mount placement; it is not an execution/host qualification gate.
+  Independent code APPROVE plus architecture WATCH yields synthesis COMMENT,
+  not merge-ready approval. Optimizer-state/resume/step integration remains OPEN.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

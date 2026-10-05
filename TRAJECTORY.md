@@ -10723,3 +10723,51 @@ Task 2 sensorium/recollection gate: CLEAN
   implementation-status note only; E3/actual host/
   optimizer/serialization/learning proof remain OPEN, global launch BLOCK.
   Fullgoal ACTIVE; no capsule learning/.alc/portability PASS claim.
+
+### Checkpoint182 - separate q/v factor record and optimizer preparation
+
+- Continued Desktop54fbfc0 checkpoint181 without reset. Status-only previous
+  turn was no implementation progress; this continuation completed new regression
+  evidence and independent byte reviews. Global history accounting/first start
+  remain unresolved; pending policy draft NOT adopted. No actual host/model/
+  tokenizer/corpus/GPU, optimizer step or held-out evaluation launched.
+- Added reference_qv_artifact: exact120 all-layer q/v FP32 factors/460800 params,
+  separate2MiB canonical manifest/SafeTensors record (NOT capsule256KiB amendment),
+  fixed pinned host identity/seed/digest and training_authority=false. Bounded
+  header/shape/dtype/offset/overlap/gap/truncation checks precede tensor allocation;
+  canonical payload byte equality follows bounded load. No pickle/executable
+  payload, .alc container, optimizer moments serialization or resume claim.
+- Live factor validation rejects alias/nonfinite/foreign rosters. Bindings reject
+  active lease, unfrozen/gradient-bearing base, factor/base parameter or buffer
+  storage alias and foreign wrapper parameters. Fixed AdamW constructs over only
+  exact sorted factors with empty state; it does NOT perform an update.
+- Retained TDD module-absent RED exit1/1collectionerror11.289s, XML root
+  e649ea55810b6f4b601e321167fbbe074dc073655fe0a0f96bcb839d243a48b3.
+  Initial GREEN22/0/0/0,9.659s root
+  306aea68ec547be35ee19ce9f959e7495a240d7362fe1636aba5e3fbfb4ba1a4.
+  First regression XML255/0/0/0,27.649s root
+  766610e99793e9b254e34015009bd97701d25d78745f74cd5d5c6b163b9920d1;
+  tool session vanished before exit retrieval, no matching worker remained.
+  Preserved XML but explicitly NOT exit-verified. Separate unchanged regression
+  observed exit0,255/0/0/0,43.016s root
+  3d3879bf6d2fa120cf93463caa09eb593d07cfecd712e4cc37570b9e8b8afa13.
+- Added seven direct negatives from review coverage comment: short/oversize/
+  truncated header, valid-length overlapping/gapped offsets, trailing bytes
+  (manifest digest rebound, loader uncalled), and base-buffer alias. Final seven-
+  file synthetic CPU regression observed exit0,262/0/0/0,23.018s, personally
+  parsed/rehashed45720fe25bdbc804e13305e0462c273423e97163fa3137636bb5988cae4c3810.
+  Ruff --no-cache and diff check passed. No benchmark/real-host proof inferred.
+- Original review agent failed quota; recovered required independent lanes with
+  new default GPT6.1Sol agents, no GPT5.5. Final exact-byte code APPROVE,
+  architecture WATCH/no scoped blocker; deterministic synthesis COMMENT, NOT
+  merge-ready approval. WATCH: canonical equality after load, private fixed
+  Torch2.14 optimizer validator, bindings assumes unchanged mount placement;
+  live-device/full-host schema certification belongs to subsequent launch gate.
+  Both reviewers and parent agree source root
+  aa78a51521a0a972252f1b06e6b76ac2407c1fa9ede7496cbf72331037d483a5;
+  final test root547a12b878109286b77d03a2091698bb4ab7a1565a9c8cbdc1d62896de9a1609.
+- Original science plan0493eeed... personally rehashed unchanged. Updated Oct3
+  implementation status only. Next: integrate q/v optimizer-state fidelity and
+  guarded disposable update path with synthetic parity, then separate actual-
+  host/E3 qualification only after authority/resource gate. Fullgoal ACTIVE;
+  no ALC-R0, learning, .alc or portability PASS; checkpoint records preparation.
