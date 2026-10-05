@@ -10804,3 +10804,42 @@ Task 2 sensorium/recollection gate: CLEAN
   and synthetic off/on update parity, then separately authorized actual-host/E3
   qualification. Fullgoal ACTIVE; optimizer resume, actual learning, .alc and
   portability gates remain OPEN; no partial-test substitute for neural proof.
+
+### Checkpoint184 - full-factor synthetic q/v accumulation/update control
+
+- Previous183 PROGRESS0492a10 committed/pushed; clean Desktop state verified,
+  full objective reread. No production source change was required: existing
+  generic observation/pair/fixed-step paths already accept all q/v factor names.
+  Added test-first integration coverage, initial success rather than inventing
+  a RED or claiming a code repair. Global launch/accounting BLOCK unchanged.
+- ScalarQVWrapper replaces TinyWrapper factors with actual ReferenceQVLoRA
+  all120 tensors/460800 parameters, private seed17 and all nonzero B. ONE scalar
+  block uses60 A.mean()*B.mean() terms, controller-owned checkpoint ticket and
+  shared frozen tiny base. This is NOT q/v projection/attention wiring, thirty
+  decoder blocks, token/position/mask semantics, model host or E3 qualification.
+  Base is unused in scalar computation; no meaningful candidate discrimination.
+- run_accumulation_pair observes16 microbatches per off/on arm, compares BEFORE
+  either clip/step, runs disposable actual CPU AdamW updates, then compares all
+  120 factors/first/second moments with exact=True. Each factor TENSOR changed
+  (not a claim every element changed); all state step counters equal1. Existing
+  post-step byte guards enforce frozen base; direct test also compares captured
+  digests and checks no base gradients. Late29vB gradient drift and active lease
+  denial preserve all120 factor tensors. These are fixture updates, not learning.
+- Initial3/0/0/0 observed exit0,31.751s, XML personally parsed/rehashed
+  7a64c101de2c88b295acbcfb5ec14dce84eb12f149296182f834bef0f52c34b2.
+  Eleven-file related CPU regression observed exit0,305/0/0/0,59.813s, XML root
+  696cd7b21a679f3243f11a81bca80cd4e5f29eab0752b93567c8efd4a4e180c7.
+  Includes prior tiny accumulation controls, q/v geometry/wrapper/inventory,
+  artifact/optimizer fidelity and capsule/canonical regressions. Ruff --no-cache
+  passed. No actual model/tokenizer/corpus/GPU or held-out invocation.
+- Independent defaultGPT6.1Sol code APPROVE and architecture WATCH/no scoped
+  blocker, synthesis COMMENT not merge-ready. WATCH scalar fixture lacks host
+  semantics, changed tensors not every element, final-base proof inherited from
+  pipeline, broad ValueError negative assertions not precise diagnostics. Parent
+  hash matches both reviewers f42d6f35f9c790b1b3883e4b83b16be016d388d58552f9b039073a22e51eaa10.
+- Original science plan0493eeed... personally rehashed unchanged. Oct3 status
+  note only updated. Next qualification must integrate the exact q/v wrapper/
+  runner path (not treat scalar coverage as real decoder parity), plus separately
+  reviewed actual-host invocation and resource/accounting authority before E3.
+  Restore/resume, E3, real neural learning and later .alc remain OPEN. Fullgoal
+  ACTIVE; no learning/ALC-R0/portability PASS from this fixture.

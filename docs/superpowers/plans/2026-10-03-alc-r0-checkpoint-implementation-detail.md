@@ -193,6 +193,12 @@ After complete actual-host parity, declare exact-byte launcher and run:
   populated moments are manual fixtures, not optimizer execution receipts. It
   preserves the fixed runtime/placement/provenance limits (architecture WATCH).
   Actual updates, optimizer-state restoration and E3 qualification remain OPEN.
+  Checkpoint184 tests the existing generic accumulation/update pipeline with all
+  120 actual fixed-shape q/v factor tensors and disposable CPU AdamW updates.
+  Its ONE scalar checkpoint block reduces A/B means; no q/v projection/attention,
+  thirty decoder blocks, token semantics or host computation is exercised. Both
+  arms match exactly after16 microbatches/one update; this is full-factor plumbing
+  evidence only. Actual-host q/v updates/restoration/E3 remain unqualified.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
