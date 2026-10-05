@@ -10595,3 +10595,26 @@ Task 2 sensorium/recollection gate: CLEAN
   conservativeamendment. Incompleteattemptcoverage genuineundereitherconvention.
   Addedprovenance/LFattributes; nopolicyadopted/scientificchange/launch. Fullgoal
   remainsACTIVE; userdecisionboundary mustnotbehiddenbyendlessselectedlogaudit.
+
+### Checkpoint178 - accounting clarification draft reviewed, NOT adopted
+
+- Previous177 PROGRESS d1e027d committed/pushed, cleanDesktop/remoteverified.
+  Fullobjective reread. Automaticcontinuation isNOTapprovalofrequestedaccounting
+  change. No model/GPUlaunch andunchangedhistory-unreconciled denial preserved.
+- Prepared separateDRAFT_PENDING_USER_DECISION policyclarification: allocationwall
+  vsactiveoccupancy distinction; observedphase/fullwall/upperbound/gap categories;
+  exactcoverage/device/time containment andsurvivingchildtail prerequisites;
+  noarbitraryhistoricalcharge/singleGPU/earliestdate assumption or600hourreset.
+  Inner/outer overlap accounting explicit, original45day/disk/scientificgates stand.
+  Methodapproval alone doesnotapproveconcretehistorycharge/clock oranylaunch.
+  Existingconsumed_gpu_ns notsilentlyrepurposed; no production/testchanges.
+  This concretizespendingdecision withoutauthority expansion. Resource/firststart
+  UNKNOWN andneuralhypothesis NOTfalsified. Requiredtwoindependentreviews next;
+  code-review skill reused existingGPT6.1Sol lanes. FullgoalACTIVE.
+- IndependentcodeAPPROVE/architectureCLEAR ONLYdraftpreservation/presentation,
+  root88e9e3136621300ff0f3c17f5faae68afdf9c82327bcaae93efb4730bff1677b.
+  Originalfrozenplan0493eeed... personallyrehashed unchanged. Separateprovenance
+  andLFattributes added. WATCHboundedactualdecision ratherthanendlessaudit;
+  usermethodapproval stillABSENT, charge/clock UNKNOWN, adoption/launchBLOCK.
+  No production/tests/pytest/model/GPUrun. FullgoalACTIVE; pendingapproval cannot
+  authorize newpolicy butdoesnotforbid relevantnon-launch engineering preparation.
