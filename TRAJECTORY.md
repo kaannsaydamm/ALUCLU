@@ -9839,3 +9839,63 @@ Task 2 sensorium/recollection gate: CLEAN
   but symbol-network restriction alone is not proof all gallery traffic disabled.
   No installation command or extension command was requested. Avoid further
   debugger runs until its gallery initialization can be explicitly constrained.
+
+### Checkpoint161 — prospective resource admission and journal, in progress
+
+- Preserved checkpoint160 OPEN native runtime diagnosis and unchanged code.
+  Began mandatory prelaunch budget/journal layer under the original fixed D/E
+  plan; no actual model/tokenizer/corpus/GPU launch, new data or threshold change.
+  First component is stdlib-only resource arithmetic, no launch authority;
+  durable reservation/terminal journal and historical reconciliation remain
+  mandatory subsequent work, not replaced by passing helper tests.
+- Added prospective design2026-10-05-alc-r0-resource-admission.md and RED tests
+  for explicit unknown history,600GPU-hour/45-day/25GiB/20GiB bounds, pending
+  reservations, exact D/E ceilings, malformed inputs and frozen state. Exact
+  UTC45-day arithmetic is disclosed, not inferred first-development date.
+  Tests import only the new file through stdlib importlib; no project/Torch or
+  pinned assets are loaded. Missing module RED will precede implementation.
+- REDv1 toole057da personally consumed actualpytest2, collection FileNotFound
+  for missing source. Added pure helper with immutable typed observations and
+  decisions, strict bounded integers, unknown-history denial and fixed ceilings.
+  Required reservation is named explicitly (not falsely a durable reservation).
+  No attempt journal/source auth/historical reconciliation is inferred or bypassed.
+- Focusedv2 tool9e7679 actualpytest0,57cases; Ruff check passed but format check
+  requested twofiles, preserved as non-clean formatting result. Extended strict
+  integer coverage to all six measurement fields, known-zero/unknown distinction,
+  independent denial aggregation and derived deadline overflow. Formatting and
+  final focused regression precede independent exact-byte review.
+- Final focusedv3 actualpytest0 previously personally consumed; XML now parsed:
+  70tests/0failures/0errors/0skipped,0.224s,
+  SHAe9947408b5e9565308ca5f7a102df511262631c5ac74682e4d52dc079b7acb11.
+  REDv1 XML1test/1error SHA58fed0dbc6755cb1ddacf14c6fed9088d28f4fd29d321cd348209de985f41ba1;
+  v2 XML57/0/0/0,0.242s SHA68645cac2c3d5c31babf609649b0deec472d9a48a53e5e5e68fa3b2209cee1d5.
+  Ruff check and final format check passed. Existing reviewer handles no longer
+  present; two fresh independent GPT6.1Sol read-only lanes dispatched. Broad
+  regression will preserve the three actual-asset/GPU exclusions and native
+  runtime checkpoint160 OPEN; pure arithmetic PASS is not learning or authority.
+- Added exact-byte Git attributes, provenance and independent code-lane record;
+  code APPROVE with optional nested immutability/subclass test coverage note.
+  Architecture verdict pending. Relevant49target regression started in original
+  session57160; no terminal/PASS inferred. No actual asset/GPU cases enabled.
+- Independent architecture WATCH, no arithmetic defect but storage projection
+  semantics needed clarification. Plan now requires shared upper bounds for both
+  research-accounted growth and peak physical C: allocation, including temporary
+  copies/cache/journal, excluding already materialized pending bytes atomically.
+  Clarified pre-new-request GPU availability, no direct resource_fit launch and
+  oneGPU/noCUDA runtime obligations. Source/test bytes unchanged while regression
+  runs; combined review COMMENT, not final approval, runtime160 still OPEN.
+- Architecture independently rechecked amended plan: scoped pure arithmetic
+  CLEAR, same source/test hashes. Review synthesis now scoped APPROVE; integration
+  caller obligations WATCH and actual launch readiness BLOCK remain explicit.
+  Regression57160 personally polled live to67percent; no terminal claim. C:
+  free observed64661798912bytes (60.221GiB), no current disk-floor hazard.
+- Original regression57160 terminal personally consumed actualpytest0,1492tests/
+  0failures/0errors/0skipped,154.198s; XML SHA
+  ecfb52c6b3506232e72ff43c42f87ed54b2db8529d0a2361ea1bb5712aa59056.
+  Confirmed70newresource/33ownedprocess cases and unchanged source/test hashes.
+  Pure arithmetic component accepted with scoped independent APPROVE/CLEAR.
+  This positive run does not repair checkpoint160 prior native crash; runtime
+  qualification remains OPEN. Historical accounting/durable journal/exclusion/
+  exact invocation binding and actual D/E/neural capability remain pending.
+  Next implement durable attempt/reservation journal under original cardinality
+  and fsync-before-launch requirements, preserving all negative outcomes.
