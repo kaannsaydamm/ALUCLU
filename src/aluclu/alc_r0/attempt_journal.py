@@ -56,6 +56,14 @@ class JournalSnapshot:
     events: tuple[bytes, ...]
 
 
+@dataclass(frozen=True, slots=True)
+class PlannedJournalAppend:
+    """Exact intended bytes/head, not storage evidence or launch authority."""
+
+    line: bytes
+    head: JournalHead
+
+
 def _digest(value: object) -> bool:
     return (
         type(value) is str
@@ -87,6 +95,44 @@ def _object(data: bytes) -> dict:
     if type(value) is not dict:
         raise JournalError("journal values must be objects")
     return value
+
+
+def plan_journal_append(
+    journal_id: str, expected: JournalHead, event: bytes
+) -> PlannedJournalAppend:
+    """Pure bounded exact record plan shared by actual append, no filesystem I/O."""
+    if not _digest(journal_id):
+        raise JournalError("canonical journal identity required")
+    _head(expected)
+    if type(event) is not bytes or not 0 < len(event) <= _MAX_EVENT:
+        raise JournalError("bounded canonical event bytes required")
+    value = _object(event)
+    line = (
+        canonical_json_bytes(
+            {
+                "version": 1,
+                "journal_id": journal_id,
+                "sequence": expected.count + 1,
+                "previous": expected.digest,
+                "event": value,
+            }
+        )
+        + b"\n"
+    )
+    if (
+        len(line) > _MAX_RECORD
+        or expected.count >= _MAX_RECORDS
+        or expected.byte_length + len(line) > _MAX_BYTES
+    ):
+        raise JournalError("journal append ceiling exceeded")
+    return PlannedJournalAppend(
+        line,
+        JournalHead(
+            expected.count + 1,
+            expected.byte_length + len(line),
+            hashlib.sha256(_RECORD_DOMAIN + line).hexdigest(),
+        ),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -195,28 +241,8 @@ class AttemptJournal:
 
     def append(self, expected: JournalHead, event: bytes) -> JournalHead:
         """Compare, append and fsync before acknowledging; no automatic retry."""
-        _head(expected)
-        if type(event) is not bytes or not 0 < len(event) <= _MAX_EVENT:
-            raise JournalError("bounded canonical event bytes required")
-        value = _object(event)
-        line = (
-            canonical_json_bytes(
-                {
-                    "version": 1,
-                    "journal_id": self.journal_id,
-                    "sequence": expected.count + 1,
-                    "previous": expected.digest,
-                    "event": value,
-                }
-            )
-            + b"\n"
-        )
-        if (
-            len(line) > _MAX_RECORD
-            or expected.count >= _MAX_RECORDS
-            or expected.byte_length + len(line) > _MAX_BYTES
-        ):
-            raise JournalError("journal append ceiling exceeded")
+        planned = plan_journal_append(self.journal_id, expected, event)
+        line = planned.line
         with exclusive_file_lock(self._lock_path()):
             with self._open("r+b") as handle:
                 if self._scan(handle).head != expected:
@@ -226,8 +252,4 @@ class AttemptJournal:
                     raise OSError("short journal write; outcome uncertain")
                 handle.flush()
                 os.fsync(handle.fileno())
-            return JournalHead(
-                expected.count + 1,
-                expected.byte_length + len(line),
-                hashlib.sha256(_RECORD_DOMAIN + line).hexdigest(),
-            )
+            return planned.head

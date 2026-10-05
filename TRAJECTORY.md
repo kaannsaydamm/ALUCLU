@@ -10222,3 +10222,40 @@ Task 2 sensorium/recollection gate: CLEAN
   Owner-locked append/create/rotation integration next; original historicalbudget,
   globalmatrix, source/runtime/assets/reviewauthority/native160/neuralgate OPEN.
   Negativev1 retained with finalpositiveevidence; scopedcommit/push follow.
+
+### Checkpoint169 - owner-locked append intent prerequisite (in progress)
+
+- Prior168 committed/pushed49873d3, current Desktop worktree clean. Full objective
+  read. Merely adding owner lock leaves intent lost between journal append and
+  owner publication. Documented full coordinator/durable-intent/explicit-resume
+  contract; first prerequisite exact journal append planner shares actual162
+  encoding/bounds, so durable next-head intent need not guess record framing.
+  RED byte/head parity and malformed/boundary tests added before public API.
+  Planner not coordinator/recovery/receipt, full integration still required.
+- RED missingplanner personally consumed before API. Factored journal162 exact
+  existing record encoder/bounds into pure immutable PlannedJournalAppend; actual
+  append uses same plan line and returns same head only AFTER disk predecessor
+  check/write/flush/fsync. No caller plan passed as authority to append, no changed
+  journal format/limits/storage recovery or scientific rules.
+- Focusedv2 original63423 actualpytest0 personally consumed:56total/0failures/
+  0errors/1skip,12.184s (55passed), only nativePOSIXFIFO unavailable. XML SHA
+  254e837ac6707f61714e6e76e8e946475a621ae69b6131279a6fa01bf49d7d4c.
+  New10planner controls plus existing46journal controls, exacttwo-record byte/
+  head parity and invalidcaps verified. REDv1 XML1/0/1/0,13.506s retained, SHA
+  c96caaec7b2682a040a2e1a5376d522107bb886d1feb71d8c8aa43897541c281.
+  Both independent lanes dispatched on frozenfinalbytes; broad regression next.
+- Both independent GPT6.1Sol lanes matchedfinalhashes, codeAPPROVE/pureplanner
+  architectureCLEAR. ExplicitWATCH: callerhead not observed/authenticated,
+  pagedprefixformatcoupling remains, uncertainfsync exactvisiblepage must reflush
+  before futurepublication. Durableintent inventory/retention/genesis/recovery
+  idempotence/fullwriter stillrequired, not scopedPASS. Regression51244 live
+  55targets on frozenfinalbytes; no terminal or integratedreadiness inferred.
+- Regression original51244 terminal actualpytest0 personally consumed and XML
+  parsed:1708total/0failures/0errors/1skip,205.050s (1707passed), only nativeFIFO.
+  XML SHA eae4447a469787232dfd20358e86a5e17a9e6e1c99e93b41fa63d937ffd43840.
+  Same3actualasset/GPUdeselections. Source/tests finalhashes unchanged, Ruffformat/
+  check/diffchecks passed. Cfree62730117120bytes observed duringrun; no diskcleanup
+  or broader resourcefit claim. Exactjournalplanner prerequisite verified only;
+  next implement durableintent/ownerlockedcoordinator plus exact-state reflush
+  for uncertainappend and explicit old/new recovery. Fullprogram active and
+  originalbudgets/matrix/native160/neuralgates OPEN. Scopedcommit/push follow.
