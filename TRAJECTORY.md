@@ -11375,3 +11375,62 @@ Task 2 sensorium/recollection gate: CLEAN
   counts. Executor/fakeexecution/actualhost q/v parity/E3 invocation/resource gate
   remainOPEN. Historical600GPUhour/first45dayclock unknown; accountingdraftNOTadopted.
   E3/learning/final.alc notPASS; full unified objective remainsACTIVE.
+
+### Checkpoint197 - persistent two-update E3 executor mechanics
+
+- Previous196 committed/pushed2e14feb; clean Desktop checkout, fullobjective and
+  E3 contract reread. Previous turn concrete progress. Implemented trusted
+  single-wrapper executor, not authenticated/resource-admitted launcher.
+  No actualhost/assets/tokenizer/taskdata/GPU launch, installation or amendment.
+- Existing196 preflight precedes optimizer creation. ONE fresh fixed AdamW is
+  retained across TWO updates of the same16-input common4096 schedule. Each
+  microbatch creates complete int64 arrays, cacheoff ownedcheckpointforward/
+  sessionbackward(loss/16), zero pendinggraphs, leaseexit and inputstabilitycheck.
+  Full logits finitechecked in32-sequencechunks (bounds temporary Boolean work,
+  not logitsallocation); finite differentiable scalar loss required.
+- Complete factor gradients must be finite/presentFP32 with matching metadata,
+  not per-factor nonzero: zero A gradients legitimate from seededB0. Gradstorage
+  disjoint fromfactors/basebuffers/moments/othergrads. Guard live fullroster/base
+  stamps/moduleidentity+mode topology and ownedinventory. Check unchanged base/
+  factorbytes before AND after norm1 nonfinite-reject clipping, outsidelease.
+  Step once perupdate, verify all factors/moments expectedstep1then2 via snapshot,
+  nonnegative secondmoments/storageseparation plusbasebufferalias/basehashchecks.
+- Immutable success records contain startingdigests, perupdate average loss,
+  preclipnorm/factor/momentdigests and progress. Attempt counts increment before
+  operation, returnedsteps after return, completedupdates after verification.
+  BaseException carries laststage/exactpartialcounts/cause; no rollback/retry.
+  Mutatedthenraisedstep is attempted/unreturned. Processkill cannot emit inprocess
+  evidence; futureownedlauncher MUST reconcile durableattempts, timeout/fulltail,
+  wrapperinclusive resources/timing and all validationcopy overhead.
+- TDD missingmoduleRED observedexit2,1/0/1/0,2.203s XML
+  f11f0b762973fb57336f1464d3b61b252ee11f15fc61e35034ad2c0ff119a901.
+  Initial4case exit0,4/0/0/0,9.608s XML
+  959b0c7cd5518ccf8480d7b3493e808f49d97872498e0f83acf5d2aff9364066.
+  Expanded18case exit0,18/0/0/0,14.439s XML
+  8d4851ba58b5aab748f35e7febde1973657343ae0c41d77be0544308d78b8cc8.
+  Sevenfile regression observedexit0,323/0/0/0,34.818s XML
+  1cd535c6c94b86f195aaadd3404684687bef300184de62de6c21c5b296d7f268.
+- Parent reproduced extra clippingmutationRED exit1,1/1/0/0,11.185s XML
+  90effaa8533bf4bfe7187e2277817867af29bee2c0a030b972ced36d49bd92bb;
+  gradientaliasRED exit1,1/1/0/0,9.785s XML
+  07bb24d6702d06831be9766561cf63b7f1e17b1f46322480c3c16ef0d5a311a2
+  (rejected latepreclip rather than required earlymicrobatch). Fixed storage
+  exclusion and postclipbyteguard. Final sevenfile observedexit0,325/0/0/0,
+  38.877s XML13a6695b932ff558a21bcf57fba922428bef8b99f5c03cc835bc9107e58586eb.
+  Every XML personallyparsed/rehashed; negativeartifacts preserved.
+- Twentyexecutor tests use explicit mocks for preflight/bindings/inventory/
+  optimizerfactory/microbatch, TWO tinyfactors and actualfixedAdamW/snapshot.
+  Separatehelpertest feeds real4096arrays through fakevocab2loss/session, not
+  actual30-blockattention/checkpointreplay. Covers ordering/oneoptimizer/partial
+  failures/stateverification/missingorinfgrad/mutation/remount/clip/output/aliases.
+  No full120-factor fakeintegration, CUDAfit oractualhost claim fromthese tests.
+- Ruffcheck/formatcheck passed. Code-review skill finalGPT6.1Sol codeAPPROVE and
+  archCLEAR, synthesisAPPROVE scopedtrustedmechanics. InitialarchWATCH resource/
+  durablecounts/aliascaveats retained oraddressed; finalsource
+  5f50af27f40da1b266c91f3bc07a7cf16b2b6053679b7ee0ad5e494a1cf2bd1b;
+  test3150fa5c0270d9851244373a27d1d8c04288f0ef9493fbedb020473179ec1913
+  agreedwithbothlanes. Scienceplan unchanged0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b.
+- Next full120-factor fakeexecutor integration, then actualhostq/vparity and
+  ownedinvocation/resources remainOPEN. Historical600GPUhours/first45dayclock
+  unknown, accountingdraftNOTadopted. E3/learning/final.alc notPASS;
+  full unified objective remainsACTIVE, not complete or blocked by safe work.

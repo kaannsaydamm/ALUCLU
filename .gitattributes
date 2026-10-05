@@ -363,3 +363,6 @@ results/alc_r0_reference_stress_inputs_*.xml -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/reference_stress_start.py text eol=lf
 tests/test_alc_r0_reference_stress_start.py text eol=lf
 results/alc_r0_reference_stress_start_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_stress_execution.py text eol=lf
+tests/test_alc_r0_reference_stress_execution.py text eol=lf
+results/alc_r0_reference_stress_execution_*.xml -text whitespace=-blank-at-eol

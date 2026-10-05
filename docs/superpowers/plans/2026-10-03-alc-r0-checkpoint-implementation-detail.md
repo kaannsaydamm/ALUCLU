@@ -281,6 +281,15 @@ After complete actual-host parity, declare exact-byte launcher and run:
   CLEAR reviews qualify this dependency only; persistent two-update executor and
   actual-host/resource/learning gates remain OPEN. Returned digests are instant
   observations under exclusive caller ownership, not authentication or a lock.
+  Checkpoint197 implements trusted two-update executor mechanics, not a launcher.
+  ONE fixed AdamW persists across two16-microbatch schedule passes; owned leases
+  carry loss/16, clipping/step remain quiescent, complete finite gradients/state
+  and protected base/factor bytes/storage/topology are checked. Terminal Python
+  failures carry attempted/completed/returned counts without retry/rollback.
+  Twenty mocked/helper tests and325-case regressions qualify orchestration only:
+  tiny-factor optimizer is real, but binding/preflight/inventory/microbatch are
+  explicit substitutions. Full120-factor fake integration and actual-host parity/
+  owned invocation/resource/E3 receipt remain OPEN; no learning/resource PASS.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
