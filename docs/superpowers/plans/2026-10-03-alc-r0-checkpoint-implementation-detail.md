@@ -173,7 +173,12 @@ After complete actual-host parity, declare exact-byte launcher and run:
   Each has ten-minute ceiling. Pure token fixtures prove the RAG construction
   and framing/answer reserves before any host run.
 - E3: all-30-layer q+v rank8 reference is460800 parameters and is NOT inferred
-  from E1. Its adapter path is not presently implemented here. Before resource
+  from E1. Its adapter path was not implemented at this detail's initial freeze.
+  Checkpoints179-180 (2026-10-05) add the fixed factor/projection substrate and
+  explicit q/v attention wiring, tested only with fake CPU blocks. Computational
+  inventory remains explicitly unavailable; real-host parity, guarded checkpoint
+  replay, optimizer/serialization integration and E3 stress remain unqualified.
+  This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
   stress process under the same30min ceiling. Keep E3 OPEN until then; E1/E2

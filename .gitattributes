@@ -337,3 +337,6 @@ results/alc_r0_accounting_clarification_draft_20261005.provenance.txt text eol=l
 src/aluclu/alc_r0/reference_qv_lora.py text eol=lf
 tests/test_alc_r0_reference_qv_lora.py text eol=lf
 results/alc_r0_reference_qv_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_qv_wrapper.py text eol=lf
+tests/test_alc_r0_reference_qv_wrapper.py text eol=lf
+results/alc_r0_reference_qv_wrapper_*.xml -text whitespace=-blank-at-eol

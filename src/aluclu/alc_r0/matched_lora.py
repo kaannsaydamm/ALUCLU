@@ -235,13 +235,24 @@ def _q_attention_with_projection(
     attention_mask: torch.Tensor | None,
     position_embeddings: tuple[torch.Tensor, torch.Tensor],
     past_key_values: Cache | None,
+    v_projection: Callable[[torch.Tensor], torch.Tensor] | None = None,
 ) -> torch.Tensor:
+    """Pinned attention with explicit q and optional v projection operations.
+
+    Existing q-only callers keep the exact base-v path. The larger q+v
+    reference supplies v explicitly; no module replacement or target discovery.
+    """
     input_shape = hidden_states.shape[:-1]
     hidden_shape = (*input_shape, -1, attention.head_dim)
     query_states = q_projection(hidden_states)
     query_states = query_states.view(hidden_shape).transpose(1, 2)
     key_states = attention.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-    value_states = attention.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+    values = (
+        attention.v_proj(hidden_states)
+        if v_projection is None
+        else v_projection(hidden_states)
+    )
+    value_states = values.view(hidden_shape).transpose(1, 2)
 
     cos, sin = position_embeddings
     query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)

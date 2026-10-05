@@ -10648,3 +10648,40 @@ Task 2 sensorium/recollection gate: CLEAN
   optimizer/serialization ownership, epoch selection and E3 stress qualification.
   No E3 PASS, ALC-R0 learning PASS, or .alc product claim. Fullgoal ACTIVE;
   historical resource/clock reconciliation and scientific launch remain BLOCK.
+
+### Checkpoint180 - explicit q/v attention and captured block wiring
+
+- Previous179 PROGRESS432e710 committed/pushed; clean Desktop state inspected.
+  Full objective reread. Pending accounting amendment still NOT authorized;
+  no real assets/model/GPU launch. Original frozen scientific plan unchanged.
+- Added PinnedLlamaQVReferenceWrapper with mandatory inherited VerifiedHost
+  constructor for actual use, no capsule co-mount, all30 q/v geometry validation
+  before mount publication, trainable FP32/base-device check, guarded detach and
+  owner-local factor getter. Shared q attention helper now accepts optional
+  explicit v projection; omitted v retains original matched q-only behavior.
+  No merges/hooks/base module replacement. Captured complete decoder closure
+  uses original q/v factors, norms/MLP/attention without mutable mount lookup.
+- Computational inventory opening explicitly DENIED as not implemented; default
+  full checkpoint forward still rejects missing inventory. Raw closure/replay
+  tests are NOT integrity/actual-host qualification or execution authority.
+  Next work is exact q/v wrapper/factor dependency inventory and guarded replay.
+- TDD retained module-absent collection RED exit1/1error,19.521s; initial fakeCPU
+  GREEN11pass15.832s. Added zero-reference attention/cache parity with changed v
+  cache values and unchanged keys; regression6files exit0,186tests/0failures/
+  0errors/0skips,21.140s. XML personally parsed and root verified:
+  69c12c86ef3696043e3cd8eb49d9c28015bfed1a2dbb5e98da50d6d79d51e5c0.
+  Coverage includes factors, bound decoder, wrapper lifecycle, checkpoint forward
+  and owned execution, all fakeCPU only. Ruff --no-cache and diff check passed.
+- Independent GPT6.1Sol code APPROVE/architecture CLEAR for incremental wiring
+  only. Explicit residual WATCH: captured references not integrity snapshots;
+  registry/optimizer/serializer/execution-factor ownership must be guarded in
+  later inventory integration. E3, real-host parity and scientific launch OPEN/
+  BLOCK remain separate. Source6f8a33ef2a4695239092d368cee5ac3fd12ceb0624c3e553902c09b18f045d48;
+  test527a7d72eb6c218cbb2b169769c597283c021b976f5f40f82e4ee8b04eb6c700;
+  matched helper filee0bc223e31209612a4371295f5c85394a06036871364a4f35332dafe000c9e6d.
+  Additional existing inventory/state/optimizer regression terminal exit0:
+  186tests/0failures/0errors/0skips,32.450s; XML personally verified root
+  caf89f89981aabfc9caf643794a2b06f18c412be72aeefea404930f64ebccc5b.
+  Original scientific plan personally rehashed0493eeed... unchanged. Updated
+  Oct3 implementation-status note only, preserving all E3 stress requirements.
+  Fullgoal ACTIVE; no E3/ALC-R0/learning/.alc product PASS claim.
