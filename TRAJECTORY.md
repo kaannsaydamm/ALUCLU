@@ -10467,3 +10467,44 @@ Task 2 sensorium/recollection gate: CLEAN
   resolution/externalfreshness/off-ledger history/full originalbudget+matrix/current
   authority/native160/checkpointrestore/real neural experiment remainOPEN.
   FullgoalACTIVE; next integration must not turn this contentreceipt into permission.
+
+### Checkpoint174 - historical resource discovery verified; reconciliation OPEN
+
+- Previous goal turn PROGRESS173 committed/pushed8d4f7a2, exactDesktop cleanHEAD
+  verified; full unifiedobjective reread. Reconstruct historical evidence rather
+  than invent remaining600hours or firstdevelopment instant. No model/assets/
+  heldout/GPU/installation/cleanup/job launch. Selected12 syntheticstdout receipts
+  rehashed/metadata parsed, preserving original scopeflags and partial timings.
+- Exact-name XML discovery found21 distinct successful/non-skipped realhost GPU
+  synthetic40-update testcase records omitted by a12stdout-only accounting view.
+  Historical/current testblob identical539e1248...; sourceactualGPUloop inspected.
+  Distinctrecords not authenticated distinctinvocations; case/suite durations
+ 828.979/5712.584seconds are NOTGPUhours. AlsoactualCPUFP32 defectsmoke,2digest
+  observations, unmeasuredCUDAbootstrap andoriginalfirstchildOOM separatelyfound.
+- Bounded all-ref Git filename scan55selectednames,0absentcurrentHEAD, notfull
+  history completeness. Targetedprivate session search found512CLI sourcecall
+  timestamps/cellIDs; some finalwait outputs serialized onlyPSobjecttypenames,
+  no numericexit/duration. No restart/savedcommandexecution/fullhistoryupload.
+  Added exact21XMLhash table and honestunknowns in historical-resource-expansion
+  audit. Initial broadPSSelect-String formatting andsingle-lineJSON match outputs
+  truncated; repeated compact exactfield/metadata-only commands provided full
+  selectedfacts. Incorrectguessed synthetic_trainability module path absent;
+  actual testcase lives unchanged host_wrapper.py. No source or test edits.
+- Further bounded SAMEsessiondate-range inspection of embeddeditem_completed
+  CommandExecution recoveredall3 original512-cellterminal exit0 anddurations:
+  capsule69.155747700s/qLoRA70.201327300s/remount60.941178100s. Exactcommand/
+  arm/externalpaths/Desktopcwd IDs andtool timestamp fields recorded inaudit.
+  This closes terminal-result provenance gap forthese3cells, not measuredGPU
+  consumption orfull originalaccounting. Toolprocesshandles notOSkillauthority.
+  All21XMLtable hashes/status/casetimes and828.979/5712.584durationfield sums
+  personallyrevalidated. Bothindependent lanes reviewingdocs-only evidence;
+  no newpytest/model/GPU experiment needed for historicalartifact inspection.
+- Final independent code/spec lane APPROVE verified all21XML/source roots and
+  original three512-cell CommandExecution terminaljoins. Architecture scopedCLEAR
+  verified final report/arithmetic; WATCH its ownprivate-session recheck denied
+  by filelock, so no independent primary-source confirmation claimed fromthatlane.
+  Both reviewed reportSHA256 bcea4317490089b6931ef81d3a9f1dadea4686e19c683afb1681286c5ff1fc54.
+  Separate provenance preserves these different verification scopes andglobal
+  historical accounting/launch UNKNOWN/BLOCK. AddedLF attributes fornewdocs.
+  No tests/source/XML changed or actualexperiment launched. FullobjectiveACTIVE;
+  next bounded joins must include failed/OOM/otherGPU invocations, notsuccessonly.
