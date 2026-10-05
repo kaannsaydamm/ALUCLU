@@ -9965,3 +9965,59 @@ Task 2 sensorium/recollection gate: CLEAN
   Next: typed declared-run/attempt reducer with original retry/resume limits,
   outstanding reservation/measurement accounting and external monotone-head
   uncertainty reconciliation before binding actual invocations.
+
+### Checkpoint163 — typed attempt-state replay, in progress
+
+- Read original R0 sections7.1/12 and frozen matrix schema; no frozen artifacts
+  changed. Added prospective event contract and RED tests for legal transitions,
+  exact same-attempt crash resume/missing work/once limit, repair and resource
+  environment retries, retained failures/unknown measurements, invalid records
+  and storage restart replay. First patch attempt failed context verification,
+  no partial files created; corrected trajectory anchor. No launch authority.
+- Missing-module RED result will be consumed before claiming GREEN. Added pure
+  immutable replay implementation with strict declared event fields, exact retry/
+  resume/evidence bindings and journal-local nullable segment measurements. No
+  frozen schema edits, durable owner/reservation logic or actual-host launch.
+- REDv1 original65187 actual2 missingmodule personally consumed. Focusedv2 actual1:
+  2^53 malformed-metric fixture was rejected by canonical encoder before replay.
+  Corrected to raw malformed byte input so replay boundary is actually tested;
+  preserved failed artifact. Expanded retry/resume/cardinality/terminal/metric
+  overflow/malformed/isolation controls before independent review.
+- Focusedv3 original70694 terminal actualpytest0 personally consumed, XML47/0/0/0,
+  6.819s SHAe56aec637b07b8b3ea00955e49fcd9fe3bc530ea457ec826ca2342d1708162c6.
+  Final source02f44a4fedc358add2812bad328265ca002a476aef5c85b5db1066900d864dc6
+  tests574c3505fb52b1edb130afbe8b95cbfa4ed9d1f0516734a488ef590f50731858.
+  Independent GPT6.1Sol code/security and architecture review dispatched; next
+  relevant regression adds typed replay to journal/persistence/resource/owned
+  process and47previous targets, same three actualasset/GPU exclusions.
+- Independent codeAPPROVE/core architectureCLEAR with retention WATCH: summary
+  overwrote segment/prepared evidence and did not expose resume review root.
+  Added immutable exact event references per attempt; original journal chain/head
+  remains authoritative authentication. v4 original73366 terminal actual0,
+  1597/0/0/1,151.871s XML SHA
+  755cd6e12641d9dda904d69e685676c08507a16533fea4ec712e8fbae9445b82.
+- Root checked3epoch*ceil(N/16) contract:4096work cap inadequate for larger
+  cohorts. Corrected before actual execution to65536/run,262144declaredwork/events
+  per batch, with33kfixture that cannot PREPARE missing work. Never narrow full
+  matrix to fit storage/batch bounds; paging/global completeness/accounting and
+  efficient continuation remain mandatory. Patch context mismatch in formatted
+  fixture corrected after reading exact tail, no partial edits left behind.
+- Retention/cap revision focusedv5 actual0/49controls thenv6 actual0/51controls,
+  additional cap-denial tests. Both independent lanes scopedAPPROVE/CLEAR on
+  revised source, confirmed event-root retention and bound/science separation.
+  Added inclusive65536/run and262144batch acceptance assertions as reviewer
+  coverage recommendation; final exacttestbytes/review/regression follow.
+- Final focusedv7 actual0,51/0/0/0,4.790s XML SHA
+  103e88dc341865309cfd3df4006ca2a1ec7c680a33bb4396ecdc0863b981c7c9.
+  Final test2f24ff467346b2f0ce2dcdf69eaf13f7d0e61735004bd39691ebc66bd0178c0f
+  independently read/rehashed by both GPT6.1Sol lanes; scopedAPPROVE/CLEAR.
+  Final regression89562 launched on frozen finalbytes. Added byte-preserving
+  attrs/provenance/review records; no terminal success inferred or actuallaunch.
+- Final regression original89562 terminal personally consumed actualpytest0:
+  1601tests/0failures/0errors/1skip,137.617s (1600passed). Only skip native POSIX
+  FIFO unavailable on Windows. XML SHA
+  f84f6ed3f895ebf5c5e3957012ae7d637f29c8bddca5efee80ea5d515dffa1fd;
+  final source bcd86ca896ae44aeb764f659af08dfc0f6450c36c194336ddfe9b50e195a9284
+  and tests2f24ff467346b2f0ce2dcdf69eaf13f7d0e61735004bd39691ebc66bd0178c0f
+  rehashed unchanged. Scoped replay acceptance only; real neural learning,
+  launch authority/accounting/paging and native runtime160 remain OPEN.
