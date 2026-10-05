@@ -10021,3 +10021,49 @@ Task 2 sensorium/recollection gate: CLEAN
   and tests2f24ff467346b2f0ce2dcdf69eaf13f7d0e61735004bd39691ebc66bd0178c0f
   rehashed unchanged. Scoped replay acceptance only; real neural learning,
   launch authority/accounting/paging and native runtime160 remain OPEN.
+
+### Checkpoint164 - incremental semantic replay (in progress)
+
+- Prior163 terminal/commit/push verified; parent158fd31. Re-read full user goal,
+  current source/plan/status and review skill. Preserve immutable reference;
+  target private append-only work/history buffers and immutable on-demand views.
+  Added prospective contract/synthetic timing plan and RED controls before API.
+  No scientific work/grid/budget changes or model/data/GPU invocation.
+- REDv1 actualpytest2 personally consumed missing AttemptReplay API. Added
+  single-owner append/snapshot sharing original parser/transition checks while
+  reference default tuple path remains intact. Validate before prefix mutation;
+  snapshots mask unknown open aggregates without mutating segment counters.
+- Focusedv2 actualpytest2 collection NameError: new parametrization called helpers
+  before their definitions. Replaced eager fixture calls with runtime selectors;
+  retained failed XML. Added interleaved environment retries, unknown/overflow,
+  real temporary journal restart and inclusive262144event cap controls.
+- Focusedv3 original96906 actualpytest0 personally consumed. Added prospective
+  synthetic benchmark script with alternating path order, three samples at
+  8192/16384/33243 work, full immutable output equality, exact input/output/source
+  roots. No fixed timing PASS threshold and no actual model/assets/GPU.
+- Focusedv3 XML66/0/0/0,27.010s personally parsed. Independent two lanes approve
+  core semantics, both flag benchmark source path vs actual imported origin.
+  Initial benchmark33471 terminal0/all nine parity samples retained as v1;
+  source-origin assertion absent, superseded informational timing only. Added
+  fail-closed imported module/checkout path equality before timing; rerun pending.
+  Regression88303 still running on unchanged source/tests (benchmark-only edit).
+- Regression88303 terminal actualpytest0 personally consumed:1616/0/0/1,
+  148.313s, only native POSIXFIFO skip. XML SHA
+  535212a5ff0908a79641a3b76c20589b7811354549158182b2c8bd0a69b5a1ce.
+  Source/tests unchanged after run. Wrong-origin rejection and correct-origin
+  benchmark controls actualexit0; both independent lanes rehashed revised script
+  and closed provenance finding. Revised timing89859 live; not inferred PASS.
+- Revised timing89859 terminal actualexit0 personally consumed; all9parity samples
+  true at8192/16384/33243. Exact imported source path matches checkout and reviewed
+  source/script roots. Median reference/incremental ratios1.76385/2.36681/5.64615;
+  raw samples retained, local shared-machine timing (regression overlap), not
+  isolated throughput/model/resource/learning qualification. Immutable reference
+  remains, original rules unchanged; snapshots/storage scans/paging/global
+  completeness/accounting/authority and native160 still OPEN. Final lint/hash/
+  artifact checks and scoped commit/push follow.
+- Final benchmark JSON SHA
+  b11a2ff81e7efd42611f83fee76b608d3c5e603a9a82a2a9df3e5c9ee767147c;
+  superseded v1 SHA0012d9ad2ae82838eddff1bcfbec96829dbbf4a9f64112fd147e98543b2875d6.
+  Personally revalidated counts/samples/equality flags/median arithmetic and
+  imported source/script roots. Ruff format/check and diff checks passed. Scoped
+ 164 acceptance only; program active, no actual neural experiment or learning PASS.

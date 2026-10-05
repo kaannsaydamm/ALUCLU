@@ -227,7 +227,9 @@ def _new_attempt(spec: RunSpec, row: RunView, item: dict) -> RunView:
     )
 
 
-def _advance(spec: RunSpec, row: RunView, item: dict) -> RunView:
+def _advance(
+    spec: RunSpec, row: RunView, item: dict, *, work_count: int | None = None
+) -> RunView:
     if item["kind"] == "intent":
         return _new_attempt(spec, row, item)
     if not row.attempts or item["attempt_id"] != row.attempts[-1].attempt_id:
@@ -242,16 +244,18 @@ def _advance(spec: RunSpec, row: RunView, item: dict) -> RunView:
             attempt, state="RUNNING", receipt_sha256=item["receipt_sha256"]
         )
     elif kind == "work":
-        index = len(attempt.work)
+        index = len(attempt.work) if work_count is None else work_count
         if (
             attempt.state != "RUNNING"
             or index >= len(spec.work_ids)
             or item["work_id"] != spec.work_ids[index]
         ):
             raise AttemptStateError("only next missing declared work is permitted")
-        attempt = replace(
-            attempt, work=attempt.work + ((item["work_id"], item["evidence_sha256"]),)
-        )
+        if work_count is None:
+            attempt = replace(
+                attempt,
+                work=attempt.work + ((item["work_id"], item["evidence_sha256"]),),
+            )
     elif kind == "resume":
         if (
             attempt.state != "INTERRUPTED"
@@ -275,7 +279,8 @@ def _advance(spec: RunSpec, row: RunView, item: dict) -> RunView:
             if state == "PREPARED":
                 if (
                     attempt.state != "RUNNING"
-                    or len(attempt.work) != len(spec.work_ids)
+                    or (len(attempt.work) if work_count is None else work_count)
+                    != len(spec.work_ids)
                     or failure is not None
                 ):
                     raise AttemptStateError(
@@ -346,3 +351,65 @@ def replay_attempts(
         )
         result.append(replace(row, attempts=attempts))
     return tuple(result)
+
+
+class AttemptReplay:
+    """Single-owner semantic replay with append-only private buffers.
+
+    Start from declarations and feed the entire externally authenticated history
+    in order. No cache import, durability, authentication or concurrency guarantee.
+    Ordinary validation failures leave the accepted prefix unchanged. snapshot()
+    copies complete history; calling it per event forfeits the append efficiency.
+    """
+
+    __slots__ = ("_declared", "_rows", "_work", "_references", "_count")
+
+    def __init__(self, specs: tuple[RunSpec, ...]) -> None:
+        self._declared = _declarations(specs)
+        self._rows = {
+            key: RunView(key, "UNSTARTED", (), 0, 0) for key in self._declared
+        }
+        self._work: dict[tuple[str, str], list[tuple[str, str]]] = {}
+        self._references: dict[tuple[str, str], list[bytes]] = {}
+        self._count = 0
+
+    @property
+    def event_count(self) -> int:
+        return self._count
+
+    def append(self, data: bytes) -> None:
+        if self._count >= 262144:
+            raise AttemptStateError("bounded immutable event history required")
+        item = _event(data)
+        run_id = item["run_id"]
+        if run_id not in self._declared:
+            raise AttemptStateError("undeclared logical run")
+        key = (run_id, item["attempt_id"])
+        row = _advance(
+            self._declared[run_id],
+            self._rows[run_id],
+            item,
+            work_count=len(self._work.get(key, ())),
+        )
+        # All semantic validation finishes before any accepted-prefix mutation.
+        work = self._work.setdefault(key, [])
+        if item["kind"] == "work":
+            work.append((item["work_id"], item["evidence_sha256"]))
+        self._references.setdefault(key, []).append(data)
+        self._rows[run_id] = row
+        self._count += 1
+
+    def snapshot(self) -> tuple[RunView, ...]:
+        result = []
+        for row in self._rows.values():
+            attempts = []
+            for attempt in row.attempts:
+                key = (row.run_id, attempt.attempt_id)
+                changes = dict(
+                    work=tuple(self._work[key]), events=tuple(self._references[key])
+                )
+                if attempt.state in {"INTENT", "RUNNING", "INTERRUPTED"}:
+                    changes.update(gpu_ns=None, wall_ns=None, storage_growth_bytes=None)
+                attempts.append(replace(attempt, **changes))
+            result.append(replace(row, attempts=tuple(attempts)))
+        return tuple(result)

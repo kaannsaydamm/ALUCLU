@@ -2,11 +2,259 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
-from aluclu.alc_r0.attempt_state import AttemptStateError, RunSpec, replay_attempts
+from aluclu.alc_r0.attempt_state import (
+    AttemptReplay,
+    AttemptStateError,
+    RunSpec,
+    replay_attempts,
+)
 from aluclu.alc_r0.canonical import canonical_json_bytes
 
 RUN = "alc-r0-v1-dev-fixture-s20260916"
 A, B, C = "a" * 64, "b" * 64, "c" * 64
+
+
+def test_incremental_every_prefix_matches_reference_and_keeps_old_snapshots():
+    history = (
+        intent(),
+        start(),
+        work("w1"),
+        work("w2"),
+        close("PREPARED", None),
+        event("result", state="PASS", evidence_sha256=C),
+    )
+    replay = AttemptReplay(spec())
+    snapshots = [replay.snapshot()]
+    for index, data in enumerate(history, 1):
+        replay.append(data)
+        snapshots.append(replay.snapshot())
+        assert replay.event_count == index
+        assert snapshots[-1] == replay_attempts(spec(), history[:index])
+    assert snapshots[0][0].state == "UNSTARTED"
+    assert snapshots[2][0].attempts[0].work == ()
+    assert snapshots[-1][0].state == "PASS"
+
+
+@pytest.mark.parametrize(
+    "invalid_kind",
+    ["json", "fields", "start", "work", "prepared", "result"],
+)
+def test_incremental_rejection_is_nonmutating_and_can_continue(invalid_kind):
+    invalid = {
+        "json": b"not json",
+        "fields": b"{}",
+        "start": start(),
+        "work": work("w2"),
+        "prepared": close("PREPARED", None),
+        "result": event("result", state="PASS", evidence_sha256=C),
+    }[invalid_kind]
+    replay = AttemptReplay(spec())
+    replay.append(intent())
+    if invalid == start():
+        replay.append(start())
+    before = replay.snapshot()
+    count = replay.event_count
+    with pytest.raises(AttemptStateError):
+        replay.append(invalid)
+    assert replay.event_count == count
+    assert replay.snapshot() == before
+    if before[0].state == "INTENT":
+        replay.append(start())
+    replay.append(work("w1"))
+    assert replay.snapshot()[0].attempts[0].work == (("w1", C),)
+
+
+def test_incremental_retains_interrupted_segment_after_open_snapshot():
+    replay = AttemptReplay(spec())
+    history = (
+        intent(),
+        start(),
+        work("w1"),
+        event(
+            "interrupt",
+            checkpoint_sha256=C,
+            evidence_sha256=C,
+            gpu_ns=7,
+            wall_ns=9,
+            storage_growth_bytes=2,
+        ),
+        event(
+            "resume",
+            checkpoint_sha256=C,
+            source_sha256=A,
+            invocation_sha256=B,
+            review_sha256=C,
+        ),
+        work("w2"),
+        close("PREPARED", None),
+    )
+    for index, data in enumerate(history, 1):
+        replay.append(data)
+        assert replay.snapshot() == replay_attempts(spec(), history[:index])
+    assert replay.snapshot()[0].attempts[0].gpu_ns == 12
+
+
+def test_incremental_repair_retains_both_attempt_histories():
+    history = (
+        intent(),
+        start(),
+        close(),
+        intent(
+            "a002", source=B, retry="REPAIR", prior_source=A, prior_artifact=C, review=C
+        ),
+        start("a002"),
+        work("w1", "a002"),
+        work("w2", "a002"),
+        close("PREPARED", None, "a002"),
+    )
+    replay = AttemptReplay(spec())
+    for index, data in enumerate(history, 1):
+        replay.append(data)
+        assert replay.snapshot() == replay_attempts(spec(), history[:index])
+    assert replay.snapshot()[0].attempts[0].events == history[:3]
+
+
+def test_incremental_does_not_share_buffers_across_instances():
+    first, second = AttemptReplay(spec()), AttemptReplay(spec())
+    first.append(intent())
+    assert second.event_count == 0
+    assert second.snapshot() == replay_attempts(spec(), ())
+
+
+def test_incremental_interleaved_resource_retries_match_every_prefix():
+    other = RUN.replace("fixture", "second")
+    declared = (RunSpec(other, False, ("w1",)), spec(True)[0])
+    history = [intent(), start(), close(failure="ENVIRONMENT")]
+    for attempt in ("a002", "a003"):
+        history.extend(
+            (
+                intent(
+                    attempt,
+                    retry="ENVIRONMENT",
+                    prior_source=A,
+                    prior_artifact=C,
+                    review=C,
+                ),
+                start(attempt),
+                close(failure="ENVIRONMENT", attempt=attempt),
+            )
+        )
+    other_event = canonical_json_bytes(
+        dict(
+            run_id=other,
+            attempt_id="a001",
+            kind="intent",
+            source_sha256=A,
+            invocation_sha256=B,
+            retry_kind="INITIAL",
+            prior_source_sha256=None,
+            prior_artifact_sha256=None,
+            review_sha256=None,
+        )
+    )
+    history.insert(2, other_event)
+    replay = AttemptReplay(declared)
+    for index, data in enumerate(history, 1):
+        replay.append(data)
+        assert replay.snapshot() == replay_attempts(declared, tuple(history[:index]))
+    before = replay.snapshot()
+    with pytest.raises(AttemptStateError):
+        replay.append(
+            intent(
+                "a004", retry="ENVIRONMENT", prior_source=A, prior_artifact=C, review=C
+            )
+        )
+    assert replay.snapshot() == before
+
+
+@pytest.mark.parametrize("gpu", [None, 2**53 - 1])
+def test_incremental_unknown_and_overflow_follow_reference(gpu):
+    history = (
+        intent(),
+        start(),
+        event(
+            "interrupt",
+            checkpoint_sha256=C,
+            evidence_sha256=C,
+            gpu_ns=gpu,
+            wall_ns=1,
+            storage_growth_bytes=0,
+        ),
+        event(
+            "resume",
+            checkpoint_sha256=C,
+            source_sha256=A,
+            invocation_sha256=B,
+            review_sha256=C,
+        ),
+    )
+    replay = AttemptReplay(spec())
+    for data in history:
+        replay.append(data)
+    before = replay.snapshot()
+    if gpu is None:
+        replay.append(close(gpu=1))
+        assert replay.snapshot() == replay_attempts(spec(), history + (close(gpu=1),))
+        assert replay.snapshot()[0].attempts[0].gpu_ns is None
+    else:
+        with pytest.raises(AttemptStateError):
+            replay.append(close(gpu=1))
+        assert replay.snapshot() == before
+        assert replay.event_count == len(history)
+
+
+def test_incremental_restart_from_authenticated_storage_history(tmp_path):
+    from aluclu.alc_r0.attempt_journal import AttemptJournal
+
+    journal = AttemptJournal(tmp_path / "attempt.jsonl", A)
+    head = journal.create()
+    history = (intent(), start(), work("w1"), work("w2"), close("PREPARED", None))
+    original = AttemptReplay(spec())
+    for data in history:
+        head = journal.append(head, data)
+        original.append(data)
+    restarted = AttemptReplay(spec())
+    for data in AttemptJournal(tmp_path / "attempt.jsonl", A).read(head).events:
+        restarted.append(data)
+    assert (
+        restarted.snapshot() == original.snapshot() == replay_attempts(spec(), history)
+    )
+
+
+def test_incremental_inclusive_event_cap_then_nonmutating_rejection():
+    declared = tuple(
+        RunSpec(
+            RUN.replace("fixture", f"cap-{i}"),
+            False,
+            tuple(f"w{j}" for j in range(65534)),
+        )
+        for i in range(4)
+    )
+    replay = AttemptReplay(declared)
+    for row in declared:
+        for template in (intent(), start()):
+            from aluclu.alc_r0.canonical import parse_canonical_json
+
+            fields = parse_canonical_json(template)
+            fields["run_id"] = row.run_id
+            replay.append(canonical_json_bytes(fields))
+        for work_id in row.work_ids:
+            replay.append(
+                canonical_json_bytes(
+                    dict(
+                        run_id=row.run_id,
+                        attempt_id="a001",
+                        kind="work",
+                        work_id=work_id,
+                        evidence_sha256=C,
+                    )
+                )
+            )
+    assert replay.event_count == 262144
+    before = replay.snapshot()
+    with pytest.raises(AttemptStateError):
+        replay.append(b"not json")
+    assert replay.event_count == 262144 and replay.snapshot() == before
 
 
 def spec(resource=False):
