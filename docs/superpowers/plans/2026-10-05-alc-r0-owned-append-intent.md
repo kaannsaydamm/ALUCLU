@@ -86,3 +86,30 @@ and owned launch/restore binding; actual frozen host neural experiment. Current
 inventory is only bounded old-file name/type/size plus exact supplied current
 intent, NOT an authenticated audit history. Coordinator changes no scientific
 schedule, seed, threshold, dataset, prompts, model assets or invocation authority.
+
+## Checkpoint171 commit-interruption qualification scope
+
+Actual imported coordinator/journal/atomic/publication sources are bound by
+source origin and SHA256 in isolated child-local tracing. First/same/rotation
+commit layouts run fault and exact Popen-owned kill modes at ten Python call/line
+boundaries (same layout correctly lacks new-page creation). Four imported module
+roots and actual directbase runtime/PID are required before termination.
+
+Do not call atomic writer 'return' an unconditional acknowledgement: trace return
+can mean exceptional unwinding. The owner_ack boundary is now the publication
+statement AFTER atomic writer successfully returns. Negative control forces an
+actual cleanup unlink(directory) failure after replacement at the moved owned
+temporary path, with tracing still active. Candidate visibility must not emit
+an acknowledgement marker; exact explicit reconciliation can subsequently finish.
+
+This strengthens COMMIT interruption proof, not RESUME interruption proof. Next
+qualification must separately start from exact pinned pending-intent states:
+intent-only/empty-page/intended-next-page and already-visible candidate owner.
+Interrupt resume's intent reacknowledgement, exact target re-fsync, resulting
+publication or identical-generation owner reconciliation and pre-response return.
+Repeated interrupted recovery must never add an event/generation, adopt a different
+intent/root, advance on failed fsync, or reset history. Capture exact target bytes
+and all frozen prior pages before each interruption; fail closed on divergence.
+Reuse only actual owned child/runtime/source identity checks and bounded reaping,
+not stale PIDs. No native call-interior/power-loss or global witness/resource/
+matrix/scientific readiness claim follows from these Python-boundary fixtures.

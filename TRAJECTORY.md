@@ -10314,3 +10314,52 @@ Task 2 sensorium/recollection gate: CLEAN
   bytes. Added explicit LF attributes for new hashed source/tests/review/provenance
   and rawXML -text, preserving futurecheckout roots. No runtime/testbytes changed;
   all three final SHA256 roots unchanged, no rerun claim for metadata-only changes.
+
+### Checkpoint171 - scoped commit-interruption controls verified; wider gates OPEN
+
+- Previous goal turn PROGRESS: checkpoint170 committed/pushed1a010bc, current
+  exactDesktop worktree clean verified; full unified objective reread. Continue
+  integrated transaction qualification, not Task2 restart or later ALC products.
+- Added boundary tests FIRST, before helper: one requested intent_ack/fault/first
+  case actualpytest1 because helper absent yielded no JSON marker. RED retained;
+  this is harness-not-yet-implemented evidence, NOT production transaction failure.
+- Added isolated child-local sys.settrace instrumentation of ACTUAL imported
+  OwnedAppend/AttemptJournal/atomic_write_bytes code objects. Source origin/root,
+  exactintention, stage, mode, runtime and realPopen PID asserted before ownedkill.
+  Directbase interpreter with existing venv paths avoids Windowsredirector PID
+  mismatch; no install/model/assets/unrelated processes/globalmodulepatch.
+- Focusedv1 original8822 live58cases: first/same/explicitrotation layouts,
+  intentprewrite/intentack/newpagecreate/appendprewrite/presync/ack/ownerpre-
+  replace/postreplace/ack/commitreceipt, fault and exactownedprocesskill. Newpage
+  boundary correctly absent for samepage. After durableintent, explicitrestart
+  must preserve exactold/candidate owner and append once or re-fsync/publish;
+  repeatedcompletedresume samegeneration/events. No terminal inferred.
+  Python call boundaries are NOT native-syscall-interior/powerloss qualification.
+- Focusedv1 original8822 terminal personally consumed actualpytest0:58/0/0/0,
+  212.176s, XML SHA8dc6f7258ec4510524d7355c6e20ca78d0357b556e15adc3ad7b9ee731dc7503.
+  Both independent lanes scopedapprove but architecture identified atomicwriter
+  return can meanexceptionunwinding, notack. Moved owner_ack to actualpublication
+  post-successfulatomiccall LINE; added publicationsource guard. Changed6ackcases
+  original31036 actual0,6/0/0/0,19.751s, SHA8a1e731e13f9ad4231eaaae5d9e5227206d6e3c1f8fcdd3ffb9f215bae832fca.
+- Negativeackguard addedFIRST REDunsupportedcleanupmode actual1,1failure; then
+  explicitownedfixture createsdirectory at safelychecked MOVEDtemp path. Actual
+  cleanup unlink raisesOSerror withtracingactive; candidatevisible butNOackmarker,
+  exit1, exactoneeventresume. GREENactual0,1/0/0/0,5.589s, XML SHA
+  dfa068028b1faaa567492286a38e1cff39808162e04776dee943285a57f5d854.
+  Finalbothlanes confirmedfalseackWATCHclosed; productioncodeunchanged.
+- Finalregression original92403 live57targets incl all59newcases and priorfull
+  suite/65536rotation. Finaltests/helperfrozen, same3actualasset/GPUdeselections.
+  Resumeinterruption/nativecallinteriors/powerloss andoriginal externalauthority/
+  historicalresources/fullmatrix/native160/checkpointrestore/neuralgates OPEN.
+  LF/rawXML attributes added for reproducible byte roots; no scientificlaunch.
+- Regression original92403 terminal personally consumed actualpytest0. JUnit
+  personally parsed1785total/0failures/0errors/1nativeFIFOskip,508.109s (1784passed).
+  XML SHA3e56f3a2bf3fd546b4bedaeec819fe58dd4a9490dff6595114e6cd34f7c032fd.
+  All59boundary names personally compared to complete expectedmode/layout/stage
+  combinations plus negativeguard. Same3actualasset/GPUdeselections; no learning
+  evidence substituted. Finaltest/helper andall4productionsource roots unchanged;
+  Ruffformat/check/diffcheckPASS. Cfree62013898752bytes observed, not broaderfit.
+  Scopedtest/helper/allRED+positiveevidence/review/trajectory commit/push next.
+  Next qualify interruptions DURINGresume; retainedhistory/fullmatrix/resource
+  history/currentauthority/native160/checkpointrestore/neuralgates OPEN. Fullgoal
+  remainsACTIVE; this checkpoint does not claim wholecoordinator/native readiness.

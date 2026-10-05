@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.326" timestamp="2026-10-05T11:26:38.858452+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_owned_append_boundaries" name="test_actual_coordinator_child_boundary[fault-first-intent_ack]" time="0.109"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">tests\test_alc_r0_owned_append_boundaries.py:87: in test_actual_coordinator_child_boundary
+    marker = json.loads(line)
+             ^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\json\decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\json\decoder.py:356: in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+E   json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)</failure></testcase></testsuite></testsuites>
