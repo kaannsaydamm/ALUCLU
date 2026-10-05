@@ -373,3 +373,6 @@ results/alc_r0_reference_stress_full_factors* -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/reference_official_guard.py -text
 tests/test_alc_r0_reference_official_guard.py -text
 results/alc_r0_reference_official_guard* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_official_suite.py -text
+tests/test_alc_r0_reference_official_suite.py -text
+results/alc_r0_reference_official_suite* -text whitespace=-blank-at-eol

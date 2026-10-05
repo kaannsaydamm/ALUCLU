@@ -11592,3 +11592,45 @@ Task 2 sensorium/recollection gate: CLEAN
   actual host/GPU/E3/learning claim. Next integrate separate official schedule,
   base/config guards and bounded partial-failure receipts, then generic q/v
   parity composition under approved contract before actual-run admission.
+
+### Checkpoint200 - separate q/v official-forward composition IN PROGRESS
+
+- Parent9d0f28b, Desktop local worktree clean, no relevant livepytest before edits.
+  Full objective and approved separate q/v contract read; matched D untouched.
+- Added real120factor/guard composition tests with explicitly substituted tiny
+  base and stubbed forward/witness observations. Personally observed RED87091
+  exit1 missing reference_official_suite module; preserved JUnit error evidence.
+- Added separate72-row composition using existing24 official forward primitives,
+  three fresh ordinary seeded mounts, declared B=.01 witness then realdetach.
+  Complete base parameter/buffer digest+roster, config and supplied host metadata
+  rechecked; bounded typed schedule receipts/failure prefixes. No loader/factory
+  callback argument, actual assets/GPU/training or launch authority.
+- GREEN/regression/independent exact-byte review pending. Stubbed observations
+  cannot prove real forward/cache behavior or actual-host qualification.
+- Initial focused30967 observed exit0,24testcases. Added stronger receipt/base
+  identity negatives; observed session35108 exit1,4passed2failed: unequal CPU
+  digest rows were only rejected at final validation, and byte-identical final
+  base object replacement with shared parameter/config escaped identity check.
+  Repair: validate CPU digests before admitting each row; include base object
+  identity in every signature. Thresholds/fixtures unchanged; fresh tests pending.
+- Regressionv2 tool5288 observedexit0,153testcases incl36new composition tests.
+  Ruff found only local importseparator I001; waited terminal then applied blank
+  line correction, no behavioral change. Final exact-byte regression/reviews
+  required; no evidence reused across source/test byte changes.
+- Final v3 tool98606 personally returnedexit0; JUnit153/0/0/0,29.034s, exact
+  grouping36composition+24guard+29artifact+64factory. Captured toolstdout100pct;
+  OS confirms relevant Python command absent. XML SHA256
+  9d290b0d8552649a5ff5819b47b414a56aea2f4085460a57e3af49e054d9a257.
+  Reviewed sourceae79719edcd10bfe61c10cf131cb5e09c9ba07506c0f4028b42573e0aaad49cd
+  tests4ec911dad227c48561e866174d394f74c57b3d3f8e3f17a4d770b67612e79bd9
+  rehashed unchanged; GPT6.1Sol codeAPPROVE/architectureCLEAR on finalbytes,
+  Ruffcheck/formatcheck and gitdiffcheckPASS. Earlier RED/initial/v2 preserved.
+- Checkpoint200 composition/receipt substrate VERIFIED, NOT actual72-row host
+  numerical qualification. Full schedule uses stubforward/witness tests; one
+  real cache/logit primitive tested with separateqvkey and synthetic outputs.
+  Required next: independently reviewed fakefullwrapper real_case/nonzero_witness,
+  actualdetach/padding/explicitpositions/incrementalcache integration before
+  admitted actualhost. Then separate q/v gradient/pending/optimizer composition.
+  External host/source/runtime/tokenizer authentication, deterministicCUDA,
+  cooperative ownership, inclusive overhead and durable attempt journal remain
+  required. Research accounting/admission/rights/sealer/eval/learning gates OPEN.
