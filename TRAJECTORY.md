@@ -9628,3 +9628,147 @@ Task 2 sensorium/recollection gate: CLEAN
   source/runtime/resource/journal/owned-timeout invocation boundary; no real
   launch until accounting/approval complete. Full unified research goal ACTIVE;
   actual D/E, R0 proof, durable interaction learning and portable ALC stay OPEN.
+
+### Checkpoint160 — Windows owned-process execution boundary (in progress)
+
+- Previous goal turn PROGRESS: checkpoint159 committed/pushed e2aef246 and
+  1389 selected regressions passed. Revalidated clean authoritative Desktop
+  worktree and reread full objective. Prior introspection handle18688 no longer
+  existed; repeated only the read-only stdlib API probe, not a model run.
+- Added real stdlib-only tiny child-process fixtures before implementation.
+  REDv1 original4349 personally consumed actualpytest2: missing module collection
+  error; JUnit1/0/1/0,11.191s, SHA256
+  cd7c8046a79b48a499651a232a91f51591c82018884e8182215658201101ef5a.
+  Implemented explicit suspended CreateProcess + private unnamed Windows x64
+  Job Object KILL_ON_JOB_CLOSE, no breakaway, restricted three-stdio HANDLE_LIST,
+  exact process/job handles only, ordinary descendant drain and OS receipt.
+  No CLI, scientific launch admission or generic PID kill.
+- Focusedv2 original92463 actualpytest0:18/0/0/0,16.591s, SHA256
+  052e8476fe68886b47029268758e127202ff15e74a5a05c8c8247bbc8bf7bbf6.
+  Added late-assignment deadline/normal-descendant/abrupt-owner-death controls.
+  REDv3 original52821 actualpytest1:21/1/0/0,20.038s, SHA256
+  88cd7ecaf0da8b89afcb3c0a2df428895af6833f28204a16c4201cbd277d885d.
+  Reproduced resume after deadline expired during assignment; now deadline is
+  checked before resume, and the never-resumed assigned root is drained. Dedicated
+  inheritable stdio copies now close immediately after process creation.
+- Final focusedv4 original9414 terminal personally consumed actualpytest0.
+  Independent GPT6.1Sol code/security and architecture lanes reviewing whole
+  source/tests (6aeae082b3391b4864094a14e2c27278c38c69026637fbd14c1d9055a588b047 /
+  f360f808a4cdfbb38993bb23e3d9ac02678c506fea3ada0ba7684992e8d534fb).
+  Broad selected regression/verdicts pending. Tiny process evidence is not model,
+  tokenizer, corpus, GPU, D/E, scientific R0, durable-learning or portability PASS.
+  Exact source/runtime/assets authentication, journal, reconciled GPU-hour ledger,
+  disk admission and wrapper-inclusive actual launch review remain required.
+- Focusedv4 parsed21/0/0/0,16.759s, SHA256
+  d74bfa1789d0b03a1506c96a4bc61fb3837b1a4b18d36991c6ec63379bb3aa71.
+  Interim regressionv5 original86867 actualpytest0:1410/0/0/0,137.110s,
+  SHA2567e0fc4112a3d46a5a84506777caa85a6a22044a2c947283c2d5da508b7360721.
+  Both reviewers independently returned REQUEST CHANGES / BLOCK: suspended root
+  could orphan between CreateProcess and assignment, advertised10s cleanup could
+  renew, and no-execution markers did not independently prove root termination.
+  Passing tests did not override these findings; no approval inferred.
+- Added two bounded exception/abrupt-exit creation-return controls before repair.
+  AtomicREDv6 original96862 actualpytest1:2/2/0/0,95.318s, SHA256
+  8667c3a8b7c99a999807f50e7880387d969afb733bd5db9b7dbc358ab98caf99.
+  Both reproduced the orphan; outer fixture job safely drained all roots. This
+  session printed Windows0x8007000e in CPython WMI/PyTorch import before tests,
+  remained live and subsequently produced terminal XML; recorded as observed
+  infrastructure diagnostic, not inferred test failure or scientific result.
+- Replaced separate assignment with native CreateProcessW/STARTUPINFOEX using
+  atomic JOB_LIST plus explicit HANDLE_LIST, supported Windows10+x64 only.
+  PROCESS_INFORMATION is retained before acquisition under finally, with exact
+  handle cleanup even across helper return exceptions. One absolute cleanup
+  deadline covers drain/exit retry/root observation; no renewed allowance.
+  Atomicfocusv7 original65255 actualpytest0:28/0/0/0,33.748s, SHA256
+  6a70aa73ccd85bd43335cadd78dddf5407134f62dab00c6b895cf0a736cfbb6dc.
+  Intermediate lint found an unused mutable command-line buffer; corrected
+  CreateProcessW argument to that buffer, no inference from v7 alone.
+- Added independently duplicated root observation handles for exception and
+  KeyboardInterrupt at creation/resume, injected cleanup/accounting failure
+  terminal observations, native x64 ABI sizes, case-colliding environment rejection
+  and six repeated success handle-count controls. Atomicfocusv8 original12969
+  personally consumed actualpytest0:33/0/0/0,42.145s, SHA256
+  cf0638a403c362e6b22cf5c538aee233db0590760eb66816f4e7fa521aea171e.
+  Ruff check/format passed; final source/tests5265eebafb79f56c57f495e769ce941c2f6eacbfabeef560f52c734d84188565 /
+  bf0f27557efd2b7b31cb1beca55841fd6aa7eae986c5e724656cf811fa228d9b.
+  Both independent final-byte rereviews requested. Final atomic regressionv9
+  original68329 live, sources frozen. All scientific/resource/admission claims OPEN.
+- Independent final-byte code APPROVE (conditional on terminal validation) /
+  architecture CLEAR returned. However finalregressionv9 original68329 actually
+  CRASHED: personally consumed pytest_exit_code=-1073740022, Windows0xc000070a
+  at subprocess._wait / unrelated-process-survival fixture line98; no XML exists.
+  No final regression PASS or component completion inferred. Earlier collection
+  WMI0x8007000e also preserved. Live process list subsequently showed no Python
+  processes; no user processes killed. Root-cause class still unproven.
+- Initial minimal launcher quoting failed before fixtures (SyntaxError/PowerShell
+  command-not-found), not a product failure. Corrected literal here-string control
+  personally returned actualexit0: standalone stdlib module, three iterations
+  owned200ms timeout + unrelated500ms wait, all timeoutTrue/active0/unrelatedexit0.
+  This does not substitute for broader acceptance. Next isolate Torch/collector
+  runtime context, reproduce the crash, then rerun exact regression. Source/test
+  hashes remain final reviewed bytes; no actual model/tokenizer/GPU run authorized.
+- Same three-iteration control after Torch-only import (no tensors/model/CUDA
+  operations) original38367 terminal personally consumed actualexit0; all
+  timeoutTrue/active0/unrelatedexit0. Crash not reproduced, no root cause inferred.
+  Read-only GlobalMemoryStatusEx observed83% load,2,859,225,088 available physical
+  bytes and13,522,542,592 available pagefile/commit bytes after crash; not evidence
+  of crash-time exhaustion. No system/process/resource changes. One controlled
+  identical48-target reproductionv10 launched on unchanged final source/tests,
+  now separately capturing stdout/stderr. No retry-until-PASS protocol, v9 remains
+  CRASHED and final completion stays OPEN pending diagnosis and authoritative result.
+- Reproductionv10 original41087 personally re-polled live; latest worker19380
+  (PID only a hint) CPU advanced35.984375->42.5625s, working set154,001,408bytes.
+  Separate stdout/stderr remain0bytes and XML absent; no percentage or completion
+  inferred. Exact reviewed source/tests unchanged. Checkpoint160 remains OPEN,
+  uncommitted working-state code/evidence preserved; do not restart live handle
+  or treat static dual approval as terminal runtime acceptance. Continue this
+  controlled reproduction/diagnosis before final checkpoint validation/commit.
+- Subsequent original41087 terminal personally consumed pytest_exit_code=0.
+  Reproductionv10 XML independently parsed1422/0/0/0,1177.101s; SHA256
+  8705b67128df0d5ef9da8d784f080efe3b7fdf853e4f6f17292ace1a1da5b1e9.
+  stdout1620bytes reaches100percent, stderr0bytes, XML217738bytes. Reviewed
+  source/tests hashes unchanged. This is selected-scope regression PASS, not a
+  repaired runtime, whole-suite claim, actual model launch or learning evidence.
+- Read-only Windows Application Error1000 event independently corroborates v9
+  python.exe PID25056 native ntdll.dll fault0xc000070a at04:57:25.2430872+03:00;
+  report8f414888-44d0-4494-a13b-b94df7d82376. Official CPython issue125315 and
+  3.12.13/main WMI source comparison identify a plausible caller-stack lifetime
+  race candidate given earlier WMI warning. Exact uv binary correspondence and
+  causal link remain unproven; no dependency/global patch or system change.
+  v9 remains CRASHED and checkpoint/runtime qualification OPEN despite v10 PASS.
+- Next diagnostic preregistered before execution: exact existing CPython3.12
+  interpreter, standalone stdlib-only loader of reviewed ownership primitive,
+  one child with platform.win32_ver()/platform.machine()100 iterations, fresh
+  process and30s absolute ownership deadline. Capture stdout/stderr separately;
+  do not import project/Torch/model, change WMI/system/runtime or inject failure.
+  This tests the official CPython issue's platform-only reproduction under the
+  existing environment; negative reproduction cannot establish absence of race,
+  and any crash is not automatically proof of the v9 causal chain.
+- WMI-onlyv11 original85162 terminal personally consumed: owned root11672
+  exit124/timed_outTrue after30.156s, total_processes31/active_processes0,
+  user_time5000000/kernel_time9531250 (100ns). Parent launcher0 is NOT child
+  success. Captured stdout reached iteration38, stderr empty; no native crash
+  reproduced and100-iteration control did not complete. No inference of WMI
+  race repair/absence or v9 causality. The ownership deadline drained the exact
+  child tree; only diagnostic-owned processes were terminated.
+- v11 log SHA256s personally verified: stdout
+  7b1c1bd4fba86297d6101dd7da24173525f2112639debce10b03b9834bf197ce;
+  empty stderr e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.
+  Independent existing GPT6.1Sol code/security and architecture evidence rereviews
+  both personally rehashed final code/tests and parsed v10 XML/hash. Primitive
+  APPROVE/CLEAR retained, runtime qualification WATCH/checkpoint OPEN. No actual
+  launch authorization or speculative source repair follows from v10 success.
+- Primary-source caveat: CPython3.12 backport126203/4a846f2 already adds the
+  query-string copy present in3.12.13; installed runtime must not be labeled as
+  missing that published fix merely because current main copies the full struct.
+  Remaining lifetime candidate/v9 causal link unproven; continue exact-runtime
+  diagnostics rather than swapping dependencies or monkeypatching platform.
+- Exact existing venv home confirmed uvCPython directory (uv0.12.5 recorded in
+  pyvenv.cfg). Actual interpreter SHA256
+  fc5d5b5bad3521cb5f6ebfbc333c42ca6efc212192cf6524ca67ee926f6de88d;
+  DLLs/_wmi.pyd25600bytes SHA256
+  7f41a76990d4f9ca6a9914d7ef65ad435fcb60e823bd6e64cae5049c851bb109.
+  Bounded exact-runtime manifest/build-json/PDB filename search returned no
+  matches, not evidence of absent metadata elsewhere. Binary/source mapping
+  remains unverified. Preserve this checkpoint as OPEN working evidence, not a
+  completion claim; no model launch or runtime mutation permitted by these tests.
