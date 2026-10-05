@@ -11181,3 +11181,57 @@ Task 2 sensorium/recollection gate: CLEAN
   resource admission/E3, neural capability and final.alc remain OPEN. Original
   scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
   unchanged. No whole-suite/broad-portability/learning PASS; full objective ACTIVE.
+
+### Checkpoint193 - Windows owned fresh-process fake q/v continuation
+
+- Previous192 committed/pushed b7c79dd; clean Desktop checked, full objective
+  reread. Previous goal turn made authoritative same-process continuation progress.
+  New test-only process-boundary integration; no actual model/assets/data/GPU,
+  installation, external compute, scientific threshold or resource-rule change.
+- Parent full30 fake CPU actual step1 update exports bounded four-byte-field
+  record. Child independently rebuilds the deterministic random fake architecture;
+  matches selected top-level ALC-R0/test source hashes, full official configuration
+  JSON hash, exact Torch runtime, fixture seed/label and frozen base digest.
+  Four record hashes, byte-identical step1 re-export and all480 named factor/step/
+  moment tensor hash checked before checkpointed actual fixture step2 update.
+- Parent uninterrupted step2 compared with child via canonical SafeTensors hashes:
+  all preclip gradients/logits/loss/clipnorm, all120 factor+360 optimizer tensors,
+  post-update output, factor record and unchanged base. Distinct padded second
+  input; gradients cleared/quiescent guards tested. Trusted source/receipt local
+  consistency, not hostile process attestation or complete dependency certificate.
+- Initial focused observed exit1,1/1/0/0,23.302s; XML
+  52d91fdfbcf37292618fdf62a19b9e33ffd2d286182d2557cd23c759b644cd26.
+  Failed before child: Transformers full config dict has integer id2label keys,
+  rejected by canonical JSON. Changed fingerprint to full official Transformers
+  to_json_string(use_diff=False) UTF8 bytes; no fields dropped, canonical context
+  and result format retained. Preserved initial negative artifact.
+- v2 observed exit1,1/1/0/0,34.420s; XML
+  679ecbb11524bdfcd6ad5212d4bce8f2c1b0099979011dacbd3677ebf38bff33.
+  Child exited0 but direct-parent-PID assertion failed because Windows venv
+  redirector created a worker child. Result comparison had not yet executed;
+  not a continuation PASS. After terminal replaced subprocess.run with existing
+  run_owned_process private Job Object. Explicit root receipt links either direct
+  interpreter or redirector worker; successful exit/notimeout/drained tree and
+  accounted process count required. Windows-only skip elsewhere, not portability.
+- v3 observed exit0,1/0/0/0,33.483s; XML personally parsed/rehashed
+  66f2c09b88eab8cd9e1b46624843c15ff8bfdb5dde591cf68578c24d95a8dbf0.
+  Thirteen-file related CPU regression incl Windows owned-process tests observed
+  exit0,364/0/0/0,134.166s; XML
+  4308165420c9f2d69af1c2757b3d8b45e89bb3092e6c6a9bc8b7c47bbcaeb87e.
+  Same handles consumed through terminal; no timeout restarts or source edits
+  while live. Ruffcheck/formatcheck/diffcheck passed, scoped LF attribute added.
+- Independent GPT6.1Sol code APPROVE/architecture CLEAR, synthesis APPROVE only
+  for final trusted Windows fixture. Re-reviewed after both terminal repairs;
+  old hashes superseded. Final test matched both reviewers/parent
+  f30b6887dc510611556809f74a239047431756a3774581af9f9e8fbb941a3126.
+  Existing codec ec9c958369338d83680bdd0694b4c0a090040a6f566aecd278121b571c4d963e
+  unchanged. Job's180s useful-work deadline excludes up-to10s cleanup; only exact
+  newly created private job tree terminable. No unrelated process kill or fallback.
+- Scoped fake process-boundary continuation proved, not independently correct
+  attention, actual host/SmolLM2, GPU/BF16,16accum/RNG/cursor/scheduler, arbitrary
+  steps, final.alc or durable learned capability. Source hashes cover selected
+  local files, not signed host/environment provenance. Next original actual-host
+  invocation/resource/E3 and scientific qualification work remains OPEN; historical
+  GPU budget/start-clock authority still unresolved, draft NOT adopted. Original
+  scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+  unchanged. Full goal ACTIVE; no broad suite/portability or neural-learning PASS.

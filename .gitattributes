@@ -355,3 +355,4 @@ docs/superpowers/plans/2026-10-05-alc-r0-qv-optimizer-resume.md text eol=lf
 src/aluclu/alc_r0/reference_qv_resume.py text eol=lf
 tests/test_alc_r0_reference_qv_resume.py text eol=lf
 tests/test_alc_r0_reference_qv_resume_update.py text eol=lf
+tests/test_alc_r0_reference_qv_resume_process.py text eol=lf

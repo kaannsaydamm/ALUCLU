@@ -253,6 +253,15 @@ After complete actual-host parity, declare exact-byte launcher and run:
   shared fake frozen base and constructor type substitution do not qualify
   16-microbatch/E3, stochastic/cursor replay or real-host learning. Separate
   owned fresh-process resume remains OPEN. Evidence belongs in trajectory.
+  Checkpoint193 adds a Windows-owned fresh-process synthetic continuation test.
+  The child independently rebuilds the fake30 CPU base, verifies selected local
+  source/config/runtime/base and four-record-byte hashes, exact restored step1
+  state and record re-export, then performs checkpointed step2. Parent compares
+  complete canonical state/preclip gradient-output/clipnorm/post-output/factor
+  hashes with uninterrupted execution. Existing private Job Object handles venv
+  launcher descendants and drain/timeout cleanup. This is trusted Windows fixture
+  consistency, not hostile process attestation, complete dependency certification,
+  actual-host provenance, GPU fit, stochastic resume or learned capability.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
