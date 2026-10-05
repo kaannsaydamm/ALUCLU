@@ -11137,3 +11137,47 @@ Task 2 sensorium/recollection gate: CLEAN
   plan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
   unchanged. Trajectory/status/attributes and scoped artifacts only; full objective
   remains ACTIVE with actual research resource admission separately blocked.
+
+### Checkpoint192 - full30 fake CPU optimizer-resume step2 integration
+
+- Previous191 committed/pushed c6eb178, clean Desktop HEAD revalidated. Full goal
+  reread; previous goal turn made authoritative codec/evidence progress. No real
+  model/assets/task data/GPU launch, installs or scientific/resource amendment.
+- Added test-only full30 distinct fake q/v CPU integration of existing resume
+  codec. Executes actual disposable first forward/backward/fixed clip/AdamWstep1,
+  clears gradients, exports factors/moments and requires aggregate factor change
+  and some nonzero first moments. Separate checkpoint-enabled wrapper mounts
+  independently decoded factors; fresh restored optimizer matches complete120
+  factor/moment step1 state, identical re-export and separate storage allocations.
+- Distinct padded second input/labels/positions compares uninterrupted ordinary
+  backward with restored owned checkpoint replay: exact logits/loss/all finite
+  gradients before clipping, exact clipnorm and complete120 factor/moment step2.
+  Changed/equal factor records, post-update ordinary inference outputs, unchanged
+  frozen-base parameter/buffer digest and clear gradients/quiescent guards checked.
+- Initial focused observed exit1,1/1/0/0,47.525s; XML personally parsed/rehashed
+  b0e9352286fe4e81c2c3889c00a7322b0a0e9866c493716f327908a30151dbf6.
+  All update/restore/step2 assertions reached, but final no_grad output incorrectly
+  used training checkpoint session; bind_output correctly rejected nondifferentiable
+  logits. Test-authoring API misuse, not production resume failure. Preserved
+  negative artifact, fixed only final inference to ordinary forward after terminal;
+  did not weaken checkpoint guards, state comparator or update requirements.
+- Corrected focused observed exit0,1/0/0/0,32.331s; XML
+  49ea1cdc6d6f5d6a478d52c84498f865879dd29f498538628bd8be2a8871d741.
+  Eleven-file related CPU regression including old factor-remount and new resume
+  integration observed exit0,330/0/0/0,97.380s; XML
+  a54713cc09fcad9b33755ea4b9d33be8c09bde7e54d78bcda8ea4ced26307f22.
+  Same live handles consumed through terminal, no timeout restarts/source edits
+  while tests live. Ruffcheck/formatcheck and diffcheck passed; LF attribute added.
+- Code-review skill used independent GPT6.1Sol lanes: code APPROVE/architecture
+  CLEAR for scoped same-process integration, synthesis APPROVE of this test only.
+  Both exact test roots matched parent
+  78722f4b413a7812f0eb9a73d738597c9bd24b2aa39238990af5deefd24681c2;
+  unchanged codec ec9c958369338d83680bdd0694b4c0a090040a6f566aecd278121b571c4d963e.
+- Shared random fake frozen base/linearMLP/fake rotary/vocab/type substitution and
+  common q/v attention path remain explicit, not official host parity/independent
+  model oracle. One padded forward/update, no16-microbatch/RNG/cursor/scheduler
+  replay. Aggregate recordchange is not everyfactor change or capability gain.
+  Separate owned fresh-process resume next remains OPEN. Actual-host provenance,
+  resource admission/E3, neural capability and final.alc remain OPEN. Original
+  scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+  unchanged. No whole-suite/broad-portability/learning PASS; full objective ACTIVE.

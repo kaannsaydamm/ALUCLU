@@ -245,6 +245,14 @@ After complete actual-host parity, declare exact-byte launcher and run:
   step2 and separately owned process resume remain OPEN, as do actual-host/E3,
   neural capability and final .alc. Exact execution/review evidence is recorded
   separately in trajectory, not inferred from this implementation status.
+  Checkpoint192 adds same-process full30 fake CPU continuation integration:
+  actual fixture step1, factor+moment export, separate mounted wrapper/fresh
+  optimizer and exact complete step2 parity against uninterrupted execution.
+  A distinct padded second input traverses checkpoint replay before clipping;
+  post-update outputs and frozen base bytes are checked. One forward/update,
+  shared fake frozen base and constructor type substitution do not qualify
+  16-microbatch/E3, stochastic/cursor replay or real-host learning. Separate
+  owned fresh-process resume remains OPEN. Evidence belongs in trajectory.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
