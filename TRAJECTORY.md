@@ -9815,3 +9815,27 @@ Task 2 sensorium/recollection gate: CLEAN
   Only metadata summary/hash enters repo;724MBdump stays local. Current work
   advances runtime diagnosis without model/GPU execution or scope/threshold
   changes; full scientific and lifelong-learning objective remains ACTIVE.
+- Next runtime diagnostic preregistered: existing local WindowsSDK x64 cdb.exe
+  found at exact Debuggers/x64 path; read saved v9 dump only, never attach live
+  PID or launch debuggee. Explicit local-only symbol/image path,System32;
+  ignore symbol env,network symbols disabled,noshell/nosqm,cfNUL prevents
+  implicit ntsd.ini. Commands .ecxr;k16;q only, no raw memory/userdata dump.
+  Launch in exact owned supervisor with30s absolute deadline and exclusive logs.
+  No symbols/dependencies installed/downloaded, no system configuration change.
+  Missing symbols/unwind warnings must limit conclusions; return addresses are
+  not evidence of who closed handle0x2c without further validation.
+- CDBv13 terminale85fa2 child0/timed_outFalse,root4064,total_processes2/active0,
+  wrapper1.188s. Existing debugger10.0.26100.7463 read saved dump with network
+  symbols explicitly disabled. Exception context matches thread2992/handle0x2c;
+  seven-frame native unwind contains ntdll then kernel32 thread startup, no
+  Python/_wmi frame in that faulting stack. This separates native fault thread
+  from Python faulthandler's subprocess.wait observation; it does not rule out
+  another thread closing the handle. No private PDBs loaded; export-nearest names
+  and offsets must not be mistaken for precise internal function symbols.
+  stdoutSHA0f6136412e15b27430067926058e59f26396d3cd72c4e0bc833f55e620d8ea6a;
+  stderr emptySHAe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.
+  Debugger automatically initialized LocalInstalled29/UserExtensions0 gallery
+  repositories with permissive NuGet settings; no install/download is reported,
+  but symbol-network restriction alone is not proof all gallery traffic disabled.
+  No installation command or extension command was requested. Avoid further
+  debugger runs until its gallery initialization can be explicitly constrained.

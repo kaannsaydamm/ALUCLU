@@ -180,6 +180,36 @@ The initial bounded reader incorrectly rejected repeated reserved0directory
 entries; the corrected reader ignored unrelated/reserved streams per contract
 and personally returned0. That diagnostic defect is not dump corruption.
 
+### Native unwind obtained with the installed debugger
+
+An existing SDK CDB10.0.26100.7463 was discovered at the exact x64 debugger
+path; no debugger installation was performed. The preregistered v13 invocation
+opened only the saved dump, with `-sins -netsyms:no -noshell -nosqm -cf NUL`,
+explicit local System32 image/symbol paths and commands `.ecxr; k 16; q`.
+It ran inside the unchanged trusted ownership primitive with a30s deadline.
+Personally consumed receipt: child0/no timeout, root4064,1.188s wrapper,
+two total processes,zero active processes. Captured stdout SHA256
+`0f6136412e15b27430067926058e59f26396d3cd72c4e0bc833f55e620d8ea6a`;
+stderr empty.
+
+The seven-frame exception-thread unwind is in ntdll/kernel32 thread startup,
+without a Python or `_wmi` frame. Thus the faulting native thread2992/index19
+is distinct from interpreting faulthandler's `subprocess.wait` observation as
+the causal stack. Another thread could still have closed the waited handle.
+Without private PDBs, nearest-export labels plus offsets are not exact names
+of the internal functions. This is stronger native evidence, not a causal
+assignment or runtime repair.
+
+The debugger log also shows automatic LocalInstalled29/UserExtensions0 gallery
+initialization with permissive NuGet settings. No install/download is reported
+or requested; the confirmed symbol-network restriction alone does not prove
+gallery networking was disabled. Further debugger execution is held until that
+automatic initialization is explicitly constrained. Local read-only binary
+strings confirm a repository-disable setting exists but do not establish its
+supported per-invocation configuration. No global debugger registry/configuration
+was changed. This diagnostic limitation does not forbid pure CPU implementation
+of remaining journal/admission components; actual model launch remains gated.
+
 Final source SHA256:
 `5265eebafb79f56c57f495e769ce941c2f6eacbfabeef560f52c734d84188565`.
 Final tests SHA256:
