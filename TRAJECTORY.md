@@ -11555,3 +11555,40 @@ Task 2 sensorium/recollection gate: CLEAN
   Preserve original missing-exit XML, interrupted regression and v2 capture
   failure without retrospective PASS. Next: separately approved q/v host-parity
   composition, pure/fake TDD and exact-byte review before any admitted real run.
+
+### Checkpoint199 - separate q/v official-phase guard IN PROGRESS
+
+- Parent bcd84e78; authoritative Desktop local worktree, no live relevant pytest
+  before edits. Approved separate q/v contract retained; original matched grid,
+  witnesses, scientific thresholds and actual-host admission remain unchanged.
+- Added substituted tiny-base mount-guard tests. Personally observed RED
+  session88748 terminalexit1: collection ModuleNotFoundError for the new guard.
+  No actual model/assets/GPU/corpus accessed. Added separate read-only guard
+  enforcing ordinary exact120 masters, private storage, seeded A, B0/.01 phase,
+  effective detach, eval modes and no co-mount; complete base byte/config guards
+  and 72-row official/parity composition remain later obligations.
+- Focused GREEN, relevant regression and independent exact-byte review pending.
+  This is implementation progress, not actual-host parity or learning acceptance.
+- First focused session55543 observed exit0,21/0 failures. Independent code lane
+  found negative-zero expected_b membership ambiguity; adding constructor RED
+  regressions before repair. Original guard is not approved or accepted yet.
+- Negative-zero reproducer session7513 personally observed exit1:5passed/1failed,
+  DID NOT RAISE for all-negative-zero masters plus expected_b=-0.0. Added explicit
+  sign rejection; no threshold change or reinterpretation of B0. Revised bytes
+  require GREEN/regression and both independent rereviews before approval.
+- Revised source3f6ae0e8bd76be19f687b5a0fecb54ff769600da1d617ff17529f1d8d4db3007
+  and testsd989d568d783cdbe34d5de7f6e75aa8f8f778f042728905c8d5e8deff9df271e:
+  independent GPT6.1Sol codeAPPROVE/architectureCLEAR supersede earlier bytes.
+  Outer base/config/source authentication, cooperative quiescence and inclusive
+  validation overhead remain explicit limitations, not waived requirements.
+- Personally observed session16307 terminalexit0. JUnit117/0/0/0,19.383s:
+  guard24, reference artifact29, parity factory64. XML SHA256
+  d86c9e7fec79ea5f4d7d2679a41a7234c8b7504f94ba014cfc18146a34f14038;
+  captured tool stdout reached100percent. Source/test hashes rechecked unchanged,
+  artifact-bound Python processes absent, Ruffcheck and gitdiffcheck passed.
+  Earlier focused21/0/0/0,18.297s and negativezero RED6/1/0/0,15.126s preserved.
+- Checkpoint199 mount-guard substrate VERIFIED in fake/pure CPU scope only.
+  No 72-row q/v official suite, gradient/optimizer composition, cache witness,
+  actual host/GPU/E3/learning claim. Next integrate separate official schedule,
+  base/config guards and bounded partial-failure receipts, then generic q/v
+  parity composition under approved contract before actual-run admission.
