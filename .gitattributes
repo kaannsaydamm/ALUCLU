@@ -314,3 +314,7 @@ tests/helpers/owned_append_boundary_child.py text eol=lf
 docs/superpowers/reviews/2026-10-05-alc-r0-owned-boundaries.md text eol=lf
 results/alc_r0_owned_boundaries_*.xml -text whitespace=-blank-at-eol
 results/alc_r0_owned_boundaries_20261005.provenance.txt text eol=lf
+tests/test_alc_r0_owned_resume_boundaries.py text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-owned-resume.md text eol=lf
+results/alc_r0_owned_resume_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_owned_resume_20261005.provenance.txt text eol=lf

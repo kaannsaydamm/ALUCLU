@@ -16,6 +16,12 @@ from aluclu.cognition.persistence import atomic_write_bytes
 
 
 def main():
+    arguments = sys.argv[1:]
+    operation = "commit"
+    if len(arguments) == 11:
+        operation = arguments.pop()
+    if operation not in {"commit", "resume"}:
+        raise RuntimeError("unsupported owned fixture operation")
     (
         owner_path,
         pages,
@@ -27,7 +33,7 @@ def main():
         mode,
         checkout_text,
         expected_sources_text,
-    ) = sys.argv[1:]
+    ) = arguments
     checkout = Path(checkout_text).resolve()
     expected_sources = json.loads(expected_sources_text)
     funcs = {
@@ -65,6 +71,8 @@ def main():
             "atomic_write_bytes(path, intent.data)",
         ),
         "intent_ack": (OwnedAppend._persist, None),
+        "intent_atomic_prereplace": (atomic_write_bytes, replace_line),
+        "intent_atomic_postreplace": (atomic_write_bytes, "temp.unlink()"),
         "page_created": (AttemptJournal.create, None),
         "append_prewrite": (
             AttemptJournal.append,
@@ -72,12 +80,15 @@ def main():
         ),
         "append_presync": (AttemptJournal.append, "os.fsync(handle.fileno())"),
         "append_ack": (AttemptJournal.append, None),
+        "reconcile_presync": (AttemptJournal.reconcile, "os.fsync(handle.fileno())"),
+        "reconcile_ack": (AttemptJournal.reconcile, None),
         "owner_prereplace": (atomic_write_bytes, replace_line),
         "owner_postreplace": (atomic_write_bytes, "temp.unlink()"),
         # Reachable ONLY after atomic_write_bytes returned successfully. Atomic
         # trace 'return' can also mean exception unwinding, so never use it as ack.
         "owner_ack": (ManifestOwner._commit, "return PublishedManifest("),
         "commit_receipt": (OwnedAppend.commit, None),
+        "resume_receipt": (OwnedAppend.resume, None),
     }
     func, needle = boundaries[stage]
     stop_line = None
@@ -128,12 +139,19 @@ def main():
         if not hit or reached:
             return trace
         if func is atomic_write_bytes:
-            if Path(frame.f_locals["target"]) != owner.path:
-                return trace  # Ignore intent and page atomic writers.
+            expected_target = (
+                intent_path if stage.startswith("intent_atomic_") else owner.path
+            )
+            if Path(frame.f_locals["target"]) != expected_target:
+                return trace  # Ignore unrelated intent/page/owner atomic writers.
         elif func is OwnedAppend._persist:
             if Path(frame.f_locals["path"]) != intent_path:
                 raise RuntimeError("unexpected intent target")
-        elif func in (AttemptJournal.create, AttemptJournal.append):
+        elif func in (
+            AttemptJournal.create,
+            AttemptJournal.append,
+            AttemptJournal.reconcile,
+        ):
             if frame.f_locals["self"].path != target:
                 raise RuntimeError("unexpected journal target")
         elif func is ManifestOwner._commit:
@@ -147,6 +165,7 @@ def main():
                 dict(
                     stage=stage,
                     mode=mode,
+                    operation=operation,
                     pid=os.getpid(),
                     python_version=sys.version,
                     python_executable=sys.executable,
@@ -166,7 +185,10 @@ def main():
 
     sys.settrace(trace)
     try:
-        writer.commit(intent)
+        if operation == "commit":
+            writer.commit(intent)
+        else:
+            writer.resume(intent)
     except OSError:
         sys.settrace(None)
         if not reached:

@@ -10363,3 +10363,59 @@ Task 2 sensorium/recollection gate: CLEAN
   Next qualify interruptions DURINGresume; retainedhistory/fullmatrix/resource
   history/currentauthority/native160/checkpointrestore/neuralgates OPEN. Fullgoal
   remainsACTIVE; this checkpoint does not claim wholecoordinator/native readiness.
+
+### Checkpoint172 - scoped interrupted recovery verified; wider gates OPEN
+
+- Previous goal turn PROGRESS:171 committed/pushedea9f170, current exactDesktop
+  clean verified; full unified objective reread. Continue actual RESUME execution,
+  not treat interruptedcommit qualification as proof of interruptedrecovery.
+- Added90resume boundary cases FIRST; RED original16762 personally consumed actual
+  pytest1 because helper lacked optionalresume argument, no expectedmarker. New
+  isolated operation selector defaultscommit for original171 cases, exactresume
+  marker required by newtests. Source/runtime/Popen/intent checks andownedkill/
+  boundedreap retained, no productionedits/globalpatch/assets/model/computejob.
+- Seven valid initial states constructed through actual coordinator plus explicit
+  parentfixture interruptions: absent/empty/prior/next/candidate/rotatednext/
+  rotatedcandidate. Selectedmeaningfulstagecoverage includes renewedintentrewrite,
+  targetre-fsync acknowledgement, absentcreation/append andownerpublication/
+  identicalreconciliation/return. Four receipt-boundary cases cutresume aSECOND
+  time before eventualexactsame-generation recovery; no newexperimentattempt.
+- Intent atomic prereplace kill intentionally leaves own temporaryfile. Closed
+  inventory must reject extraentry without deleting/adopting/retrying; preserve
+  exactpages/owner/intents. This is failclosed evidence, NOT successfulunattended
+  recovery. Fault exception cleanup/postreplace cases separately recover. Native
+  syscall interiors/powerloss/currentwitness/fullhistory/globalresource/neural
+  acceptance remainOPEN. Focusedv1 original68488 live, no terminal inferred.
+- Focusedv1 original68488 terminal personally consumed actualpytest0:16/0/0/0,
+  75.829s, XML SHA172ca90edb9b936c532ad0c95e896feb963c1e174dedc596d386af6cb994798d.
+  Both independent GPT6.1Sol lanes inspectedfinalnewtests/helper exacthashes;
+  codeAPPROVE/scopedarchitectureCLEAR, orphan stateexplicitBLOCK for unattended
+  recovery andnative/global/scientificgates retained. Original171 defaultcommit
+  instrumentation preserved; helpermarkeroperationmustprove actualresume path.
+- Finalregression original72894 launched58targets all90newcases plus prior59
+  commitcontrols and65536recordboundary. Frozenfinaltest/helper bytes, same3actual
+  asset/GPUdeselections. No productionfiles changed, no dependency/acquisition/
+  model/GPU/heldout/scientificrun or globalbudgetauthority inferred. Pendingterminal.
+- Continuation after user clarification: preceding answer was status/explanation,
+  not implementation progress. Full objective reread; exact Desktop checkout and
+  original72894 revalidated live. No restart or production/test edits while running.
+  Worker CPU increased and original output progressed through100%; personally
+  consumed original terminal actualpytest_exit_code=0, not merely wrapper exit.
+- Final XML parsed1875total/0failures/0errors/1skip,988.034s (1874passed); SHA256
+  4b4d40f1fe29ef84dc8a19f272784ec24cb426d7af25f36d6de8cb252d1f2b60.
+  All90 resume names compared against exact45state/stage x2mode matrix; prior59
+  commit controls present. Onlyskip nativePOSIXFIFO unavailable onWindows. Same3
+  actualasset/GPU deselections preserved, no training evidence inferred.
+  Finaltest/helper and fourproduction roots unchanged; Ruffformat/check/diffcheck
+  passed. Cfree61607620608bytes observed, not resource reservation/globalfit.
+  Scoped test/helper/negative+positive evidence/review/trajectory commit/push next.
+  User goal remains interaction-driven durable neural learning and later .alc,
+  not manual full-model fine-tune per message or stored-chat/RAG substitution.
+  Controlled orphan-resolution/full retained history/original resource accounting/
+  current invocation authority/native160/checkpointrestore/scientific gates OPEN;
+  full unified goal ACTIVE. Storage/recovery PASS does not claim learning PASS.
+- Compatibility verification initially selected170's owned_append regression XML,
+  which predates171's59 boundary cases; comparison correctly rejected the wrong
+  evidence scope. Correct171 owned_boundaries_regression_v3 XML selected from its
+  provenance; all59 exact testcase names match172, no missing/extra controls.
+  All six final test/helper/production roots rehashed after terminal, unchanged.
