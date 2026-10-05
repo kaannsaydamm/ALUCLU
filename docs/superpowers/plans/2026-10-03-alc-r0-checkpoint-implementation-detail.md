@@ -274,6 +274,13 @@ After complete actual-host parity, declare exact-byte launcher and run:
   two-update reuse in the digest does not execute/count/enforce optimizer steps.
   Module makes no tensor/model calls; existing package initialization imports
   Torch. Actual E3 executor, q/v actual-host parity and admitted run remain OPEN.
+  Checkpoint196 adds only read-only fresh-start preflight: full120-factor seeded
+  A/B0 logical-byte identity (including signedzero), clean gradients/placement,
+  bounded schedule and existing owned computational inventory. Fake tests do not
+  execute4096 or updates. Final173-case regression and two independent APPROVE/
+  CLEAR reviews qualify this dependency only; persistent two-update executor and
+  actual-host/resource/learning gates remain OPEN. Returned digests are instant
+  observations under exclusive caller ownership, not authentication or a lock.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

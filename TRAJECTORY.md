@@ -11325,3 +11325,53 @@ Task 2 sensorium/recollection gate: CLEAN
   executor/fakeordering/failure tests, then actual-host q/v parity/invocation remain
   OPEN. Historical resource admission still blocked; accountingdraft NOT adopted.
   No E3, learning/.alc or whole-program PASS; full unified goal remains ACTIVE.
+
+### Checkpoint196 - read-only E3 fresh-start preflight dependency
+
+- Previous195 committed/pushed79527a2; clean authoritative Desktop worktree and
+  full objective/contract personally reread. Previous turn made concrete progress.
+  Added start inspector only, NOT the complete persistent-optimizer executor.
+  No forward/model/assets/tokenizer/GPU launch, optimizer creation, task data,
+  installation or scientific amendment. Fake host metadata is enlarged only for
+  compatibility tests; embeddings remain8 and no fake forward is executed here.
+- Validates complete bounded schedule before factor reconstruction. Existing exact
+  reference bindings enforce120 finite FP32 factors/460800parameters, geometry,
+  storage separation, frozen eval base, modes and active-lease exclusion. Checks
+  matching single CPUFP32 or cuda:0BF16 placement, clean factor gradients, frozen
+  same-device dense buffers, vocabulary49152/positioncapacity>=4096, fixedseed,
+  enabledgrad/noinference/noautocast and CPU defaultdevice. Existing exact owned
+  computational inventory must validate; foreign getter rejected before invocation.
+- Reconstructs private-seeded all30 q/v A/B0 and compares EVERY tensor with existing
+  exact logical-byte comparator. Does not clear/repair gradients or mutate wrapper;
+  returns immutable counts/lengths/current schedule/base/factor digests only.
+  Caller must exclusively own quiescent state; this is no lock, host/tokenizer
+  authentication, future-state certificate, resource admission or execution permit.
+  Seed copies/base hashing are overhead to charge in eventual wrapper timing.
+- MissingmoduleRED personally observedexit2,1/0/1/0,7.968s;
+  results/alc_r0_reference_stress_start_red_20261005.xml SHA
+  b913cc17cf16623a321574b9702e2fb04fb8af68cdf32acabf3c72eeb1facc4d.
+  Initial14casegreen exit0,14/0/0/0,11.749s SHA
+  877abc137f04eb93a97891f5bf89ab9227104bece86f2f249263ff6ee9bfbc62.
+- First regression command used nonexistent checkpoint_parity_factory test name:
+  observedexit4,0tests,time0.003s; preserved XML442e5ac5c5fd85535762dbf100e38a17ec3e3381813804f2b29224bdead2db02,
+  NOT testPASS. Corrected explicit file selection v2 exit0,172/0/0/0,20.428s;
+  XML0692d29e1c4bcc6c1ad113dc0dd99156c9632eb1cfac6965098ed6169de1000f.
+- Initial independentcodeAPPROVE/architectureWATCH found torch.equal treats+0/-0
+  equal despite byte wording. Reproduced negativezeroB RED exit1,1/1/0/0,6.340s;
+  XMLd43a15ca349ce90ca5efdf8535632006b10b94490a57eb8006d6b1b901f7c248.
+  Fixed with compare_tensor(exact=True), typederror wrapping, explicit negativezero
+  regression. Final five-file v3 personally observedexit0,173/0/0/0,17.717s;
+  XMLb5eb81f4cc512fcc8ff5d908a74714af8fd2bcf77fda090e6858eee268616f65.
+  Final18 start cases plus schedule/artifact/optimizer/parityfactory regressions.
+  XMLcounts/time/SHA personally parsed; allnegativeartifacts preserved.
+- Ruffcheck/formatcheck passed. Code-review skill final independent GPT6.1Sol
+  codeAPPROVE/architectureCLEAR, synthesisAPPROVE scoped preflight only.
+  Finalsource656e37934b24ed69ba77b4904952ae9105cb9bc16711fdcd6a159c2283a02947;
+  test4715eb28310ff9b6e5be9890e80d7f625879519971ad7e9939ff95cb9cf348fc
+  agreed with bothlanes. Original scienceplan personally rehashed unchanged
+  0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b.
+- Next retain ONE fixedoptimizer through two16microbatch updates, enforce lease/
+  clip/step ordering, full finitegradient/moment/base invariants and partialfailure
+  counts. Executor/fakeexecution/actualhost q/v parity/E3 invocation/resource gate
+  remainOPEN. Historical600GPUhour/first45dayclock unknown; accountingdraftNOTadopted.
+  E3/learning/final.alc notPASS; full unified objective remainsACTIVE.
