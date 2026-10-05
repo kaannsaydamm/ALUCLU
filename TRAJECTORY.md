@@ -10563,3 +10563,35 @@ Task 2 sensorium/recollection gate: CLEAN
   inspectedexact3records andCPU/BF16/zerotrainable or273/272digestoutput; these
   predateSep21receiptcontrols but donotestablishglobalfirstdevelopmentinstant.
   Keepasnextaudit inputs, notreviewedscientific/resourceauthority. FullgoalACTIVE.
+
+### Checkpoint177 - selected coverage verified; accounting convention unresolved
+
+- Previous176 PROGRESS committed/pushed801a6dc, cleanDesktopverified; fullobjective
+  reread. ExactSep20barehostload/twofreshdigest3terminalrecords verifiedexit0,
+  CPU/BF16/zerotrainable andmatched273/272base/aliasroots. No firstjobclaim.
+- Actualhistorical/current gradient/update sourceinspection finds explicitCUDA-
+  synchronizedpartialtimers:6gradient8909160300ns+4update27257568800ns. Two
+  remountfields2129054700ns separatelynotexplicitlybracketed. All12sum38295783800ns
+  ispartialfieldarithmetic, notcompleteGPUconsumption/occupancy orjobunion.
+  Sourceidentity nestedsource_checkout.source_commit, top-level lookupmissing
+  doesnotmeanreceipt lackscommit. No missingmeasurement convertedtozero.
+- Newmeasurement-gap report records selected3CPUmetadata/outputroots/12timing
+  fields andunchangedsourceblobs. Resourceadmission stillhistory-unreconciled;
+  anyconservativehistoricalaccounting replacement requiresseparateexplicit
+  authority/review, noadoption/600hourreset/thresholdchange/currentlaunchpermit.
+  Morelogs mayrecoverfacts; no broadirrecoverabilityclaim. Initialguessed
+  resource_accounting path absent, actualcheckpoint_resource_admission inspected.
+  No oldcommands executed, model/assets/corpus/GPU launched, installation/cleanup
+  orprivatehistoryexport. Scope documentationonly; code-review skilltwoexisting
+  GPT6.1Sol independentlanes next. FullgoalACTIVE, actuallearninggate stillOPEN.
+- Final independentcodeAPPROVE/architectureCLEAR reportroot
+  57256f393d254605752a6c2ab4d91c704c2819006d700ec06bb3c38acc522066.
+  Codelane verifiedoriginal3privateIDs; architectureverifiedphase/source/limits
+  butdidnotrepeatoptional3IDprimarycheck, explicitlyrecordednolockfailure.
+  Parentvalidated3terminalrows/outputroots/6times andall12fields/scopes/sums.
+  ArchitectureWATCH: originalGPU-hour wording doesnotfullyresolveallocationwall
+  vsactiveoccupancy. DonotmanufactureperfectGPU-active telemetryrequirement;
+  seekexplicitaccountingdefinition/firststart and, ifneeded, separatelyreviewed
+  conservativeamendment. Incompleteattemptcoverage genuineundereitherconvention.
+  Addedprovenance/LFattributes; nopolicyadopted/scientificchange/launch. Fullgoal
+  remainsACTIVE; userdecisionboundary mustnotbehiddenbyendlessselectedlogaudit.
