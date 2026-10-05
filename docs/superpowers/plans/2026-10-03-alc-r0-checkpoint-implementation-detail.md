@@ -204,6 +204,13 @@ After complete actual-host parity, declare exact-byte launcher and run:
   optional inventory. Existing D arm/grid acceptance is unchanged. Fake CPU
   tests share one projection roster across30 positions, not independent decoder
   execution. Factory readiness is not actual host/resource/E3 qualification.
+  Checkpoint186 exercises full q/v wrapper forward and owned30-block replay over
+  distinct fake CPU decoder/projection allocations. Short3-token zero/nonzero
+  arms match logits/loss/all120 finite gradient tensors exactly; this is parity
+  between paths sharing the same attention helper, not an independent official
+  model oracle. Random fake weights/identity norms/linear MLPs, constructor type
+  substitution and fabricated host metadata remain explicit. Actual host, wider
+  input matrix, optimizer update/resume and E3 are still unqualified.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

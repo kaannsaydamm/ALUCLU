@@ -348,3 +348,4 @@ src/aluclu/alc_r0/reference_qv_optimizer.py text eol=lf
 tests/test_alc_r0_reference_qv_optimizer.py text eol=lf
 tests/test_alc_r0_reference_qv_accumulation.py text eol=lf
 tests/test_alc_r0_reference_qv_factory.py text eol=lf
+tests/test_alc_r0_reference_qv_forward.py text eol=lf

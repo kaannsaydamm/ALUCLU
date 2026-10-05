@@ -10883,3 +10883,46 @@ Task 2 sensorium/recollection gate: CLEAN
   semantics and separately review actual invocation/resource authority; factory
   construction is not a replacement. Restore/resume, E3 and neural learning
   remain OPEN. Fullgoal ACTIVE, no ALC-R0/.alc/portability PASS claim.
+
+### Checkpoint186 - distinct30-block fake q/v full forward and owned replay
+
+- Previous185 PROGRESS6c2e55b committed/pushed; Desktop status clean and full
+  objective reread. Accounting-method question remains unanswered/NOT adopted;
+  automatic continuations are not approval. No real model/tokenizer/corpus/GPU,
+  optimizer step, held-out evaluation or E3 launch. Global launch BLOCK unchanged.
+- Added tests only; existing production wrapper/factory paths required no repair.
+  Initial tests passed rather than manufacturing RED. IndependentQVLM constructs
+  thirty distinct fake decoder layers with separate q/v backing allocations,
+  q576/k192/v192,9query/3KV heads,head64, fakeRotary64,identity norms and linear
+  MLPs. Seeded fake weights are isolated with CPU fork_rng. Vocab8/short3tokens;
+  constructor Llama type check substituted and VerifiedHost identity fabricated
+  explicitly. These are NOT actual SmolLM2 weights or authenticated host evidence.
+- Factory creates separate seeded off/on arms over same frozen fake base. Full
+  default forward compared with genuine controller-owned30-block checkpoint
+  forward/backward and pending-ticket consumption, for zero/nonzero B states.
+  Exact logits/loss and all120 finite gradient tensors match; zero A gradients
+  are valid at B0. No claim all nonzero-state gradients are nonzero or useful.
+  Distinct layer29v projection versioned mutation after lease entry rejects
+  before forward, releases controller and clears factor gradients. It is NOT a
+  separate post-forward/pre-backward drift test. Prior inventory tests retain
+  those other lifecycle controls.
+- Initial3/0/0/0 observed exit0,60.619s, XML personally parsed/rehashed
+  5f513f8f9a6a2f078a46143d434456b69cf8ef9e567ca53fd538e062b49e27c7.
+  Fifteen-file CPU regression observed exit0,414/0/0/0,98.502s, XML root
+  002eca98c394a6d093caf62e32d045709327673522f0a2dd1e46574ac2a865ea.
+  Includes prior fake capsule/q-only full-forward cases, q/v factory/projection/
+  inventory, accumulation/update and record/optimizer fidelity. Actual worker
+  observed live during regression; terminal exit consumed, no restart. Ruff
+  --no-cache and diff check passed. Counts/time/hash personally verified.
+- Independent defaultGPT6.1Sol code APPROVE/architecture WATCH,no scoped blocker;
+  synthesis COMMENT not merge-ready. WATCH: both paths share attention helper so
+  common defect could pass; three-token unpadded cache-free scope not wider input
+  matrix/CUDA/BF16/fit; complete finite gradients not useful nonzero proof;
+  drift is pre-forward capture protection only. Exact reviewed test root matched
+  parent ebbaa74cd3cff6730ffb4acc34c0c0c16e81a35762d1ca9d2b89f808b206ce0e.
+- Original science plan0493eeed... personally rehashed unchanged. Oct3 status
+  note only updated. Next broaden declared wrapper input/lifecycle integration
+  and separately review actual-host invocation/resource authority; fake full
+  forward is NOT official pinned-host parity. Actual q/v update/resume, E3,
+  neural learning and later .alc gates remain OPEN. Fullgoal ACTIVE; no PASS
+  claim beyond this explicitly scoped synthetic engineering evidence.
