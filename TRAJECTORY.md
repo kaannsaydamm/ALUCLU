@@ -10181,3 +10181,44 @@ Task 2 sensorium/recollection gate: CLEAN
   process boundaries and owner-locked page writer. Original resource accounting,
   actual model/neural gates and native160 remain OPEN. Program active; scoped
   component and negative/positive evidence commit/push follow.
+
+### Checkpoint168 - publication boundary qualification (in progress)
+
+- Prior167 committed/pushedef8fae7; clean Desktop tree/full objective checked.
+  Added prospective actual imported-writer boundary instrumentation, rehashed
+  forged envelopes and controlled no-owner-lock mutant. Explicit test subclass/
+  isolated-child tracing, no production monkeypatch/runtime edits. Five actual
+  Python write/fsync/replace/cleanup/receipt boundaries, each fault and ownchild
+  kill; syscall-adjacent process evidence NOT native-interior/power-loss proof.
+- Focusedv1 original39672 actualpytest1 personally consumed:33total/10failures/
+  0errors/0skip,30.480s. All10boundary cases failed PID guard: Windows venv
+  python.exe redirector PID differs from real worker. Not product failure/PASS.
+  XML SHAbaf5cbc58ece3f5ee9a947d8f255b1ac9e1c968d9a9a2e40f09cbf40d101e07f.
+  Scoped process inventory afterwards had no python workers. Revised fixture
+  launches actual sys._base_executable with explicit existing venv package paths;
+  asserts exact Popen PID, interpreter version/executable and imported writer root.
+  No PID heuristic/foreign process kill, dependency acquisition or scientificrun.
+- Revised focusedv2 original26340 terminal actualpytest0 personally consumed:
+  33/0/0/0,31.672s, XML SHA
+  eb83841ecdfcfefcaa8f98cfeebb8b693e21409bb70c8fe4b67c6ce7df674fc6.
+  Actual baseCPython3.12.13/Popen PID and original checkout writer root matched
+  all10boundary cases. Three prereplace stages exactold/reconcile rejected;
+  two postreplace stages exactcandidate/reconcile samegeneration/root. Controlled
+  nolockmutant produced duplicate acknowledgements; original lock only one.
+  Rehashedwronggeneration/predecessor rejected by exact-transition rebuild.
+  No production source changed; review lanes inspect final tests/helperbytes.
+- Both independent GPT6.1Sol lanes matched finalhashes; codeAPPROVE/scoped
+  Pythonboundaryqualification architectureCLEAR. Priorcoveragecomments closed;
+  native-syscall-interior/directorysync/powerloss/ownerlockrelease/externalwitness
+  and full page-writer integration remain WATCH/BLOCK for wider readiness.
+  Regression original88300 launched54targets on finalfrozenbytes; pendingterminal.
+- Regression original88300 terminal actualpytest0 personally consumed and XML
+  personally parsed:1698total/0failures/0errors/1skip,164.417s (1697passed).
+  XML SHA f4d0c369f35b29c8c74ddd23898f080301538e9cb630c7d299a94778ef144e27.
+  All10boundarycases reran; only nativePOSIXFIFO unavailable and same3actualasset/
+  GPUdeselections. Finaltests/helperhashes unchanged; source167/persistence also
+  unchanged, Ruffformat/check/diffchecks passed. ScopedPythonboundary controls
+  verified; no nativecall/powerloss/universalcrash/independentwitness/launch claim.
+  Owner-locked append/create/rotation integration next; original historicalbudget,
+  globalmatrix, source/runtime/assets/reviewauthority/native160/neuralgate OPEN.
+  Negativev1 retained with finalpositiveevidence; scopedcommit/push follow.

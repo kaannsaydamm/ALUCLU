@@ -150,6 +150,47 @@ def test_owner_cannot_live_inside_closed_page_namespace(tmp_path):
         ManifestOwner(tmp_path / "owner.json", tmp_path, SPEC)
 
 
+@pytest.mark.parametrize("field,value", [("generation", 2), ("previous", "b" * 64)])
+def test_rehashed_forged_transition_rejected_by_reconstruction(tmp_path, field, value):
+    from dataclasses import replace
+
+    owner, old, prepared, _, _ = setup(tmp_path)
+    changed = parse_canonical_json(prepared.candidate)
+    changed[field] = value
+    data = canonical_json_bytes(changed)
+    forged = replace(prepared, candidate=data, candidate_sha256=digest(data))
+    with pytest.raises(PublicationError, match="exact transition"):
+        owner.publish(forged)
+    assert owner.path.read_bytes() == old.data
+
+
+def test_controlled_lock_removal_mutant_acknowledges_twice(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    from contextlib import nullcontext
+    from threading import Barrier
+
+    owner, _, prepared, _, _ = setup(tmp_path)
+    both_read = Barrier(2)
+
+    class UnlockedMutant(ManifestOwner):
+        def _lock(self):
+            return nullcontext()
+
+        def _load(self):
+            observed = super()._load()
+            both_read.wait(timeout=10)
+            return observed
+
+    def contender(_):
+        return UnlockedMutant(owner.path, owner.pages, SPEC).publish(prepared)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(contender, range(2)))
+    assert len(results) == 2  # Negative control breaks exactly-once CAS.
+    assert all(result.data == prepared.candidate for result in results)
+    assert owner.path.read_bytes() == prepared.candidate
+
+
 @pytest.mark.parametrize("content", [b"", b"{}", b"x" * 16385])
 def test_bad_owner_never_reset_or_adopted(tmp_path, content):
     owner, old, _, _, _ = setup(tmp_path)
@@ -264,3 +305,97 @@ os._exit(73)
     else:
         with pytest.raises(PublicationConflict):
             owner.reconcile(prepared)
+
+
+@pytest.mark.parametrize(
+    "stage", ["temp_write", "temp_fsync", "pre_replace", "post_replace", "pre_receipt"]
+)
+@pytest.mark.parametrize("mode", ["fault", "kill"])
+def test_actual_atomic_writer_boundaries_keep_exact_owner(tmp_path, stage, mode):
+    import json
+    import os
+    import subprocess
+    import sys
+    import sysconfig
+    from concurrent.futures import ThreadPoolExecutor
+    from pathlib import Path
+
+    owner, old, prepared, _, _ = setup(tmp_path)
+    checkout = Path(__file__).resolve().parents[1]
+    helper = checkout / "tests/helpers/manifest_publication_boundary_child.py"
+    args = [
+        sys._base_executable,
+        "-B",
+        str(helper),
+        str(owner.path),
+        str(owner.pages),
+        SPEC.run_id,
+        old.data.hex(),
+        old.sha256,
+        prepared.candidate.hex(),
+        prepared.candidate_sha256,
+        stage,
+        mode,
+        str(checkout),
+    ]
+    # Windows venv executable redirects into another PID. Launch actual base
+    # interpreter with explicit SAME already-installed package paths; no installs.
+    environment = dict(os.environ)
+    environment["PYTHONPATH"] = os.pathsep.join(
+        dict.fromkeys(
+            [
+                str(checkout / "src"),
+                sysconfig.get_paths()["purelib"],
+                sysconfig.get_paths()["platlib"],
+            ]
+        )
+    )
+    child = subprocess.Popen(
+        args,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=environment,
+    )
+    with ThreadPoolExecutor(max_workers=1) as reader:
+        try:
+            line = reader.submit(child.stdout.readline).result(timeout=45)
+            marker = json.loads(line)
+            assert marker["stage"] == stage and marker["mode"] == mode
+            assert marker["pid"] == child.pid
+            assert marker["python_version"] == sys.version
+            assert (
+                Path(marker["python_executable"]).resolve()
+                == Path(sys._base_executable).resolve()
+            )
+            source = checkout / "src/aluclu/cognition/persistence.py"
+            assert Path(marker["source"]) == source
+            assert marker["source_sha256"] == digest(source.read_bytes())
+            if mode == "kill":
+                assert child.poll() is None
+                child.kill()  # Exact Popen-owned child only.
+            stdout, stderr = child.communicate(timeout=15)
+            if mode == "fault":
+                assert child.returncode == 74, stderr.decode(errors="replace")
+                assert b"receipt=false" in stdout
+            else:
+                assert child.returncode != 0
+                assert b"receipt=false" not in stdout
+        finally:
+            if child.poll() is None:
+                child.kill()
+            child.communicate(timeout=15)
+    candidate_visible = stage in {"post_replace", "pre_receipt"}
+    expected = prepared.candidate if candidate_visible else old.data
+    assert owner.path.read_bytes() == expected
+    if candidate_visible:
+        reconciled = ManifestOwner(owner.path, owner.pages, SPEC).reconcile(prepared)
+        assert (
+            reconciled.data == expected
+            and reconciled.sha256 == prepared.candidate_sha256
+        )
+        assert parse_canonical_json(reconciled.data)["generation"] == 1
+    else:
+        with pytest.raises(PublicationConflict):
+            owner.reconcile(prepared)
+        assert owner.path.read_bytes() == old.data
