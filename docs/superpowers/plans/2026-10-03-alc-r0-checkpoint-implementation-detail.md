@@ -290,6 +290,14 @@ After complete actual-host parity, declare exact-byte launcher and run:
   tiny-factor optimizer is real, but binding/preflight/inventory/microbatch are
   explicit substitutions. Full120-factor fake integration and actual-host parity/
   owned invocation/resource/E3 receipt remain OPEN; no learning/resource PASS.
+  Checkpoint198 closes full120-factor fake CPU integration with two verified
+  focused cases (exit0,1990.322s) and a separate325-case regression (exit0).
+  Real preflight/replay/backward/optimizer checks execute with explicit4/5-token
+  microbatch substitution and a random fake base. This is NOT4096 execution,
+  official-host parity, E3 resource or durable learning evidence. Earlier missing
+  exit/capture failure/resource-interrupted attempts remain preserved, not PASS.
+  Separate q/v host-parity contract is independently approved for design only;
+  its exact reviewed bytes and chronology are recorded in TRAJECTORY.md.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

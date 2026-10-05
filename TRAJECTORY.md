@@ -11434,3 +11434,124 @@ Task 2 sensorium/recollection gate: CLEAN
   ownedinvocation/resources remainOPEN. Historical600GPUhours/first45dayclock
   unknown, accountingdraftNOTadopted. E3/learning/final.alc notPASS;
   full unified objective remainsACTIVE, not complete or blocked by safe work.
+
+### Checkpoint198 - full-factor short-forward fake CPU integration VERIFIED
+
+- Previous197 committed/pushedac78b7b; clean Desktop worktree and fullobjective/
+  E3 contract reread. Added ONLY test_alc_r0_reference_stress_full_factors.py,
+  production executor unchanged5f50af27f40da1b266c91f3bc07a7cf16b2b6053679b7ee0ad5e494a1cf2bd1b.
+- Two fakeCPU cases exercise real196preflight, full120bindings/inventory,197loop,
+  original ownedcheckpoint helper/replay/backward, clipping, fixedAdamW and full
+  stepstate verification. Existing30fakeblocks stabilized with parameterfreeRMSNorm;
+  fixedrandom49152outputhead, embedding8/fabricatedhost remainfake. ONLY microbatch
+  input explicitlymapped fromvalidated4096schedule to4/5tokens. Normalstep2 plus
+  deliberateone-counter corruption aftersecondstep checks completedupdate1 while
+ 32microbatches/two returnedsteps performed. No4096attention/actualhost/E3 claim.
+- TestSHA0797ce6c05b89a88405a3dbfe339bfa9ccc68557ef1ee1673b0ad8d00e8e5939.
+  Code-review skill independentGPT6.1Sol codeAPPROVE/architectureCLEAR scoped
+  explicitshort-forward fakeintegration. Staticreviews are NOT executionPASS.
+  Ruffcheck/format passed. Focused toolhandle37960, worker3488/wrapper5436 checked
+  live by actual commandline/process CPU activity, not inferred from PID hints.
+  Terminal result still pending at this checkpoint entry: do NOT rerun merely
+  because observation timedout, and do NOT infer PASS from silence/review.
+- Separate sevenfile regression tool85906 started in parallel. System memory
+  point snapshot freephysical154140KiB/freevirtual784284KiB exposed pressure.
+  Revalidated exactworker27336 parent10148 and both artifact-bound commandlines;
+  stopped ONLY these newlyowned regression processes, no unrelated/user kills.
+  Tool85906 personally terminalexit-1 after partialdots, no pytestexit/JUnit;
+  RESOURCE_PRESSURE_INTERRUPTED_NOT_PASS, not numerical/product failure.
+  After terminationfreephysical1233160KiB/freevirtual4066436KiB; laterphysical
+  free394720KiB/virtual3901936KiB. No causal attribution/peak/actualE3 resource claim.
+  Point observations and intervention preserved in separateJSON; no further
+  parallel launch. Primary stays separately observed; don't restart it.
+- Originalscienceplan unchanged0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b.
+  Need terminal focusedresult and fresh sequential resource-safe regressions
+  before claiming198 executioncomplete/committing as verified gate. All actual
+  hostq/vparity/resources/E3/learning/.alc remainOPEN; fullgoalACTIVE.
+- Continued the SAME focused session37960: first parametrized case emitted a
+  passing dot, second remains live with increasing worker CPU; no terminal XML
+  or full-file PASS yet. No tested source edits or replacement run.
+- Prepared separate prospective q/v actual-host parity contract, preserving
+  original matched18-cell grid and all scientific/resource bounds. Initial
+  exact-byte review630c0df1bfee85250c2489728446a4af4e47379be8cc85cd3efff7259df4445b:
+  independent codeAPPROVE, architectureWATCH, synthesisCOMMENT. WATCH concerned
+  ambiguity between separate q/v witnessB0.01 and original matchedB0.125;
+  clarified both explicitly. Revised bytes require both independent rereviews.
+  This preparation is not implementation, invocation admission or actual-host
+  qualification. Historical accounting and learning gates remain open.
+- Revised prospective contract SHA
+  ee1fb5ca8ee50e255da46e36e4a192e9ccc07eb05b19b1870361ac0fee1a87f4:
+  both independent GPT6.1Sol rereviews returned codeAPPROVE/architectureCLEAR;
+  synthesisAPPROVE for design only. Prior WATCH resolved by explicit unchanged
+  matched witness magnitude. Compatibility and numerical witness sensitivity
+  still require execution; no actual-host/resource/E3/learning acceptance.
+- After observation gap, tool37960 no longer exists and OS confirms worker3488/
+  wrapper5436 absent. Original focused XML now reports2/0/0/0,2580.575s,
+  case times1151.906/1391.013s; SHA
+  20d8b39a6f7472c6765a008121db5eb6d2b738942dbe597bc09a2b4883a28e46.
+  No personally observed terminal exit survived this handle expiry. Preserve
+  XML as partial terminal evidence, NOT full acceptance. No live run restarted.
+- Added fixed fake/pure CPU-only PowerShell test runner to persist raw logs,
+  prelaunch metadata and observed child exit. Fresh stems refuse overwrites;
+  operational headroom/duplicate checks defer rather than claim scientific
+  failure. No assets, CUDA, broad pytest, installs or process kills. Runner
+  requires review before use; sequential fresh regression/focused verification
+  remain pending. Scientific thresholds and original test bytes unchanged.
+- CPU runner8353e8635d5191fdb3053ef082f6e59e9cc61f890d7d0fe11674b2d694248ad6:
+  independent codeAPPROVE/architectureCLEAR, scoped serial single-owner usage.
+  No atomic reservation, sandbox, Job Object, timeout or comprehensive duplicate
+  exclusion claimed. Existing-stem negative exit1 before launch; originalXML
+  hash unchanged. New regression stem full_factors_regression_v2_20261005 is
+  separate from interrupted attempt; its terminal result must be verified.
+- Regressionv2 completed XML325/0/0/0,61.415s, hash
+  443beaac9cda7739aa64d01d1e29e145c773ab881f142bd5639727ab33ac8d1b;
+  stdout100percent, stderrempty. Runner terminalexit1 with explicit
+  'Child exit unavailable': pytest ExitCode null, no exit receipt. This is
+  runner evidence-capture failure, not325-test failure or acceptancePASS.
+  Preserve allv2 artifacts and do not reconstruct a pytest exit from XML.
+- No relevant pytest live on continuation. Minimal owned Windows PowerShell
+  child with one-second wait and deliberateexit7 returned observed7 when
+  native Handle retained before WaitForExit/Refresh. Added that narrow handle
+  retention to CPU runner; source/tests/scientific thresholds unchanged.
+  Revised runner requires independent exact-byte rereview, then new serial
+  regression/focused stems. No actual-host/GPU/training authority inferred.
+- Handle-retention probes personally observed exact exit0,7,23 for three
+  newlyowned hidden Windows PowerShell children; parser check also passed.
+  These validate exit capture mechanics, not pytest/full-factor acceptance.
+- Revised runner5ff1f8b25acf88db3f8d1fecf9d21fd9f8e829ec9f58e11ae630afb85ae7b8e2
+  independently rereviewed codeAPPROVE/architectureCLEAR for normal serial scope;
+  operational heuristic/no-lock/no-timeout/no-sandbox limits retained explicitly.
+  Launching separate regressionv3 evidence; no retrospective v2 acceptance.
+- Regressionv3 personally observed tool99448 terminalexit0; persisted
+  pytest_exit_code0/child13080 observed2026-10-05T23:51:33.4837289+03:00.
+  JUnit325/0/0/0,53.397s, exactly325testcases, stdout100percent/stderrempty;
+  XML437f0842e695b51d74a3eba415c099115e8615386fc548ddfc07ce19213b856d.
+  This accepts only the seven fixed fake/pure CPU files, not broad suite,
+  focused198/actualhost/resource/E3/learning. Runner/test sourcehashes unchanged.
+- Starting focusedv2 with reviewed runner and unchanged0797ce6c test bytes,
+  separate fresh logs/XML/exit, afterregressionterminal. Original focusedXML
+  remains incomplete terminal-chain evidence. No thresholds/schedule/science
+  changes, no duplicate/parallelpytest or actual assets/GPU operation.
+- Focusedv2 confirmed live by tool48753 and OS artifact-bound commandlines:
+  runtime launcher25668 parent25480, pytestworker37268 parent25668. PID values
+  are hints only; subsequent observations must revalidate actual commands.
+  Start receipt2026-10-05T23:51:58.8414613+03:00, sourcehash0797ce6c and
+  runner5ff1f8b2 unchanged; no XML/exit or acceptance yet. This is verified
+  waiting, not a stopped run and not grounds for another launch.
+- Focusedv2 stdout advanced to one passing dot (file timestamp
+  2026-10-06T00:08:03+03:00). Same worker37268 and tool48753 remain live;
+  no terminal XML/exit yet. This is partial pytest progress only, not whole-file
+  acceptance or actual-host/E3/learning evidence. Tested source remains unchanged.
+- Terminal focusedv2 personally observed tool48753 exit0 and persisted
+  pytest_exit_code=0, child25668, observed2026-10-06T00:25:13.9806359+03:00.
+  JUnit2/0/0/0,1990.322s; exact False/True testcases949.504/1027.015s;
+  stdout two passing dots/100percent, stderrempty. XML SHA256
+  00751bd3d1edea475b0ddae05a75f3ca0278acc99458755f0178c0dbfa7e9884.
+  OS confirms artifact-bound children absent. Test0797ce6c and runner5ff1f8b2
+  bytes unchanged from independent reviews. Together with separate regressionv3
+  325/0/0/0 exit0, this closes only checkpoint198 fake CPU integration.
+  It is not one combined327-case run, actual-host parity,4096 execution, E3
+  resource qualification, durable capability learning or whole-goal completion.
+  Preserve original missing-exit XML, interrupted regression and v2 capture
+  failure without retrospective PASS. Next: separately approved q/v host-parity
+  composition, pure/fake TDD and exact-byte review before any admitted real run.
