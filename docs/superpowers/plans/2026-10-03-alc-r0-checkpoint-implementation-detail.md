@@ -211,6 +211,12 @@ After complete actual-host parity, declare exact-byte launcher and run:
   model oracle. Random fake weights/identity norms/linear MLPs, constructor type
   substitution and fabricated host metadata remain explicit. Actual host, wider
   input matrix, optimizer update/resume and E3 are still unqualified.
+  Checkpoint187 extends the same fake30-block CPU fixture to right padding,
+  explicit mask/positions, one/two pending graphs and caller tensor mutation
+  before backward. The two-graph case uses distinct IDs, labels, masks and
+  positions; summed-loss/all120-gradient parity remains a shared-helper oracle,
+  not independent model correctness or proof of each original input's replay
+  sensitivity. No real-host update/resume, CUDA/BF16, E3 or learning qualification.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

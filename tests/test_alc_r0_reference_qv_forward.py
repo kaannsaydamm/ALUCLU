@@ -108,6 +108,54 @@ def test_distinct_thirty_qv_blocks_exact_full_forward_and_replay(host, state):
     assert all(p.grad is None and not p.requires_grad for p in host.model.parameters())
 
 
+@pytest.mark.parametrize("pending", [1, 2])
+def test_padded_qv_replay_owns_inputs_across_pending_graphs(host, pending):
+    off = make_reference_wrapper(host, False, state="nonzero")
+    on = make_reference_wrapper(host, True, state="nonzero")
+    inputs = [
+        dict(
+            input_ids=torch.tensor([[1, 2, 3, 0]]),
+            labels=torch.tensor([[-100, 2, 3, -100]]),
+            attention_mask=torch.tensor([[1, 1, 1, 0]]),
+            position_ids=torch.tensor([[3, 4, 5, 6]]),
+            use_cache=False,
+        ),
+        dict(
+            input_ids=torch.tensor([[4, 5, 0, 0]]),
+            labels=torch.tensor([[-100, 5, -100, -100]]),
+            attention_mask=torch.tensor([[1, 1, 0, 0]]),
+            position_ids=torch.tensor([[11, 12, 13, 14]]),
+            use_cache=False,
+        ),
+    ][:pending]
+    expected = [off(**args) for args in inputs]
+    expected_gradients = torch.autograd.grad(
+        sum(output.loss for output in expected), tuple(off.reference.parameters())
+    )
+    with on.checkpoint_session() as session:
+        actual = [on(**args, checkpoint_session=session) for args in inputs]
+        assert session.pending_count == pending
+        for args in inputs:
+            args["input_ids"].zero_()
+            args["labels"].fill_(7)
+            args["attention_mask"].zero_()
+            args["position_ids"].fill_(77)
+        session.backward(sum(output.loss for output in actual))
+        assert session.pending_count == 0
+    for output, baseline in zip(actual, expected, strict=True):
+        assert torch.equal(output.logits, baseline.logits)
+        assert torch.equal(output.loss, baseline.loss)
+        assert torch.isfinite(output.logits).all()
+    parameters = tuple(on.reference.parameters())
+    assert len(parameters) == 120
+    for parameter, expected_gradient in zip(
+        parameters, expected_gradients, strict=True
+    ):
+        assert torch.equal(parameter.grad, expected_gradient)
+        assert torch.isfinite(parameter.grad).all()
+    assert all(p.grad is None and not p.requires_grad for p in host.model.parameters())
+
+
 def test_late_qv_projection_drift_rejects_owned_forward(host):
     wrapper = make_reference_wrapper(host, True, state="nonzero")
     with pytest.raises(CheckpointExecutionError):

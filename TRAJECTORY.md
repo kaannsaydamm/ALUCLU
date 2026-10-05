@@ -10926,3 +10926,41 @@ Task 2 sensorium/recollection gate: CLEAN
   forward is NOT official pinned-host parity. Actual q/v update/resume, E3,
   neural learning and later .alc gates remain OPEN. Fullgoal ACTIVE; no PASS
   claim beyond this explicitly scoped synthetic engineering evidence.
+
+### Checkpoint187 - padded q/v inputs and distinct pending replay graphs
+
+- Continued from clean9d0121d Desktop worktree; full objective reread. Prior
+  status-only turn produced no new implementation evidence; this turn takes the
+  available safe test-integration step. Resource accounting question remains
+  unanswered/NOT adopted; no actual model/tokenizer/corpus/GPU/E3 launched.
+- Test-only extension of distinct30-block fake CPU fixture: right padding,
+  ignored padded supervision, explicit nondefault positions, one/two pending
+  owned graphs, mutate caller IDs/labels/mask/positions after all forwards and
+  before summed-loss backward. Compare logits/loss/all120 finite gradients to
+  ordinary-path baseline computed before mutation; assert ticket consumption
+  and frozen-base gradient flags. No optimizer execution added here.
+- Initial identical-input pending-pair5/0/0/0 observed exit0,143.455s, XML
+  2c78f1fcdfbd74fdd0c5fb00c29bf6e09658374f6d0b2d9c47dd12c5e1573145.
+  Code APPROVE/architecture WATCH flagged identical inputs could hide ticket
+  confusion. After that process was terminal, strengthened pending2 with
+  distinct token IDs/labels/padding masks/positions. Initial XML retained as
+  superseded scope evidence, not final-byte regression. No manufactured RED or
+  production repair claim; prior implementation already passed initial tests.
+- Final-byte15-file regression observed exit0,416/0/0/0,136.247s; XML personally
+  parsed/rehashed0fb311abcebe4754bd590721e9591e7428c0cf468479c6902d50b849b121249b.
+  Consumed same live process handle through terminal exit, no restart. Ruff
+  format/check --no-cache and git diff --check passed. No production repair.
+- Independent GPT6.1Sol final-byte code APPROVE/architecture WATCH, no scoped
+  blocker; synthesis COMMENT, not merge-ready approval. Exact reviewed test
+  d8805379ec1745f678ce0a114d530bf27d67d2856ec274857e5d3bde2a93d1e4
+  matched parent. Distinct-input ticket coverage resolves initial WATCH item.
+  Remaining WATCH: shared attention helper, post-forward mutation not proof of
+  each original field's replay sensitivity, only two short right-padded CPU
+  fixtures/summed backward, not broader input matrix/individual backward order,
+  official host/CUDA/BF16/resource fit/optimizer steps/E3/learning evidence.
+- Original science plan0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+  personally rehashed unchanged; implementation status note only. Next integrate
+  actual fixed-factor q/v optimizer updates and save/remount/resume semantics
+  on declared full-wrapper fixtures without substituting these for actual-host
+  qualification. Resource authority remains separate. Actual-host update/resume,
+  E3, neural learning and later .alc gates remain OPEN; full objective ACTIVE.
