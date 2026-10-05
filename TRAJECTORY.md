@@ -11085,3 +11085,55 @@ Task 2 sensorium/recollection gate: CLEAN
   must cover malformed preflight and ownership/hook failures, then continuedstep2
   and separately ownedfakeprocess proof; original resource/host/E3/learning/.alc
   gates remain OPEN. Full objective ACTIVE, not complete or scientifically failed.
+
+### Checkpoint191 - bounded manual CPU step1 q/v optimizer-state codec
+
+- Previous190 committed/pushed a7a3290. Desktop checkout revalidated; full goal
+  reread before implementation continuation. Previous status-only turn made no
+  implementation progress. No real host/assets/task data/GPU launch; pending
+  historical resource-accounting draft remains NOT adopted. Full goal ACTIVE.
+- Added separate reference_qv_resume research codec with immutable four-byte-field
+  record, fixed CPUFP32/Torch2.14 step1 schema, factor/base/runtime/group/digest
+  bindings and exact360-entry SafeTensors preflight before loading/construction.
+  Exact3686880 data bytes, manifest16KiB/header128KiB/payload4MiB/aggregate8MiB;
+  existing factor2MiB and capsule256KiB limits unchanged. Finite complete moments,
+  nonnegative second moments, step1 and canonical payload equality required.
+- Export captures/rechecks complete live bindings/state, clones bounded moments,
+  excludes callbacks/steps and rejects registered local/global optimizer hooks.
+  Restore requires exact already-mounted factors, then creates unpublished fresh
+  optimizer and clones state by complete canonical factor names. No caller mount,
+  base/factor mutation or existing optimizer replacement. Cooperating exclusive
+  ownership required; external drift detected, not claimed atomically rolled back.
+- TDD missing-module RED observed exit2:1/0/1/0,19.769s; XML SHA256
+  6f80006207fdf059f2eba7d667e5b5b59dacaef15cf622016271782af6af8364.
+  Initial45/0/0/0 observed exit0,38.572s; XML
+  bfee0e81e7d12d930ae82e4ab24af618c577215fd95ac7257d5c1422fd005f75.
+  Initial lint found import-order/lambda-style issues, fixed after terminal.
+  Added ownership/drift/typed-loader tests. Expanded XML57/1/0/0,40.105s,
+  963ffc1efb3e758f72b62a6c629a964a1a382f52fc5a04688d3e8ee8d8d92fa6:
+  test_loader_error_is_typed_and_does_not_construct had test-authoring NameError
+  (undefined before); historical process exit not recovered this continuation.
+  Lint also found that undefined variable and displaced unused header snapshot.
+  Preserved negative artifact; fixed snapshot assertion placement and definition.
+- Final focused observed exit0,57/0/0/0,48.774s; XML personally parsed/rehashed
+  530996abbe132cab2453431f9f73b3f7391839c1cd27fdc3f31e6ff27471ab43.
+  Nine-file related CPU regression observed exit0,328/0/0/0,58.337s; XML
+  361b0b94cb5cde30396b1d5bd78edaf7cdf550c6e2f07583a6cc79220f8bdfa9.
+  Live handles consumed through terminal exit, no source/test edits while live,
+  no timeout-based restart. Ruffcheck/formatcheck passed. Not a whole repo suite,
+  full30 resumed-update execution, real model test or learning acceptance.
+- Independent GPT6.1Sol code APPROVE and architecture WATCH, no scoped blocker;
+  skill synthesis COMMENT, not merge-ready. Both final exact roots match parent:
+  source ec9c958369338d83680bdd0694b4c0a090040a6f566aecd278121b571c4d963e;
+  test20f05d0da7813bec80fbc706bd8ec60f3b46a2bf12b04a818ce1e84ad9f89b3b.
+  WATCH: private fixed-version helper/hook registries constrain compatibility;
+  validation snapshots/loading/cloning coexist, serialized bound is not peakRAM.
+  Reviewer suspected sparse-buffer typed gap was withdrawn after confirming
+  existing binding storage rejection. No source repair claimed for that suspicion.
+- Manual populated moments prove codec roundtrip/storage isolation and rejection
+  boundaries only. Next full30 fake CPU real fixture step1 -> restored step2
+  continuation, then owned fresh-process resume, remain OPEN. No stochastic/cursor
+  resume, actual-host/E3, learned capability or final .alc claim. Original scientific
+  plan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+  unchanged. Trajectory/status/attributes and scoped artifacts only; full objective
+  remains ACTIVE with actual research resource admission separately blocked.

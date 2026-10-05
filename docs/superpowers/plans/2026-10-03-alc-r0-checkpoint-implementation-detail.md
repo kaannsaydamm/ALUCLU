@@ -237,6 +237,14 @@ After complete actual-host parity, declare exact-byte launcher and run:
   restore and step2/fake-process evidence are specified, NOT implemented or PASS.
   Separate research record bounds do not alter capsule/reference limits; this
   contract is not a new scientific blocking gate or actual-host launch authority.
+  Checkpoint191 implements the separate bounded CPUFP32 step1 factor/moment
+  codec. Manual synthetic moments qualify byte roundtrip, ownership, malformed
+  preflight, hook exclusion and failure publication only. Fixed Torch2.14 private
+  helper/registry coupling and additional validation copies remain explicit;
+  serialized ceilings are not peakRAM admission. Full30 actual fixture continued
+  step2 and separately owned process resume remain OPEN, as do actual-host/E3,
+  neural capability and final .alc. Exact execution/review evidence is recorded
+  separately in trajectory, not inferred from this implementation status.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
