@@ -10618,3 +10618,33 @@ Task 2 sensorium/recollection gate: CLEAN
   usermethodapproval stillABSENT, charge/clock UNKNOWN, adoption/launchBLOCK.
   No production/tests/pytest/model/GPUrun. FullgoalACTIVE; pendingapproval cannot
   authorize newpolicy butdoesnotforbid relevantnon-launch engineering preparation.
+
+### Checkpoint179 - all-layer q+v reference factor/projection substrate
+
+- Previous178 PROGRESS at2069d71 preserved. Latest conceptual user answer did
+  not authorize the pending accounting amendment. Full objective reread; no
+  real host/tokenizer/corpus/GPU launch. Original R0 science/grid unchanged.
+- Added ReferenceQVLoRA: fixed30 layers, q576/v192, rank8, exactly460800
+  trainable FP32 parameters, Kaiming A/zero B, alpha/rank1, private CPU RNG.
+  Explicit frozen bias-free linear base plus delta; no module replacement,
+  merging, hooks, or base training. Captured references are NOT integrity
+  snapshots. This is separately reported reference substrate, not matched LoRA.
+- Preserved first collection error (PYTHONPATH absent; exit1,1error), then
+  correct source-selected RED (module absent; exit1,1error). Initial GREEN
+  13pass and relevant pure matched-LoRA regression17pass. Neither loaded a
+  real host nor selected existing actual-host/CUDA test fixtures.
+- Two GPT6.1Sol independent lanes found ambient default-device allocation
+  violating private CPU initialization. Added meta-device CPU reproducer:
+  exit1,1failure,5.897s, XML5f25e2c76bed94803e9540f511afa985305179c957eaf6b98c1cf97c141e2e82.
+  Fixed both allocations with explicit CPU device. Final selected suite exit0,
+  18tests/0failures/0errors/0skips,27.578s; XML root
+  c208801ad2fa4d4dae415cd9f258c953cdeca36652ca8bf1cd47665c097765cf.
+  Parent personally parsed all6 XMLs. Ruff check passed (--no-cache after initial
+  harmless cache-access warning). Final independent code APPROVE/architecture
+  CLEAR for this substrate only; both closed the CPU allocation finding.
+- Source root b06743bd41232babccbfcf27ff40e537a0f3c100968d0ac3f68b15414f0f5ecb;
+  test root fd47ad314e3482778f04cc4b2236d6f83f801d4c7706af5d85685c597e83fb53.
+  Remaining: real host q/v attention binding, checkpoint integrity integration,
+  optimizer/serialization ownership, epoch selection and E3 stress qualification.
+  No E3 PASS, ALC-R0 learning PASS, or .alc product claim. Fullgoal ACTIVE;
+  historical resource/clock reconciliation and scientific launch remain BLOCK.
