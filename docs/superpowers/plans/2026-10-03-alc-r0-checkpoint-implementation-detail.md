@@ -231,6 +231,12 @@ After complete actual-host parity, declare exact-byte launcher and run:
   Common62-token prompt plus1/2-token candidates yields63/64 unpadded sequences.
   This nonzero-factor/one-update engineering fixture is not official host parity,
   E3/resource qualification or learning. Execution evidence belongs in trajectory.
+  Checkpoint190 reviews a separate prospective q/v optimizer-resume contract at
+  `2026-10-05-alc-r0-qv-optimizer-resume.md`. CPUFP32 step1 factor/moment export,
+  bounded exact-name preflight, hook-free source ownership, fresh optimizer
+  restore and step2/fake-process evidence are specified, NOT implemented or PASS.
+  Separate research record bounds do not alter capsule/reference limits; this
+  contract is not a new scientific blocking gate or actual-host launch authority.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum

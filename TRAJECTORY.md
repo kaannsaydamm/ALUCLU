@@ -11048,3 +11048,40 @@ Task 2 sensorium/recollection gate: CLEAN
   explicit design, malformed/state-binding rejection and continuation parity;
   factor-only remount188 is not a substitute. Historical resource authority and
   original neural-capability gates remain OPEN; full objective ACTIVE.
+
+### Checkpoint190 - independently reviewed prospective optimizer-resume contract
+
+- Previous189 committed/pushed67a4ae2; clean Desktop verified, full objective
+  reread and original scientificplan personally rehashed unchanged0493eeed... .
+  Previous turn made authoritative fullaccumulation integration progress. Current
+  work closes a reviewed engineering-design boundary, not a resume execution gate.
+  Real-host/GPU resource admission remains blocked; accounting draft NOT adopted.
+- Inspected existing referencefactorcodec/bindings and fixedTorch2.14 AdamW
+  group/snapshot/step1/2 comparison contracts. New prospective contract specifies
+  separate four-byte-string researchrecord, CPUFP32step1 export, exact-mounted
+  factor restore into fresh optimizer, complete canonicalname moment bindings,
+  preallocation shape/offset/size/digest/runtime/group checks and failure without
+  mutating caller wrapper/factors/base. No general optimizer schedule, final.alc,
+  scientificgrid/threshold/resourcebudget change or training permission.
+- Personally checked fixed arithmetic with PowerShell:240moment+120scalarentries,
+  raw3686880bytes; adding128KiBheader+8prefix fits4MiB optimizerpayload.16KiB
+  optimizermanifest/8MiBaggregateserialized bound are separate from existing2MiB
+  qvfactorrecord and256KiBcapsule. Serialized bound is NOT peakRAM admission.
+- Initial independent GPT6.1Sol code APPROVE/architecture WATCH identified hidden
+  optimizerhook behavior: matching factors/moments cannot reproduce active hooks.
+  Before code, clarified localstep/state-dict/load-state-dict pre/post hook and
+  globalstephook rejection, no hookcallbacks/serialization, cooperative no runtime
+  monkeypatch; added negatives. Also distinguished concurrent boundedRAMcopies
+  and externalfixture architecture/source identity from equalbasebytehash alone.
+- Final independent exact-byte code APPROVE/architecture CLEAR for prospective
+  contract only; synthesis APPROVE of design, NOT implementation/merge/readiness
+  of nonexistent runtime. Parent and both reviewers matched finaldocumentroot
+  3ea64b3ab8e59242c138a5603ff806a3371dec7b99d6fb6ec77be04c1ca73c95.
+  Exactbyte review completed and changed next implementation requirements; all
+  runtimeacceptance evidence still MISSING, not assumed from prose/arithmetic.
+- Docs/attribute changes only; no tests/optimizersteps/model/GPU/data invocation.
+  No needlessly repeated417/418regression because no executable subsystem changed;
+  no new testPASS. Gitdiffcheck/LFattribute verified. Next actual purecodecTDD
+  must cover malformed preflight and ownership/hook failures, then continuedstep2
+  and separately ownedfakeprocess proof; original resource/host/E3/learning/.alc
+  gates remain OPEN. Full objective ACTIVE, not complete or scientifically failed.
