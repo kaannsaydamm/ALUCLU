@@ -48,7 +48,9 @@ _TENSOR = torch.Tensor
 _CONSTANTS = {name: getattr(torch, name) for name in ("int64", "strided")}
 
 
-def wrapper_namespace_dependencies(function, name, is_lora, freeze):
+def wrapper_namespace_dependencies(
+    function, name, is_lora, freeze, *, is_reference=False
+):
     """Bind enumerated aliases from the function's actual globals and builtins.
 
     Classes/module namespaces are identity-bound, not complete method inventories.
@@ -73,7 +75,10 @@ def wrapper_namespace_dependencies(function, name, is_lora, freeze):
         ),
         "_checkpoint_factors": ("CheckpointExecutionError",),
         "_bind_checkpoint_block": ("nn", "CheckpointExecutionError")
-        + (("_q_attention_with_projection",) if is_lora else ()),
+        + (("_q_attention_with_projection",) if is_lora or is_reference else ()),
+        "_run_decoder_layer": (
+            ("_q_attention_with_projection",) if is_reference else ()
+        ),
         "_q_lora_attention": ("_q_attention_with_projection",),
     }.get(name, ())
     namespace = function.__globals__

@@ -10685,3 +10685,41 @@ Task 2 sensorium/recollection gate: CLEAN
   Original scientific plan personally rehashed0493eeed... unchanged. Updated
   Oct3 implementation-status note only, preserving all E3 stress requirements.
   Fullgoal ACTIVE; no E3/ALC-R0/learning/.alc product PASS claim.
+
+### Checkpoint181 - bounded q/v inventory and owned fixture replay
+
+- Previous180 PROGRESSbe2706c committed/pushed, cleanDesktop verified. Full
+  objective reread; pending accounting policy still NOT approved. No model,
+  tokenizer/corpus assets, GPU, optimizer update or held-out evaluation launched.
+- Extended existing bounded fingerprint with exact third wrapper/factor arm,
+  arm-specific reference field/schema, q/v factor factory and used FP32/linear/
+  autocast/nn.Linear dependencies, both live/bound helper aliases and inherited
+  decoder fallback methods. No generic arbitrary-global traversal claim.
+  Standard inventory opt-in retains original owner/controller; controller
+  lookup uses instance dictionary/exacttype before schema inspection, avoiding
+  class-property side effects. Full forward still denies missing inventory.
+- TDD initial12cases exit1:11fail/1pass29.724s (feature remained disabled).
+  Initial integrated12pass27.165s. Owned-replay follow-up exit1:2fail/14pass
+  45.132s retained as negative evidence. Author's tests wrongly assumed .data
+  mutations denied BEFORE replay: existing _guard uses versions/rosters, full
+  byte digest occurs at EXIT. No implementation claim or threshold changed to
+  hide this. Corrected controls distinguish versioned add_/registry pre-replay
+  rejection from .data exit rejection/gradient cleanup/lease release.
+  One q/v block plus29 identity blocks is explicitly NOT full-host coverage.
+- Ten-file selected fakeCPU regression exit0:227tests/0fail/0error/0skip59.166s,
+  XML personally parsed/rehashed1918818925732377395b3dadc404ffb929ddfd370c7e6f7d5723239d66234ab1.
+  Covers new18 inventory/replay cases, q/v factor/wrapper, old-arm methods,
+  namespaces/shadows, factor dependencies, inventory installation and execution.
+  Ruff final --no-cache passed (initial import-sort finding repaired).
+- Independent GPT6.1Sol code APPROVE/architecture CLEAR for bounded extension.
+  WATCH: .data-mutated computation may run before exit rejection; no hostile
+  concurrent/full-transitive semantics protection or actual-host certification.
+  Testroot177a098dba122fbd6a0f9c25de4093decf63b10d34f7a915da1611774430b869.
+  Additional computational-state/bound-decoder/full-forward fakeCPU regression
+  terminal exit0:100tests/0fail/0error/0skip44.733s, XML personally rehashed
+  ca3270c11114846a44b0ed80197ed99a8d1639c09c90d2620f46d03e02f61c17.
+  Parent rehashed all7 reviewed source/test files against both independent
+  verdicts; exact bytes match. Original plan0493eeed... unchanged. Updated
+  implementation-status note only; E3/actual host/
+  optimizer/serialization/learning proof remain OPEN, global launch BLOCK.
+  Fullgoal ACTIVE; no capsule learning/.alc/portability PASS claim.

@@ -1,8 +1,8 @@
 """Explicit all-layer q+v reference wiring; not real-host qualification.
 
 The inherited verified-host constructor remains mandatory for actual use.
-Checkpoint computational inventory is deliberately unavailable until separately
-extended/reviewed; fake-block closure tests do not grant execution authority.
+Checkpoint inventory is explicit opt-in; fake-block closure/inventory tests do
+not establish actual-host qualification or grant execution authority.
 """
 
 from __future__ import annotations
@@ -65,8 +65,7 @@ class PinnedLlamaQVReferenceWrapper(PinnedLlamaCapsuleWrapper):
         return self.reference
 
     def enable_checkpoint_inventory(self) -> None:
-        self._assert_checkpoint_mutation_allowed()
-        raise CheckpointExecutionError("q+v computational inventory not implemented")
+        super().enable_checkpoint_inventory()
 
     def _bind_checkpoint_block(self, index: int, decoder_layer: nn.Module):
         if type(index) is not int or not 0 <= index < 30:

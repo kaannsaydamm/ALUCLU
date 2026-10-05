@@ -141,7 +141,7 @@ def _factor_dependencies(module, freeze, factor_classes):
         raise CheckpointExecutionError("unsupported factor factory binding")
     namespace = factory.__func__.__globals__
     cast_binding = namespace.get("cast")
-    if cast_binding is not _TYPING_CAST:
+    if factory_name != "bind_projection" and cast_binding is not _TYPING_CAST:
         raise CheckpointExecutionError("unreviewed factor cast binding")
     functional, runtime = namespace.get("F"), namespace.get("torch")
     if (
@@ -168,7 +168,7 @@ def _factor_dependencies(module, freeze, factor_classes):
         autocast_binding = callable_binding(autocast)
     result = [
         freeze(factory),
-        freeze(cast_binding),
+        None if factory_name == "bind_projection" else freeze(cast_binding),
         id(namespace),
         id(functional),
         id(runtime),
@@ -179,6 +179,11 @@ def _factor_dependencies(module, freeze, factor_classes):
     if not isinstance(dtype, torch.dtype):
         raise CheckpointExecutionError("unsupported factor runtime dtype")
     result.append(freeze(dtype))
+    if factory_name == "bind_projection":
+        neural = namespace.get("nn")
+        if neural is not nn or vars(neural).get("Linear") is not nn.Linear:
+            raise CheckpointExecutionError("unreviewed q/v projection namespace")
+        result.append(["qv_linear_class", id(neural), id(nn.Linear)])
     if factory_name == "bind_port":
         width, epsilon = (
             namespace.get("CANONICAL_WIDTH"),
@@ -300,18 +305,25 @@ def computational_state_fingerprint(roots: Mapping[str, nn.Module]) -> str:
     # factor classes receive this explicit dependency inventory.
     from .host_wrapper import PinnedLlamaCapsuleWrapper
     from .matched_lora import MatchedQProjLoRA, PinnedLlamaLoRAWrapper
+    from .reference_qv_lora import ReferenceQVLoRA
+    from .reference_qv_wrapper import PinnedLlamaQVReferenceWrapper
     from .research_capsule import ResearchCapsuleV0
 
     factor_classes = (
         (ResearchCapsuleV0, "bind_port"),
         (MatchedQProjLoRA, "bind_q_projection"),
+        (ReferenceQVLoRA, "bind_projection"),
     )
     active = set()
     memo = {}
     nodes = 0
     inventory = _module_inventory(roots, names)
     module_ids = {id(module) for _, _, module in inventory}
-    wrapper_classes = (PinnedLlamaCapsuleWrapper, PinnedLlamaLoRAWrapper)
+    wrapper_classes = (
+        PinnedLlamaCapsuleWrapper,
+        PinnedLlamaLoRAWrapper,
+        PinnedLlamaQVReferenceWrapper,
+    )
     wrapper_ids = {
         id(module) for _, _, module in inventory if type(module) in wrapper_classes
     }

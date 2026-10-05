@@ -56,24 +56,31 @@ def wrapper_method_dependencies(module, freeze, wrapper_classes, factor_classes)
     if type(module) not in wrapper_classes:
         raise CheckpointExecutionError("unreviewed wrapper subclass")
     is_lora = type(module) is wrapper_classes[1]
+    is_reference = len(wrapper_classes) > 2 and type(module) is wrapper_classes[2]
+    arm = 2 if is_reference else int(is_lora)
+    factor_field = ("capsule", "lora", "reference")[arm]
     state = vars(module)
-    if set(state) - _MODULE_FIELDS - {"_checkpoint_controller", "capsule", "lora"}:
+    if (
+        set(state)
+        - _MODULE_FIELDS
+        - {"_checkpoint_controller", "capsule", factor_field}
+    ):
         raise CheckpointExecutionError("unknown wrapper instance field")
     if not is_lora and "lora" in state:
         raise CheckpointExecutionError("wrong wrapper arm field")
     registered = state["_modules"]
-    for field in ("base", "capsule", "lora", "_checkpoint_controller"):
+    for field in ("base", "capsule", "lora", "reference", "_checkpoint_controller"):
         # Registered modules resolve via nn.Module.__getattr__, not class
         # properties. Reject class shadows without invoking their descriptor.
         if inspect.getattr_static(type(module), field, _MISSING) is not _MISSING:
             raise CheckpointExecutionError("wrapper class field shadow")
-    allowed = {"base", "capsule", "lora"} if is_lora else {"base", "capsule"}
+    allowed = {"base", "capsule", factor_field}
     if set(registered) - allowed or "base" not in registered:
         raise CheckpointExecutionError("unknown wrapper registered field")
-    selected = registered.get("lora" if is_lora else "capsule")
-    if type(selected) is not factor_classes[is_lora][0]:
+    selected = registered.get(factor_field)
+    if type(selected) is not factor_classes[arm][0]:
         raise CheckpointExecutionError("mounted exact wrapper factors required")
-    if is_lora and registered.get("capsule") is not None:
+    if (is_lora or is_reference) and registered.get("capsule") is not None:
         raise CheckpointExecutionError("wrong wrapper arm mount")
     methods = []
     names = _METHODS + (("_q_lora_attention",) if is_lora else ())
@@ -87,10 +94,12 @@ def wrapper_method_dependencies(module, freeze, wrapper_classes, factor_classes)
             [
                 name,
                 freeze(function),
-                wrapper_namespace_dependencies(function, name, is_lora, freeze),
+                wrapper_namespace_dependencies(
+                    function, name, is_lora, freeze, is_reference=is_reference
+                ),
             ]
         )
-    if is_lora:
+    if is_lora or is_reference:
         # super() resolves these parent bodies on unselected ports. Binding the
         # selected override and a class-cell identity alone misses that route.
         for name in ("_bind_checkpoint_block", "_run_decoder_layer"):

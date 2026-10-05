@@ -127,9 +127,15 @@ def test_mount_validates_all_targets_before_publication():
     assert wrapper.reference is previous
 
 
-def test_inventory_remains_explicitly_unqualified():
+def test_checkpoint_forward_still_denies_missing_inventory():
+    wrapper = fake_wrapper().train()
     with pytest.raises(CheckpointExecutionError, match="inventory"):
-        fake_wrapper().enable_checkpoint_inventory()
+        with wrapper.checkpoint_session() as session:
+            wrapper(
+                input_ids=torch.ones(1, 2, dtype=torch.long),
+                use_cache=False,
+                checkpoint_session=session,
+            )
 
 
 def test_zero_reference_preserves_base_projection_attention_and_cache_values():

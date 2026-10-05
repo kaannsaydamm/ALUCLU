@@ -2,7 +2,7 @@
 
 from functools import partial
 
-from .checkpoint_execution import CheckpointExecutionError
+from .checkpoint_execution import CheckpointController, CheckpointExecutionError
 
 
 def _wrapper_fingerprint(owner):
@@ -21,7 +21,10 @@ def enable_wrapper_inventory(owner):
     This does not certify caller callbacks or authorize an actual model run.
     """
     owner._assert_checkpoint_mutation_allowed()
-    controller = owner._checkpoint_controller
+    # Do not invoke a class shadow/property before schema inspection rejects it.
+    controller = owner.__dict__.get("_checkpoint_controller")
+    if type(controller) is not CheckpointController:
+        raise CheckpointExecutionError("owned exact wrapper controller required")
     getter = controller.state_fingerprint_getter
     if getter is None:
         getter = partial(_wrapper_fingerprint, owner)
