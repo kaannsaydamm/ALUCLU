@@ -10139,3 +10139,45 @@ Task 2 sensorium/recollection gate: CLEAN
 - Final Ruff format/check and git diff --check passed; final source/tests hashes
   unchanged. Relevant plan/review/provenance, RED and positive XML evidence
   retained together. Scoped commit/push follow; full unified goal remains active.
+
+### Checkpoint167 - local manifest publication (in progress)
+
+- Prior166 committed/pushed6591de9, current Desktop worktree clean. Full unified
+  objective reread. Inspected atomic_write_bytes: Windows MoveFileExW write-through,
+  POSIX directory-sync helper can skip directory open failures; not independent
+  freshness or blanket power-loss qualification. Plan explicit external current
+  root, owner-lock CAS, exact prepared publication and separate same-candidate
+  reconciliation; no auto latest/adoption/new generation on reconciliation.
+  Prospective contract and RED tests added before source. Real process-kill/
+  failure boundaries and whole writer integration still required, not inferred.
+- REDv1 actualpytest2 missingmodule personally consumed. Added bounded canonical
+  owner envelope, explicit genesis, pure exact preparation, locked old-byte CAS,
+  full166extension verification before atomic replacement, expected-root reads
+  and separate identical-candidate reconciliation. External monotone root and
+  owner-locked page mutations remain prerequisites, not enforced by journal API.
+- Focusedv2 actualpytest0/14tests personally consumed. Expanded20tests include
+  two cooperating competing publishers/exact one acknowledgement, fully valid
+  rewritten page rejection, owner/lock hardlinks and two fresh-process abrupt
+  exits immediately before/after publication (childexit73). Focusedv3 original
+  92245 terminal actualpytest0,20/0/0/0,9.964s, XML SHA
+  a4761e22b08bba082f9840408eb21d5cde0daffb19968d70d281f440ad1ff2d7.
+  These process boundaries do NOT qualify interruption inside fsync/replacement.
+  Independent code review initial modelcapacity error; sameGPT6.1Sol retry,
+  architecture lane dispatched. No unavailable-review fallback or approval.
+- Both independent GPT6.1Sol reviews returned matching final hashes: codeAPPROVE,
+  localCAS/reconciliation architectureCLEAR with required WATCH for crash/platform
+  durability, owner-locked page integration, stronger rehashed-tamper and controlled
+  serialization tests. Whole launch readiness BLOCK. Exact restart boundaries
+  remain limited before/after publish, not mid-write. Regression original25240
+  running54targets on frozen final bytes; no inferred terminal/PASS.
+- Regression original25240 terminal actualpytest0 personally consumed and XML
+  personally parsed:1685total/0failures/0errors/1skip,102.638s (1684passed), only
+  nativePOSIXFIFO unavailable. XML SHA
+  0049e93bb1595d384c8c08e1bd6fbfcb28923953efa2a4b71bc98fa3ab1a73ce.
+  Final source/tests unchanged and Ruff format/check/diffchecks passed. Scoped
+  local publication CAS/reconciliation verified, NOT crash-qualified/integrated
+  owner-locked writer or independently fresh witness. Next same subsystem work:
+  valid-root wrong-envelope/serialization-mutant controls then mid-write fault/
+  process boundaries and owner-locked page writer. Original resource accounting,
+  actual model/neural gates and native160 remain OPEN. Program active; scoped
+  component and negative/positive evidence commit/push follow.
