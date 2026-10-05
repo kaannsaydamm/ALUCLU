@@ -11235,3 +11235,42 @@ Task 2 sensorium/recollection gate: CLEAN
   GPU budget/start-clock authority still unresolved, draft NOT adopted. Original
   scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
   unchanged. Full goal ACTIVE; no broad suite/portability or neural-learning PASS.
+
+### Checkpoint194 - prospective E3 stress implementation boundary
+
+- Previous193 committed/pushed84581dc; clean Desktop verified, full objective
+  reread. Previous turn made authoritative fresh-process test/evidence progress.
+  Inspected current qualification/factory/input/observation/accumulation/resource
+  modules and original implementation detail sectionE. No model/tokenizer/assets/
+  CUDA/actual-host invocation, installs, scientific adoption or budget change.
+- Verified mismatch rather than blindly reusing D: parity inputs accept32/64,
+  observe_accumulation requires common64 and nonzero factors, step_accumulation
+  makes fresh step1 optimizer. E3 requires common4096, seededA/B0, TWO16microbatch
+  updates with ONE retained optimizer. Existing CPU step1 resume codec is not a
+  CUDA checkpoint route. Keep D/codec semantics unchanged; separate E3 path needed.
+- New prospective contract specifies immutable StressInput/token schedule,
+  pinnedvocab49152/EOS0, bounded complete framing/candidates, longest-candidate
+  reserve within4096 and honest shorter actual sequence lengths. Frozen16safe/
+  vulnerable alternating schedule reused across2updates, complete supervision,
+  no truncation/padding to manufacture effective4096 length or held-out/task access.
+- Separate trusted executor is still unimplemented: seeded full120 A/B0 identity,
+  one wrapper/optimizer,32sequential loss/16 forward/backward steps, lease exit
+  before fixedclip/step, complete step1/2 state and frozenbase invariants. Present
+  finite gradients required; zeroAgradients are valid in initialB0step, unlike D's
+  nonzero-state rule. Partial attempted/completed counts and failure discard, not
+  rollback, remain implementation/test obligations. Pure tests cannot qualify E3.
+- Code-review skill: independent GPT6.1Sol code APPROVE/architecture CLEAR of
+  final design only, synthesis designAPPROVE. Parent/lanes matched final root
+  dae4d04805212dacacbd4d36a42eb7541faed0977db338876f82edcad7266f48.
+  Initial37c96root superseded by explicitEOS0/vocab49152;586e33root superseded
+  after parent found timing ambiguity. Final original30min wrapperinclusive
+  terminalverification deadline reserves preflight/verify/cleanup, no renewedclock
+  afterload. Emergencycleanuptail stays charged and INVALID, not PASS/extension.
+- This is new engineering design, not runtime/E3 acceptance or neural capability.
+  Actual-host q/v parity/invocation freeze and historical resource authority remain
+  OPEN; accounting draft remains NOT adopted/unknown600GPUhour/first45dayclock.
+  No tests rerun because changes are prospective docs/attributes/status only;
+  previous364-case execution remains scoped checkpoint193 evidence, not194runtime.
+  Original scientificplan SHA0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+  personally rehashed unchanged. Next pure separateStressInput TDD can proceed
+  without launching host/tokenizer/GPU. Full unified objective remains ACTIVE.

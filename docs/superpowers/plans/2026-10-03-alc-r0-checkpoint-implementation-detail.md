@@ -262,6 +262,12 @@ After complete actual-host parity, declare exact-byte launcher and run:
   launcher descendants and drain/timeout cleanup. This is trusted Windows fixture
   consistency, not hostile process attestation, complete dependency certification,
   actual-host provenance, GPU fit, stochastic resume or learned capability.
+  Checkpoint194 specifies a separate prospective E3 token/executor contract in
+  `2026-10-05-alc-r0-e3-reference-stress-contract.md`, not an executable launcher.
+  Existing D length32/64/nonzero/new-step1 helpers cannot implement common4096
+  seeded A/B0 two-update stress without changing their contract. Separate typed
+  input schedule and persistent optimizer execution are required; no changes to
+  D/scientific grids or resource authority. E3 remains unimplemented/unqualified.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
