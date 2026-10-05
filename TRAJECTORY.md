@@ -11004,3 +11004,47 @@ Task 2 sensorium/recollection gate: CLEAN
   accumulation integration and separately design bounded optimizer-state resume
   before claiming continuation after remount. Full objective ACTIVE; resource
   authority, actual-host qualification/E3/neural capability/.alc remain OPEN.
+
+### Checkpoint189 - full fake q/v fixed16-microbatch accumulation integration
+
+- Previous188 committed/pushed3a9ea34; clean Desktop verified and full objective
+  reread. Previous turn made authoritative integration/evidence progress. Pending
+  accounting-method draft is NOT adopted; global real-host/GPU launch remains
+  blocked, no actual assets/task data/held-out evaluation or E3 launched.
+- Added test-only full-wrapper integration of existing run_accumulation_pair.
+  Retains30 independent fake decoder q/v projections; before observation/wrapper
+  creation, installs affine-free RMSNorm576eps1e-5 to normalize fake sublayer
+  inputs (not proof globally bounded residuals). No additional norm parameters,
+  no production source/gradient rule/grid/threshold change. Explicit fakevariant
+  randomweights/linearMLP/fakerotary/vocab8/type-substituted host, NOT SmolLM2.
+- Immutablecommon62-token prompt plus1/2-token candidates yields63/64 unpadded
+  sequences, alternating16. Factory makes separate seeded nonzero q/v arms over
+  one frozen base; unchanged paired pipeline compares full preclip observation/
+  gradients BEFORE either fixedclip/AdamWstep, then complete120factor/moment state.
+  Test checks16records/fixturesequence,step1,finite averagedloss,aggregatefactor
+  recordchange/equality,quiescentcontroller,baseparameter/bufferdigest and nograd.
+- Independent GPT6.1Sol code APPROVE/architecture WATCH,no scoped blocker;
+  synthesis COMMENT, not merge-ready. Exact reviewed test root matched parent
+  c969d058eb33ce623965fd8293cca1c24205d8478d767a8e30e4809f0d19b8b5.
+  WATCH: changed syntheticnormvariant not officialarchitecture; narrowCPU/nonzero/
+  unpadded/sequential16/oneupdate matrix not padded/pending/GPU/BF16/4096fit;
+  aggregatechange not everytensor/elementchanged; sharedhelper not independent
+  oracle/E3/neurallearning/optimizerresume/freshprocess evidence.
+- Focused1/0/0/0 observed exit0,342.561s; XML personally parsed/rehashed
+  64ba90a9888442ef0db69428fa9f9a7437b7dc517752cc28d830b539bbfe43f8.
+  Initial integration already GREEN; no artificialRED or productionrepair claim.
+  Same live process consumed through exit; no timeout-triggered restart. Exact
+  existing per-factor nonzero rules accepted this declared fakefixture. This is
+  integration evidence, not mathematical global residual bound or learning.
+  Seventeen-file related CPU regression observed exit0,418/0/0/0,475.392s;
+  XML personally parsed/rehashed
+  bc78f81aa26a5f5f9f75f428cfee674a1855309fad43ffa75af88d56e21f5656.
+  Same live handle consumed through terminal exit, no restart; final test bytes
+  still match both independent reviewer roots. No source/test edits while live.
+  Ruffformat/check --no-cache passed and trackedLF added. Original scientificplan
+  0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b unchanged.
+  Git diff --check passed. Checkpoint189 scoped engineering integration complete,
+  not learning/E3/actual-host PASS. Next bounded optimizer-state resume needs
+  explicit design, malformed/state-binding rejection and continuation parity;
+  factor-only remount188 is not a substitute. Historical resource authority and
+  original neural-capability gates remain OPEN; full objective ACTIVE.

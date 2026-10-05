@@ -224,6 +224,13 @@ After complete actual-host parity, declare exact-byte launcher and run:
   Single-forward updates bypass the16-microbatch runner; factor-only remount
   does not restore optimizer moments or prove continued training/process restart.
   Actual host, E3 fit, learning/generalization and final .alc remain unqualified.
+  Checkpoint189 tests the unchanged16-microbatch accumulation pair pipeline
+  over distinct30-block fake CPU q/v wrappers. Affine-free RMSNorm is installed
+  before observation to normalize synthetic sublayer inputs; random fake weights,
+  linear MLPs, fake rotary/vocab and host type substitution remain explicit.
+  Common62-token prompt plus1/2-token candidates yields63/64 unpadded sequences.
+  This nonzero-factor/one-update engineering fixture is not official host parity,
+  E3/resource qualification or learning. Execution evidence belongs in trajectory.
   This implementation status does not revise the declared experiment. Before resource
   qualification can be called whole-candidate complete, that path must receive
   separate TDD/exact-byte review and one declared common4096 two-update/16-accum
