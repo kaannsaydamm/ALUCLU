@@ -10,7 +10,12 @@ from pathlib import Path
 
 from aluclu.cognition.persistence import resolve_ledger_path
 
-from .attempt_journal import AttemptJournal, JournalHead
+from .attempt_journal import (
+    _GENESIS_DOMAIN,
+    _RECORD_DOMAIN,
+    AttemptJournal,
+    JournalHead,
+)
 from .attempt_state import AttemptReplay, RunSpec, RunView
 from .canonical import (
     CanonicalEvidenceError,
@@ -133,6 +138,39 @@ def read_paged_history(
     """
     root = declaration_root(spec)
     heads = _manifest(manifest, expected_manifest_sha256, root)
+    return _read_pages(directory, spec, root, heads)
+
+
+def _prefix_head(identity: str, events: tuple[bytes, ...], count: int) -> JournalHead:
+    # Events come only from a fully verified journal page. Its exact canonical
+    # fixed-field record representation can be reconstructed without file repair.
+    digest = hashlib.sha256(_GENESIS_DOMAIN + identity.encode("ascii")).hexdigest()
+    byte_length = 0
+    for index in range(count):
+        line = (
+            canonical_json_bytes(
+                dict(
+                    version=1,
+                    journal_id=identity,
+                    sequence=index + 1,
+                    previous=digest,
+                    event=parse_canonical_json(events[index]),
+                )
+            )
+            + b"\n"
+        )
+        byte_length += len(line)
+        digest = hashlib.sha256(_RECORD_DOMAIN + line).hexdigest()
+    return JournalHead(count, byte_length, digest)
+
+
+def _read_pages(
+    directory: Path,
+    spec: RunSpec,
+    root: str,
+    heads: tuple[JournalHead, ...],
+    previous_heads: tuple[JournalHead, ...] = (),
+) -> RunView:
     if not isinstance(directory, Path) or not directory.is_absolute():
         raise PagedHistoryError("absolute page directory Path required")
     directory = resolve_ledger_path(directory / "page-0000.jsonl").parent
@@ -146,8 +184,46 @@ def read_paged_history(
             directory / f"page-{index:04d}.jsonl", page_identity(root, index, previous)
         )
         snapshot = journal.read(head)
+        if index == len(previous_heads) - 1:
+            expected_prefix = previous_heads[-1]
+            actual_prefix = _prefix_head(
+                journal.journal_id, snapshot.events, expected_prefix.count
+            )
+            if actual_prefix != expected_prefix:
+                raise PagedHistoryError("candidate changed prior last-page prefix")
         for event in snapshot.events:
             replay.append(event)
         previous = head
     _inventory(directory, len(heads))
     return replay.snapshot()[0]
+
+
+def verify_paged_extension(
+    directory: Path,
+    spec: RunSpec,
+    previous_manifest: bytes,
+    previous_sha256: str,
+    candidate_manifest: bytes,
+    candidate_sha256: str,
+) -> RunView:
+    """Verify a strict append-only candidate, not publish or adopt it.
+
+    Both expected roots require independent current owner/review binding. This
+    does not prove fsync, absence of an omitted prior attempt, freshness or approval.
+    No-op publication/reconciliation belongs to the separate durable owner.
+    """
+    root = declaration_root(spec)
+    previous = _manifest(previous_manifest, previous_sha256, root)
+    candidate = _manifest(candidate_manifest, candidate_sha256, root)
+    if (
+        len(candidate) < len(previous)
+        or sum(head.count for head in candidate) <= sum(head.count for head in previous)
+        or candidate[: max(0, len(previous) - 1)] != previous[:-1]
+    ):
+        raise PagedHistoryError("candidate is not a strict frozen-page extension")
+    if previous and (
+        candidate[len(previous) - 1].count < previous[-1].count
+        or candidate[len(previous) - 1].byte_length < previous[-1].byte_length
+    ):
+        raise PagedHistoryError("candidate shrank prior last page")
+    return _read_pages(directory, spec, root, candidate, previous)

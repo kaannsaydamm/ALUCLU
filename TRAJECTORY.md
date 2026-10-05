@@ -10102,3 +10102,40 @@ Task 2 sensorium/recollection gate: CLEAN
   freshness/witness publication/uncertainty/rotation/reservations/globaloriginal
   accounting/matrix completeness/launch and native160 remain OPEN. Program
   active; no actual model/learning PASS. Scoped commit/push follow.
+
+### Checkpoint166 - append-only publication precondition (scoped verified)
+
+- Prior165 committed/pushed9ab3889, clean Desktop worktree verified. Full goal/
+  memory evidence boundary reviewed. Inspected cognition RecordKeyStore receipts
+  and ledger anchor/recovery format: not a drop-in R0 manifest witness. Before
+  publisher adoption/reconciliation add strict manifest extension proof, preserving
+  prior last-page prefix and all frozen earlier heads. Prospective plan and RED
+  tests added before API; no owner writes or auto-adoption/launch inference.
+- REDv1 actualpytest2 missingAPI personally consumed. Added strict pre-I/O old/
+  candidate manifest checks, immutable earlier-page heads, actual verified page
+  prefix reconstruction with original journal domains/count/byte/digest and
+  shared165 all-page private replay. No partial result or candidate adoption.
+- Focusedv2 original39579 actualpytest0 personally consumed, added actual
+ 65536record prior-prefix verification to existing65536+4fixture before final
+  byte review/regression. Original journal domain constants reused (internal
+  format coupling explicit), no new guessed framing or auto-publication.
+- Final focusedv3 original77300 actualpytest0 personally consumed:49/0/0/0,
+  32.346s, XML SHA54051cbbed0d02b14ec70d23f3537281cf9ed40d65633b6afc43cc2d754291c3.
+  Both independent GPT6.1Sol lanes confirmed final source/tests hashes; code
+  APPROVE, strict-extension component architecture CLEAR. Format coupling and
+  bounded prefix reconstruction cost WATCH; durable publication/launch BLOCK.
+- Regression original61627 terminal actualpytest0 personally consumed and XML
+  personally parsed:1665total/0failures/0errors/1skip,145.601s (1664passed).
+  Only native POSIXFIFO unavailable on Windows; same three actualasset/GPU
+  deselections. XML SHA6266b538eea171a447b2d0ba5a6952646d43a6ff987dc9a5e4b4b908a5a23337.
+  Source/tests rehashed unchanged after terminal; large65536record prefix is
+  actual functional fixture, not publication throughput/RSS qualification.
+  Reviewer finalization messages used '1665passed' for parent's total count;
+  corrected here from personally parsed JUnit:1664passed+1skip, not1665passed.
+  Scoped166 acceptance only. No-op/idempotence owner semantics, durable current
+  witness publication/reconciliation, rotation, reservations, original historical
+  accounting, source/runtime/assets/review authority, native160 and real neural
+  gate remain OPEN. No model/tokenizer/corpus/GPU invoked; no learning PASS.
+- Final Ruff format/check and git diff --check passed; final source/tests hashes
+  unchanged. Relevant plan/review/provenance, RED and positive XML evidence
+  retained together. Scoped commit/push follow; full unified goal remains active.

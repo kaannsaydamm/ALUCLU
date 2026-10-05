@@ -12,6 +12,7 @@ from aluclu.alc_r0.paged_history import (
     declaration_root,
     page_identity,
     read_paged_history,
+    verify_paged_extension,
 )
 
 ROOT = "a" * 64
@@ -285,3 +286,124 @@ def test_real_page_record_boundary_keeps_all_work_and_reference_rules(tmp_path):
     assert result.attempts[0].events == events
     assert result.attempts[0].work == tuple((w, ROOT) for w in spec.work_ids)
     assert result.attempts[0].gpu_ns == 3
+    previous = canonical_json_bytes(
+        dict(version=1, spec_sha256=root, pages=[asdict(heads[0])])
+    )
+    extended = verify_paged_extension(
+        tmp_path,
+        spec,
+        previous,
+        hashlib.sha256(previous).hexdigest(),
+        data,
+        hashlib.sha256(data).hexdigest(),
+    )
+    assert extended == result
+
+
+@pytest.mark.parametrize("rotate", [False, True])
+def test_extension_grows_last_page_and_optionally_rotates(tmp_path, rotate):
+    (old, old_root), heads = write_pages(tmp_path, (history()[:2],))
+    journal = AttemptJournal(
+        tmp_path / "page-0000.jsonl", page_identity(declaration_root(SPEC), 0, None)
+    )
+    heads[0] = journal.append(heads[0], history()[2])
+    if rotate:
+        journal = AttemptJournal(
+            tmp_path / "page-0001.jsonl",
+            page_identity(declaration_root(SPEC), 1, heads[0]),
+        )
+        head = journal.create()
+        for event in history()[3:]:
+            head = journal.append(head, event)
+        heads.append(head)
+    else:
+        for event in history()[3:]:
+            heads[0] = journal.append(heads[0], event)
+    new, new_root = encode(heads)
+    result = verify_paged_extension(tmp_path, SPEC, old, old_root, new, new_root)
+    assert result == replay_attempts((SPEC,), history())[0]
+
+
+def test_extension_from_empty_genesis_keeps_entire_candidate(tmp_path):
+    old, old_root = encode(())
+    (new, new_root), _ = write_pages(tmp_path, (history()[:2], history()[2:]))
+    assert (
+        verify_paged_extension(tmp_path, SPEC, old, old_root, new, new_root).state
+        == "PASS"
+    )
+
+
+def test_extension_preserves_frozen_earlier_page(tmp_path):
+    (old, old_root), heads = write_pages(tmp_path, (history()[:2], history()[2:3]))
+    journal = AttemptJournal(
+        tmp_path / "page-0001.jsonl", page_identity(declaration_root(SPEC), 1, heads[0])
+    )
+    for event in history()[3:]:
+        heads[1] = journal.append(heads[1], event)
+    new, new_root = encode(heads)
+    assert (
+        verify_paged_extension(tmp_path, SPEC, old, old_root, new, new_root)
+        .attempts[0]
+        .events
+        == history()
+    )
+
+
+def test_valid_rewritten_last_page_is_not_an_extension(tmp_path):
+    from aluclu.alc_r0.canonical import parse_canonical_json
+
+    (old, old_root), _ = write_pages(tmp_path, (history()[:2],))
+    changed = parse_canonical_json(history()[0])
+    changed["source_sha256"] = "b" * 64
+    rewritten = (canonical_json_bytes(changed),) + history()[1:]
+    (tmp_path / "page-0000.jsonl").unlink()  # Own corruption fixture, not recovery.
+    (new, new_root), _ = write_pages(tmp_path, (rewritten,))
+    assert read_paged_history(tmp_path, SPEC, new, new_root).state == "PASS"
+    with pytest.raises(PagedHistoryError, match="prefix"):
+        verify_paged_extension(tmp_path, SPEC, old, old_root, new, new_root)
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "noop",
+        "fewer_pages",
+        "frozen_head",
+        "shrunk_last",
+        "wrong_old_root",
+        "wrong_new_root",
+    ],
+)
+def test_invalid_extension_preflight_does_not_access_absent_directory(tmp_path, change):
+    from aluclu.alc_r0.attempt_journal import JournalHead
+
+    heads = [JournalHead(2, 200, ROOT), JournalHead(2, 200, "b" * 64)]
+    old, old_root = encode(heads)
+    new_heads = heads + [JournalHead(1, 100, "c" * 64)]
+    if change == "noop":
+        new_heads = heads
+    elif change == "fewer_pages":
+        new_heads = [JournalHead(5, 500, ROOT)]
+    elif change == "frozen_head":
+        new_heads[0] = JournalHead(2, 200, "d" * 64)
+    elif change == "shrunk_last":
+        new_heads[1] = JournalHead(1, 100, "b" * 64)
+    new, new_root = encode(new_heads)
+    if change == "wrong_old_root":
+        old_root = ROOT
+    elif change == "wrong_new_root":
+        new_root = ROOT
+    with pytest.raises(PagedHistoryError):
+        verify_paged_extension(tmp_path / "absent", SPEC, old, old_root, new, new_root)
+    assert not list(tmp_path.iterdir())
+
+
+def test_extension_semantic_invalid_tail_returns_no_view(tmp_path):
+    (old, old_root), heads = write_pages(tmp_path, (history()[:2],))
+    journal = AttemptJournal(
+        tmp_path / "page-0000.jsonl", page_identity(declaration_root(SPEC), 0, None)
+    )
+    heads[0] = journal.append(heads[0], history()[3])  # Skips declared w1.
+    new, new_root = encode(heads)
+    with pytest.raises(AttemptStateError):
+        verify_paged_extension(tmp_path, SPEC, old, old_root, new, new_root)
