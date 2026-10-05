@@ -9899,3 +9899,69 @@ Task 2 sensorium/recollection gate: CLEAN
   exact invocation binding and actual D/E/neural capability remain pending.
   Next implement durable attempt/reservation journal under original cardinality
   and fsync-before-launch requirements, preserving all negative outcomes.
+
+### Checkpoint162 — durable attempt journal storage, in progress
+
+- Read original R0 resource/attempt/state rules and existing cognition persistence
+  and R0 canonical implementation. No prior research evidence reset. Prospective
+  storage design and RED fixtures added; generic append layer precedes typed
+  attempt/reservation reducer and actual launch integration. External monotone
+  head witness remains required: hash chain alone is not rollback protection.
+  Tests cover restart, optimistic exclusion, tail corruption/rollback, invalid
+  events/heads, fsync no-ack and two owned child writers; no real assets/GPU.
+- REDv1 actualpytest2 personally consumed, missing attempt_journal module during
+  collection. Added bounded canonical storage using existing lock/path/atomic
+  creation primitives; full-chain expected-head comparison, flush/fsync-before-
+  acknowledgement and immutable exact event snapshots. No state/launch authority.
+- Focusedv2 original84301 terminal actualpytest0/22controls. Extended tests for
+  existing-empty/no-reset, missing/read-no-create, complete-head identity, record
+  tampering/reordering, sparsefile/record/count ceilings, hardlink/unsafe names,
+  thread exclusion and actual fsync acknowledgement order. No source semantics
+  change. Expanded focused run and independent review precede acceptance.
+- Expandedv3 original45056 terminal actualpytest1: unsafe filename fixture a:b
+  expected ValueError but Windows parsed it as drive-relative and implementation
+  correctly denied with JournalError. Preserved failure; normalized filename
+  validation errors to JournalError and fixture to that explicit API contract.
+  No unsafe filename accepted, threshold weakened or scientific result changed.
+- Final focusedv4 original43476 actualpytest0,42tests/0failures/0errors/0skipped,
+  16.258s XML SHAe28dee07301c316b2481efbd60b30a5028451181de20aaeed0de3d9be189b295.
+  Preserved REDv1 1error/actual2, v2 22/0 actual0 and expandedv3 42/1 actual1.
+  Ruff check/formatcheck pass. Two independent GPT6.1Sol lanes reviewing exact
+  source996981c0062268086483aeecc0baf7d63593559236d123651e9025b7294653fb
+  testsbcfdb37549cf02123eff7dd80b28184a87866ca3b1cb7c887fffc108f6682469.
+  Relevant regression adds journal storage and reused cognition persistence to
+  checkpoint161 scope, still excludes the three actual-asset/GPU cases.
+- Independent code REQUESTCHANGES P2: rb open precedes regularfile check, so a
+  POSIX FIFO could block before rejection. Accepted repair: preopen lstat plus
+  existing descriptor fstat under lock. P3 concurrency scheduling needs controlled
+  interleaving/mutant coverage. Architecture scopedCLEAR but external head crash
+  reconciliation, cumulative fullscan cost, package coupling and launch authority
+  WATCH/BLOCK remain. Preserve current running v5 bytes/result before repair.
+- Original v5 regression22100 terminal actualpytest0 personally consumed before
+  repair; positive regression does not waive review P2. Added preopen nonregular
+  RED fixture, POSIX FIFO platform fixture (Windows cannot establish its native
+  behavior), and controlled two-writer interleaving plus isolated lock-removal
+  mutant requiring duplicate acknowledgements/sequence corruption to be exposed.
+- v5 XML personally parsed1546/0/0/0,150.717s SHA
+  cb3dec28b6a76a41a7e18b6b1a1ce3b364d07afe49dd55bd707eecdaa61cd12f.
+  Nonregular REDv6 actualpytest1: Windows directory reached OS open and raised
+  PermissionError instead of explicit JournalError. Added lstat regular/singlelink
+  rejection before open, retaining descriptor fstat under exclusive lock.
+- Repaired focusedv7 original43953 actual0; XML46tests/0failures/0errors/1skip,
+  19.107s SHA51cc26e60c7636e4a0eb7d37e97e39f4fdba89abe2b324e65e4a74dcfdbe63b7.
+  Skip is nativePOSIXFIFO only; no broad portability conclusion. Controlled
+  interleaving succeeds with lock and exposes duplicate sequence/acks when an
+  isolated test mutant removes it. Final source2629b849...775543 and tests
+  9980e212...83eda independently verified by both GPT6.1Sol lanes; codeAPPROVE,
+  architecture scopedCLEAR. Final regression92288 launched on repaired bytes;
+  no terminal claim. Added exactbyte attributes/provenance preserving negatives.
+- Final regression92288 terminal personally consumed actualpytest0; XML1550/
+  0failures/0errors/1skip,123.383s (1549passed). Only nativePOSIXFIFO skipped.
+  SHA5d8f3d780e6f09e969610f0686160f44558bebe695e02fe004b348fed661666d;
+  verified46journal/33ownedprocess/70resource/12persistence cases and unchanged
+  reviewed source/test hashes. Ruff final formatcheck passed, disk59.737GiBfree.
+  Storage component accepted on observedWindows scope, no broadportability or
+  neural learning claim. Native crash160 OPEN, no actual-host run authorized.
+  Next: typed declared-run/attempt reducer with original retry/resume limits,
+  outstanding reservation/measurement accounting and external monotone-head
+  uncertainty reconciliation before binding actual invocations.
