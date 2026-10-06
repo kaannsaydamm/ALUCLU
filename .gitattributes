@@ -382,3 +382,6 @@ results/alc_r0_reference_official_integration* -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/reference_parity_receipt.py -text
 tests/test_alc_r0_reference_parity_receipt.py -text
 results/alc_r0_reference_parity_receipt* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_parity_cell.py -text
+tests/test_alc_r0_parity_cell_failure.py -text
+results/alc_r0_parity_cell_failure* -text whitespace=-blank-at-eol

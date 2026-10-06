@@ -11725,3 +11725,36 @@ Task 2 sensorium/recollection gate: CLEAN
   Checkpoint202 bounded synthesized receipt VERIFIED. Next fixed q/v factory
   and guarded execution composition, preserving failures/current/unrun; actual
   numerical integration/host/resource/accounting/learning remain OPEN.
+
+### Checkpoint203 - parity cell bounded failure journal IN PROGRESS
+
+- Parent7a855a4 clean Desktop checkout; full objective and q/v contract reread.
+  Reuse generic run_parity_cell rather than duplicate numerical engine. Found
+  generic exceptions currently discard completed singles/current stage. Add
+  bounded typed failure evidence to that existing engine first; preserve all
+  schedules/comparators/gradients/optimizer ordering. No execution callback,
+  retry, tolerance change or source/model asset acquisition introduced.
+  Then exact fixed q/v binding and separate receipt composition remain next.
+- RED tool46b99c observedexit1;16tests with15failures missing journal API and
+  one unchanged success path. Added typed failure/prefix/current/unrun, stages
+  across singles/pending/delegated accumulation/finalbase. Preserve original
+  cause with ObservationError/KeyboardInterrupt subclasses and gradient cleanup.
+  Accumulation remains delegated-stage granularity, not microbatch or timeout
+  journal; exact internal-stage evidence needs a subsequent extension.
+- Regressionv1 tool64627 observedexit0,127/0/0/0,12.805s; XML
+  f46685402702592bd2268f29a3964c733314b9b6759d64887e99f9d93e39a49b.
+  Expandedv2 tool57499 observedexit0,377/0/0/0,33.910s; XML
+  92b298d42979686a4cb10dfce9883aefa8e416c1fb6bd24bf9b9ba889e6f4a93.
+  Source39625fc9e642918154a4e87004493f5403662134aa2739f5938312620b5ba732
+  tests830beee39ded291359ab7f18f58a752bb2cda76b702eac6eadf07d896d92e1c4
+  rehashed unchanged; no relevant livepytest. Independent codeAPPROVE and
+  architectureWATCH, combinedCOMMENT, not merge-ready APPROVE.
+- WATCH retained: bounded .failure is not bounded exception/traceback retention;
+  outer owner persists scalar journal/text then discards exceptions/wrappers or
+  ends attempt process. No rollback/resource release claimed. Completed/unrun
+  are SINGLE rows only; first candidate member is not full pair-ranking proof,
+  and empty unrun/18rows never establishes complete-cell PASS. Only successful
+  ParityCell return does. Stage remains essential on late failure. Internal
+  accumulation/microbatch/clip/step journaling still OPEN before full q/v gate.
+  Checkpoint203 bounded generic failure substrate VERIFIED only; actual-host,
+  fixed q/v composition, resource/accounting and durable learning remain OPEN.

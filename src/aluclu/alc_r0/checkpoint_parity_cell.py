@@ -51,6 +51,57 @@ class ParityCell:
     base_digest: str
 
 
+SINGLE_SCHEDULE = tuple(
+    (state, repeat, index)
+    for state, repeat in (("zero", 0), ("nonzero", 0), ("nonzero", 1))
+    for index in range(6)
+)
+
+
+@dataclass(frozen=True)
+class ParityCellFailure:
+    """Bounded observations only; not rollback or a durable process-kill journal."""
+
+    stage: str
+    completed: tuple[CaseComparison, ...]
+    current: tuple[str, int, int] | None
+    unrun: tuple[tuple[str, int, int], ...]
+    pending_losses: tuple[float, float] | None
+
+
+class ParityCellError(ObservationError):
+    def __init__(self, message, failure):
+        super().__init__(message)
+        self.failure = failure
+
+
+class ParityCellInterrupted(KeyboardInterrupt):
+    def __init__(self, message, failure):
+        super().__init__(message)
+        self.failure = failure
+
+
+class _Progress:
+    def __init__(self):
+        self.stage = "single_factory_off"
+        self.completed = ()
+        self.current = SINGLE_SCHEDULE[0]
+        self.attempted = False
+        self.pending_losses = None
+
+    def failure(self):
+        next_index = len(self.completed) + int(
+            self.current is not None and self.attempted
+        )
+        return ParityCellFailure(
+            self.stage,
+            self.completed,
+            self.current,
+            SINGLE_SCHEDULE[next_index:],
+            self.pending_losses,
+        )
+
+
 def _schedule(fixtures):
     if type(fixtures) is not tuple or len(fixtures) != 6:
         raise ObservationError("six ordered immutable D fixtures required")
@@ -89,6 +140,7 @@ class _FactoryGuard:
         self.parameters = {}
         self.base = None
         self.states = {}
+        self.progress = _Progress()
 
     def make(self, state, checkpoint):
         wrapper = self.factory(state, checkpoint)
@@ -183,23 +235,32 @@ def _singles(guard, fixtures):
     for state, repeat in (("zero", 0), ("nonzero", 0), ("nonzero", 1)):
         scores = []
         for index, fixture in enumerate(fixtures):
+            guard.progress.current = state, repeat, index
+            guard.progress.attempted = False
+            guard.progress.stage = "single_factory_off"
             off = guard.make(state, False)
+            guard.progress.stage = "single_off"
+            guard.progress.attempted = True
             reference = observe_forward_backward(
                 off,
                 fixture,
                 checkpoint=False,
                 state=state,
             )
+            guard.progress.stage = "single_factory_on"
             on = guard.make(state, True)
+            guard.progress.stage = "single_on"
             actual = observe_forward_backward(
                 on,
                 fixture,
                 checkpoint=True,
                 state=state,
             )
+            guard.progress.stage = "single_compare"
             compare_observations(reference, actual, exact=guard.exact)
             if state == "nonzero":
                 if repeat:
+                    guard.progress.stage = "single_repeat"
                     # Same-mode repetition uses the existing complete comparator;
                     # the metadata flag alone is normalized, never tensor bytes.
                     old_off, old_on = repeats[index]
@@ -212,10 +273,12 @@ def _singles(guard, fixtures):
                 else:
                     repeats[index] = reference, actual
             scores.append((reference.candidate_score, actual.candidate_score))
+            guard.progress.stage = "single_order"
             if index % 2 and _order(tuple(s[0] for s in scores[-2:])) != _order(
                 tuple(s[1] for s in scores[-2:])
             ):
                 raise ObservationError("candidate ordering or exact tie changed")
+            guard.progress.stage = "single_receipt"
             records.append(
                 CaseComparison(
                     state,
@@ -227,6 +290,9 @@ def _singles(guard, fixtures):
                     reference.factor_digest,
                 )
             )
+            guard.progress.completed = tuple(records)
+    guard.progress.current = None
+    guard.progress.attempted = False
     return tuple(records)
 
 
@@ -237,6 +303,10 @@ def run_parity_cell(factory, fixtures, *, exact):
     labels/provenance must be authenticated externally. Success is one synthetic
     cell only, not full-matrix/actual-host/resource/scientific acceptance.
     No full logits, autograd graphs or optimizer objects survive in the receipt.
+    Execution failures now wrap the original cause in ObservationError or
+    KeyboardInterrupt subclasses with bounded progress; invalid admission still
+    fails before execution. Accumulation is one delegated stage, not a claim of
+    microbatch-level or durable timeout journaling. No retry or rollback occurs.
     """
     if not callable(factory) or type(exact) is not bool:
         raise ObservationError("callable factory and exact boolean required")
@@ -244,18 +314,26 @@ def run_parity_cell(factory, fixtures, *, exact):
     guard = _FactoryGuard(factory, exact)
     try:
         cases = _singles(guard, fixtures)
+        guard.progress.stage = "pending_factory_off"
         off = guard.make("nonzero", False)
+        guard.progress.stage = "pending_off"
         reference = observe_pending_pair(off, fixtures[:2], checkpoint=False)
+        guard.progress.stage = "pending_factory_on"
         on = guard.make("nonzero", True)
+        guard.progress.stage = "pending_on"
         actual = observe_pending_pair(on, fixtures[:2], checkpoint=True)
+        guard.progress.stage = "pending_compare"
         compare_pending_observations(reference, actual, exact=exact)
         pending = reference.summed_loss.item(), actual.summed_loss.item()
+        guard.progress.pending_losses = pending
         del reference, actual, off, on
+        guard.progress.stage = "accumulation"
         accumulation = run_accumulation_pair(
             lambda checkpoint: guard.make("nonzero", checkpoint),
             fixtures[2:4] * 8,
             exact=exact,
         )
+        guard.progress.stage = "final_base"
         if _base_digest(guard.base) != guard.signature[0]:
             raise ObservationError("base changed after complete cell")
         return ParityCell(
@@ -266,6 +344,12 @@ def run_parity_cell(factory, fixtures, *, exact):
             guard.count,
             guard.signature[0],
         )
+    except KeyboardInterrupt as exc:
+        guard.clear()
+        raise ParityCellInterrupted(str(exc), guard.progress.failure()) from exc
+    except Exception as exc:
+        guard.clear()
+        raise ParityCellError(str(exc), guard.progress.failure()) from exc
     except BaseException:
         guard.clear()
         raise
