@@ -12486,3 +12486,99 @@ Task 2 sensorium/recollection gate: CLEAN
   contracts are resolved. Combined draft-preservationAPPROVE, no launchpermit.
   Exact-byte Git attribute added; original matchedplan/runtime/tests unchanged.
   Next separate import-isolation prerequisite design, not guessed admissionpolicy.
+- Draft checkpoint committed3b9fe764e5a87937aaaf58a08dad363346068073/pushed;
+  d69b5a personallyverifiedremoteequal/clean. Import prerequisite sourceinspection
+  a3b2d1 distinguishes pure arithmetic from rfc8785canonical and eagercryptography
+  cognition chain. First shellread b95574 PowerShell braceparsererror, corrected
+  read1b5a3d thenbounded a3b2d1; no command/model execution fromfailedread.
+- Prepared separate import-isolation DRAFT: propose lazy allowlisted publicexports
+  for root/alc_r0 with unchanged __all__/objectidentity and explicit dependency-
+  error timing. No path-loader/policyduplication. Firststage only pureadmission
+  imports, fulljournalbootstrap stillOPEN. Freshprocess RED beforeedits, import
+  blockers, complete publicidentity/unknown/failurecache/submodule/thread tests,
+  regressions and independentreviews required. No runtime/test change or launch.
+- Import contract cf5e566e587f54b72c2a5383ef273f07af7af74c6fcad2f2017e8349ced5d114
+  received independent code APPROVE / architecture CLEAR for narrow implementation
+  readiness, with package-wide compatibility WATCH. Neither admits a test command
+  or real-host launch. Failure-cache, ordinary submodule and concurrent identity
+  checks remain mandatory; full journal bootstrap and launcher gates stay OPEN.
+- Prepared first RED test tests/test_alc_r0_import_isolation.py, SHA256
+  73ce8f6821a73dcb407810338a774d953115a9c8444339f4d1677d50b901c271.
+  Fresh -S child installs import denial before normal package imports, requires
+  zero third-party attempts/modules and unknown-history denial without guessed
+  accounting. Child timeout 30s; no model construction, assets or CUDA execution.
+  Existing two GPT6.1Sol lanes asked to review exact bounded single-test command.
+  No test executed or initializer changed yet; this test is not full API coverage.
+- Both lanes independently admitted the exact bounded first RED invocation:
+  code APPROVE and architecture CLEAR, no launch/research/API-completion claim.
+  Actual process terminal tool chunk39d496 exit1 observed personally. XML parsed
+  a15c2c: tests1/failures1/errors0/skipped0/time0.430s, SHA256
+  b31eeb488180766c9c578485888f96b3b4799e54f3b06b8892a1317bdb2a6e52.
+  Failure is genuine current eager chain aluclu -> cognition -> keys -> forbidden
+  cryptography import, not missing PYTHONPATH or collection failure. First boundary
+  defect reproduced before initializer edits. Original output and terminal result
+  persisted afterward as .observed.log/.exit.json, explicitly parent-observed and
+  not a child-created receipt. No assets/models/CUDA or scientific run occurred.
+  Next: pinned public export compatibility tests and static lazy mappings;
+  GREEN/regression/independent implementation review remain pending.
+- Prepared pinned public export fixture from unmodified HEAD3b9fe76 eager import
+  definitions and __all__ rosters: root53 imported exports plus version, R015.
+  Expanded freshprocess suite to13 cases: stdlib admission, unchanged roster/dir/
+  unknown handling, every direct-object identity/from/star import, failure/retry
+  without cached binding, submodule bothorders and concurrent same/different
+  export/directmodule resolution. No constructors/model assets/GPU operations.
+- Implemented only the two approved package initializer changes, static exact
+  module/symbol allowlists with normal importlib, successonly bindingcache and
+  nonresolving dir. No custom lock, file/pathloader or module substitution.
+  Source hashes f401c994192a755325b672638205c24d4db334540052457a023d787845366139
+  and af21f321d068a426f81352cd72b49d6e85d813c5b001a2b8c11c9c5683c4447c.
+  Test5454d5c2f2fc854517ea74bd1a595dc53f91b60f578c59692e12c3dd95e99940,
+  fixturea7a9339653345e1146b908181d2595eb2916d200b15e404ca6e75aeff532797a.
+  Two independent lanes requested implementation/compatibility review and exact
+  focused+admission+architecture command admission. No GREEN command run yet.
+- Both independent implementation lanes APPROVE/CLEAR and admitted targeted GREEN.
+  Ran exact command once, original native session14385 terminal chunkcec7af exit0.
+  Parsed XML personally6be2ea: tests87/failures0/errors0/skipped0/time24.317s,
+  SHA256 b21fdce34ae19e161c12b7122504b9e7546dec7ed51c18fc1590820f08600811.
+  Original output/observed terminal persisted after execution; no scientific claim.
+  Sources unchanged while LIVE. Remaining compatibility WATCH not erased by GREEN.
+- Added four CLI entrypoint fresh import-only cases after terminal, no main call;
+  test now d717f2d0995243373e06f2927b07a14cb9b31b3f498810909c1cd8f2263af4b3.
+  Ledger CLI legitimately may not import Torch; CUDA assertion conditional on
+  presence, not requiring computational dependencies to certify pure import.
+  Independently requested exact expanded14-file bounded CPU regression admission
+  and fullsuite-scope assessment. Existing realasset/GPU/scientific/longscale runs
+  not silently included; import checkpoint and full research acceptance distinct.
+- Both lanes admitted14-file regression and agreed fullsuite is not mandatory for
+  this explicitly scoped checkpoint, not broader merge/release/learning claims.
+  Original native session87679 terminal chunk834f15 actualexit0. Personally parsed
+  XML03e4c7:278tests/0failures/0errors/0skipped/47.913s; SHA256
+  ec386744c33fb53b35203fe75eb81b41853af59037786fe2f57ba1ed5c62ad57.
+- Postterminal Ruff check identified importorder/formatting only; corrected using
+  apply_patch/importorder and existing Ruff formatter. Final check+formatcheck
+  f8ff5e actualexit0, fourfiles alreadyformatted. Initial combinedcheck1de783
+  exit1 preserved as tooling failure; no tests or models launched by lint.
+  Finalbytes root8e9d02f68b1f56d232b557557d6fa602c7c02718e6a0dd16c01b9e6489b9df0f,
+  R0d6bc75a07db299686186873f268125a8423753e16a604e392e24d83daf0e44b2,
+  testbceadcc0c98af0b37542f208a417d94afa6b52dbaa3a76de958df91fbbe09ec2,
+  fixture55f1209d73b599a4ad6961cde6b36c830ce5cbda254f1b81ec749974553dc9ea.
+  Exactbyte independent recheck and finalfreshstem rerun admission requested;
+  prior results do not automatically certify these newly formatted bytes.
+- Exactbyte rereviews independently APPROVE/CLEAR; final invocation admitted.
+  Ran once originalsession8812, terminal83ada1 actualexit0 personally observed.
+  Final XML parsed1761bd:278/0/0/0/51.004s, SHA256
+  6e6e233d6f92d670a28a5a84517d08371dc35cc9aa0a83d485f50cef619783bf;
+  all four final source/test SHA values matched after execution. Combined output
+  and parentobserved terminal persisted honestly; no childexitreceipt invented.
+- Added scoped import runtime evidence, exact selected tests/commands/limits and
+  deferred fullsuite/realhost/journalbootstrap/research gates. Kept prospective
+  contract bytes unchanged; historical DRAFT status is not current runtime status.
+  Added -text attributes to preserve final reviewed bytes/artifacts in Git.
+  Terminal independent synthesis next; no fullrepository/program completion claim.
+- Both independent terminal syntheses received: code APPROVE / architecture CLEAR
+  for tested import-isolation checkpoint, no unresolved scoped blocker. Both
+  personally checked final278/0/0/0 XML/hash/source bindings and honest parentexit
+  provenance. Residual incidental timing, omitted fullsuite/numerical/backend,
+  fulljournal/accounting/authority/reservation/realhost/R0 gates stay OPEN.
+  Preserve only this implementation/test/docs/RED+GREEN+regression evidence set on
+  existingbranch; no new PR, scientific acceptance or program completion claim.
