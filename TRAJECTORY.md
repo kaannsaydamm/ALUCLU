@@ -12905,3 +12905,52 @@ Task 2 sensorium/recollection gate: CLEAN
   branch; not modeltraining/wholeprogramcomplete. Next splitownedlease integrating
   durableidentity-before-resume, then concreteauthority/accounting/calendar/work
   declarations/resources and originalpinnedhost/four200updatepilot.
+
+- Continuation after501485f previousgoalturn=PROGRESS (durablecode+actualprocess
+  evidence+independentreview+push). Objective fullyreread5cf8ff, DesktopcleanHEAD
+  revalidated. Initialscripts lookup absent; located actualsrcownedprimitive and
+  readentirecode554cde. Added reserved-owned-lease contract binding globalstore
+  and original reserve clock/deadline to handle-derived identity, durable CREATED
+  thenREADY BEFORE resume, RUNNING publication and onlythen global lockrelease.
+  Usesexistingprivatejob/ownedhandles, noPIDreopen, autorelease/authorityinvention.
+  PrimaryWin32GetProcessTimes/ResumeThread checked. Independentreadinessreviewnext;
+  no source/tests/model execution yet in this continuation.
+
+- Reservedlease contract14cdc65c independently codeAPPROVE/architectureCLEAR;
+  constructor structural-only, filesystem _validate at enter, one-resume guard
+  before syscall. Added focused harmless Windows lease cases as missing-module RED
+  candidate (identity-before-execution, READY held after close, stale roots/clock/
+  deadline, single resume/wait, nonzero and descendant timeout). Exact invocation
+  admission pending; no training or GPU execution. Owner accounting approval
+  retained, not re-requested. Full scientific launch prerequisites remain separate.
+
+- Exact missing-module RED independently ADMIT/CLEAR; original nativePID18028
+  observed exit2 (tool94b13e), expected reserved_owned_process ModuleNotFoundError,
+  XMLSHA219978ca69956a79f65123399e598bd699c01041167c28b8d534769c9a4529bf.
+  Added first reserved_owned_process implementation; legacy primitive unchanged.
+  Added durable-response-loss and unrelated-child/global-lock-release fixtures.
+  No source invocation yet: pending exact GREEN admission. No model/GPU execution.
+
+- First diagnostic GREEN exactsource978f0677/testdf71227a independently ADMIT/CLEAR.
+  Original ownedPID23508 personally observed exit0 (tool12f157, native session34318),
+  JUnit12/0failure/0error/0skip12.438s, XMLSHA
+  ddaeb9ce1bd769f35744a5c641102566d5c99c8430743e4d21ed1428d395b2bd;
+  stdout12dots100%, stderr empty. Real suspended identity/order/retainedREADY,
+  nonzero, deadline descendant drain, publication-response-loss and unrelatedchild
+  survival passed. Not wholeleaseacceptance or modellearning. Next additional
+  entryfailure/lifecycle/abruptparent tests, relevant regression and final review.
+
+- Four-file relevantregression independently ADMIT/CLEAR, originalownedPID6888
+  personally terminalexit0 (tool07f14e, native session39347). JUnit125/0failure/
+  0error/0skip36.524s, stdout100%,stderr0, XMLSHA
+  51b16a80b03542e3470330b6d72a72fea66ecaa37a890385cf0c77038bf683db.
+  Exactsource/test unchanged. Added firstcheckpoint scoped evidence/exactbyteattrs;
+  final firstcheckpoint artifactreview pending. Does not close wholelease or
+  declare modeltraining. Legacy primitive crash tests not substitute lease proof.
+
+- Final firstdiagnostic preservation independently codeAPPROVE/architectureCLEAR;
+  allthree XML/counts/hashes/stderr/exitrecords and exactcode verified independently.
+  This closes only firstcheckpoint preservation, not wholelease acceptance.
+  Remaining enterfault/lifecycle/actualleaseparentcrash/nonWinerror cleanup and
+  scientificnumericcalendar/authority/outputcaps/hostqualification explicit.
+  Commit/push existingbranch only after rawstagedbyte verification. Goal active.
