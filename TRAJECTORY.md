@@ -11949,3 +11949,81 @@ Task 2 sensorium/recollection gate: CLEAN
   lock/timeout. Conditionalv3ADMIT aftercommit/hash/currentheadroom/process/freshstem.
   Checkpoint207 isolation+failfast VERIFIED; actualmodelnumerical stillRED/pending,
   accounting/scientific/learning gatesOPEN. Added -text and terminal evidence.
+- Committed207 as417ecc4f6a67cbe039d99671e9a16823153bac48; pushremoteHEADequal,
+  cleancheckout and approved3hashes personally verified beforelaunch. Immediate
+  memory5199008KiBphysical/17543224KiBvirtual above2GiB/6GiBfloors, noduplicate,
+  v3stemabsent. ConditionalADMIT requirements satisfied; started exactv3 once.
+  Session83733 wrapper12800 launcher24716 worker19184, command/startreceipt
+  verified includes tinyfirst/-x/CUDA_VISIBLE_DEVICES=-1. Stdoutdot indicates
+  firsttinycase success, fullintegrationlive; stderrempty/noexit/XML yet. Worker
+  CPU30.86s/working866131968/private1765883904bytes snapshots, notpeakclaim.
+  Pollsamehandle/artifacts; nosource/testchanges orconcurrentretry. Actualwhole
+  numerical/optimizer/learning acceptance remains pending, notinferredfromdot.
+- 2026-10-06 16:23 +03 continuation: same session83733 confirmed live again;
+  worker19184 CPU381.5s, working1068630016/private1997447168 bytes (instantaneous,
+  not peak/resource qualification). stdout still one tiny-preflight dot;
+  stderr empty, no exit/XML. No restart or source/test/runner edit.
+  Inspected accumulation pair/step, observation execution and outer failure
+  framing; added prospective DRAFT
+  docs/superpowers/plans/2026-10-06-alc-r0-accumulation-failure-journal.md.
+  Records a fine-grained failure-observability gap and future unchanged-numerics
+  RED/GREEN/regression/review gates. Not implemented or independently approved;
+  no new execution/training/scientific authority and no live-v3 change.
+- Next continuation: reread full controlling attachment and code-review skill;
+  dispatched draft SHAbe8ca9ca08d9959722c6f22d8f2d112473837e032974d2f1670a23cfb437cfe2
+  to existing independent GPT-6.1 Sol code/security and architecture lanes,
+  read-only/no execution or source edits. Verdicts pending, draft not approved.
+  Same session83733 still live at16:25:35+03, worker19184 CPU527.171875s;
+  no exit/XML, stderr empty. Checked freephysical4347932KiB/virtual16092604KiB
+  and C free51430453248bytes, snapshots only, no resource guarantee.
+- Initial prospective journal review: code COMMENT, architecture BLOCK for
+  implementation readiness, combined REQUEST CHANGES. Both independently found
+  missing exact transition/consistency table and ownership/transport mechanism;
+  no runtime defect or numerical verdict inferred. Repaired design-only revision2:
+  private per-attempt owner/tickets, primitive immutable snapshots, optional outer
+  failure field, preserved primary causes/prefixes and later final-validation
+  failures, explicit pair/microbatch/step phase and return-count constraints.
+  New draft SHA fde47163680dec487ed887dff2f5f129d8e47864f742e7de95f24749ef1c5dcc
+  sent to both independent lanes again; rereview pending, not approved/implemented.
+  Source/test/runner untouched. Same83733 still live16:28:19+03,
+  worker19184 CPU689.234375s, stdoutdot/stderrempty/noexit/XML.
+- Revision2 exact-byte independent review: code APPROVE; architecture CLEAR
+  with implementation-handoff schema WATCH. Initial BLOCK resolved for draft
+  readiness, not implementation/run authority. Conservatively retain combined
+  COMMENT until explicit nested ordinal/pair-return fields and derived-versus-
+  stored completion predicates are mechanically enumerated and checked. No
+  duplicate independently mutable flag/ordinal truth. Both lanes require exact
+  owner identity/count boundary/late record/cleanup-fault negative coverage.
+  Still no source/test/runner edits. Live83733 confirmed16:29:33+03,
+  worker19184 CPU762.296875s; no terminal XML/exit, stderr0/stdout1bytes.
+- Next continuation: read full objective/skill again, same83733 live. Refined
+  draft-only revision3 to exhaustive exact snapshot/ArmProgress fields, separate
+  perarm observation/step ordinals, repeated micro4..7 bound to counts/index,
+  pair1..12 and step1..11, all completion predicates derived from ordinals only.
+  Removed duplicate independently mutable flag truth. Finaldraft SHA
+  e19ae5f6f72301aa94ff8a86a908343de39803c5cfb99d2b49eaefd9afd70a4c
+  independently verified by both GPT-6.1 Sol lanes: code APPROVE, architect CLEAR,
+  schema WATCH resolved; combined APPROVE FOR PROSPECTIVE DESIGN ONLY. No
+  implementation/execution/accounting/learning admission and no runtime edits.
+  At16:31:43+03 worker19184 CPU890.3125s, no exit/XML, stdoutdot/stderrempty.
+- v3 TERMINAL: same session83733 actualexit0 personally observed; persisted
+  pytest_exit_code0/child24716/observed16:32:40.6639864+03 agrees. Owned3PIDs
+  absent at terminal inspection. XML2/0/0/0,957.294s; tiny0.022s/full949.818s;
+  XML SHA b5d923ddae8e4f3c5cf6243a68712fb03d73dc0260e5893d65d662c2e3450451.
+  Stdout81bytes two dots100%, stderr0bytes. Reverified admitted runner/tiny/full
+  hashes unchanged; no runtime edits during attempt. Personally read full actual
+  integration and random host fixture: direct real suite,18singles/pending2/
+  accumulation16/step1/full120factor-moment maps/frozenbase/RNGthreads/CUDAguards.
+  Numerical randomCPU integration PASS ONLY on417ecc4, not actualpretrained/R0/
+  accounting/resource/portability/learning PASS. Preserve v1/v2 negatives.
+  Added detailed terminal evidence document and byte-preserving doc attributes;
+  final independent evidence review and scoped commit/push next. Prospective
+  journal remains design-only, source implementation not started.
+- Checkpoint208 terminal evidence independently rechecked: code APPROVE,
+  architecture CLEAR, combined APPROVE for scoped randomCPU numerical evidence.
+  Both inspected5artifacts, exact2/0/0/0/time/XMLhash/sourcebytes/absentPIDs and
+  actualtestcoverage; parent actualsessionexit is separate direct evidence.
+  Terminaldoc SHA4e12f1541f1a61ea384a4a875881e4875447f022d226b041e36f23b00912b262.
+  No src/tests/scripts diff. Stage9exactdocs/attributes/trajectory/v3artifact
+  paths only; diffcheck clean. Preserve source417ecc4 association; committing
+  evidence/design does not retrospectively change test source or confer R0 PASS.
