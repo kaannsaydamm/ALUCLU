@@ -12745,3 +12745,81 @@ Task 2 sensorium/recollection gate: CLEAN
   bounds or full resource admission. No models loaded or training/tests started.
   Preserve both decision/inventory documents with exact-byte attributes; commit
   policy decision and pending bounded reconciliation without scientific claims.
+
+- Continuation after9bd9da7: previous turn progress = directownerapproval preserved,
+  independent decision/inventory reviews and exactblob commit/push. Re-read full
+  objective b0338d; clean authoritativeDesktopHEAD personally checked32a9d3.
+  Read current owned-process, ownedappend and publication APIs. Found actual
+  creation/resume gap: _execute resumes immediately after suspendedcreate, before
+  any persisted reservation/identity binding. Added prospective complete local
+  launch/reservation interface draft with explicit producer/trust boundaries,
+  declaration/ceiling separation, bootstrap, lifecycle/crashstates and resource
+  units/caps. Numeric history/qvceiling remainunknown; no guess or launch.
+  Proposed pureReservationReplay TDD component requires independent readiness
+  verdict; fulladapter/realhost/pilot/learning stillOPEN. No source/test/model edits.
+
+- Initial draft1b69e90 independently preserved APPROVE/CLEAR but PURE readiness
+  REQUEST CHANGES/BLOCK: exact schemas/exit range, unknown-charge deadend,
+  uncertainty/retained identity, clock-domain continuity, aggregate transfer,
+  total-byte/lifetime bounds and cleanup envelope needed definition. Revised
+  draftff77aa46 defines these without numeric history, budget/clock reset or
+  scientific change; two existingGPT6.1Sol lanes rereview exactbytes. No model,
+  CUDA or tests launched; direct owner accounting/localtraining approval remains
+  effective. Actual safe launcher and original learning pilot remain OPEN.
+
+- Draftff77aa46 pure implementation independently APPROVE/CLEAR. Before coding,
+  corrected RFC8785 large integer representation: decimal-string wire fields,
+  exact internal integers (UTC ns/FILETIME cannot use safe JSON numbers), explicit
+  genesis bytes and no-child receipt exemption. Draft134f3bb2 under delta review.
+  Added one synthetic missing-module RED test only; no execution yet and no
+  source module/model launch. Proposed exact pinnedPython invocation awaiting
+  independent admission. Original scientific thresholds/history unchanged.
+
+- Bothlanes admitted exact syntheticRED. Personally observed ownedPID28636 exit2
+  tool93b8de: correct absent reservationmodule collection error, JUnit1test,
+  1error/0failure/0skip,0.394s, empty stderr. Not modelfailure. Added pure bounded
+  reservation replay implementation only after terminal: no processes/OS/model
+  imports or launch permit. Exact declarations, decimalwire, immutable snapshots,
+  atomic transitions/aggregate checks, complete-history pinned finalroot entry.
+  GREEN not run; implementation and broader tests require independent review.
+
+- Expanded pure synthetic tests (no model/OS): normal owned lifecycle, no-child
+  unknown-charge later completion, retained identity, >binary64-safe values and
+  unsigned exit/FILETIME boundaries, illegal transitions/duplicates/root mismatch,
+  truncated history, atomic numeric/materialization/record/aggregate rejection.
+  Sourcea568fa66/testc2ed115d submitted to independent exact GREEN admission;
+  no live tests/source edits overlap. REDXML personally hashed27f65248.
+
+- Architecture found real pure-state mismatch before GREEN: missing uncertainty
+  reason allowed noncreation UNCERTAIN to become no-child. Retain exactreason,
+  restrict negative creation branch to RESERVED/creation-uncertain, add five
+  atomic-rejection cases. No tests were live; no evidence reused for changedcode.
+
+- Code review also caught unsafe headline pending-growth reduction across mixed
+  observation roots. Default snapshot now holds fullgrowth; optional validated
+  observation root subtracts only matching materialization. Added mixedroot,
+  totalbytes/count/lifetime/live512 boundary, nonce reuse, CPUcharge/resume,
+  releasedevent and malformed canonical cases. Complete-history preflight caps
+  before decoding; still no GREEN run or scientific launch.
+
+- Corrected pure source8d432111/test81360108 independently APPROVE/CLEAR with
+  exact GREEN admission. Personally observed originalownedPID6332 exit0 tool
+  04e388; stdout47passed1.05s, XMLSHA7af1a404f0fc4fbf474f5d4b470273590699c20afd5075b828631bdf17becde3.
+  This is pure reservation unit evidence ONLY, not durable coordinator/process
+  launch/realhost/learning. Relevant regression and checkpoint review remain.
+
+- Independently admitted fourfile regression personally terminal toolce1682,
+  originalsession28864 ownedPID26428 exit0. JUnit207/0failure/0error/1skip,
+  26.401s, SHA f8b0ef727341e877a765ab63352146a1da38e7a040e4cf18fd619d361a571c55;
+  stdout206passed/1skip26.63s, stderr empty. Skip=Windows no nativePOSIXFIFO,
+  not portabilityPASS. Existingattemptjournal race has two harmless tempworkers;
+  no CUDA/model/training. Rehashedsource/test unchanged407272. Added scoped
+  evidence and parent-observed exit records (not childreceipts), exact-byte attrs.
+  Final independent artifactreview pending; durable launcher/originalpilotOPEN.
+
+- Final stored checkpoint independently codeAPPROVE/architectureCLEAR: exact
+  source/tests/draft, allthree XMLs/logs/parentexitprovenance verified. Scopedpure
+  replay accepted, not modeltraining/realhost/ALC0. Preserve exact reviewed bytes
+  and commit/push existingbranch only. Next durable globalreservation publication
+  then identity-before-resume ownedlease; historicalnumeric/calendar inputs,
+  exactqualification/admission and original4x200updatepilot stillOPEN.
