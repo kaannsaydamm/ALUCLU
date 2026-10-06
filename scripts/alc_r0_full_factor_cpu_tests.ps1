@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Focused', 'Regression', 'OfficialIntegration')]
+    [ValidateSet('Focused', 'Regression', 'OfficialIntegration', 'ParityIntegration')]
     [string]$Suite,
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[a-z0-9_]{1,100}$')]
@@ -15,6 +15,8 @@ $taskTests = if ($Suite -eq 'Focused') {
     @('tests/test_alc_r0_reference_stress_full_factors.py')
 } elseif ($Suite -eq 'OfficialIntegration') {
     @('tests/test_alc_r0_reference_official_integration.py')
+} elseif ($Suite -eq 'ParityIntegration') {
+    @('tests/test_alc_r0_reference_parity_integration.py')
 } else {
     @(
         'tests/test_alc_r0_reference_stress_execution.py',
@@ -41,8 +43,8 @@ foreach ($taskTest in $taskTests) {
     }
 }
 $taskMemory = Get-CimInstance Win32_OperatingSystem
-$taskPhysicalFloor = if ($Suite -eq 'OfficialIntegration') { 1572864 } else { 1048576 }
-$taskVirtualFloor = if ($Suite -eq 'OfficialIntegration') { 4194304 } else { 3145728 }
+$taskPhysicalFloor = if ($Suite -eq 'ParityIntegration') { 2097152 } elseif ($Suite -eq 'OfficialIntegration') { 1572864 } else { 1048576 }
+$taskVirtualFloor = if ($Suite -eq 'ParityIntegration') { 6291456 } elseif ($Suite -eq 'OfficialIntegration') { 4194304 } else { 3145728 }
 if ($taskMemory.FreePhysicalMemory -lt $taskPhysicalFloor -or $taskMemory.FreeVirtualMemory -lt $taskVirtualFloor) {
     throw 'Defer CPU test: below operational memory headroom, not a scientific failure.'
 }

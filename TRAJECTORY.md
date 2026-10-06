@@ -11806,3 +11806,38 @@ Task 2 sensorium/recollection gate: CLEAN
   test and result hashes. Next real random CPU q/v forward/backward/pending/step
   integration under independently reviewed fixed invocation; no model/corpus/GPU
   experiment authorized by these synthetic tests or review verdicts.
+
+### Checkpoint205 - real random CPU q/v backward integration PREPARING
+
+- Parentcc6033b clean Desktop checkout. Added fixed full-cell test using existing
+  random30-layer CPU Llama fixture, real factory/cell/comparators/backward/pending/
+  accumulation/AdamW step1 without substitution. Original fixture schedule,
+ 120factor geometry, gradient rules and CPU exactness unchanged. CUDA seeding/
+  initialization forbidden, frozen base hash checked before/after.
+- Extended existing fixed CPU runner with ParityIntegration enum only;2GiB free
+  physical/6GiB free virtual operational floors are conservative admission
+  snapshots, NOT memory reservation or measured peak qualification. Random thin
+  embedding/MLP/head deviations remain test-only, not pinned SmolLM2 evidence.
+  Exact invocation/code independent review required before execution. No run,
+  numerical PASS, learning claim or actual-host admission yet.
+- Ruff format/check and PowerShell syntax parser passed. Independent GPT6.1Sol
+  codeAPPROVE/exact invocationAPPROVE; architectureWATCH/exact invocationADMIT
+  for one monitored random CPU attempt only. CombinedCOMMENT, not broad approval.
+  WATCH: memory snapshots notreservation, duplicate detection notlock, no enforced
+  timeout; retain one session, do not concurrently retry or change strict rules.
+  Testffc6f8dba67ece4abdcf5f841d8b6ddb74b1647ca79426edc97eab2426476d78;
+  runnerb013049ba6c56fc26b58472ffe182686b645e7e448d6c7e9f5c192519a43ddae.
+  Admitted fixed ParityIntegration stem alc_r0_reference_parity_integration_v1_20261006.
+- Executed admitted stem once, session29571 actualexit1 and persisted
+  pytest_exit_code1, child23948, observed2026-10-06T15:26:58+03:00. XML personally
+  parsed1test/1failure/0errors/0skipped,18.036s; SHA
+  80a18a10fe9415eda49b4614cb3b9f82d69df08b0a63b1dab5edf5c6e6a57721;
+  stderr0bytes. RED actual integration preserved, no retry/threshold change.
+  Trace: on-wrapper construction enable_checkpoint_inventory invokes dispatch
+  fingerprint; freeze rejects __class__ closure GradientCheckpointingLayer as
+  unsupported computational attribute type:type. This precedes checkpoint-on
+  observation; full singles/pending/accumulation/step remain unverified.
+  Classify as checkpoint inventory/framework compatibility defect, not evidence
+  of failed neural-learning hypothesis. Read-only independent diagnosis requested;
+  next minimal reproducer and narrowly audited dispatch/class-cell binding, no
+  generic class bypass or mutated fixture/model to manufacture PASS.
