@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.700" timestamp="2026-10-06T16:08:53.215998+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_cpu_optimizer_isolation" name="test_cpu_adamw_step_never_initializes_cuda" time="1.915"><failure message="AssertionError: Duplicate torch object &lt;function test_cpu_adamw_step_never_initializes_cuda.&lt;locals&gt;.forbidden at 0x000001D2F1564720&gt; with different rules: &lt;class 'torch._dynamo.variables.torch.TorchInGraphFunctionVariable'&gt;, &lt;class 'torch._dynamo.variables.functions.SkipFunctionVariable'&gt;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C6ABF560&gt;
+
+    def test_cpu_adamw_step_never_initializes_cuda(monkeypatch):
+        def forbidden(*args, **kwargs):
+            raise RuntimeError("CPU optimizer must not initialize or seed CUDA")
+    
+        monkeypatch.setattr(torch.cuda, "_lazy_init", forbidden)
+        monkeypatch.setattr(torch.cuda, "manual_seed_all", forbidden)
+        parameter = torch.nn.Parameter(torch.tensor([1.0, -1.0], device="cpu"))
+        before = parameter.detach().clone()
+        parameter.grad = torch.tensor([0.25, -0.5], device="cpu")
+&gt;       optimizer = torch.optim.AdamW(
+            [parameter],
+            lr=3e-4,
+            betas=(0.9, 0.999),
+            eps=1e-8,
+            weight_decay=0,
+            foreach=False,
+            fused=False,
+        )
+
+tests\test_alc_r0_cpu_optimizer_isolation.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\adamw.py:35: in __init__
+    super().__init__(
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\adam.py:102: in __init__
+    super().__init__(params, defaults)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:424: in __init__
+    self.add_param_group(cast(dict[str, Any], param_group))
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_compile.py:47: in inner
+    import torch._dynamo
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\__init__.py:80: in &lt;module&gt;
+    from .polyfills import loader as _  # usort: skip
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\polyfills\loader.py:36: in &lt;module&gt;
+    POLYFILLED_MODULES: tuple["ModuleType", ...] = tuple(
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\polyfills\loader.py:37: in &lt;genexpr&gt;
+    importlib.import_module(f".{submodule}", package=polyfills.__name__)
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\polyfills\_collections.py:20: in &lt;module&gt;
+    @substitute_in_graph(_collections._count_elements)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\decorators.py:980: in wrapper
+    rule_map: dict[Any, type[VariableTracker]] = get_torch_obj_rule_map()
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @functools.cache
+    def get_torch_obj_rule_map() -&gt; dict[Any, type["VariableTracker"]]:
+        d: dict[Any, type[VariableTracker]] = {}
+        for m in torch_name_rule_map:
+            for k, v in m.items():  # type: ignore[attr-defined]
+                if ".py#" not in k:
+                    obj = load_object(k)
+                else:
+                    torch_dir = _module_dir(torch)
+                    if torch_dir is None:
+                        continue
+                    obj = torch_dir + k[len("torch/") :]
+                if obj is not None:
+                    if is_lru_cache_wrapped_function(obj):
+                        obj = obj.__wrapped__
+                    if obj in d and d[obj] != v:
+&gt;                       raise AssertionError(
+                            f"Duplicate torch object {obj} with different rules: {v}, {d[obj]}"
+                        )
+E                       AssertionError: Duplicate torch object &lt;function test_cpu_adamw_step_never_initializes_cuda.&lt;locals&gt;.forbidden at 0x000001D2F1564720&gt; with different rules: &lt;class 'torch._dynamo.variables.torch.TorchInGraphFunctionVariable'&gt;, &lt;class 'torch._dynamo.variables.functions.SkipFunctionVariable'&gt;
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\trace_rules.py:3081: AssertionError</failure></testcase></testsuite></testsuites>

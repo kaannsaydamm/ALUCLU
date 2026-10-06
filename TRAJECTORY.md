@@ -11885,3 +11885,67 @@ Task 2 sensorium/recollection gate: CLEAN
   VERIFIED by tiny tests, NOT actual model numerical/learning acceptance. No live
   relevant pytest after final terminal. Next fresh reviewed randomCPU integration
   attempt; actual pretrained host/accounting/scientific gates remain OPEN.
+- Both independent GPT6.1Sol lanes ADMIT exact fresh v2 CPU integration command
+  on clean7b2ea6a, unchanged runner/test hashes and repaired206 hashes. Operational
+  architectureWATCH retained(noreservation/lock/timeout). Started once, session26579,
+  wrapper24156, Python launcher20816/worker3728; current process and command lines
+  verified live, stdout/stderr empty, noexit/XML yet. Worker observedCPU28.34s,
+  working set873005056/private1776173056bytes are snapshots, not measured peaks.
+  Stem alc_r0_reference_parity_integration_v2_20261006. Poll same session/artifacts,
+  do not restart on emptyoutput; no source/test changes while this attempt is live.
+  Actual outcome pending, no numerical or learning PASS inferred.
+- V2 terminal personally observed session26579exit1, persistedpytest_exit_code1
+  child20816 at2026-10-06T15:53:54+03:00; XML1/1/0/0,1040.458s, SHA
+  8b2f1ee9b6838e2e191324e3f4211c22de84be10e3cff46c5f3fe8a06d26627a;
+  stderr0bytes and no live matching processes. Trace reaches first real AdamW
+  step after unmodified singles/pending/preclip comparisons, but whole-cell FAIL.
+  PyTorch2.14 optimizer accelerator health check asks current_stream even with
+  CPU factors; test CUDA _lazy_init guard triggers pytest failure. Not numerical
+  mismatch/learning falsification; no final optimizer comparison or PASS.
+
+### Checkpoint207 - CPU optimizer accelerator isolation IN PROGRESS
+
+- Preserve206repair and v2RED. Installed optimizer.py475-485 checks any available
+  accelerator, not parameter device. Official PyTorch CUDA environment docs
+  describe CUDA_VISIBLE_DEVICES=-1 as no available GPUs. Prefer process-start
+  CPUvisibility isolation to patching optimizer/health-check or allowingCUDA.
+  https://docs.pytorch.org/docs/stable/cuda_environment_variables.html
+- Added tiny real2parameter CPU AdamW reproducer with unchanged fixed optimizer
+  settings/norm1 and forbidden CUDA seed/init. RED first in currentvisibility;
+  then isolated fresh process with -1, before changing fixed CPU runner. No model
+  assets/tokenizer/corpus/GPU/actual-host research authority involved.
+- First tiny REDtool823f95exit1 hit test-harness defect: same guard callable for
+  two CUDA operations confused TorchDynamo lazy trace-rule map. Not optimizer
+  reproducer evidence. Removed unused import and use distinct guard functions;
+  preserve first negative XML, rerun corrected reproducer with fresh stem.
+- Corrected REDtool f50689 actualexit1 reproduces same accelerator current_stream
+  CUDAinit on2CPUparameters. Freshprocess -1 focusedtool47d9e6 actualexit0 with
+  unchanged AdamW/norm1, realstep1/finitestate/CPUdevice/noCUDAinitialized checks.
+  Add runner process-start CUDA_VISIBLE_DEVICES=-1 recordedstartreceipt and restore
+  original process environment in finally, not user/machine mutation. Add fixed
+  OptimizerIsolation enum and tiny preflight FIRST in ParityIntegration. Separate
+  CUDAseed/init guard functions in full integration prevent lazyDynamo callable
+  alias issue; no forward/comparator/fixture/gradient/optimizer algorithm change.
+  Fixedrunner smoke/regression and independent exact-byte reviews remain next.
+- Strengthened tiny test checks inherited -1 explicitly and actual available
+  acceleratorNone; fixedrunner-v2 smoke actualexit0,1/0/0/0,3.435s XML
+  ebff8a7e0950b44d387e95310eb21997e61c9aeaf0595f448b103dc9415e0938.
+  FixedRegression session83012 actualexit0 with persistedexit0; finalcounts pending
+  personal parse. Both independent lanes REQUESTCHANGES/BLOCK and v3DENY:
+  tiny first is not fail-closed without -x. Add -x onlyParityIntegration, keep
+  original other suite behavior; explicit failed-preflight stop evidence next.
+- Stopcontrol d2ee9a observedexit1 with exacttiny+full order/-x and visibility-2;
+  JUnitonly1tinyfailedcase,6.921s; stdoutstopping1failure. Fullmodelnotexecuted.
+  Finalrunner-v3 smokeexit0,1/0/0/0,3.851s XML
+  fb76016c0e7ffaccc196f5493477c4986a5518976d653ca56c926fd114068670.
+  FinalfixedRegression session78290 actualexit0/persistedexit0;325/0/0/0,24.166s,
+  XML1b4ebca75606ccb56a34997cbfb6060f97cbcf79658bbaf2bb146572f6c76edb.
+  Ruff/PowerShellASTpassed. Earlier325reg36.414s SHA
+  a160073b870c7d986f429b43a5e44a904adfd0099e00a284fa4cb6e94bf4ffbd retained.
+- FinalindependentcodeAPPROVE/architectureCLEAR exactrunner84e8edc87ab1e81ffbf536c668484b2b2b7af44c1aa8db73127f193afed8e298,
+  tinytest93a79d29e7c8f252c01d17462bb0081f84f8d6c57d072a6803486bb1ed410597,
+  fulltest6014c7695726c459aa77a8c165a1383b0e4b25167db6bf3a0bfdf8767abc7dcd.
+  CombinedAPPROVE isolation/preflight only; operationalWATCH stillnoreservation/
+  lock/timeout. Conditionalv3ADMIT aftercommit/hash/currentheadroom/process/freshstem.
+  Checkpoint207 isolation+failfast VERIFIED; actualmodelnumerical stillRED/pending,
+  accounting/scientific/learning gatesOPEN. Added -text and terminal evidence.

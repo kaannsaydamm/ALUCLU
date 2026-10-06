@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Focused', 'Regression', 'OfficialIntegration', 'ParityIntegration')]
+    [ValidateSet('Focused', 'Regression', 'OfficialIntegration', 'ParityIntegration', 'OptimizerIsolation')]
     [string]$Suite,
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[a-z0-9_]{1,100}$')]
@@ -16,7 +16,9 @@ $taskTests = if ($Suite -eq 'Focused') {
 } elseif ($Suite -eq 'OfficialIntegration') {
     @('tests/test_alc_r0_reference_official_integration.py')
 } elseif ($Suite -eq 'ParityIntegration') {
-    @('tests/test_alc_r0_reference_parity_integration.py')
+    @('tests/test_alc_r0_cpu_optimizer_isolation.py', 'tests/test_alc_r0_reference_parity_integration.py')
+} elseif ($Suite -eq 'OptimizerIsolation') {
+    @('tests/test_alc_r0_cpu_optimizer_isolation.py')
 } else {
     @(
         'tests/test_alc_r0_reference_stress_execution.py',
@@ -57,7 +59,12 @@ foreach ($taskProcess in (Get-CimInstance Win32_Process)) {
         }
     }
 }
-$taskArgs = @('-m', 'pytest') + $taskTests + @('-q', "--junitxml=results/$ArtifactStem.xml")
+$taskArgs = @('-m', 'pytest') + $taskTests
+if ($Suite -eq 'ParityIntegration') {
+    # The cheap isolation prerequisite must stop before the costly model test.
+    $taskArgs += '-x'
+}
+$taskArgs += @('-q', "--junitxml=results/$ArtifactStem.xml")
 $taskStarted = [DateTimeOffset]::Now
 $taskStart = [ordered]@{
     suite = $Suite
@@ -69,12 +76,17 @@ $taskStart = [ordered]@{
     free_virtual_kib = $taskMemory.FreeVirtualMemory
     required_free_physical_kib = $taskPhysicalFloor
     required_free_virtual_kib = $taskVirtualFloor
+    cuda_visible_devices = '-1'
     scope = 'FAKE_PURE_CPU_ONLY_NOT_HOST_RESOURCE_OR_LEARNING_ACCEPTANCE'
 }
 [IO.File]::WriteAllText($taskPrefix + '.start.json', ($taskStart | ConvertTo-Json -Depth 4), [Text.UTF8Encoding]::new($false))
 $taskOldPath = $env:PYTHONPATH
+$taskOldCudaVisibility = $env:CUDA_VISIBLE_DEVICES
 try {
     $env:PYTHONPATH = Join-Path $taskRoot 'src'
+    # Process-start isolation for these fixed CPU suites. Do not patch AdamW or
+    # its accelerator health check; do not alter machine/user environment state.
+    $env:CUDA_VISIBLE_DEVICES = '-1'
     $taskChild = Start-Process -FilePath $taskPython -ArgumentList $taskArgs `
         -WorkingDirectory $taskRoot -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput ($taskPrefix + '.stdout.log') `
@@ -92,4 +104,5 @@ try {
     exit $taskExit
 } finally {
     $env:PYTHONPATH = $taskOldPath
+    $env:CUDA_VISIBLE_DEVICES = $taskOldCudaVisibility
 }

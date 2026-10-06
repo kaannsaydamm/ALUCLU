@@ -25,9 +25,12 @@ def test_full_random_qv_cell_real_backward_pending_and_adamw():
     def forbidden(*args, **kwargs):
         pytest.fail("random CPU integration must not initialize or seed CUDA")
 
+    def forbidden_seed(*args, **kwargs):
+        pytest.fail("random CPU integration must not seed CUDA")
+
     rng, threads = torch.get_rng_state().clone(), torch.get_num_threads()
     with pytest.MonkeyPatch.context() as gpu_guard:
-        gpu_guard.setattr(torch.cuda, "manual_seed_all", forbidden)
+        gpu_guard.setattr(torch.cuda, "manual_seed_all", forbidden_seed)
         gpu_guard.setattr(torch.cuda, "_lazy_init", forbidden)
         with random_cpu_host() as host:
             before = _base_digest(host.model)

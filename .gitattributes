@@ -393,3 +393,5 @@ results/alc_r0_reference_parity_integration* -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/checkpoint_hf_dispatch.py -text
 tests/test_alc_r0_hf_disabled_dispatch.py -text
 results/alc_r0_hf_disabled_dispatch* -text whitespace=-blank-at-eol
+tests/test_alc_r0_cpu_optimizer_isolation.py -text
+results/alc_r0_cpu_optimizer_isolation* -text whitespace=-blank-at-eol
