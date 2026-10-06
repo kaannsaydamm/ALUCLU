@@ -1,7 +1,8 @@
 # Accumulation journal runtime evidence
 
 Status: implemented development checkpoint; focused and relevant CPU regressions
-verified. Final source-commit-bound numerical integration remains OPEN. This is
+verified. Final source-commit-bound random-CPU numerical integration verified PASS;
+independent terminal synthesis APPROVE for this bounded development checkpoint. This is
 not pretrained-host qualification, training authorization, or ALC-R0 acceptance.
 
 The prospective failure-journal design document is preserved as historical design
@@ -86,14 +87,31 @@ All RED artifacts and prior attempts remain first-class records in the trajector
 
 ## Open gates
 
-Independent code/spec/security inspection approved the final source; architecture
-resolved both concrete BLOCK findings and retained WATCH for empirical and scope
-limits. Final terminal evidence must be incorporated in the independent synthesis.
-No whole-journal completion or merge-ready verdict is inferred from this record.
+Independent GPT-6.1 Sol code/spec/security terminal synthesis returned APPROVE;
+the separate architecture terminal synthesis returned CLEAR for this scoped
+development checkpoint, with residual provenance and operational cautions below.
+Both independently checked persisted terminal artifacts and source identities;
+the parent separately observed the original launcher exit. Deterministic combined
+verdict: APPROVE for this bounded checkpoint, not whole-branch/program acceptance.
+Both reproduced framing blockers were resolved; no unresolved scoped BLOCK remains.
 
-Next: preserve exact bytes in a source checkpoint, then separately review/admit a
-fresh random-CPU numerical integration bound to that source commit. Earlier v3
-evidence belongs only to its prior source and cannot qualify this instrumentation.
+Source checkpoint c683f4e71348e38a718070ab3fb68369c2672062 was preserved and pushed.
+Both independent lanes admitted one fresh random-CPU numerical integration bound
+to that source. Its original launcher session8889 personally returned exit0
+(3198f7); persisted exit0 and child26716 observed at2026-10-06T19:03:33.8062920+03.
+Stem `alc_r0_reference_parity_journal_v4_c683f4e_20261006`: JUnit2/0/0/0,
+1400.911seconds; tiny CPU isolation0.639s, full random q/v integration1386.458s.
+Stdout100%, stderr empty, no remaining matching Python worker. XML SHA-256
+`86695c84dc644520842ce3910e06ee1f426e9757b8605802f3b5814c5b3454c7`.
+This supplies current-source numerical regression evidence, not a speed claim.
+Earlier v3 evidence belongs only to its prior source, not this instrumentation.
+No test thresholds, seeds, schedule, fixtures or runner were changed during LIVE.
+Residual limits: cooperative in-memory instrumentation is not authenticated
+execution proof, process-kill durability or bounded traceback retention. Cleanup
+is best-effort, not optimizer rollback. Launch headroom is not a reservation.
+One random fixture seed does not qualify all accelerator/backend configurations.
+Next: preserve terminal artifacts and synthesis, then resume the still-open
+pretrained-host and scientific readiness gates without promoting this fixture.
 Actual pinned pretrained-host execution, scientific freeze/accounting, capability
 controls, retrieval-off fresh-process durability and R0 learning acceptance remain
 separate OPEN gates. Dependent ALC product infrastructure must not leapfrog them.

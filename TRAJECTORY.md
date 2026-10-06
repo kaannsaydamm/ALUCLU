@@ -12383,3 +12383,65 @@ Task 2 sensorium/recollection gate: CLEAN
   (ba3b00/session76565 terminal0d0067exit0), no unstaged/untracked remainder.
   Originalparenthandle terminalproof remains separatefrom persistedreceipts.
   Checkpoint records reproducibledevelopmentprogress, notfinalnumerical PASS.
+- Developmentcheckpoint committedc683f4e71348e38a718070ab3fb68369c2672062 and
+  pushed onlyorigin codex/unified-lifelong-cognition; remoteSHA equalityverified
+  427c1c actualexit0, checkoutclean. Continuation: previousturn PROGRESS, objective
+  andskill fullyreread, exactHEAD/cleantrackedbytes/runtimefixture inspected.
+  BothGPT6.1Sol independentlanes ADMIT one separatelyscoped randomCPU numerical
+  v4 attempt, notactualhost/scientific/learningauthority. Reviewedintegration
+  SHA6014c7695726c459aa77a8c165a1383b0e4b25167db6bf3a0bfdf8767abc7dcd;
+  isolation93a79d29e7c8f252c01d17462bb0081f84f8d6c57d072a6803486bb1ed410597;
+  randomhost9f50ff2855f0108821e4ef0203e7a289515e35670c14f96947e69aaf6d6202f5;
+  runneracd2cb6a unchanged. Genuine referenceexecution nofactory/cell/comparator
+  substitution; declared randomthinMLP/embed/head deviations preserved.
+- Exactv4 launch8169a8/session8889 on CLEANsourcec683f4e at18:40:10.3397734+03.
+  Stem results/alc_r0_reference_parity_journal_v4_c683f4e_20261006; launcher
+  immediateheadroom2691500physical/12271224virtualKiB above2097152/6291456floors.
+  TinyCPUoptimizer prerequisitefirst -x, CUDAmask-1. Liveinspectiond1a3c8:
+  wrapper15800, Pythonlauncher26716, actualpytestworker29072 (CPython3.12 uv),
+  exactcommandverified; workerCPUprogress30.15625s, RSS861736960bytes. Stdout
+  one completedtestdot, stderr0; no XML/exit terminalyet. Session8889 remains
+  running (e0f6ef), no restart, no source/test/runner edits whileLIVE. Tracked
+  sourcehashesstillmatch; onlypostlaunch trajectory/evidence uncommitted.
+  Continue SAMEhandle monitoring and personallyparse terminalexits/JUnit/logs/
+  hashes beforeclaim. Oldv3~957s duration contextonly, nevercarryPASS. R0OPEN.
+- Continuation verifiedWAIT, notblock/no-progress: objective reread862544,
+  SAMEsession8889 live7f5c8b and50secondobservation306ae2 (no restart).
+  Authoritativeinspection5b5a6a at18:42:57.8597381+03 worker29072 stillmatches
+  exactattempt. CPUtotal rosefrom88.921875s (efbde2) to156.640625s, RSS914022400
+  bytes; stdout1dot/stderr0, noXML/noexitreceipt. Source/test/runnerhashes unchanged
+  9c750045/6014c769/acd2cb6a; HEADc683f4e, onlytrajectory/resultsdirty. Launch
+  admissionheadroom notresource reservation; currentphysical1942052KiB snapshot
+  afterstart belowlaunchfloor, no automatickill/restart or claimscientificfail.
+  No visibleerror and no evidenceofstalledCPU; terminalresultstillOPEN.
+- 2026-10-06 monitoring continuation: previous turns classified verified WAIT.
+  Objective fully reread; SAME launcher session8889 remains live (7c378f), no
+  restart. At18:51:30.5043435+03 worker29072 CPU645.265625s, RSS1074425856bytes;
+  prior18:46:08 CPU339.34375s and18:49:36 CPU536.34375s demonstrate continuing
+  CPU activity, not an inferred scientific percentage or terminal success.
+  Stdout remains one completed prerequisite dot, stderr0; XML/exit absent.
+  HEADc683f4e unchanged; no source/test/runner edits during LIVE execution.
+  Earlier18:48 disk snapshot50986266624bytes free, no observed disk danger.
+  Current numerical gate and ALC-R0 durable-capability proof remain OPEN.
+- 2026-10-06 v4 TERMINAL: original launcher session8889 personally returned
+  actualexit0 (3198f7), not inferred from XML. Persistedpytest_exit_code0,
+  child26716, observed19:03:33.8062920+03. Personally parsed17ee5a: JUnit2 tests,
+  failures0/errors0/skips0,time1400.911s; isolation0.639s/fullrandom1386.458s.
+  Stdout100%, stderrempty; matching Python worker absent. XML SHA256
+  86695c84dc644520842ce3910e06ee1f426e9757b8605802f3b5814c5b3454c7.
+  Exactsourcec683f4e; integration6014c769/runneracd2cb6a rehashedunchanged.
+  No restart/sourceedits/thresholdchange duringLIVE. Current-source randomCPU
+  numerical gate PASS only; pinned pretrained-host, frozen scientific package,
+  capability controls/fresh-process durability/R0 acceptance remain OPEN.
+  Runtime evidence document updated; independent terminal synthesis next.
+- Added exact v4 artifact-stem -text rule in .gitattributes to preserve raw
+  evidence bytes across Git line-ending conversion; no runtime/test modification.
+  Two existing GPT6.1Sol lanes requested independent terminal synthesis read-only.
+- Both independent terminal syntheses received: qv201_code61 APPROVE and
+  qv201_arch61 CLEAR for the bounded accumulation-journal development checkpoint.
+  Both personally checked persisted v4 artifacts/source hashes; originalhandle
+  actualexit remains parent-observed separate evidence. Combinedscoped APPROVE,
+  no unresolvedframingBLOCK. Residualcooperativeprovenance, tracebacklifetime,
+  best-effortcleanup/notrollback, non-durablejournal, snapshotnotreservation,
+  randomfixture/notpretrained and backendscope limits preserved in evidence doc.
+  No whole-branch/program/R0 completion claim. Prepare evidence-only checkpoint.

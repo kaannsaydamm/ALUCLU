@@ -390,6 +390,7 @@ tests/test_alc_r0_reference_parity_suite.py -text
 results/alc_r0_reference_parity_suite* -text whitespace=-blank-at-eol
 tests/test_alc_r0_reference_parity_integration.py -text
 results/alc_r0_reference_parity_integration* -text whitespace=-blank-at-eol
+results/alc_r0_reference_parity_journal_v4_c683f4e_20261006* -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/checkpoint_hf_dispatch.py -text
 tests/test_alc_r0_hf_disabled_dispatch.py -text
 results/alc_r0_hf_disabled_dispatch* -text whitespace=-blank-at-eol
