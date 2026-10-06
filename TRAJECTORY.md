@@ -12582,3 +12582,103 @@ Task 2 sensorium/recollection gate: CLEAN
   fulljournal/accounting/authority/reservation/realhost/R0 gates stay OPEN.
   Preserve only this implementation/test/docs/RED+GREEN+regression evidence set on
   existingbranch; no new PR, scientific acceptance or program completion claim.
+- Import checkpoint committed9d245071f4585665e1f7d3a43e6289e23e84afb5 c1d019exit0,
+  pushedde98b0exit0;291b73 verified exactremote equality, cleancheckout and committed
+  source/fixture/test/evidence blob identity. No new PR or subsequent runtime edit.
+- Bootstrap audit cbc13e/e25a9d: persistence/contracts are stdlib but cognition
+  initializer eagerly reaches cryptography. Fulljournal separately requires the
+  existing RFC8785 canonical contract; pure imports cannot erase that dependency.
+  Initial combinedtail readbeb91e truncated; fullcognition reread e25a9d complete.
+  Prepared second cognition import contract, no runtime/test/command changes.
+  Proposes unchanged definingobjects/lockregistry plus lazy publicexports and
+  focused+Task2 relevant regressions; fulljournal/provenance/authority stillOPEN.
+- Independent cognition contract reviews received codeAPPROVE / architectureCLEAR
+  for narrow design, WATCH for larger public surface and module-init timing.
+  Both require true competing-thread sharedpath-lock tests and independent pinned
+  complete roster/collision checks; no commands or runtime edits admitted.
+- Prepared first freshprocess cognition/persistence RED test before source edits;
+  thirdpartyblocker first, normal imports/rootexception/directfunction identity,
+  zeroattempts/modules, child30s. No filesystem write, model or journaloperation.
+  Runtime remains unchanged; exact test command review next.
+- Both independent lanes admitted exactsingle cognitionRED command. Actualnative
+  terminal e32010 exit1 personally observed; XML32e0d2 tests1/failures1/errors0/
+  skips0/time0.464, SHAca952358cf4b1aa27738e1ca14906e6d3bb4ccd2dced0173f0b4bba83c5c2a1c.
+  Genuine cognition -> keys -> cryptography denial, not collection/pathfailure.
+  Combinedoutput and parentobservedexit persisted afterterminal. No runtimeedit,
+  storage API call, assets/model/GPU or journalread/write. Next full pinnedroster,
+  sharedlock integration/compatibility tests before cognitionlazy implementation.
+- Prepared independently pinned pre-edit HEAD9d24507 cognition fixture:200exports,
+  full __all__ order and definingmodule mappings, all11real submodule names.
+  Expanded12freshprocess cases for fullidentity/root/from/star, nonresolvingdir/
+  unknown/collision, cryptofailuretwice/retry, submoduleorders andconcurrentexports.
+  Sharedlock integration uses two competingthreads32entries same temporarypath,
+  actualsingletonidentity/maxactive1, originalatomicwrites old/new andpathidentity.
+- Implemented approved narrow cognition initializer staticlazy mapping only;
+  persistence/contracts/keys/ledger/canonical unchanged. Format/check passed6b6954.
+  Sourcef9dff92e6b418e82ce73387b9c46f6d2f649d0bab501e3bfa5a313be07532e16,
+  test64d3775dcccb8e9d888e16e3af15422941857b2e88893a0e43838a4fd1974c8e,
+  fixturebf7d352a8d977b1ff4d9f1378d871bfc9f7c710d0f57cac3c03a3fc1dc705ddf.
+  Both independent lanes asked implementationreview and exact4fileGREENadmission;
+  no testcommand runyet. Fulljournal/reservation/authority/scientific gatesOPEN.
+- Targeted cognition GREEN completed after both independent command admissions:
+  originalsession57756 terminalacc280 actualexit0 parentobserved. XML9eecdf parsed
+  45tests/0failures/0errors/0skipped/time34.157s, SHA256
+  7b935a68cbcb927baa4f184600bfa0ac35273c7a4d71c28193fba9edf8b6635a.
+  Combinedoutput and parent-written terminalsummary preserved, notchildreceipt.
+- Continuation20261007 revalidatedHEAD9d24507 andthree reviewed hashesf303ae;
+  no pytestlive and no regressionartifact. Oldreview lanes absent fromliveagent
+  inventory; code-review skill required independent lanes respawnedGPT6.1Sol
+  cognition_code61/cognition_arch61 readonly. Requested17file scopedregression
+  admission fresh20261007stem, no repeatGREEN/restart or realkeyring/scientificrun.
+- New independent code/spec APPROVE and architecture CLEAR explicitly admitted
+  exact17-file regression with fresh20261007 XML stem. Both checked200exportmap,
+  unchangedoriginalobjects, fakekeyring routes and ownedtemporarychild boundaries.
+  Launched once native session11274 chunk7c366b, no source/test edits whileLIVE.
+  Pending authoritative results/alc_r0_cognition_import_regression_20261007.xml;
+  actual nativehandle exit not yet observed, no PASS/terminal claim.
+  Processsnapshotae3b07 confirms pinnedlauncher19740/worker22968 with exact
+  regression command live; worker CPU and disk counters present. C free50708979712
+  bytes. Output last delivered18percent plus subsequentdots; percentnotcompletion.
+  Continue samehandle11274, neverrestart from an observationtimeout. Original
+  combinedoutput retained in current toolhistory; terminalartifact persistence
+  and independent terminal synthesis stillrequired.
+
+- Continuation 2026-10-07: reread the full unified ALUCLU/ALC objective before
+  continuing. Previous turn was a verified wait, not a completed regression.
+  Same native session11274 remains live (poll b53f66); last delivered output
+  reached36percent with subsequent dots and no failures delivered so far.
+  Snapshot62c900 personally revalidated exact17-file worker22968 command,
+  unchanged HEAD9d245071 and all three reviewed source/test/fixture hashes.
+  Worker kernel/user counters1840937500/517500000 and read/write transfer
+  counters69669646/40163385 increased over the previous live snapshot.
+  No final regression XML or authoritative terminal exit observed; no PASS.
+  C free50447413248bytes. No source/test edits, restart, scientific run, or
+  portability/learning claim. Continue the same handle and preserve terminal
+  evidence before independent synthesis and commit/push.
+
+- Terminal 2026-10-07: original native session11274 returned actual exit0 in
+  chunk88e557, personally observed without restarting. JUnit57faa2 reads
+  790tests/0failures/0errors/0skipped/time506.247s. XML SHA256
+  82bf7820e1098885df4429a9209746aa5e6449b8519dfdbd25fed0c26429aaba.
+  Three reviewed source/test/fixture hashes remain unchanged. Combined tool
+  output persisted with CRLF normalized to LF; stderr not separately redirected.
+  Exit JSON is parent-written after observation, not a child-generated receipt.
+  Exact17-file regression only: not fullrepository/Task2 acceptance, real-host
+  qualification, durablelearning or portability. Independent terminal reviews
+  pending; goal remains active with full scientific and launcher gates OPEN.
+
+- Evidence preservation correction: initial log serialization coerced the first
+  twelve structured tool-result objects to literal [object Object]. Inspection
+  detected this before staging; both independent lanes also flagged it. Original
+  chunks remained accessible in the session store. Reconstructed using each
+  object's original output field plus subsequent string chunks, normalizing only
+  CRLF to LF. Corrected log covers9percent through100percent and exactly790dots;
+  no pytest summary was invented. XML/native terminal/source hashes unchanged.
+  Added exact-path -text attributes for source/test/fixture, frozen draft,
+  runtime evidence and cognition result artifacts to preserve reviewed bytes.
+
+- Independent terminal code/spec/security APPROVE and architecture CLEAR after
+  corrected-log rereview. Both personally verified stored XML/count/hash/source
+  consistency; nativeexit observation remains parent's distinct evidence.
+  Prior architecture WATCH for log serialization is resolved. No whole-program
+  authority/learning/portability claim; prepare scoped exact-byte commit only.

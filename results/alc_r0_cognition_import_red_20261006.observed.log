@@ -1,0 +1,67 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_persistence_imports_without_third_party_dependencies __________
+
+    def test_persistence_imports_without_third_party_dependencies():
+        source = Path(__file__).resolve().parents[1] / "src"
+        script = textwrap.dedent(
+            """
+            import importlib.abc
+            import sys
+    
+            blocked = {"torch", "transformers", "numpy", "cryptography",
+                       "rfc8785", "jsonschema", "safetensors", "pyarrow", "keyring"}
+            attempts = []
+            class DenyThirdParty(importlib.abc.MetaPathFinder):
+                def find_spec(self, fullname, path=None, target=None):
+                    if fullname.split(".")[0] in blocked:
+                        attempts.append(fullname)
+                        raise ModuleNotFoundError("forbidden dependency: " + fullname)
+                    return None
+    
+            assert not blocked.intersection(sys.modules), "contaminated subprocess"
+            sys.meta_path.insert(0, DenyThirdParty())
+            import aluclu
+            import aluclu.cognition as cognition
+            import aluclu.cognition.contracts as contracts
+            import aluclu.cognition.persistence as persistence
+    
+            for name in ("atomic_write_bytes", "exclusive_file_lock", "resolve_ledger_path"):
+                assert getattr(cognition, name) is getattr(persistence, name)
+            assert cognition.PersistenceError is contracts.PersistenceError
+            assert cognition.UnsafePathError is contracts.UnsafePathError
+            assert aluclu.CognitionError is cognition.CognitionError is contracts.CognitionError
+            assert not attempts, attempts
+            assert not blocked.intersection(sys.modules)
+            print("cognition-persistence-isolated")
+            """
+        )
+        environment = os.environ.copy()
+        environment.update(
+            PYTHONPATH=str(source), PYTHONNOUSERSITE="1", CUDA_VISIBLE_DEVICES="-1"
+        )
+        completed = subprocess.run(
+            [sys.executable, "-S", "-c", script],
+            env=environment,
+            cwd=source.parent,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+>       assert completed.returncode == 0, completed.stdout + completed.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<string>", line 18, in <module>
+E           File "C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\__init__.py", line 77, in <module>
+E             from .keys import (
+E           File "C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\keys.py", line 19, in <module>
+E             from cryptography.exceptions import InvalidTag
+E           File "<string>", line 12, in find_spec
+E         ModuleNotFoundError: forbidden dependency: cryptography
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALU...mport InvalidTag\n  File "<string>", line 12, in find_spec\nModuleNotFoundError: forbidden dependency: cryptography\n').returncode
+
+tests\test_cognition_import_isolation.py:57: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_cognition_import_isolation.py::test_persistence_imports_without_third_party_dependencies
