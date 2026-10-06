@@ -14,6 +14,13 @@ import torch
 from torch import nn
 
 from .banking_scoring import score_banking_candidate
+from .checkpoint_accumulation_progress import (
+    JournalError,
+    _admit_ticket,
+    _arm_begin,
+    _arm_finish,
+    _cleanup_journaled,
+)
 from .checkpoint_execution import _digest, _tensor_stamp
 from .checkpoint_fidelity import compare_named_tensors, compare_tensor
 from .checkpoint_parity_inputs import ParityInput
@@ -170,7 +177,14 @@ def observe_forward_backward(wrapper, fixture, *, checkpoint, state):
     return forwards[0]
 
 
-def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
+def _observe_group(
+    wrapper, fixtures, *, checkpoint, state, accumulate=False, _accumulation_ticket=None
+):
+    ticket = _accumulation_ticket
+    _admit_ticket(ticket, checkpoint=checkpoint)
+    if ticket is not None and (accumulate is not True or state != "nonzero"):
+        raise JournalError("journal only accompanies nonzero accumulation")
+    _arm_begin(ticket, "observe_prepare")
     if (
         type(checkpoint) is not bool
         or type(state) is not str
@@ -204,16 +218,32 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
     )
     for _, parameter in named:
         parameter.grad = None
+    _arm_finish(ticket, "observe_prepare")
     try:
+        _arm_begin(ticket, "observe_session_enter")
         if checkpoint:
             with wrapper.checkpoint_session() as session:
+                _arm_finish(ticket, "observe_session_enter")
                 results, loss = _run_group(
-                    wrapper, arguments_group, session=session, accumulate=accumulate
+                    wrapper,
+                    arguments_group,
+                    session=session,
+                    accumulate=accumulate,
+                    _accumulation_ticket=ticket,
                 )
+                _arm_begin(ticket, "observe_session_exit")
         else:
+            _arm_finish(ticket, "observe_session_enter")
             results, loss = _run_group(
-                wrapper, arguments_group, session=None, accumulate=accumulate
+                wrapper,
+                arguments_group,
+                session=None,
+                accumulate=accumulate,
+                _accumulation_ticket=ticket,
             )
+            _arm_begin(ticket, "observe_session_exit")
+        _arm_finish(ticket, "observe_session_exit")
+        _arm_begin(ticket, "observe_bindings")
         live_base, live_factors, live_named, live_device = _bindings(wrapper, state)
         if (
             live_base is not base
@@ -226,12 +256,16 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
             != input_stamps
         ):
             raise ObservationError("live bindings changed during observation")
+        _arm_finish(ticket, "observe_bindings")
+        _arm_begin(ticket, "observe_frozen")
         if (
             before_base != _base_digest(base)
             or before_factor != _digest(named)
             or any(p.grad is not None or p.requires_grad for p in base.parameters())
         ):
             raise ObservationError("output/input/frozen-state invariant failed")
+        _arm_finish(ticket, "observe_frozen")
+        _arm_begin(ticket, "observe_outputs")
         for fixture, result, arguments, original in zip(
             fixtures, results, arguments_group, inputs_before, strict=True
         ):
@@ -246,6 +280,8 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
                 )
             ):
                 raise ObservationError("output/input invariant failed")
+        _arm_finish(ticket, "observe_outputs")
+        _arm_begin(ticket, "observe_gradients")
         gradients = []
         for name, parameter in named:
             gradient = parameter.grad
@@ -262,6 +298,8 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
                     "individual factor gradient zero/nonzero rule failed"
                 )
             gradients.append((name, gradient.detach().cpu().clone()))
+        _arm_finish(ticket, "observe_gradients")
+        _arm_begin(ticket, "observe_capture")
         forwards = tuple(
             Observation(
                 fixture,
@@ -284,37 +322,59 @@ def _observe_group(wrapper, fixtures, *, checkpoint, state, accumulate=False):
             )
             for fixture, result in zip(fixtures, results, strict=True)
         )
-        return forwards, loss.detach().cpu().clone()
+        result = forwards, loss.detach().cpu().clone()
+        _arm_finish(ticket, "observe_capture")
+        return result
     except BaseException:
-        for _, parameter in named:
-            parameter.grad = None
+        if ticket is None:
+            for _, parameter in named:
+                parameter.grad = None
+        else:
+            _cleanup_journaled(ticket, (parameter for _, parameter in named))
         raise
 
 
-def _run_group(wrapper, arguments_group, *, session, accumulate):
+def _run_group(
+    wrapper, arguments_group, *, session, accumulate, _accumulation_ticket=None
+):
+    ticket = _accumulation_ticket
+    _admit_ticket(ticket, checkpoint=session is not None)
+    if ticket is not None and accumulate is not True:
+        raise JournalError("journal only accompanies accumulation")
     results = []
     total = None
-    for arguments in arguments_group:
+    for index, arguments in enumerate(arguments_group):
+        _arm_begin(ticket, "micro_forward", index)
         kwargs = {} if session is None else {"checkpoint_session": session}
         result = wrapper(**arguments, use_cache=False, **kwargs)
         results.append(result)
+        _arm_finish(ticket, "micro_forward", index)
         if accumulate:
+            _arm_begin(ticket, "micro_loss", index)
             loss = _summed_loss((result,)) / 16
+            _arm_finish(ticket, "micro_loss", index)
+            _arm_begin(ticket, "micro_backward", index)
             if session is None:
                 loss.backward()
             else:
                 session.backward(loss)
+            _arm_finish(ticket, "micro_backward", index)
+            _arm_begin(ticket, "micro_capture", index)
             detached = loss.detach().clone()
             total = detached if total is None else total + detached
+            _arm_finish(ticket, "micro_capture", index)
     if not accumulate:
         total = _summed_loss(results)
         if session is None:
             total.backward()
         else:
             session.backward(total)
+    _arm_begin(ticket, "observe_total")
     if not torch.isfinite(total).item():
         raise ObservationError("finite total loss required")
-    return tuple(results), total
+    result = tuple(results), total
+    _arm_finish(ticket, "observe_total")
+    return result
 
 
 def _summed_loss(results):
@@ -378,13 +438,16 @@ def compare_pending_observations(reference, actual, *, exact):
         compare_observations(left, right, exact=exact)
 
 
-def observe_accumulation(wrapper, fixtures, *, checkpoint):
+def observe_accumulation(wrapper, fixtures, *, checkpoint, _accumulation_ticket=None):
     """Exactly16 alternating common-length64 candidates, sequential loss/16.
 
     Returns before clipping/optimizer mutation. Caller must compare arms BEFORE
     stepping, and consume ONE final gradient roster rather than summing copies.
     This is synthetic parity machinery, not task-training/launch authority.
     """
+    ticket = _accumulation_ticket
+    _admit_ticket(ticket, checkpoint=checkpoint)
+    _arm_begin(ticket, "observe_admit")
     if type(fixtures) is not tuple or len(fixtures) != 16:
         raise ObservationError("exactly16 immutable fixtures required")
     base, _, _, _ = _bindings(wrapper, "nonzero")
@@ -401,10 +464,19 @@ def observe_accumulation(wrapper, fixtures, *, checkpoint):
         or any(fixture != fixtures[index % 2] for index, fixture in enumerate(fixtures))
     ):
         raise ObservationError("fixed alternating common-length64 candidates required")
+    _arm_finish(ticket, "observe_admit")
     forwards, averaged_loss = _observe_group(
-        wrapper, fixtures, checkpoint=checkpoint, state="nonzero", accumulate=True
+        wrapper,
+        fixtures,
+        checkpoint=checkpoint,
+        state="nonzero",
+        accumulate=True,
+        _accumulation_ticket=ticket,
     )
-    return AccumulationObservation(averaged_loss, forwards)
+    _arm_begin(ticket, "observe_record")
+    result = AccumulationObservation(averaged_loss, forwards)
+    _arm_finish(ticket, "observe_record")
+    return result
 
 
 def compare_accumulations(reference, actual, *, exact):

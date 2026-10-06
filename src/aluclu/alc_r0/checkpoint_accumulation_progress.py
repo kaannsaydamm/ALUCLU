@@ -6,6 +6,7 @@ callables, Torch imports, tensors, models or exceptions are retained here. Paylo
 validation proves framing only; it cannot authenticate execution by a caller.
 """
 
+from contextlib import contextmanager
 from dataclasses import dataclass, fields, replace
 
 
@@ -165,7 +166,14 @@ class _ArmTicket:
 class _AccumulationOwner:
     """One cooperating attempt; tickets are identity-bound, not authorization."""
 
-    __slots__ = ("_token", "_tickets", "_cursor", "_closed")
+    __slots__ = (
+        "_token",
+        "_tickets",
+        "_cursor",
+        "_closed",
+        "_journal_fault",
+        "_cleanup_fault",
+    )
 
     def __init__(self):
         self._token = object()
@@ -174,6 +182,8 @@ class _AccumulationOwner:
         )
         self._cursor = -1
         self._closed = False
+        self._journal_fault = False
+        self._cleanup_fault = False
 
     def _admit(self):
         if (
@@ -181,6 +191,8 @@ class _AccumulationOwner:
             or type(self._cursor) is not int
             or not -1 <= self._cursor < len(_ROWS)
             or type(self._closed) is not bool
+            or type(self._journal_fault) is not bool
+            or type(self._cleanup_fault) is not bool
         ):
             raise JournalError("exact valid attempt owner required")
 
@@ -245,9 +257,142 @@ class _AccumulationOwner:
             return None
         value = _ROWS[self._cursor][1]
         # Never hand out shared transcript objects, even to a cooperating caller.
-        result = replace(value, off=replace(value.off), on=replace(value.on))
+        result = replace(
+            value,
+            off=replace(value.off),
+            on=replace(value.on),
+            journal_fault=self._journal_fault,
+            cleanup_fault=self._cleanup_fault,
+        )
         return validate_accumulation_failure(result)
+
+    def _mark_fault(self, *, journal=False, cleanup=False):
+        self._admit()
+        if type(journal) is not bool or type(cleanup) is not bool:
+            raise JournalError("exact bounded diagnostic booleans required")
+        self._journal_fault = self._journal_fault or journal
+        self._cleanup_fault = self._cleanup_fault or cleanup
 
     def close(self):
         self._admit()
         self._closed = True
+
+
+def _fresh_owner(value):
+    """Admit data only, before any cooperating computation or state mutation."""
+    if value is None:
+        return _AccumulationOwner()
+    if type(value) is not _AccumulationOwner:
+        raise JournalError("exact private accumulation owner required")
+    value._admit()
+    if (
+        value._closed
+        or value._cursor != -1
+        or value._journal_fault
+        or value._cleanup_fault
+    ):
+        raise JournalError("fresh unused accumulation attempt required")
+    return value
+
+
+def _admit_ticket(ticket, *, checkpoint=None):
+    if ticket is None:
+        return
+    if type(ticket) is not _ArmTicket or type(ticket.owner) is not _AccumulationOwner:
+        raise JournalError("exact private accumulation ticket required")
+    arm = ticket.owner._ticket(ticket)
+    if checkpoint is not None and (
+        type(checkpoint) is not bool or (arm == "on") != checkpoint
+    ):
+        raise JournalError("ticket/checkpoint arm mismatch")
+
+
+@contextmanager
+def _arm_phase(ticket, phase, index=None):
+    """Mark return only when the unchanged operation actually returns normally."""
+    _arm_begin(ticket, phase, index)
+    yield
+    _arm_finish(ticket, phase, index)
+
+
+def _arm_begin(ticket, phase, index=None):
+    _admit_ticket(ticket)
+    if ticket is not None:
+        ticket.owner.begin_arm(ticket, phase, index)
+
+
+def _arm_finish(ticket, phase, index=None):
+    _admit_ticket(ticket)
+    if ticket is not None:
+        ticket.owner.finish_arm(ticket, phase, index)
+
+
+@contextmanager
+def _pair_phase(owner, phase):
+    owner.begin_pair(phase)
+    yield
+    owner.finish_pair(phase)
+
+
+def _safe_snapshot(owner):
+    """Secondary instrumentation failure must never replace a primary cause."""
+    try:
+        if type(owner) is not _AccumulationOwner:
+            raise JournalError("exact private accumulation owner required")
+        record = owner.snapshot()
+        if record is not None:
+            validate_accumulation_failure(record)
+        return record, owner._journal_fault
+    except BaseException:
+        return None, True
+
+
+def _bounded_faults(journal, cleanup):
+    """A bad payload or marker cannot erase a separately valid diagnostic."""
+    return (
+        (journal if type(journal) is bool else True) or type(cleanup) is not bool,
+        cleanup if type(cleanup) is bool else False,
+    )
+
+
+def _owner_faults(owner):
+    if type(owner) is not _AccumulationOwner:
+        return True, False
+    try:
+        journal = owner._journal_fault
+    except BaseException:
+        journal = None
+    try:
+        cleanup = owner._cleanup_fault
+    except BaseException:
+        cleanup = None
+    return _bounded_faults(journal, cleanup)
+
+
+def _clear_owned(parameters):
+    """Best-effort every already registered factor; never retain cleanup errors."""
+    fault = False
+    for parameter in parameters:
+        try:
+            parameter.grad = None
+        except BaseException:
+            fault = True
+    return fault
+
+
+def _cleanup_journaled(ticket, parameters):
+    """Cleanup diagnostics cannot replace the active computation exception."""
+    try:
+        fault = _clear_owned(parameters)
+    except BaseException:
+        fault = True
+    if fault:
+        try:
+            _admit_ticket(ticket)
+            ticket.owner._mark_fault(cleanup=True)
+        except BaseException:
+            # A corrupt owner will fail snapshot framing; retain no exception.
+            try:
+                ticket.owner._journal_fault = True
+            except BaseException:
+                pass

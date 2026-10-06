@@ -12078,3 +12078,308 @@ Task 2 sensorium/recollection gate: CLEAN
   SHA61fdf29d14c8417ae9d57f483f863d3deb0fd395fbc61218bb70155aff64ee74.
   Stage26exactrelatedfiles, diffcheckclean; no unrelated orscientificthreshold
   changes. Preserve uncommitteddevelopment-byte qualification scope in commit.
+- Checkpoint209 committed391348faa7ae2fe19c32895c501fac35ee18ac4a and pushed
+  exactoriginbranch; remoteHEAD equality/cleanworktree/sourceblob equality verified.
+  Nextcontinuation rereadfullobjective/skill and checked391348f cleanstate before
+  changes. Added integration tests FIRST for actualtiny numerical pair/cell:
+  ownedcompletejournal, ordinary/interrupt phasefaults, onfactory/offprefix,
+  preclip-beforestep, actualforward/backward returncounts, singles/pending prefix.
+  Added fixedJournalIntegration suite, no runtime wiring yet. Expected RED missing
+  APIs/journal plumbing; separate exactinvocation reviews required beforelaunch.
+  Further lateouter/snapshot/cleanupfault coverage remainsrequired, notdoneclaim.
+- Both independent integration RED reviews codeAPPROVE/architectureCLEAR and
+  invocationADMIT; exact test8c0121c4/runner13682bd3 hashes rechecked. Launcher
+  physical6043948/virtual17826300KiB exceeded1GiB/3GiB floors. Monitored launch
+  fbc51a session15373 returned actualexit1 on samehandle130326; persistedexit1,
+  child22028 absent at terminal inspection. XML48/48/0/0,8.779s SHA
+  21e1eaf3e8b6374522f21838e58478aac53aad760f887fbd78633c5c429d363b;
+  stdout71886bytes/stderr0. Personally grouped failures:24 missingAccumulationError,
+  21 missingAccumulationInterrupted,1 missingownerkeyword,2 cellDIDNOTRAISE because
+  journal hooks are not wired. Expected integration TDD RED, not numerical or
+  learning falsification. All five fresh artifact files retained. No source edits
+  during test. Begin approved runtime transport; nested instrumentation/lateouter/
+  snapshot-and-cleanup faults and final regressions remain mandatory/open.
+- Initial runtime wiring added: exact fresh data-owner admission and optional
+  identity-bound arm tickets; pair12 phase entry/return boundaries, observation15
+  phases with16 microbatch counters, step11 phases, typed ordinary/interruption
+  wrappers and bounded snapshot-before-owned-cleanup. Cell optional trailing
+  accumulation field preserves existing five-position failures/success schemas;
+  reference retains owner locally for late failure snapshots. Pair excludes base
+  identities from registered gradient cleanup. No threshold/order/seed/optimizer
+  changes or runtime callback/global journal. Ruffformat/check and diffcheck clean.
+  Initial six-file bytes submitted to both independent lanes for fixed48-case
+  syntheticCPU GREEN admission. Full approval remainsOPEN: secondary journal/
+  cleanup marker propagation and best-effort outer cleanup need dedicated tests,
+  late reference failures and existing private-keyword test substitutes need
+  regression verification. No GREEN, full-journal or learning claim yet.
+- Independent initial wiring reviews: codeREQUESTCHANGES/architectureWATCH for
+  full conformance; BOTH limited48-case GREENinvocationADMIT. Concrete unresolved
+  issues: cell resnapshot drops inner pair fault markers; observation/step and
+  reference cleanup can replace primary cause; reference drops snapshot fault
+  marker. No whole-journal approval. FixedGREEN cc6486/session74117 returned
+  actualexit0 on samehandle778418, persistedexit0/child21560 absent terminal.
+  XML48/0/0/0,11.446s SHA
+  146c923448bd380428548235e9a95de2b51f9801a49a764380b3a606f87c533f;
+  stdout81bytes100percent/stderr0. These first48 integration tests pass on the
+  reviewed initial six-file development bytes; NOT full regression, clean-clone
+  model qualification, whole-journal or learning PASS. Preserve RED+GREEN all
+  five-file artifactsets. Next add RED tests for secondary cleanup/snapshot faults
+  and outer propagation, repair primary-cause/diagnostic preservation, adapt only
+  legitimate test doubles for private data keyword, then expanded regressions and
+  final independent reviews/fresh source-bound numerical integration.
+- Continuation rereadfullobjective/skill, preserved all existing dirty checkpoints
+  and confirmed no live test before edits. Added8 secondary-fault cases FIRST;
+  both independent reviewers approved direction and admitted fixed56caseRED.
+  REDd7aa36/session48418 actualexit1 samehandle50e450, persisted1/child8916,
+  XML56/8/0/0,16.129s SHA
+  49e4c3157ab0deb87901c1ea41a623240a50c0ffbea827875350c74f5b168b60,
+  stderr0. Original48 pass; personally verified eight exact lost-innerdiagnostic
+  and primary-cause-replacement failures. Preserved complete negative artifactset.
+  Added owner ONLY2 exact monotonically ORed diagnostic booleans, no numerical
+  state/callback/exception references; pristine owner admission rejects prefaulted
+  attempts. Journaled observation/step best-effort factor cleanup marks fault
+  without replacing primary cause; unjournaled callers retain existing handling.
+  Pair ORs inherited fault flags. Cell prefers validated exacttypedpair failure,
+  retains missinginner snapshot asNone and ORs diagnostics; guard best-effort
+  cleanup protects base identities even for rejected factors. No source changes
+  during RED. Ruffclean; independent limited56case GREEN reviews requested.
+  Reference protected cleanup/late snapshot flags and full regressions remainOPEN.
+- Secondary-fault fix reviews BOTH56caseGREENADMIT; full codeREQUESTCHANGES /
+  architectureWATCH. Additional concrete cases remainOPEN: pair loses previous
+  owner.cleanup_fault if snapshot itself fails; cell rejects malformed payload
+  by resetting otherwise exact cleanup marker; reference fault/late paths still
+  unimplemented. No approval fallback. FixedGREEN06c044/session37225 actualexit0
+  samehandle6c0f67, persisted0/child6176 absent terminalinspection57a2e6.
+  XML56/0/0/0,14.491s SHA
+  76b8826483d46179c9d4a34028c385169f5c0dc4158231de0aaa6f70f05bf59e;
+  stdout81bytes100percent/stderr0; five reviewed sourcehashes personally unchanged.
+  This closes the eight individually tested diagnostic/cause bugs ONLY. NextRED
+  must cover combined snapshot+cleanup faults, malformed inner failure preserving
+  independently valid markers, reference cleanup/late snapshot failure, then
+  focused+existing regressions and fresh final source numerical integration.
+  Wholejournal, source checkpoint approval and neural learning remainOPEN. No
+  source edits during GREEN; all negative/success evidence preserved uncommitted.
+- Continuation rereadfullobjective/skill and verified dirty checkpoint/no live test.
+  Added12 tests FIRST: combined actualtinycell cleanup+snapshot failure(2),
+  malformedinner payload with independently validcleanupmarker(2), and reference
+  inner/late snapshot/cleanup ordinary/interruption framing(8). Reference fixture
+  explicitly stubs cell computation; not numericalqualification. Both independent
+  REDreviewsADMIT; testc32fbc20/runner13682bd3/existing6sourcehashes rechecked.
+  RED1837d5/session89737 actualexit1 samehandlef25f2d, persisted1/child22784,
+  XML68/12/0/0,25.130s SHA
+  40e77d2cd032d02be7761c1ed856776e35d691e4fc5c2f6c28c8d4fa21c5e717,
+  stderr0. Prior56pass; personally inspected all12 expected lostdiagnostic or
+  referencecleanup-primary failures. Complete negative artifacts retained.
+  Added independently admitted exactbool diagnostic framing separate from payload
+  validity; pair reads ownerfaults even when snapshot omitted, cell preserves
+  validmarkers when innerrecord malformed. Reference cleanup protected/best-effort
+  across both factorregistries; typedinner or latecompletedprefix and boundedflags
+  retained while originalcause/classification survives. No successschema/numerical
+  changes; Ruffclean. Limited68caseGREEN independent reviews requested; broader
+  fault/return/earlyownership tests, regressions and finalreviews stillrequired.
+- Outerfault fix independent reviews BOTH68caseGREENADMIT; codeREQUESTCHANGES/
+  architectureWATCH for wholejournal. New bounded-framing concern: reference
+  exacttyped ParityCellFailure must also validate nonaccumulation fields
+  (completed/current/unrun/pending/stage), preserving independently valid evidence
+  and markers while dropping malformed fields. Not yet implemented/tested.
+  GREENb40c47/session12252 actualexit0 samehandle5ac8a7, persisted0/child12512
+  absent terminalinspection2694ac. XML68/0/0/0,28.891s SHA
+  5f3fef8b8040a849c07669beed348bb24dabf283cfe5e420d92987be0bf57e98,
+  stdout81bytes100percent/stderr0; four newly changed sourcehashes unchanged.
+  This closes the12 tested combined/malformedaccumulation/referencefault cases,
+  NOT whole boundedfailureframing or real numericalqualification. Next bounded
+  RED tests: malformed typedcell nonaccumulation fields/markers, early rejected
+  ownership cleanup, completed actualowner late failure, phaseafterreturn. Then
+  privatekeyword-compatible existing test doubles, relevant full regressions,
+  final independent byte reviews and fresh source-bound numerical integration.
+  All six RED/GREEN artifactsets and source checkpoints remain preserved dirty;
+  no claim of final source approval, wholejournal, actualhost or learning PASS.
+- Continuation rereadfullobjective/skill, preserved dirty source/evidence and
+  verified no live test. Added16 malformed typedcell framing cases FIRST: stage,
+  list/oversizedcompleted, foreignrow/nonfiniterowmetric, tensorcurrent, listunrun,
+  nonfinitepending crossed with ordinary/interruption. Testsha11df8b81; runtime
+  unchanged last68GREEN. Tests explicitlystubbedreference framing, notnumerical.
+  Require retaining canonical valid prefix and independent valid pending losses,
+  originalcause and separatelyvalidcleanup marker, rejecting malformed data into
+  failure-only invalid_inner sentinel. No reconstruction of missing execution
+  progress or acceptance. Fixed84case RED independent admission reviews requested.
+- Both independent framingRED codeAPPROVE/architectureCLEAR +ADMIT. RED2c89bd/
+  session91250 actualexit1 samehandlec9f0a6, persisted1/child6780 absent terminal;
+  XML84/16/0/0,32.681s SHA
+  26ad79b24892539b23b9a5a27358358d182d21e87bbee7807837e8430fce2c55,
+  stderr0. Personallygrouped8ordinary+8interruption missingjournalflag failures;
+  old68passed. Full artifactset retained. Implemented reference exact bounded
+  failure sanitization: container/fieldcounts checked BEFORE iteration, max18
+  ordered primitive canonicalrows/finitepairs/SHA; retainprefixbeforebadrow,
+  discardwrong/oversizedcontainers, boundstagevocabulary, validatecurrent/unrun
+  without inferring missing execution, preserve independentlyvalidpendinglosses
+  and faultmarkers. Missingfield defaults preserve other valid data. Invalid_inner
+  is failure-only and cannot qualify success. Exactvalidfailure identity preserved.
+  Only reference runtime changed; Ruffclean. Limited84GREEN independentadmission
+  reviewsrequested; remainder/finalregression/modelqualification stillOPEN.
+- Framing fix independent codeAPPROVE/architectureCLEAR for limitedrepair; BOTH
+ 84caseGREENADMIT, not wholejournal. GREEN5ce7af/session4793 actualexit0
+ samehandle5592ff, persisted0/child25708 absent terminalinspection49ecee.
+ XML84/0/0/0,45.933s SHA
+ 14a2b444313e40e448bc856c6955df0f194879d4b81b18739dad1743172865bb;
+ stdout162bytes100percent/stderr0; referencebdf4a860/test11df8b81 unchanged.
+ All16 malformed-cell diagnostic framing cases now pass while prior68 retained.
+ This remains developmentbyte/failureframing evidence, not actualhost/learning.
+ Next covers operation-after-return boundaries, late actualowner transport,
+ early rejected ownership cleanup, legitimate privatekeyword test double
+ compatibility, full relevant regressions and finalindependent review/source
+ commit-bound numericalintegration. All eight artifactsets remain preserved;
+ no source edits while testlive and no finalcheckpointapproval claimed.
+- Continuation: preserved HEAD391348f and all eight RED/GREEN artifactsets.
+  Added24 operation-after-return tests (108total) to journal integration only:
+  off/on x ordinary/interruption x forward/backward/capture/observation-record/
+  optimizer-call/step-record. Each executes the original finish marker before
+  injecting failure, checks exact returned counters without inventing enclosing
+  return, original cause, one hit and owned-gradient cleanup. Test SHA256
+  c85c209383fa3ff7d8648b6bbb445c4a9eb33951a5e5e63d59c6abed15ad2933.
+  Ruff format applied; diff check clean. No test launched: live free physical
+  memory622676KiB below unchanged1048576KiB launcher floor; virtual10039588KiB.
+  Independent code/architecture limitedpatch and conditional invocation reviews
+  requested. Existing84GREEN does NOT qualify these new24. Remaining lateowner,
+  ownership cleanup, relevantregression, finalreview and sourcebound numerical
+  integration gates remain OPEN; no actualhost/learning acceptance asserted.
+- Independent limited24test review: codeAPPROVE, architectureCLEAR, both
+  executionDEFER based on live physical553840/571244KiB below1048576floor.
+  Added4 more tests: actualtinycell late final_base ordinary/interruption after
+  genuine accumulation pair return preserves18singles/pending/full12pair and
+  both11step; rejectedfactor basealias in pair/cell preserves callerbasegradient
+  identity/value while clearing separateownedfactor gradient. No production
+  source changes. Total112; SHA256
+  d1f49bc667c82d08b8a2c74bd007619f8b86cab76cb8d481aa07b51a339c0479.
+  Independent latestbyte reviews requested; no launch, latestphysical746976KiB
+  still belowfloor. All new28 remain UNEXECUTED, not GREEN.
+- Latest4test additions independently codeAPPROVE/architectureCLEAR at exact
+  d1f49bc6 bytes, both executionDEFER: reviewer physical524804/682328KiB,
+  below1048576floor. Prior24 approval plus these4 are limitedtestpatch evidence,
+  never wholejournal approval. Ruffcheck passes for112casefile. Prospective
+  JournalIntegration stem alc_r0_accumulation_journal_return_20261006 remains
+  unlaunched; fresh live resource/duplicate/freshstem checks mandatory before
+  any execution. No otherprocess killed, no threshold lowered, no asset acquired.
+- Later liveheadroom recovered2190524KiB physical; launcher immediately
+  rechecked2117572physical/9978712virtual above unchangedfloors and launched
+  exact JournalIntegration112 invocation, newstem return_20261006. Tool06e93d
+  session97037; actual terminalexit0 observed SAMEhandle ec5565; persistedexit0
+  child26988 at18:11:50.2668394+03. No relevantworker at terminal24ac57.
+  Personally parsed JUnit112tests/0failures/0errors/0skips,time53.129s, stdout
+  100percent, stderr0bytes. XML SHA256
+  8e319e3debed19c8ca0bed54341cc21f4be062d878a4077bf54a75c268dfd28f;
+  test SHA d1f49bc6 unchanged; no relevantedits during LIVE. New28 and prior84
+  GREEN jointly on currentdevelopmentbytes. This is syntheticCPU integration
+  evidence ONLY, not actualhost/learning/wholejournal acceptance. All nine
+  RED/GREEN artifactsets preserved. Relevantwide regressions, legitimateprivate
+  keyword mock compatibility, finalindependent wholejournal review and fresh
+  sourcecommit-bound numericalintegration remain OPEN before checkpointclose.
+- Continuation: previous turn made concrete progress112GREEN; objective fully
+  reread, currentDesktopworktree/HEAD391348f/dirtycheckpoints inspected and
+  preserved, no pytestworker live. Added fixed JournalRegression selector to
+  existingCPUrunner:12files observation/pending/accumulation/pair/optimizer/
+  cell/failure/reference suite+receipt/protocol/journal112/scalar120QVfactor.
+  No actualhost/modelasset/corpus execution and no new dependency. Existing
+  suite selectors, isolation, headroom floors, freshstem/duplicate safeguards
+  unchanged. RunnerSHA256
+  acd2cb6a583478ad36a759f14210868d1206da6709b6aa330cd6bff7ae388095.
+  Independent limitedselector+exactinitial regression_red invocation reviews
+  requested. Existingstub compatibility not silently changed before reproducing
+  any failure. All previous evidence preserved; broadregression not yet run.
+- Both independent selector reviews APPROVE/CLEAR and exactinitial invocation
+  ADMIT with immediate resource/freshstem/duplicatechecks. Run361eeb/session58676
+  terminal actualexit1 SAMEhandle b45b97, persisted1 child27988; no workerafter.
+  Personally parsed terminal133ba7:483tests/16failures/0errors/0skips,time59.343s,
+  stderr0bytes; XMLSHA256
+  4fd2ba23c0ad804dbfb81a06d395473486f1855097b8ef5480a75cdbb2521bf8.
+  REDclassification:15 legacyreference stub rejectsprivate_accumulation_owner
+  (explicitTypeError), one pairtest expects rawRuntimeError although newtyped
+  AccumulationError preserves RuntimeErrorcause. Negativeartifactset preserved.
+  Afterterminal only, adapted stub optionalprivateowner exacttype check with
+  explicit NO fabricatedtransitions; all old receipt/factory assertionsretained.
+  Pairtest now checks exacttypederror plus ORIGINALcauseidentity, on_factory,
+  completedpair3/off16forward+backward/on0/onecreatedwrapper/gradientclear.
+  No productionsource changes or numericalrule/threshold adjustments. GREEN
+  pending independent latestbyte admission and actual serialregression rerun.
+- Compatibilitypatch independentlyAPPROVE/CLEAR, exactGREEN483ADMIT. Runbef13a
+  session64854 actualexit0 SAMEhandle3b9fc8, persisted0/child27752. Terminal
+  inspection0d800d:483/0/0/0,time60.506s,stdout100percent/stderr0. XMLSHA256
+  e27ea91afba77ab7cb7948ce6058766cce75742478f92a42a8ce047ac768e11e;
+  adaptedtest/runner hashes unchanged duringLIVE. RED16 retained unchanged.
+  Wholejournal independentreview codeREQUESTCHANGES: late_completed_progress
+  copies exactCaseComparison rows with uncheckedextraattributes; latefailure
+  bypasses sharedexactrow sanitizer so tensor/object can escapeboundedpayload.
+  ArchitectureWATCH retains execution-vs-metadata/cleanup/traceback/resource
+  limits; no finalapproval. Afterterminal added8 regressioncases ordinary/
+  interrupt x before/aftercache x tensor/objectrowextra. Require originalcause,
+  journalfault, onlyfirst5validrows, validpending, nofabricatedaccumulation and
+  cleanup. New120cases pending reviewedRED beforeproductionrepair.
+- Both exact120REDADMIT; architecturewholegate revisedBLOCK forconcreteP2.
+  Run a3a512/session29319 actualexit1 SAMEhandle37ebaa, persisted1/child16056;
+  terminal0a0aee personallyverified120tests/8failures/0errors/0skips,time34.971s,
+  all8newcases lackjournalfault; old112PASS, stderr0/no remainingworker.
+  XMLSHA25696c10bf0faf370b68785d874e3f5b7722f51b4e9b793db7c8cadd0c95c5eaa36.
+  Afterterminal repaired referenceonly: sharedsanitize atcompletedcapture AND
+  lateemission; exactfield rowchecks preservevalidprefix/pending independently,
+  capturefault retained aslocalbool even iflaterpayloadsanitizationlooksvalid.
+  Strict _completed_progress helper stillreturnsNone forbadwholeframing.
+  Diagnosticframingexceptions suppressed into faultflag notprimary replacement;
+  no successschema/numerics/thresholdchange, no fabricatedprogress. GREENpending.
+- Independent latepathrepair P2 resolved oninspection (architectureWATCH), but
+  codeREQUESTCHANGES foundsecondconcreteP2: normalpath ignores completed_fault
+  and can return originalmalformedreceipt despite detectedextrafields. No test
+  run sincepreviousRED. Added2normalpath tensor/object testcases (122total)
+  requiring typedReferenceParityError/ValueErrorcause/journalfault/safe5prefix/
+  retainedpending. Production8396ed7a remainsunfixed fornormalpath until reviewed
+  RED reproduces. Previous120GREEN/491/325 admissions superseded fornewbytes;
+  freshnormalREDadmissionrequested. No success/learningclaim.
+- IndependentnormalREDADMIT, wholearchitectureBLOCK fordetectedframing accepted
+  asnormal success. Run311847/session53641 actualexit1 SAMEhandle9e6577,
+  persisted1/child27460; personally terminal0b3d8c122/2/0/0,time45.843s,stderr0,
+  bothnormalcasesDIDNOTRAISE; prior120PASS (including8latefixcases).
+  XMLSHA256c79deec790a403d47cd32c1c1cb0c73846e9ca17b50e66b077a75f4f865b86ef.
+  Afterterminal expandednormaltimingbefore/aftercache (124total), andfixednormal
+  acceptance: recapture/sharedsanitize afterLASTfactoryunchanged before return,
+  ORinitial+finalfault and raiseValueError ondetectedbadframing; protectedexisting
+  outererror retains safevalidprefix/pending andjournalfault. No successschema
+  ornumericchange, no live edits. LatestGREEN/regressions requirefreshadmission.
+- Continuation classified previousturn PROGRESS (483GREEN, two concreteP2 RED
+  reproducers and sourcefix); notcompletion. Objective/skill reread fully, exact
+  Desktopworktree/HEAD391348f/source9c750045/test8af90a5e/runneracd2cb6a verified.
+  Previousreviewfollowups failedquota, notcodefailure. RetriedsameGPT6.1Sol lanes
+  successfully: codewholeAPPROVE, architectureconcreteBLOCKresolved/WATCH on
+  empirical/cooperative/cleanup/traceback/resource limits. Both exactserial
+  124/495/325 invocations conditionallyADMIT; noauthorapproval fallback.
+- Finalbyte focusedGREEN run4881b4/session38926 actualexit0 SAMEhandle171a58,
+  persisted0/child26104, terminal4ca151 no worker. JUnit124/0/0/0,time40.950s,
+  stdout100percent/stderr0; XMLSHA256
+  f25e5c62412f7db1c2db78fdc630f8c87c9569affdcfdd428fc9888f2894ecb1.
+  Reference9c750045/test8af90a5e unchanged. Bothlate/normalmalformed pathsGREEN.
+- Then serial relevantregression run268503/session84508 actualexit0 SAMEhandle
+  880108, persisted0/child17124, terminal0ef100 personallyparsed495/0/0/0,
+  time69.240s,stdout100percent/stderr0; no worker terminale7e7d6. XMLSHA256
+  5124d0627688034f05cf55a2f61331e3f27d76aec114bf9f6ffff3faff24067c.
+  Then serialexistingregression run011926/session41321 actualexit0 SAMEhandle
+  9c3f3f,persisted0/child26692. Terminal39d5d3 personallyparsed325/0/0/0,
+  time37.390s,stdout100percent/stderr0, no pytestworker. XMLSHA256
+  c3ecc813ab9d089fb6007283427eb3b27837ba9be71a13d0ee4e01d58a62eb21.
+  Sources/tests/runner unchanged throughoutall3LIVE; immediateheadroom/freshstem/
+  duplicate safeguards passed individually. These selections OVERLAP: do not
+  claim944unique tests. Finalsourcecommit-bound randomCPU numericalintegration
+  and terminal checkpoint documentation remain OPEN. No pinnedhost/scientific
+  accounting/training/learning/ALC-R0 acceptance inferred. All RED artifacts kept.
+- Added runtimeevidencehandoff document (d5305f2fb613382d990302f46bf0e6ae9dae8796672913e59578a0c1d2b1a179)
+  documenting exactfinal124/495/325 outcomes, overlap, bothpreservedP2negative
+  reproducers, sourcehashes, historicalDRAFTscope and OPENgates. Added targeted
+  .gitattributes -text preservation forjournalartifacts/newintegration/pairtest/
+  handoffdoc, no runtimechange. Diffcheckclean. Requested independent evidence+
+  developmentcheckpoint-readiness reviews; no finalnumerical orlearningapproval.
+- Independent evidence/checkpoint synthesis codeAPPROVE +architectureCLEAR for
+  developmentcheckpoint ONLY; broadernumerical/research WATCH remains. Both
+  personally rehashed all10 reviewedruntime/test/runnerfiles and finalartifacts,
+  matched persistedcounts/exits/logs/startreceipts/serialordering. Staged scoped
+  93files, including80artifactfiles/16completeattemptsets; gitrawhash-object vs
+  indexblob comparison personallyverified91 source/test/doc/artifactfiles EXACT
+  (ba3b00/session76565 terminal0d0067exit0), no unstaged/untracked remainder.
+  Originalparenthandle terminalproof remains separatefrom persistedreceipts.
+  Checkpoint records reproducibledevelopmentprogress, notfinalnumerical PASS.

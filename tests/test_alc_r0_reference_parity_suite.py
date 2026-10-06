@@ -55,7 +55,15 @@ def wiring(monkeypatch):
         created.append(wrapper)
         return wrapper
 
-    def cell(factory, inputs, *, exact):
+    def cell(factory, inputs, *, exact, _accumulation_owner=None):
+        # This is receipt/ownership framing, not a numerical cell. Accept the
+        # transported private owner without fabricating execution transitions.
+        from aluclu.alc_r0.checkpoint_accumulation_progress import _AccumulationOwner
+
+        assert (
+            _accumulation_owner is None
+            or type(_accumulation_owner) is _AccumulationOwner
+        )
         assert inputs == fixtures() and exact is True
         zero = factory("zero", False)
         nonzero = factory("nonzero", True)

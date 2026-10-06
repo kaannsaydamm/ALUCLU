@@ -11,6 +11,14 @@ from weakref import WeakSet, ref
 
 import torch
 
+from .checkpoint_accumulation_progress import (
+    _AccumulationOwner,
+    _bounded_faults,
+    _clear_owned,
+    _owner_faults,
+    _safe_snapshot,
+    validate_accumulation_failure,
+)
 from .checkpoint_execution import CheckpointController, _digest
 from .checkpoint_observation import _bindings
 from .checkpoint_parity_cell import (
@@ -45,15 +53,21 @@ class ReferenceParityFailure:
 
 
 class ReferenceParityError(RuntimeError):
-    def __init__(self, failure):
+    def __init__(self, failure, *, journal_fault=False, cleanup_fault=False):
         super().__init__(f"terminal q/v parity failure at {failure.stage}")
         self.failure = failure
+        self.journal_fault, self.cleanup_fault = _bounded_faults(
+            journal_fault, cleanup_fault
+        )
 
 
 class ReferenceParityInterrupted(KeyboardInterrupt):
-    def __init__(self, failure):
+    def __init__(self, failure, *, journal_fault=False, cleanup_fault=False):
         super().__init__(f"q/v parity interrupted at {failure.stage}")
         self.failure = failure
+        self.journal_fault, self.cleanup_fault = _bounded_faults(
+            journal_fault, cleanup_fault
+        )
 
 
 def _completed_progress(cell):
@@ -62,30 +76,168 @@ def _completed_progress(cell):
     This is shape/finite framing, not success validation. Invalid/corrupt
     observations are not copied into a supposedly bounded failure payload.
     """
-    if (
-        type(cell) is not ParityCell
-        or type(cell.cases) is not tuple
-        or len(cell.cases) != 18
+    progress, invalid = _capture_completed_progress(cell)
+    return None if invalid else progress
+
+
+_FAILURE_STAGES = frozenset(
+    (
+        "single_factory_off",
+        "single_off",
+        "single_factory_on",
+        "single_on",
+        "single_compare",
+        "single_repeat",
+        "single_order",
+        "single_receipt",
+        "pending_factory_off",
+        "pending_off",
+        "pending_factory_on",
+        "pending_on",
+        "pending_compare",
+        "accumulation",
+        "final_base",
+        "cell_returned",
+        "receipt",
+        "invalid_inner",
+    )
+)
+
+
+def _case_key(value):
+    return (
+        type(value) is tuple
+        and len(value) == 3
+        and type(value[0]) is str
+        and value[0] in ("zero", "nonzero")
+        and type(value[1]) is int
+        and type(value[2]) is int
+        and value in SINGLE_SCHEDULE
+    )
+
+
+def _failure_row(row, expected):
+    if type(row) is not CaseComparison or not _exact_fields(
+        row,
+        {
+            "state",
+            "repeat",
+            "fixture_index",
+            "losses",
+            "scores",
+            "base_digest",
+            "factor_digest",
+        },
     ):
-        return None
+        raise ValueError("exact bounded scalar comparison row required")
+    key = row.state, row.repeat, row.fixture_index
+    if not _case_key(key) or key != expected:
+        raise ValueError("canonical completed single prefix required")
+    _pair(row.losses, exact=False)
+    _pair(row.scores, exact=False)
+    _sha(row.base_digest)
+    _sha(row.factor_digest)
+
+
+def _exact_fields(value, names):
+    values = vars(value)
+    return (
+        type(values) is dict
+        and len(values) == len(names)
+        and all(type(key) is str for key in values)
+        and set(values) == names
+    )
+
+
+def _sanitize_cell_failure(value):
+    """Keep independent bounded diagnostics, not acceptance or inferred progress."""
+    if type(value) is not ParityCellFailure:
+        return None, True
+    fault = not _exact_fields(
+        value,
+        {
+            "stage",
+            "completed",
+            "current",
+            "unrun",
+            "pending_losses",
+            "accumulation",
+        },
+    )
+    stage = getattr(value, "stage", None)
+    if type(stage) is not str or len(stage) > 32 or stage not in _FAILURE_STAGES:
+        fault = True
+    completed = ()
+    supplied = getattr(value, "completed", None)
+    if type(supplied) is tuple and len(supplied) <= 18:
+        for index, row in enumerate(supplied):
+            try:
+                _failure_row(row, SINGLE_SCHEDULE[index])
+            except BaseException:
+                fault = True
+                break
+            completed += (row,)
+    else:
+        fault = True
+    current = getattr(value, "current", None)
+    if current is not None and (
+        not _case_key(current)
+        or len(completed) == 18
+        or current != SINGLE_SCHEDULE[len(completed)]
+    ):
+        current, fault = None, True
+    unrun = getattr(value, "unrun", None)
+    valid_unrun = (
+        type(unrun) is tuple
+        and len(unrun) <= 18
+        and all(_case_key(key) for key in unrun)
+        and any(
+            unrun == SINGLE_SCHEDULE[start:]
+            for start in (
+                (len(completed), len(completed) + 1)
+                if current is not None
+                else (len(completed),)
+            )
+        )
+    )
+    if not valid_unrun:
+        unrun, fault = (), True
+    pending = getattr(value, "pending_losses", None)
+    if pending is not None:
+        try:
+            _pair(pending, exact=False)
+        except BaseException:
+            pending, fault = None, True
+    accumulation = getattr(value, "accumulation", None)
+    if accumulation is not None:
+        try:
+            validate_accumulation_failure(accumulation)
+        except BaseException:
+            accumulation, fault = None, True
+    if not fault:
+        return value, False
+    return ParityCellFailure(
+        "invalid_inner", completed, current, unrun, pending, accumulation
+    ), True
+
+
+def _capture_completed_progress(cell):
+    """Cache only bounded returned fields; retain independent valid diagnostics."""
     try:
-        for expected, row in zip(SINGLE_SCHEDULE, cell.cases, strict=True):
-            if (
-                type(row) is not CaseComparison
-                or type(row.state) is not str
-                or type(row.repeat) is not int
-                or type(row.fixture_index) is not int
-                or (row.state, row.repeat, row.fixture_index) != expected
-            ):
-                return None
-            _pair(row.losses, exact=False)
-            _pair(row.scores, exact=False)
-            _sha(row.base_digest)
-            _sha(row.factor_digest)
-        _pair(cell.pending_losses, exact=False)
-    except ValueError:
-        return None
-    return ParityCellFailure("cell_returned", cell.cases, None, (), cell.pending_losses)
+        if (
+            type(cell) is not ParityCell
+            or type(cell.cases) is not tuple
+            or len(cell.cases) != 18
+        ):
+            return None, True
+        return _sanitize_cell_failure(
+            ParityCellFailure(
+                "cell_returned", cell.cases, None, (), cell.pending_losses
+            )
+        )
+    except BaseException:
+        # Diagnostic framing must not replace a subsequent primary failure.
+        return None, True
 
 
 class _ReferenceFactory:
@@ -165,10 +317,56 @@ class _ReferenceFactory:
         return self.guard.make(state, checkpoint)
 
     def clear(self):
-        self.guard.clear()
-        for weak in self.cleanup_parameters.values():
-            if (parameter := weak()) is not None:
-                parameter.grad = None
+        fault = False
+        try:
+            fault = self.guard.clear() is True
+        except BaseException:
+            fault = True
+        try:
+            own_fault = _clear_owned(
+                parameter
+                for weak in self.cleanup_parameters.values()
+                if (parameter := weak()) is not None
+            )
+        except BaseException:
+            own_fault = True
+        return fault or own_fault
+
+
+def _failure_progress(exc, completed, owner, stage, completed_fault=False):
+    if type(exc) in (ParityCellError, ParityCellInterrupted):
+        journal, cleanup = _bounded_faults(
+            getattr(exc, "journal_fault", None), getattr(exc, "cleanup_fault", None)
+        )
+        try:
+            inner, invalid = _sanitize_cell_failure(getattr(exc, "failure", None))
+        except BaseException:
+            inner, invalid = None, True
+        journal = journal or invalid or completed_fault
+        if inner is None:
+            return None, journal, cleanup
+        if inner.accumulation is not None:
+            try:
+                validate_accumulation_failure(inner.accumulation)
+                journal = journal or inner.accumulation.journal_fault
+                cleanup = cleanup or inner.accumulation.cleanup_fault
+            except BaseException:
+                inner, journal = replace(inner, accumulation=None), True
+        return inner, journal, cleanup
+    accumulation, journal = _safe_snapshot(owner)
+    owner_journal, cleanup = _owner_faults(owner)
+    invalid = False
+    if completed is not None:
+        try:
+            completed, invalid = _sanitize_cell_failure(completed)
+        except BaseException:
+            completed, invalid = None, True
+    inner = (
+        replace(completed, stage=stage, accumulation=accumulation)
+        if completed is not None
+        else None
+    )
+    return inner, journal or owner_journal or completed_fault or invalid, cleanup
 
 
 def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
@@ -177,8 +375,8 @@ def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest
     No public loader/factory/execution callback. The fixture digest must originate
     in caller-authenticated framing; equality alone does not confer provenance.
     Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
-    and fixed step1. Failures retain the inner journal, whose accumulation stage
-    remains coarse. Outer owner persists scalar evidence and discards live chained
+    and fixed step1. Failures retain bounded accumulation progress. Outer owner
+    persists scalar evidence and discards live chained
     exceptions/wrappers; this function neither journals process kills nor retries.
     """
     if (
@@ -206,11 +404,15 @@ def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest
         fixture_digest,
     )
     stage, factory, completed_progress = "prepare", None, None
+    completed_fault = False
+    accumulation_owner = _AccumulationOwner()
     try:
         factory = _ReferenceFactory(host, signature, exact)
         stage = "cell"
-        cell = run_parity_cell(factory.make, fixtures, exact=exact)
-        completed_progress = _completed_progress(cell)
+        cell = run_parity_cell(
+            factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+        )
+        completed_progress, completed_fault = _capture_completed_progress(cell)
         stage = "final_base"
         factory.unchanged()
         stage = "receipt"
@@ -219,34 +421,41 @@ def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest
         if any(row.factor_digest != factory.digests[row.state] for row in cell.cases):
             raise ValueError("receipt must bind original seeded factor state bytes")
         factory.unchanged()
+        # Revalidate after the final outer check: frozen non-slotted records can
+        # acquire extra fields after capture. A detected fault cannot be success.
+        completed_progress, final_fault = _capture_completed_progress(cell)
+        completed_fault = completed_fault or final_fault
+        if completed_fault:
+            raise ValueError("invalid returned cell diagnostic framing")
         return result
-    except KeyboardInterrupt as exc:
-        if factory is not None:
-            factory.clear()
-        inner = (
-            exc.failure
-            if type(exc) is ParityCellInterrupted
-            else (
-                replace(completed_progress, stage=stage)
-                if completed_progress is not None
-                else None
-            )
+    except BaseException as exc:
+        inner, journal_fault, cleanup_fault = _failure_progress(
+            exc, completed_progress, accumulation_owner, stage, completed_fault
         )
-        raise ReferenceParityInterrupted(ReferenceParityFailure(stage, inner)) from exc
-    except Exception as exc:
         if factory is not None:
-            factory.clear()
-        inner = (
-            exc.failure
-            if type(exc) is ParityCellError
-            else (
-                replace(completed_progress, stage=stage)
-                if completed_progress is not None
-                else None
+            try:
+                local_cleanup = factory.clear() is True
+            except BaseException:
+                local_cleanup = True
+            cleanup_fault = cleanup_fault or local_cleanup
+        if inner is not None and inner.accumulation is not None:
+            inner = replace(
+                inner,
+                accumulation=replace(
+                    inner.accumulation,
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ),
             )
-        )
-        raise ReferenceParityError(ReferenceParityFailure(stage, inner)) from exc
-    except BaseException:
-        if factory is not None:
-            factory.clear()
+        if isinstance(exc, (Exception, KeyboardInterrupt)):
+            error = (
+                ReferenceParityInterrupted
+                if isinstance(exc, KeyboardInterrupt)
+                else ReferenceParityError
+            )
+            raise error(
+                ReferenceParityFailure(stage, inner),
+                journal_fault=journal_fault,
+                cleanup_fault=cleanup_fault,
+            ) from exc
         raise

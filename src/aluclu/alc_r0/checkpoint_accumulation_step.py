@@ -10,6 +10,12 @@ from dataclasses import dataclass
 
 import torch
 
+from .checkpoint_accumulation_progress import (
+    _admit_ticket,
+    _arm_begin,
+    _arm_finish,
+    _cleanup_journaled,
+)
 from .checkpoint_execution import _digest, _tensor_stamp
 from .checkpoint_fidelity import compare_named_tensors, compare_tensor
 from .checkpoint_observation import (
@@ -42,12 +48,15 @@ def _structure(named):
     )
 
 
-def step_accumulation(wrapper, observation):
+def step_accumulation(wrapper, observation, *, _accumulation_ticket=None):
     """Caller must already have compared off/on pre-clip gradients.
 
     Returns live optimizer/factor bindings for complete step1 comparison.
     This does not prove that caller comparison/authentication/launch occurred.
     """
+    ticket = _accumulation_ticket
+    _admit_ticket(ticket)
+    _arm_begin(ticket, "step_admit")
     if (
         type(observation) is not AccumulationObservation
         or type(observation.forwards) is not tuple
@@ -64,6 +73,8 @@ def step_accumulation(wrapper, observation):
         or captured.state != "nonzero"
     ):
         raise ObservationError("live state differs from pre-clip observation")
+    _arm_finish(ticket, "step_admit")
+    _arm_begin(ticket, "step_live_gradients")
     gradients = _gradient_mapping(captured.gradients)
     if set(gradients) != {name for name, _ in named}:
         raise ObservationError("complete pre-clip gradient roster required")
@@ -85,11 +96,15 @@ def step_accumulation(wrapper, observation):
     base_stamp = _roster_stamp(base.named_parameters())
     buffer_stamp = _roster_stamp(base.named_buffers())
     structure = _structure(named)
+    _arm_finish(ticket, "step_live_gradients")
+    _arm_begin(ticket, "step_guard")
     # Explicit mutation guard: no stepping inside a still-active lease.
     guard = getattr(wrapper, "_assert_checkpoint_mutation_allowed", None)
     if guard is None:
         guard = wrapper.controller.assert_mutation_allowed
     guard()
+    _arm_finish(ticket, "step_guard")
+    _arm_begin(ticket, "step_optimizer_create")
     optimizer = torch.optim.AdamW(
         [p for _, p in named],
         lr=3e-4,
@@ -99,13 +114,23 @@ def step_accumulation(wrapper, observation):
         foreach=False,
         fused=False,
     )
+    _arm_finish(ticket, "step_optimizer_create")
+    _arm_begin(ticket, "step_optimizer_group")
     _group(optimizer)
+    _arm_finish(ticket, "step_optimizer_group")
     try:
+        _arm_begin(ticket, "step_clip")
         norm = torch.nn.utils.clip_grad_norm_(
             [p for _, p in named], 1.0, error_if_nonfinite=True, foreach=False
         )
+        _arm_finish(ticket, "step_clip")
+        _arm_begin(ticket, "step_clipped_capture")
         clipped = tuple((name, p.grad.detach().cpu().clone()) for name, p in named)
+        _arm_finish(ticket, "step_clipped_capture")
+        _arm_begin(ticket, "step_optimizer_call")
         optimizer.step()
+        _arm_finish(ticket, "step_optimizer_call")
+        _arm_begin(ticket, "step_postconditions")
         live_named = tuple(sorted(factors.named_parameters(remove_duplicate=False)))
         if (
             wrapper.base is not base
@@ -120,9 +145,13 @@ def step_accumulation(wrapper, observation):
             or any(p.grad is not None for p in base_parameters)
         ):
             raise ObservationError("frozen/binding invariant changed across step")
+        _arm_finish(ticket, "step_postconditions")
+        _arm_begin(ticket, "step_snapshot")
         mapping = dict(named)
         _snapshot(optimizer, mapping, base_parameters, 1)
-        return AccumulationStep(
+        _arm_finish(ticket, "step_snapshot")
+        _arm_begin(ticket, "step_record")
+        result = AccumulationStep(
             observation,
             norm.detach().cpu().clone(),
             clipped,
@@ -130,9 +159,14 @@ def step_accumulation(wrapper, observation):
             mapping,
             base_parameters,
         )
+        _arm_finish(ticket, "step_record")
+        return result
     except BaseException:
-        for _, parameter in named:
-            parameter.grad = None
+        if ticket is None:
+            for _, parameter in named:
+                parameter.grad = None
+        else:
+            _cleanup_journaled(ticket, (parameter for _, parameter in named))
         raise
 
 

@@ -1,0 +1,1027 @@
+...................................................................F.... [ 14%]
+........................................................................ [ 29%]
+........................................................................ [ 44%]
+.............................F......FFFFFFFFF.FFFF...F.................. [ 59%]
+........................................................................ [ 74%]
+........................................................................ [ 89%]
+...................................................                      [100%]
+================================== FAILURES ===================================
+________________ test_on_factory_failure_clears_off_gradients _________________
+
+checkpoint = True
+
+    def broken(checkpoint):
+        if checkpoint:
+>           raise RuntimeError("factory failed")
+E           RuntimeError: factory failed
+
+tests\test_alc_r0_accumulation_pair.py:151: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+    def test_on_factory_failure_clears_off_gradients():
+        make, created = factory()
+    
+        def broken(checkpoint):
+            if checkpoint:
+                raise RuntimeError("factory failed")
+            return make(False)
+    
+        with pytest.raises(RuntimeError, match="factory failed"):
+>           run_accumulation_pair(broken, fixtures(), exact=True)
+
+tests\test_alc_r0_accumulation_pair.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <function test_on_factory_failure_clears_off_gradients.<locals>.broken at 0x000002373EAFA160>
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...6, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63), prompt_length=62, candidate_ids=(13, 14)), ...)
+exact = True, _accumulation_owner = None
+
+    def run_accumulation_pair(factory, fixtures, *, exact, _accumulation_owner=None):
+        """Observe off, observe on, compare pre-clip, step off/on, compare full state.
+    
+        CPU exact comparison is mandatory. GPU uses the existing fixed tolerance
+        contract; factory qualification/resource budgeting remain outside this API.
+        Success is scoped pipeline execution, NOT actual-host/matrix/learning PASS.
+        """
+        if not callable(factory) or type(exact) is not bool:
+            raise ObservationError("callable factory and exact boolean required")
+        owned = []
+        owner = None
+        try:
+            owner = _fresh_owner(_accumulation_owner)
+            with _pair_phase(owner, "off_factory"):
+                off = factory(False)
+            with _pair_phase(owner, "off_bindings"):
+                if not isinstance(off, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                base_ids = {id(p) for p in off.base.parameters()}
+                owned.extend(
+                    p
+                    for p in off._checkpoint_factors().parameters()
+                    if id(p) not in base_ids
+                )
+                base, off_factors, off_named, device = _bindings(off, "nonzero")
+                if exact != (device.type == "cpu"):
+                    raise ObservationError("CPU exact/GPU fixed tolerance mode required")
+                base_stamp = _roster_stamp(base.named_parameters())
+                buffer_stamp = _roster_stamp(base.named_buffers())
+                factor_stamp = _roster_stamp(off_named)
+            with _pair_phase(owner, "off_observation"):
+                reference = observe_accumulation(
+                    off,
+                    fixtures,
+                    checkpoint=False,
+                    _accumulation_ticket=owner.ticket("off"),
+                )
+    
+            with _pair_phase(owner, "on_factory"):
+                on = factory(True)
+            with _pair_phase(owner, "on_bindings"):
+                if not isinstance(on, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                protected = base_ids | {id(p) for p in on.base.parameters()}
+                owned.extend(
+                    p
+                    for p in on._checkpoint_factors().parameters()
+                    if id(p) not in protected
+                )
+                on_base, on_factors, on_named, on_device = _bindings(on, "nonzero")
+                if (
+                    on is off
+                    or on_base is not base
+                    or on_factors is off_factors
+                    or on_device != device
+                    or off.base is not base
+                    or off._checkpoint_factors() is not off_factors
+                    or _roster_stamp(base.named_parameters()) != base_stamp
+                    or _roster_stamp(base.named_buffers()) != buffer_stamp
+                    or _roster_stamp(
+                        sorted(
+                            off_factors.named_parameters(remove_duplicate=False),
+                            key=lambda item: item[0].encode("utf-8"),
+                        )
+                    )
+                    != factor_stamp
+                    or _base_digest(base) != reference.forwards[0].base_digest
+                    or _digest(off_named) != reference.forwards[0].factor_digest
+                    or {_storage(p) for _, p in off_named}
+                    & {_storage(p) for _, p in on_named}
+                ):
+                    raise ObservationError("factory changed state or reused comparison arm")
+                compare_named_tensors(dict(off_named), dict(on_named), exact=True)
+            with _pair_phase(owner, "on_observation"):
+                actual = observe_accumulation(
+                    on, fixtures, checkpoint=True, _accumulation_ticket=owner.ticket("on")
+                )
+    
+            # This ordering is the integration invariant, not just documentation.
+            with _pair_phase(owner, "preclip_compare"):
+                compare_accumulations(reference, actual, exact=exact)
+            with _pair_phase(owner, "cross_arm_storage"):
+                used = {
+                    _storage(value)
+                    for value in (
+                        *base.parameters(),
+                        *base.buffers(),
+                        *off_factors.parameters(),
+                        *on_factors.parameters(),
+                    )
+                }
+                for parameter in owned:
+                    if parameter.grad is None:
+                        raise ObservationError("both live accumulated gradients required")
+                    storage = _storage(parameter.grad)
+                    if storage in used:
+                        raise ObservationError("cross-arm gradient/state storage alias")
+                    used.add(storage)
+            with _pair_phase(owner, "off_step"):
+                reference_step = step_accumulation(
+                    off, reference, _accumulation_ticket=owner.ticket("off")
+                )
+            with _pair_phase(owner, "on_step"):
+                actual_step = step_accumulation(
+                    on, actual, _accumulation_ticket=owner.ticket("on")
+                )
+            with _pair_phase(owner, "full_step_compare"):
+                comparison = compare_accumulation_steps(
+                    reference_step, actual_step, exact=exact
+                )
+            with _pair_phase(owner, "pair_record"):
+                result = AccumulationPair(reference_step, actual_step, comparison)
+            owner.close()
+            return result
+        except BaseException as exc:
+            failure, journal_fault = _safe_snapshot(owner)
+            owner_journal, owner_cleanup = _owner_faults(owner)
+            journal_fault = journal_fault or owner_journal
+            cleanup_fault = _clear_owned(owned)
+            cleanup_fault = cleanup_fault or owner_cleanup
+            if failure is not None:
+                journal_fault = journal_fault or failure.journal_fault
+                cleanup_fault = cleanup_fault or failure.cleanup_fault
+            if owner is not None:
+                try:
+                    owner.close()
+                except BaseException:
+                    journal_fault = True
+            if failure is not None:
+                failure = replace(
+                    failure, journal_fault=journal_fault, cleanup_fault=cleanup_fault
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    AccumulationInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else AccumulationError
+                )
+>               raise error(
+                    str(exc),
+                    failure,
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.checkpoint_accumulation_pair.AccumulationError: factory failed
+
+src\aluclu\alc_r0\checkpoint_accumulation_pair.py:205: AccumulationError
+_________ test_complete_bound_receipt_and_independent_live_ownership __________
+
+host = VerifiedHost(model=Linear(in_features=576, out_features=8, bias=False), acquisition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0)
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+expected_fixture_digest = '47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b'
+
+    def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
+        """Bind fixed factory, generic cell and bounded separate success receipt.
+    
+        No public loader/factory/execution callback. The fixture digest must originate
+        in caller-authenticated framing; equality alone does not confer provenance.
+        Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
+        and fixed step1. Failures retain bounded accumulation progress. Outer owner
+        persists scalar evidence and discards live chained
+        exceptions/wrappers; this function neither journals process kills nor retries.
+        """
+        if (
+            type(exact) is not bool
+            or torch.is_inference_mode_enabled()
+            or not torch.is_grad_enabled()
+        ):
+            raise ValueError(
+                "explicit mode and ordinary grad-enabled construction required"
+            )
+        _schedule(fixtures)
+        _sha(expected_fixture_digest)
+        fixture_digest = _json_digest([asdict(fixture) for fixture in fixtures])
+        if fixture_digest != expected_fixture_digest:
+            raise ValueError("expected six-fixture digest required")
+        signature = _signature(host)
+        if exact != (signature[0].type == "cpu"):
+            raise ValueError("CPU exact/GPU fixed tolerance mode required")
+        identity = ReferenceParityIdentity(
+            str(signature[0]),
+            str(next(host.model.parameters()).dtype),
+            signature[1],
+            signature[5],
+            signature[6],
+            fixture_digest,
+        )
+        stage, factory, completed_progress = "prepare", None, None
+        accumulation_owner = _AccumulationOwner()
+        try:
+            factory = _ReferenceFactory(host, signature, exact)
+            stage = "cell"
+>           cell = run_parity_cell(
+                factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+            )
+E           TypeError: wiring.<locals>.cell() got an unexpected keyword argument '_accumulation_owner'
+
+src\aluclu\alc_r0\reference_parity_suite.py:408: TypeError
+
+The above exception was the direct cause of the following exception:
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+
+    def test_complete_bound_receipt_and_independent_live_ownership(wiring):
+>       result = run(wiring)
+                 ^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+host = VerifiedHost(model=Linear(in_features=576, out_features=8, bias=False), acquisition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0)
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+expected_fixture_digest = '47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b'
+
+    def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
+        """Bind fixed factory, generic cell and bounded separate success receipt.
+    
+        No public loader/factory/execution callback. The fixture digest must originate
+        in caller-authenticated framing; equality alone does not confer provenance.
+        Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
+        and fixed step1. Failures retain bounded accumulation progress. Outer owner
+        persists scalar evidence and discards live chained
+        exceptions/wrappers; this function neither journals process kills nor retries.
+        """
+        if (
+            type(exact) is not bool
+            or torch.is_inference_mode_enabled()
+            or not torch.is_grad_enabled()
+        ):
+            raise ValueError(
+                "explicit mode and ordinary grad-enabled construction required"
+            )
+        _schedule(fixtures)
+        _sha(expected_fixture_digest)
+        fixture_digest = _json_digest([asdict(fixture) for fixture in fixtures])
+        if fixture_digest != expected_fixture_digest:
+            raise ValueError("expected six-fixture digest required")
+        signature = _signature(host)
+        if exact != (signature[0].type == "cpu"):
+            raise ValueError("CPU exact/GPU fixed tolerance mode required")
+        identity = ReferenceParityIdentity(
+            str(signature[0]),
+            str(next(host.model.parameters()).dtype),
+            signature[1],
+            signature[5],
+            signature[6],
+            fixture_digest,
+        )
+        stage, factory, completed_progress = "prepare", None, None
+        accumulation_owner = _AccumulationOwner()
+        try:
+            factory = _ReferenceFactory(host, signature, exact)
+            stage = "cell"
+            cell = run_parity_cell(
+                factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+            )
+            completed_progress = _completed_progress(cell)
+            stage = "final_base"
+            factory.unchanged()
+            stage = "receipt"
+            result = ReferenceParityReceipt(identity, PARITY_SEED, cell)
+            validate_reference_parity_receipt(result, expected_identity=identity)
+            if any(row.factor_digest != factory.digests[row.state] for row in cell.cases):
+                raise ValueError("receipt must bind original seeded factor state bytes")
+            factory.unchanged()
+            return result
+        except BaseException as exc:
+            inner, journal_fault, cleanup_fault = _failure_progress(
+                exc, completed_progress, accumulation_owner, stage
+            )
+            if factory is not None:
+                try:
+                    local_cleanup = factory.clear() is True
+                except BaseException:
+                    local_cleanup = True
+                cleanup_fault = cleanup_fault or local_cleanup
+            if inner is not None and inner.accumulation is not None:
+                inner = replace(
+                    inner,
+                    accumulation=replace(
+                        inner.accumulation,
+                        journal_fault=journal_fault,
+                        cleanup_fault=cleanup_fault,
+                    ),
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    ReferenceParityInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else ReferenceParityError
+                )
+>               raise error(
+                    ReferenceParityFailure(stage, inner),
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.reference_parity_suite.ReferenceParityError: terminal q/v parity failure at cell
+
+src\aluclu\alc_r0\reference_parity_suite.py:446: ReferenceParityError
+____________ test_factory_corruption_terminal_before_success[seed] ____________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FF410>
+bad = 'seed'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+_____________ test_factory_corruption_terminal_before_success[A] ______________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FF9E0>
+bad = 'A'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+_____________ test_factory_corruption_terminal_before_success[B] ______________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FC890>
+bad = 'B'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+___________ test_factory_corruption_terminal_before_success[shape] ____________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FD9D0>
+bad = 'shape'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+____________ test_factory_corruption_terminal_before_success[grad] ____________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FF080>
+bad = 'grad'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+____________ test_factory_corruption_terminal_before_success[mode] ____________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023740183AA0>
+bad = 'mode'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+_________ test_factory_corruption_terminal_before_success[controller] _________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002374023E3F0>
+bad = 'controller'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+__________ test_factory_corruption_terminal_before_success[co_mount] __________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401823C0>
+bad = 'co_mount'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+_________ test_factory_corruption_terminal_before_success[wrong_type] _________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FD460>
+bad = 'wrong_type'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+>       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError
+____________ test_final_drift_or_bad_receipt_is_not_admitted[base] ____________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002374023DF10>
+bad = 'base'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+>       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = <ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3>.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError
+___________ test_final_drift_or_bad_receipt_is_not_admitted[config] ___________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002374023F260>
+bad = 'config'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+>       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = <ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3>.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError
+__________ test_final_drift_or_bad_receipt_is_not_admitted[identity] __________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002374023E120>
+bad = 'identity'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+>       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = <ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3>.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError
+__________ test_final_drift_or_bad_receipt_is_not_admitted[receipt] ___________
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FD340>
+bad = 'receipt'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+>       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = <ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3>.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError
+___________ test_post_cell_interruption_retains_completed_evidence ____________
+
+args = (<bound method _ReferenceFactory.make of <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000002374...2, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14))))
+kwargs = {'exact': True, '_accumulation_owner': <aluclu.alc_r0.checkpoint_accumulation_progress._AccumulationOwner object at 0x0000023740221170>}
+
+    def completed(*args, **kwargs):
+>       cell = good(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: wiring.<locals>.cell() got an unexpected keyword argument '_accumulation_owner'
+
+tests\test_alc_r0_reference_parity_suite.py:252: TypeError
+
+The above exception was the direct cause of the following exception:
+
+wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FCC80>
+
+    def test_post_cell_interruption_retains_completed_evidence(wiring, monkeypatch):
+        module, _, created = wiring
+        good = module.run_parity_cell
+    
+        def completed(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            for wrapper in created:
+                for parameter in wrapper.reference.parameters():
+                    parameter.grad = torch.ones_like(parameter)
+    
+            def interrupted(self):
+                raise KeyboardInterrupt("final check interrupted")
+    
+            monkeypatch.setattr(module._ReferenceFactory, "unchanged", interrupted)
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", completed)
+        with pytest.raises(module.ReferenceParityInterrupted) as caught:
+>           run(wiring)
+
+tests\test_alc_r0_reference_parity_suite.py:265: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+host = VerifiedHost(model=Linear(in_features=576, out_features=8, bias=False), acquisition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0)
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+expected_fixture_digest = '47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b'
+
+    def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
+        """Bind fixed factory, generic cell and bounded separate success receipt.
+    
+        No public loader/factory/execution callback. The fixture digest must originate
+        in caller-authenticated framing; equality alone does not confer provenance.
+        Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
+        and fixed step1. Failures retain bounded accumulation progress. Outer owner
+        persists scalar evidence and discards live chained
+        exceptions/wrappers; this function neither journals process kills nor retries.
+        """
+        if (
+            type(exact) is not bool
+            or torch.is_inference_mode_enabled()
+            or not torch.is_grad_enabled()
+        ):
+            raise ValueError(
+                "explicit mode and ordinary grad-enabled construction required"
+            )
+        _schedule(fixtures)
+        _sha(expected_fixture_digest)
+        fixture_digest = _json_digest([asdict(fixture) for fixture in fixtures])
+        if fixture_digest != expected_fixture_digest:
+            raise ValueError("expected six-fixture digest required")
+        signature = _signature(host)
+        if exact != (signature[0].type == "cpu"):
+            raise ValueError("CPU exact/GPU fixed tolerance mode required")
+        identity = ReferenceParityIdentity(
+            str(signature[0]),
+            str(next(host.model.parameters()).dtype),
+            signature[1],
+            signature[5],
+            signature[6],
+            fixture_digest,
+        )
+        stage, factory, completed_progress = "prepare", None, None
+        accumulation_owner = _AccumulationOwner()
+        try:
+            factory = _ReferenceFactory(host, signature, exact)
+            stage = "cell"
+            cell = run_parity_cell(
+                factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+            )
+            completed_progress = _completed_progress(cell)
+            stage = "final_base"
+            factory.unchanged()
+            stage = "receipt"
+            result = ReferenceParityReceipt(identity, PARITY_SEED, cell)
+            validate_reference_parity_receipt(result, expected_identity=identity)
+            if any(row.factor_digest != factory.digests[row.state] for row in cell.cases):
+                raise ValueError("receipt must bind original seeded factor state bytes")
+            factory.unchanged()
+            return result
+        except BaseException as exc:
+            inner, journal_fault, cleanup_fault = _failure_progress(
+                exc, completed_progress, accumulation_owner, stage
+            )
+            if factory is not None:
+                try:
+                    local_cleanup = factory.clear() is True
+                except BaseException:
+                    local_cleanup = True
+                cleanup_fault = cleanup_fault or local_cleanup
+            if inner is not None and inner.accumulation is not None:
+                inner = replace(
+                    inner,
+                    accumulation=replace(
+                        inner.accumulation,
+                        journal_fault=journal_fault,
+                        cleanup_fault=cleanup_fault,
+                    ),
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    ReferenceParityInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else ReferenceParityError
+                )
+>               raise error(
+                    ReferenceParityFailure(stage, inner),
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.reference_parity_suite.ReferenceParityError: terminal q/v parity failure at cell
+
+src\aluclu\alc_r0\reference_parity_suite.py:446: ReferenceParityError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_accumulation_pair.py::test_on_factory_failure_clears_off_gradients
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_complete_bound_receipt_and_independent_live_ownership
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[seed]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[A]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[B]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[shape]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[grad]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[mode]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[controller]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[co_mount]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_factory_corruption_terminal_before_success[wrong_type]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_final_drift_or_bad_receipt_is_not_admitted[base]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_final_drift_or_bad_receipt_is_not_admitted[config]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_final_drift_or_bad_receipt_is_not_admitted[identity]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_final_drift_or_bad_receipt_is_not_admitted[receipt]
+FAILED tests/test_alc_r0_reference_parity_suite.py::test_post_cell_interruption_retains_completed_evidence

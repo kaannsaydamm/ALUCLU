@@ -14,7 +14,20 @@ from weakref import WeakSet, ref
 import torch
 from torch import nn
 
-from .checkpoint_accumulation_pair import _storage, run_accumulation_pair
+from .checkpoint_accumulation_pair import (
+    AccumulationError,
+    AccumulationInterrupted,
+    _storage,
+    run_accumulation_pair,
+)
+from .checkpoint_accumulation_progress import (
+    AccumulationFailure,
+    _bounded_faults,
+    _clear_owned,
+    _fresh_owner,
+    _safe_snapshot,
+    validate_accumulation_failure,
+)
 from .checkpoint_execution import _digest
 from .checkpoint_observation import (
     ObservationError,
@@ -67,18 +80,23 @@ class ParityCellFailure:
     current: tuple[str, int, int] | None
     unrun: tuple[tuple[str, int, int], ...]
     pending_losses: tuple[float, float] | None
+    accumulation: AccumulationFailure | None = None
 
 
 class ParityCellError(ObservationError):
-    def __init__(self, message, failure):
+    def __init__(self, message, failure, *, journal_fault=False, cleanup_fault=False):
         super().__init__(message)
         self.failure = failure
+        self.journal_fault = journal_fault
+        self.cleanup_fault = cleanup_fault
 
 
 class ParityCellInterrupted(KeyboardInterrupt):
-    def __init__(self, message, failure):
+    def __init__(self, message, failure, *, journal_fault=False, cleanup_fault=False):
         super().__init__(message)
         self.failure = failure
+        self.journal_fault = journal_fault
+        self.cleanup_fault = cleanup_fault
 
 
 class _Progress:
@@ -151,9 +169,13 @@ class _FactoryGuard:
             p for weak in self.parameters.values() if (p := weak()) is not None
         )
         incoming = tuple(factors.parameters())
+        protected = {id(p) for p in wrapper.base.parameters()}
+        if self.base is not None:
+            protected.update(id(p) for p in self.base.parameters())
         # Register even rejected ownership so exception cleanup reaches it.
         for parameter in incoming:
-            self.parameters[id(parameter)] = ref(parameter)
+            if id(parameter) not in protected:
+                self.parameters[id(parameter)] = ref(parameter)
         if {id(p) for p in previous} & {id(p) for p in incoming} or {
             _storage(p) for p in previous
         } & {_storage(p) for p in incoming}:
@@ -221,9 +243,11 @@ class _FactoryGuard:
         return wrapper
 
     def clear(self):
-        for weak in self.parameters.values():
-            if (parameter := weak()) is not None:
-                parameter.grad = None
+        return _clear_owned(
+            parameter
+            for weak in self.parameters.values()
+            if (parameter := weak()) is not None
+        )
 
 
 def _order(scores):
@@ -296,7 +320,7 @@ def _singles(guard, fixtures):
     return tuple(records)
 
 
-def run_parity_cell(factory, fixtures, *, exact):
+def run_parity_cell(factory, fixtures, *, exact, _accumulation_owner=None):
     """Run 18 off/on singles, repeated nonzero, pending pair and fixed step.
 
     Fixtures are ordered safe/vulnerable for L32, L64 and L64+padding7. Their
@@ -305,14 +329,16 @@ def run_parity_cell(factory, fixtures, *, exact):
     No full logits, autograd graphs or optimizer objects survive in the receipt.
     Execution failures now wrap the original cause in ObservationError or
     KeyboardInterrupt subclasses with bounded progress; invalid admission still
-    fails before execution. Accumulation is one delegated stage, not a claim of
-    microbatch-level or durable timeout journaling. No retry or rollback occurs.
+    fails before execution. The optional owner carries bounded in-memory
+    accumulation progress, not durable timeout journaling. No retry or rollback.
     """
     if not callable(factory) or type(exact) is not bool:
         raise ObservationError("callable factory and exact boolean required")
     _schedule(fixtures)
     guard = _FactoryGuard(factory, exact)
+    owner = None
     try:
+        owner = _fresh_owner(_accumulation_owner)
         cases = _singles(guard, fixtures)
         guard.progress.stage = "pending_factory_off"
         off = guard.make("nonzero", False)
@@ -332,6 +358,7 @@ def run_parity_cell(factory, fixtures, *, exact):
             lambda checkpoint: guard.make("nonzero", checkpoint),
             fixtures[2:4] * 8,
             exact=exact,
+            _accumulation_owner=owner,
         )
         guard.progress.stage = "final_base"
         if _base_digest(guard.base) != guard.signature[0]:
@@ -344,12 +371,46 @@ def run_parity_cell(factory, fixtures, *, exact):
             guard.count,
             guard.signature[0],
         )
-    except KeyboardInterrupt as exc:
-        guard.clear()
-        raise ParityCellInterrupted(str(exc), guard.progress.failure()) from exc
-    except Exception as exc:
-        guard.clear()
-        raise ParityCellError(str(exc), guard.progress.failure()) from exc
-    except BaseException:
-        guard.clear()
+    except BaseException as exc:
+        if type(exc) in (AccumulationError, AccumulationInterrupted):
+            journal_fault, inner_cleanup = _bounded_faults(
+                getattr(exc, "journal_fault", None), getattr(exc, "cleanup_fault", None)
+            )
+            try:
+                accumulation = exc.failure
+                if accumulation is not None:
+                    validate_accumulation_failure(accumulation)
+                if accumulation is not None:
+                    journal_fault = journal_fault or accumulation.journal_fault
+                    inner_cleanup = inner_cleanup or accumulation.cleanup_fault
+            except BaseException:
+                accumulation, journal_fault = None, True
+        else:
+            accumulation, journal_fault = _safe_snapshot(owner)
+            inner_cleanup = False
+        cleanup_fault = False
+        try:
+            cleanup_fault = guard.clear() is True
+        except BaseException:
+            cleanup_fault = True
+        cleanup_fault = cleanup_fault or inner_cleanup
+        if accumulation is not None:
+            accumulation = replace(
+                accumulation,
+                journal_fault=accumulation.journal_fault or journal_fault,
+                cleanup_fault=accumulation.cleanup_fault or cleanup_fault,
+            )
+        failure = replace(guard.progress.failure(), accumulation=accumulation)
+        if isinstance(exc, (Exception, KeyboardInterrupt)):
+            error = (
+                ParityCellInterrupted
+                if isinstance(exc, KeyboardInterrupt)
+                else ParityCellError
+            )
+            raise error(
+                str(exc),
+                failure,
+                journal_fault=journal_fault,
+                cleanup_fault=cleanup_fault,
+            ) from exc
         raise

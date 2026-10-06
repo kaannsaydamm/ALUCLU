@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Focused', 'Regression', 'OfficialIntegration', 'ParityIntegration', 'OptimizerIsolation', 'AccumulationJournal')]
+    [ValidateSet('Focused', 'Regression', 'OfficialIntegration', 'ParityIntegration', 'OptimizerIsolation', 'AccumulationJournal', 'JournalIntegration', 'JournalRegression')]
     [string]$Suite,
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[a-z0-9_]{1,100}$')]
@@ -21,6 +21,23 @@ $taskTests = if ($Suite -eq 'Focused') {
     @('tests/test_alc_r0_cpu_optimizer_isolation.py')
 } elseif ($Suite -eq 'AccumulationJournal') {
     @('tests/test_alc_r0_accumulation_progress.py')
+} elseif ($Suite -eq 'JournalIntegration') {
+    @('tests/test_alc_r0_accumulation_journal_integration.py')
+} elseif ($Suite -eq 'JournalRegression') {
+    @(
+        'tests/test_alc_r0_checkpoint_observation.py',
+        'tests/test_alc_r0_pending_observation.py',
+        'tests/test_alc_r0_accumulation_observation.py',
+        'tests/test_alc_r0_accumulation_pair.py',
+        'tests/test_alc_r0_checkpoint_optimizer.py',
+        'tests/test_alc_r0_parity_cell.py',
+        'tests/test_alc_r0_parity_cell_failure.py',
+        'tests/test_alc_r0_reference_parity_suite.py',
+        'tests/test_alc_r0_reference_parity_receipt.py',
+        'tests/test_alc_r0_accumulation_progress.py',
+        'tests/test_alc_r0_accumulation_journal_integration.py',
+        'tests/test_alc_r0_reference_qv_accumulation.py'
+    )
 } else {
     @(
         'tests/test_alc_r0_reference_stress_execution.py',

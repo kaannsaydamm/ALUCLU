@@ -145,14 +145,22 @@ def test_parity_failure_never_steps_either_arm(monkeypatch):
 
 def test_on_factory_failure_clears_off_gradients():
     make, created = factory()
+    primary = RuntimeError("factory failed")
 
     def broken(checkpoint):
         if checkpoint:
-            raise RuntimeError("factory failed")
+            raise primary
         return make(False)
 
-    with pytest.raises(RuntimeError, match="factory failed"):
+    with pytest.raises(pair_module.AccumulationError, match="factory failed") as caught:
         run_accumulation_pair(broken, fixtures(), exact=True)
+    assert caught.value.__cause__ is primary
+    assert caught.value.failure.phase == "on_factory"
+    assert caught.value.failure.completed_pair == 3
+    assert caught.value.failure.off.forwards == 16
+    assert caught.value.failure.off.backwards == 16
+    assert caught.value.failure.on.forwards == 0
+    assert len(created) == 1
     assert all(p.grad is None for p in created[0][1].factors.parameters())
 
 
