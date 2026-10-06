@@ -154,7 +154,7 @@ class ReservedOwnedLease:
             self._started = time.monotonic_ns()
             _create_suspended(self._command, self._cwd, self._environment, stdin, stdout,
                               stderr, self._deadline, self._job, self._information)
-            created = _creation_time(self._information.process)
+            created = self._observe_creation_time()
             nonce = secrets.token_hex(16)
             root = sha256_bytes(canonical_json_bytes(dict(schema="alc-r0-owned-child-v1",
                 reservation_id=self._id, pid=str(self._information.pid),
@@ -165,6 +165,10 @@ class ReservedOwnedLease:
         except BaseException:
             self._close()
             raise
+
+    def _observe_creation_time(self):
+        """Narrow owned-handle observation boundary, also usable by diagnostics."""
+        return _creation_time(self._information.process)
 
     def _live_identity(self):
         import _winapi
@@ -264,8 +268,16 @@ class ReservedOwnedLease:
             lock.__exit__(None, None, None)
 
     def _close(self):
-        import _winapi
         self._state = "CLOSED"
+        # Validation can fail before acquiring any Windows resource, including
+        # on unsupported hosts. Do not mask that error with a _winapi import.
+        if self._job is None and not self._information.process and not self._information.thread:
+            try:
+                self._stack.close()
+            finally:
+                self._unlock()
+            return
+        import _winapi
         try:
             if self._job is not None:
                 if self._job.accounting().active_processes:

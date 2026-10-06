@@ -12954,3 +12954,55 @@ Task 2 sensorium/recollection gate: CLEAN
   Remaining enterfault/lifecycle/actualleaseparentcrash/nonWinerror cleanup and
   scientificnumericcalendar/authority/outputcaps/hostqualification explicit.
   Commit/push existingbranch only after rawstagedbyte verification. Goal active.
+
+- Continuation aftereac26df previousgoalturn=PROGRESS (code+12focused+125regression
+  evidence+independentreview+push). Objective fullyreread d81785 and cleanDesktopHEAD
+  revalidated. Added lease entryfailure-ownedhandle observation, exclusiveoutputs,
+  lifecycle/foreignthread, READYdeadline expiry, exactidentityroot and three actual
+  abruptparent boundary fixtures. New diagnosticworker nested under existing outer
+  ownedjob, phase/root explicitstdout, noPIDdiscovery or globalmonkeypatch. Tests
+  awaiting exactadmission; currentcode lacks _observe_creation_time protected seam.
+  No sourcechange/model/GPU invocation yet; expected targeted entryfailure RED.
+
+- Exact entryfailureRED independently ADMIT/CLEAR. OriginalnativePID2600 personally
+  observed exit1 tool9ec2e6; both expected DIDNOTRAISE failures (missing protected
+  observation seam), JUnit2/2failure/0error/0skip0.794s XMLSHA
+  78bb74d8b57845d0c3e86952183895b6f85e52f537dec0488fa4b5dc61788945.
+  Added narrow _observe_creation_time defaultownedhandle observation at creation,
+  no externalcallback/globalpatch. Resource-free cleanup now avoids _winapi import,
+  preserving unsupported-host earlyvalidation error without portabilityPASS.
+  PrimaryMicrosoft job/nestedjob docs checked for outerfixture containment semantics.
+  ExpandedactualWindowsGREEN pending independent source/invocationadmission.
+
+- ExpandedGREEN exactsource7c2661c4/testdb917930/workere1a38895 independently
+  ADMIT/CLEAR. OriginalownedPID30944 personally observed exit0 (tool78f4f4 resumed
+  native session71576). JUnit22/0failure/0error/0skip18.290s, XMLSHA
+  8adbe4e2e1b212a29b49dde0239381c0df76ce47312cf38e0f44e86d72aa95a6;
+  stdout22dots100%,stderr0. Actual3abruptleaseparent phases each exit73, outerjob
+  nottimedout/active0 beforeoriginaldeadline, retained RESERVED/READY/RUNNING;
+  actualduplicatedownedhandle terminal afterpostcreation OSError/KeyboardInterrupt.
+  Thread/reentry/outputs/READYexpiry/exactidentityroot also passed. Notpowerloss,
+  hostileescape/wholeplatform or modellearning. Finalsource relevantregressionnext.
+
+- Fourfilefinalsource regression independently ADMIT/CLEAR, originalownedPID27760
+  personally observed exit0 toolab983e/native session24144. JUnit135/0failure/0error/
+  0skip44.217s XMLSHA4bab26afabbe37e6ed2f10338035e5436b40eb583226aee29e27d8f8bc72242a.
+  Added three direct originalcontract cases for currentREADY-state creationdenial,
+  changedfuture deadline denial and callerforgedreceipt rejection. Newtestbytes
+  not covered by previous135caseartifact; require new exactregressionadmission.
+
+- Exactv2 finalfourfile regression independently ADMIT/CLEAR: originalownedPID28848
+  personally terminalexit0 tool59252f/native session54439. JUnit138/0failure/0error/
+  0skip59.789s XMLSHAf784d9f39015f7efb8ee04e93fe739dab3be3cbc1b8657c806f53c46cfb336c7.
+  Finaltest5ab7bc7a source7c2661c4 workere1a38895; stdout100%,stderr0. Added scoped
+  runtime evidence and exactbyteworker/docattributes. Finalindependent component
+  artifactreview pending, not scientificlaunch. History/classification and approved
+  accountingdecision reread867249; unknown numericcoverage not silently zeroed.
+
+- Final reservedWindowslease component independently codeAPPROVE/architectureCLEAR:
+  source/test/worker, fourXML/counts/hashes, emptystderr/exitconsistency and25direct
+  leasecases verified. Previouslyopen ordinaryWindows entry/lifecycle/parentcrash
+  scope closed; unsupportedhost correction inspectiononly. Exactbytecommit/push
+  existingbranch afterstagedverification. Next boundedoutput sink plus trusted
+  authority/declaration/resources/numericcalendar inputs, pinnedhost and original
+  pilots. No modellearning, new allowance or wholegoalcompletion; goal active.
