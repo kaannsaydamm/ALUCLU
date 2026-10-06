@@ -12445,3 +12445,44 @@ Task 2 sensorium/recollection gate: CLEAN
   best-effortcleanup/notrollback, non-durablejournal, snapshotnotreservation,
   randomfixture/notpretrained and backendscope limits preserved in evidence doc.
   No whole-branch/program/R0 completion claim. Prepare evidence-only checkpoint.
+- Evidence-only checkpoint committed c037dfc94e8900082d7516246f821adb99347054
+  and pushed origin codex/unified-lifelong-cognition; db1c9b personally verified
+  exact remote equality and clean checkout. Raw/index bytes matched all five v4
+  artifacts and evidence document before commit90d507. No new PR or source edit.
+- Post-checkpoint readiness audit533223/dcf69a/0af3dc/ffd75c: objective reread,
+  exactHEAD/cleanstate verified. Original resource helper explicitly denies even
+  CPU D when complete history/first-start/consumption/root are missing; zero CPU
+  GPU reservation does not waive history. Checkpoints177/178 preserve unknown
+  accounting convention/coverage and pending user decision; no policy adopted.
+  Repository call-site search finds q/v official/parity suite invocations in
+  tests only, not a qualified real-host owned launcher. Pure composition PASS
+  does not authenticate host/assets/fixtures or create a durable reservation.
+  Next admissible engineering preparation is the separately reviewed real-host
+  launcher/preflight contract and negative-path qualification without loading
+  assets or launching research. Accounting reconciliation/user authority and
+  rights/evaluator/sealer/scientific freeze remain separate OPEN dependencies.
+  No CPU/GPU research launch, model/corpus access or dependent product work.
+- Prepared prospective real-host launcher/preflight DRAFT on c037dfc after reading
+  current qualification/host-evidence/owned-process interfaces and attempt schema
+  boundaries. First combined read truncated; separately reread qualification and
+  host evidence to recover full contents0da876. BF16-only host-evidence mismatch
+  for CPUFP32 and separateq/v phase/ceiling mapping explicitly OPEN, not silently
+  adapted. Draft specifies denial-before-child, authenticated history/authority,
+  fsync reservation, immutable exact invocation, absolute deadline, owned-tree
+  terminal reconciliation and test-first decomposition; no launch/implementation.
+  Original matched grid remains mandatory, q/v separate; no scientific promotion.
+- Initialdraft907912ce independentreviews: codeCOMMENT preservation/REQUESTCHANGES
+  implementation, architectureCLEAR preservation/BLOCK implementation. Concrete
+  findings: deadlineorigin positioned after initialpreflight; eager aluclu and
+  alc_r0 package imports violate denial-only stdlibboundary; globalreservation
+  transaction not supplied by owned_append. Parent personallyread initializers
+  and owned_append disclaimerf9d8ab. Corrected entryorigin beforeallpreflight and
+  explicit bootstrap/reservation prerequisites, preserved initial negative review.
+  Trustedauthority/phaseceiling/crash-state/measurementcontracts stillOPEN; no
+  guessedpolicy/runtimeedit/test/model orlaunch. Revised exact-byte review next.
+- Revised draft f6aa79853b89679f94f8e39863c40c9334b965d8255bc435321bcd59002197d1
+  independently APPROVE(code)/CLEAR(architecture) for preservation ONLY. Both
+  explicitly retain implementation REQUESTCHANGES/BLOCK until five interface
+  contracts are resolved. Combined draft-preservationAPPROVE, no launchpermit.
+  Exact-byte Git attribute added; original matchedplan/runtime/tests unchanged.
+  Next separate import-isolation prerequisite design, not guessed admissionpolicy.
