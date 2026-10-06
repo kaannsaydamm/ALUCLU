@@ -11841,3 +11841,47 @@ Task 2 sensorium/recollection gate: CLEAN
   of failed neural-learning hypothesis. Read-only independent diagnosis requested;
   next minimal reproducer and narrowly audited dispatch/class-cell binding, no
   generic class bypass or mutated fixture/model to manufacture PASS.
+
+### Checkpoint206 - disabled HF dispatch class-cell inventory IN PROGRESS
+
+- Parent93b4065 clean Desktop checkout; reviewed205 traceback and installed pinned
+  modeling_layers.py80-109. Exact GradientCheckpointingLayer.__call__ disabled
+  path invokes zero-argument super(), capturing __class__. Generic freeze rightly
+  rejects unknown classes; implement narrowly enumerated dispatch binding, not
+  generic class admission. Original D/gradient/comparison/optimizer rules untouched.
+- Added tiny no-assets minimal reproducer and exactFalse/foreign attribute/class
+  namespace/super/code/closure/method/MRO/downstream dispatch mutation tests.
+  RED required before production repair; no real model run or retry yet.
+- RED session18272 observedexit1;15tests/10failures/0errors/0skipped,8.787s;
+  expected positive fingerprint fails on unsupported class, mutation preconditions
+  also fail before mutation. Corrected code-mutation donor to preserve1closure
+  cell in strengthened tests. Added dedicated disabled_hf_dispatch helper binding
+  exact installed class/function/code/closure, defining namespace, builtin super,
+  concrete MRO exactsuffix and downstream Module dispatch. Class token is local
+  to this audited __call__ route, generic freeze remains unchanged/fail-closed.
+- Initial regression session46976 actualexit0,89tests. Added builtin-super shadow,
+  unrelated class closure, descriptor nonexecution and defaults binding tests;
+  earlier green does not certify expanded test bytes. Full relevant regression
+  and independent final exact-byte reviews required before real integration retry.
+- Expanded v2 session21413 observedexit0;295/0/0/0,20.055s, XML
+  d7b940f0b246a9c3ff4f5990eb33a30a769a2090ece4e6960b961fefca903444.
+  Independent codeREQUESTCHANGES found actual function.__builtins__ fallback not
+  globals alias. Main independently identified same gap; targeted RED72893exit1
+  reproduced copied globals alias admission. Bind actual cached builtins mapping,
+  require defining alias agree, keep global super precedence. Added actual shared
+  fallback-super mutation test with immediate finally restoration. Old architecture
+  CLEAR does not certify repaired bytes; final rereviews/regression remain required.
+- Final v3 session20971 actualexit0;297/0/0/0,20.335s; XML
+  b3c4195f7a2d2a6fb754bc18209733bf3a63faa4e868dc792cfe635e6041df30.
+  Ruff passed; exact helper6313b0cde93ebd3737a0bfeec384a033ae643470e9e9731e45fb8785d9988220;
+  state1f0051562485e203d65f5f9d671d06e2be1111a758ce8efacc515d1b19ba64bf;
+  testsa1af2121ee5b334d1a778f2471d6d69e66bd0cd95697df3b079f54b4c6c6ee70.
+  Final exact-byte rereviews requested, no inferred verdict. Added foreground
+  evidence transcription and -text hash preservation. Actual205 numerical gate
+  still RED; only after review and fresh invocation admission may it be rerun.
+- Final independent GPT6.1Sol codeAPPROVE/architectureCLEAR rehashed exact
+  repaired bytes; combinedAPPROVE scoped inventory substrate only. Prior builtin
+  REQUESTCHANGES remains recorded. Checkpoint206 disabled-HF class-cell inventory
+  VERIFIED by tiny tests, NOT actual model numerical/learning acceptance. No live
+  relevant pytest after final terminal. Next fresh reviewed randomCPU integration
+  attempt; actual pretrained host/accounting/scientific gates remain OPEN.

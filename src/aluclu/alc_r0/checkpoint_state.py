@@ -33,6 +33,7 @@ from .checkpoint_attention import attention_dependencies
 from .checkpoint_context import CONTEXT_CLASSES, no_grad_factory_dependencies
 from .checkpoint_execution import CheckpointExecutionError, _digest, _tensor_stamp
 from .checkpoint_fidelity import _canonical_keys
+from .checkpoint_hf_dispatch import disabled_hf_dispatch
 from .checkpoint_mask import mask_dependencies
 from .checkpoint_mask_registry import mask_registry_dependencies
 from .checkpoint_registry import attention_registry_dependencies
@@ -256,6 +257,14 @@ def _dispatch_dependencies(module, freeze):
     records = []
     for name in names:
         operation = inspect.getattr_static(type(module), name)
+        hf_binding = (
+            disabled_hf_dispatch(module, operation, freeze)
+            if name == "__call__"
+            else None
+        )
+        if hf_binding is not None:
+            records.append([name, hf_binding])
+            continue
         if isinstance(operation, types.FunctionType):
             binding = freeze(operation)
         elif isinstance(
