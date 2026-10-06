@@ -11758,3 +11758,51 @@ Task 2 sensorium/recollection gate: CLEAN
   accumulation/microbatch/clip/step journaling still OPEN before full q/v gate.
   Checkpoint203 bounded generic failure substrate VERIFIED only; actual-host,
   fixed q/v composition, resource/accounting and durable learning remain OPEN.
+
+### Checkpoint204 - fixed separate q/v parity composition IN PROGRESS
+
+- Parentf2aa3c9 clean Desktop checkout; full objective/approved q/v contract read.
+  Bind unchanged generic cell to exact q/v factory, original seeded120masters,
+  independent controllers/factors and common frozen base/config/host identity.
+  Expected fixture digest supplied by caller, never inferred from returned cell.
+  No new public execution/factory callback, loader, scientific grid or tolerance.
+  Pure synthetic wiring/negative tests first; actual numerical integration and
+  finer accumulation journaling remain required, not claimed by this step.
+- RED tool4a68bf observedexit1,22errors missing reference_parity_suite module;
+  preserved XML. Added fixed factory/common signature, reconstructed zero/nonzero
+  full seeded digests, controller ownership/inventory mode and generic fresh
+  storage guard; bind expected fixture digest and separate success receipt.
+  Inner failure journal retained, outer prepare/cell/finalbase/receipt stages.
+  No actual forward/backward in these stubbed composition tests.
+- Initial22-focused tool36424e observedexit0; Ruff import order found then repaired
+  after terminal. Strengthened26tests observed REDtoole0d394 exit1,25pass1fail:
+  consistent but foreign factor-state hashes escaped summary validation. Bind
+  all18 row factor digests to independently reconstructed factory states;
+  off controller must have None inventory getter. No threshold/fixture change.
+- First246-regression tool95321 exit0 but independent codeREQUESTCHANGES:
+  early factory rejection preceded generic cleanup registration. REDtoola96da2
+  reproduced surviving injected gradient. ArchitectureBLOCK: finalization errors
+  dropped completed cell prefix; REDtoolbd182b reproduced4failures. Retained
+  negative XMLs; repairing separate weak cleanup ownership before validation and
+  bounded scalar post-cell journal (not optimizer/tensor payload or PASS).
+- Repaired v2 session38985 personally observedexit0;246/0/0/0,15.821s;
+  XML a0fc9ca4687bf20a169de324e01fbcfbbc5b5aff88d4e046d2e29ba067b1b332.
+  Added7 tests covering post-cell KeyboardInterrupt retained18/pending/stage,
+  gradient cleanup and malformed completed-journal type/count/schedule/finite/
+  digest/pending framing. Final v3 session12603 observedexit0;253/0/0/0,
+  15.988s; XML cec3a7a4e6fd1f80d8da93876d65f0179d2745a20f2a6562dcafa92881e55b4a.
+  Ruff format/check passed. Foreground tool transcripts, not persisted process
+  stdout/stderr/exit logs. Source3a1e079044fc701b272ddd1948ccaaac3925f9de3469037061ed1dec1189484b;
+  testsd5b39bc3a8dd13d7b6f45a1a05673c3345724640e54c57d515d3e480de29ed01.
+  Independent GPT6.1Sol code/security and architecture rereviews dispatched on
+  exact final bytes. No final verdict or numerical/learning acceptance inferred.
+- Independent final codeAPPROVE and architectureCLEAR, both personally rehashed
+  exact final source/tests; combinedAPPROVE for composition substrate only.
+  Prior REQUESTCHANGES/BLOCK resolved, retained above rather than erased.
+  Checkpoint204 fixed binding/rejection/cleanup/bounded final-failure evidence
+  VERIFIED. Actual full-wrapper numerical integration, internal accumulation
+  journaling, actual-host authentication/resource/accounting/learning remain OPEN.
+  Added terminal evidence transcription and -text attributes to preserve source,
+  test and result hashes. Next real random CPU q/v forward/backward/pending/step
+  integration under independently reviewed fixed invocation; no model/corpus/GPU
+  experiment authorized by these synthetic tests or review verdicts.

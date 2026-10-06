@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="22" failures="0" skipped="0" tests="22" time="7.038" timestamp="2026-10-06T15:11:15.120659+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_complete_bound_receipt_and_independent_live_ownership" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433E180&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[False]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433D520&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[1]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433F290&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[None]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BC140&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[0000000000000000000000000000000000000000000000000000000000000000]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BC860&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[bad]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433F470&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[None]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433DEE0&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[seed]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BD430&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[A]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BD820&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[B]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BEC00&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[shape]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD4414110&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[grad]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BF500&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[mode]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BCD40&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[controller]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433C050&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[co_mount]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD4416810&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[wrong_type]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD4414AD0&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_reused_live_wrapper_rejected" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD44160F0&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[base]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD433E300&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[config]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD43BED20&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[identity]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD44148C0&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[receipt]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD4416F60&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_inner_failure_journal_preserved_without_retry" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'&quot;">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028CD440E330&gt;
+
+    @pytest.fixture
+    def wiring(monkeypatch):
+&gt;       module = importlib.import_module("aluclu.alc_r0.reference_parity_suite")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.reference_parity_suite'
+import_ = &lt;function _gcd_import at 0x0000028C9F6A80E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.reference_parity_suite'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</error></testcase></testsuite></testsuites>
