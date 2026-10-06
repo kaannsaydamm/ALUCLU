@@ -12823,3 +12823,85 @@ Task 2 sensorium/recollection gate: CLEAN
   and commit/push existingbranch only. Next durable globalreservation publication
   then identity-before-resume ownedlease; historicalnumeric/calendar inputs,
   exactqualification/admission and original4x200updatepilot stillOPEN.
+
+- Continuation after0f272be: previous goal turn=PROGRESS (source/tests/runtime
+  evidence, independent review, exactblob commit and verifiedpush). Fully reread
+  objective000928; authoritativeDesktopcleanHEAD personally revalidated. Read
+  fullOwnedAppend/ManifestOwner/AttemptJournal and persistence boundaries; perrun
+  owner cannot represent globalreservations. Added durableglobalstore contract
+  reusing existing journal/fsync/lock primitives, exactowner/intent schemas,
+  explicitgenesis and caller-pinned crashforward recovery, bounded inventories.
+  No source/tests/runtime/model launched in this continuation yet. Two independent
+  lanes must decide finite contract readiness, not infer launchauthority.
+
+- Both durable design lanes found finite contract gaps, not new ownerdecisions:
+  candidateowner+oldjournal must deny, every retainedintent needs complete exact
+  prefix/owner/semantic audit, initialization requires explicit missing-file matrix.
+  Defined allowed old/old,old/new,new/new and denied new/old; explicit initial
+  creation/recovery cases, all completedintentchain verification on every operation,
+  projected caps before first mutation. Draft rereview; no execution/source yet.
+
+- Added bounded missing-module RED test for durableReservationStore only. No
+  execution before independent concrete bytes/launcher admission. No source
+  implementation yet; corrected contract readiness remains under review.
+
+- Corrected durablecontract816f45bb independently APPROVE/CLEAR; exact RED
+  admittedbothlanes. Personally observed ownedPID20100 exit2 tool032728:
+  intendedmissing reservation_store module; XML1/0failure/1error/0skip0.328s,
+  SHAabcc7c331020c07531f22ba01a5c2477094d674628c1d38cde70574d7b2f76f0.
+  Implemented globalstore using existing AttemptJournal/persistence only after
+  terminal: explicitgenesis, completeintentchain audit, exactCAS commit/recovery,
+  global->journallock, no implicit root/adoption or process/model entrypoint.
+  Runtime correctness unproven; expandedtests/review/GREEN next.
+
+- Expanded durable tempdirectory tests: normalfresh-instance/re-acknowledgment,
+  three injectedappend and three initialization interruption boundaries,
+  forbiddennewowner/oldjournal, retainedintenttamper/missing/root/partialrollback,
+  semantics-before-write, explicitpendingrecovery, twothreadcoordinators onehead,
+  selfhashedforgedintent, unknowninventory, missinginit and hardlink rejection.
+  These are synthetic storage diagnostics, not actualprocessdeath or learning.
+  No GREEN or model yet; source/tests require independent bounded admission.
+
+- Before firstGREEN corrected testexpectation: exactoldowner+newjournal is allowed
+  forwardrecovery, not forbidden rollback; verifies samecandidate/reservation with
+  no duplicated journal. Added early namespace/lock inventory validation before
+  journal locking on read/resume. Independentreview hashes refreshed; no liveedit.
+
+- Independent code identified sameunsafejournal-lock preflight boundary already
+  fixedin53a36362; added explicit read/resume hardlinked-empty-lock no-alias-mutation
+  fixtures. Added exactvirtual projectedcap boundaries (not observeddiskclaims),
+  oversizedrecord, multi-generation retainedintenttamper/crossreservationaggregate,
+  and temporarysymlink fixture with explicit hostpermission skip if unavailable.
+  Source53a36362 unchanged; expandedtesthash newlysubmitted before diagnosticrun.
+
+- Finaltestexception corrected to actualUnsafePathError; hashc1353aa3 independently
+  admittedbothlanes after transientproviderquota errors retriedsameagents. Fully
+  reread objective3c1f56 and authoritativehashes. Personally observed ownedPID26348
+  exit0 tool672963: durabletempstorage29tests/0failure/0error/0skip3.727s,
+  XMLSHAb2049d8f1ffdc04d1f2903863aaba441f7eeeac6bcb1dc8cc04eda5c0ebbedfc;
+  stdout29passed3.94s. No modeltraining. Added harmless subprocessfixture exiting73
+  after actualdurableintent/journal/owner boundaries, freshprocessrecovery and
+  two-processsamehead contention tests; these NEW bytes notyetexecuted/admitted.
+
+- Actualprocessstage exactsource53a36362/testd7dc33f5/workeraa5dd161 independently
+  ADMIT/CLEAR; personally observed originalownedPID10040 exit0 tool249f52 resumed
+  nativeexecsession72217. JUnit33/0failure/0error/0skip10.061s, stdout33passed12.68s,
+  XMLSHAd852af35b188d9efbe4bd99e0078b016edf17a768956bd6d1fd2eae8b7d76e3c.
+  Realprocess_exit73 at three durableboundaries, freshprocessrecover and twoactual
+  competingcoordinators passed. Not powerloss/model/learningPASS. Proposed fivefile
+  relevantregression awaiting independentadmission, no sourceedit while live.
+
+- Fivefile relevantregression independently ADMIT/CLEAR. OriginalownedPID31584
+  personally exit0 toole66436 session93627; JUnit207/0failure/0error/1skip16.829s,
+  XMLSHAb323a93019fbaf823ff3d7353c975e944ac924911b8dc00a4afccac26acafca1;
+  stdout206passed1skip16.95s,stderr0. NativePOSIXFIFOskip disclosed. Includes
+  manifestpublication temporaryprocess/faulttests, not OwnedAppend65536scale or
+  fullsuitecapacity. Finalsource/test/worker unchanged rehashed; scopedruntime
+  evidence and parentexitrecords written. Final independentartifactreview pending.
+
+- Final durableglobalstore checkpoint independently codeAPPROVE/architectureCLEAR:
+  allfourXML/counts/hashes, exactsource/test/worker/contract, emptystderr and stage
+  provenance verified. Close scopedstore only with exactbytecommit/push existing
+  branch; not modeltraining/wholeprogramcomplete. Next splitownedlease integrating
+  durableidentity-before-resume, then concreteauthority/accounting/calendar/work
+  declarations/resources and originalpinnedhost/four200updatepilot.
