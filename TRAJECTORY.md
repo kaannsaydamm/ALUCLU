@@ -11634,3 +11634,63 @@ Task 2 sensorium/recollection gate: CLEAN
   External host/source/runtime/tokenizer authentication, deterministicCUDA,
   cooperative ownership, inclusive overhead and durable attempt journal remain
   required. Research accounting/admission/rights/sealer/eval/learning gates OPEN.
+
+### Checkpoint201 - random full-wrapper official integration IN PROGRESS
+
+- Parent70fdc8a, local Desktop worktree clean and no relevant pytest before edits.
+  Full objective/approved separate q/v contract read. Preparing original72rows
+  with real factory/guards/forward/cache/witness/detach on random CPU test-only
+  Llama: all30q/v576/192 retained; thinMLP/small embedding/factorized49152head
+  explicitly NOT pinned asset/config/learning evidence. No scientific narrowing.
+- Added integration expectations before test-host builder implementation. RED
+  collection and exact-byte review/execution remain pending. Salt-read installed
+  Transformers source inspection tool32585 is live; no duplicate process or
+  model/test launch. Exclusive single-thread CPU fixture planned, previous thread
+  setting/RNG restored; no production thread/default/device change.
+- Installed official forward read fully via direct filesystem after slow source
+  inspection import. Revalidated owned8132/29960 commandlines and parentage then
+  stopped ONLY redundant source-read helper; tool32585 exit1, not a test failure.
+  Lean interpreter sanity tool8309 observedexit0/interpreter_ready. Memory snapshot
+  freephysical617568KiB/freevirtual4924368KiB; Cfree43924078592bytes. Do NOT start
+  full fake network under this pressure; no user-process kill/cleanup/install.
+- Added bounded random CPU fixture(31280448 frozen base parameters): actual
+  Transformers forward/30 decoder/cache code but MLP64/embedding1024/headrank16,
+  fabricated host metadata explicitly non-authenticating. RNG/private scope and
+  threadcount restoration, no CUDA/assets. Real72schedule/logit49152 retained.
+- Extended fixed CPU runner with OfficialIntegration ONLY, operational headroom
+  1536MiBphysical/4096MiBvirtual before importing test. Snapshot, not reservation
+  or scientific resource threshold. Review/AST/Ruff and actual execution pending;
+  no RED/GREEN claim fabricated because test cannot safely launch yet.
+- Continuation revalidated no relevant livepytest; RAM now4642008KiB/virtual
+  20806640KiB. Earlier reviewer handles unavailable after interruption; no review
+  result inferred. Restart independent review on currentbytes before launching.
+- Installed torch/random.py confirms manual_seed touches CUDA; replaced fixture
+  seed with CPU default_generator.manual_seed inside CPU-only fork. Added explicit
+  forbidden CUDA initialization/seeding and RNG/thread restoration assertions,
+  plus exceptional fixture exit test. No production RNG/runtime default change.
+- Independent GPT6.1Sol final exact-byte codeAPPROVE/architectureWATCH;
+  combined review COMMENT, not merge-ready APPROVE. No blocker for manually
+  owned serial fake CPU attempt. WATCH: admission is a memory snapshot/duplicate
+  heuristic, not reservation/lock/sandbox/timeout; random thin network cannot
+  prove pretrained behavior, gradient/optimizer or actual-host resource gates.
+  Three reviewed hashes revalidated unchanged; AST/PowerShell parse and Ruff
+  passed. New snapshot physical5619596KiB/virtual21437516KiB; no relevant pytest.
+  Launching fresh OfficialIntegration v1 evidence; no execution PASS yet.
+- OfficialIntegration v1 tool80472 personally observed terminalexit0; persisted
+  pytest_exit_code=0, child15788,2026-10-06T14:55:24.0721019+03:00. JUnit4/0/0/0,
+  246.156s; real72forward test214.825s, noop/cache/restoration negatives passed.
+  stdout four dots100pct, stderr empty; OS confirms relevant pytest absent.
+  XML SHA25651dfe5dae343de5b44bb50acb4c075957ed8eca4472449d4ddebe6a60360d18f.
+  Real random-network wiring VERIFIED only; actual SmolLM2/authentication,
+  gradient/pending/optimizer, resource qualification and learning remain OPEN.
+  Relevant153 composition/guard/artifact/factory regressions next, serial.
+- Relevant regression tool61601 personally observedexit0, stdout153dots100pct;
+  JUnit153/0/0/0,28.882s; XML SHA256
+  57807600c6a51698475e09a612373ed340398cabd2fdd7a94fcae6f46ead1a74.
+  Four reviewed integration tests and153 regressions are separate runs, not one
+  157-case suite. Reviewed three hashes unchanged; relevant processes absent.
+  Added byte-preservation attributes and terminal evidence note. Checkpoint201
+  random full-wrapper integration VERIFIED, architectureWATCH remains; not
+  merge-ready approval, actual-host qualification, R0 learning or E3 acceptance.
+  Next implement/review separate q/v gradient/pending/optimizer composition and
+  bounded120-factor receipt under approved contract; actual-run admission OPEN.

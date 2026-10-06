@@ -376,3 +376,6 @@ results/alc_r0_reference_official_guard* -text whitespace=-blank-at-eol
 src/aluclu/alc_r0/reference_official_suite.py -text
 tests/test_alc_r0_reference_official_suite.py -text
 results/alc_r0_reference_official_suite* -text whitespace=-blank-at-eol
+tests/alc_r0_random_qv_host.py -text
+tests/test_alc_r0_reference_official_integration.py -text
+results/alc_r0_reference_official_integration* -text whitespace=-blank-at-eol

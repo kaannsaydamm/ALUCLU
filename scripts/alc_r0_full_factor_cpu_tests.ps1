@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Focused', 'Regression')]
+    [ValidateSet('Focused', 'Regression', 'OfficialIntegration')]
     [string]$Suite,
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[a-z0-9_]{1,100}$')]
@@ -13,6 +13,8 @@ $taskRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $taskPython = 'C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe'
 $taskTests = if ($Suite -eq 'Focused') {
     @('tests/test_alc_r0_reference_stress_full_factors.py')
+} elseif ($Suite -eq 'OfficialIntegration') {
+    @('tests/test_alc_r0_reference_official_integration.py')
 } else {
     @(
         'tests/test_alc_r0_reference_stress_execution.py',
@@ -39,7 +41,9 @@ foreach ($taskTest in $taskTests) {
     }
 }
 $taskMemory = Get-CimInstance Win32_OperatingSystem
-if ($taskMemory.FreePhysicalMemory -lt 1048576 -or $taskMemory.FreeVirtualMemory -lt 3145728) {
+$taskPhysicalFloor = if ($Suite -eq 'OfficialIntegration') { 1572864 } else { 1048576 }
+$taskVirtualFloor = if ($Suite -eq 'OfficialIntegration') { 4194304 } else { 3145728 }
+if ($taskMemory.FreePhysicalMemory -lt $taskPhysicalFloor -or $taskMemory.FreeVirtualMemory -lt $taskVirtualFloor) {
     throw 'Defer CPU test: below operational memory headroom, not a scientific failure.'
 }
 foreach ($taskProcess in (Get-CimInstance Win32_Process)) {
@@ -61,6 +65,8 @@ $taskStart = [ordered]@{
     started_at = $taskStarted.ToString('o')
     free_physical_kib = $taskMemory.FreePhysicalMemory
     free_virtual_kib = $taskMemory.FreeVirtualMemory
+    required_free_physical_kib = $taskPhysicalFloor
+    required_free_virtual_kib = $taskVirtualFloor
     scope = 'FAKE_PURE_CPU_ONLY_NOT_HOST_RESOURCE_OR_LEARNING_ACCEPTANCE'
 }
 [IO.File]::WriteAllText($taskPrefix + '.start.json', ($taskStart | ConvertTo-Json -Depth 4), [Text.UTF8Encoding]::new($false))
