@@ -12682,3 +12682,66 @@ Task 2 sensorium/recollection gate: CLEAN
   consistency; nativeexit observation remains parent's distinct evidence.
   Prior architecture WATCH for log serialization is resolved. No whole-program
   authority/learning/portability claim; prepare scoped exact-byte commit only.
+
+- Continuation 2026-10-07 after scoped checkpoint12b6e2bfd748259660e3817da0a3f547f301c092:
+  previous goal turn made progress: actual790-case regression terminal, independent
+  APPROVE/CLEAR, exact staged/committed blob verification and remote push. Remote
+  fd4ce8 equals that commit; clean authoritative Desktop worktree personally checked.
+  Full objective reread c31c01. Inspected current arithmetic admission, attempt
+  contract, launcher draft and historical accounting provenance, without launches.
+  Checkpoint178 expressly requires presenting method approval/rejection as an
+  actual user choice; repeated automatic continuations are not policy adoption.
+  Historical complete charge and first-development instant remain UNKNOWN under
+  either method. No further record-by-record scan or guessed authority interface.
+  Request explicit decision on the unadopted allocation-wall/conservative-bound
+  method and any owner-supplied historical start/device/external-run evidence.
+  Method approval alone cannot authorize a numeric bound or scientific launch.
+  No accounting schema/runtime/test change, model/assets/GPU invocation or new
+  test command. This is the first current blocking audit for that user decision;
+  goal stays active, not complete/paused/blocked. All full-program gates retained.
+
+- Blocking audit continuation2/3: same pending owner accounting-method decision
+  and unknown historical charge/first-development evidence revalidated in both
+  subsequent automatic goal turns; no human approval or external-state change.
+  Second turn was no progress, not a live-process wait. Third check7999af/54d80d
+  reread full objective and confirmed unchangedHEAD12b6e2b, only this trajectory
+  pending. Prior scoped evidence discovery and permissible implementation are
+  exhausted at this authority boundary; no invented policy/interface/clock or
+  downstream substitute. Set goal blocked after three consecutive same-condition
+  turns, pending user decision/evidence; not complete, paused, or scientific FAIL.
+  No model/test invocation, rerun, threshold amendment or additional agent work.
+
+- Owner decision 2026-10-07: direct human explicitly approved allocation-wall /
+  justified conservative-bound accounting, directed starting model training,
+  and stated no first actual experiment or other-PC/external-GPU run. Goal now
+  active (get_goal current). Preserve prior blocked audit as history, not current
+  method-decision blocker. Added separate owner-decision record; frozen draft
+  and original plan unchanged. Existing Sep20 real-model CPU loads and Sep29
+  synthetic CUDA tests remain distinct chargeable development evidence; no zero
+  historical charge, fresh allowance or clock reset. Numeric history/clock and
+  technical launch qualification still require evidence. Independent code-review
+  lanes to assess scope and finite next execution path; no scientific launch yet.
+
+- Independent owner-record review: architecture CLEAR for decision preservation,
+  code COMMENT requested separating CPU-only observations from GPU allocation
+  charge; corrected wording without changing arithmetic or history values.
+  CPU loads remain control/clock evidence, not GPU consumption. Both lanes agree
+  no renewed method-approval question; finite classification of already identified
+  historical jobs plus explicit launcher interfaces is the next dependency.
+  Neither prospective first-start nor numeric historical charge is invented.
+
+- Owner-record final code APPROVE; architecture CLEAR for separate preservation.
+  Added finite history-classification draft from already-read named174/175/177
+  reports: CPU/control,21XML roots, fourfailed/rerun commands, phase/CLI receipts,
+  bootstrap and unresolved tails separated. Not exhaustive accounting; no added
+  GPUtime or calendaranchor. This is the bounded next review, not repeatedmethod
+  request or modeltraining. Actual parity callable exists; safe qualification-to-
+  pilot launcher and original200-update pilot are not yet executable closed gates.
+
+- Finite inventory preservation independently APPROVE/CLEAR; no numericcharge,
+  prospectiveclock or actual launch acceptance follows. Existing pinnedPython
+  exists; readonly a68557 currentfreeRAM2643292KiB, Cfree50438381568bytes, GPU
+  RTX4050/6141MiB total/5920MiB free. Instantaneous observations, not historical
+  bounds or full resource admission. No models loaded or training/tests started.
+  Preserve both decision/inventory documents with exact-byte attributes; commit
+  policy decision and pending bounded reconciliation without scientific claims.
