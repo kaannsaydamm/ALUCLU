@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.403" timestamp="2026-10-08T18:13:34.059284+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_bounded_process_output" name="test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises" time="0.015"><failure message="Failed: DID NOT RAISE OSError">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-21/test_pipe_rollback_closes_othe0')
+
+    def test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises(tmp_path):
+        pair = PipeWrapError(**arguments(tmp_path))
+        try:
+            with pytest.raises(OSError, match="reader rollback"):
+                pair._make_pipe()
+            assert pair.reader_stream.closed
+&gt;           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests\test_alc_r0_bounded_process_output.py:402: Failed</failure></testcase></testsuite></testsuites>

@@ -13006,3 +13006,126 @@ Task 2 sensorium/recollection gate: CLEAN
   existingbranch afterstagedverification. Next boundedoutput sink plus trusted
   authority/declaration/resources/numericcalendar inputs, pinnedhost and original
   pilots. No modellearning, new allowance or wholegoalcompletion; goal active.
+
+- Componentcheckpoint364c257 rawstaged/committed20exactbytefiles verified; push
+  native session59816 terminaltool74e044 confirmsremote364c257 identical. Next
+  boundedoutput contract added: binarypipe capture rather than postwrite sizepoll,
+  exactdiskcaps/fixedpump buffers, samecleanupdeadline and honest incompleteI/O
+  handling. No source/test/host invocation. Pending independentreadiness, not
+  permission to train; this concrete boundary is required by original launchplan.
+
+- Boundedoutput initialcontracte7037302: codeAPPROVE forisolatedTDD but architecture
+  BLOCK identifiedtwofinite interface omissions (partialentry/exit deadline and
+  exact counters/error/EOF receipt semantics). No codeimplemented underBLOCK.
+  Revised mandatory constructor-pinned absolute cleanup bound, tighten-only job
+  tail, partialentry/exit reuse and singlefinish; exactobserved/confirmed/persisted
+  count/digest schema, invaliderrorreceipt distinctfromcompletevalidEOF and unknown
+  handle/thread state retention. Nonewscientific allowance or ownerdecision.
+  Updatedexactbytes awaitingtwo-lane readinessrereview.
+
+- Revised boundedoutput0d67a133 independently codeAPPROVE/architectureCLEAR for
+  isolatedTDD/preservation only, prior twofiniteBLOCKS resolved. Added concrete
+  isolatedpipe-byte tests: exact/zero/excess/binary, independentstderr, caps/deadline
+  validation, exclusivefiles/lifecycle/finish-tightening, shortwrites and honest
+  terminalread/uncertainwrite facts. Protected_read/_write are narrow diagnostic
+  seams defaultactualIO, not productioncallbacks/globalpatch. Targetmoduleabsent;
+  exactmissingmoduleRED admission pending, no code/process/GPU/model invocation.
+
+- Boundedoutput exact missingmoduleRED independently ADMIT/CLEAR, personally
+  observed originalownedPID3920 terminalexit2 tool66356d, no timeout. Intended
+  ModuleNotFoundError aluclu.alc_r0.bounded_process_output; XMLSHA
+  d18bf7d11e2d359483f40679f24d86de4174ff51b7bd661f9569446eca91c99d.
+  Added isolated binarypipe implementation against reviewed0d67contract. No
+  GREEN or model invocation yet; exact source/test admission and fault coverage
+  next. Previous goalturn status-only classified no-progress; this RED/source
+  transition is concrete progress, original full objective remains active.
+
+- Isolatedsourcee22b6 reviewed: code/architecture identified skipped remaining
+  cleanup after parentwriterclose error and missing acquire classification.
+  Added diagnosticfaulttests20652f40; exactRED independently admitted. Original
+  ownedPID8980 personally terminalexit1 tool3352c0. JUnit36/3failure/2error/0skip
+  0.735s XMLSHAa96ee5cdc3ec801ed552cf4a33b6bc0652287441b274b280829e69db5c77c202.
+  Three intendedbehavioral failures confirmed; two additionalsetup/teardown errors
+  came from pytest embedding131073payloadbytes in Windows environmentvariable
+  (>32767characters), not sink execution. ExplicitshortparamIDs fix fixture only;
+  originalpayload/threshold preserved. Source now always attempts bounded owned
+  cleanup despite writerclose errors, preserves causal failures and marks acquire.
+  New exactsource/test GREEN admission required; negative artifacts retained.
+
+- Corrected isolated GREEN source7a363f17/test0ffba243: originalPID20316 personally
+  terminalexit0 tooldd1e91;36/0failure/0error/0skip0.505s XMLSHA
+  da2736c1b3b795d5d4eb6ab33cd2bae26d3742dbe23ca7b3a62e0e81270c0fda.
+  Admitted5file regression originalPID18444/native session54492 personally terminal
+  exit0 tool291dba;174/0/0/0 76.638s XMLSHA
+  2ee0af5a1261044f19b29139f2d22483966d2de17c8e0634d46a7d72ab07786d,
+  bothstderr0. Duringreadonly review discovered finite writerclosuretime gap:
+  pump terminal timestamp alone can precede actual parentwriter closure pastbound.
+  Both independentlanes REQUESTCHANGES/BLOCK scopedacceptance. Added exactlate
+  writerclosure fixture plus timelyclosure/lateobservation converse. No edits
+  while regression live; new boundaryRED admission pending, no scientificlaunch.
+
+- Initialwriter-time RED originalPID6100 personally terminalexit1 toolc0c6d1;
+  1/1failure/0error/0skip0.541s XMLSHA
+  9c1e28ab56b390c612e27cf2b65ba591bd8180067230ed015fb6ff3984dd86d5.
+  Failure occurred at fixture ordering assertion, NOT expectedDIDNOTRAISE: pinned
+  Windows monotonicclock returned same tick at pumpfinish and capture, so -1
+  fabricated an earlier bound. This does not reproduce theproductbug. Corrected
+  fixture pins maxactualpumpfinish, explicitlyobserves subsequent clocktick with
+  bounded1s fixturegate beforeparentwriterclose. No source/threshold change; exact
+  revised diagnosticRED admission next, originalnegative artifact preserved.
+
+- Writer-time REDv2 independently admitted and actualbug reproduced:
+  originalPID28724 personally terminalexit1 tool9f151a;1/1failure/0error/0skip
+  0.424s expectedDIDNOTRAISE XMLSHA
+  f52094db69f407d813e33378697f86b502fbaa02786f490219abbd8c022593b8.
+  Source now retains first confirmed parentwriterclosure monotonicstamp internally
+  and requires it pluspumpfinished tofit thesameeffectivebound. Exactpublicschema
+  unchanged; unknown/lateclosure deniescompletereceipt. Final38caseGREEN and
+  finalbyte relevantregression await exactindependentadmission; no modellaunch.
+
+- Preexecution architectureWATCH: unknownwriterclosure mustnotbe mislabeled actual
+  time exhaustion. Refined finalclassification toretain close/thread uncertainty
+  without cleanup_deadline unlessactual late timestamp or unobservedresources at
+  elapsedbound observed. Added assertions toexistingwriterfaultfixtures. Neither
+  admitted finalinvocation executed onintermediatec3b21source; refreshed exactbytes
+  require rereview before same finalGREEN/conditionalregression. Fullscopeactive.
+
+- Continuation objective fullyreread92ce45; previousgoalwork classifiedPROGRESS.
+  Priorreviewagents absent liveinventory; code-reviewskill d679bd fullyreread and
+  fresh6.1Sol code/architecture lanes independently read exactbytes. Admitted38case
+  GREEN source9d067/testcb31: originalPID2968 personally terminalexit0 tool2ce44b;
+  38/0/0/0 0.596s XMLSHAeadabf5cc6040d5f31cb89a83a093ac920cdf04c308bf42dc6005ee2a97a3c51.
+  Architecture finiteWATCH: internalpipe wraprollback can skipclosing writerfd
+  if reader rollbackclose raises. Added narrow fd-wrap diagnosticseam and direct
+  ownedrawpipe test; no scientificcallbacks/globalpatch. Rawfixture cleanup closes
+  only known never-transferred fd. Priorconditionalregression notexecuted onnew
+  bytes; exacttargetRED pendingadmission. Originallimits/grid/model unchanged.
+
+- Pipe-rollback RED independently admitted; originalPID25928 personally observed
+  terminalexit1 toole91556,1/1failure/0error/0skip0.403s expectedDIDNOTRAISE at
+  writerfdclosure assertion, XMLSHAe948ed36b57bfb384e69e7fb40cfbc4fa844ed7cb36f452624b21a992f77e68b.
+  Nestedfinally now attempts writerclosure evenreaderrollbackfails, preserves
+  acquisitioncause. Failedrawpipeclosure retainsboundeduncertainownership and
+  classifies acquire+close; publicpartialentry cannot falselyclaim complete
+  cleanup whenunassignedpipecloseeffectunknown. Added publicentry uncertainty
+  assertion, no forcedrawfd retry/unownedthread action. Finalexactbytes admission
+  plus40caseGREEN/178relevantregression pending; no scienceauthority implied.
+
+- Finalsourcec8f24b9d/test37d4ccd1 independently admitted sequential40caseGREEN
+  and conditional5file regression. OriginalPID29444 personally terminalexit0
+  toolf46394:40/0/0/0 0.390s XMLSHA
+  c3a5663deb85018d2864833a1652aabe92f2a30ba310864c71b3ea832e40f5e4.
+  Samewrapperthen unchangedpinnedbytes check before regression, originalPID23416
+  personally terminalexit0 native session46395/tool96f09a:178/0/0/0 47.169s XMLSHA
+  95660ea18b66f5b17dd507cf6c813d90c6a1ae1bb54b44016b46e277ed47c572.
+  Bothno timeout; all10stderrfiles0bytes. Completeartifactlineage personallyparsed
+  tool250fc2. Added scopedruntimeevidence/exactbyteattributes; finalindependent
+  artifactreview pending. Not sink/leaseintegration, training orwholegoalcompletion.
+
+- Independentclosing codeAPPROVE and architectureCLEAR verified finalsource/test/
+  contract, runtimeevidence and all10XML/counts/hashes/exitrecords/emptystderr groups.
+  Originalnative observation remainsparentfact. IsolatedWindowscapture component
+  scopedaccepted, finitecleanup/clock/rollbackfindings resolved withoutthreshold
+  changes. Updatedliteralstatus only, no source/test edit afterfinalruns. Exactbyte
+  staging/commit/push next; nextdependency is auditedcaps/ownedleaseintegration plus
+  actualchild/descendant outputtests, not ALC-R0 PASS. Fullobjective staysactive.

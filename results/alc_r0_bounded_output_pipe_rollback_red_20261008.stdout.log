@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises ___
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-21/test_pipe_rollback_closes_othe0')
+
+    def test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises(tmp_path):
+        pair = PipeWrapError(**arguments(tmp_path))
+        try:
+            with pytest.raises(OSError, match="reader rollback"):
+                pair._make_pipe()
+            assert pair.reader_stream.closed
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests\test_alc_r0_bounded_process_output.py:402: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_bounded_process_output.py::test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises
