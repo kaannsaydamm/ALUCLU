@@ -13415,3 +13415,52 @@ Task 2 sensorium/recollection gate: CLEAN
   Exact-file/rawbyte staging and commit/push next; unified goal remains active.
   Next concrete path: fixed worker's bounded scientific-object projection using
   this codec, preserving denial until operator/accounting/resource/GPU2 gates.
+
+- Continuation reread full owner objective; previous turn PROGRESS (07052c4
+  committed/pushed, live Desktop clean). Read scientific dataclass sources and
+  accepted wire/worker contracts. Added explicit fixed scientific receipt
+  projection proposal; scoped independent admission next. No actual model,
+  tokenizer, GPU, assets, dataset, training or accounting reset. Owner approval
+  remains recorded, not asked again; unresolved factual coverage stays unknown.
+
+- Projection proposal a41e7307 independently code APPROVE / architecture CLEAR
+  for exact exporter synthetic TDD only. Added exact scientific dataclass fixtures
+  and independent expected envelopes, nested malformed/cap/type mutations,
+  input preservation and denied-heavy-import checks. Added closed owned diagnostic
+  runner (120s useful + same10s cleanup); exporter module still absent for RED.
+  No changes to scientific dataclasses, schemas, thresholds or actual host work.
+
+- Exact tests2951fa15/runnerb3532bda independently admitted RED. Original owned
+  session12365 personally observed terminal ea5e76: root23808 exit1,
+  active0/total3, no timeout. Added explicit bounded exporter after RED completion;
+  request validation precedes lazy scientific type imports, fixed counts/types
+  precede encoding, original source identities preserved, final accepted decoder
+  verifies semantics. Closed failure remains light and never exports raw partials.
+  Exact RED JUnit/cause/hash checks and implementation review follow.
+
+- Personally checked RED XML3/3failures/0errors/0skips89.276s, every intended
+  missing-module failure, stderr0, SHA80ba03afd459bae1cb2101b3774c7edd4e42613978690ef17a55e919a90ca1ee.
+  Added surrogate and receipt-subclass denials before GREEN; require exactfinite
+  Python float observations and ASCII bounded metadata. Diagnostic GREEN/regression
+  bound proposed300s due observed import latency, RED remains120s; original
+  scientific45m/10s bounds unchanged. Implementation/admission review next.
+
+- Final sourcee6e3dc66/tests956267ff/runnerfe8ddc72/contract2c2e358e independently
+  code APPROVE/architecture CLEAR admitted owned GREEN plus conditional regression.
+  Originalsession55982 GREENroot2904 exit0 observed80a61c, job5total0active/
+  no timeout, XML49/0/0/0 25.615s SHAfc826d445d1ad379e3e2ba3492688ef41bc504e1952d0e04dd11494a6baebbbf.
+  Conditionalregressionroot27580 terminalc455f0 exit0 job41total0active/notimeout,
+  XML248/0/0/0 119.662s SHAb895e3b11575723fb30eefaca21056dd02e5bd27c62aee18511d91f19c2d1dca.
+  All12artifacts/empty stderr/counts/pins personally recheckedccbf2e; original
+  scientific plan unchanged0493eeed. Added honest runtime evidence and raw-byte
+  attributes, closing independent source/contract/artifacts review pending.
+  No actual model/GPU/learning or full-suite/portability claim.
+
+- Closing independent GPT6.1Sol code APPROVE / architecture CLEAR both read
+  complete exporter/spec/tests/runner and new runtime narrative plus all12artifact
+  contents, computed SHA/counts/test-selection/native terminal facts. Accepted
+  scoped exporter only; updated doc status after verdicts, source/test/runner
+  unchanged from verified executions. Exact raw-byte staging and commit/push
+  next. Unified goal ACTIVE, not complete; next concrete integration is fixed
+  worker bootstrap/settings with denial until reviewed producer/handoff,
+  accounting/resource admission and required fresh-GPU evidence are resolved.
