@@ -13191,3 +13191,58 @@ Task 2 sensorium/recollection gate: CLEAN
   commit/push next. Scientific launcher authority/numeric historical coverage,
   resource declarations/admission and pinned host qualification still open;
   no ALC-R0, portability or full objective completion claim.
+
+- Continuation objective fully rereada3d66a; prior turn classifiedPROGRESS:
+  integrated output caps accepted and committed/pushedaf3ddb1174e38b5f2abf7b68cb91794fe391f623,
+  clean Desktop worktree personally rechecked. Next concrete gap: approved
+  allocation upper bounds cannot be inserted into legacy observed-only
+  ProgramAccounting. Proposed separate stdlib arithmetic adapter contract keeps
+  kind/provenance/unknown facts explicit, full cleanup reservation and independent
+  physical/research growth. Exact design-readiness review pending before source.
+  No historical numbers assigned, clock/budget reset or scientific launch.
+
+- Independent design review found two finite arithmetic ambiguities: unknown
+  charge could hide a known calendar failure, and aggregate charge overflow had
+  no exact returned-value rule. Revised contract derives charge/clock independently
+  and returns remainingNone on checked overflow while retaining provable budget
+  denial. Both lanes revised codeAPPROVE / architectureCLEAR. Added synthetic
+  allocation-policy tests (including fresh stdlib-only import guard); new source
+  still absent, exact missing-module RED admission next. These test numbers are
+  fixtures, not observed historical charge/calendar or an actual launch permit.
+
+- Missing-module RED independently admitted on testd309856a, originalPID31012
+  personally terminalexit2/no-timeout toola9cbee:1/0failure/1error/0skip0.487s,
+  XMLSHAb251080f45726577b0e035a4c52685e1d24ba1f1ae60d6421428f456d591d5c5,
+  stderr0. Implemented separate stdlib allocation_policy preserving explicit
+  observed/bounded/unknown kinds, originalentry-derived deadlines, single cleanup
+  tail, independent clock/charge denial and research/physical growth arithmetic.
+  Legacy observed-only helper unchanged. Exact implementation admission and
+  GREEN/relevant regression pending; no actual historical numbers/host/GPU work.
+
+- Exact sourcec5060036/testd309856a independently admitted GREEN and conditional
+ 3file regression. OriginalPID19236 personally terminalexit0 tool3d7368:
+  102/0failure/0error/0skip2.044s XMLSHA
+  93e11a7787154ca4ba9ccb2300d1106134dbb4e23611ad1a7ada62d36850c2fe.
+  Conditional unchangedbytes regressionPID23580 personally terminalexit0
+  session27125/tool4eadc0:189/0/0/0 59.007s XMLSHA
+  8caa43496883a29ffc2be02e0aec34e55602895b6da1f8dccbef27b9c8d62a0d.
+  Bothstderr0/no timeout, no live edits. Added exact-byte attributes and scoped
+  runtime doc; final independent code/architecture artifact review pending.
+  Pure policy behavior is not reconciled actualhistory/resource/authority;
+  no scientific/learning PASS or full-objective completion claimed.
+
+- Closing independent GPT-6.1 Sol code APPROVE / architecture CLEAR verified
+  complete allocation source/test/contract/runtime bytes and all three artifact
+  groups, including expected missing-module RED, exact XML hashes, counts,
+  durations, terminal/no-timeout records and empty stderr. Runtime status only
+  updated; source/tests unchanged after executions. This scoped arithmetic
+  checkpoint is accepted, not numeric history reconciliation or a launch permit.
+  Owner accounting/local training direction remains already approved; no repeated
+  permission request or reinterpretation of prior synthetic GPU controls.
+  Live read-only resource refresh: RAM total16471200KiB/free1524256KiB;
+  RTX4050 Laptop6141MiB/free5920MiB/utilization0percent; Cfree48373313536bytes.
+  No python process returned by the current name filter. These point observations
+  are not a launch declaration or peak-memory guarantee; no training started.
+  Remaining path: factual history/calendar reconciliation and trusted launcher
+  composition, pinned real-host qualification, original four200-update pilots.
+  Exact-byte staging/commit/push follows; full unified objective remains active.
