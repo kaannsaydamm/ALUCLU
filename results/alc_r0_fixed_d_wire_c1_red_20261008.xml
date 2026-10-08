@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.391" timestamp="2026-10-08T20:06:34.168230+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_wire" name="test_c1_controls_in_path_deny[/research/\x85snapshot]" time="0.015"><failure message="Failed: DID NOT RAISE DWireError">path = '/research/\x85snapshot'
+
+    @pytest.mark.parametrize("path", ["/research/\u0085snapshot", "C:/research/\u009fsnapshot"])
+    def test_c1_controls_in_path_deny(path):
+        req = request()
+        req["snapshot_path"] = path
+&gt;       with pytest.raises(wire().DWireError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DWireError
+
+tests\test_alc_r0_fixed_d_wire.py:178: Failed</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_wire" name="test_c1_controls_in_path_deny[C:/research/\x9fsnapshot]" time="0.002"><failure message="Failed: DID NOT RAISE DWireError">path = 'C:/research/\x9fsnapshot'
+
+    @pytest.mark.parametrize("path", ["/research/\u0085snapshot", "C:/research/\u009fsnapshot"])
+    def test_c1_controls_in_path_deny(path):
+        req = request()
+        req["snapshot_path"] = path
+&gt;       with pytest.raises(wire().DWireError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DWireError
+
+tests\test_alc_r0_fixed_d_wire.py:178: Failed</failure></testcase></testsuite></testsuites>

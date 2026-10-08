@@ -458,3 +458,9 @@ docs/superpowers/plans/2026-10-08-alc-r0-d-reservation-identity-contract.md -tex
 docs/superpowers/plans/2026-10-08-alc-r0-d-reservation-identity-runtime-evidence.md -text
 results/alc_r0_d_identity* -text whitespace=-blank-at-eol
 docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-worker-design.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-wire-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-wire-runtime-evidence.md -text
+src/aluclu/alc_r0/fixed_d_wire.py -text
+tests/test_alc_r0_fixed_d_wire.py -text
+tests/alc_r0_fixed_d_wire_test_runner.py -text
+results/alc_r0_fixed_d_wire* -text whitespace=-blank-at-eol

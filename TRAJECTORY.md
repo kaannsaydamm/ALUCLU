@@ -13345,3 +13345,73 @@ Task 2 sensorium/recollection gate: CLEAN
   for documentation-only proposal; git diff --check passed. Exact3file staging,
   raw-byte design check, commit/push next. No narrow helper promoted to learning
   proof or full-goal completion; next action is concrete fixed-worker wire schema.
+
+- Continuation objective fully reread9141cf; previous turn PROGRESS, reviewed
+  fixed-worker design committed/pushedc363bd4, clean Desktop verified. Defined
+  concrete wire proposal for complete1296official+18witness+18matrix receipts,
+  original numeric fixture-root reconstruction, signedlabels/nullable norms/
+  genuine booleans, closed failures, caps/import-safe pure API. Parent retained-
+  evidence checks are distinct from missing tensor evidence and trusted producer.
+  Scoped independent codec design admission next, before tests/source changes.
+  No heavy runtime/assets/GPU/heldout/scientific launch or numeric adoption.
+
+- Initial independent architecture CLEAR for synthetic codec; code caught an
+  explicit fixture bound mismatch (1..71 versus original3..71), REQUEST CHANGES.
+  Corrected minimum and added lexical100000token cap to bound hostile tiny-element
+  arrays before parsing. Schema/cap corrections require closing design admission.
+  No source/test edits or runtime launch yet; no original scientific edits.
+
+- Closing code APPROVE synthetic codec; architecture noted scalar-only cap does
+  not bound empty containers. Refined same100000 predecode cap to include every
+  object/array opening and key string, preventing hostile empty-container graphs.
+  Exact-byte confirmation precedes tests; this is a transport cap, not host RSS.
+
+- Final exact contractbdc2746d independently code APPROVE/architecture CLEAR
+  for pure codec and synthetic TDD only. Added synthetic full-schedule/mutation/
+  lexical-bound/import tests, including original2-token rejected fixture with
+  matching digest. Production fixed_d_wire module still absent; focused3control
+  roundtrip RED next. No scientific/runtime/asset/launch permission inferred.
+
+- Exact RED independently admitted; originalnativePID8256 terminalexit1/no timeout
+  personally observed76e674. JUnit3tests/3failures/0errors/0skips0.772s, stderr0,
+  intended missing fixed_d_wire module each control; XMLSHA
+  5ba9d2328c7e89f89299966777886176bac9180b7f2a4b46be2f50e1b6ad523c.
+  Added pure complete fixed-D wire decoder with preparse lexical bounds and exact
+  schedules/numeric fixture hash/retained measurements; no public exporter,
+  accepting worker, operator auth or scientific process. GREEN admission next.
+
+- Initial exact implementation review found UnicodeC1 path controls admitted
+  despite contract control ban; production source still unchanged5dcac79f.
+  Added2C1 request tests for diagnostic RED before repair. Review also corrected
+  import regression supervision: existing children have90s timeout, not10/20s,
+  and deliberately import Torch without CUDA initialization/model execution.
+  Added CLOSED synthetic test runner reusing accepted run_owned_process private
+  job for whole descendant cleanup; not a scientific immediate-resume bypass.
+  Exact runner/C1 diagnostic admission next, before any rerun or source fix.
+
+- C1 diagnostic independently admitted; owned root14548 terminalexit1 observed
+  870dad, privatejob3processes/active0/no timeout. JUnit2/2failures/0errors/0skips
+  0.391s both intended DIDNOTRAISE, XML8044a5a0abe30677e7dffa3e7b20bf19c20bb9f4cb0634a67f460d8f3b507b2b.
+  Repaired path control check to UnicodecategoryCc (C0/DEL/C1) without science
+  or schema change. Exact corrected source/runner GREEN and conditional owned
+  regression admission follows; no file edits during live executions.
+
+- Corrected exactsource4d55e8bd/tests580d4cbf/runnerdd8251af independently admitted
+  GREEN/conditional owned regression. Retained originalsession2783 GREEN21824
+  personally observedb47f68:111/0/0/0 27.052s XMLc46b822ef8062555e6e83e2bca9e8df054830b60fe23eebb998374a75f31da12.
+  Conditionalregressionroot7744 originalsessionterminal65a153:199/0/0/0 72.258s
+  XML6028323e53e5afd61490fd50cb51a2382ffaf6b2c3b773a2b7d9a605f1c53916.
+  Bothpytest0/notimeout/ownedactive0 (5/39total), stderr0, unchangedpins; finalall
+  fourartifactgroups personally recheckedb90ba8. Added honest runtime evidence
+  with conservative valid-success size argument; closing independent fullsource/
+  tests/contracts/artifacts review pending. No GPU/assets/scientific/learning PASS.
+
+- Closing independent GPT-6.1 Sol code APPROVE/architecture CLEAR personally
+  verified complete finalsource/tests/runner/contract/runtime and all16artifacts,
+  expectedRED causes, nativeexits/zeroactive/nottimeout, stdout/stderr/counts/time/
+  exactXMLSHA and conservativeencodingbound1862656<4MiB. Only documentstatus
+  updated afterreviews; production/tests/runner bytes unchanged after execution.
+  Scopedcodec accepted, not exporter/provenance/qualification or neurallearning.
+  Exact-file/rawbyte staging and commit/push next; unified goal remains active.
+  Next concrete path: fixed worker's bounded scientific-object projection using
+  this codec, preserving denial until operator/accounting/resource/GPU2 gates.
