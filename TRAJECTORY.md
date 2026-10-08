@@ -13246,3 +13246,29 @@ Task 2 sensorium/recollection gate: CLEAN
   Remaining path: factual history/calendar reconciliation and trusted launcher
   composition, pinned real-host qualification, original four200-update pilots.
   Exact-byte staging/commit/push follows; full unified objective remains active.
+
+- Continuation objective fully reread2664c8; previous goal turn PROGRESS:
+  allocation arithmetic accepted, committed/pushed788361f, clean Desktop source
+  reverified. Bounded complete reports174/175/177, owner decision, original budget
+  language and checkpoint detail reread. Independent code/architecture decision
+  review confirms that first-development clock cannot silently become only first
+  primary-training/pilot; no numeric or prospective calendar adoption supported.
+  Whole-window upper bound is a finite conditional alternative: justified start,
+  maximum GPU scope, cutoff/crossing coverage and separate no-later clock anchor.
+  Covered child tails need not be rejoined individually within that envelope;
+  narrower per-attempt accounting and uncertain live release remain separate.
+  Asked direct human factual clarification (controls beforeSep20/otherGPU), not
+  repeated method approval. Pending answer is not zero history/one device.
+  Added finite-envelope-next-action proposal preserving this decision and one
+  concrete fixed D coordinator/worker successor, not additional product infra.
+  Exact-byte preservation review next; no code/test/model/asset/GPU execution,
+  invented charge/date, launch permission or scientific claim in this turn.
+
+- Exact proposalc23311ed independently code APPROVE / architecture CLEAR for
+  preservation only; both full-read lanes confirmed finite facts, cutoff/tail
+  distinction, no pilot-clock reset and no hypothetical implementation approval.
+  Updated status only. Original scientific plan SHA256 personally rechecked
+  0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b,
+  unchanged. No tests appropriate/run for documentation-only decision preservation.
+  Three-file scoped commit/push next; human factual answer and concrete fixed D
+  design remain next actions, not an active process wait or a completed goal.
