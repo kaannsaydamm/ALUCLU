@@ -13272,3 +13272,46 @@ Task 2 sensorium/recollection gate: CLEAN
   unchanged. No tests appropriate/run for documentation-only decision preservation.
   Three-file scoped commit/push next; human factual answer and concrete fixed D
   design remain next actions, not an active process wait or a completed goal.
+
+- Continuation objective fully rereadddd22b; previous turn PROGRESS (finite
+  envelope/calendar decision and scoped proposal committed/pushed68fc3a7).
+  Clean authoritative Desktop source verified; no live scientific handle claimed.
+  Concrete composition gap found: reservation identity accepts only scientific
+  pilot/dev/confirm/eval grammar, while matched D is a prerequisite control.
+  Proposed THREE closed D resource-control IDs with exact device/45min+10s
+  envelope, keeping scientific RunSpec/matrix/schema/path rules unchanged.
+  New declarations cannot rewrite old genesis. Added identity contract only;
+  independent implementation-readiness review pending before tests/source edits.
+  No arbitrary namespace, historical numeric adoption or training permission.
+
+- Independent design code APPROVE / architecture CLEAR on contract8ef8c900.
+  Added synthetic D identity tests only; unchanged reservation source8d432111
+  still rejects all3 intended IDs. Exact three-case diagnostic RED invocation
+  admission next. Test envelope/timing values are fixed contracts or fixtures,
+  not observed old charge or actual-host qualifications. No source edit/test run.
+
+- Exact RED independently admitted; originalnativePID21448 personally observed
+  terminalexit1/no timeout toolfdde8c. JUnit3tests/3failures/0errors/0skips0.458s,
+  stderr0; each fails existing invalid declaration identity before any event.
+  Implemented only closed3-ID reservation acceptance plus exact D device/ceiling/
+  charge binding. Scientific attempt_state and old declaration/event formats
+  unchanged. Exact implementation/invocation review required before GREEN.
+
+- Exactsource0d151d29/testc56db869 independently admitted focused and conditional
+  regression. Personally originalPID18708 terminalexit0 tool e1efa8:
+  66/0/0/0 0.889s XML89047e4f9d10e7517c52020e2154c8292be613c53a23419d540e50b9aa4125d6.
+  Same retained wrapper session26389 originalregressionPID10464 terminalexit0
+  tool8d19e8:212/0/0/0 38.053s XML51471f0d2c29171b2bb820705707d811073d7b6735657b6ae7054653036de4cd.
+  Both stderr0/no timeout/no live edits; final hashes personally rechecked.
+  Continuation objective reread1c200b; prior work PROGRESS with real GREEN, then
+  verified same-session terminal observation, not restart on polling silence.
+  Added scoped runtime evidence/raw-byte attributes; closing independent review
+  next. No scientific host/training/accounting adoption or full-suite claim.
+
+- Closing independent GPT-6.1 Sol code APPROVE / architecture CLEAR verified
+  full final source/test/contract/runtime and all3 artifact groups, exact XML
+  hashes/counts/durations/native terminal records/empty stderr. Mechanical D
+  identity component accepted; runtime status only updated, no source/test edits
+  after runs. Exact-byte scoped commit/push follows. Full unified goal active;
+  fixed D worker/coordinator and factual numeric admission remain open, rather
+  than treating this successful helper as the actual model experiment.

@@ -14,6 +14,11 @@ _EVENT_BYTES = 32 * 1024 * 1024
 _EVENT_COUNT = 262144
 _ID = re.compile(r"[A-Za-z0-9_-]{1,128}\Z")
 _RUN = re.compile(r"alc-r0-v1-(pilot|dev|confirm|eval)-[a-z0-9-]+-s[0-9]{8}\Z")
+_D_RESOURCE_IDS = (
+    "alc-r0-qualification-v1-d-cpu-fresh1-s20260916",
+    "alc-r0-qualification-v1-d-gpu-fresh1-s20260916",
+    "alc-r0-qualification-v1-d-gpu-fresh2-s20260916",
+)
 _ROOT = re.compile(r"[0-9a-f]{64}\Z")
 _NONCE = re.compile(r"[0-9a-f]{32}\Z")
 _DECIMAL = re.compile(r"(?:0|[1-9][0-9]{0,19})\Z")
@@ -108,7 +113,7 @@ def _declaration(data: bytes) -> dict:
         raise ReservationStateError("exact declaration fields required")
     if (item["experiment_id"] != "alc-r0-smollm2-135m-v1"
             or not _matches(item["reservation_id"], _ID)
-            or not _matches(item["run_id"], _RUN)
+            or not (_matches(item["run_id"], _RUN) or item["run_id"] in _D_RESOURCE_IDS)
             or len(item["run_id"]) > 128
             or item["attempt_id"] not in ("a001", "a002", "a003")
             or item["segment"] not in ("initial", "resume")
@@ -124,6 +129,16 @@ def _declaration(data: bytes) -> dict:
             or (item["device"] == "gpu" and item["gpu_reservation_ns"] < item["charge_envelope_ns"])
             or (item["device"] == "cpu" and item["gpu_reservation_ns"] != 0)):
         raise ReservationStateError("invalid resource envelope")
+    if item["run_id"] in _D_RESOURCE_IDS:
+        # These are resource controls, not new scientific RunSpec identities.
+        # Structural acceptance never authenticates their actual invocation.
+        expected_device = "cpu" if item["run_id"] == _D_RESOURCE_IDS[0] else "gpu"
+        charge = 2710000000000
+        if (item["device"] != expected_device
+                or item["useful_wall_ceiling_ns"] != 2700000000000
+                or item["charge_envelope_ns"] != charge
+                or item["gpu_reservation_ns"] != (charge if expected_device == "gpu" else 0)):
+            raise ReservationStateError("fixed original D resource binding required")
     return item
 
 
