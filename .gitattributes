@@ -457,3 +457,4 @@ tests/test_alc_r0_d_reservation_identity.py -text
 docs/superpowers/plans/2026-10-08-alc-r0-d-reservation-identity-contract.md -text
 docs/superpowers/plans/2026-10-08-alc-r0-d-reservation-identity-runtime-evidence.md -text
 results/alc_r0_d_identity* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-worker-design.md -text

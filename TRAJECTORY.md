@@ -13315,3 +13315,33 @@ Task 2 sensorium/recollection gate: CLEAN
   after runs. Exact-byte scoped commit/push follows. Full unified goal active;
   fixed D worker/coordinator and factual numeric admission remain open, rather
   than treating this successful helper as the actual model experiment.
+
+- Continuation fully reread original objective221133; previous goal turn was
+  no-progress status verification, not a live process wait. Clean Desktop HEAD
+  63bc4b9 rechecked. Owner accounting/local training approval remains recorded;
+  pending historical facts are not zero usage or a new clock. Inspected complete
+  actual qualification callable and receipt structures, then added fixed D worker
+  composition proposal with closed3controls, bounded transport/results, original
+  full schedules, trusted-producer separation, and explicit lease admission and
+  revocation integration gaps. No model/runtime/assets/test/child/GPU invocation.
+  Independent design lanes next; no hypothetical implementation-readiness claim.
+
+- Initial GPT-6.1 Sol architecture WATCH (full launcher BLOCK) and code REQUEST
+  CHANGES to broad readiness, APPROVE narrower preservation/schema preparation.
+  Corrected a real evidence overstatement: reduced receipts do not let parent
+  recompute tensor logits/argmax/gradient comparisons; trusted callable performs
+  those. Named exact nested-schema/null/signed-token/root/count prerequisites,
+  one a001/initial invocation per D control, unresolved fieldwise GPU2 stability
+  evidence, repeated store audit bounds, full-envelope authority expiry and
+  proposed bounded fail-closed active observation. Concrete producer/monitor
+  remain unimplemented; denied worker must not trust request-adjacent config.
+  Closing scoped preservation review follows; no tests/scientific execution.
+
+- Closing independent GPT-6.1 Sol code APPROVE / architecture CLEAR fully reread
+  corrected design6f17a495 and accepted preservation/next exact wire-contract
+  specification ONLY. Full-launcher/scientific invocation remains BLOCK; exact
+  nested schema, producer, admission/monitor, factual history and GPU2 evidence
+  still missing. Updated status only after verdicts. No tests appropriate/run
+  for documentation-only proposal; git diff --check passed. Exact3file staging,
+  raw-byte design check, commit/push next. No narrow helper promoted to learning
+  proof or full-goal completion; next action is concrete fixed-worker wire schema.
