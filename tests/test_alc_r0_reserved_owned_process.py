@@ -14,7 +14,8 @@ pytestmark = pytest.mark.skipif(os.name != "nt", reason="Windows owned lease")
 ROOT = "a" * 64
 
 
-def fixture(tmp_path, *, seconds=15, source=None, **overrides):
+def fixture(tmp_path, *, seconds=15, source=None, stdout_cap=1024, stderr_cap=1024,
+            **overrides):
     namespace = tmp_path / "reservations"
     namespace.mkdir()
     (namespace / "intents").mkdir()
@@ -25,7 +26,7 @@ def fixture(tmp_path, *, seconds=15, source=None, **overrides):
         declaration_root=ROOT, device="cpu", useful_wall_ceiling_ns=str(ceiling),
         cleanup_ceiling_ns="10000000000", charge_envelope_ns=str(ceiling + 10_000_000_000),
         gpu_reservation_ns="0", research_growth_bytes="1024", physical_growth_bytes="4096",
-        stdout_limit_bytes="1024", stderr_limit_bytes="1024")),)
+        stdout_limit_bytes=str(stdout_cap), stderr_limit_bytes=str(stderr_cap))),)
     store = ReservationStore(namespace, declarations)
     initial = store.initialize(store.initialization_intent())
     origin = time.monotonic_ns()
@@ -115,6 +116,173 @@ def test_nonzero_exit_retained(tmp_path):
         ready = lease.publish_identity(ROOT, ROOT)
         lease.resume_verified(ready.sha256)
         assert lease.wait_terminal().process.exit_code == 7
+
+
+def test_declared_stdout_cap_enforced_on_real_child(tmp_path):
+    # Exactly one byte above the existing audited fixture declaration, not an
+    # invented cap. The current direct-to-file lease must reproduce this gap.
+    gate = tmp_path / "output-ready"
+    source = ("import os,time;from pathlib import Path;"
+        f"gate=Path({str(gate)!r})\n"
+        "while not gate.exists():time.sleep(0.005)\n"
+        "os.write(1,b'x'*1025)")
+    arguments, store, _, _ = fixture(tmp_path, source=source)
+    with ReservedOwnedLease(**arguments) as lease:
+        ready = lease.publish_identity(ROOT, ROOT)
+        running = lease.resume_verified(ready.sha256)
+        gate.write_bytes(b"ready")
+        terminal = lease.wait_terminal()
+        assert terminal.process.active_processes == 0
+    assert arguments["stdout_path"].read_bytes() == b"x" * 1024
+    assert not terminal.output.valid and terminal.output.stdout.excess
+    assert terminal.output.stdout.limit_bytes == 1024
+    assert terminal.output.stdout.persisted_bytes == 1024
+    assert store.read(running.sha256).snapshot.reservations[0].state == "RUNNING"
+
+
+@pytest.mark.parametrize("payload,cap", [(b"",0), (b"\x00\xff\r\n",4),
+    (b"abc",8)], ids=["empty-zero","binary-exact","under-cap"])
+def test_real_child_independent_binary_caps_and_digests(tmp_path, payload, cap):
+    import hashlib
+    gate = tmp_path / "output-ready"
+    source = ("import os,time;from pathlib import Path;"
+        f"gate=Path({str(gate)!r})\n"
+        "while not gate.exists():time.sleep(0.005)\n"
+        f"os.write(1,{payload!r});os.write(2,{payload!r})")
+    arguments, _, _, _ = fixture(tmp_path, source=source,
+        stdout_cap=cap, stderr_cap=cap)
+    with ReservedOwnedLease(**arguments) as lease:
+        ready = lease.publish_identity(ROOT,ROOT)
+        lease.resume_verified(ready.sha256)
+        gate.write_bytes(b"ready")
+        receipt = lease.wait_terminal()
+        assert receipt.process.exit_code == 0 and receipt.output.valid
+        assert receipt.output.cleanup_deadline_ns == lease._job.cleanup_deadline_ns
+        assert receipt.output.cleanup_deadline_ns <= arguments["deadline_ns"] + 10_000_000_000
+    for name in ("stdout","stderr"):
+        facts = getattr(receipt.output,name)
+        assert facts.limit_bytes == cap and facts.received_bytes == len(payload)
+        assert facts.persisted_bytes == len(payload) and facts.resources_closed
+        assert facts.file_sha256 == hashlib.sha256(payload).hexdigest()
+        assert arguments[name + "_path"].read_bytes() == payload
+
+
+@pytest.mark.parametrize("descriptor", [1,2])
+def test_excess_child_stopped_without_timeout_or_unbounded_file(tmp_path, descriptor):
+    gate = tmp_path / "output-ready"
+    source = ("import os,time;from pathlib import Path;"
+        f"gate=Path({str(gate)!r})\n"
+        "while not gate.exists():time.sleep(0.005)\n"
+        f"while True:os.write({descriptor},b'z'*4096)")
+    arguments, _, _, _ = fixture(tmp_path, source=source)
+    with ReservedOwnedLease(**arguments) as lease:
+        ready = lease.publish_identity(ROOT,ROOT)
+        lease.resume_verified(ready.sha256)
+        gate.write_bytes(b"ready")
+        receipt = lease.wait_terminal()
+    assert receipt.process.exit_code == 124 and not receipt.process.timed_out
+    assert receipt.process.active_processes == 0 and not receipt.output.valid
+    facts = receipt.output.stdout if descriptor == 1 else receipt.output.stderr
+    assert facts.excess and facts.persisted_bytes == 1024
+    for target in (arguments["stdout_path"],arguments["stderr_path"]):
+        assert target.stat().st_size <= 1024
+
+
+@pytest.mark.parametrize("expire", [False,True], ids=["timely","incomplete"])
+def test_partial_output_entry_pins_tail_before_internal_wait(tmp_path, expire):
+    import threading
+    from aluclu.alc_r0.bounded_process_output import OutputCleanupError
+    from aluclu.alc_r0.reserved_owned_process import _LeaseOutputPair
+    gate, pinned = threading.Event(), threading.Event()
+    recorded = []
+    arguments, store, reserved, _ = fixture(tmp_path)
+
+    class FaultPair(_LeaseOutputPair):
+        starts = 0
+        def _read(self, reader):
+            assert gate.wait(3), "bounded diagnostic gate timed out"
+            return super()._read(reader)
+        def _start_pump(self, thread):
+            super()._start_pump(thread)
+            self.starts += 1
+            if self.starts == 2:
+                raise OSError("fixture after actual second pump start")
+        def _observe_terminal(self, deadline):
+            # Capture all actual retained bounds BEFORE the observer can open
+            # the read gate, inside the original partial-observation path.
+            recorded.append((self._lease._cleanup_deadline,
+                self._lease._job.cleanup_deadline_ns,self._deadline,deadline))
+            pinned.set()
+            return super()._observe_terminal(deadline)
+
+    class FaultLease(ReservedOwnedLease):
+        def _new_output(self, **values):
+            return FaultPair(self, **values)
+        def _pin_cleanup_deadline(self):
+            first = self._cleanup_deadline is None
+            result = super()._pin_cleanup_deadline()
+            if first and expire:
+                # Explicit diagnostic-only shorter observation seam. The
+                # audited declaration's scientific ten-second tail is unchanged.
+                self._cleanup_deadline = min(result,time.monotonic_ns()+20_000_000)
+                self._job.cleanup_deadline_ns = self._cleanup_deadline
+                result = self._cleanup_deadline
+            return result
+
+    def release_owned_gate():
+        if pinned.wait(3) and expire:
+            time.sleep(0.08)
+        gate.set()
+
+    observer = threading.Thread(target=release_owned_gate)
+    observer.start()
+    lease = FaultLease(**arguments)
+    try:
+        with pytest.raises(OutputCleanupError if expire else OSError):
+            with lease:
+                pytest.fail("partial entry succeeded")
+        assert len(recorded) == 1
+        assert len(set(recorded[0])) == 1
+        assert recorded[0][0] == lease._output._deadline
+        assert lease._information.process is None and lease._lock is None
+        assert store.read(reserved.sha256).snapshot.reservations[0].state == "RESERVED"
+        if expire:
+            assert any("cleanup_deadline" in item.failure_kinds
+                       for item in lease._output.observations())
+    finally:
+        gate.set()
+        observer.join(3)
+        assert not observer.is_alive()
+        for stream in lease._output._streams:
+            stream.thread.join(3)
+            assert not stream.thread.is_alive()
+
+
+def test_exited_root_with_live_writing_descendant_is_drained(tmp_path):
+    import _winapi
+    gate = tmp_path / "output-ready"
+    descendant_gate = tmp_path / "root-observed-terminal"
+    child = ("import os,time;from pathlib import Path;"
+        f"gate=Path({str(descendant_gate)!r})\n"
+        "while not gate.exists():time.sleep(0.005)\n"
+        "while True:os.write(2,b'd'*4096)")
+    source = ("import subprocess,sys,time;from pathlib import Path;"
+        f"gate=Path({str(gate)!r})\n"
+        "while not gate.exists():time.sleep(0.005)\n"
+        f"subprocess.Popen([sys.executable,'-I','-c',{child!r}])")
+    arguments, _, _, _ = fixture(tmp_path, source=source)
+    with ReservedOwnedLease(**arguments) as lease:
+        ready = lease.publish_identity(ROOT,ROOT)
+        lease.resume_verified(ready.sha256)
+        gate.write_bytes(b"ready")
+        assert _winapi.WaitForSingleObject(lease._information.process,5000) == 0
+        assert _winapi.GetExitCodeProcess(lease._information.process) == 0
+        descendant_gate.write_bytes(b"root terminal")
+        receipt = lease.wait_terminal()
+    assert not receipt.process.timed_out and receipt.process.active_processes == 0
+    assert receipt.process.total_processes >= 2
+    assert not receipt.output.valid and receipt.output.stderr.excess
+    assert arguments["stderr_path"].read_bytes() == b"d" * 1024
 
 
 def test_timeout_drains_root_and_descendant(tmp_path):

@@ -444,3 +444,6 @@ tests/test_alc_r0_bounded_process_output.py -text
 docs/superpowers/plans/2026-10-07-alc-r0-bounded-output-contract.md -text
 docs/superpowers/plans/2026-10-08-alc-r0-bounded-output-runtime-evidence.md -text
 results/alc_r0_bounded_output* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-08-alc-r0-reserved-output-integration-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-reserved-output-runtime-evidence.md -text
+results/alc_r0_reserved_output* -text whitespace=-blank-at-eol

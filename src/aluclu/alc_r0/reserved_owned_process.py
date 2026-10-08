@@ -1,8 +1,8 @@
 """Trusted Windows lease: durable identity before resume, never training authority.
 
 Only the creating coordinator thread may use a lease. Reservation roots bind
-storage, not permission. Clock-domain proof, numeric budgets and output caps are
-external admission obligations. No PID discovery, implicit recovery or release.
+storage, not permission. Clock-domain proof and numeric budgets remain external
+admission obligations. No PID discovery, implicit recovery or release.
 """
 
 from __future__ import annotations
@@ -18,6 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .canonical import canonical_json_bytes, parse_canonical_json, sha256_bytes
+from .bounded_process_output import BoundedOutputPair, BoundedOutputReceipt
 from .checkpoint_owned_process import (
     OwnedProcessReceipt, _Job, _ProcessInformation, _checked,
     _create_suspended, _resume, _validate,
@@ -41,6 +42,21 @@ class ReservedTerminalReceipt:
     process: OwnedProcessReceipt
     identity: OwnedChildIdentity
     owner_root: str
+    output: BoundedOutputReceipt
+
+
+class _LeaseOutputPair(BoundedOutputPair):
+    """Fixed private integration, not a public caller-selected callback."""
+
+    def __init__(self, lease, **arguments):
+        super().__init__(**arguments)
+        self._lease = lease
+
+    def _partial_observation(self):
+        # Entry failures observe the SAME early-failure tail before waiting,
+        # rather than the possibly much later useful-work upper bound.
+        self._deadline = self._lease._pin_cleanup_deadline()
+        super()._partial_observation()
 
 
 class _FileTime(ctypes.Structure):
@@ -95,6 +111,9 @@ class ReservedOwnedLease:
         self._stack = ExitStack()
         self._lock = None
         self._job = None
+        self._output = None
+        self._output_entered = False
+        self._cleanup_deadline = None
         self._information = _ProcessInformation()
         self._identity = None
         self._ready_root = None
@@ -134,7 +153,12 @@ class ReservedOwnedLease:
             lock.__enter__()
             self._lock = lock
             owner, replay, _ = self._store._read_locked(self._owner_root)
-            self._view(self._store._receipt(owner, replay), "RESERVED")
+            view = self._view(self._store._receipt(owner, replay), "RESERVED")
+            declaration = parse_canonical_json(view.declaration)
+            self._cleanup_tail = int(declaration["cleanup_ceiling_ns"])
+            self._cleanup_upper = self._deadline + self._cleanup_tail
+            if self._cleanup_upper > (1 << 63) - 1:
+                raise ValueError("original cleanup deadline overflow")
             events = [parse_canonical_json(event) for event in replay._events]
             reserves = [event for event in events
                         if event["reservation_id"] == self._id and event["kind"] == "reserve"]
@@ -147,13 +171,22 @@ class ReservedOwnedLease:
             self._unexpired()
             _validate(self._command, self._cwd, self._environment,
                       self._stdout_path, self._stderr_path, self._deadline)
-            stdout = self._stack.enter_context(self._stdout_path.open("xb"))
-            stderr = self._stack.enter_context(self._stderr_path.open("xb"))
             stdin = self._stack.enter_context(open(os.devnull, "rb"))
             self._job = self._stack.enter_context(_Job())
+            self._output = self._new_output(
+                stdout_path=self._stdout_path, stderr_path=self._stderr_path,
+                stdout_limit_bytes=int(declaration["stdout_limit_bytes"]),
+                stderr_limit_bytes=int(declaration["stderr_limit_bytes"]),
+                cleanup_deadline_ns=self._cleanup_upper)
+            self._stack.enter_context(self._output)
+            self._output_entered = True
             self._started = time.monotonic_ns()
-            _create_suspended(self._command, self._cwd, self._environment, stdin, stdout,
-                              stderr, self._deadline, self._job, self._information)
+            try:
+                _create_suspended(self._command, self._cwd, self._environment, stdin,
+                    self._output.stdout, self._output.stderr, self._deadline,
+                    self._job, self._information)
+            finally:
+                self._output.close_parent_writers()
             created = self._observe_creation_time()
             nonce = secrets.token_hex(16)
             root = sha256_bytes(canonical_json_bytes(dict(schema="alc-r0-owned-child-v1",
@@ -169,6 +202,22 @@ class ReservedOwnedLease:
     def _observe_creation_time(self):
         """Narrow owned-handle observation boundary, also usable by diagnostics."""
         return _creation_time(self._information.process)
+
+    def _new_output(self, **arguments):
+        """Fixed integration acquisition boundary; diagnostics may specialize it."""
+        return _LeaseOutputPair(self, **arguments)
+
+    def _pin_cleanup_deadline(self):
+        if self._cleanup_deadline is None:
+            self._cleanup_deadline = min(self._cleanup_upper,
+                time.monotonic_ns() + self._cleanup_tail)
+        if self._job is not None:
+            self._job.cleanup_deadline_ns = self._cleanup_deadline
+        return self._cleanup_deadline
+
+    def _check_output(self):
+        if self._output.violated:
+            raise RuntimeError("owned output invalid before launch acknowledgment")
 
     def _live_identity(self):
         import _winapi
@@ -193,6 +242,7 @@ class ReservedOwnedLease:
         _root(review_root)
         self._evidence, self._review = evidence_root, review_root
         try:
+            self._check_output()
             self._live_identity()
             self._view(self._store.read(self._owner_root), "RESERVED")
             identity = self._identity
@@ -202,6 +252,7 @@ class ReservedOwnedLease:
             ready = self._publish_event("identity_published", identity_receipt_root=identity.receipt_root,
                                         publication_root=created.sha256)
             self._view(self._store.read(ready.sha256), "READY")
+            self._check_output()
             self._ready_root = ready.sha256
             self._state = "READY"
             return ready
@@ -218,6 +269,7 @@ class ReservedOwnedLease:
         try:
             self._view(self._store.read(self._ready_root), "READY")
             self._live_identity()
+            self._check_output()
             self._resume_attempted = True
             _resume(self._information.thread)
             resumed = time.monotonic_ns()
@@ -226,6 +278,7 @@ class ReservedOwnedLease:
                 resumed_monotonic_ns=str(resumed))))
             running = self._publish_event("running", resume_receipt_root=root)
             self._view(self._store.read(running.sha256), "RUNNING")
+            self._check_output()
             self._unlock()
             self._state = "RUNNING"
             return running
@@ -242,12 +295,18 @@ class ReservedOwnedLease:
         try:
             timed_out = False
             while self._job.accounting().active_processes:
+                if self._output.violated:
+                    self._pin_cleanup_deadline()
+                    self._job.terminate_and_drain()
+                    break
                 remaining = self._deadline - time.monotonic_ns()
                 if remaining <= 0:
                     timed_out = True
+                    self._pin_cleanup_deadline()
                     self._job.terminate_and_drain()
                     break
                 time.sleep(min(0.02, remaining / 1e9))
+            self._pin_cleanup_deadline()
             accounting = self._job.accounting()
             if (accounting.active_processes or _winapi.WaitForSingleObject(
                     self._information.process, self._job.remaining_cleanup_ms()) != 0):
@@ -256,8 +315,9 @@ class ReservedOwnedLease:
                 _winapi.GetExitCodeProcess(self._information.process), timed_out,
                 self._started, time.monotonic_ns(), accounting.total_processes,
                 accounting.active_processes, accounting.user_time, accounting.kernel_time)
+            output = self._output.finish(self._cleanup_deadline)
             self._state = "TERMINAL"
-            return ReservedTerminalReceipt(receipt, self._identity, self._owner_root)
+            return ReservedTerminalReceipt(receipt, self._identity, self._owner_root, output)
         except BaseException:
             self._close()
             raise
@@ -278,13 +338,20 @@ class ReservedOwnedLease:
                 self._unlock()
             return
         import _winapi
+        self._pin_cleanup_deadline()
+        if self._output is not None:
+            self._output._deadline = self._cleanup_deadline
         try:
-            if self._job is not None:
-                if self._job.accounting().active_processes:
-                    self._job.terminate_and_drain()
-                if self._information.process and _winapi.WaitForSingleObject(
-                        self._information.process, self._job.remaining_cleanup_ms()) != 0:
-                    raise TimeoutError("cleanup root terminal unobserved")
+            try:
+                if self._output_entered:
+                    self._output.close_parent_writers()
+            finally:
+                if self._job is not None:
+                    if self._job.accounting().active_processes:
+                        self._job.terminate_and_drain()
+                    if self._information.process and _winapi.WaitForSingleObject(
+                            self._information.process, self._job.remaining_cleanup_ms()) != 0:
+                        raise TimeoutError("cleanup root terminal unobserved")
         finally:
             try:
                 try:

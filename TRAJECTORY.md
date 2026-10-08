@@ -13129,3 +13129,65 @@ Task 2 sensorium/recollection gate: CLEAN
   changes. Updatedliteralstatus only, no source/test edit afterfinalruns. Exactbyte
   staging/commit/push next; nextdependency is auditedcaps/ownedleaseintegration plus
   actualchild/descendant outputtests, not ALC-R0 PASS. Fullobjective staysactive.
+
+- 2026-10-08 continuation: personally rechecked the authoritative Desktop worktree
+  clean at355568b4f8f4490f3315b32e827070b6f4ac571c. Previous isolated capture
+  checkpoint is committed; its tests are historical verified evidence, not a new
+  execution this turn. Full objective reread. Owner accounting/local-training
+  approval remains recorded in the October7 decision; no duplicate approval,
+  zero-history inference, allowance or calendar reset. No real training launched.
+  Added the reserved-output additive integration contract, binding audited caps,
+  one shared cleanup tail and mandatory terminal output facts. Independent
+  readiness review pending; cap+1 actual-child RED is the next execution step.
+
+- Both independent review lanes found the same finite design gap: partial sink
+  entry could wait useful-deadline-plus-tail before the lease could tighten it.
+  Revised contract requires a fixed private integration subclass to pin the shared
+  job/sink deadline BEFORE superclass partial observation, with an actual owned
+  pump diagnostic. Revised design codeAPPROVE / architectureCLEAR, not code PASS.
+  Both lanes separately admitted unchanged-source7c2661 / testd96e6533 cap+1 RED.
+  Original native testPID32216 personally observed terminalexit1, no timeout,
+  tool2f3477. Actual file-prefix assertion failed at lease testline130 before any
+  proposed output API access; source cap enforcement gap reproduced.
+  JUnit1test/1failure/0error/0skip1.160s; XML SHA256
+  a3b3c5495a8bda2ea8fbf3ce445a80473ea7a9ede201cf519a1c7301d3da123d.
+  stderr0bytes; personally rechecked actual stdout file1025bytes against audited
+  cap1024 toolad5723. This is expected diagnostic RED, not a training failure.
+  No model, GPU, training corpus or held-out data used. Artifacts retained under
+  results/alc_r0_reserved_output_cap_red_20261008.*. Integration implementation,
+  GREEN, real-child matrix and relevant regressions remain next. Approval is not
+  a substitute for those checks or the remaining scientific launch prerequisites.
+
+- Continuation objective fully reread0dd544; previous turn classified PROGRESS
+  (actual cap RED and independently revised design). Implemented audited output
+  caps in reserved lease, mandatory immutable output facts, parent-writer finally
+  closure and original shared tail. Private partial-entry integration pins the
+  common job/sink deadline before internal waiting. Added real-child gate-based
+  binary/exact/empty/excess/descendant cases plus actual-start partial-entry
+  timely and explicit incomplete-cleanup diagnostics. No tests run on these new
+  bytes yet; exact independent admission, GREEN and regression required. Legacy
+  owned primitive and isolated sink unchanged. No model/GPU/scientific run.
+
+- Exact final sourcea478edc4/testd60edddd admitted by independent code/architecture
+  lanes after strengthening original-root terminal and BEFORE-gate shared-tail
+  evidence. Actual GREEN originalPID18684 personally terminalexit0 tool252295:
+  34/0failure/0error/0skip48.797s XMLSHA
+  f71c2ce1496032e3acfb0b40b06fb63e17922b0dda64e79d1c694458a37aa705.
+  Conditional unchanged-byte regression originalPID32476 personally terminalexit0
+  tool19e1ab:187/0/0/0 66.368s XMLSHA
+  75e9ffa1f13da7b57838f0a3e8f718317b748ed16c76472f59e40a52d320da69.
+  Both stderr0bytes/no timeout, no live edits; finalhashes personally rechecked.
+  Prior capRED preserved, intermediate reviewed tests neverexecuted. Added scoped
+  runtime evidence; independent closing review pending. Not full repo suite,
+  scientific admission or learning PASS. Remaining actual-launch prerequisites
+  and original four200-update pilots remain full-objective work.
+
+- Closing independent codeAPPROVE / architectureCLEAR both verified complete
+  final source/test/contract/runtime doc and all3 preserved artifact groups:
+  counts, durations, hashes, PIDs, exit/no-timeout records and empty stderr.
+  Native observation remains parent execution fact, not recreated by review.
+  Integrated Windows output/owned-lease component scoped accepted. Updated
+  runtime status only; no source/test edits after actualruns. Exact-byte staging,
+  commit/push next. Scientific launcher authority/numeric historical coverage,
+  resource declarations/admission and pinned host qualification still open;
+  no ALC-R0, portability or full objective completion claim.
