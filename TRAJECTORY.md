@@ -13966,3 +13966,39 @@ Task 2 sensorium/recollection gate: CLEAN
   all failed attempts and earlier-source probe disclosure. No training launched.
   User accounting approval/local first experiment direction already recorded in
   2026-10-07 owner decision; do not re-request approval or infer zero local history.
+  2026-10-11 continuation: previous goal turn PROGRESS, diagnostic checkpoint
+  eaa124c pushed and current Desktop worktree clean. Goal file reread completely.
+  Preregistered standalone single-route directory observation candidate: fixed
+  by-name API/no fallback, retain raw size/identity/times/attrs plus extra fields.
+  Existing production inventory unchanged; first review contract before TDD.
+  API branch-switch cause remains unproved; no training/acceptance/clock reset.
+  Candidate contract reviews code APPROVE/architecture CLEAR for implementation
+  only. Explicit followups: readonly mode555/777, unsigned64reinterpretation,
+  full16bytesidentity, exact104-byte decoder, resolutionnotatomic/nativechecks,
+  fixed system DLL reference released finally even on errors/deadline. TDD next.
+  Native candidate REDa423ab terminal pytest1/root18288/total7/active0/notimeout:
+  implementation absent. Added standalone exact104-byte decoder/native query;
+  production inventory remains untouched. Review source before GREEN execution.
+  RED42/42/0/0,1.744s,stderr0,XMLeb3169331afb3694f36cd19fdc97124f548fb83a9c8d0b382f609cdd36796f92.
+  Independent source code APPROVE/architecture CLEAR for GREEN. Residual limits:
+  dataclass replacement proves equality discrimination, not all byte conversions;
+  unavailable API/query/release faults and in-call expiry source-reviewed only.
+  Launch focused GREEN, then regression; no actual runtime/model/GPU run.
+  GREEN196064 terminal0/root4208/total7/active0/notimeout,JUnit42/0/0/0,1.104s,
+  stderr0/XML8716a26c1757c31c0c05b0f292b778a2c833bf222090601c9f80a1558295335a.
+  Regression launchedb68769, original execsession29869, live command verified
+  wrapper8168/pytest23324/child23896 (PID hints only). Source/test/runner frozen
+  during run. Await original handle, no restart or actual scan/training claim.
+  Originalregression session29869 terminal22164e native0/root23324/total961/
+  active0/notimeout/stderr0,JUnit329/0/0/0,175.131s. XML8989b435a6d490cb094f39104c44e4aab76f642f61a7f46cd0c0994774f507fc.
+  Main parsedall3terminalJUnit/receipts and source pins unchanged;12raw artifact
+  hashes retained. Disk50.29GiBfree, no cleanup warranted. Final independent
+  artifact review next, then commit/push; original actual_v4 refusal still OPEN.
+  Final independent code/spec/security APPROVE and architecture CLEAR for
+  standalone candidate closure. Both lanes verified12raw hashes/3candidatepins/
+  2unchangedproductionpins/all3JUnit-nativepairs/exact329test selection. Main
+  rechecked12hashes/3pins/diffcheck. No accepting integration, actualscan, cause
+  proof, model/GPU/scientificexecution or launch permission. Next dependency is
+  separately reviewed SAME native directory route in both inventory walks;
+  preserve size/allnativefields, filebytes/hash/metadata, membership/count bounds,
+  diagnosis and originaldeadline. Full goal remains active, checkpoint PROGRESS.
