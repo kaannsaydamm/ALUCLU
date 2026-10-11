@@ -14249,3 +14249,12 @@ Task 2 sensorium/recollection gate: CLEAN
   actual-v5 cause, installed continuity, production repair and science remain
   OPEN. Reviewers performed no execution or edits. Record and preserve this
   checkpoint before a separately preregistered same-handle alternative.
+  Held checkpoint76f848e committed/pushed; main4ddeff verified remote==HEAD and
+  clean. Raw/index blob equality checked for15 artifacts+2source/test files.
+  Primary ABI research161/162 produced same-handle candidate draft (not code/
+  preregistration/execution): stat72 + ID24 + device8 retainsall14facts; more
+  calls/non-atomicity/cost remain explicit. Important correction: non-pending
+  Nt return status is authoritative, not unconditional IOSB-status agreement.
+  Pending buffer lifetime/cleanup, primary enum/export support, path-rebinding,
+  bounded protocol and TDD/reviews are next prerequisites. No production/model/
+  GPU/training operation, no field waiver, no installed continuity PASS.
