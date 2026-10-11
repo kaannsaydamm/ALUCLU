@@ -14064,3 +14064,44 @@ Task 2 sensorium/recollection gate: CLEAN
   PROGRESS only;35hashes/fiveunchangedsourcepins/newrunnerpin and2partitionpairs
   verified. Main reverified35hashes/pins/diffcheck22279a. Prior124/F unresolved,
   actual_v4cause unknown, installedbinding/scientificacceptance OPEN.
+  Continuation previous goal turn PROGRESS4a58464; exactDesktop clean, fullgoal
+  reread37aff8. Preregister identical345whole selection full_failfast_v4 with
+  verboseIDs/firstfailurestop/shorttraceback, original300s and freshexclusive stem.
+  No production/test edits, no weakening/retrospectivecause claim. Readtwo-lane
+  reviewskill; review execution readiness before launch, fullgoal remains active.
+  Independent fullfailfastv4 source code APPROVE/architecture CLEAR; main verified
+  runnera502a2269f1d250df196c1403acfb96ba5b489e00f930230991cfd4c57cafa16,
+  no existingPythonprocess e47bad; serial launch next, pinnedsource/tests frozen.
+  fullfailfastv4 eb15c6 originalsession61223 terminal234978: original300s timeout124,
+  root19716/total934/active0/timedouttrue/stderr0/noXML. Parsed2369ad selected345,
+  310PASSEDmarkers/zeroFAILEDmarkers, stoppedafter89% at stopalreadyexited case.
+  Suspect timeoutdrain explicitlyPASSED sameorder; priorFcause stillunknown.
+  Threefileshashed in v4doc, notfinalJUnitcounts/notPASS. Seek independentcontract
+  review of freshfixed600s CPU-only diagnostic allocation versus300s harnessbound;
+  no oldrenewal, testfixture/science/resource/search/threshold changes allowed.
+  Independent contract code APPROVE/architecture CLEAR:300s is diagnosticpytest
+  allocation, notscience latencythreshold; one fresh600s fixedbeforelaunch v5
+  permitted, oldmodes unchanged/no renewal. Readoriginalsciencebudget7.1/12 and
+  fixedD2700s/10stail; no edits to scienceplan/fixturedeadlines/caps/production.
+  Preregistered v5 in v4doc, no automatic further increase if600s expires.
+  Exactnewrunner source review before execution. Prior300s outcomes notPASS.
+  Exactv5 source code APPROVE/architecture CLEAR;runner
+  1b49dabec7edf6c717b79cba1a8f6f1a6b823113206f8cfea8056985f8237c60.
+  Primarypytest fail-stop/traceback docs checked (links in v4doc); no proof of
+  historicalcause. Launch singlefresh600s v5 serial withsource/tests frozen.
+  V5regression21a3ce originalsession41375 live90bd29, no source/test edits.
+  Draftconditional next installedruntimeactual_v5 contract SAME900sinner/960souter
+  andcaps, freshartifact only after terminal regression+independentapproval.
+  Draftonly; actualselector/fixture unmodified while345tests run. No model/GPU.
+  Fullfailfastv5 originalsession41375 terminale05e01 parsed335514:
+  finalJUnit345/0/0/0,135.618s,native0/root29036/total961/active0/notimeout/stderr0,
+  XMLd4b70d5edaf92c6e7c68c535bd45c608dfe68d675340bec10b1ae00da86d11ad.
+  Single-run regression PASS under preregistered600s diagnostic; old300s attempts
+  remain incomplete/failed, oldFnotreproduced/causeunknown. Sourcepins unchanged.
+  Bothconditionalactual_v5 contractreviews APPROVE/CLEAR, notexecutionpermission;
+  explicitcauseoff required. Seek terminalregression evidenceclosure before edits.
+  Terminal integration/regression review code APPROVE/architecture CLEAR;
+  independently verified7v4/v5hashes/6pins/345exactninefilecoverage/native-JUnit.
+  Mainreverified7hashes afa041. Accepttested integration prerequisite only;
+  nextactual_v5 requiresexactsource review. OldFcause/actual_v4cause unproved,
+  no installedbinding/nativeprovenance/producer/modeltraining/sciencePASS.
