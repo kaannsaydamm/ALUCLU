@@ -13,6 +13,7 @@ import pytest
 from alc_r0_same_handle_directory import decode, nt_record, sample
 from alc_r0_same_handle_directory import NativeAPI, inspect, bounded_names
 from alc_r0_same_handle_directory import inspect_access
+from alc_r0_same_handle_directory import decode_standard, inspect_standard
 
 
 def records(**changes):
@@ -452,4 +453,109 @@ def test_access_regular_file_denied_before_queries(tmp_path):
     api = FakeAccess()
     with pytest.raises(ValueError, match='directory'):
         inspect_access(path, api)
+    assert api.events == []
+
+
+def standard_record(allocation=8192, size=4096, links=1, pending=0, directory=1):
+    return struct.pack('<qqIBB', allocation, size, links, pending, directory) + b'xy'
+
+
+@pytest.mark.parametrize('sizes', [(8192, 4096), (0, 0)])
+def test_standard_exact_native_boolean_layout_and_padding(sizes):
+    raw = standard_record(allocation=sizes[0], size=sizes[1], links=0xffffffff)
+    assert len(raw) == struct.calcsize('<qqIBB2x') == 24
+    assert decode_standard(raw) == dict(fields=dict(allocation_size=sizes[0],
+        size=sizes[1], link_count=0xffffffff, delete_pending=False, directory=True),
+        raw_hex=raw.hex())
+
+
+@pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+    standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+    standard_record(pending=1), standard_record(pending=2),
+    standard_record(directory=0), standard_record(directory=2)])
+def test_standard_malformed_directory_records_denied(raw):
+    with pytest.raises(ValueError, match='standard'):
+        decode_standard(raw)
+
+
+def test_standard_nt_exact_class_and_length():
+    query = FakeNt(length=24)
+    result = nt_record(query, 19, 24, 5, lambda: None)
+    assert query.calls == [(19, 24, 5)]
+    assert result['record'] == b'z' * 24
+    assert result['information'] == 24
+
+
+@pytest.mark.parametrize('status,length', [(-1, 24), (0, 23), (0, 25)])
+def test_standard_nt_failure_or_nonexact_length_denied(status, length):
+    with pytest.raises(ValueError, match='completion'):
+        nt_record(FakeNt(status=status, length=length), 19, 24, 5, lambda: None)
+
+
+def test_standard_pending_routes_to_fatal_without_decode():
+    def fatal():
+        raise RuntimeError('injected pending fatal')
+    with pytest.raises(RuntimeError, match='injected pending fatal'):
+        nt_record(FakeNt(status=259, length=24), 19, 24, 5, fatal)
+
+
+def test_standard_adapter_query_class_and_raw_retention():
+    api = fake_adapter()
+    raw = standard_record()
+    query = FakeNt(length=24)
+    def native(handle, iosb, buffer, size, info_class):
+        result = query(handle, iosb, buffer, size, info_class)
+        ctypes.memmove(buffer, raw, len(raw))
+        return result
+    api.query_stat = native
+    result = api.standard(19)
+    assert query.calls == [(19, 24, 5)]
+    assert result['record'] == raw
+
+
+class FakeStandard(FakeInspection):
+    def standard(self, handle):
+        self.events.append(('standard', handle))
+        return dict(record=standard_record(allocation=1234), status=0,
+            iosb_status=0, information=24)
+
+
+def test_standard_sequence_preserves_query_disagreement(tmp_path):
+    api = FakeStandard()
+    def enumeration(path):
+        api.events.append(('enumerate', path))
+        return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+    result = inspect_standard(tmp_path, api, enumeration)
+    one = ['stat', 'identity', 'device', 'stat']
+    assert [event[0] for event in api.events] == [
+        'named', 'open', *one, 'named', 'standard', *one, 'named',
+        'enumerate', 'standard', *one, 'named', 'close', 'named']
+    assert [stage['stage'] for stage in result['stages']] == [
+        'baseline', 'after-standard', 'after-enumeration']
+    assert result['standard_comparison_differences'] == [['allocation_size']] * 2
+    assert result['standards'][0]['fields']['allocation_size'] == 1234
+    assert result['stages'][1]['baseline']['fields']['allocation_size'] == 8192
+    assert result['standards'][0]['raw_hex'] == standard_record(allocation=1234).hex()
+    assert result['standards'][0]['nt_completion'] == dict(status=0, iosb_status=0, information=24)
+    assert result['baseline_adjacent_differences'] == [[], []]
+    assert result['named_adjacent_differences'] == [[], [], [], []]
+
+
+def test_standard_decode_failure_closes_baseline_before_enumeration(tmp_path):
+    class InvalidStandard(FakeStandard):
+        def standard(self, handle):
+            return dict(record=standard_record(directory=0), status=0,
+                iosb_status=0, information=24)
+    api = InvalidStandard()
+    with pytest.raises(ValueError, match='standard'):
+        inspect_standard(tmp_path, api)
+    assert api.events[-1] == ('close', tmp_path)
+
+
+def test_standard_regular_file_denied_before_native(tmp_path):
+    path = tmp_path / 'file'
+    path.write_bytes(b'x')
+    api = FakeStandard()
+    with pytest.raises(ValueError, match='directory'):
+        inspect_standard(path, api)
     assert api.events == []

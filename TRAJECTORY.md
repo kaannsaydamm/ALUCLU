@@ -14373,3 +14373,39 @@ Task 2 sensorium/recollection gate: CLEAN
   Accesscheckpointcb5bb7c committed/pushed,19evidenceindexblobs bytepreserved.
   CachedcheckreportednewblankEOF inevidencedoc; removeonlyextraEOFblank in
   documentationfollowup, no source/test/evidence bytes or verdict changes.
+  Resumef6ad53d clean/remotecheckpoint; fullyrereadownerobjective9958fd,prior
+  turnPROGRESS notwait. Primary171nativeclass5 and24byteBOOLEANlayout distinct
+  fromWin32BOOL, nosupportedzero/stabilityguarantee. Preregisterstandardprotocol
+  beforeimplementation/results: fullbaseline, class5query, fullsample, enumerate,
+  class5query/fullsample; all14/rawretained, noproduction/model/data/GPU changes.
+  Adddecoder/inspectionstubs andclosedexclusiveRED/GREEN/regression modes.
+  StandardREDbfe054 terminal native1/root31020/total7/active0/notimeout,
+  capturevalid; personallyparseJUnit beforeimplementation. Addexact24/class5
+  whitelist/adapter/decoder, full3stageobservation/standardrawstatuscomparison,
+  boundednative-standard/private modes; no nativeinvocationbeforetests/reviews.
+  Mainf5e9a4 RED81/21/0/0,1.593s previous60pass, intendedstub/class failures.
+  GREENadc982 native0/root17528/total7/active0/notimeout,81/0/0/0,.919s.
+  REG913ef8 original36113 terminal0baf83 native0/root34576/total75/active0/
+  notimeout; main9b210d personally218/0/0/0,31.915s exact81+22+42+73.
+  Pins928eb69e270732d5a06433d833c83a9e77aa71cab85c0450db38da7eb65a6f4a/
+  2656eb03e9e8392cd1b99a8f9c7fcb0669f4a4467e018bdbcb5eb4794c79731d.
+  CodeAPPROVE/archCLEAR onefinite invocationconditional218+pins, metpersonally;
+  fivebyname/threefull compoundobservations notatomic/ABA/pathauthorityproof.
+  Nativestandard4d82cd terminal0/root28988/total3/active0/notimeout,.875s,
+  valid14108stdout/0stderr. Installed0baseline; FIRSTclass5returns8192 and
+  subsequentclass68/byname8192 BEFOREenumeration; finalenumunchanged8192.
+  Scratchall4096stable; onlysize/allocchange, other12stable; device131104vs256.
+  Mainff6254 parsedsequence,2c03ac independentlyrawdecoded16full14obs+6bookends
+  +4standardrecords/statuslengths andscratch16*512. Enumerationnotnecessaryin
+  testedsequence; queryintervalassociation notuniqueclass5cause/NTFSproof.
+  Preserve15artifacts+evidencedoc afterindependentreviews; nextstandard-first
+  explicitobservationcandidate, notfulltreewarmup/fieldwaiver/trainingauthority.
+  Primary172 clarifiedWin32FILE_STANDARD_INFO alsoBOOLEAN24, priorprotocol
+  wordingincorrectlyimpliedBOOLfields; correctexplicitlypostresult, nativeABI/
+  tests/resultsunchanged. Win32class1/BOOLreturn distinctnativeclass5; potential
+  futureWin32observer avoids callerownedNTpendingbuffers butUNTESTED,noassumedparity.
+  TerminalcodeAPPROVE/architectureCLEAR preservationonly, bothverified15hashes/
+  pins/threeJUnitreceiptpairs/nativefacts; bothconfirmedpostresultBOOLEANdocfix,
+  architecturewithdrawspriorinaccurateBOOLdistinction. Mainafd7e7 15dochashes/
+  diffcheck,f5b0ec finalpinsunchanged. Preservestandardcheckpoint thenseparate
+  standard-first/Win32observer prereg/TDD/native/fullcontinuity gates remainOPEN.

@@ -44,7 +44,7 @@ class IOStatus(ctypes.Structure):
 def nt_record(query, handle, size, info_class, fatal):
     if (struct.calcsize('P') != 8 or ctypes.sizeof(IOStatus) != 16
             or IOStatus.information.offset != 8
-            or (size, info_class) not in ((72, 68), (8, 4))):
+            or (size, info_class) not in ((72, 68), (8, 4), (24, 5))):
         raise ValueError('exact same-handle query ABI required')
     value = ctypes.create_string_buffer(size)
     iosb = IOStatus()
@@ -148,6 +148,9 @@ class NativeAPI:
 
     def stat(self, handle):
         return nt_record(self.query_stat, handle, 72, 68, pending_exit)
+
+    def standard(self, handle):
+        return nt_record(self.query_stat, handle, 24, 5, pending_exit)
 
     def device(self, handle):
         return nt_record(self.query_device, handle, 8, 4, pending_exit)
@@ -261,6 +264,70 @@ def inspect_access(path, api, enumerate_fn=bounded_names):
         baseline_adjacent_differences=adjacent([s['baseline'] for s in stages]))
 
 
+def decode_standard(record):
+    if type(record) is not bytes or len(record) != 24:
+        raise ValueError('exact standard directory record required')
+    allocation, size, links, pending, directory = struct.unpack('<qqIBB2x', record)
+    if allocation < 0 or size < 0 or not links or pending != 0 or directory != 1:
+        raise ValueError('invalid standard directory metadata')
+    return dict(fields=dict(allocation_size=allocation, size=size,
+        link_count=links, delete_pending=False, directory=True), raw_hex=record.hex())
+
+
+def inspect_standard(path, api, enumerate_fn=bounded_names):
+    if (not isinstance(path, Path) or not path.is_absolute() or '\0' in str(path)
+            or len(str(path).encode('utf-8')) > 32768
+            or path.resolve(strict=True) != path):
+        raise ValueError('resolved bounded absolute directory required')
+    metadata = path.lstat()
+    if (not stat.S_ISDIR(metadata.st_mode)
+            or getattr(metadata, 'st_file_attributes', 0) & 0x400
+            or (os.name == 'nt' and (len(path.drive) != 2 or path.drive[1] != ':'))):
+        raise ValueError('regular local directory required')
+    before, stages, standards = api.named(path), [], []
+    with api.open(path) as baseline:
+        def mark(stage):
+            stages.append(dict(stage=stage, baseline=sample(api, baseline), named=api.named(path)))
+        def standard():
+            value = api.standard(baseline)
+            decoded = decode_standard(value['record'])
+            decoded['nt_completion'] = {key: value[key] for key in ('status', 'iosb_status', 'information')}
+            standards.append(decoded)
+        mark('baseline')
+        standard()
+        mark('after-standard')
+        enumeration = enumerate_fn(path)
+        standard()
+        mark('after-enumeration')
+    after = api.named(path)
+    def adjacent(observations):
+        return [sorted(key for key in left['fields']
+            if left['fields'][key] != right['fields'][key])
+            for left, right in zip(observations, observations[1:])]
+    return dict(path=str(path), before=before, stages=stages, after=after,
+        standards=standards, enumeration=enumeration,
+        named_adjacent_differences=adjacent([before, *[s['named'] for s in stages], after]),
+        baseline_adjacent_differences=adjacent([s['baseline'] for s in stages]),
+        standard_comparison_differences=[sorted(key for key in ('allocation_size', 'size', 'link_count')
+            if std['fields'][key] != stage['baseline']['fields'][key])
+            for std, stage in zip(standards, stages[1:])])
+
+
+def owned_native_standard():
+    root = Path.cwd()
+    scratch = root / 'control-16'
+    scratch.mkdir()
+    for index in range(16):
+        with (scratch / f'sample-{index:03d}.bin').open('xb') as output:
+            output.write(b'x' * 512)
+    installed = Path(sys.base_prefix).resolve(strict=True) / 'Lib' / 'asyncio'
+    with NativeAPI() as api:
+        cases = [inspect_standard(installed, api), inspect_standard(scratch, api)]
+    print(json.dumps(dict(schema='alc-r0-directory-standard-v1', python=sys.version,
+        scope='finite-readonly-installed-and-owned-scratch', scratch_root=str(root),
+        logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
+
+
 def owned_native_access():
     root = Path.cwd()
     scratch = root / 'control-16'
@@ -282,11 +349,14 @@ def main():
         return owned_native()
     if mode == ['--owned-native-access']:
         return owned_native_access()
+    if mode == ['--owned-native-standard']:
+        return owned_native_standard()
     if mode not in (['--red'], ['--green'], ['--regression'],
                     ['--red-v2'], ['--green-v2'], ['--regression-v2'],
                     ['--red-adapter'], ['--green-adapter'], ['--regression-adapter'], ['--native'],
                     ['--red-access'], ['--green-access'], ['--regression-access'], ['--native-access'],
-                    ['--green-access-v2'], ['--regression-access-v2']):
+                    ['--green-access-v2'], ['--regression-access-v2'],
+                    ['--red-standard'], ['--green-standard'], ['--regression-standard'], ['--native-standard']):
         raise ValueError('closed test-only mode required')
     from alc_r0_directory_metadata_reproducer import run_diagnostic
     cwd = Path(__file__).resolve().parents[1]
@@ -297,7 +367,7 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_same_handle_directory.py']
-    if name in ('regression', 'regression-v2', 'regression-adapter', 'regression-access', 'regression-access-v2'):
+    if name in ('regression', 'regression-v2', 'regression-adapter', 'regression-access', 'regression-access-v2', 'regression-standard'):
         tests += ['tests/test_alc_r0_directory_metadata_reproducer.py',
             'tests/test_alc_r0_windows_directory_metadata.py',
             'tests/test_alc_r0_runtime_tree_inventory.py']
@@ -307,7 +377,7 @@ def main():
         ALUCLU_TEST_ONLY_RUNTIME_SCAN='0', ALUCLU_TEST_ONLY_RUNTIME_CAUSE='0')
     temporary = Path(tempfile.mkdtemp(prefix='alc-r0-same-handle-')).resolve(strict=True)
     command = (sys.executable, '-B', '-m', 'pytest', '-q', *tests, '--junitxml=' + str(paths['.xml']))
-    if name in ('native', 'native-access'):
+    if name in ('native', 'native-access', 'native-standard'):
         command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-' + name)
         cwd = temporary
     receipt = run_diagnostic(command, cwd, environment, paths, temporary)
