@@ -13556,3 +13556,39 @@ Task 2 sensorium/recollection gate: CLEAN
   Checkpoint complete only as pure timing policy, not live authority enforcement;
   next concrete observer/handoff/lease integration and factual launch admission.
   Full unified ALUCLU/ALC goal stays active, no new scientific acceptance.
+
+- 2026-10-11 continuation goal fully reread640fb0; previous turn PROGRESS (02a27ec
+  tested timing policy committed/pushed). Desktop clean HEAD verified564a5b.
+  Inspected original section3 and actual official-forward digest/finite/shape
+  semantics. Recomputed complete raw GPU1 trace70.43994140625GiB, over25GiB budget
+  before witnesses; no allocation or host invocation. Proposed pure sufficient
+  exact-digest repeat assessment, NOT exclusive acceptance threshold: mismatch
+  requires numerical tensors, never implies failure. Broader D fieldwise and
+  operational GPU2 acceptance remain open; independent admission precedes TDD.
+  Design c26d3181 independent code APPROVE/architecture CLEAR; actual fixture
+  diagnostic008b9b confirmed1296rows/216cached/3060slots,658661syntheticbytes.
+  RED801c1a native1/root21832/job3total0active intended missing-module. Implemented
+  source8aafdf6f; first GREEN native1/root27764/job5total0active/notimeout, XML30
+  tests/0failures/2errors32.850s. Cause: pytest auto-generated multi-MiB parameter
+  IDs overflow Windows PYTEST_CURRENT_TEST32767char limit, not numerical failure.
+  Preserved first failing evidence (stdout~16MiB); bounded node read after shell
+  Tail on giant lines stalled observation. Added short explicit IDs, missing
+  base/full-fixture identity and multiple-mismatch/truncated fixtures; new closed
+  green_v2 name avoids overwrite. Actual source unchanged; no model/GPU invocation.
+  Source/revised-tests/runner independently reviewed APPROVE/CLEAR; v2 original
+  session29183 terminal6cf2c4 native0/root10328/job5total0active/no timeout,
+  XML34/0/0/0 58.911s SHAbe3b9ef5bb0c90c0c1ee6a91f4801100d15c1f1e4f319e4b5abee145ec9ba138.
+  Exact owned hung reader PID/parent/commands verified29af1f then only29012/22124/
+  14100 stoppedf197aa; three reader handles terminal-1, original test already
+  native-terminal. Retained first failure unchanged. Added honest evidence and
+  rawbyte attributes; relevant regression originalsession88464 in progress.
+  Originalregression88464 terminal2c0188 native0/root22340/job21total0active,
+  XML249/0/0/0 96.070s SHAede1b4c96d4a06ed418fcb7a65cb156b74a32d9b86969e0afaf62f9ff885c3f2,
+  stderr0/notimeout. Final source/test/runner and frozen originalplan pins
+  unchanged2846d3. Updated terminal evidence; closing independent review next.
+  Closing independent GPT6.1Sol code APPROVE/architecture CLEAR hash-checked all16
+  artifacts and finalpins, verified exact249 selection and retained firstfailure.
+  Status-only docs updated after verdicts. Scoped checkpoint complete, not real
+  GPU2/full fieldwise/numerical-route/learning acceptance. Concrete trusted
+  producer/worker/lease/monitor composition and factual resource/history/calendar
+  admission remain required; all original scientific gates unchanged, goal active.
