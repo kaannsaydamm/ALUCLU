@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.378" timestamp="2026-10-11T07:53:35.337736+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_owned_source_inspection" name="test_clean_source_matches_existing_oracle" time="0.971"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.owned_source_inspection'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-39/test_clean_source_matches_exis0')
+repository = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-39/test_clean_source_matches_exis0/checkout')
+
+    def test_clean_source_matches_existing_oracle(tmp_path, repository):
+        expected = inspect_clean_source_checkout(repository)
+&gt;       native, result = inspect_owned(tmp_path, repository)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_owned_source_inspection.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_owned_source_inspection.py:27: in inspect_owned
+    module = api()
+             ^^^^^
+tests\test_alc_r0_owned_source_inspection.py:23: in api
+    return importlib.import_module('aluclu.alc_r0.owned_source_inspection')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.owned_source_inspection'
+import_ = &lt;function _gcd_import at 0x0000022B37C880E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.owned_source_inspection'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase></testsuite></testsuites>

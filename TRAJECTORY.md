@@ -13681,3 +13681,49 @@ Task 2 sensorium/recollection gate: CLEAN
   remains pending; do not invent zero prior GPU usage, new600h or calendar reset.
   Next concrete producer/admission + supported history/resources before fixedD;
   original four200-update pilots and full unified ALUCLU/ALC objective stay active.
+
+- 2026-10-11 continuation: full unified objective reread0fcf3a; prior explanatory
+  turn NO PROGRESS, not a running scientific experiment. Desktop clean a4a63e7
+  revalidated315204. Fixed-worker design and actual source_checkout inspected:
+  unbounded capture/per-blob subprocesses cannot enter unowned preflight. Proposed
+  owned-child source inspector preserves exact Git blob inventory semantics with
+  finite metadata/count/blob bounds and original outer owned deadline. No source
+  permit, historical numbers, GPU/model launch or scientific threshold changes.
+  Independent scoped design review next; full program remains active.
+  Independent GPT6.1Sol scoped code APPROVE/architecture CLEAR admitted TDD;
+  outer lease remains mandatory for blocking-read/descendant enforcement. Added
+  owned RED runner and real Git oracle test; original fb35d7 native1/root22868/
+  total34/active0/notimeout reproduces missing owned_source_inspection module.
+  Implemented fixed Git inspection, capped metadata, count/per-blob/aggregate
+  bounds, streamed64KiB hashing and original-deadline checks. No new launcher,
+  accepting worker, source authority, model/GPU invocation or budget adoption.
+  Original GREEN36893 terminaldbe564; personal683979 confirms native0/root22608/
+  total446/active0/notimeout, JUnit23/0/0/0 34.761s and stderr0; XML e754f14d3e639a6886d6e92b6c79468914998d0ad6b2e2f244f30abdd4b0e8de.
+  Independent implementation code APPROVE/architecture CLEAR noted unexercised
+  branches. After terminal, added direct wrong-root/gitlink/nonzero-Git and
+  changed-commit/byte tests; corrected metadata overflow comment (earliest command,
+  not specifically HEAD). Production source unchanged; new v2 evidence required.
+  GREEN-v2 original38983 terminal8c672c native1/root23992/total672/active0/notimeout;
+  personal86a61d JUnit27/1/0/0 40.433s XML4cf7acc897fcfac9174f83a64b5edde700709528e95ceec936fa00657c60ed69.
+  Failure is fixture PermissionError before inspector execution: Windows loose
+  Git blob is read-only. Preserved failed evidence; after terminal, explicitly
+  chmod only the exact disposable fixture blob before removal. No production
+  change, weaker assertion, threshold or failure reinterpretation. v3 next.
+  Independent repair review code APPROVE/architecture CLEAR. Original GREEN-v3
+  15188 terminal8b55c4 native0/root27624/total687/active0/notimeout; personal20a1f8
+  JUnit27/0/0/0 47.096s XML261bd847ed03052530c6feabd1f18a41b1245b694473c0588fcbc4120a0dddde.
+  Final source45e28961/tests4343afab/runner59f5a242 pinned. Relevant regression
+  next; earlier failed-v2 and initial23-caseGREEN are retained, not substitutes.
+  Original regression71569 terminal295aa7 native0/root27352/total1229/active0/
+  notimeout. Personal61e9bf confirms213/0/0/0 107.892s, stderr0, exact seven-file
+  selection and unchanged finalpins; XML469b34b6e5a3f0e58201f4a8a0d1ea0279c7a1473a52fc3e9a3f2cd6b43dc59e.
+  All20 retained artifacts personally hashed; failedv2 preserved. Added companion
+  evidence/rawbyte attributes. Frozen originalplan0493eeed unchanged57c388.
+  Final independent artifact closing next; no scientific run or full-goal PASS.
+  Closing independent GPT6.1Sol code APPROVE/architecture CLEAR verified all20
+  artifacts, finalpins and exact213 selection. Status-only docs updated after
+  verdicts; no code/test changes after final evidence. Scoped source inventory
+  checkpoint complete under required outer ownership, not trusted provenance,
+  native RSS admission or scientific execution. Next concrete producer/admission
+  and supported historical/calendar/resources before D/E/original pilots. Full
+  unified ALUCLU/ALC goal remains active; no test process remains running.
