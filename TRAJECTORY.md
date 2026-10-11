@@ -13638,3 +13638,46 @@ Task 2 sensorium/recollection gate: CLEAN
   denial tested, not trusted observation/admission or measured timing enforcement.
   Next: concrete coordinator observer/handoff and factual resource/history/calendar
   admission before real fixed D and four200-update pilots. Full goal active.
+
+- 2026-10-11 next continuation objective fully reread090926; previous turn
+  PROGRESS4548421 source/native evidence committed/pushed. Desktop clean HEAD
+  verifiedd2508e. Read full fixed-worker composition, resource/accounting and
+  finite historical classification. Trusted producer and factual history remain
+  absent, not permission to fake observation roots. Proposed actual bounded
+  request/response watch thread composing accepted timing policy with stop signal;
+  no callbacks/accepting worker or scientific launch. Independent TDD review next.
+  Independent GPT6.1Sol code APPROVE/architecture CLEAR admitted scoped TDD;
+  clarified exact signal internals, absorbing firstreason, first cleanupdeadline
+  retention and closure failure on unconfirmed signaling. Added owned RED runner
+  and missing-observation test. No model/GPU/assets or producer adoption.
+  Native REDf7a472 root13160/exit1/job3total0active/no timeout confirms missing
+  live_authority_watch module919ce6. Implemented actual Condition/one-slot thread,
+  constructor-time acquisition, sequence binding, exact observation transport,
+  permanent denial, original-deadline close and signal-failure closure errors.
+  Added live thread timing/negative lifecycle fixtures and retained-handle native
+  timeout/revocation root+descendant cleanup with unrelated survivor. No authority
+  producer/authentication or scientific workload enabled.
+  GREEN5c846b native0/root20464/job17total0active XML27/0/0/0 2.932s personally
+  parsed/hashed1a26c1. Independent code APPROVE/architecture CLEAR; noted missing
+  join-timeout/import-trap tests and producer join using generous test deadline.
+  Original regression75244 terminalb8d8dc native0/root26704/job215total0active.
+  After terminal, expanded tests for genuine join timeout/nonrenewable repeated
+  close and fresh owned scientific-import trap; native producer joins now use
+  same pinned lease cleanup deadline. Added exclusive v2 runner names; production
+  source unchanged. Actual thread-start failure still unexecuted, no such claim.
+  GREEN-v274af80 native0/root13716/job20total0active XML29/0/0/0 3.582s;
+  finaltests b7f856d0/runner878bcb3b/source43c00718 unchanged. Both independent
+  rereviews APPROVE/CLEAR. Final regression71028 terminaldd9bf9 native0/root7120/
+  job218total0active; personal6330d1 confirms295/0/0/0 72.313s, stderr0/notimeout,
+  exact nine-file selection and XML e2bcfa0f7c2220e55dbd3e9ecc04ea1c1dd594266e6fba7ea3caef64371d719e.
+  Added20artifact evidence/rawbyte attributes, original frozenplan unchangedc992ff.
+  Asked direct historical fact (any local work before2026-09-20), not repeated
+  accounting approval; numeric history remains unknown pending supported scope.
+  Closing independent artifact review next; no scientific launch or fullgoalPASS.
+  Closing independent GPT6.1Sol code APPROVE/architecture CLEAR personally checked
+  all20 artifacts, exact295 selection and finalpins. Status-only documentation
+  updated after verdicts. Actual watch/stop/owned-tree checkpoint complete, not
+  authenticated observer or scientific readiness. Direct historical fact question
+  remains pending; do not invent zero prior GPU usage, new600h or calendar reset.
+  Next concrete producer/admission + supported history/resources before fixedD;
+  original four200-update pilots and full unified ALUCLU/ALC objective stay active.
