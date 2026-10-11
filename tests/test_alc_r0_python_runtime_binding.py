@@ -60,6 +60,8 @@ def inspect_owned(tmp_path, layout=None, *, alter='', bounds=None, actual=False,
     if not actual:
         base, venv = layout
         source += (
+            # Load native observer dependencies before test-only sys mutation.
+            'from aluclu.alc_r0.windows_directory_metadata import observe_directory\n'
             f'sys.prefix=sys.exec_prefix={str(venv)!r}\n'
             f'sys.base_prefix=sys.base_exec_prefix={str(base)!r}\n'
             f'sys.executable={str(venv/"Scripts"/"python.exe")!r}\n'
@@ -72,10 +74,14 @@ def inspect_owned(tmp_path, layout=None, *, alter='', bounds=None, actual=False,
             'os.environ["PYTHONDONTWRITEBYTECODE"]="1"\n'
         )
     source += alter + '\ntry:\n'
+    cause_probe = os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_CAUSE')=='1' and not actual
+    failure_source = ('except ValueError as e:\n print(json.dumps(dict(ok=False,error=str(e),'
+        'cause_type=type(e.__cause__).__name__,cause_message=str(e.__cause__)[:512])))\n'
+        if cause_probe else 'except ValueError as e:\n print(json.dumps(dict(ok=False,error=str(e))))\n')
     source += (f' r=inspect_current_python_runtime(deadline_ns={1 if expired else arguments["deadline_ns"]},'
                f'bounds=RuntimeTreeBounds(**{bounds!r}))\n'
                ' print(json.dumps(dict(ok=True,payload=json.loads(r.data),sha256=r.sha256)))\n'
-               'except ValueError as e:\n print(json.dumps(dict(ok=False,error=str(e))))\n')
+               + failure_source)
     environment = dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'),
         PYTHONNOUSERSITE='1',PYTHONDONTWRITEBYTECODE='1',CUDA_VISIBLE_DEVICES='-1')
     arguments.update(command=(sys.executable,'-c',source),environment=environment)

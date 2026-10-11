@@ -143,6 +143,48 @@ def test_change_diagnostic_original_deadline():
         api()._tree_change_message('python-base',{}, {'a':('file',(1,)*8)},1)
 
 
+def test_native_directory_walk_root_and_nested(tree):
+    from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation,observe_directory
+    (tree/'empty').mkdir()
+    deadline=time.monotonic_ns()+10**9
+    nodes,files,total=api()._walk(tree,api().RuntimeTreeBounds(
+        entry_count=3,path_bytes=15,file_bytes=7,total_file_bytes=7),deadline)
+    assert type(nodes[''][1]) is DirectoryObservation
+    assert type(nodes['empty'][1]) is DirectoryObservation
+    assert nodes[''][1]==observe_directory(tree,deadline_ns=deadline)
+    assert nodes['empty'][1]==observe_directory(tree/'empty',deadline_ns=deadline)
+    assert type(nodes['python.dll'][1]) is tuple and len(nodes['python.dll'][1])==8
+    assert (files,total)==(1,7)
+
+
+def test_native_directory_diagnostic_schema_change():
+    from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+    native=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+    detail=json.loads(api()._tree_change_message('python-base',
+        {'':('directory',(0o40777,17,23,4096,101,103,1,16))},
+        {'':('directory',native)},time.monotonic_ns()+10**9).split(': ',1)[1])
+    assert detail['differing_fields']==['observation_schema']
+    assert detail['before_schema']=='python-stat-v1'
+    assert detail['after_schema']=='windows-directory-by-name-v1'
+
+
+@pytest.mark.parametrize('field', (
+    'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+    'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+    'device_type','device_characteristics','reparse_tag'))
+def test_native_directory_diagnostic_each_field(field):
+    from dataclasses import replace
+    from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+    old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+    new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+    detail=json.loads(api()._tree_change_message('python-venv',
+        {'folder':('directory',old)},{'folder':('directory',new)},
+        time.monotonic_ns()+10**9).split(': ',1)[1])
+    assert detail['differing_fields']==[field]
+    assert detail['before']==asdict(old) and detail['after']==asdict(new)
+    assert detail['before_kind']==detail['after_kind']=='directory'
+
+
 @pytest.mark.parametrize('field,value', [
     ('entry_count', 0), ('entry_count', True), ('entry_count', 65537),
     ('path_bytes', 0), ('path_bytes', 4*1024**2+1),

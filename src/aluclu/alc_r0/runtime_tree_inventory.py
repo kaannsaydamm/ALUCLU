@@ -12,7 +12,7 @@ import json
 import os
 import stat
 import time
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from itertools import chain
 from pathlib import Path
 
@@ -88,12 +88,23 @@ def _same_open_identity(path_fingerprint, opened_fingerprint):
             opened_fingerprint[1:5] + opened_fingerprint[6:])
 
 
+def _directory_metadata(path, metadata, deadline):
+    if os.name != 'nt':
+        return _fingerprint(metadata)
+    # Late import avoids initialization cycle with the observer's deadline/error helpers.
+    from .windows_directory_metadata import observe_directory
+    observed=observe_directory(path,deadline_ns=deadline)
+    if not stat.S_ISDIR(observed.mode) or observed.attributes & 0x400:
+        raise RuntimeInventoryError('native directory classification differs')
+    return observed
+
+
 def _walk(root, bounds, deadline):
     _deadline(deadline)
     root_stat = root.lstat()
     if _kind(root_stat) != 'directory':
         raise RuntimeInventoryError('runtime root must be a directory')
-    nodes = {'': ('directory', _fingerprint(root_stat))}
+    nodes = {'': ('directory', _directory_metadata(root,root_stat,deadline))}
     pending, folded = [''], set()
     path_bytes = total = files = 0
     while pending:
@@ -127,7 +138,9 @@ def _walk(root, bounds, deadline):
                     files += 1
                 else:
                     pending.append(path)
-                nodes[path] = (kind,_fingerprint(metadata))
+                retained=(_fingerprint(metadata) if kind=='file' else
+                          _directory_metadata(root/path,metadata,deadline))
+                nodes[path] = (kind,retained)
                 folded.add(path.casefold())
                 path_bytes += length
     _deadline(deadline)
@@ -161,6 +174,16 @@ def _hash_file(path, fingerprint, deadline):
     return digest.hexdigest()
 
 
+def _diagnostic_metadata(fingerprint):
+    from .windows_directory_metadata import DirectoryObservation
+    if type(fingerprint) is DirectoryObservation:
+        return 'windows-directory-by-name-v1',asdict(fingerprint),asdict(fingerprint)
+    if type(fingerprint) is tuple and len(fingerprint)==8:
+        fields=('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        return 'python-stat-v1',dict(zip(fields,fingerprint)),fingerprint
+    raise RuntimeInventoryError('unknown runtime metadata observation schema')
+
+
 def _tree_change_message(component, before, after, deadline):
     """Bounded explanation from already bounded trees; never weaken refusal."""
     _deadline(deadline)
@@ -174,17 +197,23 @@ def _tree_change_message(component, before, after, deadline):
     old, new = before.get(first), after.get(first)
     old_kind, old_fp = old if old is not None else (None,None)
     new_kind, new_fp = new if new is not None else (None,None)
-    fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+    old_schema,old_fields,old_payload=(_diagnostic_metadata(old_fp) if old else (None,None,None))
+    new_schema,new_fields,new_payload=(_diagnostic_metadata(new_fp) if new else (None,None,None))
     if old is None or new is None:
         differing = ['membership']
     else:
         differing = ['kind'] if old_kind != new_kind else []
-        differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+        if old_schema!=new_schema:
+            differing.append('observation_schema')
+        else:
+            differing += [name for name,value in old_fields.items() if value != new_fields[name]]
     encoded = first.encode('utf-8')
     detail = dict(component=component,path_prefix=first[:128],
         path_sha256=hashlib.sha256(encoded).hexdigest(),path_utf8_bytes=len(encoded),
         path_truncated=len(first)>128,before_kind=old_kind,after_kind=new_kind,
-        differing_fields=differing,before=old_fp,after=new_fp)
+        differing_fields=differing,before=old_payload,after=new_payload)
+    if 'windows-directory-by-name-v1' in (old_schema,new_schema):
+        detail.update(before_schema=old_schema,after_schema=new_schema)
     message = 'runtime tree changed during inspection: ' + json.dumps(
         detail,ensure_ascii=True,separators=(',',':'))
     _deadline(deadline)

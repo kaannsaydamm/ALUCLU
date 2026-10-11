@@ -14002,3 +14002,65 @@ Task 2 sensorium/recollection gate: CLEAN
   separately reviewed SAME native directory route in both inventory walks;
   preserve size/allnativefields, filebytes/hash/metadata, membership/count bounds,
   diagnosis and originaldeadline. Full goal remains active, checkpoint PROGRESS.
+  Continuation: previous turn PROGRESS ed78e82; Desktop worktree clean, goalfile
+  reread fully. Preregister exact14field native dir observation in BOTH walks,
+  includingroot; preserve size/no normalization/filebytes/membership/caps/deadline.
+  Diagnostics explicitnativefieldmapping; no routecauseproof or actualscan yet.
+  Contract code APPROVE/architecture CLEAR; froze exacttype schematag and
+  classification checks, addedcrossschemaRED. RED68c8fe15failed0.603s/root15308;
+  REDv2d0378216failed0.689s/root11960, bothnative1/total3/active0/notimeout.
+  Implementedsame native14fielddirrecords inbothwalks/root, file8tuples unchanged;
+  schema-aware bounded diagnostics. Source review before GREEN/regression.
+  Independent source code APPROVE/architecture CLEAR then GREENc9f0c7 session30561
+  terminal36a660 native0/root25196/total71/active0/notimeout,JUnit115pass26.749s.
+  Regression027ec9 originalsession39586 now live; no source/test/runner changes
+  during runs. Legacyreceipt scope label documented (not accepting authority).
+  Regression39586 terminal1420f5 native1/root24716/total961/active0/notimeout;
+  binding fixtures refuse generically current-runtime-observation-unavailable.
+  No underlyingcauseproved: code lane readonlytmpstdout confirmsgenericValueError,
+  emptychildstderr. Addclosed test-only cause probe selectingexactsyntheticbinding,
+  bounded512char cause preview, normal/actual behavior unchanged. Review before
+  probe; no production relaxation or fixture warmup until underlyingcauseknown.
+  Bothcauseprobe source reviews APPROVE/CLEAR;6f307a terminal1/root18596/total6/
+  active0/notimeout. Retainedcause AttributeError: SimpleNamespace lacks verbose,
+  not a proved ModuleNotFoundError. Synthetic sys.flags replacement precedes
+  newdependency import. Narrow fixture warmup importsobserver BEFORE fake sys
+  mutation only nonactual; production unchanged. Freshfocused143/reg345 stems
+  preregistered v2, old6failure suite/causefailure retained. Review before launch.
+  Narrow nonactual fixture warmup source reviews code APPROVE/architecture CLEAR.
+  Focusedv2 originalsession2795 terminalcca099 native0/root6332/total161/active0/
+  notimeout/stderr0,JUnit143/0/0/0,190.600s; personally parsed1432e6, XML SHA256
+  09a0e921da9db5ae6cdad3503ec455988a7bac838df6146e07ef3b3b0f989e69.
+  Fresh regressionv2 launchedf4f96b originalsession56908, source/test/runner frozen.
+  No model/GPU/training launched; original actual-runtime acceptance remains OPEN.
+  Regressionv2 originalsession56908 terminal695d7f at original300s: native124,
+  root21844/total935/active0/timedouttrue/stderr0. Stdout83%+24cases with one F;
+  no XML/finalcasecounts/failingidentity produced. Incomplete failing regression,
+  not PASS. Keep source acceptance OPEN; diagnose without relaxing original bound.
+  Independent architecture WATCH for incomplete regression; evidence27hashes/
+  sixpins/focused143terminal verified. Preregister disjoint serial verbose v3
+  partitions: already143native/tree/binding,75source/canonical,127lease/output/
+  stop/watch =345. Same300s perowned diagnostic; retain failed whole-suite,
+  partition evidence is NOT a completed single-suite run or ordering proof.
+  Runner newclosed fresh source_partition_v3/process_partition_v3 stems,
+  no source/tests/bounds changes. Source review before launch; no actualscan.
+  Independent code APPROVE/architecture CLEAR partition source readiness;
+  exact75source/canonical and127process (34lease+40output+24stop+29watch),
+  runnerpin80680d0aa8157eefbbc161f0a46ebf9802fb119d63fe38e46d97d0f70073437f.
+  Bothv2evidence reviews confirmed27hashes/6pins but acceptance COMMENT/WATCH.
+  No whole-suite PASS; Fordinal235 maps priororder to timeoutdrain as suspectonly.
+  Processpartitionv3 originalsession19093 terminal769bc7 native0/root13416/
+  total119/active0/notimeout/stderr0; parsed9e6e80 JUnit127/0/0/0,61.645s,
+  XML929bad1d95de62b160dabbd79f9e3ab92891b9103dd59b26f245d0b391390c06.
+  Suspect timeoutdrain passed3.038s here; prior failure cause NOT established.
+  Sourcepartitionv3 launchedbd98dd originalsession89191, frozenpins serial only.
+  Sourcepartitionv3 terminal5699be parsed401f7b JUnit75/0/0/0,79.992s,
+  native0/root24928/total687/active0/notimeout/stderr0,XML
+  2781842e3c32b19e2eafb946f3e9f22458563e94bfd9d081b04250cb5000c3ff.
+  Disjoint143+127+75=345 passing cases; NOT whole-suite PASS/orderingproof.
+  PriorunidentifiedF/timeout OPEN. All35raw artifacts hashed; review preservation
+  checkpoint only, no accepting actualscan, productionqualification or training.
+  Final preservation review independent code APPROVE/architecture CLEAR for
+  PROGRESS only;35hashes/fiveunchangedsourcepins/newrunnerpin and2partitionpairs
+  verified. Main reverified35hashes/pins/diffcheck22279a. Prior124/F unresolved,
+  actual_v4cause unknown, installedbinding/scientificacceptance OPEN.

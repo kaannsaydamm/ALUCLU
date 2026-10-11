@@ -1,6 +1,6 @@
-"""Standalone single-route Windows directory metadata candidate.
+"""Single-route Windows directory metadata for installed-tree continuity.
 
-Not integrated into runtime inventory or scientific execution. Resolved-path
+Integrated into Windows directory walks, not scientific execution. Resolved-path
 validation and observation are non-atomic on a cooperating host. Native ticks
 and identifiers are exact observations, not provenance or activation authority.
 Blocking OS calls require the outer owned job's original deadline.
