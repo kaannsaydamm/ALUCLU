@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___________________ test_current_base_single_junction_bound ___________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-59/test_current_base_single_junct0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-59/test_current_base_single_junct0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-59/test_current_base_single_junct0/venv'))
+
+    def test_current_base_single_junction_bound(tmp_path,layout):
+        base,venv=layout
+        alias=tmp_path/'base-alias'
+        junction(alias,base)
+        result=inspect_owned(tmp_path,(alias,venv))
+>       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'resolved regular runtime path required'}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:185: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_current_base_single_junction_bound

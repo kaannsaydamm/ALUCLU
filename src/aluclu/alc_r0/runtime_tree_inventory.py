@@ -75,8 +75,15 @@ def _same_open_identity(path_fingerprint, opened_fingerprint):
     # for same-source continuity; compare all other fields across sources.
     if os.name != 'nt':
         return path_fingerprint == opened_fingerprint
-    return (path_fingerprint[:5] + path_fingerprint[6:] ==
-            opened_fingerprint[:5] + opened_fingerprint[6:])
+    # CPython Windows path stat synthesizes all execute bits from extensions;
+    # fstat has no pathname. Accept only that directed 0111 -> 0 difference.
+    path_mode, opened_mode = path_fingerprint[0], opened_fingerprint[0]
+    if path_mode != opened_mode and not (
+            path_mode & 0o111 == 0o111 and opened_mode & 0o111 == 0
+            and path_mode & ~0o111 == opened_mode):
+        return False
+    return (path_fingerprint[1:5] + path_fingerprint[6:] ==
+            opened_fingerprint[1:5] + opened_fingerprint[6:])
 
 
 def _walk(root, bounds, deadline):

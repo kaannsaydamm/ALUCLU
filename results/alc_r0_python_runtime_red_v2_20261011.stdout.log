@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______________________ test_executable_metadata_sources _______________________
+
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-54/test_executable_metadata_sourc0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-54/test_executable_metadata_sourc0/venv'))
+
+    def test_executable_metadata_sources(layout):
+        from aluclu.alc_r0.runtime_tree_inventory import _fingerprint, _same_open_identity
+        path=layout[0]/'python.exe'
+        before=_fingerprint(path.lstat())
+        with path.open('rb',buffering=0) as stream:
+            opened=_fingerprint(os.fstat(stream.fileno()))
+>       assert _same_open_identity(before,opened), (before,opened)
+E       AssertionError: ((33279, 4343961586895537332, 1407374887046100, 4, 1791723403313882900, 1791723403313882900, ...), (33206, 4343961586895537332, 1407374887046100, 4, 1791723403313882900, 1791723403313882900, ...))
+E       assert False
+E        +  where False = <function _same_open_identity at 0x000001E4E1500A40>((33279, 4343961586895537332, 1407374887046100, 4, 1791723403313882900, 1791723403313882900, ...), (33206, 4343961586895537332, 1407374887046100, 4, 1791723403313882900, 1791723403313882900, ...))
+
+tests\test_alc_r0_python_runtime_binding.py:168: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_executable_metadata_sources

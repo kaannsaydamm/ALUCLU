@@ -13788,3 +13788,98 @@ Task 2 sensorium/recollection gate: CLEAN
   unchanged. No actual installed-runtime certification/nativeclosure/authproducer/
   history-clock-resource admission or real training claimed. Full program active;
   next dependency is concrete trusted runtime/launch binding, not downstream UX.
+  Next continuation: previous turn PROGRESS dd3ff45, clean Desktop checkout and
+  full user objective revalidated0d351b; fixedDdesign read completely50fed9.
+  Propose one owned current-interpreter binding composing real base/venv tree
+  inventories plus exact interpreter/config/import-settings observations. No
+  request-supplied roots, heavy imports or accepting handoff. Scoped design
+  admission before code; method approval already resolved, factual gates remain.
+  Both GPT6.1Sol scoped design reviews APPROVE/CLEAR; preserve distinction of
+  current labels/on-disk bytes versus actually mapped image/native DLLs. Added
+  owned fixture oracle/negative/runtime-change tests and closed diagnostic runner
+  before implementation. Real scan separately selected only after review; no
+  production injectable sys/backend/roots seam and no scientific admission.
+  Owned REDa6e77f terminal native1/root12228/total3/active0/notimeout: absent
+  python_runtime_binding module before implementation. Added bounded current-sys
+  observation, structural root/executable relationships, streamed3special-file
+  hashes, same-deadline base+venv inventories and after-scan continuity, exact
+  canonical byte/root binding. No actual runtime scan or acceptinghandoff yet.
+  InitialGREEN05f887 terminal1/root30228/total75/active0/notimeout; real stable
+  executable fixtures refuse open-file identity. Preserve result, inspect exact
+  executable lstat/fstat fields with new owned RED-v2 reproducer before repair.
+  Oversize-environment fixture exceeded Windows OS setter limit before observer;
+  changed to20000unicodecharacters (valid OS string, >32768UTF8bytes). Added
+  original-expiry/aggregate-string/cfg-size negatives. Both reviews require actual
+  test-only selection gate; implemented skip-by-default and retained-binding
+  collision preflight in closed runner. No installed-runtime scan yet.
+  OwnedRED-v2 4104c6 terminal1/root21656/total3/active0 confirms executable
+  pathmode33279 vs openmode33206, all other inspected fields equal. Primary
+  CPython3.12.12 posixmodule.c update_st_mode_from_path1777-1798 verifiedweb:
+  path stat synthesizes0111 for executable extensions. Added narrow Windows-only
+  directed0111->0 cross-source exception, preserving all other mode/identity bits
+  and full same-source continuity. Added6positive/negative modecases. No broad
+  mode masking, ACL claim or scientific threshold change. Final focused rerun.
+  GREEN-v2 9dd056 terminal1/root10700/total84/active0/notimeout: allnegative/
+  executablemetadata cases pass,5positive payloads fail canonical encoding after
+  test-only sys.path replacement. Fixture removed real stdlib import locations
+  before RFC8785 lazily imports key-order UTF16 codec. Warm canonical codec
+  explicitly BEFORE fixture-only sys mutation; production import behavior and
+  canonical contract unchanged. Preserve failed run; nextGREEN-v3.
+  GREEN-v3 4b281f terminal0/root4156/total84/active0/notimeout; focused24pass.
+  Both amended-code independent reviews APPROVE/CLEAR; conditional owned actual
+  read-only scan admitted after terminal focused success. Run actual inventory
+  separately from270-case relevant regression, unchanged final code. Actual scan
+  is CPU-only file observation under original owned deadline, no model/CUDA/import
+  execution or scientificD, no budget/history reset or inferredresourcepermit.
+  Actual d1b4f2 terminal1/root21156/total6/active0/notimeout; retained binding
+  denial 'resolved regular runtime path required', not successful inventory.
+  Readonly Windows919d46 identifies uv minor-version base path as Junction:
+  cpython-3.12-windows-x86_64-none -> cpython-3.12.13-windows-x86_64-none.
+  Venv/executable remain regular. Current observed layout legitimately uses that
+  alias; strict original requirement rejects it. Do not edit installedpyvenv.cfg,
+  follow arbitrary internal runtime links, or call this qualification failure.
+  Proposed explicit current-base-junction binding amendment under review next;
+  prior defaultdenial and full failures retained. Regression stilllive4532.
+  Both design reviews require immediate-target capture, no unrecorded junction
+  chain. Clarified os.readlink exactrawtarget bound/rechecked; normalizeonly local
+  extended-drive prefix for access, immediatephysicaltarget/parent strictresolved,
+  denyUNC/relative/chain and add real chained-junction negative before code.
+  Both corrected-junction-design reviews APPROVE/CLEAR. Priorregression1471c5
+  terminal0/root14056/total948/active0/notimeout (prejunction amendment). Added
+  real single/chained-junction fixtures and separately versioned actual_v2
+  artifacts/retainedcollisiongate before implementing new alias binding. Original
+  real refusal retained, no installedconfig mutation or scienceclaim.
+  Owned junctionRED-v3 15e1e7 terminal1/root3436/total7/active0/notimeout before
+  alias implementation. Added fixed current-base mountpoint-only observation,
+  exact os.readlink target capture/strict immediatephysicalroot validation,
+  raw+resolved baseexe containment, canonicalaliasbinding and full beforeafter
+  aliasfingerprint/immediatetarget check. No generic followlinks option. Run
+  final focused tests before independently reviewed actual_v2 read-only retry.
+  GREEN-v4 59aa20 terminal0/root8828/total93/active0/notimeout focused26pass.
+  ArchitectureCLEAR; code requests aliasstrings share observationcaps. Added
+  exact32768UTF8 validation on immediate target before resolution/retention and
+  alias paths; full retained payload values share4MiB aggregate beforecanonical
+  encoding. Two direct private-helper negative fixtures cover aliasUTF8/aggregate
+  (real oversized Windows path impractical). No production injectable seam. Final
+  GREEN-v5/review before actual_v2; no installedruntime changes or training.
+  GREEN-v5 c3a8a8 terminal0/root19612/total93/active0/notimeout focused28pass;
+  both fresh boundamendment reviews APPROVE/CLEAR. Final5source/test/runner pins
+  personally hashedc37449. Launch separately versioned actual_v2 factual scan and
+  274-case relevantregression_v5 on unchanged final code under owned deadlines.
+  Added evidence companion with all10prior terminalattempt counts/classifications
+  and5finalpins; rawbyte attributes for newcode/tests/docs/results. Final actual
+  andregression sessions52822/89228 remain current authoritative running handles.
+  Terminal verification after context continuation: actual_v2 session52822 exit1,
+  JUnit1/1/0/0 time42.999; native root19168/total6/active0/notimeout/stderr0.
+  Error is runtime tree changed during inspection; path/component/field were not
+  captured, so concrete culprit remains unknown. Do not label actual binding PASS
+  or blame external concurrency without evidence. regression_v5 session89228
+  terminal0, JUnit274/0/0/0 time216.448, root15832/total957/active0/notimeout/
+  stderr0. XML hashes personally verified in43397d and evidence companion updated.
+  No model/tokenizer/Torch/Transformers/CUDA/scientific training ran. Owner
+  accounting approval remains recorded; no renewed consent or budget reset.
+  Next bounded first-difference diagnostics, not weakened checks/blind rerun.
+  Independent final code/spec/security APPROVE and architecture checkpointCLEAR
+  with installed-runtime acceptance WATCH/OPEN. Both reviewers personally checked
+  all50artifact hashes,5source pins,12JUnit/native tables and exact274selection;
+  neither ran workloads. Checkpoint closure does not approve actual runtime or D.

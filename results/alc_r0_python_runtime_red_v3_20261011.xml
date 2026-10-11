@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.415" timestamp="2026-10-11T16:05:32.044705+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_current_base_single_junction_bound" time="0.997"><failure message="AssertionError: {'ok': False, 'error': 'resolved regular runtime path required'}&#10;assert False">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-59/test_current_base_single_junct0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-59/test_current_base_single_junct0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-59/test_current_base_single_junct0/venv'))
+
+    def test_current_base_single_junction_bound(tmp_path,layout):
+        base,venv=layout
+        alias=tmp_path/'base-alias'
+        junction(alias,base)
+        result=inspect_owned(tmp_path,(alias,venv))
+&gt;       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'resolved regular runtime path required'}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:185: AssertionError</failure></testcase></testsuite></testsuites>

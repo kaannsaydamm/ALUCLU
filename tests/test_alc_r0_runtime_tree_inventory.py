@@ -201,6 +201,16 @@ def test_non_windows_requires_full_timestamp_identity(monkeypatch):
     assert not module._same_open_identity(fingerprint,changed)
 
 
+@pytest.mark.parametrize('path_mode,opened_mode,allowed',[
+    (0o100777,0o100666,True), (0o100766,0o100666,False),
+    (0o100777,0o100667,False), (0o100777,0o100444,False),
+    (0o100666,0o100777,False), (0o040777,0o100666,False),
+])
+def test_windows_executable_mode_exception_is_directed(path_mode,opened_mode,allowed):
+    rest=(17,23,7,101,103,1,32)
+    assert api()._same_open_identity((path_mode,*rest),(opened_mode,*rest)) is allowed
+
+
 def test_changed_path_and_bytes_change_inventory(tmp_path, tree):
     first = tmp_path / 'first'
     first.mkdir()
