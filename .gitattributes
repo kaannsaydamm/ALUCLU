@@ -520,3 +520,8 @@ docs/superpowers/plans/2026-10-11-alc-r0-python-runtime-binding.md -text
 docs/superpowers/plans/2026-10-11-alc-r0-python-runtime-evidence.md -text
 docs/superpowers/plans/2026-10-11-alc-r0-python-runtime-artifact-hashes.md -text
 results/alc_r0_python_runtime* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-11-alc-r0-runtime-continuity-diagnostic.md -text
+docs/superpowers/plans/2026-10-11-alc-r0-runtime-continuity-evidence.md -text
+docs/superpowers/plans/2026-10-11-alc-r0-runtime-continuity-artifact-hashes.md -text
+tests/alc_r0_directory_metadata_probe.py -text
+results/alc_r0_directory_metadata_probe* -text whitespace=-blank-at-eol

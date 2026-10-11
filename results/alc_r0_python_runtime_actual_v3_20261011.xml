@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="240.640" timestamp="2026-10-11T16:23:22.885066+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_actual_current_runtime_read_only" time="240.047"><failure message="AssertionError: assert 124 == 0&#10; +  where 124 = &lt;built-in function GetExitCodeProcess&gt;(712)&#10; +    where &lt;built-in function GetExitCodeProcess&gt; = &lt;module '_winapi' (built-in)&gt;.GetExitCodeProcess">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-65/test_actual_current_runtime_re0')
+
+    @pytest.mark.skipif(os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN')!='1',
+                        reason='separately selected read-only runtime diagnostic')
+    def test_actual_current_runtime_read_only(tmp_path):
+&gt;       result=inspect_owned(tmp_path,actual=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_python_runtime_binding.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_python_runtime_binding.py:86: in inspect_owned
+    handles.drained(exit_code=0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;test_alc_r0_owned_stop.RetainedHandles object at 0x0000017DA437E450&gt;
+exit_code = 0, total = 1
+
+    def drained(self, *, exit_code=124, total=1):
+        import _winapi
+        from aluclu.alc_r0.checkpoint_owned_process import _Accounting, _checked
+        assert _winapi.WaitForSingleObject(self.handles[0], 5000) == 0
+&gt;       assert _winapi.GetExitCodeProcess(self.handles[0]) == exit_code
+E       AssertionError: assert 124 == 0
+E        +  where 124 = &lt;built-in function GetExitCodeProcess&gt;(712)
+E        +    where &lt;built-in function GetExitCodeProcess&gt; = &lt;module '_winapi' (built-in)&gt;.GetExitCodeProcess
+
+tests\test_alc_r0_owned_stop.py:117: AssertionError</failure></testcase></testsuite></testsuites>

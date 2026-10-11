@@ -8,10 +8,12 @@ interrupt them. Existing regular hardlinks are allowed and counted logically.
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import stat
 import time
 from dataclasses import dataclass
+from itertools import chain
 from pathlib import Path
 
 from .canonical import CanonicalEvidenceError, canonical_json_bytes, normalize_evidence_path
@@ -159,6 +161,36 @@ def _hash_file(path, fingerprint, deadline):
     return digest.hexdigest()
 
 
+def _tree_change_message(component, before, after, deadline):
+    """Bounded explanation from already bounded trees; never weaken refusal."""
+    _deadline(deadline)
+    first = None
+    for path in chain(before,after):
+        _deadline(deadline)
+        if before.get(path) != after.get(path) and (first is None or path < first):
+            first = path
+    if first is None:
+        return 'runtime tree changed during inspection'
+    old, new = before.get(first), after.get(first)
+    old_kind, old_fp = old if old is not None else (None,None)
+    new_kind, new_fp = new if new is not None else (None,None)
+    fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+    if old is None or new is None:
+        differing = ['membership']
+    else:
+        differing = ['kind'] if old_kind != new_kind else []
+        differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+    encoded = first.encode('utf-8')
+    detail = dict(component=component,path_prefix=first[:128],
+        path_sha256=hashlib.sha256(encoded).hexdigest(),path_utf8_bytes=len(encoded),
+        path_truncated=len(first)>128,before_kind=old_kind,after_kind=new_kind,
+        differing_fields=differing,before=old_fp,after=new_fp)
+    message = 'runtime tree changed during inspection: ' + json.dumps(
+        detail,ensure_ascii=True,separators=(',',':'))
+    _deadline(deadline)
+    return message
+
+
 def inspect_runtime_tree(root: Path, *, component: str, deadline_ns: int,
                          bounds: RuntimeTreeBounds) -> RuntimeTreeEvidence:
     """Hash one explicitly selected component inside an owned deadline boundary.
@@ -193,7 +225,7 @@ def inspect_runtime_tree(root: Path, *, component: str, deadline_ns: int,
                 byte_length=fingerprint[3] if kind == 'file' else 0,sha256=digest))
         after, after_files, after_total = _walk(root,bounds,deadline_ns)
         if (after,after_files,after_total) != (nodes,files,total):
-            raise RuntimeInventoryError('runtime tree changed during inspection')
+            raise RuntimeInventoryError(_tree_change_message(component,nodes,after,deadline_ns))
         _deadline(deadline_ns)
         digest = hashlib.sha256(canonical_json_bytes(rows)).hexdigest()
         _deadline(deadline_ns)

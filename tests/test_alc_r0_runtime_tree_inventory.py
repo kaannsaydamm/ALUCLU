@@ -85,7 +85,62 @@ def test_enumerated_identity_matches_path_and_open_file(tree):
     assert files == 1 and total == 7
     assert retained == module._fingerprint((tree/'python.dll').lstat())
     with (tree/'python.dll').open('rb') as stream:
-        assert retained == module._fingerprint(os.fstat(stream.fileno()))
+        opened = module._fingerprint(os.fstat(stream.fileno()))
+        assert module._same_open_identity(retained,opened)
+        assert opened == module._fingerprint(os.fstat(stream.fileno()))
+    assert retained == module._fingerprint((tree/'python.dll').lstat())
+
+
+@pytest.mark.parametrize('position,field', list(enumerate(
+    ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+def test_change_diagnostic_identifies_exact_field(position,field):
+    fp=(0o100666,17,23,7,101,103,1,32)
+    changed=list(fp); changed[position]+=1
+    before={'python.dll':('file',fp)}
+    after={'python.dll':('file',tuple(changed))}
+    message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+    assert message.startswith('runtime tree changed during inspection: ')
+    detail=json.loads(message.split(': ',1)[1])
+    assert detail==dict(component='python-base',path_prefix='python.dll',
+        path_sha256=hashlib.sha256(b'python.dll').hexdigest(),path_utf8_bytes=10,
+        path_truncated=False,before_kind='file',after_kind='file',
+        differing_fields=[field],before=list(fp),after=changed)
+
+
+@pytest.mark.parametrize('case', ['added','removed','kind'])
+def test_change_diagnostic_membership_and_kind(case):
+    fp=(0o100666,17,23,7,101,103,1,32)
+    before={'':('directory',fp),'z':('file',fp)}
+    after=dict(before)
+    if case=='added': after['a']=('file',fp)
+    elif case=='removed': del after['z']
+    else: after['z']=('directory',fp)
+    detail=json.loads(api()._tree_change_message('python-venv',before,after,
+        time.monotonic_ns()+10**9).split(': ',1)[1])
+    assert detail['component']=='python-venv'
+    assert detail['path_prefix']==('a' if case=='added' else 'z')
+    assert detail['differing_fields']==(['kind'] if case=='kind' else ['membership'])
+    assert detail['before_kind']==(None if case=='added' else 'file')
+    assert detail['after_kind']==(None if case=='removed' else 'directory' if case=='kind' else 'file')
+
+
+def test_change_diagnostic_bounded_path_and_deterministic_first():
+    fp=(0o100666,17,23,7,101,103,1,32)
+    changed=fp[:3]+(8,)+fp[4:]
+    path='a'+chr(0x1f600)*300
+    before={'z':('file',fp),path:('file',fp)}
+    after={path:('file',changed),'z':('file',changed)}
+    message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+    detail=json.loads(message.split(': ',1)[1])
+    assert detail['path_prefix']==path[:128] and detail['path_truncated'] is True
+    assert detail['path_utf8_bytes']==len(path.encode())
+    assert detail['path_sha256']==hashlib.sha256(path.encode()).hexdigest()
+    assert len(message.encode())<2048
+
+
+def test_change_diagnostic_original_deadline():
+    with pytest.raises(ValueError,match='original runtime inventory deadline expired'):
+        api()._tree_change_message('python-base',{}, {'a':('file',(1,)*8)},1)
 
 
 @pytest.mark.parametrize('field,value', [

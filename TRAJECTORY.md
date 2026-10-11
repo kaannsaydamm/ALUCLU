@@ -13883,3 +13883,86 @@ Task 2 sensorium/recollection gate: CLEAN
   with installed-runtime acceptance WATCH/OPEN. Both reviewers personally checked
   all50artifact hashes,5source pins,12JUnit/native tables and exact274selection;
   neither ran workloads. Checkpoint closure does not approve actual runtime or D.
+  Checkpoint9c39299 commit/push independently verified remote equal and clean.
+  Next goal turn re-read goal/current checkout: previous turn PROGRESS, no blocker
+  impasse. Add13 RED negative diagnostic cases (8fields,3membership/kind, Unicode
+  preview/firstpath, originaldeadline), closed fresh runner modes and design note.
+  Before implementation, preserve refusal and avoid unrelated model/runtime edits.
+  RED-diff76deba native1/root2920/total3/active0/notimeout,13cases failed absent
+  private helper as expected. Implemented bounded firstdifference from already
+  retained nodes only;8metadata fields/kind/membership,128char preview+fullpathhash,
+  same deadline. Original fulltree/count comparison still denies unchanged.
+  Both fresh reviews APPROVE/CLEAR conditional focused terminal; residual direct
+  helper tests not exhaustive betweenwalk race coverage, firstdifference notcause.
+  GREEN-diff9b27e6 native0/root15840/total157/active0/notimeout; independently
+  parseJUnit85/0/0/0 time88.622 andstderr0 before actual_v3. Launch newdiagnostic
+  actual_v3 and287case relevantregression_diff on unchanged hashed5pins. Prior
+  actualfailures retained; no scientificworker/model/CUDA or metadatarelaxation.
+  Actual_v3 terminal125674 nativepytest1/root23636/total6/active0/outer-notimeout;
+  JUnit1failed240.640s. Innerchild nativeexit124 on original240s deadline,stdout0;
+  fixture assertion prevents binding JSON. This is incomplete scan, not new
+  continuity culprit. regression_diff230f3e native1/root30004/total957/active0/
+  notimeout;287cases onefailure at old cross-APIctime equalityfixture, concrete
+ 1791725079935187600 versus1791725079935693200. Same-source checks stillrequired.
+  Correct old test to existing _same_open_identity plus repeated full same-source
+  comparisons; production semantics unchanged. Actualdiagnostic retains observed
+  nonzero/timeout process receipt as okfalse before finaltestassert. Preregister
+  NEWactual_v4 CPU900s/outer960s finite diagnostic envelope, serialized afterfinal
+  focused/regression/review; prior240s attempt unchanged, scientificD unchanged.
+  Fresh code APPROVE/architectureCLEAR conditional finalfocused/regression;
+  timeoutretention source-reviewed, not claimed executednegativebranchcoverage.
+  Architecture clarification requested: corrected treefixture79-91 does repeat
+  fullsame-source checks; older unchangedbindingfixture175-181 is differenttest.
+  GREEN-diff-v2ef4d18 terminal0/root9012/total157/active0/notimeout;85cases pass.
+  Launch regression_diff_v2 alone, no actual workload concurrent. Actual_v4 only
+  after this terminalregression andreviewconditions; no autoopen-endedreruns.
+  Finalregression_diff_v2 b997c5 terminal0/root27152/total957/active0/notimeout,
+ 287cases pass, stderr0. Conditionalcode/archreview conditionsmet. Launch
+  actual_v4 alone on same5pins,900s inner/960s outer NEWfinite diagnostic attempt;
+  do not editcode/tests/runner whilelive. DetailedJUnit/hash nextcompanionupdate.
+  Final287JUnit199.564s XML084a5efc282882a9751ff346a8e034484ecebeab1ebd0519cd7128d46172ad92;
+  ownedactual_v4 session44305 authoritative live handle. Companion recordspending
+  actualresult; no code/test/runner changed afterlaunch. This is still diagnostic,
+  not scientificD/modeltraining; keepfullgoal active, no prematurecompletionclaim.
+  actual_v4 session44305 terminal5fba87 nativepytest1/root7920/total6/active0/
+  notimeout/stderr0,JUnit1failed89.096s. RetainedbindingJSONeda3ea nowidentifies
+  python-venv Lib/site-packages/huggingface_hub/inference/_mcp directory size4096
+  ->0; mode/dev/inode/mtime/ctime/nlink/attrs andkind identical. Childrefusal
+  receiptroot9320/total3/active0/exit0/notimeout. This is complete refusal not
+  successfulinventory, not retrospectiveproof actual_v2cause. Nextprimarysource
+  plusminimal readonlymetadatareproducer; no comparisonfield removed/relaxed.
+  Architecture corrected earlier wrongfixturecitation; treefixture79-91 DOES
+  directly check fullsame-source repeats. No model/GPU/scientificqualification.
+  PrimaryCPython3.12.13 sources: posixmodule1977-2005 fastByName vs handlefallback;
+  fileutils1027-1076 copies distinct Win32 sizefields. Pythonosdocs only define
+  st_size forregularfile/symlink, not directory. Hypothesis API/cache reporting
+  distinction, NOT proven concretecause yet. Addedfixed readonly16round native
+  ByName/ByHandle/lstat probe, exacttarget sys.prefix/_mcp,60s owneddeadline,
+  bounded64KiBstdout/4KiBstderr/exclusiveartifacts. Review beforelaunch; no env edit.
+  Corrected probe ownedcommand explicit -I -B: isolated ignoresPYTHONenv, so -B
+  explicitly prevents bytecodewrites. Bothprobe source reviews APPROVE/CLEAR;
+  stableAPI disagreement only supportsrepresentationhypothesis, doesnotprove
+  earlierCPythonbranch or actual_v2cause. Launchfixedreadonlyprobe once.
+  Probe52b0c4 terminal0/root2032/total3/active0/notimeout, outputvalid/stdout10286/
+  stderr0;16rounds path/ByName/ByHandle allsize4096. DidNOTreproduceactual4096->0
+  or establishAPIbranchcause. Nextdiscriminatingreadonlyprobe v2 addsonebounded
+  scandir ofSAMEdirectorybetweenobservations,256entries/32768nameUTF8 bytes,
+  retainscount+nameshashonly andnewexclusive3artifacts; same60s/64KiB/4KiBbound.
+  No filesystemwrites to runtime, childexplicit-I-B. Review beforev2launch.
+  Bothincrementalprobe reviews APPROVE/CLEAR, then v2ba94d6 terminal0/root25172/
+  total3/active0/notimeout/outputvalid/stdout12014/stderr0.16rounds allsize4096;
+ 8names samehash0e3a5724974592564f28d91fc4028118231486aff508931dddf7d73bad69acb9.
+  Bothprobes' beforeafter pathfingerprints stable. Neither reproducedfullscan
+ 4096->0. API/cachecause remainsunproved. Companion records executedlimits and
+  priorpre-enumeration source difference explicitly. No metadatafield removed.
+  Nextreview type-specific directorycontinuity contract/consistent native route
+  before repair. No scientificgate, environmentbindingPASS or producerauthority.
+  Final independent code/spec/security APPROVE and architecture CLEAR for this
+  diagnostic checkpoint only. Both lanes independently verified all35 retained
+  artifact hashes, six current source pins, seven JUnit/native receipt pairs and
+  both probe receipts/outputs. Installed-runtime binding remains WATCH/OPEN;
+  actual_v4 still refuses, probes did not reproduce, causal mechanism unresolved.
+  Main revalidated35 hashes/six pins and seven JUnit/native outcomes live. Preserve
+  all failed attempts and earlier-source probe disclosure. No training launched.
+  User accounting approval/local first experiment direction already recorded in
+  2026-10-07 owner decision; do not re-request approval or infer zero local history.
