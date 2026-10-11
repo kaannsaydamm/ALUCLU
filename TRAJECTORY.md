@@ -14153,3 +14153,55 @@ Task 2 sensorium/recollection gate: CLEAN
   Preserve checkpoint only; no installedbinding/sciencePASS/trainingready or
   executionpermission. Fullroadmap goalactive, nextminimalreproducer/contract
   separatelyreviewed, no blindwarmrerun/fieldwaiver/searchbudgetrenewal.
+  Checkpoint8b36a53 pushed/remoteHEADverified fe9a9a/f71019; fullgoalactive.
+  Status-onlyfollowingturn inspected source/queryorder/NTFSCvolume d2a173, no new
+  execution/changes. Next safeaction preregistered scratchreproducerv1:3exclusive
+  dirs0/16/48files512bytes,total32768; original60s diag/65536stdout4096stderr,
+  queryfirst beforelstat, then afterlstat/handle/enum/filereads. No installedtree
+  mutation/cleanup/model/GPU/science or acceptance changes. Add13case explicit
+  API-injection contracttests+REDunimplementedhelpers and closedownedtestrunner.
+  Independent source/evidence review via code-review skill beforefactualnative
+  experiment; stableorchangedresults neitherfix nor prove actualcause/runtimePASS.
+  Pre-execution inspection caught primitive has no outputcapparameters; replaced
+  unexecuted runnerdraft with existing boundedReservedOwnedLease+synthjournal,
+  original60s/10scleanup and65536/4096capture,4MiB/8MiB syntheticdeclarations
+  not measuredphysicalusage/admission. One failedatomicpatch didnotchangefiles,
+  re-read confirmedbefore correctedpatch; no invocation/errorartifactcreated.
+  Scratchcontract RED0e205e terminalnative1/root18056/total3/active0/notimeout,
+  outputvalid/stdout13608/stderr0. Mainc23ec5 JUnit13/13/0/0,0.764s; all13
+  NotImplementedError scratchcreation, notcollection/dependency/timeoutfailure.
+  REDrunner24d9df26672751bc8fdb05928df00f7c824bae9cdc6110c6ec7c1c6997f5e12a,
+  testsaedabb280b489a36335d2d0062582a56244926b979eb288c4b1e05a8ec2010d9.
+  Implement isolatedhelper+nativeABI+closed --scratch, previousprod/probeunchanged;
+  explicitfakeAPI controls notnativeproof, nextGREEN/REGRESSION before actualrun.
+  GREEN6669fb native0/root29408/total3/active0/notimeout,validstdout81/stderr0;
+  JUnit13/0/0/0,0.399s. Finalsource43d4a211f35a2a3d20dc74c2bfccb8a99e483039759ea1f08a471f3a842e7e09.
+  REGRESSION e88a97 originalsession84361 terminal6c4e34 native0/root25440/total71/
+  active0/notimeout,validstdout162/stderr0. Mainff0e2c JUnit128/0/0/0,31.430s,
+  exact13new+42native+73tree counts, all12artifacthashes innewdoc, production/
+  priorprobepins unchanged. Source/tests not edited while originalsessionlive.
+  Independent GPT-6.1Sol source codeAPPROVE/architectureCLEAR conditional on
+  terminalregression/exactpins, now personallyconfirmed. Firstquery meansfirst
+  diagnosticobservation, creationOSopsalreadyoccurred/notcoldproof. PrimaryMS
+  docsrechecked, no waiver. One serialscratch next, no installedtree/model/GPU.
+  Scratchdf5fb5 terminalnative0/root9296/total3/active0/notimeout,1.297s,valid
+  stdout11019/stderr0/EOFclosed, noexcess/failure. Main61add2 counts[0,16,48],
+  payload512/written32768/read0+8192+24576; all15raw104byte recordsretained,
+  fivephases14decodedfieldsstablepercase,size/allocation0/4096/16384. lstat/
+  standardhandleagree, directorytrue/links1/deletefalse. NOTreproduced0->8192,
+  no cause/fix/runtime/sciencePASS. Scratch retained82hm_bit, C:48.96GiBfree.
+  Queryorder alone notsufficient explanationinthetestedfreshcases; installed/
+  cold/externalactor hypothesesremainunproved, no blindfullscan or fieldwaiver.
+  Threeartifactshashed innewdoc; seektwoindependentterminalpreservationreviews.
+  PrimaryhistoricalMSarticle turn156view0 describes filedir-entryreplicas and
+  handlecloseupdates (not currentclass3directorycontract). Hypothesizednext
+  held-handle population/close variant; NOTimplemented/run/causalproof or
+  productionwaiver. Currentcasecreationhandlesclosed beforefirstquery; no
+  genericcoldclaim. Nextvariant separatelypreregister/review afterpreservation.
+  Independentterminal codeAPPROVE/architecturepreservationCLEAR, bothverified
+  15hashes/sourcepins/exact128counts/nativeoutputfacts; cause/continuityOPEN.
+  Main2f43fd decodedall15raw104bytesagainstnumericfields/IDs; reviewerpointed
+  rawbytesnotallstable. Main1bb668 confirmedONLYaccessTimeoffset16/17changed
+  case0/48 afterenum/read,14comparisonfieldsstable; existingaccessTimeexclusion
+  predatesexperiment, no newwaiver. FullrawstabilityNOTclaimed. Preserve20file
+  reviewedcheckpoint then nextheldhandlevariant; no training/model/GPU.
