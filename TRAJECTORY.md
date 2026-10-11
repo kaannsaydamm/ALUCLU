@@ -14258,3 +14258,40 @@ Task 2 sensorium/recollection gate: CLEAN
   Pending buffer lifetime/cleanup, primary enum/export support, path-rebinding,
   bounded protocol and TDD/reviews are next prerequisites. No production/model/
   GPU/training operation, no field waiver, no installed continuity PASS.
+  Next turn: primary163/164 confirmed enumdevice4 via Microsoft terminal,
+  CreateFile synchronousflags and pending semantics. Preregister same-handle
+  diagnostic v1 before native results, original60s/caps/synthetic bounds.
+  Add decoder/query/bookend RED stubs and explicitfake tests; pending fatal
+  isolated-childexit71 avoids nativebuffer unwind. Production unchanged; no
+  native target execution yet. Previous goal turn PROGRESS (two checkpoints).
+  Samehandle RED5b10c1 original90288 terminalb570cf: native1/root34336/total5/
+  active0/notimeout, validstdout37267/stderr0. Mainf1329c JUnit30/29/0/0,.932s,
+  all29 missingdecoder/query/bookend stubs, pending isolatedfatal passed.
+  Implement exact72/24/8 decode/full14 fields, IOSB16/native success+length rule
+  and statbookend comparisons. Still no native API adapter or target execution;
+  GREEN/regression and independent review required, no production changes.
+  GREEN7fe20b native0/root26572/total5/active0/notimeout,Junit30pass/.507s.
+  Regression958ece original54231 terminal3f4bed native0/root27316/total73/
+  active0/notimeout. Code lane REQUEST CHANGES: pending_exit marker os.write
+  can fail beforeos._exit andunwind nativebuffers. Add closedstderr isolated
+  pendingquery RED-v2 regression test and exclusivev2 artifact modes; original
+  evidence retained, fatal implementation not yetchanged. No native invocation.
+  RED-v2 947fdc native1/root33364/total7/active0/notimeout/validcapture;31cases
+  one intended closedstderr failure (child3221226505 and UNWOUND marker;
+  pytestexit1), no errors/skips; JUnit31/1/0/0,1.303s main73ef6d.
+  Both independent lanes identified markerfailure defect. Fix finally exit71
+  unconditional; rerun GREEN-v2 and REGRESSION-v2 on finalbytes before rereview.
+  GREEN-v2 8af9ad native0/root30236/total7/active0/notimeout JUnit31/.447s.
+  REG-v2 06d259 original99118 terminalfc5744 native0/root13068/total75/active0/
+  notimeout; mainf4a083 JUnit168/0/0/0,24.711s exact31+22+42+73. Finalpins
+  223726a48e8c24736f59d4db291896695b6638334862f1ec0feb987c80f67fcf/
+  aa0ae0fb2ac188ea9d98fe0c8eab46fe6c80428691e1b6fdb5a9f81ee1a51a5b.
+  Code repairAPPROVE/archCLEAR conditionalterminalclosure; mainverified. Full
+  24artifacthashes/corelimits in same-handle-core-evidence doc. Nativeadapter,
+  installedtarget and runtime/scientific readiness still OPEN; productionpins
+  unchanged. Preserve core checkpoint then adapter/sequence TDD and review.
+  Final independent codeAPPROVE/architectureCLEAR for repairedcore preservation:
+  bothverified24hashes/all6JUnitreceiptpairs/finalpins/productionpins/exact168.
+  Main2e0f9f verified24doc hashes,11fe65 crosschecked6capturehashes+terminalflags.
+  No native readiness or genuinependingIO proof. Preserve30filecheckpoint;
+  next nativeadapter/sequence remains necessary before installedtarget probe.

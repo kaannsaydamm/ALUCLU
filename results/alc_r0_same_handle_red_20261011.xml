@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="29" skipped="0" tests="30" time="0.932" timestamp="2026-10-11T21:01:39.629618+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_complete_exact_mapping_and_raw_retention" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">def test_complete_exact_mapping_and_raw_retention():
+        raw = records()
+&gt;       result = decode(*raw)
+                 ^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_read_only_mode_and_valid_zero_sizes" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">def test_read_only_mode_and_valid_zero_sizes():
+&gt;       result = decode(*records(attributes=17, allocation=0, size=0))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[short-0]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 0, kind = 'short'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...0 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[short-1]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 1, kind = 'short'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[short-2]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 2, kind = 'short'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[long-0]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 0, kind = 'long'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...0\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x000'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[long-1]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 1, kind = 'long'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f0'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[long-2]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 2, kind = 'long'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x000'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[bytearray-0]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 0, kind = 'bytearray'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = bytearray(b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x...0\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00')
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[bytearray-1]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 1, kind = 'bytearray'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = bytearray(b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f')
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[bytearray-2]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">index = 2, kind = 'bytearray'
+
+    @pytest.mark.parametrize('index', range(3))
+    @pytest.mark.parametrize('kind', ['short', 'long', 'bytearray'])
+    def test_exact_raw_records_required(index, kind):
+        raw = list(records())
+        raw[index] = (raw[index][:-1] if kind == 'short' else
+                      raw[index] + b'0' if kind == 'long' else bytearray(raw[index]))
+        with pytest.raises(ValueError, match='record'):
+&gt;           decode(*raw)
+
+tests\test_alc_r0_same_handle_directory.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = bytearray(b'\x07\x00\x00\x00 \x00\x00\x00')
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes0]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'size': -1}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes1]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'allocation': -1}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...ff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes2]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'creation': -1}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes3]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'write': -1}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes4]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'change': -1}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes5]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'links': 0}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes6]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'attributes': 0}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes7]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'attributes': 1040}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x04\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes8]" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">changes = {'reparse': 1}
+
+    @pytest.mark.parametrize('changes', [dict(size=-1), dict(allocation=-1),
+        dict(creation=-1), dict(write=-1), dict(change=-1), dict(links=0),
+        dict(attributes=0), dict(attributes=0x410), dict(reparse=1)])
+    def test_malformed_directory_denied(changes):
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*records(**changes))
+
+tests\test_alc_r0_same_handle_directory.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_zero_128_identity_denied" time="0.001"><failure message="NotImplementedError: same-handle decoder pending">def test_zero_128_identity_denied():
+        values = list(records())
+        values[1] = struct.pack('&lt;Q16s', 1, bytes(16))
+        with pytest.raises(ValueError, match='metadata'):
+&gt;           decode(*values)
+
+tests\test_alc_r0_same_handle_directory.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+stat_record = b'\xfe\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+identity_record = b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+device_record = b'\x07\x00\x00\x00 \x00\x00\x00'
+
+    def decode(stat_record, identity_record, device_record):
+&gt;       raise NotImplementedError('same-handle decoder pending')
+E       NotImplementedError: same-handle decoder pending
+
+tests\alc_r0_same_handle_directory.py:10: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_return_success_authoritative_and_raw_status_retained" time="0.001"><failure message="NotImplementedError: same-handle query pending">def test_nt_return_success_authoritative_and_raw_status_retained():
+        query = FakeNt()
+&gt;       result = nt_record(query, 12, 72, 68, forbidden_fatal)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = &lt;test_alc_r0_same_handle_directory.FakeNt object at 0x000002077156F800&gt;
+handle = 12, size = 72, info_class = 68
+fatal = &lt;function forbidden_fatal at 0x000002076F4BE020&gt;
+
+    def nt_record(query, handle, size, info_class, fatal):
+&gt;       raise NotImplementedError('same-handle query pending')
+E       NotImplementedError: same-handle query pending
+
+tests\alc_r0_same_handle_directory.py:14: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[0-71]" time="0.001"><failure message="NotImplementedError: same-handle query pending">status = 0, length = 71
+
+    @pytest.mark.parametrize('status,length', [(0, 71), (0, 73), (-1073741822, 72), (1, 72)])
+    def test_nt_failed_or_nonexact_completion_denied(status, length):
+        with pytest.raises(ValueError, match='query'):
+&gt;           nt_record(FakeNt(status, length), 12, 72, 68, forbidden_fatal)
+
+tests\test_alc_r0_same_handle_directory.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = &lt;test_alc_r0_same_handle_directory.FakeNt object at 0x000002077156FF80&gt;
+handle = 12, size = 72, info_class = 68
+fatal = &lt;function forbidden_fatal at 0x000002076F4BE020&gt;
+
+    def nt_record(query, handle, size, info_class, fatal):
+&gt;       raise NotImplementedError('same-handle query pending')
+E       NotImplementedError: same-handle query pending
+
+tests\alc_r0_same_handle_directory.py:14: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[0-73]" time="0.001"><failure message="NotImplementedError: same-handle query pending">status = 0, length = 73
+
+    @pytest.mark.parametrize('status,length', [(0, 71), (0, 73), (-1073741822, 72), (1, 72)])
+    def test_nt_failed_or_nonexact_completion_denied(status, length):
+        with pytest.raises(ValueError, match='query'):
+&gt;           nt_record(FakeNt(status, length), 12, 72, 68, forbidden_fatal)
+
+tests\test_alc_r0_same_handle_directory.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = &lt;test_alc_r0_same_handle_directory.FakeNt object at 0x000002077156F0B0&gt;
+handle = 12, size = 72, info_class = 68
+fatal = &lt;function forbidden_fatal at 0x000002076F4BE020&gt;
+
+    def nt_record(query, handle, size, info_class, fatal):
+&gt;       raise NotImplementedError('same-handle query pending')
+E       NotImplementedError: same-handle query pending
+
+tests\alc_r0_same_handle_directory.py:14: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[-1073741822-72]" time="0.001"><failure message="NotImplementedError: same-handle query pending">status = -1073741822, length = 72
+
+    @pytest.mark.parametrize('status,length', [(0, 71), (0, 73), (-1073741822, 72), (1, 72)])
+    def test_nt_failed_or_nonexact_completion_denied(status, length):
+        with pytest.raises(ValueError, match='query'):
+&gt;           nt_record(FakeNt(status, length), 12, 72, 68, forbidden_fatal)
+
+tests\test_alc_r0_same_handle_directory.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = &lt;test_alc_r0_same_handle_directory.FakeNt object at 0x0000020771DF4B90&gt;
+handle = 12, size = 72, info_class = 68
+fatal = &lt;function forbidden_fatal at 0x000002076F4BE020&gt;
+
+    def nt_record(query, handle, size, info_class, fatal):
+&gt;       raise NotImplementedError('same-handle query pending')
+E       NotImplementedError: same-handle query pending
+
+tests\alc_r0_same_handle_directory.py:14: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[1-72]" time="0.001"><failure message="NotImplementedError: same-handle query pending">status = 1, length = 72
+
+    @pytest.mark.parametrize('status,length', [(0, 71), (0, 73), (-1073741822, 72), (1, 72)])
+    def test_nt_failed_or_nonexact_completion_denied(status, length):
+        with pytest.raises(ValueError, match='query'):
+&gt;           nt_record(FakeNt(status, length), 12, 72, 68, forbidden_fatal)
+
+tests\test_alc_r0_same_handle_directory.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = &lt;test_alc_r0_same_handle_directory.FakeNt object at 0x000002077156FC80&gt;
+handle = 12, size = 72, info_class = 68
+fatal = &lt;function forbidden_fatal at 0x000002076F4BE020&gt;
+
+    def nt_record(query, handle, size, info_class, fatal):
+&gt;       raise NotImplementedError('same-handle query pending')
+E       NotImplementedError: same-handle query pending
+
+tests\alc_r0_same_handle_directory.py:14: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_pending_never_decodes_or_returns" time="0.001"><failure message="NotImplementedError: same-handle query pending">def test_pending_never_decodes_or_returns():
+        class Fatal(BaseException):
+            pass
+        events = []
+        def fatal():
+            events.append('fatal')
+            raise Fatal()
+        with pytest.raises(Fatal):
+&gt;           nt_record(FakeNt(259), 12, 72, 68, fatal)
+
+tests\test_alc_r0_same_handle_directory.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = &lt;test_alc_r0_same_handle_directory.FakeNt object at 0x000002076F4C5730&gt;
+handle = 12, size = 72, info_class = 68
+fatal = &lt;function test_pending_never_decodes_or_returns.&lt;locals&gt;.fatal at 0x000002076F4BE840&gt;
+
+    def nt_record(query, handle, size, info_class, fatal):
+&gt;       raise NotImplementedError('same-handle query pending')
+E       NotImplementedError: same-handle query pending
+
+tests\alc_r0_same_handle_directory.py:14: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_real_pending_fatal_isolated_child_exit" time="0.199" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_sample_query_order_and_retention" time="0.001"><failure message="NotImplementedError: same-handle bookends pending">def test_sample_query_order_and_retention():
+        api = FakeSample()
+&gt;       result = sample(api, 19)
+                 ^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = &lt;test_alc_r0_same_handle_directory.FakeSample object at 0x000002077156ED50&gt;
+handle = 19
+
+    def sample(api, handle):
+&gt;       raise NotImplementedError('same-handle bookends pending')
+E       NotImplementedError: same-handle bookends pending
+
+tests\alc_r0_same_handle_directory.py:18: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_sample_mutation_denied_without_normalization" time="0.001"><failure message="NotImplementedError: same-handle bookends pending">def test_sample_mutation_denied_without_normalization():
+        with pytest.raises(ValueError, match='bookend'):
+&gt;           sample(FakeSample(changed=True), 19)
+
+tests\test_alc_r0_same_handle_directory.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = &lt;test_alc_r0_same_handle_directory.FakeSample object at 0x000002077156CFB0&gt;
+handle = 19
+
+    def sample(api, handle):
+&gt;       raise NotImplementedError('same-handle bookends pending')
+E       NotImplementedError: same-handle bookends pending
+
+tests\alc_r0_same_handle_directory.py:18: NotImplementedError</failure></testcase></testsuite></testsuites>
