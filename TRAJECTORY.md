@@ -13527,3 +13527,32 @@ Task 2 sensorium/recollection gate: CLEAN
   Next: concrete trusted producer/handoff, bounded admission/monitor and factual
   history coverage before actual fixed D. Full unified ALUCLU/ALC goal active;
   no qualification, training, portability or learning PASS claimed here.
+
+- 2026-10-11 next continuation: fully reread goal3e5468, previous turn PROGRESS
+  (b9ddb51 committed/pushed reviewed bootstrap plus retained runtime evidence).
+  Authoritative Desktop clean HEAD b9ddb51 verified. Inspected fixed-worker design,
+  actual ReservedOwnedLease and qualification context; active authority checking
+  remains absent. Added exact pure watch timing-policy proposal for independent
+  design admission before TDD. No live monitor/observer/permit or launch claimed.
+  Independent code lane requested changes: scheduling from response consumption
+  adds up to249ms to the proposed520ms bound. Corrected cadence to observation
+  timestamp, immediate repoll if due; added exact policy binding and absorbing
+  terminal-state exception. Design rereview precedes source implementation.
+  Architecture rereview CLEAR for pure TDD, with explicit stop-reason field
+  clarification. Code rereview required that field and absorbing return before
+  new expiry causes; added closed stop_reason and post-expiry retention fixture.
+  No code implementation or scientific launch occurred during design review.
+  Final design503d2e27 code APPROVE/architecture CLEAR admitted deterministic TDD.
+  RED aa7c4f native exit1 root25576/job3total0active: one intended missing-module
+  failure. Implemented pure policy bfeea17a; GREEN d5c68b native exit0/root23388
+  job3total0active XML25/0/0/0 .198s. Actual code reviews APPROVE/CLEAR, no blocker.
+  Original regression session12800 terminal d5b2f1 native0/root472/job19total0active,
+  XML215/0/0/0 74.274s; personally verified ee070c code/test/runner pins unchanged,
+  stderr0/no timeout. Added exact runtime evidence/rawbyte attributes. Closing
+  independent retained-artifact review pending. No model/GPU experiment launched.
+  Closing independent GPT6.1Sol code APPROVE and architecture CLEAR verified all12
+  artifacts and same three pins, exact regression four-file215 selection. Updated
+  status-only docs after verdicts; representative coverage limitations retained.
+  Checkpoint complete only as pure timing policy, not live authority enforcement;
+  next concrete observer/handoff/lease integration and factual launch admission.
+  Full unified ALUCLU/ALC goal stays active, no new scientific acceptance.
