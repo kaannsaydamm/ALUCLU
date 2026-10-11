@@ -13464,3 +13464,66 @@ Task 2 sensorium/recollection gate: CLEAN
   next. Unified goal ACTIVE, not complete; next concrete integration is fixed
   worker bootstrap/settings with denial until reviewed producer/handoff,
   accounting/resource admission and required fresh-GPU evidence are resolved.
+
+- Objective fully reread7f040e; previous turn PROGRESS, accepted exporter69a4cfa
+  clean Desktop verified. Read original qualification context and fixed-worker
+  design; proposed concrete denied production bootstrap and process-local CPU/
+  GPU settings preparation, with real fresh CPU/no-host and explicit recording
+  GPU tests. No accepting handoff/actual qualification path is asserted. Scoped
+  independent design admission next; owner approval not asked again or reset.
+
+- Worker bootstrap proposal60abd94b independently code APPROVE/architecture
+  CLEAR for denied bootstrap and settings-only TDD. Added3expected missing-module
+  RED bootstrap cases, explicit recording backend tests (no monkeypatch), light
+  module/direct-script denial and fresh real CPU original-context integration;
+  CPU integration imports real Torch but no host/assets/CUDA. Added closed owned
+  diagnostic120/300s runner; production worker/script absent for RED. Independent
+  exact tests/runner RED admission next, no actual scientific launch.
+
+- Exact worker testsd57da07e/runner50ec475d independently RED admitted.
+  Originalexeced43b1 terminalroot15464 pytest1/notimeout/job3total0active.
+  Added denied module/script and dormant fixed preparation; private explicit
+  settings seam uses original CPU/GPU reference requirements and no fallback.
+  Main and preparation deny before request hooks, imports or env changes. No
+  actual model/qualification body is enabled; implementation/GREEN review next.
+
+- Personally checked RED JUnit3/3/0/0 0.419s, only intended missing-module
+  failures, stderr0, XMLSHAd182cfbaeb87ed5098c9f2f0d82c4fdda35c3d30542b0beb49abe14df52098f0.
+  Added same denial for module execution and its fresh denied-import test before
+  GREEN. Fixed installed Torch source confirms all four SDP setter APIs used;
+  no installed dependency changes. Exact implementation admission follows.
+
+- Final worker35ba89c1/script8420e53e/tests9849e80b/runner50ec475d independently
+  code APPROVE/architecture CLEAR admitted GREEN plus conditional regression.
+  Originalsession54631 GREENroot25268 exit0 personally observed1d19c1, job15total
+  0active/no timeout; XML30/0/0/0 37.297s SHA749de1bf15ba21d21516367d3111df0e3f3f5c7229d26edd9423df4d9f0f8ccd.
+  Conditionalregroot31864 terminal166694 exit0/notimeout/job53total0active;
+  XML278/0/0/0 98.608s SHA9b235571220d096b78627f373097b530bbf98d24c1876c02aae6de0964ebb44f.
+  All12artifacts/stderr0/finalpins personally recheckede59088. Fresh real CPU
+  settings meet original _context with CUDA uninitialized; no host/assets;
+  GPUsettingrecording tests are not real GPU evidence. Added honest runtime
+  evidence/rawbyte attributes; closing independent review next. Production
+  main/preparation always denied, no accepting worker or scientific claim.
+
+- 2026-10-11 continuation objective fully reread48ec2e; previous work PROGRESS
+  (new source plus native RED/GREEN/regression evidence), not a scientific run.
+  Desktop HEAD69a4cfa and all pending source/script/test/runner/runtime pins
+  unchanged. Revalidated retained12artifact facts911475/a3a705; no rerun/restart.
+  Previous review agents no longer live (authoritative team list root only), so
+  code-review skill closing lanes reopened as explicit GPT6.1Sol read-only agents.
+  No historical numeric/clock adoption or approval reset; closing verdict pending.
+
+- 2026-10-11 closing: independent GPT6.1Sol worker_close_code61 APPROVE and
+  worker_close_arch61 CLEAR for denied-bootstrap/settings only. Both read four
+  pinned source/script/test/runner files, specification, original CPU context,
+  and independently read/hash-checked all12 retained October8 artifacts. Source
+  pins unchanged; status-only documentation updated after review. Native RED3
+  intended failures, GREEN30 and regression278 remain original retained runs,
+  not October11 reruns. Reviewers corroborated receipts, not private live handles.
+  WATCH retained: dormant preparation composition and real GPU behavior remain
+  unexecuted; replacing the denial needs new operational/scientific acceptance.
+  Owner approves accounting method and states no other-PC/GPU experiment was
+  run; this does not erase earlier local controls or establish a calendar anchor.
+  Next: concrete trusted producer/handoff, bounded admission/monitor and factual
+  history coverage before actual fixed D. Full unified ALUCLU/ALC goal active;
+  no qualification, training, portability or learning PASS claimed here.
