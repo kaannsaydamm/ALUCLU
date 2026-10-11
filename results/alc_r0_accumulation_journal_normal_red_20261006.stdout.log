@@ -1,0 +1,80 @@
+........FF.............................................................. [ 59%]
+..................................................                       [100%]
+================================== FAILURES ===================================
+_ test_reference_cannot_return_success_after_detecting_bad_row_framing[tensor] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021566363EF0>
+extra = 'tensor'
+
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_reference_cannot_return_success_after_detecting_bad_row_framing(
+        reference_wiring, monkeypatch, extra
+    ):
+        """Malformed synthesized receipt cannot bypass a detected framing failure."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        returned = []
+    
+        def malformed(*args, **kwargs):
+            result = original(*args, **kwargs)
+            injected = (
+                torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+            )
+            object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        monkeypatch.setattr(module, "run_parity_cell", malformed)
+>       with pytest.raises(module.ReferenceParityError) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ReferenceParityError
+
+tests\test_alc_r0_accumulation_journal_integration.py:111: Failed
+_ test_reference_cannot_return_success_after_detecting_bad_row_framing[object] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000215664E7B60>
+extra = 'object'
+
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_reference_cannot_return_success_after_detecting_bad_row_framing(
+        reference_wiring, monkeypatch, extra
+    ):
+        """Malformed synthesized receipt cannot bypass a detected framing failure."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        returned = []
+    
+        def malformed(*args, **kwargs):
+            result = original(*args, **kwargs)
+            injected = (
+                torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+            )
+            object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        monkeypatch.setattr(module, "run_parity_cell", malformed)
+>       with pytest.raises(module.ReferenceParityError) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ReferenceParityError
+
+tests\test_alc_r0_accumulation_journal_integration.py:111: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_reference_cannot_return_success_after_detecting_bad_row_framing[tensor]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_reference_cannot_return_success_after_detecting_bad_row_framing[object]

@@ -1,0 +1,16 @@
+Root-observed real build command at clean commit c5d0f02ea876356d281a3d18343ca8e86b17d34e.
+Locked Python -B scripts/alc_r0_native_mutation_execution.py build
+manifest=mutation-sources-5ed52f4-v1/manifest.json; build-root=mutation-build-c5d0f02-v1.
+PYTHONPATH=authoritative worktree/src; PYTHONDONTWRITEBYTECODE=1.
+Start-Process -NoNewWindow -PassThru -Wait redirected matching stdout/stderr logs.
+All ten build records existed with actual compiler exit0 and dependency exit0;
+Python and compiler processes had ended, but own PowerShell wait wrapper19544 remained.
+Root verified console19732 identity and parent19544 and no live Python/compiler,
+closed only that orphan console, then verified and stopped only own stale wrapper19544.
+Tool session42762 terminated exit-1 after that intervention. Overall Python build
+launcher exit is unavailable; do not infer or report overall build CLI exit0.
+No builds were retried. Independent data-only verify_build of all ten completed
+records in locked Python session20164 returned actual_verification_exit=0,
+with exactly ten built statuses, each build_exit=0 and dependency_exit=0.
+Run CLI subsequently started directly without Start-Process wait in session2548.
+This note is root-witnessed diagnostic provenance, not an independent watcher.

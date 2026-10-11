@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="32" skipped="0" tests="32" time="16.233" timestamp="2026-10-04T04:32:55.530387+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-dtype]" time="0.053"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-precision]" time="0.003"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-deterministic]" time="0.003"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-threads]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-sdp:flash]" time="0.002"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-sdp:math]" time="0.002"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-sdp:memory]" time="0.002"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-sdp:cudnn]" time="0.003"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-sdp:reduction]" time="0.002"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-matmul:allow_tf32]" time="0.003"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-matmul:allow_fp16_reduced_precision_reduction]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-matmul:allow_bf16_reduced_precision_reduction]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-cudnn:enabled]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-cudnn:benchmark]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-cudnn:deterministic]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[preparation-cudnn:allow_tf32]" time="0.004"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_runtime_dependency_state.py:108: in test_runtime_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-dtype]" time="0.267"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-precision]" time="0.010"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-deterministic]" time="0.011"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-threads]" time="0.010"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-sdp:flash]" time="0.009"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-sdp:math]" time="0.009"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-sdp:memory]" time="0.008"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-sdp:cudnn]" time="0.006"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-sdp:reduction]" time="0.008"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-matmul:allow_tf32]" time="0.008"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-matmul:allow_fp16_reduced_precision_reduction]" time="0.008"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-matmul:allow_bf16_reduced_precision_reduction]" time="0.009"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-cudnn:enabled]" time="0.010"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-cudnn:benchmark]" time="0.011"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-cudnn:deterministic]" time="0.011"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_dependency_state" name="test_runtime_drift_denied_before_side_effect[replay-cudnn:allow_tf32]" time="0.010"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_runtime_dependency_state.py:89: in test_runtime_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase></testsuite></testsuites>

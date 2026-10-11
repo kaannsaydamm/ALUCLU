@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.842" timestamp="2026-10-05T06:25:03.284278+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_attempt_journal" name="test_nonregular_directory_rejected_before_open" time="0.050"><failure message="PermissionError: [Errno 13] Permission denied: 'C:\\Windows\\Temp\\pytest-of-kaann\\pytest-116\\test_nonregular_directory_reje0\\attempts.jsonl'">tests\test_alc_r0_attempt_journal.py:317: in test_nonregular_directory_rejected_before_open
+    store.read(head)
+src\aluclu\alc_r0\attempt_journal.py:187: in read
+    with self._open("rb") as handle:
+         ^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\attempt_journal.py:182: in _open
+    return self.path.open(mode)
+           ^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   PermissionError: [Errno 13] Permission denied: 'C:\\Windows\\Temp\\pytest-of-kaann\\pytest-116\\test_nonregular_directory_reje0\\attempts.jsonl'</failure></testcase></testsuite></testsuites>

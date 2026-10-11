@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="47.525" timestamp="2026-10-05T17:17:57.841275+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_qv_resume_update" name="test_full_qv_step2_after_moment_restore_matches_uninterrupted" time="34.646"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: complete forward/differentiable logits required">host = VerifiedHost(model=IndependentQVLM(
+  (model): Module(
+    (layers): ModuleList(
+      (0-29): 30 x FakeLoRALayer(
+   ...e_word_embeddings': True, 'bos_token_id': 0, 'eos_token_id': 0}, parameter_count=36504576, trainable_parameter_count=0)
+
+    def test_full_qv_step2_after_moment_restore_matches_uninterrupted(host):
+        uninterrupted = make_reference_wrapper(host, False, state="zero")
+        optimizer = make_reference_optimizer(uninterrupted)
+        base_digest = _base_digest(host.model)
+        initial_factors = serialize_reference(uninterrupted.reference)
+        first = dict(
+            input_ids=torch.tensor([[1, 2, 3, 0]]),
+            labels=torch.tensor([[-100, 2, 3, -100]]),
+            attention_mask=torch.tensor([[1, 1, 1, 0]]),
+            position_ids=torch.tensor([[3, 4, 5, 6]]),
+            use_cache=False,
+        )
+        output = uninterrupted(**first)
+        assert torch.isfinite(output.loss)
+        output.loss.backward()
+        norm = torch.nn.utils.clip_grad_norm_(
+            uninterrupted.reference.parameters(),
+            1.0,
+            error_if_nonfinite=True,
+            foreach=False,
+        )
+        assert torch.isfinite(norm)
+        optimizer.step()
+        optimizer.zero_grad(set_to_none=True)
+        record = serialize_reference_resume(uninterrupted, optimizer)
+        assert (record.factor_manifest, record.factor_payload) != initial_factors
+        assert any(
+            torch.count_nonzero(state["exp_avg"]).item()
+            for state in optimizer.state.values()
+        )
+    
+        resumed = make_reference_wrapper(host, True, state="zero")
+        resumed.mount_reference(
+            deserialize_reference(
+                record.factor_manifest,
+                record.factor_payload,
+            )
+        )
+        resumed_optimizer = restore_reference_optimizer(resumed, record)
+        step1 = compare_reference_optimizer_states(
+            uninterrupted,
+            optimizer,
+            resumed,
+            resumed_optimizer,
+            expected_step=1,
+            exact=True,
+        )
+        assert len(step1.factors) == len(step1.exp_avg) == len(step1.exp_avg_sq) == 120
+        assert serialize_reference_resume(resumed, resumed_optimizer) == record
+        for left, right in zip(
+            uninterrupted.reference.parameters(),
+            resumed.reference.parameters(),
+            strict=True,
+        ):
+            assert left.data_ptr() != right.data_ptr()
+            for role in ("step", "exp_avg", "exp_avg_sq"):
+                assert optimizer.state[left][role].data_ptr() != (
+                    resumed_optimizer.state[right][role].data_ptr()
+                )
+    
+        second = dict(
+            input_ids=torch.tensor([[4, 5, 6, 0]]),
+            labels=torch.tensor([[-100, 5, 6, -100]]),
+            attention_mask=torch.tensor([[1, 1, 1, 0]]),
+            position_ids=torch.tensor([[11, 12, 13, 14]]),
+            use_cache=False,
+        )
+        expected = uninterrupted(**second)
+        expected.loss.backward()
+        with resumed.checkpoint_session() as session:
+            actual = resumed(**second, checkpoint_session=session)
+            session.backward(actual.loss)
+            assert session.pending_count == 0
+        assert torch.equal(actual.logits, expected.logits)
+        assert torch.equal(actual.loss, expected.loss)
+        assert torch.isfinite(actual.loss)
+        for left, right in zip(
+            uninterrupted.reference.parameters(),
+            resumed.reference.parameters(),
+            strict=True,
+        ):
+            assert torch.equal(left.grad, right.grad)
+            assert torch.isfinite(left.grad).all()
+        norms = [
+            torch.nn.utils.clip_grad_norm_(
+                wrapper.reference.parameters(),
+                1.0,
+                error_if_nonfinite=True,
+                foreach=False,
+            )
+            for wrapper in (uninterrupted, resumed)
+        ]
+        assert torch.equal(*norms)
+        for current in (optimizer, resumed_optimizer):
+            current.step()
+            current.zero_grad(set_to_none=True)
+        step2 = compare_reference_optimizer_states(
+            uninterrupted,
+            optimizer,
+            resumed,
+            resumed_optimizer,
+            expected_step=2,
+            exact=True,
+        )
+        assert len(step2.factors) == len(step2.exp_avg) == len(step2.exp_avg_sq) == 120
+        factors = serialize_reference(uninterrupted.reference)
+        assert factors == serialize_reference(resumed.reference)
+        assert factors != (record.factor_manifest, record.factor_payload)
+        with torch.no_grad():
+            expected_after = uninterrupted(**second)
+            with resumed.checkpoint_session() as session:
+&gt;               actual_after = resumed(**second, checkpoint_session=session)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_qv_resume_update.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1783: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1794: in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\host_wrapper.py:233: in forward
+    return self._checkpoint_forward(
+src\aluclu\alc_r0\host_wrapper.py:428: in _checkpoint_forward
+    ticket.bind_output(logits)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;aluclu.alc_r0.checkpoint_execution._ForwardTicket object at 0x00000204C057AA50&gt;
+logits = tensor([[[ 222.5026, -361.7552,   76.5779,  147.0578,  282.5587, -208.8085,
+           104.7714,   79.1077],
+         ...2.0606],
+         [ 105.7959, -184.2813,   83.2111,  227.5216,  532.7319, -198.2498,
+           226.9443,  193.3951]]])
+
+    def bind_output(self, logits: torch.Tensor) -&gt; None:
+        self._session._require_owner()
+        try:
+            self._guard()
+            if (
+                self._sealed
+                or self._next_layer != self._session._layer_count
+                or not self._gradient_blocks
+                or not isinstance(logits, torch.Tensor)
+                or not logits.requires_grad
+                or not logits.is_floating_point()
+            ):
+&gt;               raise CheckpointExecutionError(
+                    "complete forward/differentiable logits required"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: complete forward/differentiable logits required
+
+src\aluclu\alc_r0\checkpoint_execution.py:525: CheckpointExecutionError</failure></testcase></testsuite></testsuites>

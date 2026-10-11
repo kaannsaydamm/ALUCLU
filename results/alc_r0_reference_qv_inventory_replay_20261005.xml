@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="16" time="45.132" timestamp="2026-10-05T14:06:36.091070+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_inventory_enables_without_replacing_controller" time="0.276" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_guard_rejects_drift_before_forward[reference]" time="0.268" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_guard_rejects_drift_before_forward[method]" time="0.124" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_guard_rejects_drift_before_forward[base]" time="0.179" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_guard_rejects_drift_before_forward[helper]" time="0.111" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_guard_rejects_drift_before_forward[linear]" time="0.142" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_class_field_shadow_rejected_without_property_call[reference]" time="0.019" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_class_field_shadow_rejected_without_property_call[capsule]" time="0.016" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_class_field_shadow_rejected_without_property_call[lora]" time="0.018" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_class_field_shadow_rejected_without_property_call[_checkpoint_controller]" time="0.017" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_wrong_arm_and_unknown_fields_not_admitted" time="0.021" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_qv_factor_factory_mutation_changes_fingerprint" time="0.105" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_owned_qv_block_replay_guards_original_execution_objects[None]" time="6.546" /><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_owned_qv_block_replay_guards_original_execution_objects[factor]" time="6.352"><failure message="assert 2 == 1&#10; +  where 2 = len([1, 1])">drift = 'factor'
+
+    @pytest.mark.parametrize("drift", [None, "factor", "base", "registry"])
+    def test_owned_qv_block_replay_guards_original_execution_objects(drift):
+        wrapper = fake_wrapper()
+        layer = fake_layer()
+        layer.self_attn.config = LlamaConfig(
+            hidden_size=576,
+            num_attention_heads=9,
+            num_key_value_heads=3,
+        )
+        layer.self_attn.config._attn_implementation = "eager"
+        wrapper.base = layer
+        wrapper.train()
+        for target in ("q", "v"):
+            with torch.no_grad():
+                wrapper.reference.factors["29"][target].B.fill_(0.01)
+        wrapper.enable_checkpoint_inventory()
+        parameters = tuple(wrapper.reference.factors["29"].parameters())
+        hidden = torch.linspace(-1, 1, 1152).reshape(1, 2, 576)
+        expected = live(wrapper, 29, layer, hidden)
+        gradients = torch.autograd.grad(expected.square().sum(), parameters)
+        operation = wrapper._bind_checkpoint_block(29, layer)
+        calls = []
+    
+        def block(value, metadata):
+            calls.append(1)
+            return operation(value, metadata)
+    
+        def execute():
+            with wrapper.checkpoint_session() as session:
+                ticket = session.begin_forward(wrapper, data())
+                output = hidden
+                for index in range(30):
+                    # The first29 fixture blocks are identities; only the final q/v
+                    # block is exercised. This is not a full-host all-layer proof.
+                    output = ticket.run(
+                        index,
+                        block if index == 29 else lambda value, metadata: value,
+                        output,
+                    )
+                ticket.bind_output(output)
+                if drift == "factor":
+                    parameters[-1].data.add_(1)
+                elif drift == "base":
+                    layer.self_attn.v_proj.weight.data.add_(1)
+                elif drift == "registry":
+                    wrapper.reference.factors["29"]["v"].B = torch.nn.Parameter(
+                        parameters[-1].detach().clone()
+                    )
+                session.backward(output.square().sum())
+                assert torch.equal(output, expected)
+    
+        if drift is None:
+            execute()
+            assert len(calls) == 2
+            for parameter, gradient in zip(parameters, gradients, strict=True):
+                assert torch.equal(parameter.grad, gradient)
+        else:
+            with pytest.raises(CheckpointExecutionError):
+                execute()
+&gt;           assert len(calls) == 1  # Drift rejected before recomputation side effects.
+            ^^^^^^^^^^^^^^^^^^^^^^
+E           assert 2 == 1
+E            +  where 2 = len([1, 1])
+
+tests\test_alc_r0_reference_qv_inventory.py:160: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_owned_qv_block_replay_guards_original_execution_objects[base]" time="4.850"><failure message="assert 2 == 1&#10; +  where 2 = len([1, 1])">drift = 'base'
+
+    @pytest.mark.parametrize("drift", [None, "factor", "base", "registry"])
+    def test_owned_qv_block_replay_guards_original_execution_objects(drift):
+        wrapper = fake_wrapper()
+        layer = fake_layer()
+        layer.self_attn.config = LlamaConfig(
+            hidden_size=576,
+            num_attention_heads=9,
+            num_key_value_heads=3,
+        )
+        layer.self_attn.config._attn_implementation = "eager"
+        wrapper.base = layer
+        wrapper.train()
+        for target in ("q", "v"):
+            with torch.no_grad():
+                wrapper.reference.factors["29"][target].B.fill_(0.01)
+        wrapper.enable_checkpoint_inventory()
+        parameters = tuple(wrapper.reference.factors["29"].parameters())
+        hidden = torch.linspace(-1, 1, 1152).reshape(1, 2, 576)
+        expected = live(wrapper, 29, layer, hidden)
+        gradients = torch.autograd.grad(expected.square().sum(), parameters)
+        operation = wrapper._bind_checkpoint_block(29, layer)
+        calls = []
+    
+        def block(value, metadata):
+            calls.append(1)
+            return operation(value, metadata)
+    
+        def execute():
+            with wrapper.checkpoint_session() as session:
+                ticket = session.begin_forward(wrapper, data())
+                output = hidden
+                for index in range(30):
+                    # The first29 fixture blocks are identities; only the final q/v
+                    # block is exercised. This is not a full-host all-layer proof.
+                    output = ticket.run(
+                        index,
+                        block if index == 29 else lambda value, metadata: value,
+                        output,
+                    )
+                ticket.bind_output(output)
+                if drift == "factor":
+                    parameters[-1].data.add_(1)
+                elif drift == "base":
+                    layer.self_attn.v_proj.weight.data.add_(1)
+                elif drift == "registry":
+                    wrapper.reference.factors["29"]["v"].B = torch.nn.Parameter(
+                        parameters[-1].detach().clone()
+                    )
+                session.backward(output.square().sum())
+                assert torch.equal(output, expected)
+    
+        if drift is None:
+            execute()
+            assert len(calls) == 2
+            for parameter, gradient in zip(parameters, gradients, strict=True):
+                assert torch.equal(parameter.grad, gradient)
+        else:
+            with pytest.raises(CheckpointExecutionError):
+                execute()
+&gt;           assert len(calls) == 1  # Drift rejected before recomputation side effects.
+            ^^^^^^^^^^^^^^^^^^^^^^
+E           assert 2 == 1
+E            +  where 2 = len([1, 1])
+
+tests\test_alc_r0_reference_qv_inventory.py:160: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_qv_inventory" name="test_owned_qv_block_replay_guards_original_execution_objects[registry]" time="4.614" /></testsuite></testsuites>

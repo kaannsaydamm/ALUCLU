@@ -1,0 +1,15 @@
+Worker-observed Start-Process -NoNewWindow -Wait -PassThru exits, not independent watcher.
+cwd=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+PYTHONPATH=<cwd>\src
+PYTHONDONTWRITEBYTECODE=1
+executable=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+commonargs=-B -m pytest -p no:cacheprovider tests/test_alc_r0_native_mutation_execution.py
+AbsentRED --junitxml=<evidence>\mutation-execution-red.xml actualexit2; absent execution script FileNotFoundError during collection.
+ManifestRED -k raw_byte_binding --junitxml=<evidence>\mutation-execution-manifest-red.xml actualexit1;1failed8deselected0.27s missing raw-byte-binding helper. Root identified CRLF-reserialization mismatch in unexecuted build consumer; fixed captured actual input bytes hash, no original rewrite.
+AllocationRED -k "allocation_proof or later_kill" --junitxml=<evidence>\mutation-execution-allocation-red.xml actualexit1;5failed9deselected0.56s missing allocation/history admission helpers. Pure coverage added exact layout and prior-corruption rejection.
+GREENv1 --junitxml=<evidence>\mutation-execution-green-v1.xml actualexit0;36passed28.32s.
+GREENv2 --junitxml=<evidence>\mutation-execution-green-v2.xml actualexit0;36passed23.34s final-source data-only evidence.
+Each matching stem stdout/stderr redirected. Ruff format/check --no-cache on two ownedfiles PASS0.
+Actual reviewed generated manifest raw9e7b7168903640c5b2c94626877a375e503c9bc87f9c9080b5f0a63937b3eaca used only data-only positive/negative regeneration validation. Original source-generation artifacts preserved; negative copies are pytest temporary artifacts.
+Synthetic UNIT-only schedule/admission/binding tests provide no genuine build/child/raw-runtime evidence. Full valid execution build-record/child/process/aggregate positives remain unverified until first independently approved build/run.
+No native compile/load, execution CLI, generation CLI, model/corpus/tokenizer/training/heldout/timing/paid/install action; no commits. Original frozen and pure layer sources preserved.

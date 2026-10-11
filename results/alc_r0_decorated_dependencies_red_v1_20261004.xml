@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="10.954" timestamp="2026-10-04T04:49:17.072728+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_decorated_dependencies" name="test_actual_rotary_decorator_can_be_fingerprinted_without_execution" time="0.010"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: foreign bound method state unsupported">tests\test_alc_r0_decorated_dependencies.py:18: in test_actual_rotary_decorator_can_be_fingerprinted_without_execution
+    first = computational_state_fingerprint({"decorator_fixture": root})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:412: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:295: in freeze
+    return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:351: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:292: in freeze
+    raise CheckpointExecutionError("foreign bound method state unsupported")
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: foreign bound method state unsupported</failure></testcase><testcase classname="tests.test_alc_r0_decorated_dependencies" name="test_arbitrary_foreign_bound_method_remains_rejected" time="0.001" /></testsuite></testsuites>

@@ -1,0 +1,674 @@
+................................................FFFFFFFF                 [100%]
+================================== FAILURES ===================================
+______ test_cell_preserves_pair_secondary_fault_markers[snapshot-False] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228BFE100E0>
+interrupt = False, fault = 'snapshot'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_cell_preserves_pair_secondary_fault_markers(monkeypatch, interrupt, fault):
+        primary = KeyboardInterrupt("original") if interrupt else RuntimeError("original")
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        monkeypatch.setattr(pair, "compare_accumulations", fail)
+        if fault == "snapshot":
+            monkeypatch.setattr(pair, "_safe_snapshot", lambda owner: (None, True))
+        else:
+            original = pair._clear_owned
+    
+            def clear(parameters):
+                original(parameters)
+                return True
+    
+            monkeypatch.setattr(pair, "_clear_owned", clear)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert (
+            len(error.failure.completed) == 18 and error.failure.pending_losses is not None
+        )
+>       assert getattr(error, "journal_fault" if fault == "snapshot" else "cleanup_fault")
+E       AssertionError: assert False
+E        +  where False = getattr(ParityCellError('original'), 'journal_fault')
+
+tests\test_alc_r0_accumulation_journal_integration.py:254: AssertionError
+_______ test_cell_preserves_pair_secondary_fault_markers[snapshot-True] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228C0005B50>
+interrupt = True, fault = 'snapshot'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_cell_preserves_pair_secondary_fault_markers(monkeypatch, interrupt, fault):
+        primary = KeyboardInterrupt("original") if interrupt else RuntimeError("original")
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        monkeypatch.setattr(pair, "compare_accumulations", fail)
+        if fault == "snapshot":
+            monkeypatch.setattr(pair, "_safe_snapshot", lambda owner: (None, True))
+        else:
+            original = pair._clear_owned
+    
+            def clear(parameters):
+                original(parameters)
+                return True
+    
+            monkeypatch.setattr(pair, "_clear_owned", clear)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert (
+            len(error.failure.completed) == 18 and error.failure.pending_losses is not None
+        )
+>       assert getattr(error, "journal_fault" if fault == "snapshot" else "cleanup_fault")
+E       AssertionError: assert False
+E        +  where False = getattr(ParityCellInterrupted('original'), 'journal_fault')
+
+tests\test_alc_r0_accumulation_journal_integration.py:254: AssertionError
+_______ test_cell_preserves_pair_secondary_fault_markers[cleanup-False] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228BFFBF0B0>
+interrupt = False, fault = 'cleanup'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_cell_preserves_pair_secondary_fault_markers(monkeypatch, interrupt, fault):
+        primary = KeyboardInterrupt("original") if interrupt else RuntimeError("original")
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        monkeypatch.setattr(pair, "compare_accumulations", fail)
+        if fault == "snapshot":
+            monkeypatch.setattr(pair, "_safe_snapshot", lambda owner: (None, True))
+        else:
+            original = pair._clear_owned
+    
+            def clear(parameters):
+                original(parameters)
+                return True
+    
+            monkeypatch.setattr(pair, "_clear_owned", clear)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert (
+            len(error.failure.completed) == 18 and error.failure.pending_losses is not None
+        )
+>       assert getattr(error, "journal_fault" if fault == "snapshot" else "cleanup_fault")
+E       AssertionError: assert False
+E        +  where False = getattr(ParityCellError('original'), 'cleanup_fault')
+
+tests\test_alc_r0_accumulation_journal_integration.py:254: AssertionError
+_______ test_cell_preserves_pair_secondary_fault_markers[cleanup-True] ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228C004BEF0>
+interrupt = True, fault = 'cleanup'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_cell_preserves_pair_secondary_fault_markers(monkeypatch, interrupt, fault):
+        primary = KeyboardInterrupt("original") if interrupt else RuntimeError("original")
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        monkeypatch.setattr(pair, "compare_accumulations", fail)
+        if fault == "snapshot":
+            monkeypatch.setattr(pair, "_safe_snapshot", lambda owner: (None, True))
+        else:
+            original = pair._clear_owned
+    
+            def clear(parameters):
+                original(parameters)
+                return True
+    
+            monkeypatch.setattr(pair, "_clear_owned", clear)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert (
+            len(error.failure.completed) == 18 and error.failure.pending_losses is not None
+        )
+>       assert getattr(error, "journal_fault" if fault == "snapshot" else "cleanup_fault")
+E       AssertionError: assert False
+E        +  where False = getattr(ParityCellInterrupted('original'), 'cleanup_fault')
+
+tests\test_alc_r0_accumulation_journal_integration.py:254: AssertionError
+_ test_secondary_factor_cleanup_does_not_replace_computation_error[observation-False] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228C1080D70>
+interrupt = False, layer = 'observation'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("layer", ["observation", "step"])
+    def test_secondary_factor_cleanup_does_not_replace_computation_error(
+        monkeypatch, interrupt, layer
+    ):
+        primary = KeyboardInterrupt("compute") if interrupt else RuntimeError("compute")
+        original_setattr = torch.nn.Parameter.__setattr__
+        make, created = pair_factory()
+        armed = []
+        failed_cleanup = []
+    
+        def broken_setattr(parameter, name, value):
+            if armed and name == "grad" and value is None and not failed_cleanup:
+                failed_cleanup.append(id(parameter))
+                raise RuntimeError("secondary cleanup")
+            return original_setattr(parameter, name, value)
+    
+        def fail(*args, **kwargs):
+            armed.append(1)
+            raise primary
+    
+        monkeypatch.setattr(torch.nn.Parameter, "__setattr__", broken_setattr)
+        if layer == "observation":
+            monkeypatch.setattr(observation, "score_banking_candidate", fail)
+        else:
+            monkeypatch.setattr(step, "_snapshot", fail)
+        expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+        with pytest.raises(expected) as caught:
+            pair.run_accumulation_pair(make, accumulation_inputs(), exact=True)
+>       assert failed_cleanup and caught.value.__cause__ is primary
+E       AssertionError: assert ([2374060642768] and RuntimeError('secondary cleanup') is RuntimeError('compute'))
+E        +  where RuntimeError('secondary cleanup') = AccumulationError('secondary cleanup').__cause__
+E        +    where AccumulationError('secondary cleanup') = <ExceptionInfo AccumulationError('secondary cleanup') tblen=2>.value
+
+tests\test_alc_r0_accumulation_journal_integration.py:291: AssertionError
+_ test_secondary_factor_cleanup_does_not_replace_computation_error[observation-True] _
+
+args = (tensor([[0.0800, 0.0800, 0.0800,  ..., 0.0800, 0.0800, 0.0800],
+        [0.0800, 0.0800, 0.0800,  ..., 0.0800, 0.0800...0.0800],
+        [0.0800, 0.0800, 0.0800,  ..., 0.0800, 0.0800, 0.0800]],
+       grad_fn=<SelectBackward0>), 62, (12,))
+kwargs = {}
+
+    def fail(*args, **kwargs):
+        armed.append(1)
+>       raise primary
+E       KeyboardInterrupt: compute
+
+tests\test_alc_r0_accumulation_journal_integration.py:281: KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+parameter = Parameter containing:
+tensor([[1., 1.],
+        [1., 1.]], requires_grad=True)
+name = 'grad', value = None
+
+    def broken_setattr(parameter, name, value):
+        if armed and name == "grad" and value is None and not failed_cleanup:
+            failed_cleanup.append(id(parameter))
+>           raise RuntimeError("secondary cleanup")
+E           RuntimeError: secondary cleanup
+
+tests\test_alc_r0_accumulation_journal_integration.py:276: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228C10F4770>
+interrupt = True, layer = 'observation'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("layer", ["observation", "step"])
+    def test_secondary_factor_cleanup_does_not_replace_computation_error(
+        monkeypatch, interrupt, layer
+    ):
+        primary = KeyboardInterrupt("compute") if interrupt else RuntimeError("compute")
+        original_setattr = torch.nn.Parameter.__setattr__
+        make, created = pair_factory()
+        armed = []
+        failed_cleanup = []
+    
+        def broken_setattr(parameter, name, value):
+            if armed and name == "grad" and value is None and not failed_cleanup:
+                failed_cleanup.append(id(parameter))
+                raise RuntimeError("secondary cleanup")
+            return original_setattr(parameter, name, value)
+    
+        def fail(*args, **kwargs):
+            armed.append(1)
+            raise primary
+    
+        monkeypatch.setattr(torch.nn.Parameter, "__setattr__", broken_setattr)
+        if layer == "observation":
+            monkeypatch.setattr(observation, "score_banking_candidate", fail)
+        else:
+            monkeypatch.setattr(step, "_snapshot", fail)
+        expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+        with pytest.raises(expected) as caught:
+>           pair.run_accumulation_pair(make, accumulation_inputs(), exact=True)
+
+tests\test_alc_r0_accumulation_journal_integration.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <function factory.<locals>.make at 0x00000228C10B2D40>
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...6, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63), prompt_length=62, candidate_ids=(13, 14)), ...)
+exact = True, _accumulation_owner = None
+
+    def run_accumulation_pair(factory, fixtures, *, exact, _accumulation_owner=None):
+        """Observe off, observe on, compare pre-clip, step off/on, compare full state.
+    
+        CPU exact comparison is mandatory. GPU uses the existing fixed tolerance
+        contract; factory qualification/resource budgeting remain outside this API.
+        Success is scoped pipeline execution, NOT actual-host/matrix/learning PASS.
+        """
+        if not callable(factory) or type(exact) is not bool:
+            raise ObservationError("callable factory and exact boolean required")
+        owned = []
+        owner = None
+        try:
+            owner = _fresh_owner(_accumulation_owner)
+            with _pair_phase(owner, "off_factory"):
+                off = factory(False)
+            with _pair_phase(owner, "off_bindings"):
+                if not isinstance(off, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                base_ids = {id(p) for p in off.base.parameters()}
+                owned.extend(
+                    p
+                    for p in off._checkpoint_factors().parameters()
+                    if id(p) not in base_ids
+                )
+                base, off_factors, off_named, device = _bindings(off, "nonzero")
+                if exact != (device.type == "cpu"):
+                    raise ObservationError("CPU exact/GPU fixed tolerance mode required")
+                base_stamp = _roster_stamp(base.named_parameters())
+                buffer_stamp = _roster_stamp(base.named_buffers())
+                factor_stamp = _roster_stamp(off_named)
+            with _pair_phase(owner, "off_observation"):
+                reference = observe_accumulation(
+                    off,
+                    fixtures,
+                    checkpoint=False,
+                    _accumulation_ticket=owner.ticket("off"),
+                )
+    
+            with _pair_phase(owner, "on_factory"):
+                on = factory(True)
+            with _pair_phase(owner, "on_bindings"):
+                if not isinstance(on, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                protected = base_ids | {id(p) for p in on.base.parameters()}
+                owned.extend(
+                    p
+                    for p in on._checkpoint_factors().parameters()
+                    if id(p) not in protected
+                )
+                on_base, on_factors, on_named, on_device = _bindings(on, "nonzero")
+                if (
+                    on is off
+                    or on_base is not base
+                    or on_factors is off_factors
+                    or on_device != device
+                    or off.base is not base
+                    or off._checkpoint_factors() is not off_factors
+                    or _roster_stamp(base.named_parameters()) != base_stamp
+                    or _roster_stamp(base.named_buffers()) != buffer_stamp
+                    or _roster_stamp(
+                        sorted(
+                            off_factors.named_parameters(remove_duplicate=False),
+                            key=lambda item: item[0].encode("utf-8"),
+                        )
+                    )
+                    != factor_stamp
+                    or _base_digest(base) != reference.forwards[0].base_digest
+                    or _digest(off_named) != reference.forwards[0].factor_digest
+                    or {_storage(p) for _, p in off_named}
+                    & {_storage(p) for _, p in on_named}
+                ):
+                    raise ObservationError("factory changed state or reused comparison arm")
+                compare_named_tensors(dict(off_named), dict(on_named), exact=True)
+            with _pair_phase(owner, "on_observation"):
+                actual = observe_accumulation(
+                    on, fixtures, checkpoint=True, _accumulation_ticket=owner.ticket("on")
+                )
+    
+            # This ordering is the integration invariant, not just documentation.
+            with _pair_phase(owner, "preclip_compare"):
+                compare_accumulations(reference, actual, exact=exact)
+            with _pair_phase(owner, "cross_arm_storage"):
+                used = {
+                    _storage(value)
+                    for value in (
+                        *base.parameters(),
+                        *base.buffers(),
+                        *off_factors.parameters(),
+                        *on_factors.parameters(),
+                    )
+                }
+                for parameter in owned:
+                    if parameter.grad is None:
+                        raise ObservationError("both live accumulated gradients required")
+                    storage = _storage(parameter.grad)
+                    if storage in used:
+                        raise ObservationError("cross-arm gradient/state storage alias")
+                    used.add(storage)
+            with _pair_phase(owner, "off_step"):
+                reference_step = step_accumulation(
+                    off, reference, _accumulation_ticket=owner.ticket("off")
+                )
+            with _pair_phase(owner, "on_step"):
+                actual_step = step_accumulation(
+                    on, actual, _accumulation_ticket=owner.ticket("on")
+                )
+            with _pair_phase(owner, "full_step_compare"):
+                comparison = compare_accumulation_steps(
+                    reference_step, actual_step, exact=exact
+                )
+            with _pair_phase(owner, "pair_record"):
+                result = AccumulationPair(reference_step, actual_step, comparison)
+            owner.close()
+            return result
+        except BaseException as exc:
+            failure, journal_fault = _safe_snapshot(owner)
+            cleanup_fault = _clear_owned(owned)
+            if owner is not None:
+                try:
+                    owner.close()
+                except BaseException:
+                    journal_fault = True
+            if failure is not None:
+                failure = replace(
+                    failure, journal_fault=journal_fault, cleanup_fault=cleanup_fault
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    AccumulationInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else AccumulationError
+                )
+>               raise error(
+                    str(exc),
+                    failure,
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.checkpoint_accumulation_pair.AccumulationError: secondary cleanup
+
+src\aluclu\alc_r0\checkpoint_accumulation_pair.py:198: AccumulationError
+_ test_secondary_factor_cleanup_does_not_replace_computation_error[step-False] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228C10F5AC0>
+interrupt = False, layer = 'step'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("layer", ["observation", "step"])
+    def test_secondary_factor_cleanup_does_not_replace_computation_error(
+        monkeypatch, interrupt, layer
+    ):
+        primary = KeyboardInterrupt("compute") if interrupt else RuntimeError("compute")
+        original_setattr = torch.nn.Parameter.__setattr__
+        make, created = pair_factory()
+        armed = []
+        failed_cleanup = []
+    
+        def broken_setattr(parameter, name, value):
+            if armed and name == "grad" and value is None and not failed_cleanup:
+                failed_cleanup.append(id(parameter))
+                raise RuntimeError("secondary cleanup")
+            return original_setattr(parameter, name, value)
+    
+        def fail(*args, **kwargs):
+            armed.append(1)
+            raise primary
+    
+        monkeypatch.setattr(torch.nn.Parameter, "__setattr__", broken_setattr)
+        if layer == "observation":
+            monkeypatch.setattr(observation, "score_banking_candidate", fail)
+        else:
+            monkeypatch.setattr(step, "_snapshot", fail)
+        expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+        with pytest.raises(expected) as caught:
+            pair.run_accumulation_pair(make, accumulation_inputs(), exact=True)
+>       assert failed_cleanup and caught.value.__cause__ is primary
+E       AssertionError: assert ([2373977875120] and RuntimeError('secondary cleanup') is RuntimeError('compute'))
+E        +  where RuntimeError('secondary cleanup') = AccumulationError('secondary cleanup').__cause__
+E        +    where AccumulationError('secondary cleanup') = <ExceptionInfo AccumulationError('secondary cleanup') tblen=2>.value
+
+tests\test_alc_r0_accumulation_journal_integration.py:291: AssertionError
+_ test_secondary_factor_cleanup_does_not_replace_computation_error[step-True] _
+
+args = (AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    decoupled_weight_decay...aining:
+tensor([[ 0.1918,  0.1084],
+        [-0.5342,  0.1654]]), Parameter containing:
+tensor([-0.2015,  0.3356])), 1)
+kwargs = {}
+
+    def fail(*args, **kwargs):
+        armed.append(1)
+>       raise primary
+E       KeyboardInterrupt: compute
+
+tests\test_alc_r0_accumulation_journal_integration.py:281: KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+parameter = Parameter containing:
+tensor([[0.9997, 0.9997],
+        [0.9997, 0.9997]], requires_grad=True)
+name = 'grad', value = None
+
+    def broken_setattr(parameter, name, value):
+        if armed and name == "grad" and value is None and not failed_cleanup:
+            failed_cleanup.append(id(parameter))
+>           raise RuntimeError("secondary cleanup")
+E           RuntimeError: secondary cleanup
+
+tests\test_alc_r0_accumulation_journal_integration.py:276: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228C112DFA0>
+interrupt = True, layer = 'step'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("layer", ["observation", "step"])
+    def test_secondary_factor_cleanup_does_not_replace_computation_error(
+        monkeypatch, interrupt, layer
+    ):
+        primary = KeyboardInterrupt("compute") if interrupt else RuntimeError("compute")
+        original_setattr = torch.nn.Parameter.__setattr__
+        make, created = pair_factory()
+        armed = []
+        failed_cleanup = []
+    
+        def broken_setattr(parameter, name, value):
+            if armed and name == "grad" and value is None and not failed_cleanup:
+                failed_cleanup.append(id(parameter))
+                raise RuntimeError("secondary cleanup")
+            return original_setattr(parameter, name, value)
+    
+        def fail(*args, **kwargs):
+            armed.append(1)
+            raise primary
+    
+        monkeypatch.setattr(torch.nn.Parameter, "__setattr__", broken_setattr)
+        if layer == "observation":
+            monkeypatch.setattr(observation, "score_banking_candidate", fail)
+        else:
+            monkeypatch.setattr(step, "_snapshot", fail)
+        expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+        with pytest.raises(expected) as caught:
+>           pair.run_accumulation_pair(make, accumulation_inputs(), exact=True)
+
+tests\test_alc_r0_accumulation_journal_integration.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <function factory.<locals>.make at 0x00000228C111CF40>
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...6, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63), prompt_length=62, candidate_ids=(13, 14)), ...)
+exact = True, _accumulation_owner = None
+
+    def run_accumulation_pair(factory, fixtures, *, exact, _accumulation_owner=None):
+        """Observe off, observe on, compare pre-clip, step off/on, compare full state.
+    
+        CPU exact comparison is mandatory. GPU uses the existing fixed tolerance
+        contract; factory qualification/resource budgeting remain outside this API.
+        Success is scoped pipeline execution, NOT actual-host/matrix/learning PASS.
+        """
+        if not callable(factory) or type(exact) is not bool:
+            raise ObservationError("callable factory and exact boolean required")
+        owned = []
+        owner = None
+        try:
+            owner = _fresh_owner(_accumulation_owner)
+            with _pair_phase(owner, "off_factory"):
+                off = factory(False)
+            with _pair_phase(owner, "off_bindings"):
+                if not isinstance(off, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                base_ids = {id(p) for p in off.base.parameters()}
+                owned.extend(
+                    p
+                    for p in off._checkpoint_factors().parameters()
+                    if id(p) not in base_ids
+                )
+                base, off_factors, off_named, device = _bindings(off, "nonzero")
+                if exact != (device.type == "cpu"):
+                    raise ObservationError("CPU exact/GPU fixed tolerance mode required")
+                base_stamp = _roster_stamp(base.named_parameters())
+                buffer_stamp = _roster_stamp(base.named_buffers())
+                factor_stamp = _roster_stamp(off_named)
+            with _pair_phase(owner, "off_observation"):
+                reference = observe_accumulation(
+                    off,
+                    fixtures,
+                    checkpoint=False,
+                    _accumulation_ticket=owner.ticket("off"),
+                )
+    
+            with _pair_phase(owner, "on_factory"):
+                on = factory(True)
+            with _pair_phase(owner, "on_bindings"):
+                if not isinstance(on, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                protected = base_ids | {id(p) for p in on.base.parameters()}
+                owned.extend(
+                    p
+                    for p in on._checkpoint_factors().parameters()
+                    if id(p) not in protected
+                )
+                on_base, on_factors, on_named, on_device = _bindings(on, "nonzero")
+                if (
+                    on is off
+                    or on_base is not base
+                    or on_factors is off_factors
+                    or on_device != device
+                    or off.base is not base
+                    or off._checkpoint_factors() is not off_factors
+                    or _roster_stamp(base.named_parameters()) != base_stamp
+                    or _roster_stamp(base.named_buffers()) != buffer_stamp
+                    or _roster_stamp(
+                        sorted(
+                            off_factors.named_parameters(remove_duplicate=False),
+                            key=lambda item: item[0].encode("utf-8"),
+                        )
+                    )
+                    != factor_stamp
+                    or _base_digest(base) != reference.forwards[0].base_digest
+                    or _digest(off_named) != reference.forwards[0].factor_digest
+                    or {_storage(p) for _, p in off_named}
+                    & {_storage(p) for _, p in on_named}
+                ):
+                    raise ObservationError("factory changed state or reused comparison arm")
+                compare_named_tensors(dict(off_named), dict(on_named), exact=True)
+            with _pair_phase(owner, "on_observation"):
+                actual = observe_accumulation(
+                    on, fixtures, checkpoint=True, _accumulation_ticket=owner.ticket("on")
+                )
+    
+            # This ordering is the integration invariant, not just documentation.
+            with _pair_phase(owner, "preclip_compare"):
+                compare_accumulations(reference, actual, exact=exact)
+            with _pair_phase(owner, "cross_arm_storage"):
+                used = {
+                    _storage(value)
+                    for value in (
+                        *base.parameters(),
+                        *base.buffers(),
+                        *off_factors.parameters(),
+                        *on_factors.parameters(),
+                    )
+                }
+                for parameter in owned:
+                    if parameter.grad is None:
+                        raise ObservationError("both live accumulated gradients required")
+                    storage = _storage(parameter.grad)
+                    if storage in used:
+                        raise ObservationError("cross-arm gradient/state storage alias")
+                    used.add(storage)
+            with _pair_phase(owner, "off_step"):
+                reference_step = step_accumulation(
+                    off, reference, _accumulation_ticket=owner.ticket("off")
+                )
+            with _pair_phase(owner, "on_step"):
+                actual_step = step_accumulation(
+                    on, actual, _accumulation_ticket=owner.ticket("on")
+                )
+            with _pair_phase(owner, "full_step_compare"):
+                comparison = compare_accumulation_steps(
+                    reference_step, actual_step, exact=exact
+                )
+            with _pair_phase(owner, "pair_record"):
+                result = AccumulationPair(reference_step, actual_step, comparison)
+            owner.close()
+            return result
+        except BaseException as exc:
+            failure, journal_fault = _safe_snapshot(owner)
+            cleanup_fault = _clear_owned(owned)
+            if owner is not None:
+                try:
+                    owner.close()
+                except BaseException:
+                    journal_fault = True
+            if failure is not None:
+                failure = replace(
+                    failure, journal_fault=journal_fault, cleanup_fault=cleanup_fault
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    AccumulationInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else AccumulationError
+                )
+>               raise error(
+                    str(exc),
+                    failure,
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.checkpoint_accumulation_pair.AccumulationError: secondary cleanup
+
+src\aluclu\alc_r0\checkpoint_accumulation_pair.py:198: AccumulationError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_cell_preserves_pair_secondary_fault_markers[snapshot-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_cell_preserves_pair_secondary_fault_markers[snapshot-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_cell_preserves_pair_secondary_fault_markers[cleanup-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_cell_preserves_pair_secondary_fault_markers[cleanup-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_secondary_factor_cleanup_does_not_replace_computation_error[observation-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_secondary_factor_cleanup_does_not_replace_computation_error[observation-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_secondary_factor_cleanup_does_not_replace_computation_error[step-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_secondary_factor_cleanup_does_not_replace_computation_error[step-True]

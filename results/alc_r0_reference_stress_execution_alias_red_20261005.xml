@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="9.785" timestamp="2026-10-05T20:07:29.712375+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_stress_execution" name="test_gradient_storage_cannot_alias_factors" time="0.451"><failure message="AssertionError: assert 'preclip' == 'microbatch'&#10;  &#10;  - microbatch&#10;  + preclip">logic = (Module(
+  (base): Linear(in_features=2, out_features=2, bias=False)
+  (reference): Module()
+), StressSchedule(prefix_...le: False
+    eps: 1e-08
+    foreach: False
+    fused: False
+    lr: 0.0003
+    maximize: False
+    weight_decay: 0
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000252DE701F70&gt;
+
+    def test_gradient_storage_cannot_alias_factors(logic, monkeypatch):
+        wrapper, schedule, _, _ = logic
+        original = run._microbatch
+    
+        def alias(owner, item, device):
+            value = original(owner, item, device)
+            wrapper.reference.A.grad = wrapper.reference.A.detach()
+            return value
+    
+        monkeypatch.setattr(run, "_microbatch", alias)
+        with pytest.raises(run.StressExecutionError) as caught:
+            run.execute_reference_stress(wrapper, schedule)
+&gt;       assert caught.value.progress.stage == "microbatch"
+E       AssertionError: assert 'preclip' == 'microbatch'
+E         
+E         - microbatch
+E         + preclip
+
+tests\test_alc_r0_reference_stress_execution.py:353: AssertionError</failure></testcase></testsuite></testsuites>

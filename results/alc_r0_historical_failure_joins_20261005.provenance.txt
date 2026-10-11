@@ -1,0 +1,27 @@
+Checkpoint175: four original terminal joins including failed GPU suite
+Parent: 7b8116c5087e39fc231e91071c44acfbe1e7e2e6
+Report: docs/superpowers/reviews/2026-10-05-alc-r0-historical-failure-joins.md
+Final reviewed SHA256: 1c3bea65dc2bae53405ce51e09e5f81756007101a9e86d411cd43e797e21d41e
+Initial draft SHA256: 459132e62ddf80385b65e633d348ec693143415863cd6f30f22001741adfda38
+
+Initial independent code lane REQUEST CHANGES: original start/end fields exist
+on event payload envelopes, though absent in nested CommandExecution items.
+Parent reparsed all eight numeric values, corrected the table and scope wording,
+and preserved the failed draft/finding in the report and trajectory.
+Final independent code lane resource_code_61 APPROVE, original finding closed.
+Final independent architecture lane resource_arch_61 CLEAR for corrected report;
+independently accessed exact four records with shared read access, matched all
+terminal/output roots and envelope fields. Its earlier checkpoint174 session-lock
+limitation does not apply to this new primary check.
+Synthesis: scoped evidence report approved; WATCH reconstruction completeness;
+global measured resource history UNKNOWN and admission/scientific launch BLOCK.
+
+Personally revalidated exact four execution IDs, terminal summaries and exits,
+1293.153135100-second command wall duration sum, four decoded output UTF8 byte
+lengths/SHA256 roots and eight original envelope timestamps. They are not measured
+GPU consumption or authenticated OS timing. Original 259-pass/2-fail exit1 suite
+is preserved separately from targeted two-test and two 261-pass exit0 reruns.
+No new pytest or historical command executed; no model/GPU/assets/corpus work,
+installation, cleanup, private-session export, source/test/result-XML change.
+Documentation-only current verification; not fresh regression/scientific evidence.
+All original resource limits, retry rules, scientific grid and broader goal stand.

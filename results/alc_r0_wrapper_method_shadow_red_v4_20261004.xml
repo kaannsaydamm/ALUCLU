@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="14.050" timestamp="2026-10-04T23:22:35.775543+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_wrapper_field_shadow" name="test_none_class_shadow_rejected_even_when_registered_module_unchanged[base-PinnedLlamaCapsuleWrapper]" time="0.005"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_wrapper_field_shadow.py:24: in test_none_class_shadow_rejected_even_when_registered_module_unchanged
+    with pytest.raises(CheckpointExecutionError, match="class field shadow"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_field_shadow" name="test_none_class_shadow_rejected_even_when_registered_module_unchanged[base-PinnedLlamaLoRAWrapper]" time="0.006"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_wrapper_field_shadow.py:24: in test_none_class_shadow_rejected_even_when_registered_module_unchanged
+    with pytest.raises(CheckpointExecutionError, match="class field shadow"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_field_shadow" name="test_none_class_shadow_rejected_even_when_registered_module_unchanged[mount-PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_wrapper_field_shadow.py:24: in test_none_class_shadow_rejected_even_when_registered_module_unchanged
+    with pytest.raises(CheckpointExecutionError, match="class field shadow"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_field_shadow" name="test_none_class_shadow_rejected_even_when_registered_module_unchanged[mount-PinnedLlamaLoRAWrapper]" time="0.006"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_wrapper_field_shadow.py:24: in test_none_class_shadow_rejected_even_when_registered_module_unchanged
+    with pytest.raises(CheckpointExecutionError, match="class field shadow"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase></testsuite></testsuites>

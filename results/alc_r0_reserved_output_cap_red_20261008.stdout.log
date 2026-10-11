@@ -1,0 +1,24 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_declared_stdout_cap_enforced_on_real_child _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-24/test_declared_stdout_cap_enfor0')
+
+    def test_declared_stdout_cap_enforced_on_real_child(tmp_path):
+        # Exactly one byte above the existing audited fixture declaration, not an
+        # invented cap. The current direct-to-file lease must reproduce this gap.
+        arguments, store, _, _ = fixture(tmp_path,
+            source="import os;os.write(1, b'x' * 1025)")
+        with ReservedOwnedLease(**arguments) as lease:
+            ready = lease.publish_identity(ROOT, ROOT)
+            running = lease.resume_verified(ready.sha256)
+            terminal = lease.wait_terminal()
+            assert terminal.process.active_processes == 0
+>       assert arguments["stdout_path"].read_bytes() == b"x" * 1024
+E       AssertionError: assert b'xxxxxxxxxxx...xxxxxxxxxxxxx' == b'xxxxxxxxxxx...xxxxxxxxxxxxx'
+E         
+E         Use -v to get more diff
+
+tests\test_alc_r0_reserved_owned_process.py:130: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_reserved_owned_process.py::test_declared_stdout_cap_enforced_on_real_child

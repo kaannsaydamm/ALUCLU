@@ -1,0 +1,491 @@
+# Byte-identity evidence must not vary with the checkout platform.
+locks/alc_r0/v1/*.lock text eol=lf
+locks/alc_r0/v1/*.json text eol=lf
+requirements/alc_r0/*.in text eol=lf
+schemas/alc_r0/v1/*.json text eol=lf
+experiments/alc_r0/v1/*.json text eol=lf
+results/alc_r0/**/*.json text eol=lf
+results/alc_r0/**/*.jsonl text eol=lf
+docs/superpowers/plans/2026-09-20-alc-r0-neural-capability-proof.md text eol=lf
+results/alc_r0_banking77_development_candidate_20260925.json text eol=lf
+results/alc_r0_banking77_prompt_candidate_20260925.json text eol=lf
+results/alc_r0_devign_development_candidate_20260925.json text eol=lf
+results/alc_r0_devign_preprocess_candidate_20260925.json text eol=lf
+results/alc_r0_devign_exact_conflict_preflight_20260926.json text eol=lf
+results/alc_r0_devign_exact_conflict_regression_20260926.xml text eol=lf
+results/alc_r0_primevul_development_candidate_20260926.json text eol=lf
+results/alc_r0_primevul_candidate_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_near_conflict_witness_20260928.json text eol=lf
+results/alc_r0_primevul_near_conflict_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_pairs_development_20260928.json text eol=lf
+results/alc_r0_primevul_pairs_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_pair_clone_pilot50_20260928.json text eol=lf
+results/alc_r0_pair_clone_reference_regression_20260928.xml text eol=lf
+results/alc_r0_pair_clone_scalable_regression_20260928.xml text eol=lf
+results/alc_r0_pair_clone_full_runner_regression_20260928.xml text eol=lf
+results/alc_r0_pair_clone_mixed_parity_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_full_graph_101c302_20260928.stdout.log text eol=lf
+results/alc_r0_primevul_full_graph_101c302_20260928.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_full_graph_101c302_20260928.exit.log text eol=lf
+results/alc_r0_primevul_component_metric_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_component_metric_regression_v2_20260928.xml text eol=lf
+results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.stdout.log text eol=lf
+results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_full_graph_repeat2_101c302_20260928.exit.log text eol=lf
+results/alc_r0_primevul_structural_audit_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_structural_audit_run_regression_20260928.xml text eol=lf
+results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stdout.log text eol=lf
+results/alc_r0_primevul_structural_audit_full_323e1ea_20260928.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_near_edge_audit_regression_20260929.xml text eol=lf
+results/alc_r0_primevul_near_edge_full_322cc73_20260929.stdout.log text eol=lf
+results/alc_r0_primevul_near_edge_full_322cc73_20260929.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_near_edge_full_322cc73_20260929.exit.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_prompt_full_ef37754_20260929.stdout.log text eol=lf
+results/alc_r0_primevul_prompt_full_ef37754_20260929.stderr.log -text whitespace=-blank-at-eol
+results/alc_r0_primevul_prompt_full_ef37754_20260929.exit.log -text whitespace=-blank-at-eol
+results/alc_r0_prompt_budget_grid_e316531_20260929_*.log -text whitespace=-blank-at-eol
+results/alc_r0_prompt_budget_grid_e316531_20260929.execution.log -text whitespace=-blank-at-eol
+results/alc_r0_context_gradient_probe_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_context_gradient_probe_*.log -text whitespace=-blank-at-eol
+results/alc_r0_retained_pair_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_retained_pair_*.log -text whitespace=-blank-at-eol
+results/alc_r0_retained_prompt_information_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_retained_prompt_information_*.log -text whitespace=-blank-at-eol
+results/alc_r0_retained_prompt_information_*.ps1 -text whitespace=-blank-at-eol
+results/alc_r0_retained_prompt_information_launcher_v2_20260930.launcher.log -text whitespace=-blank-at-eol,-blank-at-eof
+results/alc_r0_edit_token_visibility_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_edit_token_visibility_*.log -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/edit_token_visibility_reference.py text eol=lf
+tests/test_alc_r0_edit_token_visibility_reference.py text eol=lf
+scripts/alc_r0_edit_visibility_allocation_probe.py text eol=lf
+src/aluclu/alc_r0/retained_pair_resource_census.py text eol=lf
+tests/test_alc_r0_retained_pair_resource_census.py text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-pair-resource-census.md text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-banded-edit-visibility-reference.md text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-banded-native-fixture-design.md text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-banded-native-standalone-draft-superseded.md text eol=lf
+src/aluclu/alc_r0/banded_edit_token_visibility_reference.py text eol=lf
+tests/test_alc_r0_banded_edit_token_visibility_reference.py text eol=lf
+scripts/alc_r0_banded_edit_visibility_allocation_probe.py text eol=lf
+scripts/alc_r0_banded_edit_visibility_mutation_probe.py text eol=lf
+results/alc_r0_banded_edit_visibility_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_banded_edit_visibility_*.log -text whitespace=-blank-at-eol
+results/alc_r0_pair_resource_census_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_pair_resource_census_*.log -text whitespace=-blank-at-eol
+results/alc_r0_pair_resource_census_*.ps1 -text whitespace=-blank-at-eol
+results/alc_r0_synthetic_update_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_synthetic_update_*.log -text whitespace=-blank-at-eol
+results/alc_r0_synthetic_update_*.json -text whitespace=-blank-at-eol
+results/alc_r0_synthetic_update_*.safetensors -text whitespace=-blank-at-eol
+native/alc_r0/banded_edit_visibility.cpp text eol=lf
+src/aluclu/alc_r0/banded_edit_token_visibility_native.py text eol=lf
+scripts/alc_r0_build_banded_native.py text eol=lf
+tests/test_alc_r0_banded_native.py text eol=lf
+results/alc_r0_banded_native_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_banded_native_*.log -text whitespace=-blank-at-eol
+results/alc_r0_banded_native_*.txt -text whitespace=-blank-at-eol
+results/alc_r0_banded_native_*.json -text whitespace=-blank-at-eol
+results/alc_r0_banded_native_*.jsonl -text whitespace=-blank-at-eol
+tests/test_alc_r0_banded_native_contract_edges.py text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-native-mutation-fixture-gate.md text eol=lf
+scripts/alc_r0_native_mutation_fixture_probe.py text eol=lf
+tests/test_alc_r0_native_mutation_fixture_probe.py text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-native-mutation-execution-detail.md text eol=lf
+scripts/alc_r0_native_mutation_execution.py text eol=lf
+tests/test_alc_r0_native_mutation_execution.py text eol=lf
+docs/superpowers/plans/2026-10-02-alc-r0-native-fixture-timing-detail.md text eol=lf
+scripts/alc_r0_banded_native_fixture_timing.py text eol=lf
+tests/test_alc_r0_banded_native_fixture_timing.py text eol=lf
+docs/superpowers/plans/2026-10-03-alc-r0-banded-pair-resource-census.md text eol=lf
+src/aluclu/alc_r0/banded_pair_resource_census.py text eol=lf
+tests/test_alc_r0_banded_pair_resource_census.py text eol=lf
+results/alc_r0_banded_pair_resource_census_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_banded_pair_resource_census_*.log -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-03-alc-r0-full-development-banded-edit-exposure.md text eol=lf
+src/aluclu/alc_r0/full_development_banded_edit_exposure.py text eol=lf
+tests/test_alc_r0_full_development_banded_edit_exposure.py text eol=lf
+results/alc_r0_full_edit_exposure_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_full_edit_exposure_development_62b5c7b_v1.* -text whitespace=-blank-at-eol,-blank-at-eof
+docs/superpowers/plans/2026-10-03-alc-r0-family-b-prompt-resource-v3-draft.md text eol=lf
+docs/superpowers/plans/2026-10-03-alc-r0-checkpoint-implementation-detail.md text eol=lf
+src/aluclu/alc_r0/checkpoint_fidelity.py text eol=lf
+tests/test_alc_r0_checkpoint_fidelity.py text eol=lf
+results/alc_r0_checkpoint_fidelity_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_optimizer.py text eol=lf
+tests/test_alc_r0_checkpoint_optimizer.py text eol=lf
+docs/superpowers/plans/2026-10-04-alc-r0-adamw-adapter-contract.md text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-optimizer-pure.md text eol=lf
+results/alc_r0_checkpoint_optimizer_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_execution.py text eol=lf
+tests/test_alc_r0_checkpoint_execution.py text eol=lf
+docs/superpowers/plans/2026-10-04-alc-r0-checkpoint-session-contract.md text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-session-engine.md text eol=lf
+results/alc_r0_checkpoint_execution_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_bound_factor_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_bound_factor_operations.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-bound-factor-operations.md text eol=lf
+src/aluclu/alc_r0/research_capsule.py text eol=lf
+src/aluclu/alc_r0/matched_lora.py text eol=lf
+src/aluclu/alc_r0/host_wrapper.py text eol=lf
+tests/test_alc_r0_wrapper_checkpoint_lifecycle.py text eol=lf
+results/alc_r0_wrapper_lifecycle_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-wrapper-checkpoint-lifecycle.md text eol=lf
+src/aluclu/alc_r0/checkpoint_state.py text eol=lf
+tests/test_alc_r0_checkpoint_state.py text eol=lf
+results/alc_r0_checkpoint_state_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-state.md text eol=lf
+tests/test_alc_r0_bound_decoder_blocks.py text eol=lf
+results/alc_r0_bound_decoder_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-bound-decoder-blocks.md text eol=lf
+tests/test_alc_r0_checkpoint_forward.py text eol=lf
+results/alc_r0_checkpoint_forward_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-forward.md text eol=lf
+results/alc_r0_checkpoint_dispatch_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-dispatch.md text eol=lf
+results/alc_r0_mask_binding_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-selected-mask-binding.md text eol=lf
+results/alc_r0_factor_dependencies_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_factor_dependency_state.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-factor-dependencies.md text eol=lf
+results/alc_r0_loss_dependencies_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_loss_dependency_state.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-loss-dependencies.md text eol=lf
+results/alc_r0_runtime_dependencies_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_runtime.py text eol=lf
+tests/test_alc_r0_runtime_dependency_state.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-runtime-dependencies.md text eol=lf
+results/alc_r0_decorated_dependencies_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_decorated_dependencies.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-decorated-dependencies-red.md text eol=lf
+src/aluclu/alc_r0/checkpoint_context.py text eol=lf
+docs/superpowers/reviews/2026-10-04-alc-r0-decorated-dependencies.md text eol=lf
+scripts/inventory_alc_r0_meta_host.py text eol=lf
+tests/test_alc_r0_meta_inventory_preflight.py text eol=lf
+results/alc_r0_meta_inventory_preflight_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-meta-host-inventory.md text eol=lf
+results/alc_r0_meta_host_inventory_v1_20261004.json -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_attention.py text eol=lf
+tests/test_alc_r0_attention_dependencies.py text eol=lf
+results/alc_r0_attention_dependencies_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-attention-dependencies.md text eol=lf
+src/aluclu/alc_r0/checkpoint_mask.py text eol=lf
+tests/test_alc_r0_mask_dependencies.py text eol=lf
+results/alc_r0_mask_dependencies_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-mask-dependencies.md text eol=lf
+tests/test_alc_r0_mask_subdependencies.py text eol=lf
+results/alc_r0_mask_subdependencies_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-mask-subdependencies.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_inputs.py text eol=lf
+tests/test_alc_r0_checkpoint_parity_inputs.py text eol=lf
+results/alc_r0_checkpoint_parity_inputs_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-parity-inputs.md text eol=lf
+src/aluclu/alc_r0/checkpoint_observation.py text eol=lf
+tests/test_alc_r0_checkpoint_observation.py text eol=lf
+results/alc_r0_checkpoint_observation_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-checkpoint-observation.md text eol=lf
+tests/test_alc_r0_pending_observation.py text eol=lf
+results/alc_r0_pending_observation_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-pending-observation.md text eol=lf
+src/aluclu/alc_r0/checkpoint_accumulation_step.py text eol=lf
+tests/test_alc_r0_accumulation_observation.py text eol=lf
+results/alc_r0_accumulation_observation_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-accumulation-observation.md text eol=lf
+src/aluclu/alc_r0/checkpoint_accumulation_pair.py text eol=lf
+tests/test_alc_r0_accumulation_pair.py text eol=lf
+results/alc_r0_accumulation_pair_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-accumulation-pair.md text eol=lf
+src/aluclu/alc_r0/checkpoint_registry.py text eol=lf
+tests/test_alc_r0_q_registry_dependencies.py text eol=lf
+results/alc_r0_q_registry_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-q-registry-dependencies.md text eol=lf
+tests/test_alc_r0_module_dispatch_state.py text eol=lf
+results/alc_r0_module_dispatch_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-module-dispatch-state.md text eol=lf
+tests/test_alc_r0_checkpoint_inventory_install.py text eol=lf
+results/alc_r0_inventory_install_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-inventory-install.md text eol=lf
+src/aluclu/alc_r0/checkpoint_wrapper.py text eol=lf
+tests/test_alc_r0_wrapper_method_inventory.py text eol=lf
+tests/test_alc_r0_wrapper_field_shadow.py text eol=lf
+results/alc_r0_wrapper_method_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-wrapper-method-inventory.md text eol=lf
+src/aluclu/alc_r0/checkpoint_wrapper_namespaces.py text eol=lf
+tests/test_alc_r0_wrapper_namespaces.py text eol=lf
+results/alc_r0_wrapper_namespace_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-wrapper-namespaces.md text eol=lf
+src/aluclu/alc_r0/checkpoint_inventory.py text eol=lf
+tests/test_alc_r0_wrapper_inventory_enable.py text eol=lf
+results/alc_r0_wrapper_inventory_enable_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-wrapper-inventory-enable.md text eol=lf
+src/aluclu/alc_r0/checkpoint_mask_registry.py text eol=lf
+tests/test_alc_r0_mask_registry_dependencies.py text eol=lf
+results/alc_r0_mask_registry_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-04-alc-r0-mask-registry.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_factory.py text eol=lf
+tests/test_alc_r0_parity_factory.py text eol=lf
+results/alc_r0_parity_factory_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-parity-factory.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_cell.py text eol=lf
+tests/test_alc_r0_parity_cell.py text eol=lf
+results/alc_r0_parity_cell_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-parity-cell.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_matrix.py text eol=lf
+tests/test_alc_r0_parity_matrix.py text eol=lf
+results/alc_r0_parity_matrix_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-parity-matrix.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_tokenizer.py text eol=lf
+tests/test_alc_r0_parity_tokenizer.py text eol=lf
+results/alc_r0_parity_tokenizer_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-parity-tokenizer.md text eol=lf
+src/aluclu/alc_r0/checkpoint_official_forward.py text eol=lf
+tests/test_alc_r0_official_forward_suite.py text eol=lf
+results/alc_r0_official_forward_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-official-forward.md text eol=lf
+src/aluclu/alc_r0/checkpoint_parity_qualification.py text eol=lf
+src/aluclu/alc_r0/host.py text eol=lf
+tests/test_alc_r0_parity_qualification.py text eol=lf
+tests/test_alc_r0_reference_host_backend.py text eol=lf
+results/alc_r0_parity_qualification_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-parity-qualification.md text eol=lf
+src/aluclu/alc_r0/checkpoint_owned_process.py text eol=lf
+tests/test_alc_r0_owned_process.py text eol=lf
+results/alc_r0_owned_process_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_owned_process_*.log -text whitespace=-blank-at-eol
+results/alc_r0_owned_process_20261005.provenance.txt text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-owned-process.md text eol=lf
+src/aluclu/alc_r0/checkpoint_resource_admission.py text eol=lf
+tests/test_alc_r0_resource_admission.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-resource-admission.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-resource-admission.md text eol=lf
+results/alc_r0_resource_admission_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_resource_admission_20261005.provenance.txt text eol=lf
+src/aluclu/alc_r0/attempt_journal.py text eol=lf
+tests/test_alc_r0_attempt_journal.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-attempt-journal.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-attempt-journal.md text eol=lf
+results/alc_r0_attempt_journal_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_attempt_journal_20261005.provenance.txt text eol=lf
+src/aluclu/alc_r0/attempt_state.py text eol=lf
+tests/test_alc_r0_attempt_state.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-attempt-state.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-attempt-state.md text eol=lf
+results/alc_r0_attempt_state_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_attempt_state_20261005.provenance.txt text eol=lf
+scripts/benchmark_alc_r0_attempt_replay.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-incremental-replay.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-incremental-replay.md text eol=lf
+results/alc_r0_incremental_replay_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_incremental_replay_20261005.provenance.txt text eol=lf
+results/alc_r0_incremental_replay_benchmark_20261005.json text eol=lf
+results/alc_r0_incremental_replay_benchmark_v1_20261005.json text eol=lf
+src/aluclu/alc_r0/paged_history.py text eol=lf
+tests/test_alc_r0_paged_history.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-paged-history.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-paged-history.md text eol=lf
+results/alc_r0_paged_history_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_paged_history_20261005.provenance.txt text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-manifest-extension.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-manifest-extension.md text eol=lf
+results/alc_r0_manifest_extension_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_manifest_extension_20261005.provenance.txt text eol=lf
+src/aluclu/alc_r0/manifest_publication.py text eol=lf
+tests/test_alc_r0_manifest_publication.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-manifest-publication.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-manifest-publication.md text eol=lf
+results/alc_r0_manifest_publication_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_manifest_publication_20261005.provenance.txt text eol=lf
+tests/helpers/manifest_publication_boundary_child.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-publication-boundaries.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-publication-boundaries.md text eol=lf
+results/alc_r0_publication_boundaries_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_publication_boundaries_20261005.provenance.txt text eol=lf
+tests/test_alc_r0_journal_plan.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-owned-append-intent.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-journal-plan.md text eol=lf
+results/alc_r0_journal_plan_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_journal_plan_20261005.provenance.txt text eol=lf
+src/aluclu/alc_r0/owned_append.py text eol=lf
+tests/test_alc_r0_owned_append.py text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-owned-append.md text eol=lf
+results/alc_r0_owned_append_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_owned_append_20261005.provenance.txt text eol=lf
+tests/test_alc_r0_owned_append_boundaries.py text eol=lf
+tests/helpers/owned_append_boundary_child.py text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-owned-boundaries.md text eol=lf
+results/alc_r0_owned_boundaries_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_owned_boundaries_20261005.provenance.txt text eol=lf
+tests/test_alc_r0_owned_resume_boundaries.py text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-owned-resume.md text eol=lf
+results/alc_r0_owned_resume_*.xml -text whitespace=-blank-at-eol
+results/alc_r0_owned_resume_20261005.provenance.txt text eol=lf
+src/aluclu/alc_r0/retained_intent_audit.py text eol=lf
+tests/test_alc_r0_retained_intent_audit.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-retained-intent-audit.md text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-retained-intent-audit.md text eol=lf
+results/alc_r0_retained_intent_20261005.provenance.txt text eol=lf
+results/alc_r0_retained_intent_*.xml -text whitespace=-blank-at-eol
+docs/superpowers/reviews/2026-10-05-alc-r0-historical-resource-expansion.md text eol=lf
+results/alc_r0_historical_resource_expansion_20261005.provenance.txt text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-historical-failure-joins.md text eol=lf
+results/alc_r0_historical_failure_joins_20261005.provenance.txt text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-historical-host-bindings.md text eol=lf
+results/alc_r0_historical_host_bindings_20261005.provenance.txt text eol=lf
+docs/superpowers/reviews/2026-10-05-alc-r0-historical-measurement-gap.md text eol=lf
+results/alc_r0_historical_measurement_gap_20261005.provenance.txt text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-accounting-clarification-draft.md text eol=lf
+results/alc_r0_accounting_clarification_draft_20261005.provenance.txt text eol=lf
+src/aluclu/alc_r0/reference_qv_lora.py text eol=lf
+tests/test_alc_r0_reference_qv_lora.py text eol=lf
+results/alc_r0_reference_qv_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_qv_wrapper.py text eol=lf
+tests/test_alc_r0_reference_qv_wrapper.py text eol=lf
+results/alc_r0_reference_qv_wrapper_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_reference_qv_inventory.py text eol=lf
+results/alc_r0_reference_qv_inventory_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_qv_artifact.py text eol=lf
+tests/test_alc_r0_reference_qv_artifact.py text eol=lf
+src/aluclu/alc_r0/reference_qv_optimizer.py text eol=lf
+tests/test_alc_r0_reference_qv_optimizer.py text eol=lf
+tests/test_alc_r0_reference_qv_accumulation.py text eol=lf
+tests/test_alc_r0_reference_qv_factory.py text eol=lf
+tests/test_alc_r0_reference_qv_forward.py text eol=lf
+tests/test_alc_r0_reference_qv_update_remount.py text eol=lf
+tests/test_alc_r0_reference_qv_full_accumulation.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-qv-optimizer-resume.md text eol=lf
+src/aluclu/alc_r0/reference_qv_resume.py text eol=lf
+tests/test_alc_r0_reference_qv_resume.py text eol=lf
+tests/test_alc_r0_reference_qv_resume_update.py text eol=lf
+tests/test_alc_r0_reference_qv_resume_process.py text eol=lf
+docs/superpowers/plans/2026-10-05-alc-r0-e3-reference-stress-contract.md text eol=lf
+src/aluclu/alc_r0/reference_stress_inputs.py text eol=lf
+tests/test_alc_r0_reference_stress_inputs.py text eol=lf
+results/alc_r0_reference_stress_inputs_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_stress_start.py text eol=lf
+tests/test_alc_r0_reference_stress_start.py text eol=lf
+results/alc_r0_reference_stress_start_*.xml -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_stress_execution.py text eol=lf
+tests/test_alc_r0_reference_stress_execution.py text eol=lf
+results/alc_r0_reference_stress_execution_*.xml -text whitespace=-blank-at-eol
+tests/test_alc_r0_reference_stress_full_factors.py -text
+scripts/alc_r0_full_factor_cpu_tests.ps1 -text
+docs/superpowers/plans/2026-10-05-alc-r0-qv-host-parity-contract.md -text
+results/alc_r0_reference_stress_full_factors* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_official_guard.py -text
+tests/test_alc_r0_reference_official_guard.py -text
+results/alc_r0_reference_official_guard* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_official_suite.py -text
+tests/test_alc_r0_reference_official_suite.py -text
+results/alc_r0_reference_official_suite* -text whitespace=-blank-at-eol
+tests/alc_r0_random_qv_host.py -text
+tests/test_alc_r0_reference_official_integration.py -text
+results/alc_r0_reference_official_integration* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_parity_receipt.py -text
+tests/test_alc_r0_reference_parity_receipt.py -text
+results/alc_r0_reference_parity_receipt* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_parity_cell.py -text
+tests/test_alc_r0_parity_cell_failure.py -text
+results/alc_r0_parity_cell_failure* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/reference_parity_suite.py -text
+tests/test_alc_r0_reference_parity_suite.py -text
+results/alc_r0_reference_parity_suite* -text whitespace=-blank-at-eol
+tests/test_alc_r0_reference_parity_integration.py -text
+results/alc_r0_reference_parity_integration* -text whitespace=-blank-at-eol
+results/alc_r0_reference_parity_journal_v4_c683f4e_20261006* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/checkpoint_hf_dispatch.py -text
+tests/test_alc_r0_hf_disabled_dispatch.py -text
+results/alc_r0_hf_disabled_dispatch* -text whitespace=-blank-at-eol
+tests/test_alc_r0_cpu_optimizer_isolation.py -text
+results/alc_r0_cpu_optimizer_isolation* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-06-alc-r0-accumulation-failure-journal.md -text
+docs/superpowers/plans/2026-10-06-alc-r0-random-cpu-parity-v3-terminal.md -text
+src/aluclu/alc_r0/checkpoint_accumulation_progress.py -text
+tests/test_alc_r0_accumulation_progress.py -text
+docs/superpowers/plans/2026-10-06-alc-r0-accumulation-progress-substrate.md -text
+results/alc_r0_accumulation_progress* -text whitespace=-blank-at-eol
+results/alc_r0_accumulation_journal* -text whitespace=-blank-at-eol
+tests/test_alc_r0_accumulation_journal_integration.py -text
+tests/test_alc_r0_accumulation_pair.py -text
+docs/superpowers/plans/2026-10-06-alc-r0-accumulation-journal-runtime-evidence.md -text
+docs/superpowers/plans/2026-10-06-alc-r0-real-host-launcher-preflight-draft.md -text
+results/alc_r0_import_isolation* -text whitespace=-blank-at-eol
+src/aluclu/__init__.py -text
+src/aluclu/alc_r0/__init__.py -text
+tests/test_alc_r0_import_isolation.py -text
+tests/alc_r0_public_export_contract.py -text
+docs/superpowers/plans/2026-10-06-alc-r0-import-isolation-contract-draft.md -text
+docs/superpowers/plans/2026-10-06-alc-r0-import-isolation-runtime-evidence.md -text
+src/aluclu/cognition/__init__.py -text
+tests/test_cognition_import_isolation.py -text
+tests/cognition_public_export_contract.py -text
+docs/superpowers/plans/2026-10-06-alc-r0-cognition-import-contract-draft.md -text
+docs/superpowers/plans/2026-10-07-alc-r0-cognition-import-runtime-evidence.md -text
+results/alc_r0_cognition_import* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-07-alc-r0-owner-accounting-decision.md -text
+docs/superpowers/plans/2026-10-07-alc-r0-finite-history-classification-draft.md -text
+docs/superpowers/plans/2026-10-07-alc-r0-launch-reservation-interface-draft.md -text
+docs/superpowers/plans/2026-10-07-alc-r0-reservation-runtime-evidence.md -text
+src/aluclu/alc_r0/reservation_state.py -text
+tests/test_alc_r0_reservation_state.py -text
+results/alc_r0_reservation* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-07-alc-r0-durable-reservation-contract.md -text
+docs/superpowers/plans/2026-10-07-alc-r0-durable-reservation-runtime-evidence.md -text
+src/aluclu/alc_r0/reservation_store.py -text
+tests/test_alc_r0_reservation_store.py -text
+tests/alc_r0_reservation_store_worker.py -text
+src/aluclu/alc_r0/reserved_owned_process.py -text
+tests/test_alc_r0_reserved_owned_process.py -text
+docs/superpowers/plans/2026-10-07-alc-r0-reserved-owned-lease-contract.md -text
+docs/superpowers/plans/2026-10-07-alc-r0-reserved-owned-first-checkpoint.md -text
+results/alc_r0_reserved_owned* -text whitespace=-blank-at-eol
+tests/alc_r0_reserved_owned_worker.py -text
+docs/superpowers/plans/2026-10-07-alc-r0-reserved-owned-runtime-evidence.md -text
+src/aluclu/alc_r0/bounded_process_output.py -text
+tests/test_alc_r0_bounded_process_output.py -text
+docs/superpowers/plans/2026-10-07-alc-r0-bounded-output-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-bounded-output-runtime-evidence.md -text
+results/alc_r0_bounded_output* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-08-alc-r0-reserved-output-integration-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-reserved-output-runtime-evidence.md -text
+results/alc_r0_reserved_output* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/allocation_policy.py -text
+tests/test_alc_r0_allocation_policy.py -text
+docs/superpowers/plans/2026-10-08-alc-r0-allocation-policy-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-allocation-policy-runtime-evidence.md -text
+results/alc_r0_allocation_policy* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-08-alc-r0-finite-envelope-next-action.md -text
+tests/test_alc_r0_d_reservation_identity.py -text
+docs/superpowers/plans/2026-10-08-alc-r0-d-reservation-identity-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-d-reservation-identity-runtime-evidence.md -text
+results/alc_r0_d_identity* -text whitespace=-blank-at-eol
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-worker-design.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-wire-contract.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-wire-runtime-evidence.md -text
+src/aluclu/alc_r0/fixed_d_wire.py -text
+tests/test_alc_r0_fixed_d_wire.py -text
+tests/alc_r0_fixed_d_wire_test_runner.py -text
+results/alc_r0_fixed_d_wire* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/fixed_d_projection.py -text
+tests/test_alc_r0_fixed_d_projection.py -text
+tests/alc_r0_fixed_d_projection_test_runner.py -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-projection.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-projection-runtime-evidence.md -text
+results/alc_r0_fixed_d_projection* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/fixed_d_worker.py -text
+scripts/run_alc_r0_fixed_d_worker.py -text
+tests/test_alc_r0_fixed_d_worker.py -text
+tests/alc_r0_fixed_d_worker_test_runner.py -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-worker-bootstrap.md -text
+docs/superpowers/plans/2026-10-08-alc-r0-fixed-d-worker-runtime-evidence.md -text
+results/alc_r0_fixed_d_worker* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/authority_watch_policy.py -text
+tests/test_alc_r0_authority_watch_policy.py -text
+tests/alc_r0_authority_watch_test_runner.py -text
+docs/superpowers/plans/2026-10-11-alc-r0-authority-watch-policy.md -text
+docs/superpowers/plans/2026-10-11-alc-r0-authority-watch-evidence.md -text
+results/alc_r0_authority_watch* -text whitespace=-blank-at-eol
+src/aluclu/alc_r0/official_repeat_assessment.py -text
+tests/test_alc_r0_official_repeat_assessment.py -text
+tests/alc_r0_official_repeat_test_runner.py -text
+docs/superpowers/plans/2026-10-11-alc-r0-official-repeat-assessment.md -text
+docs/superpowers/plans/2026-10-11-alc-r0-official-repeat-evidence.md -text
+results/alc_r0_official_repeat* -text whitespace=-blank-at-eol

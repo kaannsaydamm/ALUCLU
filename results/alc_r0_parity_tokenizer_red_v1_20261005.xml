@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="22" failures="0" skipped="0" tests="22" time="9.249" timestamp="2026-10-05T01:11:23.773590+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_six_fixture_schedule_and_complete_candidates" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_fixture_digest_is_repeatable_and_binds_actual_ids" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_offline_denial_precedes_asset_or_tokenizer_access[HF_HUB_OFFLINE]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_offline_denial_precedes_asset_or_tokenizer_access[TRANSFORMERS_OFFLINE]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_offline_denial_precedes_asset_or_tokenizer_access[HF_DATASETS_OFFLINE]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[bos_token_id-1]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[eos_token_id-None]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[eos_token_id-False]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[vocab_size-49153]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[vocab_size-True]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[is_fast-False]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_pinned_tokenizer_metadata_denied_before_encoding[is_fast-1]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_invalid_or_infeasible_complete_candidate_fails[tokens0]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_invalid_or_infeasible_complete_candidate_fails[tokens1]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_invalid_or_infeasible_complete_candidate_fails[tokens2]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_invalid_or_infeasible_complete_candidate_fails[tokens3]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_invalid_or_infeasible_complete_candidate_fails[tokens4]" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_encoding_drift_rejected" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_snapshot_drift_rejected_after_encoding" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_snapshot_denial_precedes_tokenizer_load" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_production_loader_explicit_local_only_without_remote_code" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase><testcase classname="tests.test_alc_r0_parity_tokenizer" name="test_relative_snapshot_rejected_before_access" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'&quot;">tests\test_alc_r0_parity_tokenizer.py:40: in setup
+    module = importlib.import_module("aluclu.alc_r0.checkpoint_parity_tokenizer")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_tokenizer'</error></testcase></testsuite></testsuites>

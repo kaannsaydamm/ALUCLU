@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="47" failures="0" skipped="0" tests="47" time="74.535" timestamp="2026-10-05T01:51:57.364786+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_qualification" name="test_fixed_full_order_same_host_and_immutable_result" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_device_before_snapshot_access[None]" time="0.005"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_device_before_snapshot_access[True]" time="0.009"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_device_before_snapshot_access[cuda]" time="0.008"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_device_before_snapshot_access[cuda:1]" time="0.006"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_device_before_snapshot_access[mps]" time="0.007"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_device_before_snapshot_access[device5]" time="0.009"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_relative_path_before_snapshot_access" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_missing_offline_flag_before_snapshot_access[HF_HUB_OFFLINE]" time="0.005"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_missing_offline_flag_before_snapshot_access[TRANSFORMERS_OFFLINE]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_missing_offline_flag_before_snapshot_access[HF_DATASETS_OFFLINE]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_execution_context_before_snapshot_access[inference]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_execution_context_before_snapshot_access[no-grad]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_execution_context_before_snapshot_access[nondeterministic]" time="0.008"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_invalid_execution_context_before_snapshot_access[warn-only]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[False-tokenizer-load_parity_fixtures-prefix0]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[False-host-load_verified_host-prefix1]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[False-official-run_official_forward_suite-prefix2]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[False-matrix-run_parity_matrix-prefix3]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[False-terminal-assets-verify_model_snapshot-prefix4]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[True-tokenizer-load_parity_fixtures-prefix0]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[True-host-load_verified_host-prefix1]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[True-official-run_official_forward_suite-prefix2]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[True-matrix-run_parity_matrix-prefix3]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_terminal_failure_preserves_stage_prior_evidence_and_cause_without_retry[True-terminal-assets-verify_model_snapshot-prefix4]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_bad_tokenizer_binding_rejected_before_host_load[type]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_bad_tokenizer_binding_rejected_before_host_load[revision]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_bad_tokenizer_binding_rejected_before_host_load[fixture-digest]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_bad_tokenizer_binding_rejected_before_host_load[inventory]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_bad_tokenizer_binding_rejected_before_host_load[schedule]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_asset_binding_drift_rejected[host]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_asset_binding_drift_rejected[terminal]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_base_mutation_rejected_before_admitting_stage_receipt[official]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_base_mutation_rejected_before_admitting_stage_receipt[matrix]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[official-type]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[official-count]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[official-device]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[official-base]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[official-order]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[official-witness]" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[matrix-type]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[matrix-count]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[matrix-seed]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[matrix-base]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[matrix-order]" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_incomplete_misattributed_component_receipts_rejected[matrix-cell]" time="0.004"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase><testcase classname="tests.test_alc_r0_parity_qualification" name="test_environment_drift_after_official_does_not_run_matrix" time="0.003"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'&quot;">tests\test_alc_r0_parity_qualification.py:32: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_parity_qualification")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1324: in _find_and_load_unlocked
+    ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_parity_qualification'</error></testcase></testsuite></testsuites>

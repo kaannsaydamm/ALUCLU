@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="22.281" timestamp="2026-10-05T00:12:07.553935+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_factory" name="test_partial_accepts_accumulation_pair_positional_flags[capsule]" time="0.026"><failure message="TypeError: make_parity_wrapper() takes 1 positional argument but 2 positional arguments (and 4 keyword-only arguments) were given">tests\test_alc_r0_parity_factory.py:194: in test_partial_accepts_accumulation_pair_positional_flags
+    off, on = factory(False), factory(True)
+              ^^^^^^^^^^^^^^
+E   TypeError: make_parity_wrapper() takes 1 positional argument but 2 positional arguments (and 4 keyword-only arguments) were given</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_partial_accepts_accumulation_pair_positional_flags[q_lora]" time="0.003"><failure message="TypeError: make_parity_wrapper() takes 1 positional argument but 2 positional arguments (and 4 keyword-only arguments) were given">tests\test_alc_r0_parity_factory.py:194: in test_partial_accepts_accumulation_pair_positional_flags
+    off, on = factory(False), factory(True)
+              ^^^^^^^^^^^^^^
+E   TypeError: make_parity_wrapper() takes 1 positional argument but 2 positional arguments (and 4 keyword-only arguments) were given</failure></testcase></testsuite></testsuites>

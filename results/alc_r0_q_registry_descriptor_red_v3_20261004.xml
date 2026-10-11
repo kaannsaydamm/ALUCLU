@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="43.821" timestamp="2026-10-04T15:43:41.960364+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_local_mapping_data_descriptor_rejected_without_access[eager]" time="0.044"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:138: in test_local_mapping_data_descriptor_rejected_without_access
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_local_mapping_data_descriptor_rejected_without_access[sdpa]" time="0.013"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:138: in test_local_mapping_data_descriptor_rejected_without_access
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase></testsuite></testsuites>

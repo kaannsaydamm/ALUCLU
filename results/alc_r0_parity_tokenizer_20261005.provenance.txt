@@ -1,0 +1,27 @@
+checkpoint=157
+parent_commit=bfa7149ba86689ff52b3aabcc0ed99b7b583d199
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+python=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+source_sha256=c1fbd60be5814ca8ced0239e5ec95a127601d93def465404451dbbe027fb57ac
+tests_sha256=b170c7d71543221e3aaa456ce647c7cbe196738d3d560a280ffb5bd88ab0e194
+reviews=independent GPT6.1Sol code APPROVE, architecture CLEAR; static only
+environment=PYTHONPATH=src; PYTHONDONTWRITEBYTECODE=1; ALUCLU_R0_SNAPSHOT unset in process
+command=& 'C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe' -B -m pytest -q -p no:cacheprovider --tb=short tests/test_alc_r0_parity_tokenizer.py tests/test_alc_r0_parity_matrix.py tests/test_alc_r0_defect_prompt.py tests/test_alc_r0_acquisition.py tests/test_alc_r0_parity_cell.py tests/test_alc_r0_parity_factory.py tests/test_alc_r0_mask_registry_dependencies.py tests/test_alc_r0_wrapper_inventory_enable.py tests/test_alc_r0_wrapper_namespaces.py tests/test_alc_r0_wrapper_field_shadow.py tests/test_alc_r0_wrapper_method_inventory.py tests/test_alc_r0_checkpoint_inventory_install.py tests/test_alc_r0_module_dispatch_state.py tests/test_alc_r0_q_registry_dependencies.py tests/test_alc_r0_accumulation_pair.py tests/test_alc_r0_accumulation_observation.py tests/test_alc_r0_pending_observation.py tests/test_alc_r0_checkpoint_observation.py tests/test_alc_r0_checkpoint_parity_inputs.py tests/test_alc_r0_mask_subdependencies.py tests/test_alc_r0_mask_dependencies.py tests/test_alc_r0_attention_dependencies.py tests/test_alc_r0_meta_inventory_preflight.py tests/test_alc_r0_decorated_dependencies.py tests/test_alc_r0_runtime_dependency_state.py tests/test_alc_r0_loss_dependency_state.py tests/test_alc_r0_factor_dependency_state.py tests/test_alc_r0_checkpoint_forward.py tests/test_alc_r0_bound_decoder_blocks.py tests/test_alc_r0_checkpoint_state.py tests/test_alc_r0_wrapper_checkpoint_lifecycle.py tests/test_alc_r0_bound_factor_operations.py tests/test_alc_r0_research_capsule.py tests/test_alc_r0_checkpoint_execution.py tests/test_alc_r0_checkpoint_optimizer.py tests/test_alc_r0_checkpoint_fidelity.py tests/test_alc_r0_base_digest.py tests/test_alc_r0_capsule_artifact.py tests/test_alc_r0_canonical.py tests/test_alc_r0_schema_validation.py tests/test_alc_r0_banking_scoring.py tests/test_alc_r0_matched_lora.py::test_matched_lora_has_exact_count_and_capsule_initial_A tests/test_alc_r0_matched_lora.py::test_lora_initialization_preserves_global_rng --deselect=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors --deselect=tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present --deselect=tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available --junitxml=results/alc_r0_parity_tokenizer_regression_v3_20261005.xml
+actual_pytest_exit_code=0
+junit_tests=1271
+junit_failures=0
+junit_errors=0
+junit_skipped=0
+junit_time_seconds=103.009
+new_tokenizer_testcases=22
+xml_sha256=d75fecb6a2b6c4c159ca70fd35526469bb9207ae300a3c0a70fa46cf015f74e3
+original_exec_session=47336, terminal consumed by root
+red_v1_actual_pytest_exit_code=1
+red_v1_junit=22 tests;0 failures;22 setup errors;0 skipped;9.249 seconds
+red_v1_xml_sha256=582ff4a794da47ca13c99b104430944d143619903754a8c12cbc1efb22de8f59
+focused_v2_actual_pytest_exit_code=0
+focused_v2_junit=65 tests;0 failures;0 errors;1 skipped;5.195 seconds
+focused_v2_skip=existing real-host defect test: pinned offline model snapshot path not supplied
+focused_v2_xml_sha256=817f841b017e885755a54760b21a3e65be616db695bc8809aa3646e685ffccab
+scope=stub snapshot/tokenizer construction plus existing selected component regressions
+limitations=not whole repository; actual model/tokenizer/GPU cases explicitly excluded; no corpus/training/optimizer model execution in new tests; no actual D/E/scientific neural learning or portable ALC acceptance

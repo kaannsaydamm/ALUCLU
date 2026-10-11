@@ -1,0 +1,4 @@
+Actual worker-observed isolated pytest process ExitCode=-1073741819 (0xC0000005). FAIL, no terminal XML.
+stdout41 dots; stderr Windows fatal exception access violation, during subsequent pytest tmp_path regex setup.
+Concrete new test harness lifetime defect found: test_empty_null_input_pointers_are_valid assigned args,_,_,_ from helper, discarding workspace/output owning arrays; byref-offset ctypes pointers do not retain their owners.
+Frozen kernel/adapter/build unchanged. Corrected only new test to retain storage/output/baseline through call. Later successful runs cannot erase this failed attempt.

@@ -1,0 +1,829 @@
+.........................................FFFFFFFFFFFF...............     [100%]
+================================== FAILURES ===================================
+__ test_combined_cleanup_and_snapshot_failure_preserves_both_markers[False] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21CAB5A60>
+interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_combined_cleanup_and_snapshot_failure_preserves_both_markers(
+        monkeypatch, interrupt
+    ):
+        primary = KeyboardInterrupt("combined") if interrupt else RuntimeError("combined")
+        original_setattr = torch.nn.Parameter.__setattr__
+        armed, cleanup_hits = [], []
+        entered = []
+        original_observe = pair.observe_accumulation
+        original_score = observation.score_banking_candidate
+    
+        def observe(*args, **kwargs):
+            entered.append(1)
+            return original_observe(*args, **kwargs)
+    
+        def fail(*args, **kwargs):
+            if not entered:
+                return original_score(*args, **kwargs)
+            armed.append(1)
+            raise primary
+    
+        def setattr_once(parameter, name, value):
+            if armed and name == "grad" and value is None and not cleanup_hits:
+                cleanup_hits.append(1)
+                raise RuntimeError("cleanup")
+            return original_setattr(parameter, name, value)
+    
+        monkeypatch.setattr(observation, "score_banking_candidate", fail)
+        monkeypatch.setattr(pair, "observe_accumulation", observe)
+        monkeypatch.setattr(torch.nn.Parameter, "__setattr__", setattr_once)
+        monkeypatch.setattr(pair, "_safe_snapshot", lambda owner: (None, True))
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert error.failure.accumulation is None
+>       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (True and False)
+E        +  where True = ParityCellError('combined').journal_fault
+E        +  and   False = ParityCellError('combined').cleanup_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:154: AssertionError
+___ test_combined_cleanup_and_snapshot_failure_preserves_both_markers[True] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21CAD8110>
+interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_combined_cleanup_and_snapshot_failure_preserves_both_markers(
+        monkeypatch, interrupt
+    ):
+        primary = KeyboardInterrupt("combined") if interrupt else RuntimeError("combined")
+        original_setattr = torch.nn.Parameter.__setattr__
+        armed, cleanup_hits = [], []
+        entered = []
+        original_observe = pair.observe_accumulation
+        original_score = observation.score_banking_candidate
+    
+        def observe(*args, **kwargs):
+            entered.append(1)
+            return original_observe(*args, **kwargs)
+    
+        def fail(*args, **kwargs):
+            if not entered:
+                return original_score(*args, **kwargs)
+            armed.append(1)
+            raise primary
+    
+        def setattr_once(parameter, name, value):
+            if armed and name == "grad" and value is None and not cleanup_hits:
+                cleanup_hits.append(1)
+                raise RuntimeError("cleanup")
+            return original_setattr(parameter, name, value)
+    
+        monkeypatch.setattr(observation, "score_banking_candidate", fail)
+        monkeypatch.setattr(pair, "observe_accumulation", observe)
+        monkeypatch.setattr(torch.nn.Parameter, "__setattr__", setattr_once)
+        monkeypatch.setattr(pair, "_safe_snapshot", lambda owner: (None, True))
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert error.failure.accumulation is None
+>       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (True and False)
+E        +  where True = ParityCellInterrupted('combined').journal_fault
+E        +  and   False = ParityCellInterrupted('combined').cleanup_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:154: AssertionError
+__ test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[False] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21CB162D0>
+interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker(
+        monkeypatch, interrupt
+    ):
+        primary = KeyboardInterrupt("malformed") if interrupt else RuntimeError("malformed")
+        expected_inner = (
+            pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+        )
+    
+        def fail(*args, **kwargs):
+            raise expected_inner("malformed", object(), cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(cell, "run_accumulation_pair", fail)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert error.failure.accumulation is None
+>       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (True and False)
+E        +  where True = ParityCellError('malformed').journal_fault
+E        +  and   False = ParityCellError('malformed').cleanup_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:178: AssertionError
+___ test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[True] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21CB14110>
+interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker(
+        monkeypatch, interrupt
+    ):
+        primary = KeyboardInterrupt("malformed") if interrupt else RuntimeError("malformed")
+        expected_inner = (
+            pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+        )
+    
+        def fail(*args, **kwargs):
+            raise expected_inner("malformed", object(), cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(cell, "run_accumulation_pair", fail)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+        with pytest.raises(expected) as caught:
+            cell.run_parity_cell(make, cell_inputs(), exact=True)
+        error = caught.value
+        assert error.__cause__.__cause__ is primary
+        assert error.failure.accumulation is None
+>       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (True and False)
+E        +  where True = ParityCellInterrupted('malformed').journal_fault
+E        +  and   False = ParityCellInterrupted('malformed').cleanup_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:178: AssertionError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-False] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21DD07830>
+interrupt = False, stage = 'inner', fault = 'snapshot'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        if stage == "inner":
+            assert error.__cause__.__cause__ is primary
+        else:
+            assert error.__cause__ is primary
+>       assert getattr(
+            error, "journal_fault" if fault == "snapshot" else "cleanup_fault", False
+        )
+E       AssertionError: assert False
+E        +  where False = getattr(ReferenceParityError('terminal q/v parity failure at cell'), 'journal_fault', False)
+
+tests\test_alc_r0_accumulation_journal_integration.py:235: AssertionError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-True] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21DD7ED80>
+interrupt = True, stage = 'inner', fault = 'snapshot'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        if stage == "inner":
+            assert error.__cause__.__cause__ is primary
+        else:
+            assert error.__cause__ is primary
+>       assert getattr(
+            error, "journal_fault" if fault == "snapshot" else "cleanup_fault", False
+        )
+E       AssertionError: assert False
+E        +  where False = getattr(ReferenceParityInterrupted('q/v parity interrupted at cell'), 'journal_fault', False)
+
+tests\test_alc_r0_accumulation_journal_integration.py:235: AssertionError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-False] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21DF2BA10>
+interrupt = False, stage = 'late', fault = 'snapshot'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        if stage == "inner":
+            assert error.__cause__.__cause__ is primary
+        else:
+            assert error.__cause__ is primary
+>       assert getattr(
+            error, "journal_fault" if fault == "snapshot" else "cleanup_fault", False
+        )
+E       AssertionError: assert False
+E        +  where False = getattr(ReferenceParityError('terminal q/v parity failure at receipt'), 'journal_fault', False)
+
+tests\test_alc_r0_accumulation_journal_integration.py:235: AssertionError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-True] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21E01E7E0>
+interrupt = True, stage = 'late', fault = 'snapshot'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        if stage == "inner":
+            assert error.__cause__.__cause__ is primary
+        else:
+            assert error.__cause__ is primary
+>       assert getattr(
+            error, "journal_fault" if fault == "snapshot" else "cleanup_fault", False
+        )
+E       AssertionError: assert False
+E        +  where False = getattr(ReferenceParityInterrupted('q/v parity interrupted at receipt'), 'journal_fault', False)
+
+tests\test_alc_r0_accumulation_journal_integration.py:235: AssertionError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-False] _
+RuntimeError: reference
+
+The above exception was the direct cause of the following exception:
+
+factory = <bound method _ReferenceFactory.make of <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000001E21E0FFA70>>
+inputs = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+_accumulation_owner = <aluclu.alc_r0.checkpoint_accumulation_progress._AccumulationOwner object at 0x000001E21E133650>
+
+    def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+        result = original_cell(factory, inputs, exact=exact)
+        if stage == "inner":
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+>           raise kind(
+                "reference",
+                module._completed_progress(result),
+                journal_fault=fault == "snapshot",
+                cleanup_fault=fault == "cleanup",
+            ) from primary
+E           aluclu.alc_r0.checkpoint_parity_cell.ParityCellError: reference
+
+tests\test_alc_r0_accumulation_journal_integration.py:203: ParityCellError
+
+During handling of the above exception, another exception occurred:
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21E0FFF50>
+interrupt = False, stage = 'inner', fault = 'cleanup'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+>           reference_run(reference_wiring)
+
+tests\test_alc_r0_accumulation_journal_integration.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\reference_parity_suite.py:246: in run_reference_parity_suite
+    factory.clear()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000001E21E0FFA70>
+
+    def clear(factory):
+        original_clear(factory)
+>       raise RuntimeError("reference cleanup")
+E       RuntimeError: reference cleanup
+
+tests\test_alc_r0_accumulation_journal_integration.py:216: RuntimeError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-True] _
+KeyboardInterrupt: reference
+
+The above exception was the direct cause of the following exception:
+
+factory = <bound method _ReferenceFactory.make of <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000001E21E01D310>>
+inputs = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+_accumulation_owner = <aluclu.alc_r0.checkpoint_accumulation_progress._AccumulationOwner object at 0x000001E21DEFEED0>
+
+    def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+        result = original_cell(factory, inputs, exact=exact)
+        if stage == "inner":
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+>           raise kind(
+                "reference",
+                module._completed_progress(result),
+                journal_fault=fault == "snapshot",
+                cleanup_fault=fault == "cleanup",
+            ) from primary
+E           aluclu.alc_r0.checkpoint_parity_cell.ParityCellInterrupted: reference
+
+tests\test_alc_r0_accumulation_journal_integration.py:203: ParityCellInterrupted
+
+During handling of the above exception, another exception occurred:
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21E01E0C0>
+interrupt = True, stage = 'inner', fault = 'cleanup'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+>           reference_run(reference_wiring)
+
+tests\test_alc_r0_accumulation_journal_integration.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\reference_parity_suite.py:229: in run_reference_parity_suite
+    factory.clear()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000001E21E01D310>
+
+    def clear(factory):
+        original_clear(factory)
+>       raise RuntimeError("reference cleanup")
+E       RuntimeError: reference cleanup
+
+tests\test_alc_r0_accumulation_journal_integration.py:216: RuntimeError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-False] _
+
+args = (ReferenceParityReceipt(identity=ReferenceParityIdentity(source_device='cpu', source_dtype='torch.float32', base_diges...ors.9.v.B'), parameter_count=460800, base_digest='07cf3be58166c9fa598cd677e5ccf22ef939e0c63cd46c51b56fc9e477101e37')),)
+kwargs = {'expected_identity': ReferenceParityIdentity(source_device='cpu', source_dtype='torch.float32', base_digest='07cf3be5...886f9b2ea471f58a143e454ff131f6d05', fixture_digest='47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b')}
+
+    def fail(*args, **kwargs):
+>       raise primary
+E       RuntimeError: reference
+
+tests\test_alc_r0_accumulation_journal_integration.py:212: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21DEA7980>
+interrupt = False, stage = 'late', fault = 'cleanup'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+>           reference_run(reference_wiring)
+
+tests\test_alc_r0_accumulation_journal_integration.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\reference_parity_suite.py:246: in run_reference_parity_suite
+    factory.clear()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000001E21DEA4D70>
+
+    def clear(factory):
+        original_clear(factory)
+>       raise RuntimeError("reference cleanup")
+E       RuntimeError: reference cleanup
+
+tests\test_alc_r0_accumulation_journal_integration.py:216: RuntimeError
+_ test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-True] _
+
+args = (ReferenceParityReceipt(identity=ReferenceParityIdentity(source_device='cpu', source_dtype='torch.float32', base_diges...ors.9.v.B'), parameter_count=460800, base_digest='adc74654501b2d645d9cc0b20a09582ab361b695590f8e9d2588d0f839e8ffcc')),)
+kwargs = {'expected_identity': ReferenceParityIdentity(source_device='cpu', source_dtype='torch.float32', base_digest='adc74654...886f9b2ea471f58a143e454ff131f6d05', fixture_digest='47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b')}
+
+    def fail(*args, **kwargs):
+>       raise primary
+E       KeyboardInterrupt: reference
+
+tests\test_alc_r0_accumulation_journal_integration.py:212: KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E21DD7C7D0>
+interrupt = True, stage = 'late', fault = 'cleanup'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("stage", ["inner", "late"])
+    @pytest.mark.parametrize("fault", ["snapshot", "cleanup"])
+    def test_stubbed_reference_fault_transport_preserves_primary_and_prefix(
+        reference_wiring, monkeypatch, interrupt, stage, fault
+    ):
+        """Reference framing/cleanup only: fixture deliberately stubs cell computation."""
+        module, _, _ = reference_wiring
+        original_cell, original_clear = (
+            module.run_parity_cell,
+            module._ReferenceFactory.clear,
+        )
+        primary = KeyboardInterrupt("reference") if interrupt else RuntimeError("reference")
+    
+        def framed_cell(factory, inputs, *, exact, _accumulation_owner):
+            result = original_cell(factory, inputs, exact=exact)
+            if stage == "inner":
+                kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+                raise kind(
+                    "reference",
+                    module._completed_progress(result),
+                    journal_fault=fault == "snapshot",
+                    cleanup_fault=fault == "cleanup",
+                ) from primary
+            return result
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        def clear(factory):
+            original_clear(factory)
+            raise RuntimeError("reference cleanup")
+    
+        monkeypatch.setattr(module, "run_parity_cell", framed_cell)
+        if stage == "late":
+            monkeypatch.setattr(module, "validate_reference_parity_receipt", fail)
+        if fault == "cleanup":
+            monkeypatch.setattr(module._ReferenceFactory, "clear", clear)
+        elif stage == "late":
+            monkeypatch.setattr(module, "_safe_snapshot", lambda owner: (None, True))
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+>           reference_run(reference_wiring)
+
+tests\test_alc_r0_accumulation_journal_integration.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\reference_parity_suite.py:229: in run_reference_parity_suite
+    factory.clear()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = <aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000001E21DD1BA40>
+
+    def clear(factory):
+        original_clear(factory)
+>       raise RuntimeError("reference cleanup")
+E       RuntimeError: reference cleanup
+
+tests\test_alc_r0_accumulation_journal_integration.py:216: RuntimeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_combined_cleanup_and_snapshot_failure_preserves_both_markers[False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_combined_cleanup_and_snapshot_failure_preserves_both_markers[True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-True]

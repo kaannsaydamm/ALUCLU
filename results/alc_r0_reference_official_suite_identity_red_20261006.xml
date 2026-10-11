@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="19.145" timestamp="2026-10-06T01:30:54.248096+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_official_suite" name="test_bad_case_receipts_rejected[duplicate]" time="0.142" /><testcase classname="tests.test_alc_r0_reference_official_suite" name="test_bad_case_receipts_rejected[foreign]" time="0.056" /><testcase classname="tests.test_alc_r0_reference_official_suite" name="test_bad_case_receipts_rejected[bad_digest]" time="0.052" /><testcase classname="tests.test_alc_r0_reference_official_suite" name="test_bad_case_receipts_rejected[cache]" time="0.063" /><testcase classname="tests.test_alc_r0_reference_official_suite" name="test_bad_case_receipts_rejected[cpu_unequal]" time="0.843"><failure message="AssertionError: assert (OfficialCase...56=None), ...) == ()&#10;  &#10;  Left contains 72 more items, first extra item: OfficialCase(key=OfficialKey(grid_id='qv-reference-r8', arm='qv_reference', phase='unmounted'), case=ForwardCase(batch...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', incremental_official_sha256=None, incremental_wrapper_sha256=None)&#10;  Use -v to get more diff">wiring = (&lt;module 'aluclu.alc_r0.reference_official_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktree...ase='unmounted'), ForwardCase(batch=1, length=127, padding_side='none', explicit_positions=False, cached=False)), ...])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A60E830740&gt;
+mutation = 'cpu_unequal'
+
+    @pytest.mark.parametrize("mutation", ["duplicate", "foreign", "bad_digest", "cache", "cpu_unequal"])
+    def test_bad_case_receipts_rejected(wiring, monkeypatch, mutation):
+        module, host, _ = wiring
+        observe = module._case
+        def bad(wrapper, key, case, *, exact):
+            row = observe(wrapper, key, case, exact=exact)
+            if mutation in ("duplicate", "foreign"):
+                return replace(row, key=replace(key, phase="elsewhere"))
+            if mutation == "bad_digest":
+                return replace(row, official_sha256="nan")
+            if mutation == "cache":
+                return replace(row, incremental_official_sha256="a" * 64)
+            return replace(row, wrapper_sha256="b" * 64)
+        monkeypatch.setattr(module, "_case", bad)
+        with pytest.raises(module.ReferenceOfficialError) as caught:
+            module.run_reference_official_suite(host, exact=True)
+&gt;       assert caught.value.failure.completed == ()
+E       AssertionError: assert (OfficialCase...56=None), ...) == ()
+E         
+E         Left contains 72 more items, first extra item: OfficialCase(key=OfficialKey(grid_id='qv-reference-r8', arm='qv_reference', phase='unmounted'), case=ForwardCase(batch...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', incremental_official_sha256=None, incremental_wrapper_sha256=None)
+E         Use -v to get more diff
+
+tests\test_alc_r0_reference_official_suite.py:217: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_official_suite" name="test_byte_identical_base_replacement_at_last_row_rejected" time="0.827"><failure message="Failed: DID NOT RAISE ReferenceOfficialError">wiring = (&lt;module 'aluclu.alc_r0.reference_official_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktree...ase='unmounted'), ForwardCase(batch=1, length=127, padding_side='none', explicit_positions=False, cached=False)), ...])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A6145286E0&gt;
+
+    def test_byte_identical_base_replacement_at_last_row_rejected(wiring, monkeypatch):
+        module, host, _ = wiring
+        observe, count = module._case, 0
+        def swap(wrapper, key, case, *, exact):
+            nonlocal count
+            row = observe(wrapper, key, case, exact=exact)
+            count += 1
+            if count == 72:
+                replacement = nn.Linear(576, 8, bias=False).requires_grad_(False).eval()
+                replacement.weight = host.model.weight
+                replacement.config = host.model.config
+                object.__setattr__(host, "model", replacement)
+            return row
+        monkeypatch.setattr(module, "_case", swap)
+&gt;       with pytest.raises(module.ReferenceOfficialError) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ReferenceOfficialError
+
+tests\test_alc_r0_reference_official_suite.py:235: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="16" skipped="0" tests="483" time="59.343" timestamp="2026-10-06T18:14:29.806387+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_off_on_complete_observation_exact_and_base_frozen[False-False]" time="0.131" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_off_on_complete_observation_exact_and_base_frozen[False-True]" time="0.023" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_off_on_complete_observation_exact_and_base_frozen[True-False]" time="0.026" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_off_on_complete_observation_exact_and_base_frozen[True-True]" time="0.021" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_wrong_expected_factor_state_denied_before_forward" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_observation_mismatch_denied[loss]" time="0.017" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_observation_mismatch_denied[logits]" time="0.020" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_observation_mismatch_denied[gradients]" time="0.023" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_backward_failure_clears_partial_gradients" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_live_binding_replacement_during_forward_rejected[base]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_live_binding_replacement_during_forward_rejected[factors]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_live_binding_replacement_during_forward_rejected[mode]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_duplicate_observation_gradient_names_rejected" time="0.019" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_state_and_input_mutations_rejected_and_gradients_cleared[base_parameter]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_state_and_input_mutations_rejected_and_gradients_cleared[factor_parameter]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_state_and_input_mutations_rejected_and_gradients_cleared[buffer]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_state_and_input_mutations_rejected_and_gradients_cleared[input]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_state_and_input_mutations_rejected_and_gradients_cleared[gradient]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_aliased_factor_parameter_rejected_before_forward" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_base_shape_drift_with_identical_bytes_rejected[parameter]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_base_shape_drift_with_identical_bytes_rejected[buffer]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_malformed_fixture_rejected_before_forward[labels]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_malformed_fixture_rejected_before_forward[attention_mask]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_malformed_fixture_rejected_before_forward[position_ids]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_malformed_fixture_rejected_before_forward[input_ids]" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_pending_pair_matches_summed_single_gradients_and_off_on[False]" time="0.044" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_pending_pair_matches_summed_single_gradients_and_off_on[True]" time="0.046" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_both_forwards_precede_single_backward[False]" time="0.007" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_both_forwards_precede_single_backward[True]" time="0.024" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_invalid_pair_count_denied_before_execution[bad0]" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_invalid_pair_count_denied_before_execution[bad1]" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_invalid_pair_count_denied_before_execution[bad2]" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_invalid_pair_count_denied_before_execution[bad3]" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_invalid_second_fixture_denied_before_first_forward" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_second_forward_failure_clears_original_gradients[False]" time="0.003" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_second_forward_failure_clears_original_gradients[True]" time="0.008" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_summed_loss_mismatch_denied" time="0.025" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_duplicate_candidate_pair_denied" time="0.002" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_omitted_second_graph_rejected_and_gradients_cleared" time="0.019" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_nonfinite_second_loss_rejected[False]" time="0.003" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_nonfinite_second_loss_rejected[True]" time="0.013" /><testcase classname="tests.test_alc_r0_pending_observation" name="test_zero_factor_state_not_admitted_for_pending_fixture" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_accumulation_off_on_then_fixed_adamw_matches" time="0.289" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_loss_division_once_and_gradients_accumulate_without_reset" time="0.027" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_each_microbatch_backward_precedes_next_forward[False]" time="0.022" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_each_microbatch_backward_precedes_next_forward[True]" time="0.168" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_bad_count_denied_before_execution[bad0]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_bad_count_denied_before_execution[bad1]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_bad_count_denied_before_execution[bad2]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_bad_count_denied_before_execution[bad3]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_invalid_last_fixture_denied_before_first_forward" time="0.004" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_non_alternating_fixture_denied" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_mid_accumulation_failure_clears_grads[False]" time="0.009" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_mid_accumulation_failure_clears_grads[True]" time="0.075" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_changed_gradients_denied_before_optimizer_step" time="0.029" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_second_step_on_same_observation_rejected" time="0.032" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_active_checkpoint_lease_denies_step" time="0.030" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_step_detects_frozen_base_mutation_and_clears_grads" time="0.028" /><testcase classname="tests.test_alc_r0_accumulation_observation" name="test_step_full_state_matches_independent_fixed_reference" time="0.032" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_shared_base_independent_factors_full_pair" time="0.271" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_factor_registration_order_is_not_state_drift" time="0.404" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_actual_phase_order_compare_before_both_steps" time="0.315" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_bad_factory_denied_before_on_forward[base]" time="0.028" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_bad_factory_denied_before_on_forward[wrapper]" time="0.030" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_bad_factory_denied_before_on_forward[factors]" time="0.028" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_bad_factory_denied_before_on_forward[initial_state]" time="0.029" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_parity_failure_never_steps_either_arm" time="0.208" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_on_factory_failure_clears_off_gradients" time="0.026"><failure message="aluclu.alc_r0.checkpoint_accumulation_pair.AccumulationError: factory failed">checkpoint = True
+
+    def broken(checkpoint):
+        if checkpoint:
+&gt;           raise RuntimeError("factory failed")
+E           RuntimeError: factory failed
+
+tests\test_alc_r0_accumulation_pair.py:151: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+    def test_on_factory_failure_clears_off_gradients():
+        make, created = factory()
+    
+        def broken(checkpoint):
+            if checkpoint:
+                raise RuntimeError("factory failed")
+            return make(False)
+    
+        with pytest.raises(RuntimeError, match="factory failed"):
+&gt;           run_accumulation_pair(broken, fixtures(), exact=True)
+
+tests\test_alc_r0_accumulation_pair.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+factory = &lt;function test_on_factory_failure_clears_off_gradients.&lt;locals&gt;.broken at 0x000002373EAFA160&gt;
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...6, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63), prompt_length=62, candidate_ids=(13, 14)), ...)
+exact = True, _accumulation_owner = None
+
+    def run_accumulation_pair(factory, fixtures, *, exact, _accumulation_owner=None):
+        """Observe off, observe on, compare pre-clip, step off/on, compare full state.
+    
+        CPU exact comparison is mandatory. GPU uses the existing fixed tolerance
+        contract; factory qualification/resource budgeting remain outside this API.
+        Success is scoped pipeline execution, NOT actual-host/matrix/learning PASS.
+        """
+        if not callable(factory) or type(exact) is not bool:
+            raise ObservationError("callable factory and exact boolean required")
+        owned = []
+        owner = None
+        try:
+            owner = _fresh_owner(_accumulation_owner)
+            with _pair_phase(owner, "off_factory"):
+                off = factory(False)
+            with _pair_phase(owner, "off_bindings"):
+                if not isinstance(off, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                base_ids = {id(p) for p in off.base.parameters()}
+                owned.extend(
+                    p
+                    for p in off._checkpoint_factors().parameters()
+                    if id(p) not in base_ids
+                )
+                base, off_factors, off_named, device = _bindings(off, "nonzero")
+                if exact != (device.type == "cpu"):
+                    raise ObservationError("CPU exact/GPU fixed tolerance mode required")
+                base_stamp = _roster_stamp(base.named_parameters())
+                buffer_stamp = _roster_stamp(base.named_buffers())
+                factor_stamp = _roster_stamp(off_named)
+            with _pair_phase(owner, "off_observation"):
+                reference = observe_accumulation(
+                    off,
+                    fixtures,
+                    checkpoint=False,
+                    _accumulation_ticket=owner.ticket("off"),
+                )
+    
+            with _pair_phase(owner, "on_factory"):
+                on = factory(True)
+            with _pair_phase(owner, "on_bindings"):
+                if not isinstance(on, nn.Module):
+                    raise ObservationError("factory must return a cooperating wrapper")
+                protected = base_ids | {id(p) for p in on.base.parameters()}
+                owned.extend(
+                    p
+                    for p in on._checkpoint_factors().parameters()
+                    if id(p) not in protected
+                )
+                on_base, on_factors, on_named, on_device = _bindings(on, "nonzero")
+                if (
+                    on is off
+                    or on_base is not base
+                    or on_factors is off_factors
+                    or on_device != device
+                    or off.base is not base
+                    or off._checkpoint_factors() is not off_factors
+                    or _roster_stamp(base.named_parameters()) != base_stamp
+                    or _roster_stamp(base.named_buffers()) != buffer_stamp
+                    or _roster_stamp(
+                        sorted(
+                            off_factors.named_parameters(remove_duplicate=False),
+                            key=lambda item: item[0].encode("utf-8"),
+                        )
+                    )
+                    != factor_stamp
+                    or _base_digest(base) != reference.forwards[0].base_digest
+                    or _digest(off_named) != reference.forwards[0].factor_digest
+                    or {_storage(p) for _, p in off_named}
+                    &amp; {_storage(p) for _, p in on_named}
+                ):
+                    raise ObservationError("factory changed state or reused comparison arm")
+                compare_named_tensors(dict(off_named), dict(on_named), exact=True)
+            with _pair_phase(owner, "on_observation"):
+                actual = observe_accumulation(
+                    on, fixtures, checkpoint=True, _accumulation_ticket=owner.ticket("on")
+                )
+    
+            # This ordering is the integration invariant, not just documentation.
+            with _pair_phase(owner, "preclip_compare"):
+                compare_accumulations(reference, actual, exact=exact)
+            with _pair_phase(owner, "cross_arm_storage"):
+                used = {
+                    _storage(value)
+                    for value in (
+                        *base.parameters(),
+                        *base.buffers(),
+                        *off_factors.parameters(),
+                        *on_factors.parameters(),
+                    )
+                }
+                for parameter in owned:
+                    if parameter.grad is None:
+                        raise ObservationError("both live accumulated gradients required")
+                    storage = _storage(parameter.grad)
+                    if storage in used:
+                        raise ObservationError("cross-arm gradient/state storage alias")
+                    used.add(storage)
+            with _pair_phase(owner, "off_step"):
+                reference_step = step_accumulation(
+                    off, reference, _accumulation_ticket=owner.ticket("off")
+                )
+            with _pair_phase(owner, "on_step"):
+                actual_step = step_accumulation(
+                    on, actual, _accumulation_ticket=owner.ticket("on")
+                )
+            with _pair_phase(owner, "full_step_compare"):
+                comparison = compare_accumulation_steps(
+                    reference_step, actual_step, exact=exact
+                )
+            with _pair_phase(owner, "pair_record"):
+                result = AccumulationPair(reference_step, actual_step, comparison)
+            owner.close()
+            return result
+        except BaseException as exc:
+            failure, journal_fault = _safe_snapshot(owner)
+            owner_journal, owner_cleanup = _owner_faults(owner)
+            journal_fault = journal_fault or owner_journal
+            cleanup_fault = _clear_owned(owned)
+            cleanup_fault = cleanup_fault or owner_cleanup
+            if failure is not None:
+                journal_fault = journal_fault or failure.journal_fault
+                cleanup_fault = cleanup_fault or failure.cleanup_fault
+            if owner is not None:
+                try:
+                    owner.close()
+                except BaseException:
+                    journal_fault = True
+            if failure is not None:
+                failure = replace(
+                    failure, journal_fault=journal_fault, cleanup_fault=cleanup_fault
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    AccumulationInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else AccumulationError
+                )
+&gt;               raise error(
+                    str(exc),
+                    failure,
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.checkpoint_accumulation_pair.AccumulationError: factory failed
+
+src\aluclu\alc_r0\checkpoint_accumulation_pair.py:205: AccumulationError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_cross_arm_gradient_alias_denied_before_either_step" time="0.229" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_cpu_tolerant_mode_denied_before_forward" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_invalid_exact_denied_before_factory[1]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_invalid_exact_denied_before_factory[None]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_pair" name="test_invalid_exact_denied_before_factory[true]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_complete_identity_and_canonical_order_without_mutation" time="0.010" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_step_two_and_reordered_optimizer_parameters" time="0.009" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_each_value_compared_with_scale_sensitive_criteria[factor]" time="0.008" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_each_value_compared_with_scale_sensitive_criteria[exp_avg]" time="0.009" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_each_value_compared_with_scale_sensitive_criteria[exp_avg_sq]" time="0.009" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_state-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_state-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[extra_state-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[extra_state-1]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_parameter-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_parameter-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[duplicate_parameter-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[duplicate_parameter-1]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[base_parameter-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[base_parameter-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_binding-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_binding-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[duplicate_binding-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[duplicate_binding-1]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[bad_name-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[bad_name-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[empty_base-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[empty_base-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[trainable_base-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[trainable_base-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[duplicate_base-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[duplicate_base-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[factor_is_base-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[factor_is_base-1]" time="0.008" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[wrong_dtype-0]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[wrong_dtype-1]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[frozen_factor-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[frozen_factor-1]" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[non_parameter-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[non_parameter-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[two_groups-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[two_groups-1]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[extra_group_key-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[extra_group_key-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_group_key-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[missing_group_key-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[wrong_optimizer-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_membership_and_binding_fail_closed[wrong_optimizer-1]" time="0.005" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[lr-0.001]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[lr-True]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[lr-value2]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[betas-value3]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[betas-value4]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[eps-1e-06]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[weight_decay-0.01]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[weight_decay-False]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[amsgrad-True]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[maximize-True]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[foreach-None]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[capturable-True]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[differentiable-True]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[fused-None]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[decoupled_weight_decay-False]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_fixed_hyperparameters_even_when_both_arms_drift[maximize-0]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-empty]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-missing_moment]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-extra_key]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_zero]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_two]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_bool]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_int]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_vector]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_nan]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-step_grad]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_shape]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_dtype]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_none]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_nan]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_sparse]" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_grad]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-negative_square]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[0-moment_meta]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-empty]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-missing_moment]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-extra_key]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_zero]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_two]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_bool]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_int]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_vector]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_nan]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-step_grad]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_shape]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_dtype]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_none]" time="0.008" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_nan]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_sparse]" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_grad]" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-negative_square]" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_state_validation[1-moment_meta]" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_required_step_contract[True]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_required_step_contract[0]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_required_step_contract[3]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_required_step_contract[1.0]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_required_step_contract[None]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_shared_factor_arms_are_not_independent_evidence" time="0.009" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_mismatched_complete_names_fail" time="0.007" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_exact_mode_checks_moment_original_bytes" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[factor_alias]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[base_alias]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[moment_factor]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[moment_moment]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[shared_step]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[cross_arm_moment]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_distinct_objects_cannot_hide_shared_storage[cross_arm_factor]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_frozen_base_may_be_shared_without_sharing_comparison_state" time="0.015" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[factor-0]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[factor-1]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg-1]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg_sq-0]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg_sq-1]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[step-0]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[step-1]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_explicit_zero_moments_not_missing_state[exp_avg]" time="0.006" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_explicit_zero_moments_not_missing_state[exp_avg_sq]" time="0.019" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_exact_flags[0]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_exact_flags[1]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_exact_flags[None]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_exact_flags[true]" time="0.001" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_containers[factors_none]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_containers[factors_empty]" time="0.004" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_containers[base_none]" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_containers[state_none]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_invalid_containers[state_not_mapping]" time="0.003" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_matching_wrong_state_cannot_pass_against_itself" time="0.002" /><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_factor_shape_mismatch_between_arms" time="0.003" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_complete_cell_schedule_and_fixed_step" time="0.764" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[None]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[bad1]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[bad2]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[bad3]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[reorder]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[padding]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[candidate]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[prompt]" time="0.002" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[base]" time="0.006" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[wrapper]" time="0.005" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[factors]" time="0.005" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[initial]" time="0.006" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_repeat_initial_state_drift_is_not_hidden_by_pair_parity" time="0.235" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_cpu_cannot_select_tolerant_mode" time="0.003" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_fresh_modules_cannot_share_live_factor_storage[single-storage]" time="0.006" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_fresh_modules_cannot_share_live_factor_storage[single-parameter]" time="0.005" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_fresh_modules_cannot_share_live_factor_storage[pending-storage]" time="0.401" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_fresh_modules_cannot_share_live_factor_storage[pending-parameter]" time="0.405" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_nonzero_state_must_keep_zero_state_A" time="0.118" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_nonzero_B_requires_prescribed_pattern" time="0.118" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_matching_pairs_cannot_hide_order_or_repeat_drift[order]" time="0.039" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_matching_pairs_cannot_hide_order_or_repeat_drift[repeat]" time="0.262" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_interruption_clears_owned_gradients_without_retry" time="0.006" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-0]" time="0.003" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-5]" time="0.101" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-6]" time="0.119" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-12]" time="0.244" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-17]" time="0.380" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-0]" time="0.004" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-5]" time="0.114" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-6]" time="0.140" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-12]" time="0.669" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-17]" time="0.398" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_factory_failure_does_not_mark_current_row_attempted" time="0.023" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[pending_off]" time="0.418" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[pending_on]" time="0.409" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[pending_compare]" time="0.452" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[accumulation]" time="0.433" /><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_success_still_has_original_complete_result" time="0.823" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_complete_bound_receipt_and_independent_live_ownership" time="0.037"><failure message="aluclu.alc_r0.reference_parity_suite.ReferenceParityError: terminal q/v parity failure at cell">host = VerifiedHost(model=Linear(in_features=576, out_features=8, bias=False), acquisition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0)
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+expected_fixture_digest = '47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b'
+
+    def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
+        """Bind fixed factory, generic cell and bounded separate success receipt.
+    
+        No public loader/factory/execution callback. The fixture digest must originate
+        in caller-authenticated framing; equality alone does not confer provenance.
+        Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
+        and fixed step1. Failures retain bounded accumulation progress. Outer owner
+        persists scalar evidence and discards live chained
+        exceptions/wrappers; this function neither journals process kills nor retries.
+        """
+        if (
+            type(exact) is not bool
+            or torch.is_inference_mode_enabled()
+            or not torch.is_grad_enabled()
+        ):
+            raise ValueError(
+                "explicit mode and ordinary grad-enabled construction required"
+            )
+        _schedule(fixtures)
+        _sha(expected_fixture_digest)
+        fixture_digest = _json_digest([asdict(fixture) for fixture in fixtures])
+        if fixture_digest != expected_fixture_digest:
+            raise ValueError("expected six-fixture digest required")
+        signature = _signature(host)
+        if exact != (signature[0].type == "cpu"):
+            raise ValueError("CPU exact/GPU fixed tolerance mode required")
+        identity = ReferenceParityIdentity(
+            str(signature[0]),
+            str(next(host.model.parameters()).dtype),
+            signature[1],
+            signature[5],
+            signature[6],
+            fixture_digest,
+        )
+        stage, factory, completed_progress = "prepare", None, None
+        accumulation_owner = _AccumulationOwner()
+        try:
+            factory = _ReferenceFactory(host, signature, exact)
+            stage = "cell"
+&gt;           cell = run_parity_cell(
+                factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+            )
+E           TypeError: wiring.&lt;locals&gt;.cell() got an unexpected keyword argument '_accumulation_owner'
+
+src\aluclu\alc_r0\reference_parity_suite.py:408: TypeError
+
+The above exception was the direct cause of the following exception:
+
+wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+
+    def test_complete_bound_receipt_and_independent_live_ownership(wiring):
+&gt;       result = run(wiring)
+                 ^^^^^^^^^^^
+
+tests\test_alc_r0_reference_parity_suite.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+host = VerifiedHost(model=Linear(in_features=576, out_features=8, bias=False), acquisition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0)
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+expected_fixture_digest = '47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b'
+
+    def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
+        """Bind fixed factory, generic cell and bounded separate success receipt.
+    
+        No public loader/factory/execution callback. The fixture digest must originate
+        in caller-authenticated framing; equality alone does not confer provenance.
+        Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
+        and fixed step1. Failures retain bounded accumulation progress. Outer owner
+        persists scalar evidence and discards live chained
+        exceptions/wrappers; this function neither journals process kills nor retries.
+        """
+        if (
+            type(exact) is not bool
+            or torch.is_inference_mode_enabled()
+            or not torch.is_grad_enabled()
+        ):
+            raise ValueError(
+                "explicit mode and ordinary grad-enabled construction required"
+            )
+        _schedule(fixtures)
+        _sha(expected_fixture_digest)
+        fixture_digest = _json_digest([asdict(fixture) for fixture in fixtures])
+        if fixture_digest != expected_fixture_digest:
+            raise ValueError("expected six-fixture digest required")
+        signature = _signature(host)
+        if exact != (signature[0].type == "cpu"):
+            raise ValueError("CPU exact/GPU fixed tolerance mode required")
+        identity = ReferenceParityIdentity(
+            str(signature[0]),
+            str(next(host.model.parameters()).dtype),
+            signature[1],
+            signature[5],
+            signature[6],
+            fixture_digest,
+        )
+        stage, factory, completed_progress = "prepare", None, None
+        accumulation_owner = _AccumulationOwner()
+        try:
+            factory = _ReferenceFactory(host, signature, exact)
+            stage = "cell"
+            cell = run_parity_cell(
+                factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+            )
+            completed_progress = _completed_progress(cell)
+            stage = "final_base"
+            factory.unchanged()
+            stage = "receipt"
+            result = ReferenceParityReceipt(identity, PARITY_SEED, cell)
+            validate_reference_parity_receipt(result, expected_identity=identity)
+            if any(row.factor_digest != factory.digests[row.state] for row in cell.cases):
+                raise ValueError("receipt must bind original seeded factor state bytes")
+            factory.unchanged()
+            return result
+        except BaseException as exc:
+            inner, journal_fault, cleanup_fault = _failure_progress(
+                exc, completed_progress, accumulation_owner, stage
+            )
+            if factory is not None:
+                try:
+                    local_cleanup = factory.clear() is True
+                except BaseException:
+                    local_cleanup = True
+                cleanup_fault = cleanup_fault or local_cleanup
+            if inner is not None and inner.accumulation is not None:
+                inner = replace(
+                    inner,
+                    accumulation=replace(
+                        inner.accumulation,
+                        journal_fault=journal_fault,
+                        cleanup_fault=cleanup_fault,
+                    ),
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    ReferenceParityInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else ReferenceParityError
+                )
+&gt;               raise error(
+                    ReferenceParityFailure(stage, inner),
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.reference_parity_suite.ReferenceParityError: terminal q/v parity failure at cell
+
+src\aluclu\alc_r0\reference_parity_suite.py:446: ReferenceParityError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[False]" time="0.004" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[1]" time="0.003" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[None]" time="0.003" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[0000000000000000000000000000000000000000000000000000000000000000]" time="0.004" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[bad]" time="0.003" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[None]" time="0.003" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[seed]" time="0.034"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FF410&gt;
+bad = 'seed'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[A]" time="0.037"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FF9E0&gt;
+bad = 'A'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[B]" time="0.016"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FC890&gt;
+bad = 'B'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[shape]" time="0.018"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FD9D0&gt;
+bad = 'shape'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[grad]" time="0.035"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FF080&gt;
+bad = 'grad'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[mode]" time="0.020"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023740183AA0&gt;
+bad = 'mode'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[controller]" time="0.014"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002374023E3F0&gt;
+bad = 'controller'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[co_mount]" time="0.018"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401823C0&gt;
+bad = 'co_mount'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[wrong_type]" time="0.016"><failure message="assert 0 == 1&#10; +  where 0 = len([])">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FD460&gt;
+bad = 'wrong_type'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+&gt;       assert len(created) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_alc_r0_reference_parity_suite.py:149: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_reused_live_wrapper_rejected" time="0.034" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[base]" time="0.015"><failure message="AssertionError: assert 'cell' in ('final_base', 'receipt')&#10; +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage&#10; +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure&#10; +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002374023DF10&gt;
+bad = 'base'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+&gt;       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[config]" time="0.029"><failure message="AssertionError: assert 'cell' in ('final_base', 'receipt')&#10; +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage&#10; +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure&#10; +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002374023F260&gt;
+bad = 'config'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+&gt;       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[identity]" time="0.029"><failure message="AssertionError: assert 'cell' in ('final_base', 'receipt')&#10; +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage&#10; +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure&#10; +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002374023E120&gt;
+bad = 'identity'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+&gt;       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[receipt]" time="0.024"><failure message="AssertionError: assert 'cell' in ('final_base', 'receipt')&#10; +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage&#10; +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure&#10; +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FD340&gt;
+bad = 'receipt'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+&gt;       assert caught.value.failure.stage in ("final_base", "receipt")
+E       AssertionError: assert 'cell' in ('final_base', 'receipt')
+E        +  where 'cell' = ReferenceParityFailure(stage='cell', cell_failure=None).stage
+E        +    where ReferenceParityFailure(stage='cell', cell_failure=None) = ReferenceParityError('terminal q/v parity failure at cell').failure
+E        +      where ReferenceParityError('terminal q/v parity failure at cell') = &lt;ExceptionInfo ReferenceParityError('terminal q/v parity failure at cell') tblen=3&gt;.value
+
+tests\test_alc_r0_reference_parity_suite.py:188: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_inner_failure_journal_preserved_without_retry" time="0.018" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_foreign_consistent_factor_hashes_rejected" time="0.035" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_inner_interruption_preserved" time="0.014" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_post_cell_interruption_retains_completed_evidence" time="0.015"><failure message="aluclu.alc_r0.reference_parity_suite.ReferenceParityError: terminal q/v parity failure at cell">args = (&lt;bound method _ReferenceFactory.make of &lt;aluclu.alc_r0.reference_parity_suite._ReferenceFactory object at 0x000002374...2, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14))))
+kwargs = {'exact': True, '_accumulation_owner': &lt;aluclu.alc_r0.checkpoint_accumulation_progress._AccumulationOwner object at 0x0000023740221170&gt;}
+
+    def completed(*args, **kwargs):
+&gt;       cell = good(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: wiring.&lt;locals&gt;.cell() got an unexpected keyword argument '_accumulation_owner'
+
+tests\test_alc_r0_reference_parity_suite.py:252: TypeError
+
+The above exception was the direct cause of the following exception:
+
+wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...isition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237401FCC80&gt;
+
+    def test_post_cell_interruption_retains_completed_evidence(wiring, monkeypatch):
+        module, _, created = wiring
+        good = module.run_parity_cell
+    
+        def completed(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            for wrapper in created:
+                for parameter in wrapper.reference.parameters():
+                    parameter.grad = torch.ones_like(parameter)
+    
+            def interrupted(self):
+                raise KeyboardInterrupt("final check interrupted")
+    
+            monkeypatch.setattr(module._ReferenceFactory, "unchanged", interrupted)
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", completed)
+        with pytest.raises(module.ReferenceParityInterrupted) as caught:
+&gt;           run(wiring)
+
+tests\test_alc_r0_reference_parity_suite.py:265: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_parity_suite.py:88: in run
+    return module.run_reference_parity_suite(host, fixtures(), **args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+host = VerifiedHost(model=Linear(in_features=576, out_features=8, bias=False), acquisition_receipt={'fake': True}, config_identity={'fake': True}, parameter_count=4608, trainable_parameter_count=0)
+fixtures = (ParityInput(input_ids=(10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26...52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70), prompt_length=62, candidate_ids=(13, 14)))
+exact = True
+expected_fixture_digest = '47a35817b3bd37e48d8adffe3a9d559c646eb7ddf4dab227487a83c10b16747b'
+
+    def run_reference_parity_suite(host, fixtures, *, exact, expected_fixture_digest):
+        """Bind fixed factory, generic cell and bounded separate success receipt.
+    
+        No public loader/factory/execution callback. The fixture digest must originate
+        in caller-authenticated framing; equality alone does not confer provenance.
+        Original cell keeps18 singles/pending pair/16 accumulation/preclip comparisons
+        and fixed step1. Failures retain bounded accumulation progress. Outer owner
+        persists scalar evidence and discards live chained
+        exceptions/wrappers; this function neither journals process kills nor retries.
+        """
+        if (
+            type(exact) is not bool
+            or torch.is_inference_mode_enabled()
+            or not torch.is_grad_enabled()
+        ):
+            raise ValueError(
+                "explicit mode and ordinary grad-enabled construction required"
+            )
+        _schedule(fixtures)
+        _sha(expected_fixture_digest)
+        fixture_digest = _json_digest([asdict(fixture) for fixture in fixtures])
+        if fixture_digest != expected_fixture_digest:
+            raise ValueError("expected six-fixture digest required")
+        signature = _signature(host)
+        if exact != (signature[0].type == "cpu"):
+            raise ValueError("CPU exact/GPU fixed tolerance mode required")
+        identity = ReferenceParityIdentity(
+            str(signature[0]),
+            str(next(host.model.parameters()).dtype),
+            signature[1],
+            signature[5],
+            signature[6],
+            fixture_digest,
+        )
+        stage, factory, completed_progress = "prepare", None, None
+        accumulation_owner = _AccumulationOwner()
+        try:
+            factory = _ReferenceFactory(host, signature, exact)
+            stage = "cell"
+            cell = run_parity_cell(
+                factory.make, fixtures, exact=exact, _accumulation_owner=accumulation_owner
+            )
+            completed_progress = _completed_progress(cell)
+            stage = "final_base"
+            factory.unchanged()
+            stage = "receipt"
+            result = ReferenceParityReceipt(identity, PARITY_SEED, cell)
+            validate_reference_parity_receipt(result, expected_identity=identity)
+            if any(row.factor_digest != factory.digests[row.state] for row in cell.cases):
+                raise ValueError("receipt must bind original seeded factor state bytes")
+            factory.unchanged()
+            return result
+        except BaseException as exc:
+            inner, journal_fault, cleanup_fault = _failure_progress(
+                exc, completed_progress, accumulation_owner, stage
+            )
+            if factory is not None:
+                try:
+                    local_cleanup = factory.clear() is True
+                except BaseException:
+                    local_cleanup = True
+                cleanup_fault = cleanup_fault or local_cleanup
+            if inner is not None and inner.accumulation is not None:
+                inner = replace(
+                    inner,
+                    accumulation=replace(
+                        inner.accumulation,
+                        journal_fault=journal_fault,
+                        cleanup_fault=cleanup_fault,
+                    ),
+                )
+            if isinstance(exc, (Exception, KeyboardInterrupt)):
+                error = (
+                    ReferenceParityInterrupted
+                    if isinstance(exc, KeyboardInterrupt)
+                    else ReferenceParityError
+                )
+&gt;               raise error(
+                    ReferenceParityFailure(stage, inner),
+                    journal_fault=journal_fault,
+                    cleanup_fault=cleanup_fault,
+                ) from exc
+E               aluclu.alc_r0.reference_parity_suite.ReferenceParityError: terminal q/v parity failure at cell
+
+src\aluclu\alc_r0\reference_parity_suite.py:446: ReferenceParityError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_completed_failure_framing_rejects_corrupt_payload[type]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_completed_failure_framing_rejects_corrupt_payload[count]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_completed_failure_framing_rejects_corrupt_payload[schedule]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_completed_failure_framing_rejects_corrupt_payload[nonfinite]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_completed_failure_framing_rejects_corrupt_payload[digest]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_completed_failure_framing_rejects_corrupt_payload[pending]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_nonordinary_context_denied_before_factory[no_grad]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_nonordinary_context_denied_before_factory[inference_mode]" time="0.003" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_cpu_and_gpu_receipts" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_identity[source_device-cuda:1]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_identity[source_dtype-torch.float16]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_identity[base_digest-zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_identity[configuration_digest-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_identity[host_identity_digest-None]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_identity[fixture_digest-000000000000000000000000000000000000000000000000000000000000000]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_valid_but_foreign_identity" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_wrong_seed[True]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_wrong_seed[0]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_wrong_seed[20260917]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_wrong_seed[20260916]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[count]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[bool_count]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[names]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[reverse]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[duplicate]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[base]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[partial]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_incomplete_or_foreign_cell[list]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[state-other]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[repeat-True]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[fixture_index-1]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[losses-value3]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[scores-value4]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[losses-value5]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[losses-value6]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[base_digest-0000000000000000000000000000000000000000000000000000000000000000]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_single_row[factor_digest-bad]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_factor_state_and_repetition_corruption" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_pending[pending0]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_pending[pending1]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_pending[pending2]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_pending[pending3]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_bad_pending[pending4]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[partial-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[partial-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[partial-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[reverse-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[reverse-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[reverse-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[duplicate-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[duplicate-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[duplicate-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[malformed-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[malformed-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[malformed-exp_avg_sq]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[nan-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[nan-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[nan-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[bound-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[bound-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[bound-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[zero-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[zero-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[zero-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[cpu_difference-factors]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[cpu_difference-exp_avg]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_complete_optimizer_metrics_required[cpu_difference-exp_avg_sq]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_fixed_step1[0]" time="0.001" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_fixed_step1[2]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_fixed_step1[True]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_fixed_step1[1.0]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_receipt" name="test_exact_zero_metric_allowed_and_bad_receipt_type_denied" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_complete_trace_has_bounded_immutable_primitive_records" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_before_backward_counts_do_not_claim_observation_return[0-off]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_before_backward_counts_do_not_claim_observation_return[0-on]" time="0.005" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_before_backward_counts_do_not_claim_observation_return[7-off]" time="0.006" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_before_backward_counts_do_not_claim_observation_return[7-on]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_before_backward_counts_do_not_claim_observation_return[15-off]" time="0.003" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_before_backward_counts_do_not_claim_observation_return[15-on]" time="0.006" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_optimizer_return_does_not_claim_step_record_or_pair_return" time="0.007" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_skipped_return_and_foreign_or_forged_ticket_are_rejected" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes0]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes1]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes2]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes3]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes4]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes5]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_forged_snapshot_cannot_overstate_progress[changes6]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_bad_nested_counts_subclasses_and_extra_fields_are_rejected" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_closed_owner_retains_snapshot_but_cannot_continue" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_copied_exact_ticket_is_foreign_even_with_same_owner_token_arm" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_owner_and_snapshot_subclasses_are_not_admitted" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_external_snapshot_mutation_cannot_corrupt_owner_or_other_snapshots" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_invalid_micro_index_is_rejected_without_advancing[True]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_invalid_micro_index_is_rejected_without_advancing[-1]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_invalid_micro_index_is_rejected_without_advancing[16]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_invalid_micro_index_is_rejected_without_advancing[0]" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_progress" name="test_fault_markers_are_primitive_diagnostics_not_completion" time="0.001" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[stage-False]" time="0.177" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[stage-True]" time="0.179" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[completed_list-False]" time="0.251" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[completed_list-True]" time="0.329" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[oversized-False]" time="0.216" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[oversized-True]" time="0.275" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row-False]" time="0.259" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row-True]" time="0.285" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row_metric-False]" time="0.211" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row_metric-True]" time="0.186" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[current-False]" time="0.213" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[current-True]" time="0.234" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[unrun-False]" time="0.152" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[unrun-True]" time="0.219" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[pending-False]" time="0.229" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[pending-True]" time="0.222" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_real_tiny_pair_drives_complete_owned_journal_without_receipt_changes" time="0.381" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-off-False]" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-off-True]" time="0.014" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-on-False]" time="0.062" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-on-True]" time="0.070" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-off-False]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-off-True]" time="0.009" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-on-False]" time="0.076" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-on-True]" time="0.067" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-off-False]" time="0.015" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-off-True]" time="0.016" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-on-False]" time="0.194" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-on-True]" time="0.282" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-off-False]" time="0.047" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-off-True]" time="0.029" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-on-False]" time="0.328" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-on-True]" time="0.322" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-off-False]" time="0.233" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-off-True]" time="0.243" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-on-False]" time="0.265" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-on-True]" time="0.252" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-off-False]" time="0.262" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-off-True]" time="0.252" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-on-False]" time="0.305" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-on-True]" time="0.275" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-False]" time="0.007" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-True]" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-False]" time="0.014" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-True]" time="0.011" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-False]" time="0.016" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-True]" time="0.015" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-False]" time="0.017" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-True]" time="0.017" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-False]" time="0.027" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-True]" time="0.023" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-False]" time="0.029" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-True]" time="0.030" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-False]" time="0.090" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-True]" time="0.074" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-False]" time="0.101" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-True]" time="0.120" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-False]" time="0.157" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-True]" time="0.141" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-False]" time="0.155" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-True]" time="0.212" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-False]" time="0.222" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-True]" time="0.237" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-False]" time="0.221" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-True]" time="0.217" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-False]" time="0.218" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-True]" time="0.225" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-False]" time="0.222" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-True]" time="0.222" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-False]" time="0.219" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-True]" time="0.221" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-False]" time="0.218" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-True]" time="0.218" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-False]" time="0.223" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-True]" time="0.229" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-False]" time="0.283" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-True]" time="0.258" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-False]" time="0.269" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-True]" time="0.255" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-False]" time="0.236" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-True]" time="0.228" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_cell_failure_retains_real_completed_accumulation[False]" time="0.739" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_cell_failure_retains_real_completed_accumulation[True]" time="0.703" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_rejected_factor_alias_does_not_clear_caller_owned_base_gradient[pair]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_rejected_factor_alias_does_not_clear_caller_owned_base_gradient[cell]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_combined_cleanup_and_snapshot_failure_preserves_both_markers[False]" time="0.494" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_combined_cleanup_and_snapshot_failure_preserves_both_markers[True]" time="0.584" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[False]" time="0.427" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[True]" time="0.424" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-False]" time="0.285" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-True]" time="0.271" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-False]" time="0.269" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-True]" time="0.297" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-False]" time="0.371" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-True]" time="0.557" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-False]" time="0.461" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-True]" time="0.520" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[False]" time="0.044" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[True]" time="0.012" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_preclip_failure_prevents_either_optimizer_step" time="0.320" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_forward_failure_does_not_increment_completed_forward" time="0.013" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_backward_failure_does_not_increment_completed_backward" time="0.005" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[False]" time="0.854" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[True]" time="0.831" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[snapshot-False]" time="0.784" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[snapshot-True]" time="0.822" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[cleanup-False]" time="0.813" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[cleanup-True]" time="1.099" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[observation-False]" time="0.038" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[observation-True]" time="0.016" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[step-False]" time="0.383" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[step-True]" time="0.290" /><testcase classname="tests.test_alc_r0_reference_qv_accumulation" name="test_all_qv_factors_accumulate_and_step_exact_off_on" time="9.128" /><testcase classname="tests.test_alc_r0_reference_qv_accumulation" name="test_qv_step_preconditions_preserve_all_factors[late_gradient]" time="0.307" /><testcase classname="tests.test_alc_r0_reference_qv_accumulation" name="test_qv_step_preconditions_preserve_all_factors[active_lease]" time="0.369" /></testsuite></testsuites>

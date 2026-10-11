@@ -1,0 +1,15 @@
+# ALC-R0 Windows x64 / CPython 3.12 scientific environment.
+# Torch is pinned to the official CUDA 13.0 wheel and its upstream SHA-256.
+torch @ https://download-r2.pytorch.org/whl/cu130/torch-2.14.0%2Bcu130-cp312-cp312-win_amd64.whl#sha256=6a20371bf5af2af933a6149e5ec13f7ea7ad506276137dae9386f98d236c02ff
+transformers==5.17.0
+huggingface-hub==1.32.0
+safetensors==0.8.0
+tokenizers==0.23.2
+numpy==2.5.3
+pyarrow==25.0.1
+psutil==7.2.2
+jsonschema==4.26.0
+cryptography==50.0.1
+rfc8785==0.1.4
+pytest==9.1.1
+ruff==0.16.8

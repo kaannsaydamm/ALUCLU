@@ -1,0 +1,13 @@
+Worker-observed Start-Process -NoNewWindow -Wait -PassThru process exits; not independent watcher.
+cwd=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+PYTHONPATH=<cwd>\src
+PYTHONDONTWRITEBYTECODE=1
+ALUCLU_BANDED_NATIVE_RECEIPT=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\alc_r0_banded_native_20261002\build-d739a35-v1\receipt.json
+executable=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+v1 args=-B -m pytest -p no:cacheprovider tests/test_alc_r0_banded_native_contract_edges.py --junitxml=<evidence>\contract-edges-v1.xml
+v1 exit=-1073741819 Windows access violation; no terminal XML. New test harness discarded ctypes workspace/output owners at empty-null-input call. Failure retained.
+v2 args=-B -X faulthandler -m pytest -v -p no:cacheprovider tests/test_alc_r0_banded_native_contract_edges.py -k "empty_null or deep_receipt or artifact_content" --junitxml=<evidence>\contract-lifetime-isolation-v2.xml
+v2 corrected named-owner lifetime case plus following receipts:22passed40deselected28.21s exit0.
+v3 args=-B -X faulthandler -m pytest -vv -p no:cacheprovider tests/test_alc_r0_banded_native_contract_edges.py --junitxml=<evidence>\contract-edges-v3.xml
+v3 final module62passed40.16s exit0.
+Each run redirected stdout/stderr matching stem. Frozen nativeCPP/adapter/build/design/originaltests unchanged; newmodule separate test-source hash not part of d739a35 build receipt. No compilation/timing/corpus/model/tokenizer/training/heldout action.

@@ -1,0 +1,12 @@
+Root-witnessed terminal evidence; stdout/stderr were captured by the tool, not redirected to raw log files.
+source_commit=968e92f7ec198bd095ecc607d9e8e7383836d3cd
+session_id=43194
+actual_native_pytest_exit_code=0
+actual_edges_pytest_exit_code=0
+actual_other_pytest_exit_code=0
+terminal_shell_exit_code=0
+native: 53 passed, 0 skipped; stdout 21.21s; JUnit 21.199s.
+edges: 62 passed, 0 skipped; stdout 33.84s; JUnit 33.833s.
+other: 671 passed, 8 skipped; stdout 360.68s; JUnit 360.392s.
+Disjoint total: 786 passed, 8 skipped, 0 failures, 0 errors; 794 cases.
+The v1 launcher exited 4 before running tests; preserve its empty XML and failure note separately.

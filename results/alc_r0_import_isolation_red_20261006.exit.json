@@ -1,0 +1,1 @@
+{"actual_tool_chunk_id":"39d496","actual_process_exit_code":1,"evidence_kind":"parent_observed_terminal_result_persisted_after_execution","test_sha256":"73ce8f6821a73dcb407810338a774d953115a9c8444339f4d1677d50b901c271","source_head":"3b9fe764e5a87937aaaf58a08dad363346068073","scope":"single import-isolation RED test; no research admission"}

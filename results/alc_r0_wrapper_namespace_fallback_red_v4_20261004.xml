@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="8.603" timestamp="2026-10-04T23:33:09.250337+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_lora_super_fallback_method_state_detected[code-_bind_checkpoint_block]" time="0.006"><failure message="AssertionError: assert 'a8b34e0ad7b623466d1f531ebe0f6754234d32173b0e0ce8fb630dbf59f90d0f' != 'a8b34e0ad7b623466d1f531ebe0f6754234d32173b0e0ce8fb630dbf59f90d0f'">tests\test_alc_r0_wrapper_namespaces.py:115: in test_lora_super_fallback_method_state_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:22: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'a8b34e0ad7b623466d1f531ebe0f6754234d32173b0e0ce8fb630dbf59f90d0f' != 'a8b34e0ad7b623466d1f531ebe0f6754234d32173b0e0ce8fb630dbf59f90d0f'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_lora_super_fallback_method_state_detected[code-_run_decoder_layer]" time="0.010"><failure message="AssertionError: assert 'c1b689396e1c1b8cd1351e2bfad245c6bd52f092e3c472cc1f7477de08ef1549' != 'c1b689396e1c1b8cd1351e2bfad245c6bd52f092e3c472cc1f7477de08ef1549'">tests\test_alc_r0_wrapper_namespaces.py:115: in test_lora_super_fallback_method_state_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:22: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'c1b689396e1c1b8cd1351e2bfad245c6bd52f092e3c472cc1f7477de08ef1549' != 'c1b689396e1c1b8cd1351e2bfad245c6bd52f092e3c472cc1f7477de08ef1549'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_lora_super_fallback_method_state_detected[defaults-_bind_checkpoint_block]" time="0.008"><failure message="AssertionError: assert '57cc14b1f7da3bb4ca9982c83486355cf38a0089daef0cf9252e41fe4bfbd8fc' != '57cc14b1f7da3bb4ca9982c83486355cf38a0089daef0cf9252e41fe4bfbd8fc'">tests\test_alc_r0_wrapper_namespaces.py:115: in test_lora_super_fallback_method_state_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:22: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '57cc14b1f7da3bb4ca9982c83486355cf38a0089daef0cf9252e41fe4bfbd8fc' != '57cc14b1f7da3bb4ca9982c83486355cf38a0089daef0cf9252e41fe4bfbd8fc'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_lora_super_fallback_method_state_detected[defaults-_run_decoder_layer]" time="0.008"><failure message="AssertionError: assert '6ee3229c69e01c4012673a2351a5518b4814f660b8960b25e22b87d397f2b6f0' != '6ee3229c69e01c4012673a2351a5518b4814f660b8960b25e22b87d397f2b6f0'">tests\test_alc_r0_wrapper_namespaces.py:115: in test_lora_super_fallback_method_state_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:22: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '6ee3229c69e01c4012673a2351a5518b4814f660b8960b25e22b87d397f2b6f0' != '6ee3229c69e01c4012673a2351a5518b4814f660b8960b25e22b87d397f2b6f0'</failure></testcase></testsuite></testsuites>

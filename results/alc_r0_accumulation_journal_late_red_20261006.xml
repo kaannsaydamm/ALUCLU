@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="120" time="34.971" timestamp="2026-10-06T18:21:19.663717+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[tensor-before_cache-False]" time="0.213"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1A349B0&gt;
+interrupt = False, timing = 'before_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[tensor-before_cache-True]" time="0.204"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1B6B740&gt;
+interrupt = True, timing = 'before_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[tensor-after_cache-False]" time="0.304"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1C4FE60&gt;
+interrupt = False, timing = 'after_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[tensor-after_cache-True]" time="0.240"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1C4E450&gt;
+interrupt = True, timing = 'after_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[object-before_cache-False]" time="0.244"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B12788F0&gt;
+interrupt = False, timing = 'before_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[object-before_cache-True]" time="0.194"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296AB602240&gt;
+interrupt = True, timing = 'before_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[object-after_cache-False]" time="0.177"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1E4EED0&gt;
+interrupt = False, timing = 'after_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_reference_failure_rejects_extra_row_fields[object-after_cache-True]" time="0.228"><failure message="AssertionError: assert False&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1F354C0&gt;
+interrupt = True, timing = 'after_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+&gt;       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[stage-False]" time="0.228" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[stage-True]" time="0.240" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[completed_list-False]" time="0.246" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[completed_list-True]" time="0.213" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[oversized-False]" time="0.217" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[oversized-True]" time="0.214" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row-False]" time="0.151" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row-True]" time="0.320" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row_metric-False]" time="0.204" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row_metric-True]" time="0.214" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[current-False]" time="0.239" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[current-True]" time="0.244" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[unrun-False]" time="0.182" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[unrun-True]" time="0.177" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[pending-False]" time="0.169" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[pending-True]" time="0.195" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_real_tiny_pair_drives_complete_owned_journal_without_receipt_changes" time="0.737" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-off-False]" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-off-True]" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-on-False]" time="0.062" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_forward-3-counters0-4-0-on-True]" time="0.062" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-off-False]" time="0.009" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-off-True]" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-on-False]" time="0.060" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_backward-3-counters1-6-0-on-True]" time="0.044" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-off-False]" time="0.006" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-off-True]" time="0.008" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-on-False]" time="0.127" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[micro_capture-15-counters2-7-0-on-True]" time="0.108" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-off-False]" time="0.013" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-off-True]" time="0.017" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-on-False]" time="0.154" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[observe_record-None-counters3-15-0-on-True]" time="0.146" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-off-False]" time="0.188" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-off-True]" time="0.216" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-on-False]" time="0.221" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_optimizer_call-None-counters4-15-8-on-True]" time="0.219" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-off-False]" time="0.226" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-off-True]" time="0.226" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-on-False]" time="0.225" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_returned_operation_is_retained_without_inventing_enclosing_return[step_record-None-counters5-15-11-on-True]" time="0.351" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-False]" time="0.005" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-True]" time="0.005" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-False]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-True]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-False]" time="0.015" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-True]" time="0.015" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-False]" time="0.020" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-True]" time="0.017" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-False]" time="0.023" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-True]" time="0.023" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-False]" time="0.028" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-True]" time="0.013" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-False]" time="0.070" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-True]" time="0.079" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-False]" time="0.128" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-True]" time="0.153" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-False]" time="0.153" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-True]" time="0.149" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-False]" time="0.175" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-True]" time="0.217" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-False]" time="0.220" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-True]" time="0.216" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-False]" time="0.226" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-True]" time="0.231" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-False]" time="0.255" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-True]" time="0.266" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-False]" time="0.254" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-True]" time="0.271" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-False]" time="0.265" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-True]" time="0.258" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-False]" time="0.255" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-True]" time="0.287" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-False]" time="0.301" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-True]" time="0.309" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-False]" time="0.266" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-True]" time="0.226" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-False]" time="0.240" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-True]" time="0.229" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-False]" time="0.230" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-True]" time="0.232" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_cell_failure_retains_real_completed_accumulation[False]" time="0.700" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_late_cell_failure_retains_real_completed_accumulation[True]" time="0.695" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_rejected_factor_alias_does_not_clear_caller_owned_base_gradient[pair]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_rejected_factor_alias_does_not_clear_caller_owned_base_gradient[cell]" time="0.002" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_combined_cleanup_and_snapshot_failure_preserves_both_markers[False]" time="0.435" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_combined_cleanup_and_snapshot_failure_preserves_both_markers[True]" time="0.440" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[False]" time="0.417" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[True]" time="0.421" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-False]" time="0.276" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-True]" time="0.149" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-False]" time="0.332" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-True]" time="0.201" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-False]" time="0.230" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-True]" time="0.165" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-False]" time="0.232" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-True]" time="0.231" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[False]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[True]" time="0.009" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_preclip_failure_prevents_either_optimizer_step" time="0.125" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_forward_failure_does_not_increment_completed_forward" time="0.003" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_backward_failure_does_not_increment_completed_backward" time="0.003" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[False]" time="0.642" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[True]" time="0.652" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[snapshot-False]" time="0.611" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[snapshot-True]" time="0.595" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[cleanup-False]" time="0.609" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[cleanup-True]" time="0.615" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[observation-False]" time="0.019" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[observation-True]" time="0.016" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[step-False]" time="0.180" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[step-True]" time="0.221" /></testsuite></testsuites>

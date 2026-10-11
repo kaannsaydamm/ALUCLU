@@ -1,0 +1,28 @@
+checkpoint=173
+parent_commit=bbc0c75f85e34c5a7842a1ae75a8ab0ec5467126
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_sha256=a5570635accdd28f267abf15fcb069b203c99a37c4ad3b22006b787cfbd9554a
+tests_sha256=460fd825fe89b32fc7306b4c75fd591c237f4c6d46a4a2995494ac404b9ba9bd
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+environment=PYTHONPATH=src; PYTHONDONTWRITEBYTECODE=1; ALUCLU_R0_SNAPSHOT unset
+pytest_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<specific retained XML>
+red_actual_pytest_exit_code=2; missing new audit API at collection; personally consumed
+red_junit=1/0/1/0; time=6.005; sha256=c7b577a3f158a2edaab919f6446115fab83931608051cf3bada78cb43d8f1f61
+focused_v1_actual_pytest_exit_code=1; personally consumed
+focused_v1_junit=22/0/2/0; time=5.781; sha256=deab75b47581fdbbae0909c73f632171696fb28c82fe2d3257e203a167b95d9f
+focused_v1_cause=21 testcase elements without error; one oversized-bytes generated ID caused setup+teardown Windows PYTEST_CURRENT_TEST environment-value overflow >32767characters; payload unchanged, explicit short IDs fixed harness
+focused_v1_ruff=import ordering failure corrected explicitly before final source freeze
+focused_v2_actual_pytest_exit_code=0; personally consumed
+focused_v2_junit=25/0/0/0; time=6.937; sha256=a79dee779841ae6b28b7843e43f7ea439b562110f7d8f7ae8f8a83773610150d
+review=independent GPT6.1Sol code APPROVE/scoped architecture CLEAR with mandatory WATCH privateAPI/replay ordering/full retained cost and broader readiness BLOCK; exact final hashes verified
+regression_v3_original_session=63915; terminal personally consumed actual_pytest_exit_code=0; original not restarted
+regression_v3_junit=362/0/0/1; passed=361; time=190.205
+regression_v3_xml_sha256=13411c1f4d044cd2a3aef29618da79967b75243bbf4756a6c8f6c91e412020bc
+regression_v3_new_coverage=all25 audit testcase names personally compared with final focused XML, no missing/extra names
+regression_v3_only_skip=tests.test_alc_r0_attempt_journal::test_posix_fifo_rejected_without_opening_other_end; native POSIX FIFO unavailable
+regression_v3_freeze=source/test final reviewed SHA256 unchanged; Ruff check/format and diffcheck passed
+observed_c_free_bytes=61817749504; point-in-time observation only, not total research fit or resource reservation
+regression_v3_targets=tests/test_alc_r0_retained_intent_audit.py tests/test_alc_r0_owned_append.py tests/test_alc_r0_journal_plan.py tests/test_alc_r0_manifest_publication.py tests/test_alc_r0_paged_history.py tests/test_alc_r0_attempt_state.py tests/test_alc_r0_attempt_journal.py tests/test_cognition_persistence.py tests/test_alc_r0_resource_admission.py tests/test_alc_r0_owned_process.py
+scope=complete locally published one-event-per-generation coordinator intent chain, not all historical real-world executions/budget/review authorization/external freshness/fsync/learning/launch
+limits=existing262144events/intents/eightpages/64KiBintent/aggregatepages unchanged; retained logical payload bytes are not physical allocation/globalresource fit or RSS qualification
+unchanged_writer_semantics=no commit/resume mutation; pending/orphan rejects with evidence preserved, no implicit repair/adoption/deletion

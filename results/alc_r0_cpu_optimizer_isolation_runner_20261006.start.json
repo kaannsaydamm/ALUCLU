@@ -1,0 +1,19 @@
+{
+    "suite":  "OptimizerIsolation",
+    "python":  "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+    "worktree":  "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local",
+    "arguments":  [
+                      "-m",
+                      "pytest",
+                      "tests/test_alc_r0_cpu_optimizer_isolation.py",
+                      "-q",
+                      "--junitxml=results/alc_r0_cpu_optimizer_isolation_runner_20261006.xml"
+                  ],
+    "started_at":  "2026-10-06T16:10:32.7775688+03:00",
+    "free_physical_kib":  5408752,
+    "free_virtual_kib":  17945544,
+    "required_free_physical_kib":  1048576,
+    "required_free_virtual_kib":  3145728,
+    "cuda_visible_devices":  "-1",
+    "scope":  "FAKE_PURE_CPU_ONLY_NOT_HOST_RESOURCE_OR_LEARNING_ACCEPTANCE"
+}

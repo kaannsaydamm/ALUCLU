@@ -1,0 +1,76 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_pure_resource_admission_without_third_party_imports ___________
+
+    def test_pure_resource_admission_without_third_party_imports():
+        source = Path(__file__).resolve().parents[1] / "src"
+        script = textwrap.dedent(
+            """
+            import importlib.abc
+            import sys
+    
+            blocked = {"torch", "transformers", "numpy", "cryptography",
+                       "rfc8785", "jsonschema", "safetensors", "pyarrow"}
+            attempts = []
+    
+            class DenyThirdParty(importlib.abc.MetaPathFinder):
+                def find_spec(self, fullname, path=None, target=None):
+                    if fullname.split(".")[0] in blocked:
+                        attempts.append(fullname)
+                        raise ModuleNotFoundError("forbidden dependency: " + fullname)
+                    return None
+    
+            assert not blocked.intersection(sys.modules), "contaminated subprocess"
+            sys.meta_path.insert(0, DenyThirdParty())
+            import aluclu
+            import aluclu.alc_r0
+            from aluclu.alc_r0.checkpoint_resource_admission import (
+                ProgramAccounting, ResourceRequest, assess_resources,
+            )
+    
+            result = assess_resources(ResourceRequest(
+                accounting=ProgramAccounting(False, None, None, None),
+                phase="D", device="cpu", now_utc_ns=0, research_bytes=0,
+                free_c_bytes=25 * (1 << 30), projected_growth_bytes=0,
+                pending_gpu_ns=0, pending_growth_bytes=0,
+            ))
+            assert result.resource_fit is False
+            assert result.reasons == ("history-unreconciled",)
+            assert result.remaining_gpu_ns is None
+            assert result.program_deadline_utc_ns is None
+            assert not attempts, attempts
+            assert not blocked.intersection(sys.modules)
+            print("pure-admission-isolated")
+            """
+        )
+        environment = os.environ.copy()
+        environment["PYTHONPATH"] = str(source)
+        environment["PYTHONNOUSERSITE"] = "1"
+        environment["CUDA_VISIBLE_DEVICES"] = "-1"
+        completed = subprocess.run(
+            [sys.executable, "-S", "-c", script],
+            env=environment,
+            cwd=source.parent,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+>       assert completed.returncode == 0, completed.stdout + completed.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<string>", line 18, in <module>
+E           File "C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\__init__.py", line 1, in <module>
+E             from .cognition import (
+E           File "C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\__init__.py", line 77, in <module>
+E             from .keys import (
+E           File "C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\keys.py", line 19, in <module>
+E             from cryptography.exceptions import InvalidTag
+E           File "<string>", line 13, in find_spec
+E         ModuleNotFoundError: forbidden dependency: cryptography
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALU...mport InvalidTag\n  File "<string>", line 13, in find_spec\nModuleNotFoundError: forbidden dependency: cryptography\n').returncode
+
+tests\test_alc_r0_import_isolation.py:64: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_import_isolation.py::test_pure_resource_admission_without_third_party_imports

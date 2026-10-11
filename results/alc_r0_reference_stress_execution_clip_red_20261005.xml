@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="11.185" timestamp="2026-10-05T20:06:52.622946+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_stress_execution" name="test_clipping_cannot_mutate_factor_bytes_before_step" time="0.331"><failure message="Failed: DID NOT RAISE StressExecutionError">logic = (Module(
+  (base): Linear(in_features=2, out_features=2, bias=False)
+  (reference): Module()
+), StressSchedule(prefix_...le: False
+    eps: 1e-08
+    foreach: False
+    fused: False
+    lr: 0.0003
+    maximize: False
+    weight_decay: 0
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002C5A65220C0&gt;
+
+    def test_clipping_cannot_mutate_factor_bytes_before_step(logic, monkeypatch):
+        wrapper, schedule, _, optimizers = logic
+        original = torch.nn.utils.clip_grad_norm_
+    
+        def corrupt(parameters, max_norm, **kwargs):
+            norm = original(parameters, max_norm, **kwargs)
+            wrapper.reference.A.data.add_(1)
+            return norm
+    
+        monkeypatch.setattr(torch.nn.utils, "clip_grad_norm_", corrupt)
+&gt;       with pytest.raises(run.StressExecutionError) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE StressExecutionError
+
+tests\test_alc_r0_reference_stress_execution.py:334: Failed</failure></testcase></testsuite></testsuites>

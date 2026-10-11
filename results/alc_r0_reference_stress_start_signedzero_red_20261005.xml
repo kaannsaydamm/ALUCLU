@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.340" timestamp="2026-10-05T19:54:22.164832+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_stress_start" name="test_reject_negative_zero_seed_bytes" time="0.566"><failure message="Failed: DID NOT RAISE StressStartError">start = (PinnedLlamaQVReferenceWrapper(
+  (base): IndependentQVLM(
+    (model): Module(
+      (layers): ModuleList(
+        (0...4084, 4085, 4086, 4087, 4088, 4089, 4090, 4091, 4092, 4093, 4094, 4095), prompt_length=4094, candidate_ids=(11, 12)))))
+
+    def test_reject_negative_zero_seed_bytes(start):
+        wrapper, schedule = start
+        with torch.no_grad():
+            wrapper.reference.factors["29"]["v"].B[0, 0] = -0.0
+&gt;       with pytest.raises(StressStartError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE StressStartError
+
+tests\test_alc_r0_reference_stress_start.py:137: Failed</failure></testcase></testsuite></testsuites>

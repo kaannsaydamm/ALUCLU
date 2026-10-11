@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="10.470" timestamp="2026-10-06T15:32:50.438628+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_function_builtin_cache_and_global_alias_must_agree" time="0.005"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002183D25BA40&gt;
+
+    def test_function_builtin_cache_and_global_alias_must_agree(monkeypatch):
+        operation = GradientCheckpointingLayer.__call__
+        monkeypatch.setitem(operation.__globals__, "__builtins__", dict(operation.__builtins__))
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_hf_disabled_dispatch.py:109: Failed</failure></testcase></testsuite></testsuites>

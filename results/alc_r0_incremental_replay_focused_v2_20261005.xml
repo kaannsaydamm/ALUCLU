@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="4.059" timestamp="2026-10-05T07:00:26.776063+03:00" hostname="Kaan"><testcase classname="" name="tests.test_alc_r0_attempt_state" time="0.000"><error message="collection failure">tests\test_alc_r0_attempt_state.py:43: in &lt;module&gt;
+    start(),
+    ^^^^^
+E   NameError: name 'start' is not defined</error></testcase></testsuite></testsuites>

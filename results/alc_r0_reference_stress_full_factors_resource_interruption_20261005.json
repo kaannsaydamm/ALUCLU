@@ -1,0 +1,28 @@
+{
+  "schema": "aluclu/development/resource-observations/v1",
+  "training_authority": false,
+  "actual_host_evidence": false,
+  "research_resource_admission": false,
+  "source_commit": "ac78b7bf05e34d199ff5265fb3077ee502cb352c",
+  "scope": "CPU fake integration and separate regression; system-wide point observations, not process peaks or causal attribution",
+  "memory_unit": "KiB",
+  "system_observations_in_order": [
+    {"free_physical": 154140, "free_virtual": 784284},
+    {"free_physical": 127204, "free_virtual": 718428},
+    {"free_physical": 1233160, "free_virtual": 4066436},
+    {"free_physical": 394720, "free_virtual": 3901936}
+  ],
+  "secondary_regression": {
+    "artifact_stem": "alc_r0_reference_stress_full_factors_regression_20261005",
+    "worker_pid_hint": 27336,
+    "wrapper_pid_hint": 10148,
+    "identity_check": "worker parent10148 and both command lines matched exact junitxml artifact before Stop-Process",
+    "action": "terminated only these newly owned regression processes for system memory pressure",
+    "terminal_handle_exit_code": -1,
+    "pytest_exit_code": null,
+    "junit_result": null,
+    "verdict": "RESOURCE_PRESSURE_INTERRUPTED_NOT_PASS"
+  },
+  "untouched": "user processes, actual model/GPU/assets/data and production source",
+  "limits": "No timestamps inferred; observations are not RAM peaks, an E3 receipt, historical GPU charges, or proof all system pressure was caused by these tests. Primary integration is tracked separately."
+}

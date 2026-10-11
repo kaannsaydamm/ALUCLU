@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="2.339" timestamp="2026-10-02T20:30:54.368465+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_impossible_exposure_is_rejected[first0-second0-overrides0]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">first = (1, 2), second = (2, 1), overrides = {20: 1, 22: 1}
+
+    @pytest.mark.parametrize("first,second,overrides", [
+        ((1, 2), (2, 1), {20: 1, 22: 1}),
+        ((1, 2), (2, 1), {25: 3}),
+        ((1,), (1,), {21: 1, 25: 1}),
+    ])
+    def test_data_only_impossible_exposure_is_rejected(first, second, overrides):
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        reference = audit_banded_edit_token_visibility(first, second, **args)
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:115: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_impossible_exposure_is_rejected[first1-second1-overrides1]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">first = (1, 2), second = (2, 1), overrides = {25: 3}
+
+    @pytest.mark.parametrize("first,second,overrides", [
+        ((1, 2), (2, 1), {20: 1, 22: 1}),
+        ((1, 2), (2, 1), {25: 3}),
+        ((1,), (1,), {21: 1, 25: 1}),
+    ])
+    def test_data_only_impossible_exposure_is_rejected(first, second, overrides):
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        reference = audit_banded_edit_token_visibility(first, second, **args)
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:115: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_impossible_exposure_is_rejected[first2-second2-overrides2]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">first = (1,), second = (1,), overrides = {21: 1, 25: 1}
+
+    @pytest.mark.parametrize("first,second,overrides", [
+        ((1, 2), (2, 1), {20: 1, 22: 1}),
+        ((1, 2), (2, 1), {25: 3}),
+        ((1,), (1,), {21: 1, 25: 1}),
+    ])
+    def test_data_only_impossible_exposure_is_rejected(first, second, overrides):
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        reference = audit_banded_edit_token_visibility(first, second, **args)
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:115: Failed</failure></testcase></testsuite></testsuites>
