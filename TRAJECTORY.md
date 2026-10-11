@@ -14370,3 +14370,6 @@ Task 2 sensorium/recollection gate: CLEAN
   19hashes/pins/fourJUnitreceiptpairs/nativeobservations, causalrepairOPEN.
   Mainf73af8 independently19dochashes/scratch16*512/diffcheck. Preservecheckpoint
   thennewpreregisteredclass5 orenumerationmechanismexperiment, notnormalization.
+  Accesscheckpointcb5bb7c committed/pushed,19evidenceindexblobs bytepreserved.
+  CachedcheckreportednewblankEOF inevidencedoc; removeonlyextraEOFblank in
+  documentationfollowup, no source/test/evidence bytes or verdict changes.
