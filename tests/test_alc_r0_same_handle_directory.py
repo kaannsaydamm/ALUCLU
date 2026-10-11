@@ -5,10 +5,13 @@ import struct
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
+from contextlib import contextmanager
 
 import pytest
 
 from alc_r0_same_handle_directory import decode, nt_record, sample
+from alc_r0_same_handle_directory import NativeAPI, inspect, bounded_names
 
 
 def records(**changes):
@@ -156,3 +159,193 @@ def test_sample_query_order_and_retention():
 def test_sample_mutation_denied_without_normalization():
     with pytest.raises(ValueError, match='bookend'):
         sample(FakeSample(changed=True), 19)
+
+
+class FakeFunction:
+    def __init__(self, result=1, payload=None):
+        self.result, self.payload, self.calls = result, payload, []
+
+    def __call__(self, *args):
+        self.calls.append(args)
+        if self.payload is not None:
+            ctypes.memmove(args[2], self.payload, len(self.payload))
+        return self.result
+
+
+def fake_adapter(handle=19, close=1):
+    api = NativeAPI()
+    api.create, api.close = FakeFunction(handle), FakeFunction(close)
+    api.extended = FakeFunction(payload=records()[1])
+    return api
+
+
+def test_handle_exact_flags_and_close_even_on_failure(tmp_path):
+    api = fake_adapter()
+    with pytest.raises(RuntimeError, match='body failure'):
+        with api.open(tmp_path) as handle:
+            assert handle == 19
+            raise RuntimeError('body failure')
+    assert api.create.calls == [(str(tmp_path), 0x80, 7, None, 3, 0x02200000, None)]
+    assert api.close.calls == [(19,)]
+
+
+@pytest.mark.parametrize('handle', [None, 0, ctypes.c_void_p(-1).value])
+def test_invalid_handle_never_used_or_closed(tmp_path, handle):
+    api = fake_adapter(handle=handle)
+    with pytest.raises(OSError):
+        with api.open(tmp_path):
+            pytest.fail('invalid handle yielded')
+    assert api.close.calls == []
+
+
+def test_close_failure_not_hidden(tmp_path):
+    api = fake_adapter(close=0)
+    with pytest.raises(OSError):
+        with api.open(tmp_path):
+            pass
+    assert api.close.calls == [(19,)]
+
+
+def test_native_methods_fixed_query_classes_and_fatal_binding():
+    api = fake_adapter()
+    api.query_stat = FakeNt()
+    api.query_device = FakeNt(length=8)
+    assert api.stat(19)['record'] == b'z' * 72
+    assert api.device(19)['record'] == b'z' * 8
+    assert api.query_stat.calls == [(19, 72, 68)]
+    assert api.query_device.calls == [(19, 8, 4)]
+    assert api.identity(19) == records()[1]
+    call = api.extended.calls[0]
+    assert (call[0], call[1], call[3]) == (19, 18, 24)
+
+
+def test_identity_win32_failure_denied():
+    api = fake_adapter()
+    api.extended.result = 0
+    with pytest.raises(OSError):
+        api.identity(19)
+
+
+def test_named_full_mapping_retains_original104_bytes(tmp_path):
+    api = fake_adapter()
+    base, identity, device = records()
+    raw = base[:68] + device + bytes(4) + identity
+    assert len(raw) == 104
+    api.query_named = FakeFunction(payload=raw)
+    result = api.named(tmp_path)
+    assert result['fields'] == decode(*records())['fields']
+    assert result['native_record_hex'] == raw.hex()
+    call = api.query_named.calls[0]
+    assert (call[0], call[1], call[3]) == (str(tmp_path), 3, 104)
+
+
+def test_named_failure_denied(tmp_path):
+    api = fake_adapter()
+    api.query_named = FakeFunction(result=0)
+    with pytest.raises(OSError):
+        api.named(tmp_path)
+
+
+def fake_libraries(fail=None):
+    events = []
+    libraries = {
+        'api-ms-win-core-file-l2-1-4.dll': SimpleNamespace(_handle=11, GetFileInformationByName=FakeFunction()),
+        'kernel32.dll': SimpleNamespace(_handle=12, CreateFileW=FakeFunction(),
+            CloseHandle=FakeFunction(), GetFileInformationByHandleEx=FakeFunction()),
+        'ntdll.dll': SimpleNamespace(_handle=13, NtQueryInformationFile=FakeFunction(),
+            NtQueryVolumeInformationFile=FakeFunction())}
+    def loader(name, **kwargs):
+        events.append(('load', name, kwargs))
+        if name == fail:
+            raise OSError('injected load failure')
+        return libraries[name]
+    def release(handle):
+        events.append(('release', handle))
+    return events, loader, release
+
+
+def test_loader_system32_prototypes_and_reverse_cleanup():
+    events, loader, release = fake_libraries()
+    with NativeAPI(loader, release) as api:
+        assert api.query_stat.restype is ctypes.c_int32
+        assert api.query_device.restype is ctypes.c_int32
+        assert len(api.query_stat.argtypes) == len(api.query_device.argtypes) == 5
+        assert api.create.restype is ctypes.c_void_p
+        assert api.extended.argtypes[-1] is ctypes.c_uint32
+    assert [event[1] for event in events[:3]] == [
+        'api-ms-win-core-file-l2-1-4.dll', 'kernel32.dll', 'ntdll.dll']
+    assert all(event[2] == dict(use_last_error=True, winmode=0x800) for event in events[:3])
+    assert events[3:] == [('release', 13), ('release', 12), ('release', 11)]
+
+
+def test_partial_library_load_unwinds():
+    events, loader, release = fake_libraries(fail='ntdll.dll')
+    with pytest.raises(OSError, match='injected'):
+        with NativeAPI(loader, release):
+            pass
+    assert events[-2:] == [('release', 12), ('release', 11)]
+
+
+class FakeInspection(FakeSample):
+    def __init__(self, different=False):
+        super().__init__()
+        self.different = different
+
+    def named(self, path):
+        self.events.append(('named', path))
+        fields = decode(*records(size=0 if self.different else 4096))['fields']
+        return dict(fields=fields, native_record_hex='a' * 208)
+
+    @contextmanager
+    def open(self, path):
+        self.events.append(('open', path))
+        try:
+            yield 19
+        finally:
+            self.events.append(('close', path))
+
+
+def test_inspection_exact_sequence_and_cross_route_differences(tmp_path):
+    api = FakeInspection(different=True)
+    def enumeration(path):
+        api.events.append(('enumerate', path))
+        return dict(count=0, names_sha256='a' * 64)
+    result = inspect(tmp_path, api, enumeration)
+    one = ['stat', 'identity', 'device', 'stat']
+    assert [event[0] for event in api.events] == [
+        'named', 'open', *one, 'named', 'enumerate', *one, 'named', *one, 'close', 'named']
+    assert len(result['handle_samples']) == 3
+    assert len(result['named_samples']) == 4
+    assert result['handle_stable'] and result['named_stable']
+    assert result['cross_route_differences'] == [['size']] * 4
+    assert result['handle_samples'][0]['fields']['size'] == 4096
+    assert result['named_samples'][0]['fields']['size'] == 0
+
+
+def test_inspection_enumeration_failure_closes_handle(tmp_path):
+    api = FakeInspection()
+    def enumeration(path):
+        raise ValueError('enumeration failed')
+    with pytest.raises(ValueError, match='enumeration failed'):
+        inspect(tmp_path, api, enumeration)
+    assert api.events[-1] == ('close', tmp_path)
+
+
+def test_inspection_regular_file_refused_before_native(tmp_path):
+    path = tmp_path / 'not-directory'
+    path.write_bytes(b'not-dir')
+    api = FakeInspection()
+    with pytest.raises(ValueError, match='directory'):
+        inspect(path, api)
+    assert api.events == []
+
+
+def test_enumeration_exact_count_and_bound(tmp_path):
+    for index in range(256):
+        (tmp_path / str(index)).touch()
+    result = bounded_names(tmp_path)
+    assert result['count'] == 256
+    assert len(result['names_sha256']) == 64
+    (tmp_path / 'overflow').touch()
+    with pytest.raises(ValueError, match='bound'):
+        bounded_names(tmp_path)

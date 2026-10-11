@@ -14295,3 +14295,42 @@ Task 2 sensorium/recollection gate: CLEAN
   Main2e0f9f verified24doc hashes,11fe65 crosschecked6capturehashes+terminalflags.
   No native readiness or genuinependingIO proof. Preserve30filecheckpoint;
   next nativeadapter/sequence remains necessary before installedtarget probe.
+  Core4e51032 committed/pushed, remoteequal0b6548/clean; previous turn PROGRESS.
+  Resume adapter phase under existing preregistered samehandleprotocol, official
+  APIs rechecked165. Add fake DLL/handle/prototype/class/cleanup/full104decode,
+  inspection sequence/crossroute difference/enumerationbound RED tests and
+  adapter stubs. Closed adapter artifact modes, no native invocation yet.
+  AdapterRED375b2d native1/root23824/total7/active0/notimeout; prior31pass/new
+  failures are missingadapter/enumeration/sequence stubs. Implement system32
+  loader/prototypes/reverseunload/readattributeshandle/fullnamed104decode,
+  stat68/ID18/device4, bounded names and exactsequence; closed native mode now
+  implemented but NOTinvoked until GREEN/regression/twoindependentreviews.
+  Main3c33ac RED46/15/0/0,1.242s: prior31passed,new15 missingstubs (one
+  bodyfailure regex insteadstub). GREEN121c51 native0/root33236/total7/active0/
+  notimeout, main8acd98 JUnit46/0/0/0,.805s. REG8acd98 original47903 terminal
+  5f343d native0/root31988/total75/active0/notimeout; main9bc309 personally
+  parsed183/0/0/0,39.808s exact46+22+42+73 and unchangedreviewedpins
+  bf23160f4fbd70d64102ca91b45af64345523722d577bd4ecd71e11834504c4e/
+  f202fafb2229479f75908c4d08cc4c65083f83844c91310531770acbe506f1e8.
+  Independent codeAPPROVE/archCLEAR for onefinite native diagnostic conditional
+  terminal183/exactpins; conditionsnowpersonallyverified. Non-atomic/ABA/path
+  limits and unsupportedzero semanticambiguity retained, notproduction/science.
+  Native invocation next, source/testsfrozen, no otherjoblive; nofieldwaiver.
+  Native21dc99 terminal0/root30864/total3/active0/notimeout,.859s, valid11776
+  stdout/0stderr/caps/EOFclosed. Actualinstalledasyncio reproduces0->8192 in
+  BOTHsamehandle andbyname afterenumeration, stableidentity/timestamps/other12
+  fields; no-writerbythisscript, externalactors/uniquecausality notexcluded.
+  Scratch16*512 stable4096. Allmatchedpairs devicecharacteristics differ:
+  volumequery131104 vsbyname256, no semanticparity/production substitution.
+  Main76a917 parsedfullsequence; dd4fe1 independentlyrawdecoded20observations
+  all14fields +exactlengths/statuses andretained16files8192bytes. Nativeexit0
+  onlycompletion, installedstabilityFALSE. NoactualpendingIO. Newevidence doc
+  15hashes; samehandleALONEnotrepair. Preserve afterindependentterminalreviews,
+  thenresearchmetadata materialization/device-source semantics, notfieldwaiver.
+  Terminal independent codeAPPROVE/archpreservationCLEAR, explicitBLOCK against
+  production-repair interpretation. Bothverified15hashes/finalpins/JUnit/native
+  counterevidence; codealso productionpins/raw mappings. Main735601 verified15
+  dochashes/finalpins. Preserve20filecheckpoint negative-remedy result. Primary
+  search166 found no causal proof; historicalNTFSreplication/SMB/WMI semantics
+  are not currentlocaldirectory-query waivers. Goalremainsactive, next primary
+  mechanism/device-source investigation, no downstreamtraining authority.

@@ -6,6 +6,8 @@ import stat
 import struct
 import sys
 import tempfile
+import hashlib
+from contextlib import ExitStack, contextmanager
 from pathlib import Path
 
 
@@ -81,10 +83,152 @@ def pending_exit():
         os._exit(71)
 
 
+class NativeAPI:
+    def __init__(self, loader=None, release=None):
+        self.loader, self.release = loader, release
+
+    def __enter__(self):
+        if os.name != 'nt' or struct.calcsize('P') != 8 or sys.byteorder != 'little':
+            raise ValueError('Windows64 little-endian diagnostic required')
+        if (self.loader is None) != (self.release is None):
+            raise ValueError('paired loader/release required')
+        if self.loader is None:
+            import _ctypes
+            self.loader, self.release = ctypes.WinDLL, _ctypes.FreeLibrary
+        self.stack = ExitStack()
+        try:
+            def load(name):
+                library = self.loader(name, use_last_error=True, winmode=0x800)
+                self.stack.callback(self.release, library._handle)
+                return library
+            named = load('api-ms-win-core-file-l2-1-4.dll')
+            kernel = load('kernel32.dll')
+            native = load('ntdll.dll')
+            self.query_named = named.GetFileInformationByName
+            self.query_named.argtypes = [ctypes.c_wchar_p, ctypes.c_int32,
+                ctypes.c_void_p, ctypes.c_uint32]
+            self.query_named.restype = ctypes.c_int32
+            self.create = kernel.CreateFileW
+            self.create.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+                ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_void_p]
+            self.create.restype = ctypes.c_void_p
+            self.close = kernel.CloseHandle
+            self.close.argtypes = [ctypes.c_void_p]
+            self.close.restype = ctypes.c_int32
+            self.extended = kernel.GetFileInformationByHandleEx
+            self.extended.argtypes = [ctypes.c_void_p, ctypes.c_int32,
+                ctypes.c_void_p, ctypes.c_uint32]
+            self.extended.restype = ctypes.c_int32
+            self.query_stat = native.NtQueryInformationFile
+            self.query_device = native.NtQueryVolumeInformationFile
+            for query in (self.query_stat, self.query_device):
+                query.argtypes = [ctypes.c_void_p, ctypes.POINTER(IOStatus),
+                    ctypes.c_void_p, ctypes.c_uint32, ctypes.c_int32]
+                query.restype = ctypes.c_int32
+            return self
+        except BaseException:
+            self.stack.close()
+            raise
+
+    def __exit__(self, *exception):
+        self.stack.close()
+
+    @contextmanager
+    def open(self, path):
+        handle = self.create(str(path), 0x80, 7, None, 3, 0x02200000, None)
+        if handle in (None, 0, ctypes.c_void_p(-1).value):
+            raise ctypes.WinError(ctypes.get_last_error())
+        try:
+            yield handle
+        finally:
+            if not self.close(handle):
+                raise ctypes.WinError(ctypes.get_last_error())
+
+    def stat(self, handle):
+        return nt_record(self.query_stat, handle, 72, 68, pending_exit)
+
+    def device(self, handle):
+        return nt_record(self.query_device, handle, 8, 4, pending_exit)
+
+    def identity(self, handle):
+        value = ctypes.create_string_buffer(24)
+        if not self.extended(handle, 18, ctypes.byref(value), 24):
+            raise ctypes.WinError(ctypes.get_last_error())
+        return bytes(value)
+
+    def named(self, path):
+        value = ctypes.create_string_buffer(104)
+        if not self.query_named(str(path), 3, ctypes.byref(value), 104):
+            raise ctypes.WinError(ctypes.get_last_error())
+        raw = bytes(value)
+        fields = decode(raw[:68] + bytes(4), raw[80:104], raw[68:76])['fields']
+        return dict(fields=fields, native_record_hex=raw.hex())
+
+
+def bounded_names(path):
+    names, length = [], 0
+    with os.scandir(path) as entries:
+        for entry in entries:
+            length += len(entry.name.encode('utf-8'))
+            if len(names) >= 256 or length > 32768:
+                raise ValueError('directory enumeration bound exceeded')
+            names.append(entry.name)
+    encoded = json.dumps(sorted(names), ensure_ascii=True, separators=(',', ':')).encode()
+    return dict(count=len(names), name_bytes=length, names_sha256=hashlib.sha256(encoded).hexdigest())
+
+
+def inspect(path, api, enumerate_fn=bounded_names):
+    if (not isinstance(path, Path) or not path.is_absolute() or '\0' in str(path)
+            or len(str(path).encode('utf-8')) > 32768
+            or path.resolve(strict=True) != path):
+        raise ValueError('resolved bounded absolute directory required')
+    metadata = path.lstat()
+    if (not stat.S_ISDIR(metadata.st_mode)
+            or getattr(metadata, 'st_file_attributes', 0) & 0x400
+            or (os.name == 'nt' and (len(path.drive) != 2 or path.drive[1] != ':'))):
+        raise ValueError('regular local directory required')
+    named = [api.named(path)]
+    handles = []
+    with api.open(path) as handle:
+        handles.append(sample(api, handle))
+        named.append(api.named(path))
+        enumeration = enumerate_fn(path)
+        handles.append(sample(api, handle))
+        named.append(api.named(path))
+        handles.append(sample(api, handle))
+    named.append(api.named(path))
+    differences = []
+    for named_index, handle_index in ((0, 0), (1, 0), (2, 1), (3, 2)):
+        left, right = named[named_index]['fields'], handles[handle_index]['fields']
+        differences.append(sorted(key for key in left if left[key] != right[key]))
+    return dict(path=str(path), named_samples=named, handle_samples=handles,
+        enumeration=enumeration, cross_route_differences=differences,
+        named_stable=all(item['fields'] == named[0]['fields'] for item in named),
+        handle_stable=all(item['fields'] == handles[0]['fields'] for item in handles))
+
+
+def owned_native():
+    root = Path.cwd()
+    scratch = root / 'control-16'
+    scratch.mkdir()
+    for index in range(16):
+        with (scratch / f'sample-{index:03d}.bin').open('xb') as output:
+            output.write(b'x' * 512)
+    installed = Path(sys.base_prefix).resolve(strict=True) / 'Lib' / 'asyncio'
+    with NativeAPI() as api:
+        cases = [inspect(installed, api), inspect(scratch, api)]
+    print(json.dumps(dict(schema='alc-r0-same-handle-directory-v1', python=sys.version,
+        scope='finite-readonly-installed-and-owned-scratch', scratch_root=str(root),
+        logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
+
+
 def main():
     mode = sys.argv[1:]
+    if mode == ['--owned-native']:
+        return owned_native()
     if mode not in (['--red'], ['--green'], ['--regression'],
-                    ['--red-v2'], ['--green-v2'], ['--regression-v2']):
+                    ['--red-v2'], ['--green-v2'], ['--regression-v2'],
+                    ['--red-adapter'], ['--green-adapter'], ['--regression-adapter'], ['--native']):
         raise ValueError('closed test-only mode required')
     from alc_r0_directory_metadata_reproducer import run_diagnostic
     cwd = Path(__file__).resolve().parents[1]
@@ -95,7 +239,7 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_same_handle_directory.py']
-    if name in ('regression', 'regression-v2'):
+    if name in ('regression', 'regression-v2', 'regression-adapter'):
         tests += ['tests/test_alc_r0_directory_metadata_reproducer.py',
             'tests/test_alc_r0_windows_directory_metadata.py',
             'tests/test_alc_r0_runtime_tree_inventory.py']
@@ -105,7 +249,11 @@ def main():
         ALUCLU_TEST_ONLY_RUNTIME_SCAN='0', ALUCLU_TEST_ONLY_RUNTIME_CAUSE='0')
     temporary = Path(tempfile.mkdtemp(prefix='alc-r0-same-handle-')).resolve(strict=True)
     command = (sys.executable, '-B', '-m', 'pytest', '-q', *tests, '--junitxml=' + str(paths['.xml']))
+    if name == 'native':
+        command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-native')
+        cwd = temporary
     receipt = run_diagnostic(command, cwd, environment, paths, temporary)
+    receipt['scope'] = 'same-handle-directory-diagnostic'
     data = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
     with paths['.exit.json'].open('xb') as output:
         output.write(data)
