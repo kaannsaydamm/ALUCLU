@@ -14105,3 +14105,51 @@ Task 2 sensorium/recollection gate: CLEAN
   Mainreverified7hashes afa041. Accepttested integration prerequisite only;
   nextactual_v5 requiresexactsource review. OldFcause/actual_v4cause unproved,
   no installedbinding/nativeprovenance/producer/modeltraining/sciencePASS.
+  Checkpoint674f946 committed/pushed1884f1 andremote==HEAD/clean. Implementonly
+  preregisteredactual_v5 closedselector/freshartifact; exactsame900inner/960outer
+  andcaps, explicitcauseoff. Actualfixture modebranch extends; no productionedits.
+  Prior345regression fixturepin a02c57... predatesthis modeaddition, notclaimed
+  byteidentical newfixture; allnonactual behavior unchanged. Source review before
+  actual invocation, no concurrentPython/model/GPU process.
+  Exactactual_v5 source independent code APPROVE/architecture CLEAR,
+  runner2ca377524e2511f5960b95f0ae6bdf056a618ecbc2f7e0a240cd356ba4422356,
+  fixturea073865cf4dca2ca45725138f2de5a8697bc50533af6e3c10937b4d2c70a8ccd.
+  Mainb70496 currentPythonprocessnone/disk49.03GiBfree. Onefreshactual_v5 serial
+  invocation next, source/tests frozen untilterminal; no model/GPU/training.
+  Actualv5 launched89c0e6 originalsession7301 terminale027ef parsedb3a388:
+  outer1/root13924/total6/active0/notimeout/stderr0,Junit1/1/0/0,48.472s;
+  inner0/root22348/total3/active0/notimeout,completedrefusal nothang. Same-native
+  Lib/asyncio size ANDallocation0->8192, other12fieldsstable/full128IDsame.
+  Fiveartifactshashed/docretained, productionpinsunchanged55c9d4. Native-routeonly
+  hypothesis notsufficient; no normalize/drop fields or installedbindingPASS.
+  PrimaryMS docs consulted, enumerationstaleness warning notproofthisbynamecause;
+  SETdirectoryallocationundefined notpermissiontodiscardQUERYfields. Investigate
+  minimal samepath handle/standard/byname/enumeration diagnostic, no training.
+  Preregister comparativeprobev3 existing script --asyncio closedfixedbasepath,
+  16rounds/same60s/65536stdout/4096stderr/256entry32768names, exactstandard24bytes
+  class1 plus old104byname/legacy/lstat. Capture afterhandle then afterenumeration;
+  preserve oldmodes/artifacts. Diagnosticonly/no installedtree mutation, review
+  source beforeexecution. Stablewarmresult wouldNOTprove orfixcoldcause.
+  Comparativeprobe source code APPROVE/architecture CLEAR, exactscript
+  c8b14d78b224985dffa7ea7d9fd6347143fd474b8f3d51c66a3ac29305d1c254.
+  Codeverifiedfiveactualnegativehashes; archsourceonlynotartifactclaim. Launch
+  oneclosed --asyncio diagnostic next. Handles/query/env/cache are observational
+  constraints, notproofcause. No productionchange or runtime/model qualification.
+  Probev3 b77767 native0/root20996/total3/active0/notimeout,0.875s; validoutput
+  stdout16189bytes/stderr0, no excess/failure, EOF/resourcesclosed. Parsedall16
+  rounds: lstatbeforeafterequal, bynameallthreephases size/allocation8192,
+  legacyhandle8192/standard8192allocation8192, enumeration34/stablenamehash.
+  Actualv5 0->8192 transition NOTreproduced onalready-observedtree; no coldcause,
+  cachecause, repair, installedbindingPASS or trainingready claim. Synthetic
+  reservation remainsRUNNING, not realresourceadmission/release. Mainhashed3
+  artifacts and matchedreceipt outputhash/bytes; hashes ininstalledruntime-v5doc.
+  Seek bothfinalreadonly terminalreviews includingfiveactual+threeprobehashes,
+  sourcepins/nativeoutcome and claimlimits. Preserve evidencecheckpoint only;
+  installedruntime continuity stillOPEN, nextremedy needs separatecontractreview.
+  Final independent GPT-6.1Sol code APPROVE/architecture preservationCLEAR,
+  continuityWATCH/OPEN. Both personally verifiedeightartifacthashes/threeharness
+  pins/negativeactual/nativeprobe facts and full13file scope; no productionedit,
+  no tests/edits/spawns byreviewers. Mainreverifiedpins/JUnit38f5d9, C:48.96GiB.
+  Preserve checkpoint only; no installedbinding/sciencePASS/trainingready or
+  executionpermission. Fullroadmap goalactive, nextminimalreproducer/contract
+  separatelyreviewed, no blindwarmrerun/fieldwaiver/searchbudgetrenewal.

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="48.472" timestamp="2026-10-11T19:57:12.128258+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_actual_current_runtime_read_only" time="47.663"><failure message="AssertionError: {'ok': False, 'error': 'runtime tree changed during inspection: {&quot;component&quot;:&quot;python-base&quot;,&quot;path_prefix&quot;:&quot;Lib/asyncio&quot;...ry-by-name-v1&quot;}', 'process': {'root_pid': 22348, 'exit_code': 0, 'timed_out': False, 'started_ns': 6289250000000, ...}}&#10;assert False">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-84/test_actual_current_runtime_re0')
+
+    @pytest.mark.skipif(os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN')!='1',
+                        reason='separately selected read-only runtime diagnostic')
+    def test_actual_current_runtime_read_only(tmp_path):
+        result=inspect_owned(tmp_path,actual=True)
+        mode=os.environ['ALUCLU_TEST_ONLY_RUNTIME_SCAN_MODE']
+        assert mode in ('actual','actual_v2','actual_v3','actual_v4','actual_v5')
+        target=Path(__file__).resolve().parents[1]/'results'/f'alc_r0_python_runtime_{mode}_20261011.binding.json'
+        with target.open('xb') as out:
+            out.write(canonical_json_bytes(result))
+&gt;       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'runtime tree changed during inspection: {"component":"python-base","path_prefix":"Lib/asyncio"...ry-by-name-v1"}', 'process': {'root_pid': 22348, 'exit_code': 0, 'timed_out': False, 'started_ns': 6289250000000, ...}}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:238: AssertionError</failure></testcase></testsuite></testsuites>

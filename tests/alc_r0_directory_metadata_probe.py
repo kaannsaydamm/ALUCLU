@@ -11,9 +11,10 @@ from dataclasses import asdict
 from pathlib import Path
 
 
-def probe(enumerate_directory=False):
+def probe(enumerate_directory=False, asyncio_directory=False):
     if os.name!='nt' or struct.calcsize('P')!=8: raise ValueError('Windows64 only')
-    path=Path(sys.prefix)/'Lib/site-packages/huggingface_hub/inference/_mcp'
+    path=(Path(sys.base_prefix).resolve(strict=True)/'Lib/asyncio' if asyncio_directory
+          else Path(sys.prefix)/'Lib/site-packages/huggingface_hub/inference/_mcp')
     if path.resolve(strict=True)!=path: raise ValueError('resolved directory required')
     class Basic(ctypes.Structure):
         _fields_=[(n,ctypes.c_longlong) for n in ('FileId','CreationTime','LastAccessTime',
@@ -25,13 +26,21 @@ def probe(enumerate_directory=False):
         _fields_=[('attributes',W.DWORD)]+[(n,W.FILETIME) for n in
             ('creation','access','write')]+[(n,W.DWORD) for n in
             ('volume','size_high','size_low','links','index_high','index_low')]
+    class Standard(ctypes.Structure):
+        _fields_=[('allocation',ctypes.c_longlong),('size',ctypes.c_longlong),
+            ('links',W.DWORD),('delete_pending',ctypes.c_ubyte),('directory',ctypes.c_ubyte)]
     assert ctypes.sizeof(Basic)==104 and ctypes.sizeof(Legacy)==52
+    if asyncio_directory: assert ctypes.sizeof(Standard)==24
     byname=ctypes.WinDLL('api-ms-win-core-file-l2-1-4.dll',use_last_error=True).GetFileInformationByName
     byname.argtypes=[W.LPCWSTR,ctypes.c_int,ctypes.c_void_p,W.DWORD]; byname.restype=W.BOOL
     kernel=ctypes.WinDLL('kernel32',use_last_error=True)
     create=kernel.CreateFileW; create.argtypes=[W.LPCWSTR,W.DWORD,W.DWORD,ctypes.c_void_p,W.DWORD,W.DWORD,W.HANDLE]; create.restype=W.HANDLE
     info=kernel.GetFileInformationByHandle; info.argtypes=[W.HANDLE,ctypes.POINTER(Legacy)]; info.restype=W.BOOL
     close=kernel.CloseHandle; close.argtypes=[W.HANDLE]; close.restype=W.BOOL
+    if asyncio_directory:
+        standard_info=kernel.GetFileInformationByHandleEx
+        standard_info.argtypes=[W.HANDLE,ctypes.c_int,ctypes.c_void_p,W.DWORD]
+        standard_info.restype=W.BOOL
     def named():
         value=Basic()
         if not byname(str(path),3,ctypes.byref(value),ctypes.sizeof(value)): raise ctypes.WinError(ctypes.get_last_error())
@@ -53,9 +62,19 @@ def probe(enumerate_directory=False):
             legacy=dict(size=(value.size_high<<32)|value.size_low,
                 inode=(value.index_high<<32)|value.index_low,volume32=value.volume,
                 attributes=value.attributes,links=value.links)
+            standard=None
+            if asyncio_directory:
+                extended=Standard()
+                if not standard_info(handle,1,ctypes.byref(extended),24):
+                    raise ctypes.WinError(ctypes.get_last_error())
+                if not extended.directory: raise ValueError('handle directory classification differs')
+                standard=dict(size=extended.size,allocation=extended.allocation,
+                    links=extended.links,delete_pending=bool(extended.delete_pending),
+                    directory=bool(extended.directory))
         finally:
             if not close(handle): raise ctypes.WinError(ctypes.get_last_error())
         enumeration=None
+        after_handle=named() if asyncio_directory else None
         if enumerate_directory:
             names=[]; length=0
             with os.scandir(path) as entries:
@@ -68,6 +87,8 @@ def probe(enumerate_directory=False):
             enumeration=dict(count=len(names),names_sha256=hashlib.sha256(encoded).hexdigest())
         rows.append(dict(before=before,by_name_before=first,by_handle=legacy,
                          enumeration=enumeration,by_name_after=named(),after=fp()))
+        if asyncio_directory:
+            rows[-1].update(by_handle_standard=standard,by_name_after_handle=after_handle)
     print(json.dumps(dict(schema='alc-r0-directory-metadata-probe-v1',
         python=sys.version,absolute_path=str(path),rounds=rows),sort_keys=True,separators=(',',':')))
 
@@ -75,20 +96,24 @@ def probe(enumerate_directory=False):
 def main():
     if sys.argv[1:]==['--owned-probe']: return probe()
     if sys.argv[1:]==['--owned-probe-enumerate']: return probe(True)
-    if sys.argv[1:] not in ([],['--enumerate']): raise ValueError('closed probe mode required')
-    enumerate_directory=sys.argv[1:]==['--enumerate']
+    if sys.argv[1:]==['--owned-probe-asyncio']: return probe(True,True)
+    if sys.argv[1:] not in ([],['--enumerate'],['--asyncio']): raise ValueError('closed probe mode required')
+    asyncio_directory=sys.argv[1:]==['--asyncio']
+    enumerate_directory=sys.argv[1:] in (['--enumerate'],['--asyncio'])
     from aluclu.alc_r0.reserved_owned_process import ReservedOwnedLease
     from test_alc_r0_reserved_owned_process import fixture,ROOT
     from test_alc_r0_owned_stop import RetainedHandles
     cwd=Path(__file__).resolve().parents[1]
-    stem=cwd/('results/alc_r0_directory_metadata_probe_v2_20261011' if enumerate_directory
-              else 'results/alc_r0_directory_metadata_probe_20261011')
+    stem=cwd/('results/alc_r0_directory_metadata_probe_v3_20261011' if asyncio_directory else
+        'results/alc_r0_directory_metadata_probe_v2_20261011' if enumerate_directory
+        else 'results/alc_r0_directory_metadata_probe_20261011')
     paths={s:Path(str(stem)+s) for s in ('.stdout.log','.stderr.log','.exit.json')}
     if any(p.exists() for p in paths.values()): raise FileExistsError('retained evidence exists')
     environment=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1',CUDA_VISIBLE_DEVICES='-1')
     temporary=Path(tempfile.mkdtemp(prefix='alc-r0-directory-probe-'))
     arguments,store,_,_=fixture(temporary,seconds=60,stdout_cap=65536,stderr_cap=4096)
-    internal='--owned-probe-enumerate' if enumerate_directory else '--owned-probe'
+    internal=('--owned-probe-asyncio' if asyncio_directory else
+              '--owned-probe-enumerate' if enumerate_directory else '--owned-probe')
     arguments.update(command=(sys.executable,'-I','-B',str(Path(__file__).resolve()),internal),
         cwd=cwd,environment=environment,stdout_path=paths['.stdout.log'],stderr_path=paths['.stderr.log'])
     with ReservedOwnedLease(**arguments) as lease:
