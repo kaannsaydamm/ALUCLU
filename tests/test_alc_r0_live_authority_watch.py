@@ -263,6 +263,7 @@ def test_join_timeout_then_repeated_close_cannot_renew_deadline():
         first = time.monotonic_ns() + 20_000_000
         with pytest.raises(TimeoutError, match='original bound'):
             watch.close(first)
+        assert watch._close_failed
         assert signal._event.is_set() and watch._thread.is_alive()
         release.set()
         watch._thread.join(3)
@@ -270,6 +271,7 @@ def test_join_timeout_then_repeated_close_cannot_renew_deadline():
         with pytest.raises(TimeoutError, match='original bound'):
             watch.close(time.monotonic_ns() + 5_000_000_000)
         assert watch._close_deadline == first
+        assert watch._close_failed
     finally:
         release.set()
         if watch._thread is not None:

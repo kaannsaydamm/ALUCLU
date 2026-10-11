@@ -42,6 +42,7 @@ class LiveAuthorityWatch:
         self._sequence = 0
         self._reason = 'stopped' if pre_stopped else None
         self._signal_error = False
+        self._close_failed = False
         self._finished_ns = self._close_deadline = None
 
     @property
@@ -154,8 +155,9 @@ class LiveAuthorityWatch:
         if thread is not None and thread.ident is not None:
             thread.join(max(0, deadline - time.monotonic_ns()) / 1e9)
         with self._condition:
-            if (thread is not None and thread.is_alive()
+            if (self._close_failed or thread is not None and thread.is_alive()
                     or self._finished_ns is None or self._finished_ns > deadline):
+                self._close_failed = True
                 raise TimeoutError('watch closure unobserved within original bound')
             if self._signal_error:
                 raise LiveWatchError('owned stop signaling unconfirmed')

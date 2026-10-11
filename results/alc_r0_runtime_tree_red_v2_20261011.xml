@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.298" timestamp="2026-10-11T15:34:21.290545+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_enumerated_identity_matches_path_and_open_file" time="0.009"><failure message="assert (33206, 0, 0,...80892200, ...) == (33206, 43439...80892200, ...)&#10;  &#10;  At index 1 diff: 0 != 4343961586895537332&#10;  Use -v to get more diff">tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-46/test_enumerated_identity_match0/installed')
+
+    def test_enumerated_identity_matches_path_and_open_file(tree):
+        module = api()
+        bounds = module.RuntimeTreeBounds(entry_count=2,path_bytes=10,file_bytes=7,total_file_bytes=7)
+        nodes, files, total = module._walk(tree,bounds,time.monotonic_ns()+1_000_000_000)
+        retained = nodes['python.dll'][1]
+        assert files == 1 and total == 7
+&gt;       assert retained == module._fingerprint((tree/'python.dll').lstat())
+E       assert (33206, 0, 0,...80892200, ...) == (33206, 43439...80892200, ...)
+E         
+E         At index 1 diff: 0 != 4343961586895537332
+E         Use -v to get more diff
+
+tests\test_alc_r0_runtime_tree_inventory.py:86: AssertionError</failure></testcase></testsuite></testsuites>

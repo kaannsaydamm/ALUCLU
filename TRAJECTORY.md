@@ -13727,3 +13727,64 @@ Task 2 sensorium/recollection gate: CLEAN
   native RSS admission or scientific execution. Next concrete producer/admission
   and supported historical/calendar/resources before D/E/original pilots. Full
   unified ALUCLU/ALC goal remains active; no test process remains running.
+
+- 2026-10-11 continuation: prior turn PROGRESSd3a63ba source inventory checkpoint
+  committed/pushed; Desktop clean HEAD/current objective verifiedc3b63b. Existing
+  launch contracts and runtime evidence inspected3504cc/7e8d3c/a03a09: package
+  version receipts are not exact installed-runtime bytes. Proposed bounded owned
+  per-component runtime inventory, explicitly not native closure/authentication.
+  Hardlink/cooperating-filesystem assumptions and blocking-FS limits retained;
+  no factual historical numbers, asset/model/GPU access or scientific launch.
+  Scoped independent design review next; full unified program remains active.
+  Independent GPT6.1Sol design code APPROVE/architecture CLEAR; clarified root
+  counts/fingerprint separately, excluded from relative rows/path charge, and
+  positive/nonnegative exact bound minima before oracle. Owned REDba2fe7 native1/
+  root27128/total3/active0/notimeout reproduces absent runtime_tree_inventory.
+  Implemented bounded incremental double traversal, all-node/path/logical-size
+  caps, streamed64KiB hashes, lstat/fstat continuity, canonical rows and original
+  outer-deadline dependency. Added harmless owned fixtures/import trap. No real
+  runtime scan, effective DLL closure, producer or scientific launch claimed.
+  OriginalGREEN62145 terminal8d82b2 native1/root30364/total61/active0/notimeout.
+  Personal0a545e JUnit28/7/0/0 16.203s: unchanged files reject 'changed before
+  opening'. Both independent lanes REQUEST CHANGES/BLOCK: Windows DirEntry.stat
+  zeroes dev/inode/nlink, unlike full path lstat/fstat. Official CPython3.12 docs
+  independently checked. Preserve failure; added exact identity-source RED-v2,
+  before repair. Do not drop identity fields or reinterpret failures as PASS.
+  RED-v2 b1b2db terminal native1/root25632/total3/active0/notimeout reproduces
+  retained identity mismatch against full lstat. Replaced DirEntry.stat with
+  full path lstat in both traversals, preserving every identity comparison.
+  Owner repeated accounting-method approval and first-real-experiment intent;
+  no zero historical preparation consumption or scientific gate PASS inferred.
+  GREEN-v2 terminal fee065 native1/root25800/total64/active0/notimeout: 28 of29
+  tests pass; renamed-file case reports open-file identity differs. Direct
+  read-only a24bf4 confirms identical dev/inode/size/mtime/nlink/attributes but
+  path ctime is creation time whereas fstat ctime is change time. Preserve run.
+  Amend comparison to retain full independent path and open-handle fingerprints
+  for same-source continuity; exclude only legacy ctime from cross-source match.
+  Every actual device/inode/link identity comparison remains. Review amendment.
+  GREEN-v3 0b6e6e terminal0/root7916/total67/active0; personal2bc1cb JUnit29/0/0/0
+  18.473s. Regression-v3 66e7c7 terminal0/root18272/total867/active0/notimeout.
+  Architecture amendment CLEAR; code REQUEST CHANGES: scope ctime exception to
+  Windows and add negative-field coverage. After v3 terminal (no source mutation
+  while running), restricted exception to os.name nt and added8field negatives
+  plus non-Windows full-ctime comparison. v3 now non-final; final v4 reruns next.
+  Added runtime evidence companion preserving all failures/limits, no training.
+  Final-v4 241aec terminal1/root24200/total867/active0/notimeout; personal2a4a93
+  JUnit240/1/0/0 107.665s XMLf029ce58631bc06152ae9542704047b0e54b1d5e24c74bc27ca771b9e17ad461.
+  All38 runtime tests pass; existing watch repeated-close test fails: first
+  TimeoutError was not latched, so later completion could erase failed closure
+  observation. Preserve as real lifecycle failure, not harmless flake or PASS.
+  Added absorbing _close_failed on observed timeout and assertions in existing
+  reproducer; original min deadline and cleanup/join still retained. Independent
+  review and final-v5 regression next. No scientific training started.
+  Both GPT6.1Sol lifecycle reviews APPROVE/CLEAR. V5 72f79c terminal0/root26404/
+  total867/active0/notimeout; personalb7384c XML240/0/0/0 105.004s with exact
+  runtime38/source27/canonical48/lease34/output40/stop24/watch29. XML109a4159f63f724884d493f4c79edeafdfbeb872b0768aa01a92d596a9a94679;
+  stderr0 and complete stdout. Personally hashed all32 retained result artifacts
+  into companion manifest; raw-byte attributes added. Final artifact reviews next.
+  Final independent GPT6.1Sol code/security APPROVE and architecture CLEAR each
+  rehashed32artifacts, all5finalpins and parsed native/JUnit evidence. Scoped
+  runtime inventory/lifecycle checkpoint accepted; frozen plan SHA0493eeed remains
+  unchanged. No actual installed-runtime certification/nativeclosure/authproducer/
+  history-clock-resource admission or real training claimed. Full program active;
+  next dependency is concrete trusted runtime/launch binding, not downstream UX.
