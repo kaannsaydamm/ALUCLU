@@ -14205,3 +14205,47 @@ Task 2 sensorium/recollection gate: CLEAN
   case0/48 afterenum/read,14comparisonfieldsstable; existingaccessTimeexclusion
   predatesexperiment, no newwaiver. FullrawstabilityNOTclaimed. Preserve20file
   reviewedcheckpoint then nextheldhandlevariant; no training/model/GPU.
+  Scratchcheckpoint44c080d committed/pushedc0d082 andremote==HEADe1a823/clean.
+  Nexthelddirectoryvariant preregisterednewdoc: same3cases0/16/48*512,total32768,
+  holdreadattributeshandle whilepopulate; emptybaseline, populatedopen, samehandle
+  standardquery, afterclose, boundedoldverification. Expectedintentionalwrite
+  deltas NOTreproduction; comparepostpopulationpre/postclose only. Same60sowned/
+  10cleanup/65536stdout4096stderr andsyntheticjournalnotadmission. Add9newtests
+  andREDstub, prior13unchanged apartimport; nativeonlyaftertests+independentreview.
+  HeldRED56eaec originalsession19816 terminalffe4e4, native1/root16224/total3/
+  active0/notimeout/validstdout10758stderr0. Main9c7c46 JUnit22/9/0/0,3.449s:
+  prior13pass/new9fail;8NotImplemented+1expectedqueryerrorregexinsteadstub,
+  allmissinghelpernotcollection. REDsourceceea8223679e514519185d0beb59e8227e359ff7dfe2adffe8185d25dc3c5c6e,
+  tests932ee985e6619b62768f2ea2c9a837ff1fb951d700e0665a85c7cd7ea2d86a5f.
+  Implementheldhelper/privatecontextmanager+closedownedoutput, preserveoldstandard
+  behavior. No nativefactualrun yet; GREEN/REGRESSION and source review next.
+  HeldGREENb6f748 original88608 terminal1fbfa6 native0/root28428/total3/active0/
+  notimeout/validstdout81stderr0,JUnit22/0/0/0,.741s. HeldREG471d59original29674
+  terminal572e98 native0/root34252/total71/active0/notimeout/validstdout162stderr0,
+  main5141bd JUnit137/0/0/0,42.232s exact22+42+73 counts. Source/testsunchanged
+  dae91a80f33e69724ec70ebd05e15044ba2c538fd47ed6da8fc85fc043158c62/
+  932ee985e6619b62768f2ea2c9a837ff1fb951d700e0665a85c7cd7ea2d86a5f.
+  Twelveartifacthashes inhelddoc. Code sourceAPPROVE conditionalregression+arch;
+  primaryMSarticle/APIrechecked no causalproof. Awaitarchsourcebeforeheldnative.
+  ArchsourceCLEAR/codeAPPROVE foronefiniteheld afterterminal137/exactpins.
+  Main5141bd personallyconfirmed; nativecleanup/writefailnotfullyfaultinjected,
+  fakecontractnotnativeproof. Executeclosed --held serialnext/sourcefrozen,
+  no installedtree/fullscan/model/GPU/training/fieldwaiver.
+  Heldnative4e6441 terminal0/root23400/total3/active0/notimeout,1.016s; valid
+  stdout19050stderr0/caps/EOFclosed/noexcess/failure. Mainc6ce71 3counts0/16/48,
+  512payload32768total/read0+8192+24576,27raw104records. Empty->populatedsize/
+  allocation0->4096/16384 pluswrite/changeticks expectedintentionalwrites, NOT
+  unexplainedreproduction. Postpopulationthroughstandard/close+5verifyphases
+  all14fieldsstablepercase. Heldstandardmatches0/4096/16384/dirtrue/links1/delete0.
+  No postpopulationtransition, no actualcause/fix/runtime/training/sciencePASS.
+  Threehashes inhelddoc; nextcandidate samehandleallnativefacts contract vsbyname
+  onrepresentativeinstalledtree needs primaryABIresearch/prereg/review; not
+  implemented/authorizedhere, noblindfullscan/arbitraryscratchrepetition.
+
+  Held terminal independent GPT-6.1 Sol code APPROVE / architecture CLEAR for
+  evidence preservation only. Both personally verified all15 artifact hashes,
+  final source/test pins, exact20-file delta, unchanged production/prior probe,
+  JUnit22 RED9/GREEN22/REG137 and native27-record claims. No blocking findings;
+  actual-v5 cause, installed continuity, production repair and science remain
+  OPEN. Reviewers performed no execution or edits. Record and preserve this
+  checkpoint before a separately preregistered same-handle alternative.

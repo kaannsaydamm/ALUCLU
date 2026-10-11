@@ -10,10 +10,33 @@ import tempfile
 import time
 from dataclasses import asdict
 from pathlib import Path
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 
 COUNTS = (0, 16, 48)
 PAYLOAD = b'x' * 512
+
+
+def inspect_held_case(root, count, api):
+    if type(count) is not int or count not in COUNTS:
+        raise ValueError('closed scratch file count required')
+    if not isinstance(root, Path) or not root.is_absolute():
+        raise ValueError('absolute scratch root required')
+    metadata = root.lstat()
+    if not stat.S_ISDIR(metadata.st_mode) or getattr(metadata, 'st_file_attributes', 0) & 0x400:
+        raise ValueError('regular scratch root required')
+    path = root / f'case-{count}'
+    path.mkdir()
+    with api.hold(path) as standard_query:
+        observations = {'empty_open': api.named(path)}
+        for index in range(count):
+            with (path / f'sample-{index:03d}.bin').open('xb') as output:
+                output.write(PAYLOAD)
+        observations['populated_open'] = api.named(path)
+        standard = standard_query()
+        observations['after_held_standard'] = api.named(path)
+    observations['after_close'] = api.named(path)
+    return dict(count=count, path=str(path), held_observations=observations,
+        held_standard=standard, verification=inspect_case(path, count, api))
 
 
 def create_case(root, count):
@@ -158,12 +181,40 @@ class NativeAPI:
             if not self.close(handle):
                 raise ctypes.WinError(ctypes.get_last_error())
 
+    @contextmanager
+    def hold(self, path):
+        handle = self.create(str(path), 0x80, 7, None, 3, 0x02200000, None)
+        if handle == ctypes.c_void_p(-1).value:
+            raise ctypes.WinError(ctypes.get_last_error())
+        try:
+            def standard_query():
+                value = Standard()
+                if not self.extended(handle, 1, ctypes.byref(value), 24):
+                    raise ctypes.WinError(ctypes.get_last_error())
+                if not value.directory:
+                    raise ValueError('native held directory classification differs')
+                return dict(size=value.size, allocation_size=value.allocation,
+                    links=value.links, delete_pending=bool(value.delete_pending), directory=bool(value.directory))
+            yield standard_query
+        finally:
+            if not self.close(handle):
+                raise ctypes.WinError(ctypes.get_last_error())
+
 
 def owned_scratch():
     root = Path.cwd()
     with NativeAPI() as api:
         cases = [inspect_case(create_case(root, count), count, api) for count in COUNTS]
     print(json.dumps(dict(schema='alc-r0-scratch-directory-metadata-v1', python=sys.version,
+        scratch_root=str(root), counts=COUNTS, payload_bytes=512, logical_written_bytes=32768,
+        cases=cases), sort_keys=True, separators=(',', ':')))
+
+
+def owned_held():
+    root = Path.cwd()
+    with NativeAPI() as api:
+        cases = [inspect_held_case(root, count, api) for count in COUNTS]
+    print(json.dumps(dict(schema='alc-r0-held-directory-metadata-v1', python=sys.version,
         scratch_root=str(root), counts=COUNTS, payload_bytes=512, logical_written_bytes=32768,
         cases=cases), sort_keys=True, separators=(',', ':')))
 
@@ -213,7 +264,10 @@ def main():
     mode = sys.argv[1:]
     if mode == ['--owned-scratch']:
         return owned_scratch()
-    if mode not in (['--red'], ['--green'], ['--regression'], ['--scratch']):
+    if mode == ['--owned-held']:
+        return owned_held()
+    if mode not in (['--red'], ['--green'], ['--regression'], ['--scratch'],
+                   ['--red-held'], ['--green-held'], ['--regression-held'], ['--held']):
         raise ValueError('closed diagnostic mode required')
     cwd = Path(__file__).resolve().parents[1]
     name = mode[0][2:]
@@ -223,7 +277,7 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_directory_metadata_reproducer.py']
-    if name == 'regression':
+    if name in ('regression', 'regression-held'):
         tests += ['tests/test_alc_r0_windows_directory_metadata.py',
                   'tests/test_alc_r0_runtime_tree_inventory.py']
     environment = dict(os.environ, PYTHONPATH=str(cwd / 'src'),
@@ -232,8 +286,9 @@ def main():
         ALUCLU_TEST_ONLY_RUNTIME_SCAN='0', ALUCLU_TEST_ONLY_RUNTIME_CAUSE='0')
     temporary = Path(tempfile.mkdtemp(prefix='alc-r0-directory-reproducer-')).resolve(strict=True)
     command = (sys.executable, '-B', '-m', 'pytest', '-q', *tests, '--junitxml=' + str(paths['.xml']))
-    if name == 'scratch':
-        command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-scratch')
+    if name in ('scratch', 'held'):
+        internal = '--owned-held' if name == 'held' else '--owned-scratch'
+        command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), internal)
         cwd = temporary
     receipt = run_diagnostic(command, cwd, environment, paths, temporary)
     data = json.dumps(receipt,

@@ -1,7 +1,8 @@
 """Scratch contract tests; explicit fake API is not native Windows evidence."""
 import pytest
+from contextlib import contextmanager
 
-from alc_r0_directory_metadata_reproducer import COUNTS, PAYLOAD, create_case, inspect_case
+from alc_r0_directory_metadata_reproducer import COUNTS, PAYLOAD, create_case, inspect_case, inspect_held_case
 
 
 class FakeAPI:
@@ -62,3 +63,51 @@ def test_corrupted_payload_refused(tmp_path):
     (path / 'sample-000.bin').write_bytes(b'bad')
     with pytest.raises(ValueError, match='payload'):
         inspect_case(path, 16, FakeAPI())
+
+
+class HeldFakeAPI(FakeAPI):
+    @contextmanager
+    def hold(self, path):
+        self.events.append(('open', path))
+        try:
+            def standard():
+                self.events.append(('held_standard', path))
+                return {'size': 8192, 'allocation': 8192, 'directory': True}
+            yield standard
+        finally:
+            self.events.append(('close', path))
+
+
+@pytest.mark.parametrize('count', COUNTS)
+def test_held_population_and_close_sequence(tmp_path, count):
+    api = HeldFakeAPI()
+    result = inspect_held_case(tmp_path, count, api)
+    assert [event[0] for event in api.events[:7]] == [
+        'open', 'named', 'named', 'held_standard', 'named', 'close', 'named']
+    assert list(result['held_observations']) == [
+        'empty_open', 'populated_open', 'after_held_standard', 'after_close']
+    assert [value['size'] for value in result['held_observations'].values()] == [2, 3, 5, 7]
+    assert result['verification']['count'] == count
+    assert result['verification']['read_bytes'] == count * 512
+    assert result['held_standard']['directory'] is True
+    assert len(list((tmp_path / f'case-{count}').iterdir())) == count
+
+
+def test_held_query_failure_closes_handle(tmp_path):
+    class FailingAPI(HeldFakeAPI):
+        def named(self, path):
+            raise RuntimeError('query failed')
+    api = FailingAPI()
+    with pytest.raises(RuntimeError, match='query failed'):
+        inspect_held_case(tmp_path, 16, api)
+    assert [event[0] for event in api.events] == ['open', 'close']
+    assert list((tmp_path / 'case-16').iterdir()) == []
+
+
+@pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+def test_held_foreign_counts_denied_before_writes(tmp_path, count):
+    api = HeldFakeAPI()
+    with pytest.raises(ValueError):
+        inspect_held_case(tmp_path, count, api)
+    assert list(tmp_path.iterdir()) == []
+    assert api.events == []
