@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.290" timestamp="2026-10-11T07:23:43.889025+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_owned_stop" name="test_preset_stop_denies_before_outputs_and_creation" time="0.008"><failure message="AttributeError: module 'aluclu.alc_r0.reserved_owned_process' has no attribute 'OwnedStopSignal'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-29/test_preset_stop_denies_before0')
+
+    def test_preset_stop_denies_before_outputs_and_creation(tmp_path):
+&gt;       Signal, Stopped, Lease = api()
+                                 ^^^^^
+
+tests\test_alc_r0_owned_stop.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def api():
+        module = importlib.import_module('aluclu.alc_r0.reserved_owned_process')
+&gt;       return module.OwnedStopSignal, module.OwnedStopRequested, module.ReservedOwnedLease
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.reserved_owned_process' has no attribute 'OwnedStopSignal'
+
+tests\test_alc_r0_owned_stop.py:15: AttributeError</failure></testcase></testsuite></testsuites>

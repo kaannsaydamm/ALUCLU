@@ -29,6 +29,38 @@ _ROOT = re.compile(r"[0-9a-f]{64}\Z")
 _ID = re.compile(r"[A-Za-z0-9_-]{1,128}\Z")
 
 
+class OwnedStopRequested(RuntimeError):
+    """Denial only: no successful terminal receipt follows an observed stop."""
+
+
+class OwnedStopSignal:
+    """One-way cooperating-coordinator signal; an unset signal grants nothing."""
+
+    __slots__ = ("_event",)
+
+    def __init__(self):
+        self._event = threading.Event()
+
+    def _validated_event(self):
+        event = getattr(self, "_event", None)
+        if type(event) is not threading.Event:
+            raise OwnedStopRequested("owned stop signal invalid")
+        return event
+
+    def request_stop(self):
+        threading.Event.set(OwnedStopSignal._validated_event(self))
+
+    def _requested(self):
+        event = OwnedStopSignal._validated_event(self)
+        try:
+            requested = threading.Event.is_set(event)
+        except AttributeError:
+            raise OwnedStopRequested("owned stop signal invalid") from None
+        if type(requested) is not bool:
+            raise OwnedStopRequested("owned stop signal invalid")
+        return requested
+
+
 @dataclass(frozen=True, slots=True)
 class OwnedChildIdentity:
     pid: int
@@ -84,7 +116,12 @@ def _root(value):
 
 class ReservedOwnedLease:
     def __init__(self, store, expected_owner_root, reservation_id, command, *, cwd,
-                 environment, stdout_path, stderr_path, deadline_ns, clock_domain_root):
+                 environment, stdout_path, stderr_path, deadline_ns, clock_domain_root,
+                 stop_signal=None):
+        if stop_signal is not None:
+            if type(stop_signal) is not OwnedStopSignal:
+                raise TypeError("exact OwnedStopSignal required")
+            OwnedStopSignal._requested(stop_signal)
         if type(store) is not ReservationStore:
             raise TypeError("exact ReservationStore required")
         _root(expected_owner_root)
@@ -119,6 +156,24 @@ class ReservedOwnedLease:
         self._ready_root = None
         self._evidence = self._review = None
         self._resume_attempted = self._wait_attempted = False
+        self._stop_signal, self._stop_observed = stop_signal, False
+
+    def _check_stop(self):
+        if self._stop_observed:
+            raise OwnedStopRequested("owned stop requested")
+        signal = self._stop_signal
+        if signal is None:
+            return
+        try:
+            if type(signal) is not OwnedStopSignal:
+                raise OwnedStopRequested("owned stop signal invalid")
+            requested = OwnedStopSignal._requested(signal)
+        except OwnedStopRequested:
+            self._stop_observed = True
+            raise
+        if requested:
+            self._stop_observed = True
+            raise OwnedStopRequested("owned stop requested")
 
     def _require(self, *states):
         if threading.get_ident() != self._thread or self._state not in states:
@@ -149,6 +204,7 @@ class ReservedOwnedLease:
         self._require("NEW")
         self._state = "ENTERING"
         try:
+            self._check_stop()
             lock = self._store._lock()
             lock.__enter__()
             self._lock = lock
@@ -182,6 +238,7 @@ class ReservedOwnedLease:
             self._output_entered = True
             self._started = time.monotonic_ns()
             try:
+                self._check_stop()
                 _create_suspended(self._command, self._cwd, self._environment, stdin,
                     self._output.stdout, self._output.stderr, self._deadline,
                     self._job, self._information)
@@ -242,6 +299,7 @@ class ReservedOwnedLease:
         _root(review_root)
         self._evidence, self._review = evidence_root, review_root
         try:
+            self._check_stop()
             self._check_output()
             self._live_identity()
             self._view(self._store.read(self._owner_root), "RESERVED")
@@ -253,6 +311,7 @@ class ReservedOwnedLease:
                                         publication_root=created.sha256)
             self._view(self._store.read(ready.sha256), "READY")
             self._check_output()
+            self._check_stop()
             self._ready_root = ready.sha256
             self._state = "READY"
             return ready
@@ -267,10 +326,12 @@ class ReservedOwnedLease:
         if self._resume_attempted:
             raise RuntimeError("resume already attempted")
         try:
+            self._check_stop()
             self._view(self._store.read(self._ready_root), "READY")
             self._live_identity()
             self._check_output()
             self._resume_attempted = True
+            self._check_stop()
             _resume(self._information.thread)
             resumed = time.monotonic_ns()
             root = sha256_bytes(canonical_json_bytes(dict(schema="alc-r0-owned-resume-v1",
@@ -279,6 +340,7 @@ class ReservedOwnedLease:
             running = self._publish_event("running", resume_receipt_root=root)
             self._view(self._store.read(running.sha256), "RUNNING")
             self._check_output()
+            self._check_stop()
             self._unlock()
             self._state = "RUNNING"
             return running
@@ -293,8 +355,10 @@ class ReservedOwnedLease:
             raise RuntimeError("terminal wait already attempted")
         self._wait_attempted = True
         try:
+            self._check_stop()
             timed_out = False
             while self._job.accounting().active_processes:
+                self._check_stop()
                 if self._output.violated:
                     self._pin_cleanup_deadline()
                     self._job.terminate_and_drain()
@@ -311,11 +375,13 @@ class ReservedOwnedLease:
             if (accounting.active_processes or _winapi.WaitForSingleObject(
                     self._information.process, self._job.remaining_cleanup_ms()) != 0):
                 raise TimeoutError("owned root/tree terminal unobserved")
+            self._check_stop()
             receipt = OwnedProcessReceipt(self._information.pid,
                 _winapi.GetExitCodeProcess(self._information.process), timed_out,
                 self._started, time.monotonic_ns(), accounting.total_processes,
                 accounting.active_processes, accounting.user_time, accounting.kernel_time)
             output = self._output.finish(self._cleanup_deadline)
+            self._check_stop()
             self._state = "TERMINAL"
             return ReservedTerminalReceipt(receipt, self._identity, self._owner_root, output)
         except BaseException:

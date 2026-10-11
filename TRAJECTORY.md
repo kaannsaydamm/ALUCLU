@@ -13592,3 +13592,49 @@ Task 2 sensorium/recollection gate: CLEAN
   GPU2/full fieldwise/numerical-route/learning acceptance. Concrete trusted
   producer/worker/lease/monitor composition and factual resource/history/calendar
   admission remain required; all original scientific gates unchanged, goal active.
+
+- 2026-10-11 continuation objective fully reread33f510; previous turn PROGRESS
+  (c8d4536 implementation/TDD/relevant regression committed/pushed). Desktopclean
+  HEADverified; read actual lease and full native tests3d410c. Active watch has
+  no owned-stop integration. Proposed fixed one-way denial signal within existing
+  lease exception/cleanup paths, no accepting authority callback or new deadlines.
+  Independent scoped design review before TDD; no model/GPU invocation.
+
+- 2026-10-11 next action revalidated after status-only/no-progress turn. Full
+  objective reread; Desktop HEADc8d4536 and two pending proposal/trajectory files
+  verified. Code-review skill independent GPT6.1Sol lanes APPROVE/CLEAR admitted
+  stop plumbing TDD. Corrected journal wording to include durable CREATED, not
+  rollback. Added closed owned diagnostic runner and preset-stop RED test.
+  No actual training/model/GPU launch or numeric-history adoption.
+  Owned RED d8a5b6 native1/root25928/job3total0active/no timeout; actual stdout
+  1failure missing OwnedStopSignal (not collection or scientific failure).
+  Implemented exact one-way signal and checked lifecycle cleanup boundaries;
+  expanded native tests including duplicate root/job observations, live descendant
+  drain, unrelated survivor, malformed internals, publication and output-finalize
+  stop. Original deadline/tail and pending reservation states remain unchanged.
+  First GREEN35e4e0 native0/root13716/job28total0active XML22/0/0/0 8.722s.
+  Independent architecture CLEAR; code REQUEST CHANGES missing exact Event._flag
+  raises AttributeError without fixed denial latch. Initial regression22003
+  terminalefb7b7 native0/root5452/job200total0active; this predates repair and is
+  retained as non-final. Added missing-flag RED-v2 before/after acquisition and
+  new exclusive runner modes; no running-code edits before original terminal.
+  RED-v2 7d22ec native1/root9464/job4total0active XML2/2/0/0 .545s personally
+  confirmed missing_flag AttributeErrors767c1e. Narrowly normalized AttributeError
+  from exact Event.is_set, no broad swallowing. Final GREEN-v2 original14295
+  terminalcd8cfa native0/root28964/job29total0active XML24/0/0/0 13.535s;
+  XML26b37fee30d21ac110ccc336a8e2c5b1ca7c717450b9abf846bb42a62df38142.
+  Source d0e51967/tested53f9c5/runnerf0535eda pinned; independent rereview code
+  APPROVE/architecture CLEAR. Final regression-v2 original2157 now running on
+  final source; initial retained success does not substitute. No scientific run.
+  Final original2157 terminalafebf6 native0/root25200/job201total0active/notimeout.
+  Personal native/JUnit/hash check1d9860 confirms266/0/0/0 66.362s, stderr0,
+  exact eight-file selection and unchanged finalpins; XML03d5ff0bfaa171e873bcf57cd5f46f58dbaee603d266f63c5df03c918bf4b81e.
+  Frozen originalplan SHA0493eeed unchanged59e034. Added honest24artifact evidence
+  and rawbyte attributes. Closing independent review next; no broad PASS.
+  Closing independent GPT6.1Sol code APPROVE/architecture CLEAR verified all24
+  retained artifacts, finalpins and exact266 selection. Corrected six-run wording
+  and status-only docs after verdicts; no source edits after final evidence.
+  Scoped stop integration complete: owned root/tree/output cleanup and permanent
+  denial tested, not trusted observation/admission or measured timing enforcement.
+  Next: concrete coordinator observer/handoff and factual resource/history/calendar
+  admission before real fixed D and four200-update pilots. Full goal active.

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.545" timestamp="2026-10-11T07:29:01.123599+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_owned_stop" name="test_missing_flag_exact_event_is_fixed_latched_denial[before]" time="0.083"><failure message="AttributeError: 'Event' object has no attribute '_flag'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-32/test_missing_flag_exact_event_0')
+acquired = False
+
+    @pytest.mark.parametrize('acquired', [False, True], ids=['before', 'after'])
+    def test_missing_flag_exact_event_is_fixed_latched_denial(tmp_path, acquired):
+        Signal, Stopped, Lease = api()
+        signal = Signal()
+        arguments, store, _, _ = fixture(tmp_path)
+        if not acquired:
+            del signal._event._flag
+            with pytest.raises(Stopped, match='signal invalid'):
+&gt;               Lease(**arguments, stop_signal=signal)
+
+tests\test_alc_r0_owned_stop.py:349: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reserved_owned_process.py:120: in __init__
+    OwnedStopSignal._requested(stop_signal)
+src\aluclu\alc_r0\reserved_owned_process.py:54: in _requested
+    requested = threading.Event.is_set(OwnedStopSignal._validated_event(self))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;[AttributeError("'Event' object has no attribute '_flag'") raised in repr()] Event object at 0x28781ed8290&gt;
+
+    def is_set(self):
+        """Return true if and only if the internal flag is true."""
+&gt;       return self._flag
+               ^^^^^^^^^^
+E       AttributeError: 'Event' object has no attribute '_flag'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\threading.py:603: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_owned_stop" name="test_missing_flag_exact_event_is_fixed_latched_denial[after]" time="0.122"><failure message="AttributeError: 'Event' object has no attribute '_flag'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-32/test_missing_flag_exact_event_1')
+acquired = True
+
+    @pytest.mark.parametrize('acquired', [False, True], ids=['before', 'after'])
+    def test_missing_flag_exact_event_is_fixed_latched_denial(tmp_path, acquired):
+        Signal, Stopped, Lease = api()
+        signal = Signal()
+        arguments, store, _, _ = fixture(tmp_path)
+        if not acquired:
+            del signal._event._flag
+            with pytest.raises(Stopped, match='signal invalid'):
+                Lease(**arguments, stop_signal=signal)
+            assert not arguments['stdout_path'].exists()
+            pending(store, 'RESERVED')
+            return
+        with Lease(**arguments, stop_signal=signal) as lease:
+            retained = RetainedHandles(lease)
+            try:
+                del signal._event._flag
+                with pytest.raises(Stopped, match='signal invalid'):
+&gt;                   lease.publish_identity(ROOT, ROOT)
+
+tests\test_alc_r0_owned_stop.py:358: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reserved_owned_process.py:298: in publish_identity
+    self._check_stop()
+src\aluclu\alc_r0\reserved_owned_process.py:166: in _check_stop
+    requested = OwnedStopSignal._requested(signal)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\reserved_owned_process.py:54: in _requested
+    requested = threading.Event.is_set(OwnedStopSignal._validated_event(self))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;[AttributeError("'Event' object has no attribute '_flag'") raised in repr()] Event object at 0x28781e0f920&gt;
+
+    def is_set(self):
+        """Return true if and only if the internal flag is true."""
+&gt;       return self._flag
+               ^^^^^^^^^^
+E       AttributeError: 'Event' object has no attribute '_flag'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\threading.py:603: AttributeError</failure></testcase></testsuite></testsuites>
