@@ -134,8 +134,10 @@ class NativeAPI:
         self.stack.close()
 
     @contextmanager
-    def open(self, path):
-        handle = self.create(str(path), 0x80, 7, None, 3, 0x02200000, None)
+    def open(self, path, access=0x80):
+        if type(access) is not int or access not in (0x80, 0x81):
+            raise ValueError('closed diagnostic access required')
+        handle = self.create(str(path), access, 7, None, 3, 0x02200000, None)
         if handle in (None, 0, ctypes.c_void_p(-1).value):
             raise ctypes.WinError(ctypes.get_last_error())
         try:
@@ -222,13 +224,69 @@ def owned_native():
         logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
 
 
+def inspect_access(path, api, enumerate_fn=bounded_names):
+    if (not isinstance(path, Path) or not path.is_absolute() or '\0' in str(path)
+            or len(str(path).encode('utf-8')) > 32768
+            or path.resolve(strict=True) != path):
+        raise ValueError('resolved bounded absolute directory required')
+    metadata = path.lstat()
+    if (not stat.S_ISDIR(metadata.st_mode)
+            or getattr(metadata, 'st_file_attributes', 0) & 0x400
+            or (os.name == 'nt' and (len(path.drive) != 2 or path.drive[1] != ':'))):
+        raise ValueError('regular local directory required')
+    before = api.named(path)
+    stages = []
+    with api.open(path, access=0x80) as baseline:
+        def mark(stage, second=None):
+            stages.append(dict(stage=stage, baseline=sample(api, baseline),
+                second_handle=None if second is None else sample(api, second),
+                named=api.named(path)))
+        mark('baseline')
+        with api.open(path, access=0x80) as second:
+            mark('attributes-open', second)
+        mark('attributes-closed')
+        with api.open(path, access=0x81) as second:
+            mark('list-access-open', second)
+        mark('list-access-closed')
+        enumeration = enumerate_fn(path)
+        mark('enumerated')
+    after = api.named(path)
+    def adjacent(observations):
+        return [sorted(key for key in left['fields']
+            if left['fields'][key] != right['fields'][key])
+            for left, right in zip(observations, observations[1:])]
+    return dict(path=str(path), before=before, stages=stages, after=after,
+        enumeration=enumeration,
+        named_adjacent_differences=adjacent([before, *[s['named'] for s in stages], after]),
+        baseline_adjacent_differences=adjacent([s['baseline'] for s in stages]))
+
+
+def owned_native_access():
+    root = Path.cwd()
+    scratch = root / 'control-16'
+    scratch.mkdir()
+    for index in range(16):
+        with (scratch / f'sample-{index:03d}.bin').open('xb') as output:
+            output.write(b'x' * 512)
+    installed = Path(sys.base_prefix).resolve(strict=True) / 'Lib' / 'asyncio'
+    with NativeAPI() as api:
+        cases = [inspect_access(installed, api), inspect_access(scratch, api)]
+    print(json.dumps(dict(schema='alc-r0-directory-access-v1', python=sys.version,
+        scope='finite-readonly-installed-and-owned-scratch', scratch_root=str(root),
+        logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
+
+
 def main():
     mode = sys.argv[1:]
     if mode == ['--owned-native']:
         return owned_native()
+    if mode == ['--owned-native-access']:
+        return owned_native_access()
     if mode not in (['--red'], ['--green'], ['--regression'],
                     ['--red-v2'], ['--green-v2'], ['--regression-v2'],
-                    ['--red-adapter'], ['--green-adapter'], ['--regression-adapter'], ['--native']):
+                    ['--red-adapter'], ['--green-adapter'], ['--regression-adapter'], ['--native'],
+                    ['--red-access'], ['--green-access'], ['--regression-access'], ['--native-access'],
+                    ['--green-access-v2'], ['--regression-access-v2']):
         raise ValueError('closed test-only mode required')
     from alc_r0_directory_metadata_reproducer import run_diagnostic
     cwd = Path(__file__).resolve().parents[1]
@@ -239,7 +297,7 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_same_handle_directory.py']
-    if name in ('regression', 'regression-v2', 'regression-adapter'):
+    if name in ('regression', 'regression-v2', 'regression-adapter', 'regression-access', 'regression-access-v2'):
         tests += ['tests/test_alc_r0_directory_metadata_reproducer.py',
             'tests/test_alc_r0_windows_directory_metadata.py',
             'tests/test_alc_r0_runtime_tree_inventory.py']
@@ -249,8 +307,8 @@ def main():
         ALUCLU_TEST_ONLY_RUNTIME_SCAN='0', ALUCLU_TEST_ONLY_RUNTIME_CAUSE='0')
     temporary = Path(tempfile.mkdtemp(prefix='alc-r0-same-handle-')).resolve(strict=True)
     command = (sys.executable, '-B', '-m', 'pytest', '-q', *tests, '--junitxml=' + str(paths['.xml']))
-    if name == 'native':
-        command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-native')
+    if name in ('native', 'native-access'):
+        command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-' + name)
         cwd = temporary
     receipt = run_diagnostic(command, cwd, environment, paths, temporary)
     receipt['scope'] = 'same-handle-directory-diagnostic'

@@ -12,6 +12,7 @@ import pytest
 
 from alc_r0_same_handle_directory import decode, nt_record, sample
 from alc_r0_same_handle_directory import NativeAPI, inspect, bounded_names
+from alc_r0_same_handle_directory import inspect_access
 
 
 def records(**changes):
@@ -349,3 +350,106 @@ def test_enumeration_exact_count_and_bound(tmp_path):
     (tmp_path / 'overflow').touch()
     with pytest.raises(ValueError, match='bound'):
         bounded_names(tmp_path)
+
+
+@pytest.mark.parametrize('access', [0x80, 0x81])
+def test_native_open_closed_access_choices(tmp_path, access):
+    api = fake_adapter()
+    with api.open(tmp_path, access=access) as handle:
+        assert handle == 19
+    assert api.create.calls[0][1] == access
+    assert api.create.calls[0][2:] == (7, None, 3, 0x02200000, None)
+    assert api.close.calls == [(19,)]
+
+
+@pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+def test_native_open_invalid_access_before_create(tmp_path, access):
+    api = fake_adapter()
+    with pytest.raises(ValueError, match='access'):
+        with api.open(tmp_path, access=access):
+            pass
+    assert api.create.calls == []
+    assert api.close.calls == []
+
+
+class FakeAccess(FakeInspection):
+    def __init__(self, fail_access=None):
+        super().__init__()
+        self.next_handle = 19
+        self.fail_access = fail_access
+        self.changed = False
+
+    @contextmanager
+    def open(self, path, access=0x80):
+        handle = self.next_handle
+        self.next_handle += 1
+        self.events.append(('open', handle, access))
+        if access == self.fail_access:
+            raise OSError('injected access open')
+        try:
+            yield handle
+        finally:
+            self.events.append(('close', handle))
+
+    def named(self, path):
+        result = super().named(path)
+        if self.changed:
+            result['fields']['change_ticks'] = 999
+        return result
+
+
+def test_access_exact_intervention_sequence_and_no_early_enumeration(tmp_path):
+    api = FakeAccess()
+    def enumeration(path):
+        api.events.append(('enumerate', path))
+        api.changed = True
+        return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+    result = inspect_access(tmp_path, api, enumeration)
+    one = ['stat', 'identity', 'device', 'stat']
+    assert [event[0] for event in api.events] == [
+        'named', 'open', *one, 'named',
+        'open', *one, *one, 'named', 'close', *one, 'named',
+        'open', *one, *one, 'named', 'close', *one, 'named',
+        'enumerate', *one, 'named', 'close', 'named']
+    assert [event for event in api.events if event[0] == 'open'] == [
+        ('open', 19, 0x80), ('open', 20, 0x80), ('open', 21, 0x81)]
+    assert [stage['stage'] for stage in result['stages']] == [
+        'baseline', 'attributes-open', 'attributes-closed',
+        'list-access-open', 'list-access-closed', 'enumerated']
+    assert [stage['second_handle'] is not None for stage in result['stages']] == [
+        False, True, False, True, False, False]
+    assert result['named_adjacent_differences'] == [[], [], [], [], [], ['change_ticks'], []]
+    assert result['baseline_adjacent_differences'] == [[], [], [], [], ['size']]
+    assert result['stages'][-1]['baseline']['fields']['size'] == 1
+    assert result['stages'][-1]['named']['fields']['change_ticks'] == 999
+    assert result['enumeration']['count'] == 0
+    for stage in result['stages']:
+        assert len(stage['baseline']['fields']) == 14
+        assert stage['baseline']['raw']['stat']
+
+
+def test_access_second_open_failure_closes_baseline(tmp_path):
+    api = FakeAccess(fail_access=0x81)
+    with pytest.raises(OSError, match='injected access open'):
+        inspect_access(tmp_path, api)
+    assert api.events[-1] == ('close', 19)
+    assert not any(event[0] == 'enumerate' for event in api.events)
+
+
+def test_access_enumeration_failure_closes_baseline(tmp_path):
+    api = FakeAccess()
+    def enumeration(path):
+        raise ValueError('injected enumeration')
+    with pytest.raises(ValueError, match='injected enumeration'):
+        inspect_access(tmp_path, api, enumeration)
+    assert [event for event in api.events if event[0] == 'close'] == [
+        ('close', 20), ('close', 21), ('close', 19)]
+
+
+def test_access_regular_file_denied_before_queries(tmp_path):
+    path = tmp_path / 'file'
+    path.write_bytes(b'x')
+    api = FakeAccess()
+    with pytest.raises(ValueError, match='directory'):
+        inspect_access(path, api)
+    assert api.events == []

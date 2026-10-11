@@ -1,0 +1,407 @@
+..............................................FFFFFFFFFFFFFF             [100%]
+================================== FAILURES ===================================
+_________________ test_native_open_closed_access_choices[128] _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_closed_access0')
+access = 128
+
+    @pytest.mark.parametrize('access', [0x80, 0x81])
+    def test_native_open_closed_access_choices(tmp_path, access):
+        api = fake_adapter()
+>       with api.open(tmp_path, access=access) as handle:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:358: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4BFB0>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4BE30>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_closed_access0'))
+kwds = {'access': 128}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+_________________ test_native_open_closed_access_choices[129] _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_closed_access1')
+access = 129
+
+    @pytest.mark.parametrize('access', [0x80, 0x81])
+    def test_native_open_closed_access_choices(tmp_path, access):
+        api = fake_adapter()
+>       with api.open(tmp_path, access=access) as handle:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:358: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4E0C0>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4CE30>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_closed_access1'))
+kwds = {'access': 129}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+______________ test_native_open_invalid_access_before_create[0] _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces0')
+access = 0
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4CB30>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA23CB0>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces0'))
+kwds = {'access': 0}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+______________ test_native_open_invalid_access_before_create[1] _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces1')
+access = 1
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4C380>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4CFE0>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces1'))
+kwds = {'access': 1}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+_____________ test_native_open_invalid_access_before_create[130] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces2')
+access = 130
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4D040>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4DDF0>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces2'))
+kwds = {'access': 130}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+______________ test_native_open_invalid_access_before_create[-1] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces3')
+access = -1
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4DC70>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4EFC0>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces3'))
+kwds = {'access': -1}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+_____________ test_native_open_invalid_access_before_create[True] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces4')
+access = True
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4F980>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4EBD0>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces4'))
+kwds = {'access': True}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+____________ test_native_open_invalid_access_before_create[128.0] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces5')
+access = 128.0
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA84EF0>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA87BC0>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces5'))
+kwds = {'access': 128.0}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+_____________ test_native_open_invalid_access_before_create[128] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces6')
+access = '128'
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4E240>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4F530>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces6'))
+kwds = {'access': '128'}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+_____________ test_native_open_invalid_access_before_create[None] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces7')
+access = None
+
+    @pytest.mark.parametrize('access', [0, 1, 0x82, -1, True, 128.0, '128', None])
+    def test_native_open_invalid_access_before_create(tmp_path, access):
+        api = fake_adapter()
+        with pytest.raises(ValueError, match='access'):
+>           with api.open(tmp_path, access=access):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <contextlib._GeneratorContextManager object at 0x000001B11CA4D2E0>
+func = <function NativeAPI.open at 0x000001B11C743380>
+args = (<alc_r0_same_handle_directory.NativeAPI object at 0x000001B11CA4EC00>, WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_native_open_invalid_acces7'))
+kwds = {'access': None}
+
+    def __init__(self, func, args, kwds):
+>       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: NativeAPI.open() got an unexpected keyword argument 'access'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:105: TypeError
+______ test_access_exact_intervention_sequence_and_no_early_enumeration _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_exact_intervention0')
+
+    def test_access_exact_intervention_sequence_and_no_early_enumeration(tmp_path):
+        api = FakeAccess()
+        def enumeration(path):
+            api.events.append(('enumerate', path))
+            api.changed = True
+            return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+>       result = inspect_access(tmp_path, api, enumeration)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:407: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_exact_intervention0')
+api = <test_alc_r0_same_handle_directory.FakeAccess object at 0x000001B11CA4C5F0>
+enumerate_fn = <function test_access_exact_intervention_sequence_and_no_early_enumeration.<locals>.enumeration at 0x000001B11CA159E0>
+
+    def inspect_access(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered access intervention')
+E       NotImplementedError: preregistered access intervention
+
+tests\alc_r0_same_handle_directory.py:226: NotImplementedError
+_______________ test_access_second_open_failure_closes_baseline _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_second_open_failur0')
+
+    def test_access_second_open_failure_closes_baseline(tmp_path):
+        api = FakeAccess(fail_access=0x81)
+        with pytest.raises(OSError, match='injected access open'):
+>           inspect_access(tmp_path, api)
+
+tests\test_alc_r0_same_handle_directory.py:433: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_second_open_failur0')
+api = <test_alc_r0_same_handle_directory.FakeAccess object at 0x000001B11CA85F10>
+enumerate_fn = <function bounded_names at 0x000001B11C743100>
+
+    def inspect_access(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered access intervention')
+E       NotImplementedError: preregistered access intervention
+
+tests\alc_r0_same_handle_directory.py:226: NotImplementedError
+_______________ test_access_enumeration_failure_closes_baseline _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_enumeration_failur0')
+
+    def test_access_enumeration_failure_closes_baseline(tmp_path):
+        api = FakeAccess()
+        def enumeration(path):
+            raise ValueError('injected enumeration')
+        with pytest.raises(ValueError, match='injected enumeration'):
+>           inspect_access(tmp_path, api, enumeration)
+
+tests\test_alc_r0_same_handle_directory.py:443: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_enumeration_failur0')
+api = <test_alc_r0_same_handle_directory.FakeAccess object at 0x000001B11CA87590>
+enumerate_fn = <function test_access_enumeration_failure_closes_baseline.<locals>.enumeration at 0x000001B11CA163E0>
+
+    def inspect_access(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered access intervention')
+E       NotImplementedError: preregistered access intervention
+
+tests\alc_r0_same_handle_directory.py:226: NotImplementedError
+_______________ test_access_regular_file_denied_before_queries ________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_regular_file_denie0')
+
+    def test_access_regular_file_denied_before_queries(tmp_path):
+        path = tmp_path / 'file'
+        path.write_bytes(b'x')
+        api = FakeAccess()
+        with pytest.raises(ValueError, match='directory'):
+>           inspect_access(path, api)
+
+tests\test_alc_r0_same_handle_directory.py:453: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-96/test_access_regular_file_denie0/file')
+api = <test_alc_r0_same_handle_directory.FakeAccess object at 0x000001B11CA87A70>
+enumerate_fn = <function bounded_names at 0x000001B11C743100>
+
+    def inspect_access(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered access intervention')
+E       NotImplementedError: preregistered access intervention
+
+tests\alc_r0_same_handle_directory.py:226: NotImplementedError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_closed_access_choices[128]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_closed_access_choices[129]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[0]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[1]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[130]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[-1]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[True]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[128.0]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[128]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_native_open_invalid_access_before_create[None]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_access_exact_intervention_sequence_and_no_early_enumeration
+FAILED tests/test_alc_r0_same_handle_directory.py::test_access_second_open_failure_closes_baseline
+FAILED tests/test_alc_r0_same_handle_directory.py::test_access_enumeration_failure_closes_baseline
+FAILED tests/test_alc_r0_same_handle_directory.py::test_access_regular_file_denied_before_queries

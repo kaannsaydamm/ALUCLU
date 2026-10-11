@@ -14334,3 +14334,39 @@ Task 2 sensorium/recollection gate: CLEAN
   search166 found no causal proof; historicalNTFSreplication/SMB/WMI semantics
   are not currentlocaldirectory-query waivers. Goalremainsactive, next primary
   mechanism/device-source investigation, no downstreamtraining authority.
+  Resume92ab202: fully reread owner objective; priorstatus-only goalturn was
+  no-progress, notverifiedwait. Primary167-170 devicebits decoded0x20020 vs0x100
+  butstacksource/sizecause unproved; statbasicdoc inconsistentremarks notABI.
+  Preregister directory-access-protocol beforeimplementation/results: baseline
+  retained0x80, second0x80control, second0x81intervention, bounded enumeration;
+  preserveall14/raw andnegativeobservations, nofieldwaiver/productionchange.
+  Addaccessstub/tests andclosedexclusive RED/GREEN/regression modes first.
+  AccessRED1e8df6 terminal native1/root34108/total7/active0/notimeout/capturevalid,
+  mainparsed60/14fail/0error/0skip; existing46pass, missingaccess/stub failures.
+  Implementclosed0x80/0x81 andfixed6stage fullraw sequence, newprivate/parent
+  accessnative modes, no native invocation beforetests+twoindependentverdicts.
+  FirstGREEN0af45d native1/root34220/active0/notimeout:59pass/1failure,
+  FakeAccess.changed alsoactivates inheritedFakeSample.stat size4096->1.
+  Actualdifferencecorrectlyretained; fixexpectedtest toassertsizechange+rawvalue,
+  notimplementation/threshold. PreservefailedGREEN; exclusivev2 reruns.
+  GREEN-v217a66f native0/root33164/active0/notimeout,Junit60/0/0/0,1.050s.
+  REG-v285a24a original70593 terminal922a7b native0/root24776/total75/active0/
+  notimeout; maine2b845 personallyparsed197/0/0/0,31.158s exact60+22+42+73.
+  Frozenpins aad9e1d20aa024eb5179e88f9ae71a92be852d2353d68aaf5a80d36e4000e0f1/
+  2fd7aacb1fa6f654f48173e5b46a8166f27846f8929aade585d49bc557049e5f,
+  productionpinsunchanged. CodeAPPROVE/archCLEAR conditionalterminal197/pins;
+  conditionsverified. Architectureopen-stageincludessecondhandlequeries, not
+  pureopenalone; explicitlyrecordconfoundbeforeonefinite nativeaccess run.
+  Nativeaccess65a012 terminal0/root19068/total3/active0/notimeout,.641s,
+  valid26848stdout/0stderr/EOFclosed. Installedasyncio remains0/0 through
+  baseline/second0x80openclose/second0x81openclose; onlyenumerated8192/8192.
+  Scratchall4096stable. Open/querysufficiency unsupportedinthissequence;
+  enumerationintervalassociation stillnotuniquecause/lazyinitproof. Device
+  mismatchunchanged131104vs256. Main373f20 fullsequence,8a91f5 rawsizealloc/
+  bookend/ID/volume/device/statuslengths all32obs +full14decodedcomparison;
+  main4401e8 allreceipt/loghashpairs. Preserve19artifacts+evidencedoc; seek
+  independentterminalreviews beforecheckpoint. No downstreamtrainingauthority.
+  TerminalcodeAPPROVE/architectureCLEAR evidencepreservationonly:bothverified
+  19hashes/pins/fourJUnitreceiptpairs/nativeobservations, causalrepairOPEN.
+  Mainf73af8 independently19dochashes/scratch16*512/diffcheck. Preservecheckpoint
+  thennewpreregisteredclass5 orenumerationmechanismexperiment, notnormalization.
