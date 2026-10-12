@@ -1,0 +1,12 @@
+...........                                                              [100%]
+============================ slowest 10 durations =============================
+7.70s call     tests/test_alc_r0_runtime_tree_inventory.py::test_hardlinks_charge_each_logical_path
+6.10s call     tests/test_alc_r0_runtime_tree_inventory.py::test_multiple_chunks_and_binary_unicode_path
+5.47s call     tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[component]
+5.29s call     tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[file]
+5.14s call     tests/test_alc_r0_runtime_tree_inventory.py::test_junction_denies_without_following_target
+4.75s call     tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[expired]
+4.58s call     tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[relative]
+4.35s call     tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[empty]
+4.18s call     tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[missing]
+3.11s call     tests/test_alc_r0_runtime_tree_inventory.py::test_zero_length_file_and_zero_byte_allowances

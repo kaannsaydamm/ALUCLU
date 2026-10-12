@@ -14457,3 +14457,61 @@ Task 2 sensorium/recollection gate: CLEAN
   ArchitectureterminalCLEAR nowverified22hashes/pins/all4JUnit/all6receipts/
   nativefacts/claimlimits. Preservecheckpoint then integrationdesign/TDD,
   no production/fullscan/model/data/GPU/training/scientificPASS yet.
+  c025b36 initializedcheckpoint committed27files;22evidenceindexblobs identical
+  tooriginalrawbytes, independentterminalreviews preserved. Main9d61e7/240831.
+  Preregisterstandard-first-integration-protocol beforeproductionimplementation:
+  full14nameddomainunchanged, Win32std3+identity2corroboration+namedbookends/
+  afterclose equality, distinctcomposition fromdiagnosticnativefull13. NoNT
+  pendingbuffers/processfatal inlibrary; explicitadapter/resources/deadline,
+  failclosednomasking/retry/warmup. Primary175reviewed APIcontracts, notstability
+  guarantee. NextTDDandtwoindependentreviews beforecandidate native/fullscan.
+  Main72fada pushedc025b36,remoteHEADidentical. Newlibrarycontracttestfile before
+  implementation: standarddecoder, exactsequence/all14domain, namedmutations
+  atbothbookendsinclafterclose, std3/identitymismatch, failurecleanup/deadline.
+  Addexclusive red-library/green-library runnerselectors, sameownedbounds and
+  shortpytesttrace tokeepboundedREDcapture; no model/installedfullscan execution.
+  LibraryRED77e6e4/original56714 terminal325fc9 native1/root19680/total3/
+  active0/notimeout,valid28078stdout0stderr; personallyparseJUnit beforecode.
+  Extendpreimplementationtests forfixedWin32ABI/classes/openflags, invalidhandles,
+  API failures, reverseDLLrelease/partialload/deadlinecleanup. Newexclusivev2RED
+  retainsfirstREDbytes; productionimplementation notstartedbeforethose tests.
+  FirstREDJUnit52/52/0/0,3.958s. ExtendedREDv2a14863/bcc774 native1/root28760/
+  total3/active0/notimeout,capturevalid33458stdout0stderr; JUnit62/62/0/0,6.018s.
+  ImplementWin32libraryadapter+purestandarddecoder+composite/publicwiring;
+  full14return/continuityunchanged, standard3+ID2corroboration, namedbookends
+  inclafterclose, reverseDLLcleanup/handleclose evenexpired, noNT/fatal/retry.
+  No actualinstalled/fullscan/training execution; next GREEN/relevantregressions.
+  GREENv2dc385f native0/root25136/total3/active0/notimeout/valid81stdout0stderr;
+  parsedJUnit62/0/0/0. ArchitecturedesignCLEAR onlyTDDscope, requires explicit
+  releasefailure+remainingrelease andpostcreateexpirycoverage. Add3tests before
+  fix; REDv3retainedseparately. Fixedregression107new/native +73inventory=180,
+  samebounds, no candidateinstalled/fullscan executionbeforeindependentreviews.
+  REDv39a318a native1/root31708/3/active0/notimeout/valid775stdout0stderr;
+  releaseFalse failure exposed. FixexplicitFalsefailure whileNone remains
+  successful_ctypesreleasecontract; ExitStack attemptsremainingreleases.
+  GREENv3d3c9a2 65/0/0/0,.433s; regressionAa9b9ea107/0/0/0,2.213s.
+  Main15ab82 finalsource175787d217e1a45b49a0154ca395fd4191a0c3e249abba62bf613a54f3ab399b
+  test68aa3d7dce649d74e4926f62c072ff333e0f4ea9a1f1e503b45ae475a7a0fd79.
+  CodeAPPROVE/architectureCLEAR sourceonly; nofiniteinstalled/fullscanapproval.
+  RegressionBoriginal22594 terminal3b9160exit124/root26164/37/active0/timeout,
+  valid50stdout0stderr,NOXML—notPASS. Preregisterfixedexactinventorynodeids
+  first36/rest37 partitions before newexecution, no threshold/boundsrelaxation.
+  B1main34502936/0/0/0,2.600s. B2original60638terminal815627exit124/root29172/
+  total31/active0/timeout,capturevalid13stdout0stderr,NOXML. Preserveincomplete.
+  Fixedremaining37exactnodes into10/11/16 slices beforeexecution, durationreport
+  added toobtaincostevidence, original60s/10s bounds unchanged. No nativeinstalled
+  orfullscanexecution; source175787d2/test68aa3d7d unchanged83e5b3.
+  2026-10-12 resume: previous status-only goalturn NO_PROGRESS; objective and
+  code-review skill fully reread43bcad. Main terminalrecheck finalA107/B1 36/
+  B21 10/B22 11/B23 16 all0fail/error/skip, native0/active0/notimeout/capturevalid;
+  exact180union verified previously, all12receipt loghashes rechecked now.
+  Both originalB/B2exit124/NOXML preserved, notPASS. Addedintegrationevidence
+  with46freshdiskSHA256manifest, TDDRED/GREEN, fixedpartitions, exactreviewpins,
+  composition/threatmodel limits andremaininginstalled/fullscan/D/E/science gates.
+  Seektwo independentterminal evidence reviews beforecommit; no training yet.
+  Main6a7b46 verified51pins(46raw+5source), exact180unique passingcases and73
+  originalinventoryunion. IndependentGPT6.1 code terminalAPPROVE andarchitecture
+  terminalCLEAR each personallyverifiedall51hashes/12receipts/10JUnit/180union/
+  preservedtimeouts. Verdicts authorizecheckpointpreservationonly, notinstalled
+  candidate/fullscan/training. No unavailable-reviewfallback. Savecheckpoint,
+  thenclosedfinite candidate-driver TDD/source review beforeactualinvocation.

@@ -412,6 +412,83 @@ def owned_native_access():
         logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
 
 
+_INVENTORY_NODES = (
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_canonical_runtime_inventory",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_enumerated_identity_matches_path_and_open_file",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[0-mode]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[1-device]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[2-inode]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[3-size]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[4-mtime_ns]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[5-ctime_ns]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[6-nlink]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_identifies_exact_field[7-attributes]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_membership_and_kind[added]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_membership_and_kind[removed]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_membership_and_kind[kind]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_bounded_path_and_deterministic_first",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_change_diagnostic_original_deadline",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_walk_root_and_nested",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_schema_change",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[mode]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[volume_serial]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[file_id128]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[size]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[write_ticks]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[creation_ticks]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[link_count]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[attributes]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[change_ticks]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[allocation_size]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[legacy_file_id]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[device_type]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[device_characteristics]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[reparse_tag]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[entry_count-0]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[entry_count-True]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[entry_count-65537]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[path_bytes-0]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[path_bytes-4194305]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[file_bytes--1]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[file_bytes-4294967297]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[total_file_bytes-17179869185]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_finite_bounds[total_file_bytes-1.0]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_exact_all_bounds",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[entry_count-1]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[path_bytes-9]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[file_bytes-6]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[total_file_bytes-6]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_empty_directories_are_counted_and_hashed",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_empty_directory_cannot_bypass_node_bound",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_zero_length_file_and_zero_byte_allowances",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_multiple_chunks_and_binary_unicode_path",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_hardlinks_charge_each_logical_path",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_junction_denies_without_following_target",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[expired]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[component]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[relative]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[missing]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[file]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_invalid_inputs_deny[empty]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[0]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[1]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[2]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[3]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[4]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[5]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[6]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[7]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_non_windows_requires_full_timestamp_identity",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_windows_executable_mode_exception_is_directed[33279-33206-True]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_windows_executable_mode_exception_is_directed[33270-33206-False]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_windows_executable_mode_exception_is_directed[33279-33207-False]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_windows_executable_mode_exception_is_directed[33279-33060-False]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_windows_executable_mode_exception_is_directed[33206-33279-False]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_windows_executable_mode_exception_is_directed[16895-33206-False]",
+    "tests/test_alc_r0_runtime_tree_inventory.py::test_changed_path_and_bytes_change_inventory",
+)
+
+
 def main():
     mode = sys.argv[1:]
     if mode == ['--owned-native']:
@@ -430,6 +507,12 @@ def main():
                     ['--red-standard'], ['--green-standard'], ['--regression-standard'], ['--native-standard'],
                     ['--red-initialized'], ['--green-initialized'], ['--regression-initialized'],
                     ['--regression-initialized-a'], ['--regression-initialized-b'],
+                    ['--red-library'], ['--green-library'],
+                    ['--red-library-v2'], ['--green-library-v2'],
+                    ['--red-library-v3'], ['--green-library-v3'],
+                    ['--regression-library-a'], ['--regression-library-b'],
+                    ['--regression-library-b1'], ['--regression-library-b2'],
+                    ['--regression-library-b21'], ['--regression-library-b22'], ['--regression-library-b23'],
                     ['--native-initialized']):
         raise ValueError('closed test-only mode required')
     from alc_r0_directory_metadata_reproducer import run_diagnostic
@@ -441,6 +524,20 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_same_handle_directory.py']
+    if name in ('red-library', 'green-library', 'red-library-v2', 'green-library-v2',
+                'red-library-v3', 'green-library-v3', 'regression-library-a'):
+        tests = ['tests/test_alc_r0_standard_first_observer.py']
+    if name == 'regression-library-a':
+        tests += ['tests/test_alc_r0_windows_directory_metadata.py']
+    if name == 'regression-library-b':
+        tests = ['tests/test_alc_r0_runtime_tree_inventory.py']
+    if name in ('regression-library-b1', 'regression-library-b2'):
+        tests = list(_INVENTORY_NODES[:36] if name.endswith('b1') else _INVENTORY_NODES[36:])
+    partitions = {'regression-library-b21': (36, 46),
+        'regression-library-b22': (46, 57), 'regression-library-b23': (57, 73)}
+    if name in partitions:
+        start, end = partitions[name]
+        tests = list(_INVENTORY_NODES[start:end])
     if name in ('regression', 'regression-v2', 'regression-adapter', 'regression-access', 'regression-access-v2', 'regression-standard', 'regression-initialized'):
         tests += ['tests/test_alc_r0_directory_metadata_reproducer.py',
             'tests/test_alc_r0_windows_directory_metadata.py',
@@ -456,6 +553,11 @@ def main():
         ALUCLU_TEST_ONLY_RUNTIME_SCAN='0', ALUCLU_TEST_ONLY_RUNTIME_CAUSE='0')
     temporary = Path(tempfile.mkdtemp(prefix='alc-r0-same-handle-')).resolve(strict=True)
     command = (sys.executable, '-B', '-m', 'pytest', '-q', *tests, '--junitxml=' + str(paths['.xml']))
+    if name in partitions:
+        command += ('--durations=10', '--tb=short')
+    if name in ('red-library', 'green-library', 'red-library-v2', 'green-library-v2',
+                'red-library-v3', 'green-library-v3', 'regression-library-a', 'regression-library-b'):
+        command += ('--tb=short',)
     if name in ('native', 'native-access', 'native-standard', 'native-initialized'):
         command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-' + name)
         cwd = temporary
