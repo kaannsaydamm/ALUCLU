@@ -14680,3 +14680,27 @@ Task 2 sensorium/recollection gate: CLEAN
   vs pins vs freshness vs generation; nofullscan250mswatch, totallockorder,
   durableoneuse/recovery, separatechildhandoff/guardreview. No code/test/modelrun;
   onlygapidentificationclosed, concreteoperatorformat next mandatory action.
+  Resume878c7b5 clean/fullobjective verified; previousgoalturnPROGRESS gapcontract.
+  Specify concrete fixed operatorinstallation origin/immutable descriptor and
+  exact4096byte live status slot, generation/oneuse/update/lock semantics. No
+  installation created, no accepting guard; codec/reader designreview precedes
+  implementation. Full authority/history/resource/learning objective unchanged.
+  Add operatorstatus REDtests/closed120srunner and exactbyteattributes before
+  evidence. Temporaryfiles only; no actualinstallation/permit/modelinvocation.
+  Operatorstatus RED native1/active0/notimeout93a53c; missingmodule two cases.
+  Independent design codeAPPROVE/architectureCLEAR forcodec+readeronly. Add
+  tighter lexical/statusfile caps and exactinteger decodedfields, single-read
+  cooperating continuity. No acceptingintegration; GREEN/regression next.
+  FirstGREEN40/0/0/0,.234s andreg38784terminal4aa872native0, source/tests stable.
+  SourcecodeAPPROVE notedtokenfixtureconfoundedbydepth andfocusedpathcoverage.
+  Add independent64tokenboundary/statuspath/symlinkcases afterterminal; newclosed
+  green_v2/regression_v2 required, productionbytesunchanged. No concurrentrace/
+  installation/updater proof inferred.
+  FinalGREEN47/0/0/0,.221s; finalreg286/0/0/0,14.875s verified82f893,
+  47status/55request/111wire/48canonical/25watch. Original76324 terminalbcfdb8
+  native0/root3552/total5/active0/notimeout. Added20raw+3sourceSHA evidence,
+  explicit noinstallation/noauthority/race/timinglimits; finalreview next.
+  Independent finalcodeAPPROVE/architectureCLEAR each23SHA/fiveJUnitreceipts/
+  exact286selection verified. Mainfbaa8b23manifest+23indexidentities cleancheck.
+  Preserve boundedstatusobservation checkpoint; fixedinstallation/generation
+  publication/oneuse/leasehandoff/historyresource/science remainOPEN, goalactive.
