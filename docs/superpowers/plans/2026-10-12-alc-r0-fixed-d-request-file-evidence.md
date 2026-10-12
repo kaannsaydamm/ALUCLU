@@ -91,6 +91,10 @@ Main independently rechecked all28 manifest hashes (3ba1f2). Checkpoint accepted
 for transport only. Raw RED traceback stdout/XML contain original trailing
 whitespace; retain their exact bytes instead of formatting evidence. Source/docs
 diff whitespace checks are separate from those preserved raw artifacts.
+Pre-push index validation caught absent byte-preservation attributes in local
+471908f. Its raw indexed line endings were not byte-identical to on-disk output.
+Follow-up scopes existing -text policy to these files and restages original bytes;
+only the corrected final tree supports this manifest. Original raw files unchanged.
 
 Transport reader returns the existing immutable DRequest; caller root is not
 authenticated. Existing worker denial remains before any accepted request/heavy

@@ -14625,3 +14625,13 @@ Task 2 sensorium/recollection gate: CLEAN
   3ba1f2 independently28hashes. RawRED traceback whitespace retained unchanged;
   source/doc checks clean separately. No acceptingworker/scienceclaim. Preserve
   checkpoint; next concrete fullworker/producer integration remains open.
+  Prepush indexcheck exposed missing -text attributes for new raw evidence;
+  PowerShell nonterminating foreach error allowed local471908f commit despite
+  mismatch. NOTpushed as final. Preserve history, add narrowly scoped existing
+  -text policy for this component, restage original on-disk bytes and verify all
+  24raw+source index blob identities with terminating checks beforepush. No
+  rerun/modified raw evidence or scientific result reinterpretation.
+  Corrected index main9acc5d27identical/b3d31928SHAverified; both independent
+  preservation rereviews personallyconfirmed27indexidentities/28SHA and scoped
+  attributes: codeAPPROVE/architectureCLEAR. Commit follow-up thenpush corrected
+  finaltree; modeltraining stillnotstarted, fullroadmap remainsactive.
