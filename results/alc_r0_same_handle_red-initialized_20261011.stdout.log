@@ -1,0 +1,1061 @@
+........................................................................ [ 61%]
+.........FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                           [100%]
+================================== FAILURES ===================================
+_______ test_initialized_win32_exact_class_buffer_and_no_invented_count _______
+
+    def test_initialized_win32_exact_class_buffer_and_no_invented_count():
+        api = fake_adapter()
+        api.extended = FakeFunction(payload=standard_record())
+>       result = api.standard_win32(19)
+                 ^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NativeAPI' object has no attribute 'standard_win32'
+
+tests\test_alc_r0_same_handle_directory.py:575: AttributeError
+_________________ test_initialized_win32_failure_no_fallback __________________
+
+    def test_initialized_win32_failure_no_fallback():
+        api = fake_adapter()
+        api.extended = FakeFunction(result=0)
+        with pytest.raises(OSError):
+>           api.standard_win32(19)
+            ^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'NativeAPI' object has no attribute 'standard_win32'
+
+tests\test_alc_r0_same_handle_directory.py:587: AttributeError
+______________ test_initialized_exact_sequence_and_raw_retention ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_exact_sequenc0')
+
+    def test_initialized_exact_sequence_and_raw_retention(tmp_path):
+        api = FakeInitialized()
+        def enumeration(path):
+            api.events.append(('enumerate', path))
+            return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+>       result = inspect_initialized(tmp_path, api, enumeration)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:596: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_exact_sequenc0')
+api = <test_alc_r0_same_handle_directory.FakeInitialized object at 0x00000256CB39AE70>
+enumerate_fn = <function test_initialized_exact_sequence_and_raw_retention.<locals>.enumeration at 0x00000256CAB2AA20>
+
+    def inspect_initialized(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered initialized inspection')
+E       NotImplementedError: preregistered initialized inspection
+
+tests\alc_r0_same_handle_directory.py:336: NotImplementedError
+_______ test_initialized_rejects_each_of_14_named_bookend_changes[mode] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_0')
+field = 'mode'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CB39BD10>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_0')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+__ test_initialized_rejects_each_of_14_named_bookend_changes[volume_serial] ___
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_1')
+field = 'volume_serial'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CB399CA0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_1')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+____ test_initialized_rejects_each_of_14_named_bookend_changes[file_id128] ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_2')
+field = 'file_id128'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CB39A1B0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_2')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_______ test_initialized_rejects_each_of_14_named_bookend_changes[size] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_3')
+field = 'size'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CB39BD40>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_3')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+___ test_initialized_rejects_each_of_14_named_bookend_changes[write_ticks] ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_4')
+field = 'write_ticks'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CB39AD50>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_4')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+__ test_initialized_rejects_each_of_14_named_bookend_changes[creation_ticks] __
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_5')
+field = 'creation_ticks'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB27AA0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_5')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+____ test_initialized_rejects_each_of_14_named_bookend_changes[link_count] ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_6')
+field = 'link_count'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB26450>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_6')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+____ test_initialized_rejects_each_of_14_named_bookend_changes[attributes] ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_7')
+field = 'attributes'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB4B380>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_7')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+___ test_initialized_rejects_each_of_14_named_bookend_changes[change_ticks] ___
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_8')
+field = 'change_ticks'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB482C0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_8')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_ test_initialized_rejects_each_of_14_named_bookend_changes[allocation_size] __
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_9')
+field = 'allocation_size'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB49EB0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_9')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+__ test_initialized_rejects_each_of_14_named_bookend_changes[legacy_file_id] __
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_10')
+field = 'legacy_file_id'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAAE85F0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_10')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+___ test_initialized_rejects_each_of_14_named_bookend_changes[device_type] ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_11')
+field = 'device_type'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB48C80>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_11')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_ test_initialized_rejects_each_of_14_named_bookend_changes[device_characteristics] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_12')
+field = 'device_characteristics'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB4C230>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_12')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+___ test_initialized_rejects_each_of_14_named_bookend_changes[reparse_tag] ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_13')
+field = 'reparse_tag'
+
+    @pytest.mark.parametrize('field', list(decode(*records())['fields']))
+    def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                if sum(event[0] == 'named' for event in self.events) == 2:
+                    old = value['fields'][field]
+                    value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='named bookend'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_of_14_named_bookend_changes.<locals>.Changed object at 0x00000256CAB27D70>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_13')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_______ test_initialized_rejects_standard_disagreement[allocation_size] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_stand0')
+field = 'allocation_size'
+
+    @pytest.mark.parametrize('field', ['allocation_size', 'size', 'link_count'])
+    def test_initialized_rejects_standard_disagreement(tmp_path, field):
+        class Changed(FakeInitialized):
+            def standard_win32(self, handle):
+                value = super().standard_win32(handle)
+                kwargs = dict(allocation=8192, size=4096, links=1)
+                kwargs[dict(allocation_size='allocation', size='size', link_count='links')[field]] += 1
+                value['record'] = standard_record(**kwargs)
+                return value
+        with pytest.raises(ValueError, match='standard disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:638: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_standard_disagreement.<locals>.Changed object at 0x00000256CAAC4CB0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_stand0')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+____________ test_initialized_rejects_standard_disagreement[size] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_stand1')
+field = 'size'
+
+    @pytest.mark.parametrize('field', ['allocation_size', 'size', 'link_count'])
+    def test_initialized_rejects_standard_disagreement(tmp_path, field):
+        class Changed(FakeInitialized):
+            def standard_win32(self, handle):
+                value = super().standard_win32(handle)
+                kwargs = dict(allocation=8192, size=4096, links=1)
+                kwargs[dict(allocation_size='allocation', size='size', link_count='links')[field]] += 1
+                value['record'] = standard_record(**kwargs)
+                return value
+        with pytest.raises(ValueError, match='standard disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:638: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_standard_disagreement.<locals>.Changed object at 0x00000256CAAC7170>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_stand1')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_________ test_initialized_rejects_standard_disagreement[link_count] __________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_stand2')
+field = 'link_count'
+
+    @pytest.mark.parametrize('field', ['allocation_size', 'size', 'link_count'])
+    def test_initialized_rejects_standard_disagreement(tmp_path, field):
+        class Changed(FakeInitialized):
+            def standard_win32(self, handle):
+                value = super().standard_win32(handle)
+                kwargs = dict(allocation=8192, size=4096, links=1)
+                kwargs[dict(allocation_size='allocation', size='size', link_count='links')[field]] += 1
+                value['record'] = standard_record(**kwargs)
+                return value
+        with pytest.raises(ValueError, match='standard disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:638: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_standard_disagreement.<locals>.Changed object at 0x00000256CAA9FD10>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_stand2')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+__________ test_initialized_rejects_each_cross_source_mismatch[mode] __________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_14')
+field = 'mode'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAAC4410>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_14')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_____ test_initialized_rejects_each_cross_source_mismatch[volume_serial] ______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_15')
+field = 'volume_serial'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAB26D50>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_15')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_______ test_initialized_rejects_each_cross_source_mismatch[file_id128] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_16')
+field = 'file_id128'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAB4A030>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_16')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+__________ test_initialized_rejects_each_cross_source_mismatch[size] __________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_17')
+field = 'size'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAA9DF70>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_17')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+______ test_initialized_rejects_each_cross_source_mismatch[write_ticks] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_18')
+field = 'write_ticks'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAA9C110>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_18')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_____ test_initialized_rejects_each_cross_source_mismatch[creation_ticks] _____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_19')
+field = 'creation_ticks'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256C89C5820>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_19')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_______ test_initialized_rejects_each_cross_source_mismatch[link_count] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_20')
+field = 'link_count'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAB4A870>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_20')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_______ test_initialized_rejects_each_cross_source_mismatch[attributes] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_21')
+field = 'attributes'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAB26D50>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_21')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+______ test_initialized_rejects_each_cross_source_mismatch[change_ticks] ______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_22')
+field = 'change_ticks'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256C89C63F0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_22')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+____ test_initialized_rejects_each_cross_source_mismatch[allocation_size] _____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_23')
+field = 'allocation_size'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CB39AAB0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_23')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+_____ test_initialized_rejects_each_cross_source_mismatch[legacy_file_id] _____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_24')
+field = 'legacy_file_id'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CB39A030>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_24')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+______ test_initialized_rejects_each_cross_source_mismatch[device_type] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_25')
+field = 'device_type'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CB39B740>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_25')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+______ test_initialized_rejects_each_cross_source_mismatch[reparse_tag] _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_26')
+field = 'reparse_tag'
+
+    @pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+        if key != 'device_characteristics'])
+    def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+        class Changed(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+                return value
+        with pytest.raises(ValueError, match='disagreement'):
+>           initialized_sample(Changed(), tmp_path, 19)
+
+tests\test_alc_r0_same_handle_directory.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_rejects_each_cross_source_mismatch.<locals>.Changed object at 0x00000256CAB4C4D0>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_rejects_each_26')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+__________ test_initialized_device_sources_retained_not_substituted ___________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_device_source0')
+
+    def test_initialized_device_sources_retained_not_substituted(tmp_path):
+        class DeviceDifference(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                value['fields']['device_characteristics'] = 256
+                return value
+>       result = initialized_sample(DeviceDifference(), tmp_path, 19)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:660: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+api = <test_alc_r0_same_handle_directory.test_initialized_device_sources_retained_not_substituted.<locals>.DeviceDifference object at 0x00000256CAA9F140>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_device_source0')
+handle = 19
+
+    def initialized_sample(api, path, handle):
+>       raise NotImplementedError('preregistered initialized sample')
+E       NotImplementedError: preregistered initialized sample
+
+tests\alc_r0_same_handle_directory.py:332: NotImplementedError
+______________ test_initialized_continuity_includes_device_field ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_continuity_in0')
+
+    def test_initialized_continuity_includes_device_field(tmp_path):
+        class ContinuityChange(FakeInitialized):
+            def named(self, path):
+                value = super().named(path)
+                value['fields']['device_characteristics'] = 257 if self.changed else 256
+                return value
+        api = ContinuityChange()
+        def enumeration(path):
+            # Do not use inherited FakeSample.changed: that mutates stat as well.
+            api.changed = True
+            return dict(count=0)
+        def stat_record(handle):
+            return dict(record=records()[0], status=0, iosb_status=0, information=72)
+        api.stat = stat_record
+>       result = inspect_initialized(tmp_path, api, enumeration)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:680: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_continuity_in0')
+api = <test_alc_r0_same_handle_directory.test_initialized_continuity_includes_device_field.<locals>.ContinuityChange object at 0x00000256CB39A210>
+enumerate_fn = <function test_initialized_continuity_includes_device_field.<locals>.enumeration at 0x00000256CAA979C0>
+
+    def inspect_initialized(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered initialized inspection')
+E       NotImplementedError: preregistered initialized inspection
+
+tests\alc_r0_same_handle_directory.py:336: NotImplementedError
+_________ test_initialized_failed_standard_closes_before_enumeration __________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_failed_standa0')
+
+    def test_initialized_failed_standard_closes_before_enumeration(tmp_path):
+        class Failed(FakeInitialized):
+            def standard_win32(self, handle):
+                raise OSError('injected standard error')
+        api = Failed()
+        with pytest.raises(OSError, match='injected standard error'):
+>           inspect_initialized(tmp_path, api)
+
+tests\test_alc_r0_same_handle_directory.py:691: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_failed_standa0')
+api = <test_alc_r0_same_handle_directory.test_initialized_failed_standard_closes_before_enumeration.<locals>.Failed object at 0x00000256CB399FA0>
+enumerate_fn = <function bounded_names at 0x00000256CAB84220>
+
+    def inspect_initialized(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered initialized inspection')
+E       NotImplementedError: preregistered initialized inspection
+
+tests\alc_r0_same_handle_directory.py:336: NotImplementedError
+_________________ test_initialized_file_denied_before_queries _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_file_denied_b0')
+
+    def test_initialized_file_denied_before_queries(tmp_path):
+        path = tmp_path / 'file'
+        path.write_bytes(b'x')
+        api = FakeInitialized()
+        with pytest.raises(ValueError, match='directory'):
+>           inspect_initialized(path, api)
+
+tests\test_alc_r0_same_handle_directory.py:700: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-103/test_initialized_file_denied_b0/file')
+api = <test_alc_r0_same_handle_directory.FakeInitialized object at 0x00000256CB39EE40>
+enumerate_fn = <function bounded_names at 0x00000256CAB84220>
+
+    def inspect_initialized(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered initialized inspection')
+E       NotImplementedError: preregistered initialized inspection
+
+tests\alc_r0_same_handle_directory.py:336: NotImplementedError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_win32_exact_class_buffer_and_no_invented_count
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_win32_failure_no_fallback
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_exact_sequence_and_raw_retention
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[mode]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[volume_serial]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[file_id128]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[size]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[write_ticks]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[creation_ticks]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[link_count]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[attributes]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[change_ticks]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[allocation_size]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[legacy_file_id]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[device_type]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[device_characteristics]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_of_14_named_bookend_changes[reparse_tag]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_standard_disagreement[allocation_size]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_standard_disagreement[size]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_standard_disagreement[link_count]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[mode]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[volume_serial]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[file_id128]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[size]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[write_ticks]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[creation_ticks]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[link_count]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[attributes]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[change_ticks]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[allocation_size]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[legacy_file_id]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[device_type]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_rejects_each_cross_source_mismatch[reparse_tag]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_device_sources_retained_not_substituted
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_continuity_includes_device_field
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_failed_standard_closes_before_enumeration
+FAILED tests/test_alc_r0_same_handle_directory.py::test_initialized_file_denied_before_queries

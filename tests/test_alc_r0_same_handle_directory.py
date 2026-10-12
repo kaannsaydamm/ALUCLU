@@ -14,6 +14,7 @@ from alc_r0_same_handle_directory import decode, nt_record, sample
 from alc_r0_same_handle_directory import NativeAPI, inspect, bounded_names
 from alc_r0_same_handle_directory import inspect_access
 from alc_r0_same_handle_directory import decode_standard, inspect_standard
+from alc_r0_same_handle_directory import initialized_sample, inspect_initialized
 
 
 def records(**changes):
@@ -558,4 +559,144 @@ def test_standard_regular_file_denied_before_native(tmp_path):
     api = FakeStandard()
     with pytest.raises(ValueError, match='directory'):
         inspect_standard(path, api)
+    assert api.events == []
+
+
+class FakeInitialized(FakeInspection):
+    def standard_win32(self, handle):
+        self.events.append(('standard-win32', handle))
+        return dict(record=standard_record(), win32_succeeded=True,
+            buffer_bytes=24, info_class=1)
+
+
+def test_initialized_win32_exact_class_buffer_and_no_invented_count():
+    api = fake_adapter()
+    api.extended = FakeFunction(payload=standard_record())
+    result = api.standard_win32(19)
+    assert result == dict(record=standard_record(), win32_succeeded=True,
+        buffer_bytes=24, info_class=1)
+    call = api.extended.calls[0]
+    assert (call[0], call[1], call[3]) == (19, 1, 24)
+    assert 'information' not in result
+
+
+def test_initialized_win32_failure_no_fallback():
+    api = fake_adapter()
+    api.extended = FakeFunction(result=0)
+    with pytest.raises(OSError):
+        api.standard_win32(19)
+    assert len(api.extended.calls) == 1
+
+
+def test_initialized_exact_sequence_and_raw_retention(tmp_path):
+    api = FakeInitialized()
+    def enumeration(path):
+        api.events.append(('enumerate', path))
+        return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+    result = inspect_initialized(tmp_path, api, enumeration)
+    one = ['standard-win32', 'named', 'stat', 'identity', 'device', 'stat', 'named']
+    assert [event[0] for event in api.events] == [
+        'open', *one, 'enumerate', *one, *one, 'close', 'named']
+    assert result['stable'] is True
+    assert result['adjacent_differences'] == [[], [], []]
+    assert result['enumeration']['names_sha256'] == 'a' * 64
+    assert len(result['samples']) == 3
+    for value in result['samples']:
+        assert value['fields'] == decode(*records())['fields']
+        assert len(value['fields']) == 14
+        assert value['standard']['raw_hex'] == standard_record().hex()
+        assert value['standard']['win32_completion'] == dict(
+            win32_succeeded=True, buffer_bytes=24, info_class=1)
+        assert value['handle']['raw']['stat'] == records()[0].hex()
+        assert value['named_first']['native_record_hex'] == 'a' * 208
+        assert value['named_last']['native_record_hex'] == 'a' * 208
+
+
+@pytest.mark.parametrize('field', list(decode(*records())['fields']))
+def test_initialized_rejects_each_of_14_named_bookend_changes(tmp_path, field):
+    class Changed(FakeInitialized):
+        def named(self, path):
+            value = super().named(path)
+            if sum(event[0] == 'named' for event in self.events) == 2:
+                old = value['fields'][field]
+                value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+            return value
+    with pytest.raises(ValueError, match='named bookend'):
+        initialized_sample(Changed(), tmp_path, 19)
+
+
+@pytest.mark.parametrize('field', ['allocation_size', 'size', 'link_count'])
+def test_initialized_rejects_standard_disagreement(tmp_path, field):
+    class Changed(FakeInitialized):
+        def standard_win32(self, handle):
+            value = super().standard_win32(handle)
+            kwargs = dict(allocation=8192, size=4096, links=1)
+            kwargs[dict(allocation_size='allocation', size='size', link_count='links')[field]] += 1
+            value['record'] = standard_record(**kwargs)
+            return value
+    with pytest.raises(ValueError, match='standard disagreement'):
+        initialized_sample(Changed(), tmp_path, 19)
+
+
+@pytest.mark.parametrize('field', [key for key in decode(*records())['fields']
+    if key != 'device_characteristics'])
+def test_initialized_rejects_each_cross_source_mismatch(tmp_path, field):
+    class Changed(FakeInitialized):
+        def named(self, path):
+            value = super().named(path)
+            old = value['fields'][field]
+            value['fields'][field] = 'f' * 32 if isinstance(old, str) else old + 1
+            return value
+    with pytest.raises(ValueError, match='disagreement'):
+        initialized_sample(Changed(), tmp_path, 19)
+
+
+def test_initialized_device_sources_retained_not_substituted(tmp_path):
+    class DeviceDifference(FakeInitialized):
+        def named(self, path):
+            value = super().named(path)
+            value['fields']['device_characteristics'] = 256
+            return value
+    result = initialized_sample(DeviceDifference(), tmp_path, 19)
+    assert result['cross_route_differences'] == ['device_characteristics']
+    assert result['fields']['device_characteristics'] == 256
+    assert result['handle']['fields']['device_characteristics'] == 32
+
+
+def test_initialized_continuity_includes_device_field(tmp_path):
+    class ContinuityChange(FakeInitialized):
+        def stat(self, handle):
+            self.events.append(('stat', handle))
+            return dict(record=records()[0], status=0, iosb_status=0, information=72)
+
+        def named(self, path):
+            value = super().named(path)
+            value['fields']['device_characteristics'] = 257 if self.changed else 256
+            return value
+    api = ContinuityChange()
+    def enumeration(path):
+        # Do not use inherited FakeSample.changed: that mutates stat as well.
+        api.changed = True
+        return dict(count=0)
+    result = inspect_initialized(tmp_path, api, enumeration)
+    assert result['stable'] is False
+    assert result['adjacent_differences'] == [['device_characteristics'], [], []]
+
+
+def test_initialized_failed_standard_closes_before_enumeration(tmp_path):
+    class Failed(FakeInitialized):
+        def standard_win32(self, handle):
+            raise OSError('injected standard error')
+    api = Failed()
+    with pytest.raises(OSError, match='injected standard error'):
+        inspect_initialized(tmp_path, api)
+    assert api.events == [('open', tmp_path), ('close', tmp_path)]
+
+
+def test_initialized_file_denied_before_queries(tmp_path):
+    path = tmp_path / 'file'
+    path.write_bytes(b'x')
+    api = FakeInitialized()
+    with pytest.raises(ValueError, match='directory'):
+        inspect_initialized(path, api)
     assert api.events == []

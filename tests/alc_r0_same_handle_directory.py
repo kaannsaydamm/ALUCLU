@@ -152,6 +152,14 @@ class NativeAPI:
     def standard(self, handle):
         return nt_record(self.query_stat, handle, 24, 5, pending_exit)
 
+    def standard_win32(self, handle):
+        value = ctypes.create_string_buffer(24)
+        if not self.extended(handle, 1, ctypes.byref(value), 24):
+            raise ctypes.WinError(ctypes.get_last_error())
+        # This API reports BOOL success, not a returned byte count.
+        return dict(record=bytes(value), win32_succeeded=True,
+            buffer_bytes=24, info_class=1)
+
     def device(self, handle):
         return nt_record(self.query_device, handle, 8, 4, pending_exit)
 
@@ -328,6 +336,67 @@ def owned_native_standard():
         logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
 
 
+def initialized_sample(api, path, handle):
+    value = api.standard_win32(handle)
+    standard = decode_standard(value['record'])
+    standard['win32_completion'] = {key: value[key] for key in
+        ('win32_succeeded', 'buffer_bytes', 'info_class')}
+    first = api.named(path)
+    retained = sample(api, handle)
+    last = api.named(path)
+    if first['fields'] != last['fields']:
+        raise ValueError('initialized named bookend changed')
+    if any(standard['fields'][key] != first['fields'][key]
+            for key in ('allocation_size', 'size', 'link_count')):
+        raise ValueError('initialized standard disagreement')
+    differences = sorted(key for key in first['fields']
+        if first['fields'][key] != retained['fields'][key])
+    if any(key != 'device_characteristics' for key in differences):
+        raise ValueError('initialized cross-source disagreement')
+    return dict(fields=dict(first['fields']), named_first=first, named_last=last,
+        standard=standard, handle=retained, cross_route_differences=differences)
+
+
+def inspect_initialized(path, api, enumerate_fn=bounded_names):
+    if (not isinstance(path, Path) or not path.is_absolute() or '\0' in str(path)
+            or len(str(path).encode('utf-8')) > 32768
+            or path.resolve(strict=True) != path):
+        raise ValueError('resolved bounded absolute directory required')
+    metadata = path.lstat()
+    if (not stat.S_ISDIR(metadata.st_mode)
+            or getattr(metadata, 'st_file_attributes', 0) & 0x400
+            or (os.name == 'nt' and (len(path.drive) != 2 or path.drive[1] != ':'))):
+        raise ValueError('regular local directory required')
+    with api.open(path) as handle:
+        first = initialized_sample(api, path, handle)
+        enumeration = enumerate_fn(path)
+        second = initialized_sample(api, path, handle)
+        third = initialized_sample(api, path, handle)
+    final = api.named(path)
+    observations = [first, second, third, final]
+    differences = [sorted(key for key in left['fields']
+        if left['fields'][key] != right['fields'][key])
+        for left, right in zip(observations, observations[1:])]
+    return dict(path=str(path), samples=[first, second, third], final_named=final,
+        enumeration=enumeration, adjacent_differences=differences,
+        stable=not any(differences))
+
+
+def owned_native_initialized():
+    root = Path.cwd()
+    scratch = root / 'control-16'
+    scratch.mkdir()
+    for index in range(16):
+        with (scratch / f'sample-{index:03d}.bin').open('xb') as output:
+            output.write(b'x' * 512)
+    installed = Path(sys.base_prefix).resolve(strict=True) / 'Lib' / 'asyncio'
+    with NativeAPI() as api:
+        cases = [inspect_initialized(installed, api), inspect_initialized(scratch, api)]
+    print(json.dumps(dict(schema='alc-r0-directory-initialized-v1', python=sys.version,
+        scope='finite-readonly-installed-and-owned-scratch', scratch_root=str(root),
+        logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
+
+
 def owned_native_access():
     root = Path.cwd()
     scratch = root / 'control-16'
@@ -351,12 +420,17 @@ def main():
         return owned_native_access()
     if mode == ['--owned-native-standard']:
         return owned_native_standard()
+    if mode == ['--owned-native-initialized']:
+        return owned_native_initialized()
     if mode not in (['--red'], ['--green'], ['--regression'],
                     ['--red-v2'], ['--green-v2'], ['--regression-v2'],
                     ['--red-adapter'], ['--green-adapter'], ['--regression-adapter'], ['--native'],
                     ['--red-access'], ['--green-access'], ['--regression-access'], ['--native-access'],
                     ['--green-access-v2'], ['--regression-access-v2'],
-                    ['--red-standard'], ['--green-standard'], ['--regression-standard'], ['--native-standard']):
+                    ['--red-standard'], ['--green-standard'], ['--regression-standard'], ['--native-standard'],
+                    ['--red-initialized'], ['--green-initialized'], ['--regression-initialized'],
+                    ['--regression-initialized-a'], ['--regression-initialized-b'],
+                    ['--native-initialized']):
         raise ValueError('closed test-only mode required')
     from alc_r0_directory_metadata_reproducer import run_diagnostic
     cwd = Path(__file__).resolve().parents[1]
@@ -367,9 +441,14 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_same_handle_directory.py']
-    if name in ('regression', 'regression-v2', 'regression-adapter', 'regression-access', 'regression-access-v2', 'regression-standard'):
+    if name in ('regression', 'regression-v2', 'regression-adapter', 'regression-access', 'regression-access-v2', 'regression-standard', 'regression-initialized'):
         tests += ['tests/test_alc_r0_directory_metadata_reproducer.py',
             'tests/test_alc_r0_windows_directory_metadata.py',
+            'tests/test_alc_r0_runtime_tree_inventory.py']
+    if name == 'regression-initialized-a':
+        tests += ['tests/test_alc_r0_directory_metadata_reproducer.py']
+    if name == 'regression-initialized-b':
+        tests = ['tests/test_alc_r0_windows_directory_metadata.py',
             'tests/test_alc_r0_runtime_tree_inventory.py']
     environment = dict(os.environ, PYTHONPATH=str(cwd / 'src'),
         PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1',
@@ -377,7 +456,7 @@ def main():
         ALUCLU_TEST_ONLY_RUNTIME_SCAN='0', ALUCLU_TEST_ONLY_RUNTIME_CAUSE='0')
     temporary = Path(tempfile.mkdtemp(prefix='alc-r0-same-handle-')).resolve(strict=True)
     command = (sys.executable, '-B', '-m', 'pytest', '-q', *tests, '--junitxml=' + str(paths['.xml']))
-    if name in ('native', 'native-access', 'native-standard'):
+    if name in ('native', 'native-access', 'native-standard', 'native-initialized'):
         command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-' + name)
         cwd = temporary
     receipt = run_diagnostic(command, cwd, environment, paths, temporary)
