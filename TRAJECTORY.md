@@ -14547,3 +14547,52 @@ Task 2 sensorium/recollection gate: CLEAN
   andscan-v5protocols plusactualfixture; v5negative remainsretained. Nextclosed
   actual_v6 atsame900/960bounds requires relevantbinding regression andtwo
   newsource reviews, not merelyfinitecandidate success.
+  f04f8ed finitecheckpoint committed20files/pushedremoteHEADidentical3db9b2;
+  raw15indexblobs unchanged. Preregisterscan-v6protocol atsame900inner/960outer,
+  addonlyclosedv6actual/regression selectorsandfixture900/allowlist membership.
+  No production/caps/alias/thresholdchanges. Runexistingbinding+ownedregression
+  atunchanged300s first; actualv6 blockeduntilterminalregression/twofreshreviews.
+  BothGPT6.1 scan-v6source lanes returnedcodeAPPROVE/architectureCLEAR
+  CONDITIONAL onterminal currentregression success/pins. Runner22775e32c8b7147547509da7db27bdb3e1f08457b9287f0f7b7b8c1e13449aeb
+  fixture28146c7c814f2541bd92fe2bce07ddcb3a4b9e6cac3fef1b62d27a5568798418.
+  Regressionlive originalexec37654, wrapper26876/18348 pytest13356/30176;
+  progression23->47percent observed, NOTterminalPASS. Noactualv6launched.
+  Main3a0ac8 FULLrereadfixedDworkerdesign; producer/leaseadmission/watch/history/
+  clock/resources/GPU2stillseparateopenblocks, notsolvedbyfilesystemscan.
+  Regressionoriginal37654 terminaleae584 native0/root13356/total957/active0/
+  notimeout; mainbcba2d JUnit303/0/0/0,123.612s,stderr0. Recheckedsourcepins.
+  MainFULLreadoutercheckpoint_owned_process: receipt hasNO output.valid/cap,
+  so correctedv6protocol beforeactual; outerlogs exclusive/closed/postchecked,
+  notruntime-capped. InnerReservedOwnedLease8MiB/4096 outputvalid asserted by
+  fixture butnotprojectedreceipt. Explicitresiduallimit; no scientificlaunchclaim.
+  Main894248 full303casebreakdown and4artifactSHA/lengths verified, pinsmatch,
+  noPythonprocess andCfree45.49GiB. BothGPT6.1 rereviewedcaptureclarification/
+  personally303terminal/current5pins: codeAPPROVE/architectureCLEAR forONEserial
+  factualactual_v6 only. Legacyouteruncappedlogs NOT scientificlauncherready.
+  Runoneactual_v6 original900/960deadlines; preserveall5artifacts/refusal.
+  Actualv6 launched1e3166 originalexecsession7290; revalidatedlive6c3171:
+  wrapper24584/21108, outerpytest23476/28132, innerchild33436/30436. stdout/stderr
+  currently0, XML/binding/exit notyetproduced: pending, NOTPASS/nothangclaim.
+  Cfree45.49GiB. Resume/pollSAME7290; no restart onobservationtimeout.
+  2026-10-12 goalresume6cb644 FULLrereadobjective, previousgoalturnPROGRESS:
+  two reviewedcommits, driverTDD/native and303regression, startedactualscan.
+  Same7290live confirmed f9ee20/324d64/09415e: worker30436read278->367->412MB,
+  no restart. Original7290 terminal56e122 exit0/root23476/total6/active0/
+  notimeout,234.593s; main86c151 JUnit1/0/0/0,233.789s,stdout81stderr0.
+  Bindingoktrue; innernative0/root33436/total3/active0/notimeout,233.282s.
+  Mainae6f33 canonicalfullresult byteequality/payloadSHA c15da069da2f247f80033cc1f38cb6ed5dc3ab0c0f06f3bec7681bebd7fa65cc,
+  current3specialhashes/lengths andjunctiontarget matched. Base3707entries/
+  3438files/65767174bytes,venv25799/23450/3369989032. Addedterminal evidence
+  with9rawhashes/5sourcepins/complete303breakdown/settings/capturelimits.
+  No scientificapproval orcausal/coldclaim; seekindependentterminalreviews
+  beforecheckpoint/factualgateclosure, thennextoperatorproducerdependency.
+  IndependentGPT6.1 terminalcodeAPPROVE/architectureCLEAR: both verified9raw+
+  5sourcepins,303+1JUnit,outer/innerterminal, canonicalpayloadSHAandcurrent3
+  specialhashes; architecture also byteidenticalcompletecanonicalresult.
+  Narrowfactualcurrent-runtime observationgate CLOSED atthissnapshot/procedure,
+  notimmutablemappednative/producerauthority/history-clock/resources/D/E/neural.
+  Main883368 FULLreadownerdecision/finitehistorydraft/clarification: method
+  alreadyapproved, numericcoverage/clockunknown, no re-request/reset/adoptedzero.
+  Mainc481bc inspectedexistingdeniedworker/runtimeevidence; wire/projection/
+  settingspreparation exists, do NOT rebuild. Concreteoperatorproducer/handoff/
+  fullworkerbody/leaseadmission-monitor andGPU2boundedcomparison remainnext.

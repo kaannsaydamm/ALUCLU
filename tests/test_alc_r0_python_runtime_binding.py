@@ -39,7 +39,7 @@ def layout(tmp_path):
 def inspect_owned(tmp_path, layout=None, *, alter='', bounds=None, actual=False, expired=False):
     api()
     from aluclu.alc_r0.reserved_owned_process import ReservedOwnedLease
-    actual_seconds = 900 if os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN_MODE') in ('actual_v4','actual_v5') else 240
+    actual_seconds = 900 if os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN_MODE') in ('actual_v4','actual_v5','actual_v6') else 240
     arguments, store, _, _ = fixture(tmp_path, seconds=actual_seconds if actual else 15,
                                     stdout_cap=8*1024**2, stderr_cap=4096)
     bounds = bounds or dict(entry_count=65536 if actual else 64,path_bytes=4*1024**2,
@@ -231,7 +231,7 @@ def test_alias_text_uses_shared_aggregate_bound():
 def test_actual_current_runtime_read_only(tmp_path):
     result=inspect_owned(tmp_path,actual=True)
     mode=os.environ['ALUCLU_TEST_ONLY_RUNTIME_SCAN_MODE']
-    assert mode in ('actual','actual_v2','actual_v3','actual_v4','actual_v5')
+    assert mode in ('actual','actual_v2','actual_v3','actual_v4','actual_v5','actual_v6')
     target=Path(__file__).resolve().parents[1]/'results'/f'alc_r0_python_runtime_{mode}_20261011.binding.json'
     with target.open('xb') as out:
         out.write(canonical_json_bytes(result))
