@@ -14596,3 +14596,32 @@ Task 2 sensorium/recollection gate: CLEAN
   Mainc481bc inspectedexistingdeniedworker/runtimeevidence; wire/projection/
   settingspreparation exists, do NOT rebuild. Concreteoperatorproducer/handoff/
   fullworkerbody/leaseadmission-monitor andGPU2boundedcomparison remainnext.
+  2026-10-12 resume: previous goal turn NO_PROGRESS (status only); reread full
+  objective and verified c5e4070/clean Desktop checkout. Preregister bounded
+  fixed-D request-file transport reader; existing worker denial unchanged.
+  No assets/model/training invocation. Next RED then implementation/regression
+  and two independent GPT6.1 review lanes; transport integrity is not authority.
+  Request reader RED native1/active0/no timeout: two valid-request cases fail
+  because module absent (original a4adf0). Independent design code APPROVE /
+  architecture CLEAR; added ordinary-component rules and sentinel/root/cleanup
+  constraints. Implement single-open reader and negative/short-read tests;
+  original worker denial preserved. GREEN/regression not yet claimed.
+  First GREEN personally verified51/0/0/0,.712s, native0/active0/notimeout.
+  Independent implementation code APPROVE/architecture CLEAR with race/expiry
+  coverage WATCH. Add private-helper real-handle continuity/close tests before
+  extracting helper; preserve first GREEN/regression as predecessor evidence,
+  not final refactored-source evidence. No public backend/authority seam added.
+  First regression81947 stilllive when test file expanded: preserve as diagnostic,
+  not frozen-source acceptance. ContinuityRED native1/active0/notimeout96b5e0,
+  four new cases helper absent. Extract same owned operation to private helper;
+  final green_v2/regression_v2 required, no retry/threshold changes.
+  FinalGREEN55/0/0/0,.364s; finalregression261/0/0/0,54.898s personallychecked
+  ba7a18 (55reader/111wire/48canonical/30worker/17isolation), native0/root33516/
+  total51/active0/notimeout original94967 terminald2c14f. Empty stderr; source
+  pins unchanged. Added24raw+4sourceSHA manifest/evidence and residual limits;
+  source rereviews codeAPPROVE/architectureCLEAR, terminalevidence reviews next.
+  Both independent terminal reviews verifiedall28SHA/sixreceipts/sixJUnit/exact
+  261selection: codeAPPROVE/architectureCLEAR fortransportcheckpointonly. Main
+  3ba1f2 independently28hashes. RawRED traceback whitespace retained unchanged;
+  source/doc checks clean separately. No acceptingworker/scienceclaim. Preserve
+  checkpoint; next concrete fullworker/producer integration remains open.

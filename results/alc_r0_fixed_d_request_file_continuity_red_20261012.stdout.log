@@ -1,0 +1,67 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_____________ test_owned_file_refusal_closes_real_handle[mutate] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_refusal_closes0')
+action = 'mutate'
+
+    @pytest.mark.parametrize('action', ['mutate', 'hardlink', 'expire_after_open'])
+    def test_owned_file_refusal_closes_real_handle(tmp_path, action):
+        path, _ = fixture(tmp_path)
+        owned = OwnedFilePath(path, action)
+        duration = 20_000_000 if action == 'expire_after_open' else 10**9
+        with pytest.raises(reader().DRequestFileError):
+>           reader()._read_file(owned, time.monotonic_ns() + duration)
+            ^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:205: AttributeError
+____________ test_owned_file_refusal_closes_real_handle[hardlink] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_refusal_closes1')
+action = 'hardlink'
+
+    @pytest.mark.parametrize('action', ['mutate', 'hardlink', 'expire_after_open'])
+    def test_owned_file_refusal_closes_real_handle(tmp_path, action):
+        path, _ = fixture(tmp_path)
+        owned = OwnedFilePath(path, action)
+        duration = 20_000_000 if action == 'expire_after_open' else 10**9
+        with pytest.raises(reader().DRequestFileError):
+>           reader()._read_file(owned, time.monotonic_ns() + duration)
+            ^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:205: AttributeError
+________ test_owned_file_refusal_closes_real_handle[expire_after_open] ________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_refusal_closes2')
+action = 'expire_after_open'
+
+    @pytest.mark.parametrize('action', ['mutate', 'hardlink', 'expire_after_open'])
+    def test_owned_file_refusal_closes_real_handle(tmp_path, action):
+        path, _ = fixture(tmp_path)
+        owned = OwnedFilePath(path, action)
+        duration = 20_000_000 if action == 'expire_after_open' else 10**9
+        with pytest.raises(reader().DRequestFileError):
+>           reader()._read_file(owned, time.monotonic_ns() + duration)
+            ^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:205: AttributeError
+___________ test_owned_file_success_single_open_closes_real_handle ____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_success_single0')
+
+    def test_owned_file_success_single_open_closes_real_handle(tmp_path):
+        path, data = fixture(tmp_path)
+        owned = OwnedFilePath(path, 'none')
+>       assert reader()._read_file(owned, time.monotonic_ns() + 10**9) == data
+               ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:213: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_request_file.py::test_owned_file_refusal_closes_real_handle[mutate]
+FAILED tests/test_alc_r0_fixed_d_request_file.py::test_owned_file_refusal_closes_real_handle[hardlink]
+FAILED tests/test_alc_r0_fixed_d_request_file.py::test_owned_file_refusal_closes_real_handle[expire_after_open]
+FAILED tests/test_alc_r0_fixed_d_request_file.py::test_owned_file_success_single_open_closes_real_handle
