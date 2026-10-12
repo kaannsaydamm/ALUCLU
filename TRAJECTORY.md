@@ -14515,3 +14515,35 @@ Task 2 sensorium/recollection gate: CLEAN
   preservedtimeouts. Verdicts authorizecheckpointpreservationonly, notinstalled
   candidate/fullscan/training. No unavailable-reviewfallback. Savecheckpoint,
   thenclosedfinite candidate-driver TDD/source review beforeactualinvocation.
+  Checkpointd0cda1a committed52files/pushedremoteHEADidentical7f9886, clean;
+  raw46indexblobs identical. EOFblankline diffcheck caught andremoved beforecommit,
+  no raw/source bytes changed. Addedprospective finitepublicobserver protocol
+  and43injecteddriver cases BEFOREimplementation; candidate native notrun.
+  DriverRED ee803a/f37ff4 personally43/43/0/0,.610s,native1/active0/notimeout/
+  capturevalid31125stdout0stderr: missinginspect_library beforeimplementation.
+  Implementexplicitobserver/enumerator/clock helper, exactfull14threeobservations,
+  failimmediate/no retry/originaldeadline. Newclosedowned-native-library uses
+  realpublicobserver, fixedrepo src under-I, installedasyncio+owned16*512 only,
+  single45sinner/60souterdeadline. No invocationbeforeGREEN/regression/tworeviews.
+  Maind13079 verifieddriver GREEN43/0/0/0,.257s andregression226/0/0/0,1.207s
+  (43driver+65library+118previousdiagnostic), native0/active0/notimeout/capturevalid
+  loghashes. Reviewpins runnerf4d9595758fc49edaa087914be36e816efbc389a47bd50bfc0618a169374ee31
+  driverTests7ad9d46d8057b919ca73c64286c8973827b551b40e0e11e0146c88443034bd8a;
+  production175787d2 unchanged. TwoGPT6.1 source lanes requested beforefinitecall.
+  Bothnewdriver lanes returnedcodeAPPROVE/architectureCLEAR forONEfinite
+  --native-library invocation atf4d95957/7ad9d46d/175787d2, notfullscan/science.
+  Mainterminalchecks met d13079. Runonefixedtwo-target candidate, preservefailure;
+  alreadyobservedinstalledtarget/coldstate/uniqueinitcause notclaimed.
+  Nativecandidatea2e44b terminalexit0/root28872/total3/active0/notimeout/.610s,
+  valid3285stdout0stderr. Mainpersonaloutputcheck all3full14equal eachtarget:
+  installedasyncio8192/8192, ownedcontrol4096/4096; no droppeddevicefield256.
+  Enum34/414and16/224,digests retained. Readall16ownedfiles each512xbytes,
+  receipt stdout/stderr hashesmatch. Newfinitecandidateevidence15rawhashes,
+  notcold/fullruntime/sciencePASS. Seekterminalreviews then preservecheckpoint;
+  nextreadfullscanprotocol beforeseparatelyreviewedrealbase/venvscan.
+  TerminalGPT6.1 codeAPPROVE/architectureCLEAR forfinitecheckpointpreservation:
+  eachverified15artifacts/3pins/4receipts/3JUnit/every14field across3samples.
+  No furtherexecutionpermission inferred. Mainebbc34 FULLread originalbinding
+  andscan-v5protocols plusactualfixture; v5negative remainsretained. Nextclosed
+  actual_v6 atsame900/960bounds requires relevantbinding regression andtwo
+  newsource reviews, not merelyfinitecandidate success.

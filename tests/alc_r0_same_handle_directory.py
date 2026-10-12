@@ -7,6 +7,8 @@ import struct
 import sys
 import tempfile
 import hashlib
+import time
+from dataclasses import asdict
 from contextlib import ExitStack, contextmanager
 from pathlib import Path
 
@@ -218,6 +220,63 @@ def inspect(path, api, enumerate_fn=bounded_names):
         enumeration=enumeration, cross_route_differences=differences,
         named_stable=all(item['fields'] == named[0]['fields'] for item in named),
         handle_stable=all(item['fields'] == handles[0]['fields'] for item in handles))
+
+
+def inspect_library(path, observe, enumerate_fn=bounded_names, *, deadline_ns,
+                    clock=time.monotonic_ns):
+    """Finite public-observer continuity, not full-runtime acceptance."""
+    from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+    if type(deadline_ns) is not int or not 0 < deadline_ns < 2**63:
+        raise ValueError('invalid original candidate deadline')
+
+    def check():
+        if clock() >= deadline_ns:
+            raise ValueError('original candidate deadline expired')
+
+    def observation():
+        check()
+        result = observe(path, deadline_ns=deadline_ns)
+        check()
+        if type(result) is not DirectoryObservation:
+            raise ValueError('exact public directory observation required')
+        return asdict(result)
+
+    first = observation()
+    check()
+    enumeration = enumerate_fn(path)
+    check()
+    observations = [first]
+    for _ in range(2):
+        current = observation()
+        if current != first:
+            raise ValueError('public directory observation changed')
+        observations.append(current)
+    return dict(path=str(path), observations=observations,
+                enumeration=enumeration, stable=True)
+
+
+def owned_native_library():
+    # -I ignores PYTHONPATH/script-directory imports. Only this reviewed checkout
+    # is inserted explicitly; no caller-supplied source or discovery fallback.
+    source_root = Path(__file__).resolve().parents[1] / 'src'
+    sys.path.insert(0, str(source_root))
+    from aluclu.alc_r0.windows_directory_metadata import observe_directory
+    deadline = time.monotonic_ns() + 45_000_000_000
+    root = Path.cwd().resolve(strict=True)
+    scratch = root / 'control-16'
+    scratch.mkdir()
+    for index in range(16):
+        with (scratch / f'sample-{index:03d}.bin').open('xb') as output:
+            output.write(b'x' * 512)
+    installed = (Path(sys.base_prefix) / 'Lib' / 'asyncio').resolve(strict=True)
+    cases = [inspect_library(path, observe_directory, deadline_ns=deadline)
+             for path in (installed, scratch)]
+    if cases[1]['enumeration']['count'] != 16:
+        raise ValueError('owned control membership differs')
+    print(json.dumps(dict(schema='alc-r0-public-directory-candidate-v1',
+        python=sys.version, executable=sys.executable, base_prefix=sys.base_prefix,
+        scope='finite-readonly-installed-and-owned-scratch', scratch_root=str(root),
+        logical_written_bytes=8192, cases=cases), sort_keys=True, separators=(',', ':')))
 
 
 def owned_native():
@@ -491,6 +550,8 @@ _INVENTORY_NODES = (
 
 def main():
     mode = sys.argv[1:]
+    if mode == ['--owned-native-library']:
+        return owned_native_library()
     if mode == ['--owned-native']:
         return owned_native()
     if mode == ['--owned-native-access']:
@@ -513,6 +574,8 @@ def main():
                     ['--regression-library-a'], ['--regression-library-b'],
                     ['--regression-library-b1'], ['--regression-library-b2'],
                     ['--regression-library-b21'], ['--regression-library-b22'], ['--regression-library-b23'],
+                    ['--red-library-driver'], ['--green-library-driver'], ['--regression-library-driver'],
+                    ['--native-library'],
                     ['--native-initialized']):
         raise ValueError('closed test-only mode required')
     from alc_r0_directory_metadata_reproducer import run_diagnostic
@@ -524,6 +587,11 @@ def main():
     if any(path.exists() for path in paths.values()):
         raise FileExistsError('retained evidence exists')
     tests = ['tests/test_alc_r0_same_handle_directory.py']
+    if name in ('red-library-driver', 'green-library-driver', 'regression-library-driver'):
+        tests = ['tests/test_alc_r0_library_candidate_driver.py']
+    if name == 'regression-library-driver':
+        tests += ['tests/test_alc_r0_standard_first_observer.py',
+                  'tests/test_alc_r0_same_handle_directory.py']
     if name in ('red-library', 'green-library', 'red-library-v2', 'green-library-v2',
                 'red-library-v3', 'green-library-v3', 'regression-library-a'):
         tests = ['tests/test_alc_r0_standard_first_observer.py']
@@ -558,7 +626,9 @@ def main():
     if name in ('red-library', 'green-library', 'red-library-v2', 'green-library-v2',
                 'red-library-v3', 'green-library-v3', 'regression-library-a', 'regression-library-b'):
         command += ('--tb=short',)
-    if name in ('native', 'native-access', 'native-standard', 'native-initialized'):
+    if name in ('red-library-driver', 'green-library-driver', 'regression-library-driver'):
+        command += ('--tb=short',)
+    if name in ('native', 'native-access', 'native-standard', 'native-initialized', 'native-library'):
         command = (sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--owned-' + name)
         cwd = temporary
     receipt = run_diagnostic(command, cwd, environment, paths, temporary)
