@@ -78,24 +78,32 @@ def _claim(path,deadline):
     return current
 
 
+def _read_record_path(path,ancestors,deadline_ns):
+    """Private bounded bytes observation shared by the two fixed file domains."""
+    _check_deadline(deadline_ns)
+    original=_file(path.lstat())
+    _check_deadline(deadline_ns)
+    with path.open('rb',buffering=0) as stream:
+        _check_deadline(deadline_ns)
+        opened=_file(os.fstat(stream.fileno()))
+        if not _same_open_identity(original,opened):
+            raise ControlConsumptionError('record open identity differs')
+        data=_read_bytes(stream,original[3],deadline_ns)
+        if _file(os.fstat(stream.fileno()))!=opened:
+            raise ControlConsumptionError('open record changed')
+    _check_deadline(deadline_ns)
+    if _file(path.lstat())!=original or _ancestors(path,deadline_ns)!=ancestors:
+        raise ControlConsumptionError('record namespace changed')
+    _check_deadline(deadline_ns)
+    return data
+
+
 def read_consumption(directory,control_id,*,deadline_ns):
     """Bounded stored observation, no availability/reset or provenance verdict."""
     try:
         _deadline(deadline_ns)
         path,ancestors=_path(directory,control_id,deadline_ns)
-        original=_file(path.lstat())
-        _check_deadline(deadline_ns)
-        with path.open('rb',buffering=0) as stream:
-            _check_deadline(deadline_ns)
-            opened=_file(os.fstat(stream.fileno()))
-            if not _same_open_identity(original,opened):
-                raise ControlConsumptionError('consumption open identity differs')
-            data=_read_bytes(stream,original[3],deadline_ns)
-            if _file(os.fstat(stream.fileno()))!=opened:
-                raise ControlConsumptionError('open consumption changed')
-        _check_deadline(deadline_ns)
-        if _file(path.lstat())!=original or _ancestors(path,deadline_ns)!=ancestors:
-            raise ControlConsumptionError('consumption namespace changed')
+        data=_read_record_path(path,ancestors,deadline_ns)
         result=_decode(data,control_id)
         _check_deadline(deadline_ns)
         return result
