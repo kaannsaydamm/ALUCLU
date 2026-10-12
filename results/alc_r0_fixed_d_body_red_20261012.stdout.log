@@ -1,0 +1,9 @@
+
+=================================== ERRORS ====================================
+_____________ ERROR collecting tests/test_alc_r0_fixed_d_body.py ______________
+tests\test_alc_r0_fixed_d_body.py:16: in __getattribute__
+    raise AssertionError('request hook called before denial')
+E   AssertionError: request hook called before denial
+=========================== short test summary info ===========================
+ERROR tests/test_alc_r0_fixed_d_body.py - AssertionError: request hook called...
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!

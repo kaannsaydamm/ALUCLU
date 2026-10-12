@@ -14635,3 +14635,37 @@ Task 2 sensorium/recollection gate: CLEAN
   preservation rereviews personallyconfirmed27indexidentities/28SHA and scoped
   attributes: codeAPPROVE/architectureCLEAR. Commit follow-up thenpush corrected
   finaltree; modeltraining stillnotstarted, fullroadmap remainsactive.
+  2026-10-12 nextresume: previousgoalturnPROGRESS; verifiedfc3ce6a/clean and
+  rereadfullobjective/fixedDdesign/existingqualifier/projection/worker. Preserve
+  original fixed callable, compose dormant one-call workerbody behind unchanged
+  denial. Preregister scoped design; independent review before accepting code.
+  No operational/scientific claim from denied-entry/static tests.
+  Add dormantbody RED cases (deny-before-hooks, bounded pure failureclassifier,
+  static fixedcall/no-loop evidence) and closed120s runner; bytepreservation
+  attrs registered before artifacts. No modelcall/guard replacement.
+  FirstRED e77d2f native2 collectionerror: pytest introspected Trap parameter
+  before testbody; this is fixturebug, not productionRED. Preserve artifacts;
+  move Trap creation into testbody and runfresh red_v2 beforeimplementation.
+  red_v2 native1/active0/notimeout missingbody/classifier verifiedc38692;
+  independent design codeAPPROVE/archCLEAR requirements incorporated. Add guarded
+  one-call dormant composition and pure bounded diagnostics. main/prepare denial
+  unchanged; no modelcall or dynamic accepted-path proof. GREEN/regression next.
+  FirstGREEN25/0/0/0,.142s; originalreg85109 terminalcab7e1 native0 stable
+  predecessor source. Code review REQUESTCHANGES deadlineencoding contract;
+  architectureCLEAR noted missingtypedfields fallback. Prospectively admitfinite
+  max2errorencoding (neverqualifierretry), fieldfallback andprecalltimecheck;
+  addrepairRED tests beforecode, preserve all predecessorresults.
+  RepairRED native1/active0/notimeout3a4caf; independentrefinement codeAPPROVE/
+  archCLEAR. Implement finite terminalfailure, missingfieldfallback and immediate
+  prequalifierdeadline. FreshfinalGREEN/regression beforeacceptance; unchanged
+  denial stillfirst, no scientificinvocation.
+  FinalGREEN32/0/0/0,.187s; finalregression294/0/0/0,79.693s personallyverified
+  9c075c:32body/49projection/55request/111wire/30worker/17isolation. Original
+  43536 terminalf28ff0 native0/root32196/total53/active0/notimeout. Finalsource
+  stable; added28raw+3source manifest/evidence, explicit dormant/static limits.
+  Independent finalsource codeAPPROVE/architectureCLEAR; terminalreviews next.
+  Both independent terminalverdicts codeAPPROVE/architectureCLEAR verified31SHA/
+  sevenreceiptJUnit/exact294selection. Mainc25ba6 verified31SHA+31index identities,
+  cacheddiffcheckclean. Preserve dormant composition only; no acceptedscientific
+  path/workeroutput/trustedproducer/admissionclaim. Next concrete producer and
+  accepting invocation integration remain mandatory before first realmodelrun.

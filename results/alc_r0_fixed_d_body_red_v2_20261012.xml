@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="25" skipped="0" tests="25" time="0.329" timestamp="2026-10-12T23:49:24.809748+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_body_denies_before_request_hooks[none]" time="0.019"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'">case = 'none'
+
+    @pytest.mark.parametrize('case', ['none', 'dict', 'text', 'trap'])
+    def test_body_denies_before_request_hooks(case):
+        value = {'none': None, 'dict': {}, 'text': 'approved', 'trap': Trap()}[case]
+        with pytest.raises(worker().WorkerHandoffUnavailable):
+&gt;           worker()._execute_request(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'
+
+tests\test_alc_r0_fixed_d_body.py:23: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_body_denies_before_request_hooks[dict]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'">case = 'dict'
+
+    @pytest.mark.parametrize('case', ['none', 'dict', 'text', 'trap'])
+    def test_body_denies_before_request_hooks(case):
+        value = {'none': None, 'dict': {}, 'text': 'approved', 'trap': Trap()}[case]
+        with pytest.raises(worker().WorkerHandoffUnavailable):
+&gt;           worker()._execute_request(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'
+
+tests\test_alc_r0_fixed_d_body.py:23: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_body_denies_before_request_hooks[text]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'">case = 'text'
+
+    @pytest.mark.parametrize('case', ['none', 'dict', 'text', 'trap'])
+    def test_body_denies_before_request_hooks(case):
+        value = {'none': None, 'dict': {}, 'text': 'approved', 'trap': Trap()}[case]
+        with pytest.raises(worker().WorkerHandoffUnavailable):
+&gt;           worker()._execute_request(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'
+
+tests\test_alc_r0_fixed_d_body.py:23: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_body_denies_before_request_hooks[trap]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'">case = 'trap'
+
+    @pytest.mark.parametrize('case', ['none', 'dict', 'text', 'trap'])
+    def test_body_denies_before_request_hooks(case):
+        value = {'none': None, 'dict': {}, 'text': 'approved', 'trap': Trap()}[case]
+        with pytest.raises(worker().WorkerHandoffUnavailable):
+&gt;           worker()._execute_request(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_execute_request'
+
+tests\test_alc_r0_fixed_d_body.py:23: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_diagnostic_category[error0-validation]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">error = ValueError(), category = 'validation'
+
+    @pytest.mark.parametrize('error,category', [(ValueError(), 'validation'),
+                                             (RuntimeError(), 'runtime'),
+                                             (MemoryError(), 'oom'), (OOM(), 'oom'),
+                                             (KeyboardInterrupt(), 'interrupted')])
+    def test_diagnostic_category(error, category):
+&gt;       assert worker()._diagnostic(error, 'worker_context', TYPES) == ('worker_context', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:53: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_diagnostic_category[error1-runtime]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">error = RuntimeError(), category = 'runtime'
+
+    @pytest.mark.parametrize('error,category', [(ValueError(), 'validation'),
+                                             (RuntimeError(), 'runtime'),
+                                             (MemoryError(), 'oom'), (OOM(), 'oom'),
+                                             (KeyboardInterrupt(), 'interrupted')])
+    def test_diagnostic_category(error, category):
+&gt;       assert worker()._diagnostic(error, 'worker_context', TYPES) == ('worker_context', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:53: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_diagnostic_category[error2-oom]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">error = MemoryError(), category = 'oom'
+
+    @pytest.mark.parametrize('error,category', [(ValueError(), 'validation'),
+                                             (RuntimeError(), 'runtime'),
+                                             (MemoryError(), 'oom'), (OOM(), 'oom'),
+                                             (KeyboardInterrupt(), 'interrupted')])
+    def test_diagnostic_category(error, category):
+&gt;       assert worker()._diagnostic(error, 'worker_context', TYPES) == ('worker_context', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:53: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_diagnostic_category[error3-oom]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">error = OOM(), category = 'oom'
+
+    @pytest.mark.parametrize('error,category', [(ValueError(), 'validation'),
+                                             (RuntimeError(), 'runtime'),
+                                             (MemoryError(), 'oom'), (OOM(), 'oom'),
+                                             (KeyboardInterrupt(), 'interrupted')])
+    def test_diagnostic_category(error, category):
+&gt;       assert worker()._diagnostic(error, 'worker_context', TYPES) == ('worker_context', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:53: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_diagnostic_category[error4-interrupted]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">error = KeyboardInterrupt(), category = 'interrupted'
+
+    @pytest.mark.parametrize('error,category', [(ValueError(), 'validation'),
+                                             (RuntimeError(), 'runtime'),
+                                             (MemoryError(), 'oom'), (OOM(), 'oom'),
+                                             (KeyboardInterrupt(), 'interrupted')])
+    def test_diagnostic_category(error, category):
+&gt;       assert worker()._diagnostic(error, 'worker_context', TYPES) == ('worker_context', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:53: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exact_qualifier_stage[tokenizer]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">stage = 'tokenizer'
+
+    @pytest.mark.parametrize('stage', ['tokenizer', 'host', 'official', 'matrix', 'terminal-assets'])
+    def test_exact_qualifier_stage(stage):
+        error = QualificationError(Failure(stage))
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == (stage, 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:59: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exact_qualifier_stage[host]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">stage = 'host'
+
+    @pytest.mark.parametrize('stage', ['tokenizer', 'host', 'official', 'matrix', 'terminal-assets'])
+    def test_exact_qualifier_stage(stage):
+        error = QualificationError(Failure(stage))
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == (stage, 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:59: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exact_qualifier_stage[official]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">stage = 'official'
+
+    @pytest.mark.parametrize('stage', ['tokenizer', 'host', 'official', 'matrix', 'terminal-assets'])
+    def test_exact_qualifier_stage(stage):
+        error = QualificationError(Failure(stage))
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == (stage, 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:59: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exact_qualifier_stage[matrix]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">stage = 'matrix'
+
+    @pytest.mark.parametrize('stage', ['tokenizer', 'host', 'official', 'matrix', 'terminal-assets'])
+    def test_exact_qualifier_stage(stage):
+        error = QualificationError(Failure(stage))
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == (stage, 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:59: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exact_qualifier_stage[terminal-assets]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">stage = 'terminal-assets'
+
+    @pytest.mark.parametrize('stage', ['tokenizer', 'host', 'official', 'matrix', 'terminal-assets'])
+    def test_exact_qualifier_stage(stage):
+        error = QualificationError(Failure(stage))
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == (stage, 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:59: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_unknown_failure_never_supplies_stage[none]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">case = 'none'
+
+    @pytest.mark.parametrize('case', ['none', 'trap', 'unexpected', 'stage_trap'])
+    def test_unknown_failure_never_supplies_stage(case):
+        failure = {'none': None, 'trap': Trap(), 'unexpected': Failure('unexpected'),
+                   'stage_trap': Failure(Trap())}[case]
+&gt;       assert worker()._diagnostic(QualificationError(failure), 'tokenizer', TYPES) == (
+               ^^^^^^^^^^^^^^^^^^^^
+            'tokenizer', 'runtime')
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:66: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_unknown_failure_never_supplies_stage[trap]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">case = 'trap'
+
+    @pytest.mark.parametrize('case', ['none', 'trap', 'unexpected', 'stage_trap'])
+    def test_unknown_failure_never_supplies_stage(case):
+        failure = {'none': None, 'trap': Trap(), 'unexpected': Failure('unexpected'),
+                   'stage_trap': Failure(Trap())}[case]
+&gt;       assert worker()._diagnostic(QualificationError(failure), 'tokenizer', TYPES) == (
+               ^^^^^^^^^^^^^^^^^^^^
+            'tokenizer', 'runtime')
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:66: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_unknown_failure_never_supplies_stage[unexpected]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">case = 'unexpected'
+
+    @pytest.mark.parametrize('case', ['none', 'trap', 'unexpected', 'stage_trap'])
+    def test_unknown_failure_never_supplies_stage(case):
+        failure = {'none': None, 'trap': Trap(), 'unexpected': Failure('unexpected'),
+                   'stage_trap': Failure(Trap())}[case]
+&gt;       assert worker()._diagnostic(QualificationError(failure), 'tokenizer', TYPES) == (
+               ^^^^^^^^^^^^^^^^^^^^
+            'tokenizer', 'runtime')
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:66: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_unknown_failure_never_supplies_stage[stage_trap]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">case = 'stage_trap'
+
+    @pytest.mark.parametrize('case', ['none', 'trap', 'unexpected', 'stage_trap'])
+    def test_unknown_failure_never_supplies_stage(case):
+        failure = {'none': None, 'trap': Trap(), 'unexpected': Failure('unexpected'),
+                   'stage_trap': Failure(Trap())}[case]
+&gt;       assert worker()._diagnostic(QualificationError(failure), 'tokenizer', TYPES) == (
+               ^^^^^^^^^^^^^^^^^^^^
+            'tokenizer', 'runtime')
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:66: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_typed_interruption_preserved" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">def test_typed_interruption_preserved():
+&gt;       assert worker()._diagnostic(QualificationInterrupted(Failure('matrix')),
+               ^^^^^^^^^^^^^^^^^^^^
+                                    'tokenizer', TYPES) == ('matrix', 'interrupted')
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:71: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exception_chain_bound[1-oom]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">distance = 1, category = 'oom'
+
+    @pytest.mark.parametrize('distance,category', [(1, 'oom'), (7, 'oom'), (8, 'runtime')])
+    def test_exception_chain_bound(distance, category):
+        error = OOM()
+        for _ in range(distance):
+            outer = RuntimeError()
+            outer.__cause__ = error
+            error = outer
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == ('tokenizer', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:82: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exception_chain_bound[7-oom]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">distance = 7, category = 'oom'
+
+    @pytest.mark.parametrize('distance,category', [(1, 'oom'), (7, 'oom'), (8, 'runtime')])
+    def test_exception_chain_bound(distance, category):
+        error = OOM()
+        for _ in range(distance):
+            outer = RuntimeError()
+            outer.__cause__ = error
+            error = outer
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == ('tokenizer', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:82: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exception_chain_bound[8-runtime]" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">distance = 8, category = 'runtime'
+
+    @pytest.mark.parametrize('distance,category', [(1, 'oom'), (7, 'oom'), (8, 'runtime')])
+    def test_exception_chain_bound(distance, category):
+        error = OOM()
+        for _ in range(distance):
+            outer = RuntimeError()
+            outer.__cause__ = error
+            error = outer
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == ('tokenizer', category)
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:82: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_cycle_and_causal_precedence" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">def test_cycle_and_causal_precedence():
+        first, second = RuntimeError(), RuntimeError()
+        first.__cause__, second.__cause__ = second, first
+        first.__context__ = OOM()
+&gt;       assert worker()._diagnostic(first, 'tokenizer', TYPES) == ('tokenizer', 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:89: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_exception_attribute_hooks_not_called" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'">def test_exception_attribute_hooks_not_called():
+        class Hook(RuntimeError):
+            def __getattribute__(self, name):
+                raise AssertionError('exception hook called')
+        error = Hook()
+        error.__cause__ = OOM()
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == ('tokenizer', 'oom')
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_diagnostic'
+
+tests\test_alc_r0_fixed_d_body.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_body_static_fixed_call_is_not_dynamic_execution_proof" time="0.001"><failure message="StopIteration">def test_body_static_fixed_call_is_not_dynamic_execution_proof():
+        tree = ast.parse(Path(worker().__file__).read_text(encoding='utf-8'))
+&gt;       body = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                    and node.name == '_execute_request')
+E       StopIteration
+
+tests\test_alc_r0_fixed_d_body.py:103: StopIteration</failure></testcase></testsuite></testsuites>

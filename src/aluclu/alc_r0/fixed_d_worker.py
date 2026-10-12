@@ -7,6 +7,9 @@ The private settings seam is not an authorization API or host callback.
 
 import os
 import sys
+import time
+import types
+from pathlib import Path
 
 from .canonical import parse_canonical_json
 from .fixed_d_wire import DRequest, DWireError, decode_d_request
@@ -85,6 +88,103 @@ def _prepare_runtime(request):
 
     _context(device)
     return device
+
+
+def _diagnostic(error, fallback_stage, diagnostic_types):
+    """Private classification-only seam; never invokes a supplied callable."""
+    qualification_error, qualification_interrupt, failure_type, oom_error = diagnostic_types
+    stage = fallback_stage
+    if type(error) in (qualification_error, qualification_interrupt):
+        try:
+            failure = object.__getattribute__(error, 'failure')
+        except AttributeError:
+            failure = None
+        if type(failure) is failure_type:
+            try:
+                candidate = object.__getattribute__(failure, 'stage')
+            except AttributeError:
+                candidate = None
+            if type(candidate) is str and candidate in (
+                    'tokenizer', 'host', 'official', 'matrix', 'terminal-assets'):
+                stage = candidate
+    if issubclass(type(error), KeyboardInterrupt):
+        return stage, 'interrupted'
+    current, seen = error, set()
+    for _ in range(8):
+        if current is None or id(current) in seen:
+            break
+        seen.add(id(current))
+        if issubclass(type(current), (MemoryError, oom_error)):
+            return stage, 'oom'
+        cause = BaseException.__cause__.__get__(current)
+        current = cause if cause is not None else BaseException.__context__.__get__(current)
+    return stage, 'validation' if issubclass(type(error), ValueError) else 'runtime'
+
+
+def _runtime_oom_type():
+    # Classification only; do not import a runtime after failed preparation.
+    module = sys.modules.get('torch')
+    candidate = vars(module).get('OutOfMemoryError') if type(module) is types.ModuleType else None
+    return candidate if type(candidate) is type and issubclass(candidate, BaseException) else MemoryError
+
+
+def _check_original_deadline(deadline):
+    if time.monotonic_ns() >= deadline:
+        raise WorkerSettingsError('original fixed D useful deadline expired')
+
+
+def _terminal_failure(request, stage, category, deadline):
+    """At most two bounded diagnostic encodes, never renewed scientific work."""
+    from .fixed_d_projection import encode_d_failure
+
+    if category != 'interrupted' and time.monotonic_ns() >= deadline:
+        stage, category = 'bootstrap_deadline', 'validation'
+    result = encode_d_failure(request, stage=stage, category=category)
+    if category != 'interrupted' and stage != 'bootstrap_deadline' and time.monotonic_ns() >= deadline:
+        result = encode_d_failure(request, stage='bootstrap_deadline', category='validation')
+    return (130 if category == 'interrupted' else 2), result
+
+
+def _execute_request(request):
+    """Dormant fixed scientific composition; unconditional denial remains first.
+
+    Denied/static tests are NOT dynamic execution proof. No output/CLI or producer
+    integration, retry, scientific callback, or accepting permit is installed.
+    """
+    _require_operator_handoff()
+    if type(request) is not DRequest:
+        raise DWireError('DRequest transport required')
+    checked = decode_d_request(request.data)
+    if type(request.root) is not str or request.root != checked.root:
+        raise DWireError('request byte root mismatch')
+    req = parse_canonical_json(checked.data)
+    deadline = int(req['useful_deadline_monotonic_ns'])
+    from .fixed_d_projection import encode_d_success
+
+    stage = 'worker_context'
+    diagnostic_types = (None, None, None, MemoryError)
+    try:
+        _check_original_deadline(deadline)
+        device = _prepare_runtime(checked)
+        _check_original_deadline(deadline)
+        from .checkpoint_parity_qualification import (
+            ParityQualificationError, ParityQualificationInterrupted,
+            QualificationFailure, run_parity_qualification,
+        )
+        diagnostic_types = (ParityQualificationError, ParityQualificationInterrupted,
+                            QualificationFailure, _runtime_oom_type())
+        stage = 'tokenizer'
+        _check_original_deadline(deadline)
+        qualification = run_parity_qualification(Path(req['snapshot_path']), device=device)
+        _check_original_deadline(deadline)
+        stage = 'worker_projection'
+        result = encode_d_success(qualification, checked)
+        _check_original_deadline(deadline)
+        return 0, result
+    except (Exception, KeyboardInterrupt) as error:
+        diagnostic_types = (*diagnostic_types[:3], _runtime_oom_type())
+        stage, category = _diagnostic(error, stage, diagnostic_types)
+        return _terminal_failure(checked, stage, category, deadline)
 
 
 def main():
