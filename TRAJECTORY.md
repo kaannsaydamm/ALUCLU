@@ -14835,3 +14835,52 @@ No model, CUDA job, pytest, source edit, commit or push performed for this note.
   Main8cbdf9 reverified23raw/indexbytes andnative143suite; stagedcheckclean.
   Preserve denialtransport only; mandatoryinstalledorigin/producerlifetime/
   precreatepreresume/historyclockresources/qualification remainOPEN, goalactive.
+
+  Resume b3d14bf clean; previousgoalturnPROGRESS reviews+commit/push. Inspection
+  found existing process/native file lock admission lacksoriginaldeadline.
+  Preregister shared registry/RLock/OS-compatible bounded lock for actualoperator
+  thenreservation order; no existingAPIchange/acceptingworker. OfficialPython3.12
+  native lock semantics checked; independentdesign review before implementation.
+
+  DesignarchitectureCLEAR/codeREQUESTCHANGES identified legacy-held-marker lacks
+  retainedvalidatedhandle/bytes, conflicting with exactNULcontract. Correctdesign:
+  legacy-only outer -> bounded inner denies; bounded outer -> legacy inner works;
+  bounded nesting retains/revalidates ownhandle. No metadata guarantee weakened.
+
+  Add exactdeadline/nesting/thread/nativecontention REDtests andowned120srunner.
+  REDnative1/active0/notimeout505cd4 missingmodule. Correcteddesign independent
+  codeAPPROVE/architectureCLEAR. Implement shared registry/RLock/nativeprotocol
+  boundedhelper, retainedownnestedhandle, legacy-only nested denial. No operator
+  writer or scientific activation yet; nativeGREEN next.
+
+  FirstGREEN24/0/0/0 1.477s; reg103/0/0/0 44.510s native0/root3292/total96/
+  active0/notimeout292fa7 personallyverified. CodeREQUESTCHANGES coverage gaps,
+  architectureWATCH seek-errorclassification. Narrowretry to nativecallonly and
+  add isolatedchildaudithook unknownacquisition/unlock/postnativeexpiry faults,
+  actuallegacy-native reacquisition, nestedbytes/ancestor/junction andprivate
+  postthreadacquisitionexpiry cleanup. No parentmonkeypatch orpubliccallback.
+
+  GREENv2 32/1/0/0 4.181s native1/active0/notimeout retained. ActualWindows
+  refusesparentrename whilelockhandleopen (WinError5). Correcttest capturesold
+  ancestors, replacesnamespace BEFOREacquisition, then exercisesstalepinned
+  ancestorvalidation withcurrentretainedhandle; no post-heldreplacementclaim.
+  Allfourisolatedfault probes passed; finalv3 aftertestcorrection required.
+
+  Regv3 111/0/0/0 63.764s native0/root33424/total117/active0/notimeoutf6b665
+  personallyverified. CodeREQUESTCHANGES found weakregistry RLock test could
+  vacuouslypass ifentryGCd; retain SAMEentrystrong BEFOREhelpercall and remove
+  None-success branch. Priorv3 predecessoronly; finalv4 required. Architecture
+  agent capacityerror isnot approval, retryGPT6.1same lane. Sourceunchanged.
+
+  FinalGREENv4 32/0/0/0 3.541s andregv4 111/0/0/0 64.302s native0/active0/
+  notimeout/stderrempty personallyverifiedbd84d5; original32440 terminalab2dae
+  root22008/total117. Selection32lock12persistence33store34lease. 32raw+5source
+  manifest explicit; sourcecodeAPPROVE/architectureCLEAR afterstrongRLockproof.
+  Finalindependentartifactclosure next; no operatorinstallation/science launched.
+
+  Both independentterminalreviews codeAPPROVE/architectureCLEAR personally
+  verified37SHA/eightJUnit-native-logsets/exact111uniqueidentities and32focused
+  equality. Mainb39da8 verified37raw/indexbyteidentities+cleanstagedcheck.
+  Preserve shared original-deadline exclusion only; actualoperatorpublication/
+  lock-order composition/producerlifetime/mandatoryleaseverifier/historyclock/
+  resourceprojections/qualifications and firstlearning remainOPEN, goalactive.

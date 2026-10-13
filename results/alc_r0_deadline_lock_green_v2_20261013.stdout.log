@@ -1,0 +1,35 @@
+.............................F..                                         [100%]
+================================== FAILURES ===================================
+_________________ test_nested_ancestor_change_preserves_outer _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-149/test_nested_ancestor_change_pr0')
+
+    def test_nested_ancestor_change_preserves_outer(tmp_path):
+        lock,_=api(); parent=tmp_path/'parent'; parent.mkdir()
+        path=parent/'operator.lock'; moved=tmp_path/'moved'
+        with lock(path,end()):
+>           parent.rename(moved); parent.mkdir()
+            ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_deadline_file_lock.py:172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-149/test_nested_ancestor_change_pr0/parent')
+target = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-149/test_nested_ancestor_change_pr0/moved')
+
+    def rename(self, target):
+        """
+        Rename this path to the target path.
+    
+        The target path may be absolute or relative. Relative paths are
+        interpreted relative to the current working directory, *not* the
+        directory of the Path object.
+    
+        Returns the new Path instance pointing to the target path.
+        """
+>       os.rename(self, target)
+E       PermissionError: [WinError 5] Eriþim engellendi: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-149\\test_nested_ancestor_change_pr0\\parent' -> 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-149\\test_nested_ancestor_change_pr0\\moved'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1363: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_deadline_file_lock.py::test_nested_ancestor_change_preserves_outer
