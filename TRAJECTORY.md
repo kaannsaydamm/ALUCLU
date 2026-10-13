@@ -14770,3 +14770,68 @@ Task 2 sensorium/recollection gate: CLEAN
   fiveJUnitreceipts/exact160selection. Mained6b62 24manifest+24indexidentities
   cleancheck. PreserveactualownedREADYcorrespondenceonly; mandatoryoperator/
   scientificresumegate/historyresources/modelqualification remainOPEN, goalactive.
+
+### 2026-10-13 - owner local-history scope clarification (testimony only)
+
+The owner answered the explicit before-2026-09-20/local-machine scope question:
+"önceden bir şey yapılmadı model eğitimiyle alakalı vs. bir şey. ama tamamen bu
+bilgisayarda yürüdü ne yürüdüyse model tarafında."
+
+Preserve this as direct human testimony: no prior model-training-related work
+reported in response to the before-Sep20 question, and all model-side work was
+on this computer. The answer does not independently establish one physical GPU,
+an exact earliest CUDA allocation, complete child termination coverage, or a
+measured zero historical GPU charge. Previously recorded CPU loads, failed/OOM
+CUDA probes and synthetic optimizer/remount tests remain evidence and are not
+erased or relabelled as the first capability-training experiment.
+
+The 2026-10-07 approved allocation-wall-time accounting method and local training
+direction remain accepted. No 600-GPU-hour/45-day reset, numeric historical bound,
+resource-admission approval, or scientific gate closure is adopted here.
+Authoritative Desktop HEAD inspected: e1e20dad6c4121ca3dfc1aeb432ecc1ef4c4ad5c;
+checkout was clean before this documentation-only append. fixed_d_worker still
+unconditionally rejects missing reviewed operator handoff. Actual first learning
+has not started; operator/mandatory launch integration, historical clock/charge,
+resource projections and prescribed qualification prerequisites remain open.
+No model, CUDA job, pytest, source edit, commit or push performed for this note.
+
+  Continue from e1e20da with owner scope testimony preserved; previous turn
+  PROGRESS in factual documentation, not execution admission. Specify stateful
+  bounded status-to-watch consumer: anti-regression/root/expiry checks and sticky
+  owned denial, no accepting worker or authenticated producer claim. Independent
+  GPT6.1 review of contract before implementation; no model/CUDA work.
+
+  Native RED1/1/0/0 .370s verified missingmodule, exit1/active0/notimeout.
+  Independent designcodeAPPROVE/architectureCLEAR both require explicit UTC
+  anchor and complete watch binding. Implement denial consumer with anchored
+  elapsed-time transport assumption explicit, exact watch once/retainedpolicy,
+  reparse/statussequence/expiry/sticky checks. No producerorigin/launch acceptance.
+
+  InitialGREEN33/0/0/0 1.281s native0/active0/notimeout personally verified.
+  Add anchor/overflow/rebinding/knownexpiry coverage and two actual owned-tree
+  file-revocation/generation diagnostics retaining unrelatedprocess and pending
+  reservation evidence. No live tests while edits made; finalv2 required.
+
+  GREENv2 negative evidence42/1/0/0 5.348s native1/active0/notimeout retained.
+  Generation diagnostic stopped beforeresume: synchronous test producer could
+  not service live250ms observations during reservation audit. Correct fixture
+  with creating-thread-owned consumer on separate continuously bounded producer;
+  retain exact250ms deadline, original cleanup and failed artifact. Finalv3 next.
+
+  FinalGREENv3 42/0/0/0 4.488s andregressionv3 143/0/0/0 9.702s personally
+  verified native0/active0/notimeout/stderrempty. Original29593 terminalfe35bd
+  root26948/total34. Selection42consumer29livewatch25policy47status. Manifest
+  20raw+3source recorded; timing/blockedproducer residuals explicit. No model.
+
+  Independent architecture terminalCLEAR verified23SHA/fiveJUnit+receipts and
+  exact143selection; code/security finalreview pending. Mainindex bytecheck
+  found evidence-doc EOFblank, corrected documentation only; no source/test/raw
+  change or rerun. Keep checkpoint uncommitted until both independent gates.
+
+  Resume staged e1e20da checkpoint; prior goalturn PROGRESS (source+actual143
+  regression). Originalcodeagent pending_init interrupted; cleancontextGPT6.1
+  replacement independently verified23SHA/fiveJUnit/native/logs andexact143
+  identities, returnedAPPROVE. ArchitectureCLEAR independently verifiedsame.
+  Main8cbdf9 reverified23raw/indexbytes andnative143suite; stagedcheckclean.
+  Preserve denialtransport only; mandatoryinstalledorigin/producerlifetime/
+  precreatepreresume/historyclockresources/qualification remainOPEN, goalactive.
