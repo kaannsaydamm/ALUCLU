@@ -14884,3 +14884,41 @@ No model, CUDA job, pytest, source edit, commit or push performed for this note.
   Preserve shared original-deadline exclusion only; actualoperatorpublication/
   lock-order composition/producerlifetime/mandatoryleaseverifier/historyclock/
   resourceprojections/qualifications and firstlearning remainOPEN, goalactive.
+
+  Resumea5ac3b6 clean; previousgoalturnPROGRESS sharedboundedexclusion accepted.
+  Specify exactoperator status transaction/committedreader/explicitforwardrecovery.
+  Foundrawstatus-only observation wouldmiss pending intent aftercrash; future
+  installedproducer MUSTjoinintent+status. No current-transaction hash treatedas
+  archivedantirollback/installedauthority; generationrotation remainsblocking.
+
+  Both designcodeAPPROVE/architectureCLEAR require commonancestor snapshot and
+  uninterruptedoperatorownership. Addtransaction/crash/native-race REDtests plus
+  closedownedrunner. REDnative1/active0/notimeout57a34c missingmodule. Implement
+  bounded intent-status-intent join, +1/tightening/revocation, stickyinitclaim and
+  explicitcaller-pinnedforwardrecovery. No installednamespace/producer/science.
+
+  FirstGREEN19/0/0/0 2.815s native0/active0/notimeout77ad2b. Addedrealisolatedunlock
+  scheduling RED: source returned success afteroriginaldeadline, native1/active0
+  b57e60. Fix publish/recover return ONLYafterlockcleanup+originaldeadlinecheck;
+  testboth latepublish/laterecovery, addsequenceexhaustion/malformedintentbounds.
+  No silentdeadline renewal; finalv2 required aftersource/test revision.
+
+  GREENv2 26/0/0/0 5.869s; regv2 122/0/0/0 10.524s native0/root26608/total62/
+  active0/notimeout09edd3 personallyverified. SourcearchCLEAR; codeREQUESTCHANGES
+  acceptedpublicreader/recovery negatives missing. Addwrongstorepins, corrupt/
+  oversized/hardlinked/emptyintentreadrecover, changedintent/missingupdateslot,
+  unsafe/junctionnamespace, isolatedactualpublish-between-intent-reads scheduling.
+  Sourceunchanged; tests editedonlyafterterminal. Finalv3 required.
+
+  FinalGREENv3 47/0/0/0 7.342s andregv3 143/0/0/0 15.564s personallyverified
+  51f965; native0/active0/notimeout/stderrempty, original71222 terminal5ac272
+  root6948/total66. Selection47pub47status32lock17consumption. 28raw+4source
+  manifest added; codeAPPROVE/archCLEAR source+focusedcoverage, finalartifact
+  closurepending. Raw-readerwatch stilldiagnostic, committedconnection mandatory.
+
+  Both independentterminalreviews codeAPPROVE/architectureCLEAR personally
+  verified32SHA/sevenactualJUnit-native-logsets/exact143uniqueidentities and
+  47focused equality. Mainf0d80f reverified32raw/indexbyteidentities+cleanstage.
+  Preserve same-generation currenttransaction ONLY; nextcommittedreader->watch
+  actualownedpendingpublication cancellation required beforeoperationalproducer.
+  Installedorigin/generationrotation/lease/historyclockresources/science OPEN.
