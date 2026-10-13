@@ -58,8 +58,10 @@ Do not clamp ordinary representable negative remaining.
 Keep600GPUhours,45days,25GiBresearch cap,20GiBCfree floor and existing10second
 cleanup tail. Fixed useful ceilings D45minutes, E1/E3 30minutes, E2 10minutes,
 pilot2hours. D admits separately declaredCPU/noCUDA or singleGPU; E1/E2/E3/pilot
-require the original singleGPU scope. pilot describes ONE original200-update job,
-not an altered four-job pilot schedule. This helper never checks updates or
+require the original singleGPU scope. The pilot2hours ceiling applies to EACH
+of the original FOUR200-update jobs (two families by capsule/q-only LoRA), not
+to a substitute single-job pilot or one pooled two-hour allowance. Each job needs
+its own reservation and terminal charge. This helper never checks updates or
 scientific job IDs: the fixed declaration/RunSpec coordinator must do that.
 Separate q/v has no approved ceiling; unsupported phase fails structurally.
 
