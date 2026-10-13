@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.392" timestamp="2026-10-13T18:18:19.804042+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_committed_watch" name="test_committed_service_queues_original_request" time="0.039"><failure message="AttributeError: 'StatusWatchConsumer' object has no attribute 'serve_committed_once'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-161/test_committed_service_queues_0')
+
+    def test_committed_service_queues_original_request(tmp_path):
+        _,signal,watch,consumer,deadline=context(tmp_path)
+        try:
+            watch.start()
+&gt;           assert serve(consumer,watch,tmp_path)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_committed_watch.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+consumer = &lt;aluclu.alc_r0.status_watch_consumer.StatusWatchConsumer object at 0x00000289E19DD6D0&gt;
+watch = &lt;aluclu.alc_r0.live_authority_watch.LiveAuthorityWatch object at 0x00000289E1164050&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-161/test_committed_service_queues_0')
+
+    def serve(consumer,watch,path):
+&gt;       return consumer.serve_committed_once(watch,path,time.time_ns(),
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                            utc_anchor_monotonic_ns=time.monotonic_ns())
+E       AttributeError: 'StatusWatchConsumer' object has no attribute 'serve_committed_once'
+
+tests\test_alc_r0_committed_watch.py:30: AttributeError</failure></testcase></testsuite></testsuites>

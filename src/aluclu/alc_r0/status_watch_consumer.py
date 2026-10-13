@@ -6,6 +6,8 @@ import time
 from .authority_watch_policy import Observation, OBSERVATION_NS, start_watch
 from .live_authority_watch import LiveAuthorityWatch
 from .operator_status import OperatorStatus, decode_operator_status, read_operator_status
+from .status_publication import read_committed_operator_status
+from .fixed_d_request_file import _local_path
 from .reserved_owned_process import OwnedStopSignal
 
 _MAX = 2**63 - 1
@@ -37,6 +39,7 @@ class StatusWatchConsumer:
         self._last = None
         self._last_observed = 0
         self._watch = self._policy = None
+        self._source = None
 
     def _deny(self):
         # A non-owner never modifies owner state; the one-way signal is sufficient.
@@ -97,7 +100,26 @@ class StatusWatchConsumer:
             raise
 
     def serve_once(self, watch, path, utc_upper_ns, *, utc_anchor_monotonic_ns):
-        """Queue one response; not watch acceptance or authenticated clock evidence.
+        """Raw diagnostic observation only; never installed producer fallback."""
+        return self._serve_once(watch,path,utc_upper_ns,utc_anchor_monotonic_ns,'raw')
+
+    def serve_committed_once(self, watch, directory, utc_upper_ns, *, utc_anchor_monotonic_ns):
+        """Queue committed transport only, NOT authenticated origin/authority."""
+        return self._serve_once(watch,directory,utc_upper_ns,utc_anchor_monotonic_ns,'committed')
+
+    def _bind_source(self,path,kind):
+        if type(kind) is not str or kind not in ('raw','committed'):
+            raise StatusConsumerError('closed observation source required')
+        path=_local_path(path)
+        source=(kind,str(path))  # exact normalized spelling, not Path alias equality
+        if self._source is None:
+            self._source=source
+        elif self._source!=source:
+            raise StatusConsumerError('observation source rebinding forbidden')
+        return path
+
+    def _serve_once(self, watch, path, utc_upper_ns, utc_anchor_monotonic_ns, kind):
+        """Closed static route; success is queuing, not continued authority.
 
         The supplied anchored UTC envelope must independently justify at most
         one UTC nanosecond growth per elapsed monotonic nanosecond in this domain.
@@ -105,6 +127,7 @@ class StatusWatchConsumer:
         """
         try:
             self._bind(watch)
+            path=self._bind_source(path,kind)  # bind even when no request is ready
             _integer(utc_upper_ns); _integer(utc_anchor_monotonic_ns)
             if utc_anchor_monotonic_ns > time.monotonic_ns():
                 raise StatusConsumerError('future UTC anchor')
@@ -115,7 +138,11 @@ class StatusWatchConsumer:
             deadline = min(self._policy.useful_deadline_ns,
                            request.started_monotonic_ns + OBSERVATION_NS)
             _integer(deadline)
-            status = read_operator_status(path, deadline_ns=deadline)
+            if kind=='committed':
+                status=read_committed_operator_status(path,self._installation,
+                    self._generation,deadline_ns=deadline)
+            else:
+                status=read_operator_status(path,deadline_ns=deadline)
             captured = time.monotonic_ns()
             if not request.started_monotonic_ns <= captured < deadline:
                 raise StatusConsumerError('original observation deadline exceeded')

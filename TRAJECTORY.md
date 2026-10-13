@@ -14922,3 +14922,41 @@ No model, CUDA job, pytest, source edit, commit or push performed for this note.
   Preserve same-generation currenttransaction ONLY; nextcommittedreader->watch
   actualownedpendingpublication cancellation required beforeoperationalproducer.
   Installedorigin/generationrotation/lease/historyclockresources/science OPEN.
+
+  Resume3be7f56 clean; priorgoalturnPROGRESS committedtransaction reviewed/pushed.
+  Specifycommittedreader->watch actualownedpendingpublication cancellation with
+  sourcekind/path singlebinding, no rawfallback/reset. Tests alivepublisher-held
+  operatorlock andrealcrash17 while root+descendant running; no scienceactivation.
+
+  IndependentdesigncodeAPPROVE/architectureCLEAR scopedcommittedwatch. Addfocused
+  sourcebinding/fallback/stickyrepair and2actualownedtrees REDtests. REDnative1/
+  active0/notimeout689f10 absentserve_committed_once. Implementstaticcommittedroute
+  withsharedoriginaltiming andclosedsourcekind/path firstbinding; no callback or
+  installedorigin/launch guard change. Holdinglockalone isnot denial; visible
+  pending intent/slot mismatch isactual trigger. NativeGREEN next.
+
+  InitialGREEN native0/active0/notimeout1a795f actual2ownedcancellationcasespass.
+  Beforefinalregression tighten sourcekey toexactnormalizedstr (notPath alias
+  equality), addsource type/namespace/originalroot/casespelling negatives. No
+  live tests whileediting; finalv2 runs needed forfinal source/testbytes.
+
+  Regv2 original56540 terminala57f7e native0/active0/notimeout root14132/total150.
+  Independent source architectureCLEAR; codeREQUESTCHANGES missing accepted-plan
+  next-sequence success and original useful-deadline continued-service tests.
+  After terminal add those actual committed-service tests and unknown closed-kind
+  negatives, preserve production bytes/thresholds. Finalv3 focused/reg required.
+
+  FinalGREENv3 23/0/0/0 5.682s; regv3 175/0/0/0 55.401s personallyparsed8cf55e.
+  Original50271 terminal0ca1a1 native0 root21436/total150/active0/notimeout,
+  stderr empty; classes23committed42consumer29watch47publication34lease.
+  Code sourceAPPROVE/architectureCLEAR after revised coverage. Add 27SHA evidence
+  manifest(3final source24raw), preserveRED/precursors. Terminalreview pending;
+  installedorigin/producerlifetime/mandatorylaunch/historyclockresources stillOPEN.
+
+  Staging SHA/index checks all27 passed; terminatingcachedcheck d70fdd caught only
+  evidence-document extraEOFblank. Remove that doc-only whitespace; no raw/source
+  normalization or test rerun needed. Independent terminalreview continues.
+
+  Final independent codeAPPROVE/architectureCLEAR both personallyverified27SHA,
+  sixJUnit/native/logsets,175uniqueidentities andfocused23equality. Workerdenial
+  unchanged. Commit scopeddependency only; fullroadmap/actuallearning OPEN.
