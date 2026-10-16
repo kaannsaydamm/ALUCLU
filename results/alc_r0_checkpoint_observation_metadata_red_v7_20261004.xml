@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="37.354" timestamp="2026-10-04T14:43:07.875963+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_observation" name="test_base_shape_drift_with_identical_bytes_rejected" time="0.063"><failure message="Failed: DID NOT RAISE ObservationError">tests\test_alc_r0_checkpoint_observation.py:235: in test_base_shape_drift_with_identical_bytes_rejected
+    with pytest.raises(ObservationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ObservationError</failure></testcase></testsuite></testsuites>

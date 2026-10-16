@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.424" timestamp="2026-10-07T02:21:20.852349+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_bounded_process_output" name="test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound" time="0.023"><failure message="Failed: DID NOT RAISE OutputCleanupError">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-19/test_late_parent_writer_closur0')
+
+    def test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound(tmp_path):
+        pair = ReadError(**arguments(tmp_path))
+        pair.__enter__()
+        try:
+            for stream in pair._streams:
+                stream.thread.join(2)
+                assert not stream.thread.is_alive()
+            assert all(item.terminal for item in pair.observations())
+            earlier = max(item.finished_monotonic_ns for item in pair.observations())
+            # This pinned Windows Python can return the same monotonic clock tick
+            # for successive operations. Observe a later tick, bounded by 1 second,
+            # rather than pretending that subtraction establishes actual ordering.
+            tick_deadline = time.perf_counter() + 1
+            tick_wait = threading.Event()
+            while time.monotonic_ns() &lt;= earlier:
+                assert time.perf_counter() &lt; tick_deadline, "monotonic tick did not advance"
+                tick_wait.wait(0.001)
+            pair.close_parent_writers()  # confirmation occurs AFTER the effective bound
+&gt;           with pytest.raises(OutputCleanupError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OutputCleanupError
+
+tests\test_alc_r0_bounded_process_output.py:352: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="34.420" timestamp="2026-10-05T19:25:34.273621+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_qv_resume_process" name="test_fresh_process_rebuild_and_step2_resume_exact" time="27.154"><failure message="assert (28440 != 1332 and 19084 == 1332)&#10; +  where 1332 = &lt;built-in function getpid&gt;()&#10; +    where &lt;built-in function getpid&gt; = os.getpid&#10; +  and   1332 = &lt;built-in function getpid&gt;()&#10; +    where &lt;built-in function getpid&gt; = os.getpid">host = VerifiedHost(model=IndependentQVLM(
+  (model): Module(
+    (layers): ModuleList(
+      (0-29): 30 x FakeLoRALayer(
+   ...e_word_embeddings': True, 'bos_token_id': 0, 'eos_token_id': 0}, parameter_count=36504576, trainable_parameter_count=0)
+tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-159/test_fresh_process_rebuild_and0')
+
+    def test_fresh_process_rebuild_and_step2_resume_exact(host, tmp_path):
+        wrapper = make_reference_wrapper(host, False, state="zero")
+        optimizer = make_reference_optimizer(wrapper)
+        initial = serialize_reference(wrapper.reference)
+        fingerprint = identity(host.model)
+        first = update(wrapper, optimizer, second=False, checkpoint=False)
+        record = serialize_reference_resume(wrapper, optimizer)
+        assert serialize_reference(wrapper.reference) != initial
+        assert first["base"] == fingerprint["base"]
+        context = {
+            "identity": fingerprint,
+            "step1": first["state"],
+            "record": [sha(getattr(record, f.name)) for f in fields(record)],
+        }
+        for field in fields(record):
+            (tmp_path / field.name).write_bytes(getattr(record, field.name))
+        (tmp_path / "context.json").write_bytes(canonical_json_bytes(context))
+        expected = update(wrapper, optimizer, second=True, checkpoint=False)
+        environment = os.environ.copy()
+        environment.update(
+            {
+                "PYTHONPATH": str(ROOT / "src"),
+                "CUDA_VISIBLE_DEVICES": "",
+                "HF_HUB_OFFLINE": "1",
+                "TRANSFORMERS_OFFLINE": "1",
+                "PYTHONDONTWRITEBYTECODE": "1",
+            }
+        )
+        run = subprocess.run(
+            [sys.executable, "-B", str(Path(__file__).resolve()), str(tmp_path)],
+            cwd=ROOT,
+            env=environment,
+            capture_output=True,
+            timeout=180,
+        )
+        assert run.returncode == 0, (run.stdout, run.stderr)
+        result = parse_canonical_json((tmp_path / "result.json").read_bytes())
+&gt;       assert result["pid"] != os.getpid() and result["parent"] == os.getpid()
+E       assert (28440 != 1332 and 19084 == 1332)
+E        +  where 1332 = &lt;built-in function getpid&gt;()
+E        +    where &lt;built-in function getpid&gt; = os.getpid
+E        +  and   1332 = &lt;built-in function getpid&gt;()
+E        +    where &lt;built-in function getpid&gt; = os.getpid
+
+tests\test_alc_r0_reference_qv_resume_process.py:192: AssertionError</failure></testcase></testsuite></testsuites>

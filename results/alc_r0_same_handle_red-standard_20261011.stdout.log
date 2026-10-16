@@ -1,0 +1,463 @@
+............................................................FFFFFFFFFFFF [ 88%]
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+________ test_standard_exact_native_boolean_layout_and_padding[sizes0] ________
+
+sizes = (8192, 4096)
+
+    @pytest.mark.parametrize('sizes', [(8192, 4096), (0, 0)])
+    def test_standard_exact_native_boolean_layout_and_padding(sizes):
+        raw = standard_record(allocation=sizes[0], size=sizes[1], links=0xffffffff)
+        assert len(raw) == struct.calcsize('<qqIBB2x') == 24
+>       assert decode_standard(raw) == dict(fields=dict(allocation_size=sizes[0],
+               ^^^^^^^^^^^^^^^^^^^^
+            size=sizes[1], link_count=0xffffffff, delete_pending=False, directory=True),
+            raw_hex=raw.hex())
+
+tests\test_alc_r0_same_handle_directory.py:467: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+________ test_standard_exact_native_boolean_layout_and_padding[sizes1] ________
+
+sizes = (0, 0)
+
+    @pytest.mark.parametrize('sizes', [(8192, 4096), (0, 0)])
+    def test_standard_exact_native_boolean_layout_and_padding(sizes):
+        raw = standard_record(allocation=sizes[0], size=sizes[1], links=0xffffffff)
+        assert len(raw) == struct.calcsize('<qqIBB2x') == 24
+>       assert decode_standard(raw) == dict(fields=dict(allocation_size=sizes[0],
+               ^^^^^^^^^^^^^^^^^^^^
+            size=sizes[1], link_count=0xffffffff, delete_pending=False, directory=True),
+            raw_hex=raw.hex())
+
+tests\test_alc_r0_same_handle_directory.py:467: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+__ test_standard_malformed_directory_records_denied[xxxxxxxxxxxxxxxxxxxxxxx] __
+
+raw = b'xxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'xxxxxxxxxxxxxxxxxxxxxxx'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[xxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+raw = b'xxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'xxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+___________ test_standard_malformed_directory_records_denied[raw2] ____________
+
+raw = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\xff\xff\xff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01xy] _
+
+raw = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\xff\xff\xff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x01xy] _
+
+raw = b'\x00 \x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x01xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01xy] _
+
+raw = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x01xy] _
+
+raw = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x01xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x02\x01xy] _
+
+raw = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x02\x01xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x02\x01xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00xy] _
+
+raw = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+_ test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x02xy] _
+
+raw = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x02xy'
+
+    @pytest.mark.parametrize('raw', [b'x' * 23, b'x' * 25, bytearray(24),
+        standard_record(allocation=-1), standard_record(size=-1), standard_record(links=0),
+        standard_record(pending=1), standard_record(pending=2),
+        standard_record(directory=0), standard_record(directory=2)])
+    def test_standard_malformed_directory_records_denied(raw):
+        with pytest.raises(ValueError, match='standard'):
+>           decode_standard(raw)
+
+tests\test_alc_r0_same_handle_directory.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = b'\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x02xy'
+
+    def decode_standard(record):
+>       raise NotImplementedError('preregistered standard decoder')
+E       NotImplementedError: preregistered standard decoder
+
+tests\alc_r0_same_handle_directory.py:265: NotImplementedError
+___________________ test_standard_nt_exact_class_and_length ___________________
+
+    def test_standard_nt_exact_class_and_length():
+        query = FakeNt(length=24)
+>       result = nt_record(query, 19, 24, 5, lambda: None)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = <test_alc_r0_same_handle_directory.FakeNt object at 0x000001BD87142E40>
+handle = 19, size = 24, info_class = 5
+fatal = <function test_standard_nt_exact_class_and_length.<locals>.<lambda> at 0x000001BD85082340>
+
+    def nt_record(query, handle, size, info_class, fatal):
+        if (struct.calcsize('P') != 8 or ctypes.sizeof(IOStatus) != 16
+                or IOStatus.information.offset != 8
+                or (size, info_class) not in ((72, 68), (8, 4))):
+>           raise ValueError('exact same-handle query ABI required')
+E           ValueError: exact same-handle query ABI required
+
+tests\alc_r0_same_handle_directory.py:48: ValueError
+__________ test_standard_nt_failure_or_nonexact_length_denied[-1-24] __________
+
+status = -1, length = 24
+
+    @pytest.mark.parametrize('status,length', [(-1, 24), (0, 23), (0, 25)])
+    def test_standard_nt_failure_or_nonexact_length_denied(status, length):
+>       with pytest.raises(ValueError, match='completion'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'completion'
+E         Actual message: 'exact same-handle query ABI required'
+
+tests\test_alc_r0_same_handle_directory.py:491: AssertionError
+__________ test_standard_nt_failure_or_nonexact_length_denied[0-23] ___________
+
+status = 0, length = 23
+
+    @pytest.mark.parametrize('status,length', [(-1, 24), (0, 23), (0, 25)])
+    def test_standard_nt_failure_or_nonexact_length_denied(status, length):
+>       with pytest.raises(ValueError, match='completion'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'completion'
+E         Actual message: 'exact same-handle query ABI required'
+
+tests\test_alc_r0_same_handle_directory.py:491: AssertionError
+__________ test_standard_nt_failure_or_nonexact_length_denied[0-25] ___________
+
+status = 0, length = 25
+
+    @pytest.mark.parametrize('status,length', [(-1, 24), (0, 23), (0, 25)])
+    def test_standard_nt_failure_or_nonexact_length_denied(status, length):
+>       with pytest.raises(ValueError, match='completion'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'completion'
+E         Actual message: 'exact same-handle query ABI required'
+
+tests\test_alc_r0_same_handle_directory.py:491: AssertionError
+____________ test_standard_pending_routes_to_fatal_without_decode _____________
+
+    def test_standard_pending_routes_to_fatal_without_decode():
+        def fatal():
+            raise RuntimeError('injected pending fatal')
+        with pytest.raises(RuntimeError, match='injected pending fatal'):
+>           nt_record(FakeNt(status=259, length=24), 19, 24, 5, fatal)
+
+tests\test_alc_r0_same_handle_directory.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = <test_alc_r0_same_handle_directory.FakeNt object at 0x000001BD870BDEE0>
+handle = 19, size = 24, info_class = 5
+fatal = <function test_standard_pending_routes_to_fatal_without_decode.<locals>.fatal at 0x000001BD870B4360>
+
+    def nt_record(query, handle, size, info_class, fatal):
+        if (struct.calcsize('P') != 8 or ctypes.sizeof(IOStatus) != 16
+                or IOStatus.information.offset != 8
+                or (size, info_class) not in ((72, 68), (8, 4))):
+>           raise ValueError('exact same-handle query ABI required')
+E           ValueError: exact same-handle query ABI required
+
+tests\alc_r0_same_handle_directory.py:48: ValueError
+_____________ test_standard_adapter_query_class_and_raw_retention _____________
+
+    def test_standard_adapter_query_class_and_raw_retention():
+        api = fake_adapter()
+        raw = standard_record()
+        query = FakeNt(length=24)
+        def native(handle, iosb, buffer, size, info_class):
+            result = query(handle, iosb, buffer, size, info_class)
+            ctypes.memmove(buffer, raw, len(raw))
+            return result
+        api.query_stat = native
+>       result = api.standard(19)
+                 ^^^^^^^^^^^^
+E       AttributeError: 'NativeAPI' object has no attribute 'standard'
+
+tests\test_alc_r0_same_handle_directory.py:511: AttributeError
+_____________ test_standard_sequence_preserves_query_disagreement _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-100/test_standard_sequence_preserv0')
+
+    def test_standard_sequence_preserves_query_disagreement(tmp_path):
+        api = FakeStandard()
+        def enumeration(path):
+            api.events.append(('enumerate', path))
+            return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+>       result = inspect_standard(tmp_path, api, enumeration)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:528: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-100/test_standard_sequence_preserv0')
+api = <test_alc_r0_same_handle_directory.FakeStandard object at 0x000001BD850862A0>
+enumerate_fn = <function test_standard_sequence_preserves_query_disagreement.<locals>.enumeration at 0x000001BD870B47C0>
+
+    def inspect_standard(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered standard intervention')
+E       NotImplementedError: preregistered standard intervention
+
+tests\alc_r0_same_handle_directory.py:269: NotImplementedError
+_______ test_standard_decode_failure_closes_baseline_before_enumeration _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-100/test_standard_decode_failure_c0')
+
+    def test_standard_decode_failure_closes_baseline_before_enumeration(tmp_path):
+        class InvalidStandard(FakeStandard):
+            def standard(self, handle):
+                return dict(record=standard_record(directory=0), status=0,
+                    iosb_status=0, information=24)
+        api = InvalidStandard()
+        with pytest.raises(ValueError, match='standard'):
+>           inspect_standard(tmp_path, api)
+
+tests\test_alc_r0_same_handle_directory.py:551: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-100/test_standard_decode_failure_c0')
+api = <test_alc_r0_same_handle_directory.test_standard_decode_failure_closes_baseline_before_enumeration.<locals>.InvalidStandard object at 0x000001BD870BF110>
+enumerate_fn = <function bounded_names at 0x000001BD85083920>
+
+    def inspect_standard(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered standard intervention')
+E       NotImplementedError: preregistered standard intervention
+
+tests\alc_r0_same_handle_directory.py:269: NotImplementedError
+_______________ test_standard_regular_file_denied_before_native _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-100/test_standard_regular_file_den0')
+
+    def test_standard_regular_file_denied_before_native(tmp_path):
+        path = tmp_path / 'file'
+        path.write_bytes(b'x')
+        api = FakeStandard()
+        with pytest.raises(ValueError, match='directory'):
+>           inspect_standard(path, api)
+
+tests\test_alc_r0_same_handle_directory.py:560: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-100/test_standard_regular_file_den0/file')
+api = <test_alc_r0_same_handle_directory.FakeStandard object at 0x000001BD870E6150>
+enumerate_fn = <function bounded_names at 0x000001BD85083920>
+
+    def inspect_standard(path, api, enumerate_fn=bounded_names):
+>       raise NotImplementedError('preregistered standard intervention')
+E       NotImplementedError: preregistered standard intervention
+
+tests\alc_r0_same_handle_directory.py:269: NotImplementedError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_exact_native_boolean_layout_and_padding[sizes0]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_exact_native_boolean_layout_and_padding[sizes1]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[xxxxxxxxxxxxxxxxxxxxxxx]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[xxxxxxxxxxxxxxxxxxxxxxxxx]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[raw2]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\xff\xff\xff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x01xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x01xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x02\x01xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_malformed_directory_records_denied[\x00 \x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x02xy]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_nt_exact_class_and_length
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_nt_failure_or_nonexact_length_denied[-1-24]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_nt_failure_or_nonexact_length_denied[0-23]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_nt_failure_or_nonexact_length_denied[0-25]
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_pending_routes_to_fatal_without_decode
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_adapter_query_class_and_raw_retention
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_sequence_preserves_query_disagreement
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_decode_failure_closes_baseline_before_enumeration
+FAILED tests/test_alc_r0_same_handle_directory.py::test_standard_regular_file_denied_before_native

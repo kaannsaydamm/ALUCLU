@@ -1,0 +1,705 @@
+FFFFFFFFFFFFFFF                                                          [100%]
+================================== FAILURES ===================================
+_________________ test_native_directory_walk_root_and_nested __________________
+
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-73/test_native_directory_walk_roo0/installed')
+
+    def test_native_directory_walk_root_and_nested(tree):
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation,observe_directory
+        (tree/'empty').mkdir()
+        deadline=time.monotonic_ns()+10**9
+        nodes,files,total=api()._walk(tree,api().RuntimeTreeBounds(
+            entry_count=3,path_bytes=15,file_bytes=7,total_file_bytes=7),deadline)
+>       assert type(nodes[''][1]) is DirectoryObservation
+E       AssertionError: assert <class 'tuple'> is <class 'aluclu.alc_r0.windows_directory_metadata.DirectoryObservation'>
+E        +  where <class 'tuple'> = type((16895, 4343961586895537332, 3659174698431806, 0, 1791735347096304400, 1791735347087356600, ...))
+
+tests\test_alc_r0_runtime_tree_inventory.py:152: AssertionError
+______________ test_native_directory_diagnostic_each_field[mode] ______________
+
+field = 'mode'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16896, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804562000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+_________ test_native_directory_diagnostic_each_field[volume_serial] __________
+
+field = 'volume_serial'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=18, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804578000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+___________ test_native_directory_diagnostic_each_field[file_id128] ___________
+
+field = 'file_id128'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='020202020202020202020202020202..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804593000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+______________ test_native_directory_diagnostic_each_field[size] ______________
+
+field = 'size'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804609000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+__________ test_native_directory_diagnostic_each_field[write_ticks] ___________
+
+field = 'write_ticks'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804625000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+_________ test_native_directory_diagnostic_each_field[creation_ticks] _________
+
+field = 'creation_ticks'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804640000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+___________ test_native_directory_diagnostic_each_field[link_count] ___________
+
+field = 'link_count'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804656000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+___________ test_native_directory_diagnostic_each_field[attributes] ___________
+
+field = 'attributes'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804656000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+__________ test_native_directory_diagnostic_each_field[change_ticks] __________
+
+field = 'change_ticks'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=108, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804671000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+________ test_native_directory_diagnostic_each_field[allocation_size] _________
+
+field = 'allocation_size'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4097, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804687000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+_________ test_native_directory_diagnostic_each_field[legacy_file_id] _________
+
+field = 'legacy_file_id'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=24, device_type=7, device_characteristics=32, reparse_tag=0))}
+deadline = 3804703000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+__________ test_native_directory_diagnostic_each_field[device_type] ___________
+
+field = 'device_type'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=8, device_characteristics=32, reparse_tag=0))}
+deadline = 3804718000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+_____ test_native_directory_diagnostic_each_field[device_characteristics] _____
+
+field = 'device_characteristics'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=33, reparse_tag=0))}
+deadline = 3804734000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+__________ test_native_directory_diagnostic_each_field[reparse_tag] ___________
+
+field = 'reparse_tag'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_directory_diagnostic_each_field(field):
+        from dataclasses import replace
+        from aluclu.alc_r0.windows_directory_metadata import DirectoryObservation
+        old=DirectoryObservation(0o40777,17,'01'*16,4096,101,103,1,16,107,4096,23,7,32,0)
+        new=replace(old,**{field:'02'*16 if field=='file_id128' else getattr(old,field)+1})
+>       detail=json.loads(api()._tree_change_message('python-venv',
+            {'folder':('directory',old)},{'folder':('directory',new)},
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+
+tests\test_alc_r0_runtime_tree_inventory.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+component = 'python-venv'
+before = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=0))}
+after = {'folder': ('directory', DirectoryObservation(mode=16895, volume_serial=17, file_id128='010101010101010101010101010101..., change_ticks=107, allocation_size=4096, legacy_file_id=23, device_type=7, device_characteristics=32, reparse_tag=1))}
+deadline = 3804750000000
+
+    def _tree_change_message(component, before, after, deadline):
+        """Bounded explanation from already bounded trees; never weaken refusal."""
+        _deadline(deadline)
+        first = None
+        for path in chain(before,after):
+            _deadline(deadline)
+            if before.get(path) != after.get(path) and (first is None or path < first):
+                first = path
+        if first is None:
+            return 'runtime tree changed during inspection'
+        old, new = before.get(first), after.get(first)
+        old_kind, old_fp = old if old is not None else (None,None)
+        new_kind, new_fp = new if new is not None else (None,None)
+        fields = ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes')
+        if old is None or new is None:
+            differing = ['membership']
+        else:
+            differing = ['kind'] if old_kind != new_kind else []
+>           differing += [name for i,name in enumerate(fields) if old_fp[i] != new_fp[i]]
+                                                                  ^^^^^^^^^
+E           TypeError: 'DirectoryObservation' object is not subscriptable
+
+src\aluclu\alc_r0\runtime_tree_inventory.py:182: TypeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_walk_root_and_nested
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[mode]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[volume_serial]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[file_id128]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[size]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[write_ticks]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[creation_ticks]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[link_count]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[attributes]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[change_ticks]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[allocation_size]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[legacy_file_id]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[device_type]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[device_characteristics]
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_native_directory_diagnostic_each_field[reparse_tag]

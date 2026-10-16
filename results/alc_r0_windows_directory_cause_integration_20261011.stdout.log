@@ -1,0 +1,39 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____________________ test_exact_current_runtime_binding ______________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-77/test_exact_current_runtime_bin0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-77/test_exact_current_runtime_bin0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-77/test_exact_current_runtime_bin0/venv'))
+
+    def test_exact_current_runtime_binding(tmp_path,layout):
+        base,venv=layout
+        result=inspect_owned(tmp_path,layout)
+        observed=dict(executable=str(venv/'Scripts'/'python.exe'),base_executable=str(base/'python.exe'),
+            prefix=str(venv),exec_prefix=str(venv),base_prefix=str(base),base_exec_prefix=str(base),
+            version='3.12.12 fixture',implementation='cpython',cache_tag='cpython-312',
+            platform='win32',pointer_bits='64',byteorder=sys.byteorder,flags=FLAGS,
+            path=[str(base/'Lib'),str(base/'missing.zip')],
+            environment={key:'1' if key=='PYTHONDONTWRITEBYTECODE' else None for key in ENV_KEYS})
+        special=[]
+        for role,path in [('venv-executable',venv/'Scripts'/'python.exe'),
+                          ('base-executable',base/'python.exe'),('venv-config',venv/'pyvenv.cfg')]:
+            data=path.read_bytes()
+            special.append(dict(role=role,absolute_path=path.as_posix(),byte_length=str(len(data)),
+                                sha256=hashlib.sha256(data).hexdigest()))
+        payload=dict(schema='alc-r0-current-python-runtime-v1',observed=observed,base_prefix_alias=None,
+            components=[tree_row(base,'python-base'),tree_row(venv,'python-venv')],special_files=special)
+>       assert result==dict(ok=True,payload=payload,sha256=hashlib.sha256(canonical_json_bytes(payload)).hexdigest())
+E       assert {'ok': False,...te 'verbose'"} == {'ok': True, ...42a25cbe65f3'}
+E         
+E         Differing items:
+E         {'ok': False} != {'ok': True}
+E         Left contains 3 more items:
+E         {'cause_message': "'types.SimpleNamespace' object has no attribute 'verbose'",
+E          'cause_type': 'AttributeError',
+E          'error': 'current runtime observation unavailable'}...
+E         
+E         ...Full output truncated (58 lines hidden), use '-vv' to show
+
+tests\test_alc_r0_python_runtime_binding.py:139: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_exact_current_runtime_binding

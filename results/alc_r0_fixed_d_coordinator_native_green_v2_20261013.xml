@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="16" time="16.599" timestamp="2026-10-13T22:17:03.122817+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_default_entrypoint_denies_missing_scientific_installation" time="0.527" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success]" time="3.104" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]" time="3.892"><failure message="assert (162943375000000 - 162942781000000) &gt;= 600000000">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-179/test_actual_diagnostic_entrypo1')
+scenario = 'slow-parent'
+
+    @pytest.mark.parametrize('scenario',['success','slow-parent'])
+    def test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle(tmp_path,scenario):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+        assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+        report=bounded_json(namespace/'diagnostic.result.json')
+        assert report['schema']=='alc-r0-coordinator-diagnostic-v1'
+        assert report['domain']=='diagnostic-only' and report['scenario']==scenario
+        assert report['outcome']=='success'
+        assert report['scientific_execution'] is False
+        origin=int(report['entry_monotonic_ns'])
+        useful=int(report['useful_deadline_monotonic_ns'])
+        cleanup=int(report['cleanup_deadline_monotonic_ns'])
+        assert useful==origin+15_000_000_000 and cleanup==useful+10_000_000_000
+        assert int(report['finished_monotonic_ns'])&lt;=cleanup
+        work=report['work']; observer=report['observer']
+        assert work['exit_code']==0 and work['active_processes']==0 and work['outputs_closed'] is True
+        assert observer['active_processes']==0 and observer['terminal'] is True
+        worker_native=bounded_json(namespace/'work.native.json')
+        observer_native=bounded_json(namespace/'observer.native.json')
+        assert worker_native['root_pid']==int(work['pid'])&gt;0
+        assert observer_native['root_pid']==int(observer['pid'])&gt;0
+        assert observer_native['root_pid']!=worker_native['root_pid']
+        assert int(observer['creation_filetime_100ns'])&gt;0
+        for native in (worker_native,observer_native):
+            assert native['active_processes']==0 and native['timed_out'] is False
+            assert origin&lt;=native['started_ns']&lt;native['finished_ns']&lt;=int(report['finished_monotonic_ns'])
+        child=bounded_json(namespace/'child.result.json')
+        assert child['schema']=='alc-r0-harmless-child-v1'
+        assert child['domain']=='diagnostic-only' and child['request_root']==report['request_root']
+        assert child['identity_receipt_root']==work['identity_receipt_root']
+        assert int(child['pid'])==int(work['pid'])&gt;0
+        assert int(child['creation_filetime_100ns'])==int(work['creation_filetime_100ns'])&gt;0
+        declaration=bounded_json(namespace/'declaration.json')
+        assert declaration['run_id']=='alc-r0-diagnostic-coordinator-success'
+        assert declaration['device']=='cpu' and declaration['gpu_reservation_ns']=='0'
+        assert declaration['attempt_id']=='a001' and declaration['segment']=='initial'
+        store=ReservationStore(namespace/'reservations',(canonical_json_bytes(declaration),))
+        final=store.read(report['final_owner_root'])
+        with store._lock():
+            _,replay,_=store._read_locked(report['final_owner_root'])
+        events=[parse_canonical_json(data) for data in replay._events]
+        assert [event['kind'] for event in events]==[
+            'reserve','child_created','identity_published','running','terminal','reconcile','release']
+        assert len(final.snapshot.reservations)==1
+        view=final.snapshot.reservations[0]
+        assert view.state=='RELEASED' and view.effective_gpu_ns==0
+        assert view.identity_receipt_root==work['identity_receipt_root']
+        assert view.pid==int(child['pid'])
+        assert final.snapshot.pending_physical_bytes==0 and final.snapshot.pending_research_bytes==0
+        charge=bounded_json(namespace/'diagnostic.charge.json')
+        assert charge['domain']=='diagnostic-only' and charge['effective_gpu_ns']=='0'
+        assert charge['request_root']==report['request_root']
+        assert charge['reservation_id']==declaration['reservation_id']
+        assert charge['clock_domain_root']==events[0]['clock_domain_root']
+        assert int(charge['entry_monotonic_ns'])==origin
+        # Finish means owned work AND observer cleanup complete, before report encoding.
+        assert charge['owned_finished_monotonic_ns']==report['finished_monotonic_ns']
+        assert int(charge['effective_wall_ns'])&gt;=int(report['finished_monotonic_ns'])-origin&gt;0
+        assert events[-2]['effective_wall_ns']==charge['effective_wall_ns']
+        # Only the diagnostic one-use claim; no scientific D consumption filename.
+        claim=bounded_json(namespace/'diagnostic.consumed.json')
+        assert claim['domain']=='diagnostic-only' and claim['request_root']==report['request_root']
+        assert claim['reservation_id']==declaration['reservation_id']
+        for key in ('run_id','attempt_id','segment','declaration_root'):
+            assert claim[key]==declaration[key]
+        assert not list(namespace.glob('d-*.consumed.json'))
+        if scenario=='slow-parent':
+            delay=bounded_json(namespace/'parent.delay.json')
+            begin=int(delay['started_monotonic_ns']); end=int(delay['finished_monotonic_ns'])
+&gt;           assert end-begin&gt;=600_000_000
+E           assert (162943375000000 - 162942781000000) &gt;= 600000000
+
+tests\test_alc_r0_fixed_d_coordinator.py:121: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[stale-before-create-RESERVED]" time="0.799" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[stale-before-resume-READY]" time="1.755" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[blocked-observer-RUNNING]" time="2.486" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_is_cpu_only_fixed_envelope" time="0.029" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change0]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change1]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change2]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change3]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change4]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change5]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_diagnostic_declaration_cannot_become_scientific[change6]" time="0.001" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_entrypoint_refuses_consumed_diagnostic_namespace" time="3.237" /><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_entrypoint_refuses_system_temp_root_without_writing" time="0.347" /></testsuite></testsuites>

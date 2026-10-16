@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.865" timestamp="2026-10-06T15:14:57.858875+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[grad]" time="0.035"><failure message="assert False&#10; +  where False = all(&lt;generator object test_factory_corruption_terminal_before_success.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000273B0FEA880&gt;)">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000273B093ED80&gt;
+bad = 'grad'
+
+    @pytest.mark.parametrize(
+        "bad",
+        ["seed", "A", "B", "shape", "grad", "mode", "controller", "co_mount", "wrong_type"],
+    )
+    def test_factory_corruption_terminal_before_success(wiring, monkeypatch, bad):
+        module, _, created = wiring
+        good = module.make_reference_wrapper
+    
+        def corrupt(*args, **kwargs):
+            wrapper = good(*args, **kwargs)
+            block = wrapper.reference.factors["0"]["q"]
+            if bad == "seed":
+                wrapper.reference.initialization_seed = 1
+            elif bad in ("A", "B"):
+                with torch.no_grad():
+                    getattr(block, bad).add_(1)
+            elif bad == "shape":
+                block.A = nn.Parameter(torch.zeros(8, 575))
+            elif bad == "grad":
+                block.A.grad = torch.ones_like(block.A)
+            elif bad == "mode":
+                wrapper.eval()
+            elif bad == "controller":
+                wrapper._checkpoint_controller.owner = nn.Identity()
+            elif bad == "co_mount":
+                wrapper.capsule = nn.Identity()
+            else:
+                return nn.Identity()
+            return wrapper
+    
+        monkeypatch.setattr(module, "make_reference_wrapper", corrupt)
+        with pytest.raises(module.ReferenceParityError):
+            run(wiring)
+        assert len(created) == 1
+&gt;       assert all(p.grad is None for wrapper in created for p in wrapper.reference.parameters())
+E       assert False
+E        +  where False = all(&lt;generator object test_factory_corruption_terminal_before_success.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000273B0FEA880&gt;)
+
+tests\test_alc_r0_reference_parity_suite.py:150: AssertionError</failure></testcase></testsuite></testsuites>

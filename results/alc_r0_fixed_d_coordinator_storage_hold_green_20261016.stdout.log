@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 56 items / 47 deselected / 9 selected
+
+tests/test_alc_r0_reservation_state.py::test_storage_held_settlement_transfers_charge_but_never_refunds_space[cpu] PASSED [ 11%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_settlement_transfers_charge_but_never_refunds_space[gpu] PASSED [ 22%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes0] PASSED [ 33%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes1] PASSED [ 44%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes2] PASSED [ 55%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes3] PASSED [ 66%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes4] PASSED [ 77%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_requires_terminal_and_preserves_gpu_overrun PASSED [ 88%]
+tests/test_alc_r0_reservation_state.py::test_storage_held_remains_in_aggregate_across_next_independent_reservation PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_storage_hold_green_20261016.xml -
+====================== 9 passed, 47 deselected in 0.27s =======================

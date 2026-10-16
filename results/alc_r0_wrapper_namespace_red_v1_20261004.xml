@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="20" skipped="0" tests="23" time="9.909" timestamp="2026-10-04T23:29:06.712786+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[torch-PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="AssertionError: assert 'da14f2a8790745bfac8511587ec9b4a5b8a0bb795b8dfc01c89d3e709a3004f2' != 'da14f2a8790745bfac8511587ec9b4a5b8a0bb795b8dfc01c89d3e709a3004f2'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'da14f2a8790745bfac8511587ec9b4a5b8a0bb795b8dfc01c89d3e709a3004f2' != 'da14f2a8790745bfac8511587ec9b4a5b8a0bb795b8dfc01c89d3e709a3004f2'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[torch-PinnedLlamaLoRAWrapper]" time="0.007"><failure message="AssertionError: assert '6fbcbf530ddd47ecddec5a61cc0505b5b904be453ee4a997151df2360a9abd88' != '6fbcbf530ddd47ecddec5a61cc0505b5b904be453ee4a997151df2360a9abd88'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '6fbcbf530ddd47ecddec5a61cc0505b5b904be453ee4a997151df2360a9abd88' != '6fbcbf530ddd47ecddec5a61cc0505b5b904be453ee4a997151df2360a9abd88'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[nn-PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="AssertionError: assert 'f489956cfaacac54953b4f3547116cbe91e41bad4b0de8d17183c38995b25db0' != 'f489956cfaacac54953b4f3547116cbe91e41bad4b0de8d17183c38995b25db0'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'f489956cfaacac54953b4f3547116cbe91e41bad4b0de8d17183c38995b25db0' != 'f489956cfaacac54953b4f3547116cbe91e41bad4b0de8d17183c38995b25db0'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[nn-PinnedLlamaLoRAWrapper]" time="0.006"><failure message="AssertionError: assert 'ffb8d965c8411c0877eeac95e1e29426a523041bc11ed487782bfd923f41e7a0' != 'ffb8d965c8411c0877eeac95e1e29426a523041bc11ed487782bfd923f41e7a0'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'ffb8d965c8411c0877eeac95e1e29426a523041bc11ed487782bfd923f41e7a0' != 'ffb8d965c8411c0877eeac95e1e29426a523041bc11ed487782bfd923f41e7a0'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[CheckpointSession-PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="AssertionError: assert '9ac0c6a0d7a0a981abc73410b1308768f76214dbfbfbeca73ceaf09d09438df4' != '9ac0c6a0d7a0a981abc73410b1308768f76214dbfbfbeca73ceaf09d09438df4'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '9ac0c6a0d7a0a981abc73410b1308768f76214dbfbfbeca73ceaf09d09438df4' != '9ac0c6a0d7a0a981abc73410b1308768f76214dbfbfbeca73ceaf09d09438df4'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[CheckpointSession-PinnedLlamaLoRAWrapper]" time="0.006"><failure message="AssertionError: assert 'a3cdba6f98bcced7d365d0f6c5dc28c1e6b000d5f30ae5cd1fc17c657b5d44fb' != 'a3cdba6f98bcced7d365d0f6c5dc28c1e6b000d5f30ae5cd1fc17c657b5d44fb'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'a3cdba6f98bcced7d365d0f6c5dc28c1e6b000d5f30ae5cd1fc17c657b5d44fb' != 'a3cdba6f98bcced7d365d0f6c5dc28c1e6b000d5f30ae5cd1fc17c657b5d44fb'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[CausalLMOutputWithPast-PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="AssertionError: assert 'ac6a714dec85f9c5647178eca85455dc991c4923a2c63157cd378110ae7109d1' != 'ac6a714dec85f9c5647178eca85455dc991c4923a2c63157cd378110ae7109d1'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'ac6a714dec85f9c5647178eca85455dc991c4923a2c63157cd378110ae7109d1' != 'ac6a714dec85f9c5647178eca85455dc991c4923a2c63157cd378110ae7109d1'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[CausalLMOutputWithPast-PinnedLlamaLoRAWrapper]" time="0.007"><failure message="AssertionError: assert 'b0a449a763d23aeda79d6cd568918c1b21dd59bcbbd64cff907000609e26cdbf' != 'b0a449a763d23aeda79d6cd568918c1b21dd59bcbbd64cff907000609e26cdbf'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'b0a449a763d23aeda79d6cd568918c1b21dd59bcbbd64cff907000609e26cdbf' != 'b0a449a763d23aeda79d6cd568918c1b21dd59bcbbd64cff907000609e26cdbf'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[cast-PinnedLlamaCapsuleWrapper]" time="0.007"><failure message="AssertionError: assert 'a50e38de5c5e6981a86d064fe6b03e3611c74e9e57d4d6d1067f30c8fe38b865' != 'a50e38de5c5e6981a86d064fe6b03e3611c74e9e57d4d6d1067f30c8fe38b865'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'a50e38de5c5e6981a86d064fe6b03e3611c74e9e57d4d6d1067f30c8fe38b865' != 'a50e38de5c5e6981a86d064fe6b03e3611c74e9e57d4d6d1067f30c8fe38b865'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[cast-PinnedLlamaLoRAWrapper]" time="0.007"><failure message="AssertionError: assert '03ed1fb5eb9813e9a544d9252f04a897d5609f3f15f91277ba6331922766085e' != '03ed1fb5eb9813e9a544d9252f04a897d5609f3f15f91277ba6331922766085e'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '03ed1fb5eb9813e9a544d9252f04a897d5609f3f15f91277ba6331922766085e' != '03ed1fb5eb9813e9a544d9252f04a897d5609f3f15f91277ba6331922766085e'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[create_causal_mask-PinnedLlamaCapsuleWrapper]" time="0.007"><failure message="AssertionError: assert '24b51aab3229e3639047f3c456e8c192491885676ff693e1af8acd662c208298' != '24b51aab3229e3639047f3c456e8c192491885676ff693e1af8acd662c208298'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '24b51aab3229e3639047f3c456e8c192491885676ff693e1af8acd662c208298' != '24b51aab3229e3639047f3c456e8c192491885676ff693e1af8acd662c208298'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_host_wrapper_alias_drift_detected[create_causal_mask-PinnedLlamaLoRAWrapper]" time="0.007"><failure message="AssertionError: assert 'c15e91c3a946a3590b45d7b089b5935e60165bb9efc54d7c75621802c4b6dc10' != 'c15e91c3a946a3590b45d7b089b5935e60165bb9efc54d7c75621802c4b6dc10'">tests\test_alc_r0_wrapper_namespaces.py:30: in test_actual_host_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'c15e91c3a946a3590b45d7b089b5935e60165bb9efc54d7c75621802c4b6dc10' != 'c15e91c3a946a3590b45d7b089b5935e60165bb9efc54d7c75621802c4b6dc10'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_lora_wrapper_alias_drift_detected[torch]" time="0.005" /><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_lora_wrapper_alias_drift_detected[nn]" time="0.008"><failure message="AssertionError: assert '459dd2156bb6114aa9791d04f656867ff4efdc6aa71886317065e49530096aae' != '459dd2156bb6114aa9791d04f656867ff4efdc6aa71886317065e49530096aae'">tests\test_alc_r0_wrapper_namespaces.py:38: in test_actual_lora_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '459dd2156bb6114aa9791d04f656867ff4efdc6aa71886317065e49530096aae' != '459dd2156bb6114aa9791d04f656867ff4efdc6aa71886317065e49530096aae'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_lora_wrapper_alias_drift_detected[_q_attention_with_projection]" time="0.006"><failure message="AssertionError: assert 'a5aaa44497c094ec377794438f6bc1fad7d2287cc2d4682146cfdfc141e37db7' != 'a5aaa44497c094ec377794438f6bc1fad7d2287cc2d4682146cfdfc141e37db7'">tests\test_alc_r0_wrapper_namespaces.py:38: in test_actual_lora_wrapper_alias_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'a5aaa44497c094ec377794438f6bc1fad7d2287cc2d4682146cfdfc141e37db7' != 'a5aaa44497c094ec377794438f6bc1fad7d2287cc2d4682146cfdfc141e37db7'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_native_arange_endpoint_rebinding_detected[PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="AssertionError: assert '7fcadc7297935b5cfce588a59bf994aa6d49d949acd0949ecc053adbfcdd0bae' != '7fcadc7297935b5cfce588a59bf994aa6d49d949acd0949ecc053adbfcdd0bae'">tests\test_alc_r0_wrapper_namespaces.py:46: in test_wrapper_native_arange_endpoint_rebinding_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '7fcadc7297935b5cfce588a59bf994aa6d49d949acd0949ecc053adbfcdd0bae' != '7fcadc7297935b5cfce588a59bf994aa6d49d949acd0949ecc053adbfcdd0bae'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_native_arange_endpoint_rebinding_detected[PinnedLlamaLoRAWrapper]" time="0.006"><failure message="AssertionError: assert 'b2489692c16fef37129a37612c3348c84e3d7931e0cef498b2a54daebf674e65' != 'b2489692c16fef37129a37612c3348c84e3d7931e0cef498b2a54daebf674e65'">tests\test_alc_r0_wrapper_namespaces.py:46: in test_wrapper_native_arange_endpoint_rebinding_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'b2489692c16fef37129a37612c3348c84e3d7931e0cef498b2a54daebf674e65' != 'b2489692c16fef37129a37612c3348c84e3d7931e0cef498b2a54daebf674e65'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_builtin_global_shadow_detected[PinnedLlamaCapsuleWrapper]" time="0.006"><failure message="AssertionError: assert 'ff8526e3173d41eabb65c1245817af4bb15ea93ed9f45ff1765915396472e772' != 'ff8526e3173d41eabb65c1245817af4bb15ea93ed9f45ff1765915396472e772'">tests\test_alc_r0_wrapper_namespaces.py:54: in test_wrapper_builtin_global_shadow_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'ff8526e3173d41eabb65c1245817af4bb15ea93ed9f45ff1765915396472e772' != 'ff8526e3173d41eabb65c1245817af4bb15ea93ed9f45ff1765915396472e772'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_builtin_global_shadow_detected[PinnedLlamaLoRAWrapper]" time="0.006"><failure message="AssertionError: assert 'eab11797e00ad6b4eac0bc6bb5f020411cd0ed3f8a5d1151f9dae992e51bd847' != 'eab11797e00ad6b4eac0bc6bb5f020411cd0ed3f8a5d1151f9dae992e51bd847'">tests\test_alc_r0_wrapper_namespaces.py:54: in test_wrapper_builtin_global_shadow_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'eab11797e00ad6b4eac0bc6bb5f020411cd0ed3f8a5d1151f9dae992e51bd847' != 'eab11797e00ad6b4eac0bc6bb5f020411cd0ed3f8a5d1151f9dae992e51bd847'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_function_builtin_table_drift_detected[PinnedLlamaCapsuleWrapper]" time="0.008"><failure message="AssertionError: assert '6e9eb312549fed9affc5c65a139d4eac826a5e89656769af562c1f434c15946d' != '6e9eb312549fed9affc5c65a139d4eac826a5e89656769af562c1f434c15946d'">tests\test_alc_r0_wrapper_namespaces.py:68: in test_actual_function_builtin_table_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert '6e9eb312549fed9affc5c65a139d4eac826a5e89656769af562c1f434c15946d' != '6e9eb312549fed9affc5c65a139d4eac826a5e89656769af562c1f434c15946d'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_actual_function_builtin_table_drift_detected[PinnedLlamaLoRAWrapper]" time="0.006"><failure message="AssertionError: assert 'a625f2de30855d0261c6084164ba3bc49ac94bd567dca0561de096abdb220092' != 'a625f2de30855d0261c6084164ba3bc49ac94bd567dca0561de096abdb220092'">tests\test_alc_r0_wrapper_namespaces.py:68: in test_actual_function_builtin_table_drift_detected
+    changed_or_denied(wrapper, before)
+tests\test_alc_r0_wrapper_namespaces.py:21: in changed_or_denied
+    assert after != before
+E   AssertionError: assert 'a625f2de30855d0261c6084164ba3bc49ac94bd567dca0561de096abdb220092' != 'a625f2de30855d0261c6084164ba3bc49ac94bd567dca0561de096abdb220092'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_namespace_drift_denied_before_owned_preparation[PinnedLlamaCapsuleWrapper]" time="0.007" /><testcase classname="tests.test_alc_r0_wrapper_namespaces" name="test_wrapper_namespace_drift_denied_before_owned_preparation[PinnedLlamaLoRAWrapper]" time="0.006" /></testsuite></testsuites>

@@ -1,0 +1,139 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+_______ test_structural_raw_abi_corruption_is_not_semantic_kill[7-127] ________
+
+slot = 7, value = 127
+
+    @pytest.mark.parametrize("slot,value", [(7,127),(27,1),(54,1),(2,2),(7,31)])
+    def test_structural_raw_abi_corruption_is_not_semantic_kill(slot,value):
+        case = ((1,2),(2,1),2)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:136: Failed
+________ test_structural_raw_abi_corruption_is_not_semantic_kill[27-1] ________
+
+slot = 27, value = 1
+
+    @pytest.mark.parametrize("slot,value", [(7,127),(27,1),(54,1),(2,2),(7,31)])
+    def test_structural_raw_abi_corruption_is_not_semantic_kill(slot,value):
+        case = ((1,2),(2,1),2)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:136: Failed
+________ test_structural_raw_abi_corruption_is_not_semantic_kill[54-1] ________
+
+slot = 54, value = 1
+
+    @pytest.mark.parametrize("slot,value", [(7,127),(27,1),(54,1),(2,2),(7,31)])
+    def test_structural_raw_abi_corruption_is_not_semantic_kill(slot,value):
+        case = ((1,2),(2,1),2)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:136: Failed
+________ test_structural_raw_abi_corruption_is_not_semantic_kill[2-2] _________
+
+slot = 2, value = 2
+
+    @pytest.mark.parametrize("slot,value", [(7,127),(27,1),(54,1),(2,2),(7,31)])
+    def test_structural_raw_abi_corruption_is_not_semantic_kill(slot,value):
+        case = ((1,2),(2,1),2)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:136: Failed
+________ test_structural_raw_abi_corruption_is_not_semantic_kill[7-31] ________
+
+slot = 7, value = 31
+
+    @pytest.mark.parametrize("slot,value", [(7,127),(27,1),(54,1),(2,2),(7,31)])
+    def test_structural_raw_abi_corruption_is_not_semantic_kill(slot,value):
+        case = ((1,2),(2,1),2)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:136: Failed
+__ test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[19-1] __
+
+slot = 19, value = 1
+
+    @pytest.mark.parametrize("slot,value", [(19,1),(7,63),(20,1),(2,0)])
+    def test_unresolved_absent_distance_and_exposure_are_not_semantic_kills(slot,value):
+        case = ((1,),(2,),0)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:145: Failed
+__ test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[7-63] __
+
+slot = 7, value = 63
+
+    @pytest.mark.parametrize("slot,value", [(19,1),(7,63),(20,1),(2,0)])
+    def test_unresolved_absent_distance_and_exposure_are_not_semantic_kills(slot,value):
+        case = ((1,),(2,),0)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:145: Failed
+__ test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[20-1] __
+
+slot = 20, value = 1
+
+    @pytest.mark.parametrize("slot,value", [(19,1),(7,63),(20,1),(2,0)])
+    def test_unresolved_absent_distance_and_exposure_are_not_semantic_kills(slot,value):
+        case = ((1,),(2,),0)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:145: Failed
+__ test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[2-0] ___
+
+slot = 2, value = 0
+
+    @pytest.mark.parametrize("slot,value", [(19,1),(7,63),(20,1),(2,0)])
+    def test_unresolved_absent_distance_and_exposure_are_not_semantic_kills(slot,value):
+        case = ((1,),(2,),0)
+        words = PROBE.expected_words(case)
+        words[slot] = value
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_native_mutation_fixture_probe.py:145: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_structural_raw_abi_corruption_is_not_semantic_kill[7-127]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_structural_raw_abi_corruption_is_not_semantic_kill[27-1]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_structural_raw_abi_corruption_is_not_semantic_kill[54-1]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_structural_raw_abi_corruption_is_not_semantic_kill[2-2]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_structural_raw_abi_corruption_is_not_semantic_kill[7-31]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[19-1]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[7-63]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[20-1]
+FAILED tests/test_alc_r0_native_mutation_fixture_probe.py::test_unresolved_absent_distance_and_exposure_are_not_semantic_kills[2-0]
+9 failed, 18 deselected in 3.67s

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="15" time="69.681" timestamp="2026-10-05T00:27:16.556252+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_cell" name="test_complete_cell_schedule_and_fixed_step" time="2.360" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[None]" time="0.004" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[bad1]" time="0.003" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[bad2]" time="0.004" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_invalid_fixture_schedule_denied_before_factory[bad3]" time="0.003" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[reorder]" time="0.005" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[padding]" time="0.006" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[candidate]" time="0.005" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_incomplete_or_mismatched_schedule_denied_before_factory[prompt]" time="0.006" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[base]" time="0.015" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[wrapper]" time="0.024"><failure message="RuntimeError: Boolean value of Tensor with more than one value is ambiguous">tests\test_alc_r0_parity_cell.py:107: in test_factory_drift_denied_and_gradients_cleared
+    runner().run_parity_cell(broken, fixtures(), exact=True)
+src\aluclu\alc_r0\checkpoint_parity_cell.py:213: in run_parity_cell
+    cases = _singles(guard, fixtures)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:160: in _singles
+    on = guard.make(state, True)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:97: in make
+    self.parameters.update(factors.parameters())
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\_weakrefset.py:124: in update
+    self.add(element)
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\_weakrefset.py:88: in add
+    self.data.add(ref(item, self._remove))
+E   RuntimeError: Boolean value of Tensor with more than one value is ambiguous</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[factors]" time="0.016"><failure message="RuntimeError: Boolean value of Tensor with more than one value is ambiguous">tests\test_alc_r0_parity_cell.py:107: in test_factory_drift_denied_and_gradients_cleared
+    runner().run_parity_cell(broken, fixtures(), exact=True)
+src\aluclu\alc_r0\checkpoint_parity_cell.py:213: in run_parity_cell
+    cases = _singles(guard, fixtures)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:160: in _singles
+    on = guard.make(state, True)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:97: in make
+    self.parameters.update(factors.parameters())
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\_weakrefset.py:124: in update
+    self.add(element)
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\_weakrefset.py:88: in add
+    self.data.add(ref(item, self._remove))
+E   RuntimeError: Boolean value of Tensor with more than one value is ambiguous</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell" name="test_factory_drift_denied_and_gradients_cleared[initial]" time="0.016" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_repeat_initial_state_drift_is_not_hidden_by_pair_parity" time="0.543" /><testcase classname="tests.test_alc_r0_parity_cell" name="test_cpu_cannot_select_tolerant_mode" time="0.003" /></testsuite></testsuites>

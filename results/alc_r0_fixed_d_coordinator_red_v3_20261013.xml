@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.801" timestamp="2026-10-13T21:30:47.446398+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_default_entrypoint_denies_missing_scientific_installation" time="0.328"><failure message="assert (1 == 2)&#10; +  where 1 = OwnedProcessReceipt(root_pid=22012, exit_code=1, timed_out=False, started_ns=160161671000000, finished_ns=160161843000000, total_processes=3, active_processes=0, user_time_100ns=156250, kernel_time_100ns=625000).exit_code">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-169/test_actual_default_entrypoint0')
+
+    def test_actual_default_entrypoint_denies_missing_scientific_installation(tmp_path):
+        baseline_path=tmp_path/'runtime-baseline'; baseline_path.mkdir()
+        baseline=invoke(baseline_path,(),runtime_baseline=True)
+        assert baseline.exit_code==0 and baseline.active_processes==0 and not baseline.timed_out
+        receipt=invoke(tmp_path,())
+&gt;       assert receipt.exit_code==2 and not receipt.timed_out
+E       assert (1 == 2)
+E        +  where 1 = OwnedProcessReceipt(root_pid=22012, exit_code=1, timed_out=False, started_ns=160161671000000, finished_ns=160161843000000, total_processes=3, active_processes=0, user_time_100ns=156250, kernel_time_100ns=625000).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:42: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle" time="0.140"><failure message="assert (1 == 0)&#10; +  where 1 = OwnedProcessReceipt(root_pid=22728, exit_code=1, timed_out=False, started_ns=160161968000000, finished_ns=160162109000000, total_processes=3, active_processes=0, user_time_100ns=312500, kernel_time_100ns=937500).exit_code">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-169/test_actual_diagnostic_entrypo0')
+
+    def test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle(tmp_path):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic','success',str(namespace)))
+&gt;       assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E       assert (1 == 0)
+E        +  where 1 = OwnedProcessReceipt(root_pid=22728, exit_code=1, timed_out=False, started_ns=160161968000000, finished_ns=160162109000000, total_processes=3, active_processes=0, user_time_100ns=312500, kernel_time_100ns=937500).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:54: AssertionError</failure></testcase></testsuite></testsuites>

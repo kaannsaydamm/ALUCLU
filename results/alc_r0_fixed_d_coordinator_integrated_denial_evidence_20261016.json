@@ -1,0 +1,508 @@
+{
+  "scope": "Actual diagnostic coordinator RUNNING query/terminate Win5, independent owner cleanup receipts and retained outer-denial reporting. Separate retry bookkeeping uses real event handles but manufactured prior error, NOT native join/close fault proof. No scientific acceptance.",
+  "source_pin_modes": [
+    "integrated_denial_green_v4",
+    "regression_integrated_denial_v2"
+  ],
+  "historical_note": "Other runs use earlier source/test/runner snapshots; current pins must NOT be attributed to them.",
+  "negative_classification": {
+    "integrated_denial_red": "missing closed diagnostic route",
+    "integrated_denial_native_red": "actual native denial observed, missing verified owner cleanup receipt",
+    "integrated_denial_green": "owner receipt present but secondary bridge cleanup masks native denial",
+    "integrated_retry_red": "CLOSED lease skips remaining actuator handle cleanup",
+    "integrated_denial_green_v3": "handles reaped but manufactured retained actor error does not reassert stop"
+  },
+  "residual_open": [
+    "base-cleanup retry of partially closed resources",
+    "universal first body/lifecycle error preservation before outer finally",
+    "actual native join/CloseHandle/wait/start failures and concurrency cuts",
+    "growth/release accounting",
+    "scientific installation/admission"
+  ],
+  "runs": [
+    {
+      "mode": "integrated_denial_red",
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.798
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 36274921000000,
+        "kernel_time_100ns": 8125000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 6300,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36273000000000,
+        "timed_out": false,
+        "total_processes": 6,
+        "user_time_100ns": 6093750
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_red_20261016.stdout.log",
+          "bytes": 2320,
+          "sha256": "daeeb42e67ab26f9a622de9356e69b04976f69dfef094889537d6bd4f7a64d5a"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_red_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_red_20261016.exit.json",
+          "bytes": 310,
+          "sha256": "0e19aad8b7bd1b62f7422faeaff6bac57e001fb97d2a531e14a3b92387f82002"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_red_20261016.xml",
+          "bytes": 1543,
+          "sha256": "0ea1a0e47b4200e533643afbe791ab31c9f7130925a031462f772c7e2c5dc85c"
+        }
+      ]
+    },
+    {
+      "mode": "integrated_denial_native_red",
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 2.426
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 36323937000000,
+        "kernel_time_100ns": 15625000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 22648,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36320843000000,
+        "timed_out": false,
+        "total_processes": 10,
+        "user_time_100ns": 9375000
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_native_red_20261016.stdout.log",
+          "bytes": 2307,
+          "sha256": "d39cfc6ca7668fcbdbc3babb5e1dcc9590da2ae965425a779ab5264d8427fd1a"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_native_red_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_native_red_20261016.exit.json",
+          "bytes": 313,
+          "sha256": "e7defd9df72cb882734373e37cf8f600348db98a9d372b9736124d5b85990a88"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_native_red_20261016.xml",
+          "bytes": 1517,
+          "sha256": "a049be83f05d7a7b26643c26aec78b8963731e5f98440a337529b31261b4c736"
+        }
+      ]
+    },
+    {
+      "mode": "integrated_denial_green",
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 2.663
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 36382031000000,
+        "kernel_time_100ns": 23906250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 8844,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36377484000000,
+        "timed_out": false,
+        "total_processes": 11,
+        "user_time_100ns": 10156250
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_20261016.stdout.log",
+          "bytes": 2048,
+          "sha256": "0adbff151825faa6991156ee053aeb8bdb5cda623cde82ba0a0b04f44eed870a"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_20261016.exit.json",
+          "bytes": 313,
+          "sha256": "9809ce087956b0fc6b21d0b70b5f96bb5d1fdc1699edebae7e546afb6c36bb0f"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_20261016.xml",
+          "bytes": 1457,
+          "sha256": "c7a2ee14882fb2dad77c93445781c399a1995ef6d4d182bbefb131ba099e1806"
+        }
+      ]
+    },
+    {
+      "mode": "integrated_denial_green_v2",
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 4.458
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 36439312000000,
+        "kernel_time_100ns": 26406250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 4020,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36433984000000,
+        "timed_out": false,
+        "total_processes": 17,
+        "user_time_100ns": 17656250
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v2_20261016.stdout.log",
+          "bytes": 1106,
+          "sha256": "6db5dab5cc69fb4a1ade3e1b0cec552923d8fd3267af61f8e0102cc70b01548f"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v2_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v2_20261016.exit.json",
+          "bytes": 313,
+          "sha256": "438229a27491de2577e8e4b54f7a183cf887b32115ebf423b65f15ca933eded0"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v2_20261016.xml",
+          "bytes": 618,
+          "sha256": "ca8220dffae7ed3bc937e302300cfd3218da5cc6ae90a1337cfb919fc7697185"
+        }
+      ]
+    },
+    {
+      "mode": "regression_integrated_denial",
+      "junit": {
+        "tests": 224,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 98.743
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 36572406000000,
+        "kernel_time_100ns": 561562500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 16972,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36472828000000,
+        "timed_out": false,
+        "total_processes": 222,
+        "user_time_100ns": 225625000
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_20261016.stdout.log",
+          "bytes": 27302,
+          "sha256": "af4ab0fd2a5de5c2faffbe4f1b6a7a2f7634b1010257868e71466e1f7a82ddec"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_20261016.exit.json",
+          "bytes": 317,
+          "sha256": "9851a61d94fecc30ecc872b4571079db58bc617b57aa6cec5d591a69776d90de"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_20261016.xml",
+          "bytes": 32433,
+          "sha256": "63dd616383441b5e318b970d2948fb691755e901315ee9b3138158f0dce9f5de"
+        }
+      ]
+    },
+    {
+      "mode": "integrated_retry_red",
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.502
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 36639531000000,
+        "kernel_time_100ns": 5468750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 12800,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36638296000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 4218750
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_retry_red_20261016.stdout.log",
+          "bytes": 1689,
+          "sha256": "c09975d07823895cfb90f2f8daa6083a3042bfccb3d7b66068dead0fbb659c84"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_retry_red_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_retry_red_20261016.exit.json",
+          "bytes": 311,
+          "sha256": "d007adbf92e0b2e696e7d190f101e60cccacef224a519d8d94902deeb95bab9e"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_retry_red_20261016.xml",
+          "bytes": 903,
+          "sha256": "aaa3655eac4c2c13ccb158d22352c95ec55e93c11b937e47783735664d2c33bf"
+        }
+      ]
+    },
+    {
+      "mode": "integrated_denial_green_v3",
+      "junit": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 5.523
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 36693984000000,
+        "kernel_time_100ns": 36250000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 32932,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36687578000000,
+        "timed_out": false,
+        "total_processes": 17,
+        "user_time_100ns": 18906250
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v3_20261016.stdout.log",
+          "bytes": 2451,
+          "sha256": "479f5c87cff6bbc7477c5164ec2d5774e2cdab8ebd8316cba3d36352de21b865"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v3_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v3_20261016.exit.json",
+          "bytes": 314,
+          "sha256": "e2700a1061b75fa3ab0b2e4aa830e4f328f6c908ba73c9747014ad075fc5feb9"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v3_20261016.xml",
+          "bytes": 2184,
+          "sha256": "55fcde014918df6b7ed38c21155ed5ec91396acc70d16275cf16f6f515e10fff"
+        }
+      ]
+    },
+    {
+      "mode": "integrated_denial_green_v4",
+      "junit": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 4.563
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 36747921000000,
+        "kernel_time_100ns": 27187500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 27816,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36742578000000,
+        "timed_out": false,
+        "total_processes": 17,
+        "user_time_100ns": 18906250
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v4_20261016.stdout.log",
+          "bytes": 1240,
+          "sha256": "f541a350f498bec608732c933244165defe8382b73d2e35f3a6ba314ab01125c"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v4_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v4_20261016.exit.json",
+          "bytes": 314,
+          "sha256": "0f834eda9a453b249651c155eaf27d338b969980bde1d0205f62c9bbcb155956"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_integrated_denial_green_v4_20261016.xml",
+          "bytes": 777,
+          "sha256": "c1df0b0d00ab9bddb6620f52356ee408cc1d61d17db47e52781ff06d76c94465"
+        }
+      ]
+    },
+    {
+      "mode": "regression_integrated_denial_v2",
+      "junit": {
+        "tests": 225,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 100.097
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 36860109000000,
+        "kernel_time_100ns": 562187500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 8872,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 36758593000000,
+        "timed_out": false,
+        "total_processes": 222,
+        "user_time_100ns": 231250000
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_v2_20261016.stdout.log",
+          "bytes": 27439,
+          "sha256": "5754d985f45a29db62abeadbfc35595f25e86202cb25fe6d74303e8c21be447a"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_v2_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_v2_20261016.exit.json",
+          "bytes": 316,
+          "sha256": "2acd4acc279c813ee1dd187768606a83d15bad39bc6e3c0e16bc002dcc50b07c"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_integrated_denial_v2_20261016.xml",
+          "bytes": 32593,
+          "sha256": "822adb11d0392d59e2a3d3908bdd3e9557cdbeec4683a9a0a8a3687ee7e8b4d7"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "bytes": 66291,
+      "sha256": "e253263802c26ebc9e9573ab7e4ec198fe6e0c6aac1c020dd5bc0f902046aa93"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "bytes": 37465,
+      "sha256": "32dd966587b936ef3766e1e72430566a6513a56db0266fb8a61a97fa1f9e3425"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "bytes": 5954,
+      "sha256": "098837b73041db062d7b632b6af864db775b6d0d4521e7a02c70bdd6ce3d5668"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reservation_state.py",
+      "bytes": 16968,
+      "sha256": "37e21b07ef1b12a72ccd785fd8ec2117d5fc0e4d3ae930eb8b7dd1f070f35da2"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reserved_owned_process.py",
+      "bytes": 19331,
+      "sha256": "cb3c33873c34abcc6af0b828a1fbc38e713e198677d8796a20404374429a787d"
+    },
+    {
+      "path": "tests/test_alc_r0_reserved_owned_process.py",
+      "bytes": 24879,
+      "sha256": "d60edddd395cba472e78959f81d3ac63abf19fd138d237d5da1e029edf5f3d9d"
+    },
+    {
+      "path": "tests/alc_r0_reserved_owned_worker.py",
+      "bytes": 1925,
+      "sha256": "e1a38895395b943f61807b3fc3a67177887660b723789c3377eed2b5611382f2"
+    }
+  ],
+  "regression_unique": 225,
+  "prior_missing": [],
+  "added": [
+    "tests.test_alc_r0_fixed_d_coordinator::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied]",
+    "tests.test_alc_r0_fixed_d_coordinator::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-terminate-denied]",
+    "tests.test_alc_r0_fixed_d_coordinator::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure"
+  ],
+  "groups": [
+    {
+      "Name": "tests.test_alc_r0_fixed_d_coordinator",
+      "Count": 40
+    },
+    {
+      "Name": "tests.test_alc_r0_live_authority_watch",
+      "Count": 29
+    },
+    {
+      "Name": "tests.test_alc_r0_reservation_state",
+      "Count": 47
+    },
+    {
+      "Name": "tests.test_alc_r0_reservation_store",
+      "Count": 33
+    },
+    {
+      "Name": "tests.test_alc_r0_reserved_owned_process",
+      "Count": 34
+    },
+    {
+      "Name": "tests.test_alc_r0_status_watch_consumer",
+      "Count": 42
+    }
+  ]
+}

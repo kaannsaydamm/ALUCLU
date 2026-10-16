@@ -1,0 +1,8 @@
+Root observed PowerShell launcher terminal exit4 and actual_native_pytest_exit_code=4.
+The expression assigning a single-file partition unrolled its array to a scalar;
+native argument splatting consequently supplied an invalid test path 't'.
+Pytest: ERROR: file or directory not found: t; no tests ran in0.06s.
+This is invalid launcher evidence, not a failed native test or regression result.
+Preserve any v1 XML as empty-run evidence; corrected run uses fresh v2 stems.
+Repair: assign each branch's array directly rather than assigning if-expression output.
+No source, case, threshold, artifact or acceptance rule changes.

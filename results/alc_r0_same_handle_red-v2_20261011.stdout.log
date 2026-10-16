@@ -1,0 +1,19 @@
+............................F..                                          [100%]
+================================== FAILURES ===================================
+________ test_pending_fatal_with_closed_stderr_does_not_unwind_buffers ________
+
+    def test_pending_fatal_with_closed_stderr_does_not_unwind_buffers():
+        script = Path(__file__).with_name('alc_r0_same_handle_directory.py')
+        command = ('import os, runpy\nm=runpy.run_path(' + repr(str(script)) + ')\n'
+            'os.close(2)\ntry:\n'
+            ' m["nt_record"](lambda *args:259,12,72,68,m["pending_exit"])\n'
+            'finally:\n os.write(1,b"UNWOUND")\n')
+        result = subprocess.run([sys.executable, '-I', '-B', '-c', command],
+            capture_output=True, timeout=10)
+>       assert result.returncode == 71
+E       assert 3221226505 == 71
+E        +  where 3221226505 = CompletedProcess(args=['C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALU...,72,68,m["pending_exit"])\nfinally:\n os.write(1,b"UNWOUND")\n'], returncode=3221226505, stdout=b'UNWOUND', stderr=b'').returncode
+
+tests\test_alc_r0_same_handle_directory.py:125: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_same_handle_directory.py::test_pending_fatal_with_closed_stderr_does_not_unwind_buffers

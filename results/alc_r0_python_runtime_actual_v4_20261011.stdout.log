@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________________ test_actual_current_runtime_read_only ____________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-69/test_actual_current_runtime_re0')
+
+    @pytest.mark.skipif(os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN')!='1',
+                        reason='separately selected read-only runtime diagnostic')
+    def test_actual_current_runtime_read_only(tmp_path):
+        result=inspect_owned(tmp_path,actual=True)
+        mode=os.environ['ALUCLU_TEST_ONLY_RUNTIME_SCAN_MODE']
+        assert mode in ('actual','actual_v2','actual_v3','actual_v4')
+        target=Path(__file__).resolve().parents[1]/'results'/f'alc_r0_python_runtime_{mode}_20261011.binding.json'
+        with target.open('xb') as out:
+            out.write(canonical_json_bytes(result))
+>       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'runtime tree changed during inspection: {"component":"python-venv","path_prefix":"Lib/site-pac...68415800,1,16]}', 'process': {'root_pid': 9320, 'exit_code': 0, 'timed_out': False, 'started_ns': 62642031000000, ...}}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:232: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_actual_current_runtime_read_only

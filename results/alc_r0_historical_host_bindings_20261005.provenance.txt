@@ -1,0 +1,25 @@
+Checkpoint176: selected historical CPU host controls and source/runtime receipts
+Parent: 2b6ac0e2598428e24d1f8df8f99612b46aa800eb
+Report: docs/superpowers/reviews/2026-10-05-alc-r0-historical-host-bindings.md
+Reviewed SHA256: 97b65b6445889a236d99cf42d470c05860004ad14deab44bf66be1f145e6a32e
+
+Independent code/spec lane resource_code_61 APPROVE and architecture lane
+resource_arch_61 CLEAR for this scoped evidence report. Both independently
+read the original four exact-ID private terminal records, their envelope fields,
+decoded-output roots and historical Git receipt/source objects. Primary access
+was available in both lanes; no session-lock limitation claimed for this review.
+Synthesis: evidence report approved; WATCH authentication/completeness; global
+first-development instant/measured consumption UNKNOWN and launch admission BLOCK.
+
+Personally verified four record metadata/output rows, eight envelope timestamps,
+101.000479100 command wall seconds, three raw Git 2040-byte receipt hashes,
+source/script blob identities and CPU/BF16 worker defaults. CUDA-enabled Torch
+version is not proof of GPU execution. One wrong-expected-HEAD rejection remains
+in history; it precedes model workers, not a failed training update. Initial
+mutable-checkout source proof is not retroactively upgraded to immutable export.
+Runtime strings/lock roots are receipt claims, not runtime-binary attestation.
+
+No new pytest, historical command/model/tokenizer/corpus/GPU invocation,
+installation, cleanup or private-session export. Source/tests/XML unchanged.
+Documentation-only current verification does not imply fresh regression evidence.
+Original resource limits, retry rules, frozen grid, launch gates and full goal stand.

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="33.483" timestamp="2026-10-05T19:27:27.920746+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_qv_resume_process" name="test_fresh_process_rebuild_and_step2_resume_exact" time="26.908" /></testsuite></testsuites>

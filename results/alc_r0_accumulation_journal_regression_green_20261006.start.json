@@ -1,0 +1,30 @@
+{
+    "suite":  "JournalRegression",
+    "python":  "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+    "worktree":  "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local",
+    "arguments":  [
+                      "-m",
+                      "pytest",
+                      "tests/test_alc_r0_checkpoint_observation.py",
+                      "tests/test_alc_r0_pending_observation.py",
+                      "tests/test_alc_r0_accumulation_observation.py",
+                      "tests/test_alc_r0_accumulation_pair.py",
+                      "tests/test_alc_r0_checkpoint_optimizer.py",
+                      "tests/test_alc_r0_parity_cell.py",
+                      "tests/test_alc_r0_parity_cell_failure.py",
+                      "tests/test_alc_r0_reference_parity_suite.py",
+                      "tests/test_alc_r0_reference_parity_receipt.py",
+                      "tests/test_alc_r0_accumulation_progress.py",
+                      "tests/test_alc_r0_accumulation_journal_integration.py",
+                      "tests/test_alc_r0_reference_qv_accumulation.py",
+                      "-q",
+                      "--junitxml=results/alc_r0_accumulation_journal_regression_green_20261006.xml"
+                  ],
+    "started_at":  "2026-10-06T18:17:22.6586524+03:00",
+    "free_physical_kib":  3388780,
+    "free_virtual_kib":  9863592,
+    "required_free_physical_kib":  1048576,
+    "required_free_virtual_kib":  3145728,
+    "cuda_visible_devices":  "-1",
+    "scope":  "FAKE_PURE_CPU_ONLY_NOT_HOST_RESOURCE_OR_LEARNING_ACCEPTANCE"
+}

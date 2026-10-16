@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="16" time="7.907" timestamp="2026-10-06T15:05:21.980541+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-0]" time="0.007"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B18726CF50&gt;
+index = 0, interrupt = False
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                                                               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-5]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C5B50&gt;
+index = 5, interrupt = False
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                                                               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-6]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C64B0&gt;
+index = 6, interrupt = False
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                                                               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-12]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C6C60&gt;
+index = 12, interrupt = False
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                                                               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[False-17]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C7680&gt;
+index = 17, interrupt = False
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                                                               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-0]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B18C7500E0&gt;
+index = 0, interrupt = True
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-5]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B18C7504D0&gt;
+index = 5, interrupt = True
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-6]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C6270&gt;
+index = 6, interrupt = True
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-12]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C71D0&gt;
+index = 12, interrupt = True
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_failed_single_retains_prefix_key_unrun_no_retry[True-17]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873C6B40&gt;
+index = 17, interrupt = True
+
+    @pytest.mark.parametrize("index", [0, 5, 6, 12, 17])
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_failed_single_retains_prefix_key_unrun_no_retry(monkeypatch, index, interrupt):
+        runner = module()
+        make, created = factory()
+        original = runner.observe_forward_backward
+        attempts = []
+    
+        def fail(wrapper, fixture, *, checkpoint, state):
+            if not checkpoint:
+                attempts.append((state, len(attempts)))
+                if len(attempts) == index + 1:
+                    raise KeyboardInterrupt("declared") if interrupt else RuntimeError("declared")
+            return original(wrapper, fixture, checkpoint=checkpoint, state=state)
+    
+        monkeypatch.setattr(runner, "observe_forward_backward", fail)
+&gt;       error = runner.ParityCellInterrupted if interrupt else runner.ParityCellError
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellInterrupted'
+
+tests\test_alc_r0_parity_cell_failure.py:29: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_factory_failure_does_not_mark_current_row_attempted" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">def test_factory_failure_does_not_mark_current_row_attempted():
+        runner = module()
+        make, created = factory()
+    
+        def fail(state, checkpoint):
+            if len(created) == 2:
+                raise ValueError("factory deliberate")
+            return make(state, checkpoint)
+    
+&gt;       with pytest.raises(runner.ParityCellError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:52: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[pending_off]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873B7B60&gt;
+stage = 'pending_off'
+
+    @pytest.mark.parametrize("stage", ["pending_off", "pending_on", "pending_compare", "accumulation"])
+    def test_later_stage_retains_all_singles(monkeypatch, stage):
+        runner = module()
+        make, _ = factory()
+        original = runner.observe_pending_pair
+    
+        def fail(*args, **kwargs):
+            raise ValueError("late deliberate")
+    
+        if stage in ("pending_off", "pending_on"):
+            def observe(*args, **kwargs):
+                if kwargs["checkpoint"] == (stage == "pending_on"):
+                    fail()
+                return original(*args, **kwargs)
+            monkeypatch.setattr(runner, "observe_pending_pair", observe)
+        elif stage == "pending_compare":
+            monkeypatch.setattr(runner, "compare_pending_observations", fail)
+        else:
+            monkeypatch.setattr(runner, "run_accumulation_pair", fail)
+&gt;       with pytest.raises(runner.ParityCellError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:80: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[pending_on]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873B6AB0&gt;
+stage = 'pending_on'
+
+    @pytest.mark.parametrize("stage", ["pending_off", "pending_on", "pending_compare", "accumulation"])
+    def test_later_stage_retains_all_singles(monkeypatch, stage):
+        runner = module()
+        make, _ = factory()
+        original = runner.observe_pending_pair
+    
+        def fail(*args, **kwargs):
+            raise ValueError("late deliberate")
+    
+        if stage in ("pending_off", "pending_on"):
+            def observe(*args, **kwargs):
+                if kwargs["checkpoint"] == (stage == "pending_on"):
+                    fail()
+                return original(*args, **kwargs)
+            monkeypatch.setattr(runner, "observe_pending_pair", observe)
+        elif stage == "pending_compare":
+            monkeypatch.setattr(runner, "compare_pending_observations", fail)
+        else:
+            monkeypatch.setattr(runner, "run_accumulation_pair", fail)
+&gt;       with pytest.raises(runner.ParityCellError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:80: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[pending_compare]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873B5190&gt;
+stage = 'pending_compare'
+
+    @pytest.mark.parametrize("stage", ["pending_off", "pending_on", "pending_compare", "accumulation"])
+    def test_later_stage_retains_all_singles(monkeypatch, stage):
+        runner = module()
+        make, _ = factory()
+        original = runner.observe_pending_pair
+    
+        def fail(*args, **kwargs):
+            raise ValueError("late deliberate")
+    
+        if stage in ("pending_off", "pending_on"):
+            def observe(*args, **kwargs):
+                if kwargs["checkpoint"] == (stage == "pending_on"):
+                    fail()
+                return original(*args, **kwargs)
+            monkeypatch.setattr(runner, "observe_pending_pair", observe)
+        elif stage == "pending_compare":
+            monkeypatch.setattr(runner, "compare_pending_observations", fail)
+        else:
+            monkeypatch.setattr(runner, "run_accumulation_pair", fail)
+&gt;       with pytest.raises(runner.ParityCellError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:80: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_later_stage_retains_all_singles[accumulation]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B1873A7F50&gt;
+stage = 'accumulation'
+
+    @pytest.mark.parametrize("stage", ["pending_off", "pending_on", "pending_compare", "accumulation"])
+    def test_later_stage_retains_all_singles(monkeypatch, stage):
+        runner = module()
+        make, _ = factory()
+        original = runner.observe_pending_pair
+    
+        def fail(*args, **kwargs):
+            raise ValueError("late deliberate")
+    
+        if stage in ("pending_off", "pending_on"):
+            def observe(*args, **kwargs):
+                if kwargs["checkpoint"] == (stage == "pending_on"):
+                    fail()
+                return original(*args, **kwargs)
+            monkeypatch.setattr(runner, "observe_pending_pair", observe)
+        elif stage == "pending_compare":
+            monkeypatch.setattr(runner, "compare_pending_observations", fail)
+        else:
+            monkeypatch.setattr(runner, "run_accumulation_pair", fail)
+&gt;       with pytest.raises(runner.ParityCellError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_parity_cell' has no attribute 'ParityCellError'
+
+tests\test_alc_r0_parity_cell_failure.py:80: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_parity_cell_failure" name="test_success_still_has_original_complete_result" time="1.184" /></testsuite></testsuites>

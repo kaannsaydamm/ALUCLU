@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 40 items / 39 deselected / 1 selected
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure _
+tests\test_alc_r0_fixed_d_coordinator.py:470: in test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure
+    assert actor.closed and actor.process is None and actor.job is None
+E   assert (False)
+E    +  where False = <aluclu.alc_r0.fixed_d_coordinator._NativeActuator object at 0x0000019A8E5D01D0>.closed
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_integrated_retry_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+====================== 1 failed, 39 deselected in 0.54s =======================

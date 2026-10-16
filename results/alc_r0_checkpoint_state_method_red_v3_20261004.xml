@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="10.671" timestamp="2026-10-04T02:33:29.186579+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_many_ephemeral_bound_methods_have_stable_fingerprint" time="0.043" /><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_foreign_bound_method_state_not_silently_accepted" time="0.006"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_checkpoint_state.py:168: in test_foreign_bound_method_state_not_silently_accepted
+    with pytest.raises(CheckpointExecutionError, match="foreign"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase></testsuite></testsuites>

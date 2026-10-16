@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="13" time="18.426" timestamp="2026-10-04T04:10:13.198123+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[preparation-capsule-epsilon]" time="0.060"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_factor_dependency_state.py:94: in test_factor_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[preparation-capsule-width]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_factor_dependency_state.py:94: in test_factor_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[preparation-capsule-linear]" time="0.008"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_factor_dependency_state.py:94: in test_factor_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[preparation-capsule-autocast]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_factor_dependency_state.py:94: in test_factor_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[preparation-lora-linear]" time="0.008"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_factor_dependency_state.py:94: in test_factor_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[preparation-lora-autocast]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_factor_dependency_state.py:94: in test_factor_dependency_drift_denied_before_side_effect
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[replay-capsule-epsilon]" time="0.238"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_factor_dependency_state.py:75: in test_factor_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[replay-capsule-width]" time="0.020"><failure message="ValueError: hidden state must have [batch, sequence, 576] shape">tests\test_alc_r0_factor_dependency_state.py:93: in test_factor_dependency_drift_denied_before_side_effect
+    session.backward(output.square().sum())
+src\aluclu\alc_r0\checkpoint_execution.py:325: in backward
+    loss.backward(retain_graph=False)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_tensor.py:623: in backward
+    torch.autograd.backward(
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\autograd\__init__.py:395: in backward
+    _engine_run_backward(
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\autograd\graph.py:1072: in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\utils\checkpoint.py:1369: in unpack_hook
+    _run_fn_with_dynamo_disabled(frame.recompute_fn, *args)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_compile.py:54: in inner
+    return disable_fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\_dynamo\eval_frame.py:1548: in _fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\utils\checkpoint.py:1336: in _run_fn_with_dynamo_disabled
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\utils\checkpoint.py:1962: in recompute_fn
+    fn(*args, **kwargs)
+src\aluclu\alc_r0\checkpoint_execution.py:472: in bound
+    result = block(value, self._metadata)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_factor_dependency_state.py:82: in block
+    return operation(hidden)
+           ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\research_capsule.py:85: in apply
+    raise ValueError("hidden state must have [batch, sequence, 576] shape")
+E   ValueError: hidden state must have [batch, sequence, 576] shape</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[replay-capsule-linear]" time="0.017"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_factor_dependency_state.py:75: in test_factor_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[replay-capsule-autocast]" time="0.018"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_factor_dependency_state.py:75: in test_factor_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[replay-lora-linear]" time="0.020"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_factor_dependency_state.py:75: in test_factor_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_factor_dependency_drift_denied_before_side_effect[replay-lora-autocast]" time="0.020"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_factor_dependency_state.py:75: in test_factor_dependency_drift_denied_before_side_effect
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_factor_dependency_state" name="test_epsilon_counterexample_changes_bound_math_and_fingerprint" time="0.008"><failure message="AssertionError: assert '56dd474ad837128bf930a21abf33ffb22b0edeac2d7df9b5c56fccfb8d6fba98' != '56dd474ad837128bf930a21abf33ffb22b0edeac2d7df9b5c56fccfb8d6fba98'&#10; +  where '56dd474ad837128bf930a21abf33ffb22b0edeac2d7df9b5c56fccfb8d6fba98' = &lt;function make_owner.&lt;locals&gt;.getter at 0x00000290076534C0&gt;()">tests\test_alc_r0_factor_dependency_state.py:106: in test_epsilon_counterexample_changes_bound_math_and_fingerprint
+    assert getter() != before
+E   AssertionError: assert '56dd474ad837128bf930a21abf33ffb22b0edeac2d7df9b5c56fccfb8d6fba98' != '56dd474ad837128bf930a21abf33ffb22b0edeac2d7df9b5c56fccfb8d6fba98'
+E    +  where '56dd474ad837128bf930a21abf33ffb22b0edeac2d7df9b5c56fccfb8d6fba98' = &lt;function make_owner.&lt;locals&gt;.getter at 0x00000290076534C0&gt;()</failure></testcase></testsuite></testsuites>

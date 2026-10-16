@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="28" time="16.203" timestamp="2026-10-11T15:32:37.634632+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_canonical_runtime_inventory" time="0.628"><failure message="AssertionError: assert {'ok': False,...fore opening'} == {'ok': True, ...unt': 2, ...}}&#10;  &#10;  Differing items:&#10;  {'ok': False} != {'ok': True}&#10;  Left contains 1 more item:&#10;  {'error': 'runtime file changed before opening'}&#10;  Right contains 1 more item:&#10;  {'evidence': {'absolute_root': 'C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_exact_canonical_runtime_i0/installed',...&#10;  &#10;  ...Full output truncated (6 lines hidden), use '-vv' to show">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_exact_canonical_runtime_i0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_exact_canonical_runtime_i0/installed')
+
+    def test_exact_canonical_runtime_inventory(tmp_path, tree):
+        result = inspect_owned(tmp_path, tree)
+        rows = [dict(path='python.dll',kind='file',byte_length=7,
+                     sha256=hashlib.sha256(b'runtime').hexdigest())]
+&gt;       assert result == dict(ok=True, evidence=dict(component='python-venv',
+            absolute_root=tree.as_posix(), inventory_sha256=hashlib.sha256(canonical_json_bytes(rows)).hexdigest(),
+            entry_count=2, file_count=1, logical_file_bytes=7))
+E       AssertionError: assert {'ok': False,...fore opening'} == {'ok': True, ...unt': 2, ...}}
+E         
+E         Differing items:
+E         {'ok': False} != {'ok': True}
+E         Left contains 1 more item:
+E         {'error': 'runtime file changed before opening'}
+E         Right contains 1 more item:
+E         {'evidence': {'absolute_root': 'C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_exact_canonical_runtime_i0/installed',...
+E         
+E         ...Full output truncated (6 lines hidden), use '-vv' to show
+
+tests\test_alc_r0_runtime_tree_inventory.py:74: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[entry_count-0]" time="0.001" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[entry_count-True]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[entry_count-65537]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[path_bytes-0]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[path_bytes-4194305]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[file_bytes--1]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[file_bytes-4294967297]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[total_file_bytes-17179869185]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_finite_bounds[total_file_bytes-1.0]" time="0.000" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_exact_all_bounds" time="0.590"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_exact_all_bounds0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_exact_all_bounds0/installed')
+
+    def test_exact_all_bounds(tmp_path, tree):
+        result = inspect_owned(tmp_path, tree, bounds=dict(entry_count=2,path_bytes=10,
+                                                         file_bytes=7,total_file_bytes=7))
+&gt;       assert result['ok'] and result['evidence']['logical_file_bytes'] == 7
+E       assert (False)
+
+tests\test_alc_r0_runtime_tree_inventory.py:95: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_one_byte_or_node_over_bound_denies[entry_count-1]" time="0.643" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_one_byte_or_node_over_bound_denies[path_bytes-9]" time="0.609" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_one_byte_or_node_over_bound_denies[file_bytes-6]" time="0.843" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_one_byte_or_node_over_bound_denies[total_file_bytes-6]" time="0.885" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_empty_directories_are_counted_and_hashed" time="0.989"><failure message="KeyError: 'evidence'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_empty_directories_are_cou0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_empty_directories_are_cou0/installed')
+
+    def test_empty_directories_are_counted_and_hashed(tmp_path, tree):
+        (tree / 'empty').mkdir()
+        result = inspect_owned(tmp_path, tree, bounds=dict(entry_count=3,path_bytes=15,
+                                                         file_bytes=7,total_file_bytes=7))
+        rows = [dict(path='empty',kind='directory',byte_length=0,sha256=None),
+                dict(path='python.dll',kind='file',byte_length=7,
+                     sha256=hashlib.sha256(b'runtime').hexdigest())]
+&gt;       assert result['evidence']['entry_count'] == 3
+               ^^^^^^^^^^^^^^^^^^
+E       KeyError: 'evidence'
+
+tests\test_alc_r0_runtime_tree_inventory.py:114: KeyError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_empty_directory_cannot_bypass_node_bound" time="0.853" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_zero_length_file_and_zero_byte_allowances" time="0.935"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_zero_length_file_and_zero0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_zero_length_file_and_zero0/installed')
+
+    def test_zero_length_file_and_zero_byte_allowances(tmp_path, tree):
+        (tree / 'python.dll').write_bytes(b'')
+        result = inspect_owned(tmp_path, tree, bounds=dict(entry_count=2,path_bytes=10,
+                                                         file_bytes=0,total_file_bytes=0))
+&gt;       assert result['ok'] and result['evidence']['logical_file_bytes'] == 0
+E       assert (False)
+
+tests\test_alc_r0_runtime_tree_inventory.py:129: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_multiple_chunks_and_binary_unicode_path" time="0.988"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_multiple_chunks_and_binar0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_multiple_chunks_and_binar0/installed')
+
+    def test_multiple_chunks_and_binary_unicode_path(tmp_path, tree):
+        data = b'\0\xff' * 65537
+        (tree / 'python.dll').unlink()
+        (tree / 'çalışma.pyd').write_bytes(data)
+        result = inspect_owned(tmp_path, tree, bounds=dict(entry_count=2,path_bytes=100,
+            file_bytes=len(data),total_file_bytes=len(data)))
+        rows = [dict(path='çalışma.pyd',kind='file',byte_length=len(data),
+                     sha256=hashlib.sha256(data).hexdigest())]
+&gt;       assert result['ok'] and result['evidence']['inventory_sha256'] == hashlib.sha256(canonical_json_bytes(rows)).hexdigest()
+E       assert (False)
+
+tests\test_alc_r0_runtime_tree_inventory.py:140: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_hardlinks_charge_each_logical_path" time="0.873"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_hardlinks_charge_each_log0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_hardlinks_charge_each_log0/installed')
+
+    def test_hardlinks_charge_each_logical_path(tmp_path, tree):
+        os.link(tree / 'python.dll', tree / 'alias.dll')
+        result = inspect_owned(tmp_path, tree, bounds=dict(entry_count=3,path_bytes=100,
+                                                         file_bytes=7,total_file_bytes=14))
+&gt;       assert result['ok'] and result['evidence']['file_count'] == 2
+E       assert (False)
+
+tests\test_alc_r0_runtime_tree_inventory.py:147: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_junction_denies_without_following_target" time="1.009" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_invalid_inputs_deny[expired]" time="0.885" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_invalid_inputs_deny[component]" time="0.956" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_invalid_inputs_deny[relative]" time="0.761" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_invalid_inputs_deny[missing]" time="0.741" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_invalid_inputs_deny[file]" time="0.906" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_invalid_inputs_deny[empty]" time="0.880" /><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_changed_path_and_bytes_change_inventory" time="0.904"><failure message="KeyError: 'evidence'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_changed_path_and_bytes_ch0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-45/test_changed_path_and_bytes_ch0/installed')
+
+    def test_changed_path_and_bytes_change_inventory(tmp_path, tree):
+        first = tmp_path / 'first'
+        first.mkdir()
+&gt;       before = inspect_owned(first, tree)['evidence']['inventory_sha256']
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'evidence'
+
+tests\test_alc_r0_runtime_tree_inventory.py:177: KeyError</failure></testcase></testsuite></testsuites>

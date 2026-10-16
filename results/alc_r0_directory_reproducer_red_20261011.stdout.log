@@ -1,0 +1,285 @@
+FFFFFFFFFFFFF                                                            [100%]
+================================== FAILURES ===================================
+______________ test_closed_creation_is_bounded_and_exclusive[0] _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_closed_creation_is_bounde0')
+count = 0
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_closed_creation_is_bounded_and_exclusive(tmp_path, count):
+>       path = create_case(tmp_path, count)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_closed_creation_is_bounde0')
+count = 0
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+______________ test_closed_creation_is_bounded_and_exclusive[16] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_closed_creation_is_bounde1')
+count = 16
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_closed_creation_is_bounded_and_exclusive(tmp_path, count):
+>       path = create_case(tmp_path, count)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_closed_creation_is_bounde1')
+count = 16
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+______________ test_closed_creation_is_bounded_and_exclusive[48] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_closed_creation_is_bounde2')
+count = 48
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_closed_creation_is_bounded_and_exclusive(tmp_path, count):
+>       path = create_case(tmp_path, count)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_closed_creation_is_bounde2')
+count = 48
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+________________ test_foreign_counts_denied_before_writes[-1] _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef0')
+count = -1
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_foreign_counts_denied_before_writes(tmp_path, count):
+        with pytest.raises(ValueError):
+>           create_case(tmp_path, count)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef0')
+count = -1
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_________________ test_foreign_counts_denied_before_writes[1] _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef1')
+count = 1
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_foreign_counts_denied_before_writes(tmp_path, count):
+        with pytest.raises(ValueError):
+>           create_case(tmp_path, count)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef1')
+count = 1
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+________________ test_foreign_counts_denied_before_writes[49] _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef2')
+count = 49
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_foreign_counts_denied_before_writes(tmp_path, count):
+        with pytest.raises(ValueError):
+>           create_case(tmp_path, count)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef2')
+count = 49
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_______________ test_foreign_counts_denied_before_writes[True] ________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef3')
+count = True
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_foreign_counts_denied_before_writes(tmp_path, count):
+        with pytest.raises(ValueError):
+>           create_case(tmp_path, count)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef3')
+count = True
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+________________ test_foreign_counts_denied_before_writes[16] _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef4')
+count = '16'
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_foreign_counts_denied_before_writes(tmp_path, count):
+        with pytest.raises(ValueError):
+>           create_case(tmp_path, count)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_foreign_counts_denied_bef4')
+count = '16'
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_____________ test_sequence_preserves_raw_queries_and_payload[0] ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_sequence_preserves_raw_qu0')
+count = 0
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_sequence_preserves_raw_queries_and_payload(tmp_path, count):
+>       path = create_case(tmp_path, count)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_sequence_preserves_raw_qu0')
+count = 0
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_____________ test_sequence_preserves_raw_queries_and_payload[16] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_sequence_preserves_raw_qu1')
+count = 16
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_sequence_preserves_raw_queries_and_payload(tmp_path, count):
+>       path = create_case(tmp_path, count)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_sequence_preserves_raw_qu1')
+count = 16
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_____________ test_sequence_preserves_raw_queries_and_payload[48] _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_sequence_preserves_raw_qu2')
+count = 48
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_sequence_preserves_raw_queries_and_payload(tmp_path, count):
+>       path = create_case(tmp_path, count)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_sequence_preserves_raw_qu2')
+count = 48
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_____________________ test_unexpected_membership_refused ______________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_unexpected_membership_ref0')
+
+    def test_unexpected_membership_refused(tmp_path):
+>       path = create_case(tmp_path, 0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_unexpected_membership_ref0')
+count = 0
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+_______________________ test_corrupted_payload_refused ________________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_corrupted_payload_refused0')
+
+    def test_corrupted_payload_refused(tmp_path):
+>       path = create_case(tmp_path, 16)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-85/test_corrupted_payload_refused0')
+count = 16
+
+    def create_case(root, count):
+>       raise NotImplementedError('scratch creation contract RED')
+E       NotImplementedError: scratch creation contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:19: NotImplementedError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_closed_creation_is_bounded_and_exclusive[0]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_closed_creation_is_bounded_and_exclusive[16]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_closed_creation_is_bounded_and_exclusive[48]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_foreign_counts_denied_before_writes[-1]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_foreign_counts_denied_before_writes[1]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_foreign_counts_denied_before_writes[49]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_foreign_counts_denied_before_writes[True]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_foreign_counts_denied_before_writes[16]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_sequence_preserves_raw_queries_and_payload[0]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_sequence_preserves_raw_queries_and_payload[16]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_sequence_preserves_raw_queries_and_payload[48]
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_unexpected_membership_refused
+FAILED tests/test_alc_r0_directory_metadata_reproducer.py::test_corrupted_payload_refused

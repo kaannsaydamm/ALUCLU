@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1040.458" timestamp="2026-10-06T15:36:33.263480+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_parity_integration" name="test_full_random_qv_cell_real_backward_pending_and_adamw" time="1030.097"><failure message="Failed: random CPU integration must not initialize or seed CUDA">def test_full_random_qv_cell_real_backward_pending_and_adamw():
+        def forbidden(*args, **kwargs):
+            pytest.fail("random CPU integration must not initialize or seed CUDA")
+    
+        rng, threads = torch.get_rng_state().clone(), torch.get_num_threads()
+        with pytest.MonkeyPatch.context() as gpu_guard:
+            gpu_guard.setattr(torch.cuda, "manual_seed_all", forbidden)
+            gpu_guard.setattr(torch.cuda, "_lazy_init", forbidden)
+            with random_cpu_host() as host:
+                before = _base_digest(host.model)
+                inputs = fixtures()
+&gt;               result = run_reference_parity_suite(
+                    host,
+                    inputs,
+                    exact=True,
+                    expected_fixture_digest=_json_digest([asdict(f) for f in inputs]),
+                )
+
+tests\test_alc_r0_reference_parity_integration.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reference_parity_suite.py:212: in run_reference_parity_suite
+    cell = run_parity_cell(factory.make, fixtures, exact=exact)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_cell.py:331: in run_parity_cell
+    accumulation = run_accumulation_pair(
+src\aluclu\alc_r0\checkpoint_accumulation_pair.py:114: in run_accumulation_pair
+    reference_step = step_accumulation(off, reference)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_accumulation_step.py:108: in step_accumulation
+    optimizer.step()
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:549: in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:79: in _use_grad
+    ret = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\adam.py:222: in step
+    self._accelerator_graph_capture_health_check()
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:485: in _accelerator_graph_capture_health_check
+    capturing = torch.accelerator.current_stream().is_capturing()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\accelerator\__init__.py:232: in current_stream
+    device_index = _get_device_index(device, optional=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\accelerator\_utils.py:27: in _get_device_index
+    return torch.accelerator.current_device_index()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\accelerator\__init__.py:141: in current_device_index
+    return torch._C._accelerator_getDeviceIndex()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}
+
+    def forbidden(*args, **kwargs):
+&gt;       pytest.fail("random CPU integration must not initialize or seed CUDA")
+E       Failed: random CPU integration must not initialize or seed CUDA
+
+tests\test_alc_r0_reference_parity_integration.py:26: Failed</failure></testcase></testsuite></testsuites>

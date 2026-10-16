@@ -1,0 +1,7 @@
+................                                                         [100%]
+============================ slowest 10 durations =============================
+6.76s call     tests/test_alc_r0_runtime_tree_inventory.py::test_changed_path_and_bytes_change_inventory
+0.01s setup    tests/test_alc_r0_runtime_tree_inventory.py::test_changed_path_and_bytes_change_inventory
+0.01s call     tests/test_alc_r0_runtime_tree_inventory.py::test_cross_source_identity_exception_is_only_windows_ctime[0]
+
+(7 durations < 0.005s hidden.  Use -vv to show these durations.)

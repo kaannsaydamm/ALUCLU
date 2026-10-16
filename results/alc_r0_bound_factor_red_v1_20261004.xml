@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="21" skipped="0" tests="21" time="32.125" timestamp="2026-10-04T02:00:19.263319+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype0-14-ResearchCapsuleV0]" time="0.032"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 14
+dtype = torch.float32
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype0-14-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 14
+dtype = torch.float32
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype0-29-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 29
+dtype = torch.float32
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype0-29-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 29
+dtype = torch.float32
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype1-14-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 14
+dtype = torch.bfloat16
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype1-14-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 14
+dtype = torch.bfloat16
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype1-29-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 29
+dtype = torch.bfloat16
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_bound_math_and_gradients_equal_live_path[dtype1-29-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 29
+dtype = torch.bfloat16
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+    def test_bound_math_and_gradients_equal_live_path(arm, port, dtype):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_binding_captures_parameters_not_mutable_factor_module[14-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 14
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_binding_captures_parameters_not_mutable_factor_module(arm, port):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_binding_captures_parameters_not_mutable_factor_module[14-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 14
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_binding_captures_parameters_not_mutable_factor_module(arm, port):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_binding_captures_parameters_not_mutable_factor_module[29-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 29
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_binding_captures_parameters_not_mutable_factor_module(arm, port):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_binding_captures_parameters_not_mutable_factor_module[29-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 29
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_binding_captures_parameters_not_mutable_factor_module(arm, port):
+&gt;       factors, _, bound, live = make_operation(arm, port)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_q_binding_captures_projection_module_not_attention_lookup" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">def test_q_binding_captures_projection_module_not_attention_lookup():
+&gt;       _, attention, bound, live = make_operation(MatchedQProjLoRA)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_checkpoint_replay_uses_original_parameters_with_frozen_input[14-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 14
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_checkpoint_replay_uses_original_parameters_with_frozen_input(arm, port):
+&gt;       factors, attention, bound, _ = make_operation(arm, port)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_checkpoint_replay_uses_original_parameters_with_frozen_input[14-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 14
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_checkpoint_replay_uses_original_parameters_with_frozen_input(arm, port):
+&gt;       factors, attention, bound, _ = make_operation(arm, port)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_checkpoint_replay_uses_original_parameters_with_frozen_input[29-ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;, port = 29
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_checkpoint_replay_uses_original_parameters_with_frozen_input(arm, port):
+&gt;       factors, attention, bound, _ = make_operation(arm, port)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_checkpoint_replay_uses_original_parameters_with_frozen_input[29-MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;, port = 29
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    @pytest.mark.parametrize("port", [14, 29])
+    def test_checkpoint_replay_uses_original_parameters_with_frozen_input(arm, port):
+&gt;       factors, attention, bound, _ = make_operation(arm, port)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_unselected_port_rejected_at_binding[ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    def test_unselected_port_rejected_at_binding(arm):
+        factors = arm(ports=(14,), rank=4, seed=0)
+        with pytest.raises(ValueError, match="port"):
+            if arm is ResearchCapsuleV0:
+&gt;               factors.bind_port(29)
+                ^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_unselected_port_rejected_at_binding[MatchedQProjLoRA]" time="0.003"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    def test_unselected_port_rejected_at_binding(arm):
+        factors = arm(ports=(14,), rank=4, seed=0)
+        with pytest.raises(ValueError, match="port"):
+            if arm is ResearchCapsuleV0:
+                factors.bind_port(29)
+            else:
+&gt;               factors.bind_q_projection(29, SimpleNamespace(q_proj=FrozenProjection()))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_captured_factor_dtype_revalidated_at_execution[ResearchCapsuleV0]" time="0.002"><failure message="AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'">arm = &lt;class 'aluclu.alc_r0.research_capsule.ResearchCapsuleV0'&gt;
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    def test_captured_factor_dtype_revalidated_at_execution(arm):
+&gt;       factors, _, bound, _ = make_operation(arm)
+                               ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:30: in make_operation
+    bound = factors.bind_port(port)
+            ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ResearchCapsuleV0(
+  (factors): ModuleDict(
+    (14): _PortFactors()
+    (29): _PortFactors()
+  )
+)
+name = 'bind_port'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'ResearchCapsuleV0' object has no attribute 'bind_port'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_bound_factor_operations" name="test_captured_factor_dtype_revalidated_at_execution[MatchedQProjLoRA]" time="0.002"><failure message="AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?">arm = &lt;class 'aluclu.alc_r0.matched_lora.MatchedQProjLoRA'&gt;
+
+    @pytest.mark.parametrize("arm", [ResearchCapsuleV0, MatchedQProjLoRA])
+    def test_captured_factor_dtype_revalidated_at_execution(arm):
+&gt;       factors, _, bound, _ = make_operation(arm)
+                               ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_bound_factor_operations.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_bound_factor_operations.py:33: in make_operation
+    bound = factors.bind_q_projection(port, attention)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MatchedQProjLoRA(
+  (factors): ModuleDict(
+    (14): _QFactors()
+    (29): _QFactors()
+  )
+)
+name = 'bind_q_projection'
+
+    def __getattr__(self, name: str) -&gt; Union[Tensor, "Module"]:
+        if "_parameters" in self.__dict__:
+            _parameters = self.__dict__["_parameters"]
+            if name in _parameters:
+                return _parameters[name]
+        if "_buffers" in self.__dict__:
+            _buffers = self.__dict__["_buffers"]
+            if name in _buffers:
+                return _buffers[name]
+        if "_modules" in self.__dict__:
+            modules = self.__dict__["_modules"]
+            if name in modules:
+                return modules[name]
+&gt;       raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+E       AttributeError: 'MatchedQProjLoRA' object has no attribute 'bind_q_projection'. Did you mean: 'q_projection'?
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: AttributeError</failure></testcase></testsuite></testsuites>

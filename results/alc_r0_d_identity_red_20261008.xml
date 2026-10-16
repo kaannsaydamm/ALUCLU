@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="0.458" timestamp="2026-10-08T19:21:58.508836+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_d_reservation_identity" name="test_exact_d_resource_identity_is_accepted_without_execution[alc-r0-qualification-v1-d-cpu-fresh1-s20260916]" time="0.011"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: invalid declaration identity">run_id = 'alc-r0-qualification-v1-d-cpu-fresh1-s20260916'
+
+    @pytest.mark.parametrize("run_id", IDS)
+    def test_exact_d_resource_identity_is_accepted_without_execution(run_id):
+        data = declaration(run_id)
+&gt;       replay = ReservationReplay((data,))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_d_reservation_identity.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reservation_state.py:142: in __init__
+    item = _declaration(data)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = b'{"attempt_id":"a001","charge_envelope_ns":"2710000000000","cleanup_ceiling_ns":"10000000000","declaration_root":"aaa...916","segment":"initial","stderr_limit_bytes":"20","stdout_limit_bytes":"20","useful_wall_ceiling_ns":"2700000000000"}'
+
+    def _declaration(data: bytes) -&gt; dict:
+        item = _parse(data)
+        if item.keys() != _DECL:
+            raise ReservationStateError("exact declaration fields required")
+        if (item["experiment_id"] != "alc-r0-smollm2-135m-v1"
+                or not _matches(item["reservation_id"], _ID)
+                or not _matches(item["run_id"], _RUN)
+                or len(item["run_id"]) &gt; 128
+                or item["attempt_id"] not in ("a001", "a002", "a003")
+                or item["segment"] not in ("initial", "resume")
+                or item["device"] not in ("cpu", "gpu")
+                or not _matches(item["declaration_root"], _ROOT)):
+&gt;           raise ReservationStateError("invalid declaration identity")
+E           aluclu.alc_r0.reservation_state.ReservationStateError: invalid declaration identity
+
+src\aluclu\alc_r0\reservation_state.py:117: ReservationStateError</failure></testcase><testcase classname="tests.test_alc_r0_d_reservation_identity" name="test_exact_d_resource_identity_is_accepted_without_execution[alc-r0-qualification-v1-d-gpu-fresh1-s20260916]" time="0.001"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: invalid declaration identity">run_id = 'alc-r0-qualification-v1-d-gpu-fresh1-s20260916'
+
+    @pytest.mark.parametrize("run_id", IDS)
+    def test_exact_d_resource_identity_is_accepted_without_execution(run_id):
+        data = declaration(run_id)
+&gt;       replay = ReservationReplay((data,))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_d_reservation_identity.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reservation_state.py:142: in __init__
+    item = _declaration(data)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = b'{"attempt_id":"a001","charge_envelope_ns":"2710000000000","cleanup_ceiling_ns":"10000000000","declaration_root":"aaa...916","segment":"initial","stderr_limit_bytes":"20","stdout_limit_bytes":"20","useful_wall_ceiling_ns":"2700000000000"}'
+
+    def _declaration(data: bytes) -&gt; dict:
+        item = _parse(data)
+        if item.keys() != _DECL:
+            raise ReservationStateError("exact declaration fields required")
+        if (item["experiment_id"] != "alc-r0-smollm2-135m-v1"
+                or not _matches(item["reservation_id"], _ID)
+                or not _matches(item["run_id"], _RUN)
+                or len(item["run_id"]) &gt; 128
+                or item["attempt_id"] not in ("a001", "a002", "a003")
+                or item["segment"] not in ("initial", "resume")
+                or item["device"] not in ("cpu", "gpu")
+                or not _matches(item["declaration_root"], _ROOT)):
+&gt;           raise ReservationStateError("invalid declaration identity")
+E           aluclu.alc_r0.reservation_state.ReservationStateError: invalid declaration identity
+
+src\aluclu\alc_r0\reservation_state.py:117: ReservationStateError</failure></testcase><testcase classname="tests.test_alc_r0_d_reservation_identity" name="test_exact_d_resource_identity_is_accepted_without_execution[alc-r0-qualification-v1-d-gpu-fresh2-s20260916]" time="0.001"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: invalid declaration identity">run_id = 'alc-r0-qualification-v1-d-gpu-fresh2-s20260916'
+
+    @pytest.mark.parametrize("run_id", IDS)
+    def test_exact_d_resource_identity_is_accepted_without_execution(run_id):
+        data = declaration(run_id)
+&gt;       replay = ReservationReplay((data,))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_d_reservation_identity.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reservation_state.py:142: in __init__
+    item = _declaration(data)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = b'{"attempt_id":"a001","charge_envelope_ns":"2710000000000","cleanup_ceiling_ns":"10000000000","declaration_root":"aaa...916","segment":"initial","stderr_limit_bytes":"20","stdout_limit_bytes":"20","useful_wall_ceiling_ns":"2700000000000"}'
+
+    def _declaration(data: bytes) -&gt; dict:
+        item = _parse(data)
+        if item.keys() != _DECL:
+            raise ReservationStateError("exact declaration fields required")
+        if (item["experiment_id"] != "alc-r0-smollm2-135m-v1"
+                or not _matches(item["reservation_id"], _ID)
+                or not _matches(item["run_id"], _RUN)
+                or len(item["run_id"]) &gt; 128
+                or item["attempt_id"] not in ("a001", "a002", "a003")
+                or item["segment"] not in ("initial", "resume")
+                or item["device"] not in ("cpu", "gpu")
+                or not _matches(item["declaration_root"], _ROOT)):
+&gt;           raise ReservationStateError("invalid declaration identity")
+E           aluclu.alc_r0.reservation_state.ReservationStateError: invalid declaration identity
+
+src\aluclu\alc_r0\reservation_state.py:117: ReservationStateError</failure></testcase></testsuite></testsuites>

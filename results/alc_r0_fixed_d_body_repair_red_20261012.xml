@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="8" time="0.318" timestamp="2026-10-12T23:53:19.635942+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_missing_typed_fields_fall_back[failure]" time="0.003"><failure message="AttributeError: 'QualificationError' object has no attribute 'failure'">missing = 'failure'
+
+    @pytest.mark.parametrize('missing', ['failure', 'stage'])
+    def test_missing_typed_fields_fall_back(missing):
+        error = QualificationError.__new__(QualificationError)
+        if missing == 'stage':
+            error.failure = Failure.__new__(Failure)
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == ('tokenizer', 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_body.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+error = QualificationError(), fallback_stage = 'tokenizer'
+diagnostic_types = (&lt;class 'test_alc_r0_fixed_d_body.QualificationError'&gt;, &lt;class 'test_alc_r0_fixed_d_body.QualificationInterrupted'&gt;, &lt;class 'test_alc_r0_fixed_d_body.Failure'&gt;, &lt;class 'test_alc_r0_fixed_d_body.OOM'&gt;)
+
+    def _diagnostic(error, fallback_stage, diagnostic_types):
+        """Private classification-only seam; never invokes a supplied callable."""
+        qualification_error, qualification_interrupt, failure_type, oom_error = diagnostic_types
+        stage = fallback_stage
+        if type(error) in (qualification_error, qualification_interrupt):
+&gt;           failure = object.__getattribute__(error, 'failure')
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'QualificationError' object has no attribute 'failure'
+
+src\aluclu\alc_r0\fixed_d_worker.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_missing_typed_fields_fall_back[stage]" time="0.001"><failure message="AttributeError: 'Failure' object has no attribute 'stage'">missing = 'stage'
+
+    @pytest.mark.parametrize('missing', ['failure', 'stage'])
+    def test_missing_typed_fields_fall_back(missing):
+        error = QualificationError.__new__(QualificationError)
+        if missing == 'stage':
+            error.failure = Failure.__new__(Failure)
+&gt;       assert worker()._diagnostic(error, 'tokenizer', TYPES) == ('tokenizer', 'runtime')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_body.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+error = QualificationError(), fallback_stage = 'tokenizer'
+diagnostic_types = (&lt;class 'test_alc_r0_fixed_d_body.QualificationError'&gt;, &lt;class 'test_alc_r0_fixed_d_body.QualificationInterrupted'&gt;, &lt;class 'test_alc_r0_fixed_d_body.Failure'&gt;, &lt;class 'test_alc_r0_fixed_d_body.OOM'&gt;)
+
+    def _diagnostic(error, fallback_stage, diagnostic_types):
+        """Private classification-only seam; never invokes a supplied callable."""
+        qualification_error, qualification_interrupt, failure_type, oom_error = diagnostic_types
+        stage = fallback_stage
+        if type(error) in (qualification_error, qualification_interrupt):
+            failure = object.__getattribute__(error, 'failure')
+            if type(failure) is failure_type:
+&gt;               candidate = object.__getattribute__(failure, 'stage')
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AttributeError: 'Failure' object has no attribute 'stage'
+
+src\aluclu\alc_r0\fixed_d_worker.py:100: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_terminal_failure_real_codec[False-runtime-worker_context-2]" time="0.003"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'">expired = False, category = 'runtime', stage = 'worker_context', code = 2
+
+    @pytest.mark.parametrize('expired,category,stage,code', [
+        (False, 'runtime', 'worker_context', 2),
+        (True, 'oom', 'bootstrap_deadline', 2),
+        (True, 'interrupted', 'worker_context', 130),
+    ])
+    def test_terminal_failure_real_codec(expired, category, stage, code):
+        req = decode_d_request(canonical_json_bytes(request()))
+        deadline = 1 if expired else time.monotonic_ns() + 10**9
+&gt;       actual_code, result = worker()._terminal_failure(req, 'worker_context', category, deadline)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'
+
+tests\test_alc_r0_fixed_d_body.py:121: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_terminal_failure_real_codec[True-oom-bootstrap_deadline-2]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'">expired = True, category = 'oom', stage = 'bootstrap_deadline', code = 2
+
+    @pytest.mark.parametrize('expired,category,stage,code', [
+        (False, 'runtime', 'worker_context', 2),
+        (True, 'oom', 'bootstrap_deadline', 2),
+        (True, 'interrupted', 'worker_context', 130),
+    ])
+    def test_terminal_failure_real_codec(expired, category, stage, code):
+        req = decode_d_request(canonical_json_bytes(request()))
+        deadline = 1 if expired else time.monotonic_ns() + 10**9
+&gt;       actual_code, result = worker()._terminal_failure(req, 'worker_context', category, deadline)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'
+
+tests\test_alc_r0_fixed_d_body.py:121: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_terminal_failure_real_codec[True-interrupted-worker_context-130]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'">expired = True, category = 'interrupted', stage = 'worker_context', code = 130
+
+    @pytest.mark.parametrize('expired,category,stage,code', [
+        (False, 'runtime', 'worker_context', 2),
+        (True, 'oom', 'bootstrap_deadline', 2),
+        (True, 'interrupted', 'worker_context', 130),
+    ])
+    def test_terminal_failure_real_codec(expired, category, stage, code):
+        req = decode_d_request(canonical_json_bytes(request()))
+        deadline = 1 if expired else time.monotonic_ns() + 10**9
+&gt;       actual_code, result = worker()._terminal_failure(req, 'worker_context', category, deadline)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'
+
+tests\test_alc_r0_fixed_d_body.py:121: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_terminal_failure_invalid_request_not_fabricated" time="0.000"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'">def test_terminal_failure_invalid_request_not_fabricated():
+        req = DRequest(canonical_json_bytes(request()), 'b' * 64)
+        with pytest.raises(ValueError):
+&gt;           worker()._terminal_failure(req, 'worker_context', 'runtime', 1)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_worker' has no attribute '_terminal_failure'
+
+tests\test_alc_r0_fixed_d_body.py:132: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_terminal_failure_static_max_two_encodes_no_recursion" time="0.002"><failure message="StopIteration">def test_terminal_failure_static_max_two_encodes_no_recursion():
+        tree = ast.parse(Path(worker().__file__).read_text(encoding='utf-8'))
+&gt;       body = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                    and node.name == '_terminal_failure')
+E       StopIteration
+
+tests\test_alc_r0_fixed_d_body.py:137: StopIteration</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_body" name="test_body_static_fixed_call_is_not_dynamic_execution_proof" time="0.002"><failure message="AssertionError: assert (False)&#10; +  where False = isinstance(&lt;ast.Assign object at 0x000001DE207DAF90&gt;, &lt;class 'ast.Expr'&gt;)&#10; +    where &lt;class 'ast.Expr'&gt; = ast.Expr">def test_body_static_fixed_call_is_not_dynamic_execution_proof():
+        tree = ast.parse(Path(worker().__file__).read_text(encoding='utf-8'))
+        body = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                    and node.name == '_execute_request')
+        first = body.body[1] if isinstance(body.body[0], ast.Expr) and isinstance(
+            body.body[0].value, ast.Constant) else body.body[0]
+        assert isinstance(first, ast.Expr) and isinstance(first.value, ast.Call)
+        assert first.value.func.id == '_require_operator_handoff'
+        calls = [node for node in ast.walk(body) if isinstance(node, ast.Call)
+                 and isinstance(node.func, ast.Name) and node.func.id == 'run_parity_qualification']
+        assert len(calls) == 1
+        parent = next(node for node in ast.walk(body) if isinstance(node, ast.Try))
+        call_statement = next(i for i, node in enumerate(parent.body)
+                              if isinstance(node, ast.Assign) and node.value is calls[0])
+        preceding = parent.body[call_statement - 1]
+&gt;       assert isinstance(preceding, ast.Expr) and preceding.value.func.id == '_check_original_deadline'
+E       AssertionError: assert (False)
+E        +  where False = isinstance(&lt;ast.Assign object at 0x000001DE207DAF90&gt;, &lt;class 'ast.Expr'&gt;)
+E        +    where &lt;class 'ast.Expr'&gt; = ast.Expr
+
+tests\test_alc_r0_fixed_d_body.py:161: AssertionError</failure></testcase></testsuite></testsuites>

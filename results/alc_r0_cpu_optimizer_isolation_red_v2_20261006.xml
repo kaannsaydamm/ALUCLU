@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.551" timestamp="2026-10-06T16:09:20.303714+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_cpu_optimizer_isolation" name="test_cpu_adamw_step_never_initializes_cuda" time="1.637"><failure message="RuntimeError: CPU optimizer must not initialize or seed CUDA">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D68FE12780&gt;
+
+    def test_cpu_adamw_step_never_initializes_cuda(monkeypatch):
+        def forbidden(*args, **kwargs):
+            raise RuntimeError("CPU optimizer must not initialize or seed CUDA")
+    
+        def forbidden_seed(*args, **kwargs):
+            raise RuntimeError("CPU optimizer must not seed CUDA")
+    
+        monkeypatch.setattr(torch.cuda, "_lazy_init", forbidden)
+        monkeypatch.setattr(torch.cuda, "manual_seed_all", forbidden_seed)
+        parameter = torch.nn.Parameter(torch.tensor([1.0, -1.0], device="cpu"))
+        before = parameter.detach().clone()
+        parameter.grad = torch.tensor([0.25, -0.5], device="cpu")
+        optimizer = torch.optim.AdamW(
+            [parameter],
+            lr=3e-4,
+            betas=(0.9, 0.999),
+            eps=1e-8,
+            weight_decay=0,
+            foreach=False,
+            fused=False,
+        )
+        torch.nn.utils.clip_grad_norm_(
+            [parameter], 1.0, error_if_nonfinite=True, foreach=False
+        )
+&gt;       optimizer.step()
+
+tests\test_alc_r0_cpu_optimizer_isolation.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:549: in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:79: in _use_grad
+    ret = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\adam.py:222: in step
+    self._accelerator_graph_capture_health_check()
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\optim\optimizer.py:485: in _accelerator_graph_capture_health_check
+    capturing = torch.accelerator.current_stream().is_capturing()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\accelerator\__init__.py:232: in current_stream
+    device_index = _get_device_index(device, optional=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\accelerator\_utils.py:27: in _get_device_index
+    return torch.accelerator.current_device_index()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\accelerator\__init__.py:141: in current_device_index
+    return torch._C._accelerator_getDeviceIndex()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}
+
+    def forbidden(*args, **kwargs):
+&gt;       raise RuntimeError("CPU optimizer must not initialize or seed CUDA")
+E       RuntimeError: CPU optimizer must not initialize or seed CUDA
+
+tests\test_alc_r0_cpu_optimizer_isolation.py:8: RuntimeError</failure></testcase></testsuite></testsuites>

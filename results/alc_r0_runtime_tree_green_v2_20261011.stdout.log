@@ -1,0 +1,21 @@
+............................F                                            [100%]
+================================== FAILURES ===================================
+________________ test_changed_path_and_bytes_change_inventory _________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-47/test_changed_path_and_bytes_ch0')
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-47/test_changed_path_and_bytes_ch0/installed')
+
+    def test_changed_path_and_bytes_change_inventory(tmp_path, tree):
+        first = tmp_path / 'first'
+        first.mkdir()
+        before = inspect_owned(first, tree)['evidence']['inventory_sha256']
+        (tree / 'python.dll').rename(tree / 'renamed.dll')
+        second = tmp_path / 'second'
+        second.mkdir()
+>       renamed = inspect_owned(second, tree)['evidence']['inventory_sha256']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'evidence'
+
+tests\test_alc_r0_runtime_tree_inventory.py:193: KeyError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_changed_path_and_bytes_change_inventory

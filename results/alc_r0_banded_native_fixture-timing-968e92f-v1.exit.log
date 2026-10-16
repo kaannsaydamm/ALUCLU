@@ -1,0 +1,9 @@
+Root-witnessed terminal evidence; stdout/stderr were captured by the tool, not redirected to raw log files.
+session_id=71675
+actual_timing_exit_code=0
+terminal_shell_exit_code=0
+source_commit=968e92f7ec198bd095ecc607d9e8e7383836d3cd
+report_sha256=d51b92889bb0469cab39e01465d35f09a542166728a804cbcf2cf96d81a8d13f
+stdout: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\alc_r0_banded_native_20261002\fixture-timing-968e92f-v1.json
+No stderr text was emitted in the returned terminal output.
+This is fixed synthetic CPU fixture timing only; no corpus, model, training, held-out or portability acceptance.

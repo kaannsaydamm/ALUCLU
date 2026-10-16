@@ -1,0 +1,30 @@
+.........................F.                                              [100%]
+================================== FAILURES ===================================
+______________ test_nonzero_git_exit_does_not_accept_empty_blob _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-41/test_nonzero_git_exit_does_not0')
+repository = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-41/test_nonzero_git_exit_does_not0/checkout')
+
+    def test_nonzero_git_exit_does_not_accept_empty_blob(tmp_path, repository):
+        oid = _git(repository, 'rev-parse', 'HEAD:source.py')
+        # Delete only the exact disposable fixture blob; cat-file must exit nonzero.
+>       (repository / '.git' / 'objects' / oid[:2] / oid[2:]).unlink()
+
+tests\test_alc_r0_owned_source_inspection.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-41/test_nonzero_git_exit_does_not0/checkout/.git/objects/52/a6828701fcb05b189eb61103a745b1e317008c')
+missing_ok = False
+
+    def unlink(self, missing_ok=False):
+        """
+        Remove this file or link.
+        If the path is a directory, use rmdir() instead.
+        """
+        try:
+>           os.unlink(self)
+E           PermissionError: [WinError 5] Eriþim engellendi: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-41\\test_nonzero_git_exit_does_not0\\checkout\\.git\\objects\\52\\a6828701fcb05b189eb61103a745b1e317008c'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1342: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_owned_source_inspection.py::test_nonzero_git_exit_does_not_accept_empty_blob

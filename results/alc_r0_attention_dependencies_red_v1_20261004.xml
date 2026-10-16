@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="27" skipped="0" tests="27" time="25.514" timestamp="2026-10-04T05:12:10.750326+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-eager-transformers.models.llama.modeling_llama-rotate_half]" time="0.054"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-eager-transformers.models.llama.modeling_llama-apply_rotary_pos_emb]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-eager-aluclu.alc_r0.matched_lora-apply_rotary_pos_emb]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.models.llama.modeling_llama-rotate_half]" time="0.010"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.models.llama.modeling_llama-apply_rotary_pos_emb]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-aluclu.alc_r0.matched_lora-apply_rotary_pos_emb]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-eager-transformers.models.llama.modeling_llama-repeat_kv]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.integrations.sdpa_attention-repeat_kv]" time="0.010"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.integrations.sdpa_attention-use_gqa_in_sdpa]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.integrations.sdpa_attention-create_position_bias_mask]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.integrations.sdpa_attention-_is_torch_xpu_available]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.integrations.sdpa_attention-_is_torch_npu_available]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[preparation-sdpa-transformers.integrations.sdpa_attention-_is_torch_greater_or_equal_than_2_8]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_attention_dependencies.py:88: in test_attention_helper_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-eager-transformers.models.llama.modeling_llama-rotate_half]" time="0.312"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-eager-transformers.models.llama.modeling_llama-apply_rotary_pos_emb]" time="0.032"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-eager-aluclu.alc_r0.matched_lora-apply_rotary_pos_emb]" time="0.032"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.models.llama.modeling_llama-rotate_half]" time="0.037"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.models.llama.modeling_llama-apply_rotary_pos_emb]" time="0.043"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-aluclu.alc_r0.matched_lora-apply_rotary_pos_emb]" time="0.041"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-eager-transformers.models.llama.modeling_llama-repeat_kv]" time="0.035"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.integrations.sdpa_attention-repeat_kv]" time="0.036"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.integrations.sdpa_attention-use_gqa_in_sdpa]" time="0.039"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.integrations.sdpa_attention-create_position_bias_mask]" time="0.032"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.integrations.sdpa_attention-_is_torch_xpu_available]" time="0.037"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.integrations.sdpa_attention-_is_torch_npu_available]" time="0.031"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_attention_helper_drift_denied_before_side_effects[replay-sdpa-transformers.integrations.sdpa_attention-_is_torch_greater_or_equal_than_2_8]" time="0.031"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_attention_dependencies.py:67: in test_attention_helper_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_attention_dependencies" name="test_rotate_half_numeric_change_must_change_binding" time="0.018"><failure message="AssertionError: assert '66f8c9e347538db4d3f81097ff0bbbf25d4b31520dbcbc0418eafeeecb821137' != '66f8c9e347538db4d3f81097ff0bbbf25d4b31520dbcbc0418eafeeecb821137'&#10; +  where '66f8c9e347538db4d3f81097ff0bbbf25d4b31520dbcbc0418eafeeecb821137' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001F042CFF2E0&gt;()">tests\test_alc_r0_attention_dependencies.py:103: in test_rotate_half_numeric_change_must_change_binding
+    assert getter() != before
+E   AssertionError: assert '66f8c9e347538db4d3f81097ff0bbbf25d4b31520dbcbc0418eafeeecb821137' != '66f8c9e347538db4d3f81097ff0bbbf25d4b31520dbcbc0418eafeeecb821137'
+E    +  where '66f8c9e347538db4d3f81097ff0bbbf25d4b31520dbcbc0418eafeeecb821137' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001F042CFF2E0&gt;()</failure></testcase></testsuite></testsuites>

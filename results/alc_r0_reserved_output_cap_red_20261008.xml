@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.160" timestamp="2026-10-08T18:33:54.795187+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reserved_owned_process" name="test_declared_stdout_cap_enforced_on_real_child" time="0.847"><failure message="AssertionError: assert b'xxxxxxxxxxx...xxxxxxxxxxxxx' == b'xxxxxxxxxxx...xxxxxxxxxxxxx'&#10;  &#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-24/test_declared_stdout_cap_enfor0')
+
+    def test_declared_stdout_cap_enforced_on_real_child(tmp_path):
+        # Exactly one byte above the existing audited fixture declaration, not an
+        # invented cap. The current direct-to-file lease must reproduce this gap.
+        arguments, store, _, _ = fixture(tmp_path,
+            source="import os;os.write(1, b'x' * 1025)")
+        with ReservedOwnedLease(**arguments) as lease:
+            ready = lease.publish_identity(ROOT, ROOT)
+            running = lease.resume_verified(ready.sha256)
+            terminal = lease.wait_terminal()
+            assert terminal.process.active_processes == 0
+&gt;       assert arguments["stdout_path"].read_bytes() == b"x" * 1024
+E       AssertionError: assert b'xxxxxxxxxxx...xxxxxxxxxxxxx' == b'xxxxxxxxxxx...xxxxxxxxxxxxx'
+E         
+E         Use -v to get more diff
+
+tests\test_alc_r0_reserved_owned_process.py:130: AssertionError</failure></testcase></testsuite></testsuites>

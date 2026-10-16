@@ -1,0 +1,265 @@
+{
+  "scope": "Isolated actual native QUERY/TERMINATE rights denial on same owned suspended harmless child; independent primary owner cleanup. Not full coordinator publication/admission/running-tree/remaining-native-fault/scientific acceptance.",
+  "source_pin_modes": [
+    "query_fault_v2",
+    "regression_query_fault_v2"
+  ],
+  "historical_first_test_sha256": "9348a8a8164113298f9c7819691febd7ea1389be498ff3d56839bd8e0e8d98f3",
+  "historical_first_runner_sha256": "14ea3f6f7447e5241a5e5d7c5e4825eab0b2f75bc75d67f3ab72439e742ec633",
+  "focused_selection_note": "query_fault collected222 filtered220 executed2; query_fault_v2 collected37 filtered35 executed2",
+  "runs": [
+    {
+      "mode": "query_fault",
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 2.189
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 35762765000000,
+        "kernel_time_100ns": 13593750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 8416,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35759515000000,
+        "timed_out": false,
+        "total_processes": 5,
+        "user_time_100ns": 11250000
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_20261016.stdout.log",
+          "bytes": 1039,
+          "sha256": "584577b645e0f892756169dfb980898792c7c0eb3bd90293390e1875b6c9cbc0"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_20261016.exit.json",
+          "bytes": 312,
+          "sha256": "ab2571899008a3b2ebda00cac3da550bc35d53cb69f73ed5ae5f2e5cdc55face"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_20261016.xml",
+          "bytes": 564,
+          "sha256": "d76f9a923b152370526a7df15a97a9c28234cc6f452184a59d45e3b6eefd5fe7"
+        }
+      ]
+    },
+    {
+      "mode": "regression_query_fault",
+      "junit": {
+        "tests": 222,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 85.45
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 35873546000000,
+        "kernel_time_100ns": 469531250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 23428,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35787359000000,
+        "timed_out": false,
+        "total_processes": 208,
+        "user_time_100ns": 184218750
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_20261016.stdout.log",
+          "bytes": 26968,
+          "sha256": "762e5845e9c012c98fead0ed707a43ad63c5392e3fca0402500aff32afca0a7c"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_20261016.exit.json",
+          "bytes": 317,
+          "sha256": "9eeb9e56a4cb379b88de7c09e253d8937d4ef13c7d8cc68f87b494ba6b66e83f"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_20261016.xml",
+          "bytes": 32055,
+          "sha256": "352dbaccad92caa0c1b7ffc4de542bded825da5e7830a7f9ff5774884d410389"
+        }
+      ]
+    },
+    {
+      "mode": "query_fault_v2",
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 1.633
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 35918328000000,
+        "kernel_time_100ns": 13593750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 23088,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35915703000000,
+        "timed_out": false,
+        "total_processes": 5,
+        "user_time_100ns": 8281250
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_v2_20261016.stdout.log",
+          "bytes": 1040,
+          "sha256": "d665cd9c173196ec0d8320242aef04d48424cc05b371db93299a7c5f068c1888"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_v2_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_v2_20261016.exit.json",
+          "bytes": 312,
+          "sha256": "24936fd7f5f31198dd78e6832d163cf04b0e3a06d5390cbd027c4cb583df5cd6"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_query_fault_v2_20261016.xml",
+          "bytes": 564,
+          "sha256": "baf1c8f451c525533f4c421db5ff6ba0eaa03ca86bd7d193bf761e8ec266b5e2"
+        }
+      ]
+    },
+    {
+      "mode": "regression_query_fault_v2",
+      "junit": {
+        "tests": 222,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 89.474
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 36016796000000,
+        "kernel_time_100ns": 501093750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 34292,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35926437000000,
+        "timed_out": false,
+        "total_processes": 208,
+        "user_time_100ns": 193750000
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_v2_20261016.stdout.log",
+          "bytes": 26971,
+          "sha256": "22bfd3deed31f30003859113dd36b584154f4b479f85500bfdd53b9cff9008f3"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_v2_20261016.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_v2_20261016.exit.json",
+          "bytes": 317,
+          "sha256": "7c579b62fee522e7a46ae7333b843bbb257e5cd01df8a99b6ceb28cf0c2e5be8"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_query_fault_v2_20261016.xml",
+          "bytes": 32055,
+          "sha256": "0abb198e911014ddd8fcf70405ca1b00a07a5c2182343e583e4fd0c768aac7d4"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "bytes": 61731,
+      "sha256": "6235c5497e76947f1fe5b2ad955d4449f7f81fdf8d0ae90e0b0aa82c4ea0d500"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "bytes": 32749,
+      "sha256": "b89ddf2be3ae4b0c9892b1ac36ce3320b89bf16586172b0763dfb6d26f7f1082"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "bytes": 4531,
+      "sha256": "5d0293ff4d68b6133cb4291a600185748413eff02bb0acb30101992034cd80e0"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reservation_state.py",
+      "bytes": 16968,
+      "sha256": "37e21b07ef1b12a72ccd785fd8ec2117d5fc0e4d3ae930eb8b7dd1f070f35da2"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reserved_owned_process.py",
+      "bytes": 19331,
+      "sha256": "cb3c33873c34abcc6af0b828a1fbc38e713e198677d8796a20404374429a787d"
+    },
+    {
+      "path": "tests/test_alc_r0_reserved_owned_process.py",
+      "bytes": 24879,
+      "sha256": "d60edddd395cba472e78959f81d3ac63abf19fd138d237d5da1e029edf5f3d9d"
+    },
+    {
+      "path": "tests/alc_r0_reserved_owned_worker.py",
+      "bytes": 1925,
+      "sha256": "e1a38895395b943f61807b3fc3a67177887660b723789c3377eed2b5611382f2"
+    }
+  ],
+  "regression_unique": 222,
+  "prior_missing": [],
+  "added": [
+    "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_access_denial_stays_failed_and_owner_drains_child[8-query]",
+    "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_access_denial_stays_failed_and_owner_drains_child[4-terminate]"
+  ],
+  "groups": [
+    {
+      "Name": "tests.test_alc_r0_fixed_d_coordinator",
+      "Count": 37
+    },
+    {
+      "Name": "tests.test_alc_r0_live_authority_watch",
+      "Count": 29
+    },
+    {
+      "Name": "tests.test_alc_r0_reservation_state",
+      "Count": 47
+    },
+    {
+      "Name": "tests.test_alc_r0_reservation_store",
+      "Count": 33
+    },
+    {
+      "Name": "tests.test_alc_r0_reserved_owned_process",
+      "Count": 34
+    },
+    {
+      "Name": "tests.test_alc_r0_status_watch_consumer",
+      "Count": 42
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+checkpoint=171
+parent_commit=1a010bc2710bd3db315ec3c5f1d9eabeb2fa2ce3
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+final_tests_sha256=1821c04971ab064d64cd544690c7f69313ac1d689bbc99216af59a0be66aab87
+final_helper_sha256=5164fd4aa85f04e1e5a168e7ea82964d11ce228b967b09238aaf9f8bf2dbb59e
+production_owned_append_sha256=3314c46315af2398a02320cb69ab6288d9d51f85b24a4e7ebd58fac14a30ebbb
+production_journal_sha256=ef67264099b52b97291088a724fcd07d920c89fe41341db03800bb9d9e57f2dd
+production_publication_sha256=520fa38e01c324423c09393c31e6ff9dd44dc3a8beb99f5e2db30dc11a7bdc10
+production_persistence_sha256=7b50bb056df5e22d475562ee99331d3da7b573c8464d94ae1e385ce7cc050d8d
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+child_runtime=actual sys._base_executable plus existing sysconfig purelib/platlib paths; exact Popen PID/executable/version/checkout/four imported source roots/intent/stage/mode asserted before owned kill
+environment=PYTHONPATH=src; PYTHONDONTWRITEBYTECODE=1; ALUCLU_R0_SNAPSHOT unset
+pytest_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<specific retained XML>
+red_original_chunk=d52428; actual_pytest_exit_code=1; missing helper produced absent marker, not production failure
+red_selection=tests/test_alc_r0_owned_append_boundaries.py -k 'fault and first and intent_ack'
+red_junit=1/1/0/0; time=3.326; sha256=d1b730a2fc29144c1a95216b892af8e6787df9256aeff4e39ffdf9667ea43334
+focused_v1_original_session=8822; terminal personally consumed actual_pytest_exit_code=0
+focused_v1_junit=58/0/0/0; time=212.176; sha256=8dc6f7258ec4510524d7355c6e20ca78d0357b556e15adc3ad7b9ee731dc7503
+focused_v1_test_sha256=1a94e68796387c113b869f9d87f6a2a28f25b2ad0ae2fce5b45f132e6386a320
+focused_v1_helper_sha256=ca8bcd45c3a08b7663cbee2d66761c1e17840311483db2c354e60cc8b04aae85
+focused_v2_original_session=31036; terminal personally consumed actual_pytest_exit_code=0
+focused_v2_selection=tests/test_alc_r0_owned_append_boundaries.py -k owner_ack
+focused_v2_junit=6/0/0/0; time=19.751; sha256=8a1e731e13f9ad4231eaaae5d9e5227206d6e3c1f8fcdd3ffb9f215bae832fca
+ack_guard_red_original_chunk=11a9ea; actual_pytest_exit_code=1; explicit cleanup negative mode not yet implemented
+ack_guard_red_junit=1/1/0/0; time=6.205; sha256=1315e842237dbf063cb001697c93bb675e78e184ec3f791cbee279f7f006cbc6
+ack_guard_green_original_chunk=4aa293; actual_pytest_exit_code=0
+ack_guard_selection=tests/test_alc_r0_owned_append_boundaries.py -k never_marks
+ack_guard_green_junit=1/0/0/0; time=5.589; sha256=dfa068028b1faaa567492286a38e1cff39808162e04776dee943285a57f5d854
+review=two independent GPT6.1Sol final code APPROVE/scoped architecture CLEAR; atomic-return false-ack WATCH closed; mandatory wider OPEN qualifications retained
+regression_v3_original_session=92403; terminal personally consumed actual_pytest_exit_code=0
+regression_v3_target_count=57; final59boundary/negative cases plus prior56target suite
+regression_v3_explicit_targets=tests/test_alc_r0_owned_append_boundaries.py tests/test_alc_r0_owned_append.py tests/test_alc_r0_journal_plan.py tests/test_alc_r0_manifest_publication.py tests/test_alc_r0_paged_history.py tests/test_alc_r0_attempt_state.py tests/test_alc_r0_attempt_journal.py tests/test_cognition_persistence.py tests/test_alc_r0_resource_admission.py tests/test_alc_r0_owned_process.py
+regression_v3_prior_targets=47 quoted tests/ targets extracted from tracked results/alc_r0_parity_qualification_20261005.provenance.txt command= line with regex 'tests/[^']+' and quotes trimmed; assert47+10=57; NEVER execute saved command
+regression_v3_prior_provenance_sha256=dd64ecc1312ddda73d53abcbe4702aecfc0c7829a45547ddb0e422d2cdd9f8be
+regression_v3_deselections=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors; tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present; tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+scope=Python commit-interruption boundaries and explicit recovery; NOT resume-interruption/native-syscall-interior/powerloss/external-current-witness/history/resource-fit/learning/launch qualification
+regression_v3_junit=1785/0/0/1; passed=1784; time=508.109
+regression_v3_xml_sha256=3e56f3a2bf3fd546b4bedaeec819fe58dd4a9490dff6595114e6cd34f7c032fd
+regression_v3_only_skip=tests.test_alc_r0_attempt_journal.test_posix_fifo_rejected_without_opening_other_end; native POSIX unavailable
+regression_v3_boundary_coverage=all59 actual JUnit test names personally compared to exact expected first/same/rotate stage/mode combinations plus negativeguard; no missing/extra cases
+final_checks=tests/helper roots unchanged; all4 production source roots unchanged; Ruff format/check and git diff --check PASS; Cfree62013898752bytes observed, NOT broader resource-fit approval

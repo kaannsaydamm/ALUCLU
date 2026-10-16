@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.921" timestamp="2026-10-06T16:13:28.751442+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_cpu_optimizer_isolation" name="test_cpu_adamw_step_never_initializes_cuda" time="0.001"><failure message="AssertionError: assert '-2' == '-1'&#10;  &#10;  - -1&#10;  + -2">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002519F89BB00&gt;
+
+    def test_cpu_adamw_step_never_initializes_cuda(monkeypatch):
+&gt;       assert os.environ.get("CUDA_VISIBLE_DEVICES") == "-1"
+E       AssertionError: assert '-2' == '-1'
+E         
+E         - -1
+E         + -2
+
+tests\test_alc_r0_cpu_optimizer_isolation.py:9: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,2257 @@
+from __future__ import annotations
+
+import hashlib
+import struct
+from collections.abc import Callable
+from dataclasses import FrozenInstanceError, fields, is_dataclass, replace
+from decimal import Decimal, localcontext
+from inspect import signature
+from typing import Any, cast
+
+import pytest
+
+import aluclu.cognition as cognition_api
+import aluclu.cognition.calibration as calibration_module
+import aluclu.cognition.recollection as recollection_module
+from aluclu.cognition import InputBoundaryError
+from aluclu.cognition.calibration import (
+    ActiveCalibrationProfileV1,
+    CalibrationActivationScope,
+    CalibrationArtifactV1,
+    CalibrationCompatibilityRequirementsV1,
+    CalibrationDeploymentStatus,
+    CalibrationDisabledReason,
+    CalibrationProfileUnavailableReason,
+    CalibrationProfileUnavailableV1,
+    CalibrationProfileV1,
+    CalibrationPurpose,
+    CalibrationSpecV1,
+    CalibrationStatisticalStatus,
+    ExplicitCalibrationTestHarnessV1,
+    LabeledRecallExampleV1,
+    LabelIndependenceStatus,
+    LabelProvenanceManifestV1,
+    ThresholdSelectionRule,
+    activate_calibration_profile,
+    build_calibration_artifact,
+    calibration_spec_from_json_value,
+    calibration_spec_to_json_value,
+    clopper_pearson_upper_bound,
+    decode_calibration_artifact,
+    decode_calibration_spec,
+    decode_label_provenance_manifest,
+    decode_labeled_recall_example,
+    derive_calibration_artifact_digest,
+    derive_calibration_spec_digest,
+    derive_label_provenance_manifest_digest,
+    derive_labeled_recall_example_digest,
+    encode_calibration_artifact,
+    encode_calibration_spec,
+    encode_label_provenance_manifest,
+    encode_labeled_recall_example,
+    explicit_calibration_test_harness,
+    label_provenance_manifest_from_json_value,
+    label_provenance_manifest_to_json_value,
+    labeled_recall_example,
+    labeled_recall_example_from_json_value,
+    labeled_recall_example_to_json_value,
+)
+from aluclu.cognition.codec import canonical_json_bytes, strict_json_loads
+from aluclu.cognition.recall_features import (
+    active_feature_spec_id,
+    active_normalizer_id,
+    active_scorer_id,
+)
+from aluclu.cognition.recollection import (
+    RecallExecutionPolicyV1,
+    RecallPolicyTighteningV1,
+    tighten_recall_policy,
+)
+
+# Independently generated at 160 decimal digits by regularized-beta inversion,
+# then cross-checked with a separate arbitrary-precision binomial recurrence.
+# Expected values are upper-rounded to the frozen 24-place output lattice.
+_BOUND_FIXTURES = (
+    (0, 0, "0.05", 10, "1"),
+    (0, 1, "0.01", 1, "0.99"),
+    (1, 1, "0.01", 1, "1"),
+    (7, 7, "0.01", 8, "1"),
+    (0, 100, "0.05", 10, "0.051604029624104003416529"),
+    (3, 20, "0.05", 10, "0.449465406739485979638068"),
+    (2, 100, "0.01", 20, "0.114628478227106434215945"),
+    (0, 8_192, "0.01", 20, "0.000927414223873145725855"),
+    (41, 8_192, "0.01", 20, "0.008122492527907508061789"),
+    (8_191, 8_192, "0.01", 20, "0.999999938949581736343229"),
+)
+
+_REFERENCE_BRACKETS = (
+    (
+        0,
+        100,
+        "0.05",
+        10,
+        "0.051604029624104003416528549011825019770120768102135988378746",
+        "0.051604029624104003416528549011825019770120768102135988378747",
+    ),
+    (
+        3,
+        20,
+        "0.05",
+        10,
+        "0.449465406739485979638067610044323945311094092586512976964716",
+        "0.449465406739485979638067610044323945311094092586512976964717",
+    ),
+    (
+        2,
+        100,
+        "0.01",
+        20,
+        "0.114628478227106434215944787848433887325401418530863489815916",
+        "0.114628478227106434215944787848433887325401418530863489815917",
+    ),
+    (
+        0,
+        8_192,
+        "0.01",
+        20,
+        "0.000927414223873145725854448067561957565569046658234555190542",
+        "0.000927414223873145725854448067561957565569046658234555190543",
+    ),
+    (
+        41,
+        8_192,
+        "0.01",
+        20,
+        "0.008122492527907508061788090989821658758303277727626238650759",
+        "0.008122492527907508061788090989821658758303277727626238650760",
+    ),
+    (
+        8_191,
+        8_192,
+        "0.01",
+        20,
+        "0.999999938949581736343228208189735343252037573678027376928347",
+        "0.999999938949581736343228208189735343252037573678027376928348",
+    ),
+)
+
+
+@pytest.mark.parametrize(
+    ("error_count", "selected_count", "delta_decimal", "family_size", "expected"),
+    _BOUND_FIXTURES,
+)
+def test_clopper_pearson_upper_bound_matches_independent_fixtures(
+    error_count: int,
+    selected_count: int,
+    delta_decimal: str,
+    family_size: int,
+    expected: str,
+) -> None:
+    assert (
+        clopper_pearson_upper_bound(
+            error_count=error_count,
+            selected_count=selected_count,
+            delta_decimal=delta_decimal,
+            family_size=family_size,
+        )
+        == expected
+    )
+
+
+@pytest.mark.parametrize(
+    (
+        "error_count",
+        "selected_count",
+        "delta_decimal",
+        "family_size",
+        "reference_lower",
+        "reference_upper",
+    ),
+    _REFERENCE_BRACKETS,
+)
+def test_clopper_pearson_result_is_conservatively_upper_rounded(
+    error_count: int,
+    selected_count: int,
+    delta_decimal: str,
+    family_size: int,
+    reference_lower: str,
+    reference_upper: str,
+) -> None:
+    actual = Decimal(
+        clopper_pearson_upper_bound(
+            error_count=error_count,
+            selected_count=selected_count,
+            delta_decimal=delta_decimal,
+            family_size=family_size,
+        )
+    )
+
+    assert actual >= Decimal(reference_upper)
+    assert actual - Decimal(reference_lower) <= Decimal("1e-24")
+
+
+def test_clopper_pearson_uses_bonferroni_tail_for_the_full_family() -> None:
+    corrected = clopper_pearson_upper_bound(
+        error_count=0,
+        selected_count=100,
+        delta_decimal="0.05",
+        family_size=10,
+    )
+    uncorrected = clopper_pearson_upper_bound(
+        error_count=0,
+        selected_count=100,
+        delta_decimal="0.05",
+        family_size=1,
+    )
+
+    assert corrected == "0.051604029624104003416529"
+    assert uncorrected == "0.029513049607039934500476"
+    assert Decimal(corrected) > Decimal(uncorrected)
+
+
+def test_clopper_pearson_ignores_the_ambient_decimal_context() -> None:
+    baseline = clopper_pearson_upper_bound(
+        error_count=0,
+        selected_count=100,
+        delta_decimal="0.05",
+        family_size=1,
+    )
+
+    with localcontext() as hostile_context:
+        hostile_context.prec = 6
+        hostile_context.Emin = -9
+        hostile_context.Emax = 9
+        equivalent_tail = clopper_pearson_upper_bound(
+            error_count=0,
+            selected_count=100,
+            delta_decimal="0.1",
+            family_size=2,
+        )
+
+    assert baseline == "0.029513049607039934500476"
+    assert equivalent_tail == baseline
+
+
+def test_exact_fallback_reduces_the_probability_ratio(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    gcd_calls: list[tuple[int, int]] = []
+    original_gcd = calibration_module.math.gcd
+
+    def recording_gcd(left: int, right: int) -> int:
+        gcd_calls.append((left, right))
+        return original_gcd(left, right)
+
+    monkeypatch.setattr(calibration_module.math, "gcd", recording_gcd)
+
+    assert (
+        clopper_pearson_upper_bound(
+            error_count=250,
+            selected_count=501,
+            delta_decimal="0.5",
+            family_size=1,
+        )
+        == "0.5"
+    )
+    assert (5 * 10**35, 10**36) in gcd_calls
+
+
+def test_clopper_pearson_accepts_the_frozen_decimal_precision_boundary() -> None:
+    assert (
+        clopper_pearson_upper_bound(
+            error_count=0,
+            selected_count=0,
+            delta_decimal=f"0.{'0' * 35}1",
+            family_size=256,
+        )
+        == "1"
+    )
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    (
+        {"error_count": True},
+        {"error_count": -1},
+        {"error_count": 65_537},
+        {"error_count": 2, "selected_count": 1},
+        {"selected_count": True},
+        {"selected_count": -1},
+        {"selected_count": 65_537},
+        {"family_size": True},
+        {"family_size": 0},
+        {"family_size": 257},
+        {"delta_decimal": 0.05},
+        {"delta_decimal": ""},
+        {"delta_decimal": "0"},
+        {"delta_decimal": "1"},
+        {"delta_decimal": ".05"},
+        {"delta_decimal": "0.050"},
+        {"delta_decimal": "5e-2"},
+        {"delta_decimal": "-0.05"},
+        {"delta_decimal": "NaN"},
+        {"delta_decimal": f"0.{'0' * 36}1"},
+    ),
+)
+def test_clopper_pearson_rejects_noncanonical_or_invalid_inputs(
+    overrides: dict[str, object],
+) -> None:
+    arguments: dict[str, object] = {
+        "error_count": 0,
+        "selected_count": 10,
+        "delta_decimal": "0.05",
+        "family_size": 4,
+    }
+    arguments.update(overrides)
+
+    untyped_boundary_call = cast(Any, clopper_pearson_upper_bound)
+    with pytest.raises(InputBoundaryError):
+        untyped_boundary_call(**arguments)
+
+
+_GOLD_SOURCE_DIGEST = "a" * 64
+_DATASET_MANIFEST_DIGEST = "b" * 64
+_SCORER_INPUT_MANIFEST_DIGEST = "c" * 64
+_GOLD_LABEL_MANIFEST_DIGEST = "d" * 64
+
+
+def _label_manifest(
+    *,
+    fit_example_ids: tuple[str, ...] = ("example:fit-1",),
+    calibration_example_ids: tuple[str, ...] = (
+        "example:calibration-1",
+        "example:calibration-2",
+    ),
+) -> LabelProvenanceManifestV1:
+    return LabelProvenanceManifestV1(
+        issuer_id="issuer:research-team",
+        adjudication_method_id="held-out-double-review.v1",
+        gold_source_digest=_GOLD_SOURCE_DIGEST,
+        dataset_manifest_digest=_DATASET_MANIFEST_DIGEST,
+        scorer_input_manifest_digest=_SCORER_INPUT_MANIFEST_DIGEST,
+        gold_label_manifest_digest=_GOLD_LABEL_MANIFEST_DIGEST,
+        fit_example_ids=fit_example_ids,
+        calibration_example_ids=calibration_example_ids,
+        external_evidence_reference="audit:pending",
+        external_signature_digest=None,
+        independence_status=LabelIndependenceStatus.ASSERTED_NOT_PROVEN,
+    )
+
+
+def _calibration_spec(
+    manifest: LabelProvenanceManifestV1 | None = None,
+) -> CalibrationSpecV1:
+    active_manifest = manifest or _label_manifest()
+    return CalibrationSpecV1(
+        purpose=CalibrationPurpose.PERSONAL_MEMORY_TEXT,
+        query_stratum_id="personal-memory.en.v1",
+        scorer_id="aluclu.similarity.cosine-q32.v1",
+        normalizer_id="aluclu.search-view.nfc-ascii-ws.v1+ucd-15.0.0",
+        feature_spec_id="aluclu.feature.signed-byte-ngram-1024-int16.v1+ucd-15.0.0",
+        boundary_schema_id="aluclu.boundary-profile.v1",
+        dataset_manifest_digest=_DATASET_MANIFEST_DIGEST,
+        label_provenance_manifest_digest=(
+            derive_label_provenance_manifest_digest(active_manifest)
+        ),
+        threshold_grid_q32=(0, 2**31, 2**32),
+        minimum_margin_q32=2**24,
+        alpha_decimal="0.1",
+        delta_decimal="0.05",
+        minimum_selected=2,
+        minimum_coverage_decimal="0.25",
+        selection_rule=ThresholdSelectionRule.MAX_COVERAGE_THEN_HIGHER_THRESHOLD,
+    )
+
+
+def _labeled_example(
+    spec: CalibrationSpecV1 | None = None,
+    manifest: LabelProvenanceManifestV1 | None = None,
+) -> LabeledRecallExampleV1:
+    active_manifest = manifest or _label_manifest()
+    active_spec = spec or _calibration_spec(active_manifest)
+    return labeled_recall_example(
+        example_id="example:calibration-1",
+        calibration_spec_digest=derive_calibration_spec_digest(active_spec),
+        label_provenance_manifest_digest=(
+            derive_label_provenance_manifest_digest(active_manifest)
+        ),
+        score_q32=2**31,
+        eligible=True,
+        target_observation_id="obs:gold-1",
+        predicted_observation_id=None,
+    )
+
+
+def _example_for(
+    *,
+    example_id: str,
+    score_q32: int,
+    target_observation_id: str,
+    predicted_observation_id: str | None,
+    spec: CalibrationSpecV1,
+    manifest: LabelProvenanceManifestV1,
+    eligible: bool = True,
+) -> LabeledRecallExampleV1:
+    return labeled_recall_example(
+        example_id=example_id,
+        calibration_spec_digest=derive_calibration_spec_digest(spec),
+        label_provenance_manifest_digest=(
+            derive_label_provenance_manifest_digest(manifest)
+        ),
+        score_q32=score_q32,
+        eligible=eligible,
+        target_observation_id=target_observation_id,
+        predicted_observation_id=predicted_observation_id,
+    )
+
+
+def _passing_artifact_inputs() -> tuple[
+    CalibrationSpecV1,
+    LabelProvenanceManifestV1,
+    tuple[LabeledRecallExampleV1, ...],
+]:
+    manifest = _label_manifest()
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="1",
+        minimum_selected=1,
+        minimum_coverage_decimal="0",
+    )
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+    return spec, manifest, examples
+
+
+def _compatibility_requirements(
+    spec: CalibrationSpecV1,
+) -> CalibrationCompatibilityRequirementsV1:
+    return CalibrationCompatibilityRequirementsV1(
+        purpose=spec.purpose,
+        query_stratum_id=spec.query_stratum_id,
+        scorer_id=spec.scorer_id,
+        normalizer_id=spec.normalizer_id,
+        feature_spec_id=spec.feature_spec_id,
+        boundary_schema_id=spec.boundary_schema_id,
+        dataset_manifest_digest=spec.dataset_manifest_digest,
+    )
+
+
+def _redigested_artifact(wire: dict[str, Any]) -> CalibrationArtifactV1:
+    artifact_body = dict(wire)
+    artifact_body.pop("artifact_digest")
+    domain = b"aluclu.task2.calibration-artifact.v1"
+    body_bytes = canonical_json_bytes(cast(Any, artifact_body))
+    framed = (
+        struct.pack(">Q", len(domain))
+        + domain
+        + struct.pack(">Q", len(body_bytes))
+        + body_bytes
+    )
+    wire["artifact_digest"] = hashlib.sha256(framed).hexdigest()
+    return decode_calibration_artifact(canonical_json_bytes(cast(Any, wire)))
+
+
+@pytest.mark.parametrize(
+    ("instance", "field_names"),
+    (
+        (
+            _label_manifest(),
+            (
+                "issuer_id",
+                "adjudication_method_id",
+                "gold_source_digest",
+                "dataset_manifest_digest",
+                "scorer_input_manifest_digest",
+                "gold_label_manifest_digest",
+                "fit_example_ids",
+                "calibration_example_ids",
+                "external_evidence_reference",
+                "external_signature_digest",
+                "independence_status",
+            ),
+        ),
+        (
+            _calibration_spec(),
+            (
+                "purpose",
+                "query_stratum_id",
+                "scorer_id",
+                "normalizer_id",
+                "feature_spec_id",
+                "boundary_schema_id",
+                "dataset_manifest_digest",
+                "label_provenance_manifest_digest",
+                "threshold_grid_q32",
+                "minimum_margin_q32",
+                "alpha_decimal",
+                "delta_decimal",
+                "minimum_selected",
+                "minimum_coverage_decimal",
+                "selection_rule",
+            ),
+        ),
+        (
+            _labeled_example(),
+            (
+                "example_id",
+                "calibration_spec_digest",
+                "label_provenance_manifest_digest",
+                "score_q32",
+                "eligible",
+                "target_observation_id",
+                "predicted_observation_id",
+                "error",
+            ),
+        ),
+    ),
+)
+def test_calibration_records_are_frozen_kw_only_and_slotted(
+    instance: object,
+    field_names: tuple[str, ...],
+) -> None:
+    assert is_dataclass(instance) and not isinstance(instance, type)
+    assert tuple(field.name for field in fields(instance)) == field_names
+    assert not hasattr(instance, "__dict__")
+    first_field = field_names[0]
+    with pytest.raises((FrozenInstanceError, AttributeError)):
+        setattr(instance, first_field, getattr(instance, first_field))
+    with pytest.raises(TypeError):
+        type(instance)(*[getattr(instance, name) for name in field_names])
+
+
+def test_calibration_records_round_trip_canonically_with_stable_digests() -> None:
+    manifest = _label_manifest()
+    spec = _calibration_spec(manifest)
+    example = _labeled_example(spec, manifest)
+
+    for instance, encoder, decoder, to_value, from_value, digest in (
+        (
+            manifest,
+            encode_label_provenance_manifest,
+            decode_label_provenance_manifest,
+            label_provenance_manifest_to_json_value,
+            label_provenance_manifest_from_json_value,
+            derive_label_provenance_manifest_digest,
+        ),
+        (
+            spec,
+            encode_calibration_spec,
+            decode_calibration_spec,
+            calibration_spec_to_json_value,
+            calibration_spec_from_json_value,
+            derive_calibration_spec_digest,
+        ),
+        (
+            example,
+            encode_labeled_recall_example,
+            decode_labeled_recall_example,
+            labeled_recall_example_to_json_value,
+            labeled_recall_example_from_json_value,
+            derive_labeled_recall_example_digest,
+        ),
+    ):
+        encoded = cast(Callable[[Any], bytes], encoder)(instance)
+        decoded = cast(Callable[[bytes], object], decoder)(encoded)
+        json_value = cast(Callable[[Any], object], to_value)(instance)
+        rebuilt = cast(Callable[[Any], object], from_value)(json_value)
+
+        assert canonical_json_bytes(cast(Any, json_value)) == encoded
+        assert decoded == instance
+        assert rebuilt == instance
+        assert cast(Callable[[Any], str], digest)(decoded) == cast(
+            Callable[[Any], str], digest
+        )(instance)
+
+
+def test_calibration_schema_surface_is_exported_from_cognition_package() -> None:
+    expected_names = (
+        "CalibrationPurpose",
+        "CalibrationSpecV1",
+        "LabelIndependenceStatus",
+        "LabeledRecallExampleV1",
+        "LabelProvenanceManifestV1",
+        "ThresholdSelectionRule",
+        "calibration_spec_from_json_value",
+        "calibration_spec_to_json_value",
+        "clopper_pearson_upper_bound",
+        "decode_calibration_spec",
+        "decode_label_provenance_manifest",
+        "decode_labeled_recall_example",
+        "derive_calibration_spec_digest",
+        "derive_label_provenance_manifest_digest",
+        "derive_labeled_recall_example_digest",
+        "encode_calibration_spec",
+        "encode_label_provenance_manifest",
+        "encode_labeled_recall_example",
+        "label_provenance_manifest_from_json_value",
+        "label_provenance_manifest_to_json_value",
+        "labeled_recall_example",
+        "labeled_recall_example_from_json_value",
+        "labeled_recall_example_to_json_value",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__
+
+
+def test_threshold_grid_mutation_changes_the_spec_binding() -> None:
+    manifest = _label_manifest()
+    original = _calibration_spec(manifest)
+    example = _labeled_example(original, manifest)
+    mutated = replace(original, threshold_grid_q32=(0, 2**30, 2**32))
+
+    assert derive_calibration_spec_digest(mutated) != (
+        derive_calibration_spec_digest(original)
+    )
+    assert example.calibration_spec_digest == derive_calibration_spec_digest(original)
+    assert example.calibration_spec_digest != derive_calibration_spec_digest(mutated)
+
+
+@pytest.mark.parametrize(
+    "threshold_grid_q32",
+    (
+        [],
+        (),
+        (2, 1),
+        (1, 1),
+        (True,),
+        (-1,),
+        (2**32 + 1,),
+        tuple(range(257)),
+    ),
+)
+def test_calibration_spec_rejects_invalid_threshold_grids(
+    threshold_grid_q32: object,
+) -> None:
+    with pytest.raises(InputBoundaryError):
+        replace(_calibration_spec(), threshold_grid_q32=threshold_grid_q32)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value"),
+    (
+        ("minimum_margin_q32", True),
+        ("minimum_margin_q32", 2**32 + 1),
+        ("purpose", "personal_memory_text"),
+        ("selection_rule", "max_coverage_then_higher_threshold"),
+        ("scorer_id", "scorer with spaces"),
+        ("alpha_decimal", "0.10"),
+        ("alpha_decimal", "1.0"),
+        ("alpha_decimal", "2"),
+        ("delta_decimal", "0"),
+        ("minimum_selected", True),
+        ("minimum_selected", 0),
+        ("minimum_selected", 65_537),
+        ("minimum_coverage_decimal", "0.250"),
+        ("minimum_coverage_decimal", "-0.1"),
+        ("dataset_manifest_digest", "A" * 64),
+        ("label_provenance_manifest_digest", "not-a-digest"),
+        ("query_stratum_id", "stratum with spaces"),
+    ),
+)
+def test_calibration_spec_rejects_noncanonical_boundaries(
+    field_name: str,
+    value: object,
+) -> None:
+    with pytest.raises(InputBoundaryError):
+        replace(_calibration_spec(), **{field_name: value})
+
+
+def test_label_manifest_preserves_semantic_builder_failures() -> None:
+    overlap = _label_manifest(
+        fit_example_ids=("example:shared",),
+        calibration_example_ids=("example:shared",),
+    )
+    empty = _label_manifest(calibration_example_ids=())
+
+    assert overlap.fit_example_ids == overlap.calibration_example_ids
+    assert empty.calibration_example_ids == ()
+
+
+def test_label_manifest_is_bounded_to_a_round_trippable_id_set() -> None:
+    fit_ids = tuple(f"example:fit-{index:04d}" for index in range(4_094))
+    at_boundary = _label_manifest(fit_example_ids=fit_ids)
+
+    assert len(at_boundary.fit_example_ids) + len(
+        at_boundary.calibration_example_ids
+    ) == 4_096
+    assert decode_label_provenance_manifest(
+        encode_label_provenance_manifest(at_boundary)
+    ) == at_boundary
+
+    with pytest.raises(InputBoundaryError):
+        replace(
+            at_boundary,
+            fit_example_ids=fit_ids + ("example:fit-4094",),
+        )
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value"),
+    (
+        ("fit_example_ids", ["example:fit-1"]),
+        ("fit_example_ids", ("example:z", "example:a")),
+        ("fit_example_ids", ("example:a", "example:a")),
+        ("calibration_example_ids", ("bad id",)),
+        ("issuer_id", "bad issuer"),
+        ("gold_source_digest", "0" * 63),
+        ("independence_status", "asserted_not_proven"),
+        ("external_evidence_reference", ""),
+        ("external_evidence_reference", "x" * 2_049),
+        ("external_signature_digest", "A" * 64),
+    ),
+)
+def test_label_manifest_rejects_structurally_invalid_fields(
+    field_name: str,
+    value: object,
+) -> None:
+    with pytest.raises(InputBoundaryError):
+        replace(_label_manifest(), **{field_name: value})
+
+
+def test_labeled_example_derives_error_and_blocks_direct_construction() -> None:
+    manifest = _label_manifest()
+    spec = _calibration_spec(manifest)
+    incorrect = _labeled_example(spec, manifest)
+    correct = labeled_recall_example(
+        example_id="example:calibration-2",
+        calibration_spec_digest=derive_calibration_spec_digest(spec),
+        label_provenance_manifest_digest=(
+            derive_label_provenance_manifest_digest(manifest)
+        ),
+        score_q32=2**32,
+        eligible=False,
+        target_observation_id="obs:gold-2",
+        predicted_observation_id="obs:gold-2",
+    )
+
+    assert incorrect.error is True
+    assert correct.error is False
+    with pytest.raises(TypeError):
+        LabeledRecallExampleV1()
+
+
+def test_labeled_example_decoder_rejects_self_assigned_error() -> None:
+    wire = strict_json_loads(encode_labeled_recall_example(_labeled_example()))
+    assert type(wire) is dict
+    wire["error"] = False
+
+    with pytest.raises(InputBoundaryError):
+        decode_labeled_recall_example(canonical_json_bytes(wire))
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value"),
+    (
+        ("example_id", "bad id"),
+        ("calibration_spec_digest", "A" * 64),
+        ("label_provenance_manifest_digest", "0" * 63),
+        ("score_q32", True),
+        ("score_q32", 2**32 + 1),
+        ("eligible", 1),
+        ("target_observation_id", "event:not-an-observation"),
+        ("predicted_observation_id", "obs:"),
+    ),
+)
+def test_labeled_example_factory_rejects_invalid_boundaries(
+    field_name: str,
+    value: object,
+) -> None:
+    arguments: dict[str, object] = {
+        "example_id": "example:calibration-1",
+        "calibration_spec_digest": "a" * 64,
+        "label_provenance_manifest_digest": "b" * 64,
+        "score_q32": 2**31,
+        "eligible": True,
+        "target_observation_id": "obs:gold-1",
+        "predicted_observation_id": None,
+    }
+    arguments[field_name] = value
+
+    with pytest.raises(InputBoundaryError):
+        cast(Any, labeled_recall_example)(**arguments)
+
+
+@pytest.mark.parametrize(
+    ("encoder", "decoder", "instance"),
+    (
+        (encode_calibration_spec, decode_calibration_spec, _calibration_spec()),
+        (
+            encode_label_provenance_manifest,
+            decode_label_provenance_manifest,
+            _label_manifest(),
+        ),
+        (
+            encode_labeled_recall_example,
+            decode_labeled_recall_example,
+            _labeled_example(),
+        ),
+    ),
+)
+def test_calibration_decoders_require_exact_canonical_objects(
+    encoder: Callable[[Any], bytes],
+    decoder: Callable[[bytes], object],
+    instance: object,
+) -> None:
+    encoded = encoder(instance)
+    wire = strict_json_loads(encoded)
+    assert type(wire) is dict
+
+    missing = dict(wire)
+    missing.pop(next(iter(missing)))
+    with pytest.raises(InputBoundaryError):
+        decoder(canonical_json_bytes(missing))
+
+    unknown = dict(wire)
+    unknown["unknown"] = None
+    with pytest.raises(InputBoundaryError):
+        decoder(canonical_json_bytes(unknown))
+
+    wrong_schema = dict(wire)
+    wrong_schema["schema"] = "aluclu.wrong.v1"
+    with pytest.raises(InputBoundaryError):
+        decoder(canonical_json_bytes(wrong_schema))
+
+    with pytest.raises(InputBoundaryError):
+        decoder(b" " + encoded)
+
+
+def test_calibration_decoders_reject_bool_integer_fields() -> None:
+    spec_wire = strict_json_loads(encode_calibration_spec(_calibration_spec()))
+    assert type(spec_wire) is dict
+    spec_wire["minimum_selected"] = True
+    with pytest.raises(InputBoundaryError):
+        decode_calibration_spec(canonical_json_bytes(spec_wire))
+
+    example_wire = strict_json_loads(
+        encode_labeled_recall_example(_labeled_example())
+    )
+    assert type(example_wire) is dict
+    example_wire["score_q32"] = True
+    with pytest.raises(InputBoundaryError):
+        decode_labeled_recall_example(canonical_json_bytes(example_wire))
+
+
+def test_calibration_builder_selects_maximum_coverage_then_higher_threshold() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.statistical_status is CalibrationStatisticalStatus.STATISTICAL_PASS
+    assert artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY
+    assert artifact.independence_status is LabelIndependenceStatus.ASSERTED_NOT_PROVEN
+    assert artifact.chosen_threshold_q32 == 2**31
+    assert artifact.disabled_reasons == ()
+    assert artifact.production_acceptance_digest is None
+    assert tuple(result.threshold_q32 for result in artifact.threshold_results) == (
+        0,
+        2**31,
+        2**32,
+    )
+    assert tuple(result.selected_count for result in artifact.threshold_results) == (
+        2,
+        2,
+        1,
+    )
+    assert tuple(result.error_count for result in artifact.threshold_results) == (
+        0,
+        0,
+        0,
+    )
+    assert tuple(result.coverage_decimal for result in artifact.threshold_results) == (
+        "1",
+        "1",
+        "0.5",
+    )
+    assert all(result.passed for result in artifact.threshold_results)
+
+
+def test_calibration_builder_is_deterministic_under_example_permutation() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    forward = build_calibration_artifact(spec, manifest, examples)
+    reversed_artifact = build_calibration_artifact(
+        spec,
+        manifest,
+        tuple(reversed(examples)),
+    )
+
+    assert reversed_artifact == forward
+    assert reversed_artifact.artifact_digest == forward.artifact_digest
+    assert reversed_artifact.example_set_digest == forward.example_set_digest
+
+
+def test_calibration_artifact_round_trips_and_verifies_its_digest() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    encoded = encode_calibration_artifact(artifact)
+
+    assert decode_calibration_artifact(encoded) == artifact
+    assert derive_calibration_artifact_digest(artifact) == artifact.artifact_digest
+    assert not hasattr(artifact, "__dict__")
+    with pytest.raises(TypeError):
+        CalibrationArtifactV1()
+
+    wire = strict_json_loads(encoded)
+    assert type(wire) is dict
+    wire["chosen_threshold_q32"] = 0
+    with pytest.raises(InputBoundaryError):
+        decode_calibration_artifact(canonical_json_bytes(wire))
+
+
+@pytest.mark.parametrize(
+    "expected_reason",
+    (
+        CalibrationDisabledReason.ZERO_EXAMPLES,
+        CalibrationDisabledReason.FIT_CALIBRATION_OVERLAP,
+        CalibrationDisabledReason.LABEL_MANIFEST_LEAKAGE,
+        CalibrationDisabledReason.DATASET_MANIFEST_MISMATCH,
+        CalibrationDisabledReason.EXAMPLE_SET_MISMATCH,
+        CalibrationDisabledReason.SPEC_DIGEST_MISMATCH,
+        CalibrationDisabledReason.LABEL_MANIFEST_DIGEST_MISMATCH,
+        CalibrationDisabledReason.INSUFFICIENT_SELECTED,
+        CalibrationDisabledReason.NO_PASSING_THRESHOLD,
+    ),
+)
+def test_calibration_builder_emits_explicit_disabled_reasons(
+    expected_reason: CalibrationDisabledReason,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    if expected_reason is CalibrationDisabledReason.ZERO_EXAMPLES:
+        manifest = _label_manifest(calibration_example_ids=())
+        spec = _calibration_spec(manifest)
+        examples = ()
+    elif expected_reason is CalibrationDisabledReason.FIT_CALIBRATION_OVERLAP:
+        manifest = _label_manifest(
+            fit_example_ids=("example:calibration-1",),
+        )
+        spec = replace(
+            _calibration_spec(manifest),
+            alpha_decimal="1",
+            minimum_selected=1,
+            minimum_coverage_decimal="0",
+        )
+        examples = tuple(
+            _example_for(
+                example_id=example_id,
+                score_q32=2**32,
+                target_observation_id=f"obs:gold-{index}",
+                predicted_observation_id=f"obs:gold-{index}",
+                spec=spec,
+                manifest=manifest,
+            )
+            for index, example_id in enumerate(
+                manifest.calibration_example_ids,
+                start=1,
+            )
+        )
+    elif expected_reason is CalibrationDisabledReason.LABEL_MANIFEST_LEAKAGE:
+        manifest = replace(
+            manifest,
+            scorer_input_manifest_digest=manifest.gold_label_manifest_digest,
+        )
+        spec = replace(
+            spec,
+            label_provenance_manifest_digest=(
+                derive_label_provenance_manifest_digest(manifest)
+            ),
+        )
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+    elif expected_reason is CalibrationDisabledReason.DATASET_MANIFEST_MISMATCH:
+        spec = replace(spec, dataset_manifest_digest="e" * 64)
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+    elif expected_reason is CalibrationDisabledReason.EXAMPLE_SET_MISMATCH:
+        examples = examples[:1]
+    elif expected_reason is CalibrationDisabledReason.SPEC_DIGEST_MISMATCH:
+        spec = replace(spec, threshold_grid_q32=(0, 2**30, 2**32))
+    elif expected_reason is CalibrationDisabledReason.LABEL_MANIFEST_DIGEST_MISMATCH:
+        manifest = replace(manifest, issuer_id="issuer:changed")
+    elif expected_reason is CalibrationDisabledReason.INSUFFICIENT_SELECTED:
+        spec = replace(spec, minimum_selected=3)
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+    elif expected_reason is CalibrationDisabledReason.NO_PASSING_THRESHOLD:
+        spec = replace(spec, alpha_decimal="0")
+        examples = tuple(
+            _example_for(
+                example_id=example.example_id,
+                score_q32=example.score_q32,
+                target_observation_id=example.target_observation_id,
+                predicted_observation_id=example.predicted_observation_id,
+                spec=spec,
+                manifest=manifest,
+            )
+            for example in examples
+        )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+    assert artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY
+    assert artifact.chosen_threshold_q32 is None
+    assert expected_reason in artifact.disabled_reasons
+    assert tuple(reason.value for reason in artifact.disabled_reasons) == tuple(
+        sorted(reason.value for reason in artifact.disabled_reasons)
+    )
+
+
+def test_task2_builder_cannot_mint_production_acceptance() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.deployment_status is CalibrationDeploymentStatus.TEST_ONLY
+    assert artifact.production_acceptance_digest is None
+    assert not hasattr(calibration_module, "promote_calibration_artifact")
+
+
+def test_artifact_surface_is_exported_from_cognition_package() -> None:
+    expected_names = (
+        "CalibrationArtifactV1",
+        "CalibrationDeploymentStatus",
+        "CalibrationDisabledReason",
+        "CalibrationStatisticalStatus",
+        "ThresholdCalibrationV1",
+        "build_calibration_artifact",
+        "calibration_artifact_from_json_value",
+        "calibration_artifact_to_json_value",
+        "decode_calibration_artifact",
+        "derive_calibration_artifact_digest",
+        "encode_calibration_artifact",
+        "threshold_calibration_from_json_value",
+        "threshold_calibration_to_json_value",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__
+
+
+def test_builder_binds_bonferroni_family_to_full_threshold_grid() -> None:
+    manifest = _label_manifest()
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="0.8",
+        minimum_selected=2,
+        minimum_coverage_decimal="0",
+    )
+    examples = tuple(
+        _example_for(
+            example_id=example_id,
+            score_q32=2**32,
+            target_observation_id=f"obs:gold-{index}",
+            predicted_observation_id=f"obs:gold-{index}",
+            spec=spec,
+            manifest=manifest,
+        )
+        for index, example_id in enumerate(
+            manifest.calibration_example_ids,
+            start=1,
+        )
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+    assert artifact.chosen_threshold_q32 is None
+    assert tuple(
+        result.risk_upper_bound_decimal for result in artifact.threshold_results
+    ) == (
+        "0.870900555126419437160692",
+        "0.870900555126419437160692",
+        "0.870900555126419437160692",
+    )
+    assert not any(result.passed for result in artifact.threshold_results)
+    assert CalibrationDisabledReason.NO_PASSING_THRESHOLD in artifact.disabled_reasons
+
+
+def test_builder_excludes_ineligible_examples_from_counts_and_errors() -> None:
+    manifest = _label_manifest(
+        calibration_example_ids=(
+            "example:calibration-1",
+            "example:calibration-2",
+            "example:calibration-3",
+        )
+    )
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="1",
+        minimum_selected=1,
+        minimum_coverage_decimal="0",
+    )
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-3",
+            score_q32=2**32,
+            target_observation_id="obs:gold-3",
+            predicted_observation_id="obs:wrong-3",
+            spec=spec,
+            manifest=manifest,
+            eligible=False,
+        ),
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    lowest_threshold = artifact.threshold_results[0]
+
+    assert lowest_threshold.selected_count == 2
+    assert lowest_threshold.error_count == 0
+    assert lowest_threshold.coverage_decimal == "0.666666666666666666666666"
+
+
+def test_builder_counts_selected_errors_and_binds_their_risk_bound() -> None:
+    manifest = _label_manifest()
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="0.99",
+        minimum_selected=2,
+        minimum_coverage_decimal="0",
+    )
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**32,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:wrong-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+
+    assert tuple(
+        (result.selected_count, result.error_count)
+        for result in artifact.threshold_results
+    ) == ((2, 1), (2, 1), (2, 1))
+    assert tuple(
+        result.risk_upper_bound_decimal for result in artifact.threshold_results
+    ) == (
+        "0.991631652042901126219544",
+        "0.991631652042901126219544",
+        "0.991631652042901126219544",
+    )
+    assert not any(result.passed for result in artifact.threshold_results)
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+
+
+def test_builder_floors_nonterminating_coverage_before_the_gate() -> None:
+    manifest = _label_manifest(
+        calibration_example_ids=(
+            "example:calibration-1",
+            "example:calibration-2",
+            "example:calibration-3",
+        )
+    )
+    spec = replace(
+        _calibration_spec(manifest),
+        alpha_decimal="1",
+        minimum_selected=1,
+        minimum_coverage_decimal="0.333333333333333333333334",
+    )
+    examples = tuple(
+        _example_for(
+            example_id=example_id,
+            score_q32=2**32 if index == 1 else 0,
+            target_observation_id=f"obs:gold-{index}",
+            predicted_observation_id=f"obs:gold-{index}",
+            spec=spec,
+            manifest=manifest,
+        )
+        for index, example_id in enumerate(
+            manifest.calibration_example_ids,
+            start=1,
+        )
+    )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    partial_results = artifact.threshold_results[1:]
+
+    assert tuple(result.selected_count for result in partial_results) == (1, 1)
+    assert tuple(result.coverage_decimal for result in partial_results) == (
+        "0.333333333333333333333333",
+        "0.333333333333333333333333",
+    )
+    assert not any(result.passed for result in partial_results)
+
+
+def test_disabled_artifact_cannot_claim_production_acceptance() -> None:
+    manifest = _label_manifest(calibration_example_ids=())
+    spec = _calibration_spec(manifest)
+    artifact = build_calibration_artifact(spec, manifest, ())
+    wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(wire) is dict
+    wire["deployment_status"] = "production_accepted"
+    wire["production_acceptance_digest"] = "f" * 64
+    artifact_body = dict(wire)
+    artifact_body.pop("artifact_digest")
+    domain = b"aluclu.task2.calibration-artifact.v1"
+    body_bytes = canonical_json_bytes(cast(Any, artifact_body))
+    framed = (
+        struct.pack(">Q", len(domain))
+        + domain
+        + struct.pack(">Q", len(body_bytes))
+        + body_bytes
+    )
+    wire["artifact_digest"] = hashlib.sha256(framed).hexdigest()
+
+    with pytest.raises(InputBoundaryError, match="statistical pass"):
+        decode_calibration_artifact(canonical_json_bytes(wire))
+
+
+def test_calibration_activation_requires_explicit_test_harness_authority() -> None:
+    spec, _manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, _manifest, examples)
+    profile = CalibrationProfileV1(spec=spec, artifact=artifact)
+    requirements = _compatibility_requirements(spec)
+
+    unavailable = activate_calibration_profile(profile, requirements)
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.TEST_ONLY_REQUIRES_EXPLICIT_HARNESS
+    )
+
+    harness = explicit_calibration_test_harness()
+    active = activate_calibration_profile(
+        profile,
+        requirements,
+        test_harness=harness,
+    )
+
+    assert type(active) is ActiveCalibrationProfileV1
+    assert active.activation_scope is CalibrationActivationScope.TEST_HARNESS
+    assert active.spec_digest == derive_calibration_spec_digest(spec)
+    assert active.artifact_digest == artifact.artifact_digest
+    assert active.minimum_score_q32 == artifact.chosen_threshold_q32
+    assert active.minimum_margin_q32 == spec.minimum_margin_q32
+    profile_body = canonical_json_bytes(
+        cast(
+            Any,
+            {
+                "activation_scope": "test_harness",
+                "artifact_digest": artifact.artifact_digest,
+                "spec_digest": derive_calibration_spec_digest(spec),
+            },
+        )
+    )
+    profile_domain = b"aluclu.task2.calibration-profile.v1"
+    profile_frame = (
+        struct.pack(">Q", len(profile_domain))
+        + profile_domain
+        + struct.pack(">Q", len(profile_body))
+        + profile_body
+    )
+    assert active.profile_digest == hashlib.sha256(profile_frame).hexdigest()
+    assert not hasattr(active, "__dict__")
+    assert not hasattr(harness, "__dict__")
+    with pytest.raises(TypeError):
+        ActiveCalibrationProfileV1()
+    with pytest.raises(TypeError):
+        ExplicitCalibrationTestHarnessV1()
+
+
+def test_missing_test_authority_precedes_expensive_semantic_replay() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    rows[0]["risk_upper_bound_decimal"] = "0"
+    semantically_forged = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=semantically_forged),
+        _compatibility_requirements(spec),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.TEST_ONLY_REQUIRES_EXPLICIT_HARNESS
+    )
+
+
+def test_calibration_activation_rejects_test_harness_lookalike() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    profile = CalibrationProfileV1(
+        spec=spec,
+        artifact=build_calibration_artifact(spec, manifest, examples),
+    )
+    lookalike = {"_authenticator": b"not-a-capability"}
+
+    with pytest.raises(InputBoundaryError, match="test harness"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=cast(Any, lookalike),
+        )
+
+    harness = explicit_calibration_test_harness()
+    forged = cast(Any, object.__new__(ExplicitCalibrationTestHarnessV1))
+    object.__setattr__(
+        forged,
+        "_authenticator",
+        cast(Any, harness)._authenticator,
+    )
+    with pytest.raises(InputBoundaryError, match="test harness"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=forged,
+        )
+
+    damaged = explicit_calibration_test_harness()
+    object.__delattr__(damaged, "_authenticator")
+    with pytest.raises(InputBoundaryError, match="test harness"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=damaged,
+        )
+
+
+def test_active_profile_rejects_tampering_and_exact_type_clone() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    calibration_module._validate_active_calibration_profile(active)
+
+    clone = object.__new__(ActiveCalibrationProfileV1)
+    for field in fields(active):
+        object.__setattr__(clone, field.name, getattr(active, field.name))
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        calibration_module._validate_active_calibration_profile(clone)
+
+    object.__setattr__(
+        active,
+        "minimum_score_q32",
+        active.minimum_score_q32 - 1,
+    )
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        calibration_module._validate_active_calibration_profile(active)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    (
+        ("activation_scope", "test_harness"),
+        ("artifact_digest", "not-a-digest"),
+        ("minimum_score_q32", "not-an-int"),
+        ("_authenticator", "not-bytes"),
+    ),
+)
+def test_active_profile_normalizes_malformed_fields(
+    field_name: str,
+    invalid_value: object,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    object.__setattr__(active, field_name, invalid_value)
+
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        calibration_module._validate_active_calibration_profile(active)
+
+
+def test_activation_normalizes_malformed_profile_inputs() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    profile = CalibrationProfileV1(spec=spec, artifact=artifact)
+    object.__setattr__(artifact, "deployment_status", "test_only")
+
+    with pytest.raises(InputBoundaryError, match="calibration artifact is invalid"):
+        activate_calibration_profile(
+            profile,
+            _compatibility_requirements(spec),
+            test_harness=explicit_calibration_test_harness(),
+        )
+
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    profile = CalibrationProfileV1(spec=spec, artifact=artifact)
+    requirements = _compatibility_requirements(spec)
+    object.__setattr__(spec, "purpose", "personal_memory_text")
+
+    with pytest.raises(InputBoundaryError, match="calibration spec is invalid"):
+        activate_calibration_profile(
+            profile,
+            requirements,
+            test_harness=explicit_calibration_test_harness(),
+        )
+
+
+def test_calibration_activation_reports_spec_and_manifest_binding_mismatches() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    different_spec = replace(
+        spec,
+        query_stratum_id="personal-memory.other.v1",
+    )
+
+    spec_mismatch = activate_calibration_profile(
+        CalibrationProfileV1(spec=different_spec, artifact=artifact),
+        _compatibility_requirements(different_spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(spec_mismatch) is CalibrationProfileUnavailableV1
+    assert (
+        spec_mismatch.reason
+        is CalibrationProfileUnavailableReason.SPEC_DIGEST_MISMATCH
+    )
+
+    changed_manifest_spec = replace(
+        spec,
+        label_provenance_manifest_digest="d" * 64,
+    )
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    wire["spec_digest"] = derive_calibration_spec_digest(changed_manifest_spec)
+    rebound_artifact = _redigested_artifact(wire)
+
+    manifest_mismatch = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=changed_manifest_spec,
+            artifact=rebound_artifact,
+        ),
+        _compatibility_requirements(changed_manifest_spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(manifest_mismatch) is CalibrationProfileUnavailableV1
+    assert (
+        manifest_mismatch.reason
+        is CalibrationProfileUnavailableReason.LABEL_MANIFEST_DIGEST_MISMATCH
+    )
+
+
+def test_activation_recomputes_risk_after_valid_redigest() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    rows[0]["risk_upper_bound_decimal"] = "0"
+    redigested = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=redigested),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH
+    )
+
+
+def test_calibration_activation_has_no_raw_production_authority_input() -> None:
+    assert (
+        "trusted_production_acceptance_digest"
+        not in signature(activate_calibration_profile).parameters
+    )
+
+
+def test_calibration_activation_reports_missing_and_disabled_profiles() -> None:
+    spec, _manifest, _examples = _passing_artifact_inputs()
+    requirements = _compatibility_requirements(spec)
+
+    missing = activate_calibration_profile(None, requirements)
+
+    assert type(missing) is CalibrationProfileUnavailableV1
+    assert missing.reason is CalibrationProfileUnavailableReason.MISSING
+    assert missing.spec_digest is None
+    assert missing.artifact_digest is None
+
+    empty_manifest = _label_manifest(calibration_example_ids=())
+    disabled_spec = _calibration_spec(empty_manifest)
+    disabled_artifact = build_calibration_artifact(
+        disabled_spec,
+        empty_manifest,
+        (),
+    )
+    disabled = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=disabled_spec,
+            artifact=disabled_artifact,
+        ),
+        _compatibility_requirements(disabled_spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(disabled) is CalibrationProfileUnavailableV1
+    assert (
+        disabled.reason
+        is CalibrationProfileUnavailableReason.STATISTICALLY_DISABLED
+    )
+
+
+@pytest.mark.parametrize(
+    "expected_reason",
+    (
+        CalibrationProfileUnavailableReason.QUERY_STRATUM_MISMATCH,
+        CalibrationProfileUnavailableReason.SCORER_MISMATCH,
+        CalibrationProfileUnavailableReason.NORMALIZER_MISMATCH,
+        CalibrationProfileUnavailableReason.FEATURE_SPEC_MISMATCH,
+        CalibrationProfileUnavailableReason.BOUNDARY_SCHEMA_MISMATCH,
+        CalibrationProfileUnavailableReason.DATASET_MANIFEST_MISMATCH,
+    ),
+)
+def test_calibration_activation_reports_exact_runtime_mismatch(
+    expected_reason: CalibrationProfileUnavailableReason,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    profile = CalibrationProfileV1(
+        spec=spec,
+        artifact=build_calibration_artifact(spec, manifest, examples),
+    )
+    requirements = _compatibility_requirements(spec)
+    if (
+        expected_reason
+        is CalibrationProfileUnavailableReason.QUERY_STRATUM_MISMATCH
+    ):
+        requirements = replace(requirements, query_stratum_id="personal-memory.tr.v1")
+    elif expected_reason is CalibrationProfileUnavailableReason.SCORER_MISMATCH:
+        requirements = replace(requirements, scorer_id="aluclu.similarity.other.v1")
+    elif expected_reason is CalibrationProfileUnavailableReason.NORMALIZER_MISMATCH:
+        requirements = replace(requirements, normalizer_id="normalizer.other.v1")
+    elif expected_reason is CalibrationProfileUnavailableReason.FEATURE_SPEC_MISMATCH:
+        requirements = replace(requirements, feature_spec_id="feature.other.v1")
+    elif (
+        expected_reason
+        is CalibrationProfileUnavailableReason.BOUNDARY_SCHEMA_MISMATCH
+    ):
+        requirements = replace(requirements, boundary_schema_id="boundary.other.v1")
+    elif (
+        expected_reason
+        is CalibrationProfileUnavailableReason.DATASET_MANIFEST_MISMATCH
+    ):
+        requirements = replace(requirements, dataset_manifest_digest="e" * 64)
+
+    unavailable = activate_calibration_profile(
+        profile,
+        requirements,
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert unavailable.reason is expected_reason
+
+
+@pytest.mark.parametrize(
+    "expected_reason",
+    (
+        CalibrationProfileUnavailableReason.ARTIFACT_GRID_MISMATCH,
+        CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH,
+        CalibrationProfileUnavailableReason.ARTIFACT_SELECTION_MISMATCH,
+    ),
+)
+def test_activation_recomputes_artifact_semantics_after_valid_redigest(
+    expected_reason: CalibrationProfileUnavailableReason,
+) -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    if expected_reason is CalibrationProfileUnavailableReason.ARTIFACT_GRID_MISMATCH:
+        rows[1]["threshold_q32"] = 2**30
+        wire["chosen_threshold_q32"] = 2**30
+    elif expected_reason is CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH:
+        rows[0]["passed"] = False
+    else:
+        wire["chosen_threshold_q32"] = 0
+    redigested = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=redigested),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert unavailable.reason is expected_reason
+
+
+@pytest.mark.parametrize(
+    "failed_gate",
+    ("minimum_selected", "minimum_coverage", "maximum_risk"),
+)
+def test_activation_rejects_redigested_false_positive_gate(
+    failed_gate: str,
+) -> None:
+    if failed_gate == "minimum_coverage":
+        manifest = _label_manifest()
+        spec = replace(
+            _calibration_spec(manifest),
+            threshold_grid_q32=(2**31,),
+            minimum_selected=1,
+            minimum_coverage_decimal="0.75",
+            alpha_decimal="1",
+        )
+        examples = (
+            _example_for(
+                example_id="example:calibration-1",
+                score_q32=2**32,
+                target_observation_id="obs:gold-1",
+                predicted_observation_id="obs:gold-1",
+                spec=spec,
+                manifest=manifest,
+            ),
+            _example_for(
+                example_id="example:calibration-2",
+                score_q32=0,
+                target_observation_id="obs:gold-2",
+                predicted_observation_id="obs:gold-2",
+                spec=spec,
+                manifest=manifest,
+            ),
+        )
+    else:
+        manifest = _label_manifest(
+            calibration_example_ids=("example:calibration-1",),
+        )
+        spec = replace(
+            _calibration_spec(manifest),
+            threshold_grid_q32=(0,),
+            minimum_selected=2 if failed_gate == "minimum_selected" else 1,
+            minimum_coverage_decimal="0",
+            alpha_decimal="1" if failed_gate == "minimum_selected" else "0.1",
+        )
+        examples = (
+            _example_for(
+                example_id="example:calibration-1",
+                score_q32=2**32,
+                target_observation_id="obs:gold-1",
+                predicted_observation_id="obs:gold-1",
+                spec=spec,
+                manifest=manifest,
+            ),
+        )
+
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    assert artifact.statistical_status is CalibrationStatisticalStatus.DISABLED
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    rows = wire["threshold_results"]
+    assert type(rows) is list
+    rows[0]["passed"] = True
+    wire["statistical_status"] = "statistical_pass"
+    wire["chosen_threshold_q32"] = spec.threshold_grid_q32[0]
+    wire["disabled_reasons"] = []
+    forged = _redigested_artifact(wire)
+
+    unavailable = activate_calibration_profile(
+        CalibrationProfileV1(spec=spec, artifact=forged),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+
+    assert type(unavailable) is CalibrationProfileUnavailableV1
+    assert (
+        unavailable.reason
+        is CalibrationProfileUnavailableReason.ARTIFACT_GATE_MISMATCH
+    )
+
+
+@pytest.mark.parametrize("mutation", ("reverse", "duplicate"))
+def test_disabled_reason_order_and_uniqueness_are_wire_invariants(
+    mutation: str,
+) -> None:
+    manifest = _label_manifest(calibration_example_ids=())
+    spec = _calibration_spec(manifest)
+    artifact = build_calibration_artifact(spec, manifest, ())
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    reasons = wire["disabled_reasons"]
+    assert type(reasons) is list
+    assert len(reasons) >= 3
+    if mutation == "reverse":
+        wire["disabled_reasons"] = list(reversed(reasons))
+    else:
+        wire["disabled_reasons"] = sorted([*reasons, reasons[0]])
+
+    with pytest.raises(InputBoundaryError, match="sorted and unique"):
+        _redigested_artifact(wire)
+
+
+def test_production_activation_requires_future_trusted_capability() -> None:
+    spec, manifest, examples = _passing_artifact_inputs()
+    artifact = build_calibration_artifact(spec, manifest, examples)
+    raw_wire = strict_json_loads(encode_calibration_artifact(artifact))
+    assert type(raw_wire) is dict
+    wire = cast(dict[str, Any], raw_wire)
+    acceptance_digest = "e" * 64
+    wire["deployment_status"] = "production_accepted"
+    wire["production_acceptance_digest"] = acceptance_digest
+    production_artifact = _redigested_artifact(wire)
+    profile = CalibrationProfileV1(spec=spec, artifact=production_artifact)
+    requirements = _compatibility_requirements(spec)
+
+    for test_harness in (None, explicit_calibration_test_harness()):
+        unavailable = activate_calibration_profile(
+            profile,
+            requirements,
+            test_harness=test_harness,
+        )
+        assert type(unavailable) is CalibrationProfileUnavailableV1
+        assert (
+            unavailable.reason
+            is CalibrationProfileUnavailableReason.PRODUCTION_ACCEPTANCE_UNTRUSTED
+        )
+
+
+def test_calibration_activation_surface_is_explicitly_exported() -> None:
+    expected_names = (
+        "ActiveCalibrationProfileV1",
+        "CalibrationActivationScope",
+        "CalibrationCompatibilityRequirementsV1",
+        "CalibrationProfileUnavailableReason",
+        "CalibrationProfileUnavailableV1",
+        "CalibrationProfileV1",
+        "ExplicitCalibrationTestHarnessV1",
+        "activate_calibration_profile",
+        "explicit_calibration_test_harness",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__
+
+
+def _active_runtime_calibration_profile(
+    **spec_overrides: object,
+) -> ActiveCalibrationProfileV1:
+    manifest = _label_manifest()
+    values: dict[str, object] = {
+        "scorer_id": active_scorer_id(),
+        "normalizer_id": active_normalizer_id(),
+        "feature_spec_id": active_feature_spec_id(),
+        "alpha_decimal": "1",
+        "minimum_selected": 1,
+        "minimum_coverage_decimal": "0",
+    }
+    values.update(spec_overrides)
+    spec = replace(_calibration_spec(manifest), **values)  # type: ignore[arg-type]
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    return active
+
+
+def _calibrated_policy(
+    active: ActiveCalibrationProfileV1,
+    **overrides: object,
+) -> RecallExecutionPolicyV1:
+    values: dict[str, object] = {
+        "max_records": 128,
+        "top_k": 8,
+        "max_returned_payload_bytes": 16_384,
+        "active_normalizer_id": active.normalizer_id,
+        "active_feature_spec_id": active.feature_spec_id,
+        "minimum_score_q32": active.minimum_score_q32,
+        "minimum_margin_q32": active.minimum_margin_q32,
+        "allow_approximate": True,
+        "allow_incomplete": True,
+    }
+    values.update(overrides)
+    return RecallExecutionPolicyV1(**values)  # type: ignore[arg-type]
+
+
+def _domain_digest_for_test(domain: bytes, payload: object) -> str:
+    body = canonical_json_bytes(cast(Any, payload))
+    frame = (
+        struct.pack(">Q", len(domain))
+        + domain
+        + struct.pack(">Q", len(body))
+        + body
+    )
+    return hashlib.sha256(frame).hexdigest()
+
+
+def test_active_scorer_id_is_the_frozen_q32_cosine_protocol_identity() -> None:
+    assert active_scorer_id() == "aluclu.similarity.cosine-q32.v1"
+
+
+def test_equal_policy_bounds_are_valid_and_force_abstain_changes_identity() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    unchanged = tighten_recall_policy(
+        policy,
+        active,
+        max_records=policy.max_records,
+        top_k=policy.top_k,
+        max_returned_payload_bytes=policy.max_returned_payload_bytes,
+        minimum_score_q32=policy.minimum_score_q32,
+        minimum_margin_q32=policy.minimum_margin_q32,
+        allow_approximate=policy.allow_approximate,
+        allow_incomplete=policy.allow_incomplete,
+        force_abstain=False,
+    )
+    forced = tighten_recall_policy(policy, active, force_abstain=True)
+
+    assert unchanged.max_records == policy.max_records
+    assert unchanged.top_k == policy.top_k
+    assert unchanged.max_returned_payload_bytes == policy.max_returned_payload_bytes
+    assert unchanged.minimum_score_q32 == policy.minimum_score_q32
+    assert unchanged.minimum_margin_q32 == policy.minimum_margin_q32
+    assert unchanged.allow_approximate is policy.allow_approximate
+    assert unchanged.allow_incomplete is policy.allow_incomplete
+    assert unchanged.force_abstain is False
+    assert forced.force_abstain is True
+    assert forced.effective_policy_digest != unchanged.effective_policy_digest
+    recollection_module._validate_recall_policy_tightening(
+        unchanged,
+        policy=policy,
+        active_profile=active,
+    )
+    recollection_module._validate_recall_policy_tightening(
+        forced,
+        policy=policy,
+        active_profile=active,
+    )
+
+
+@pytest.mark.parametrize(
+    ("overrides", "field_name"),
+    (
+        ({"max_records": True}, "max_records"),
+        ({"minimum_score_q32": True}, "minimum_score_q32"),
+        ({"allow_approximate": 1}, "allow_approximate"),
+        ({"force_abstain": 1}, "force_abstain"),
+    ),
+)
+def test_policy_tightening_factory_requires_exact_scalar_types(
+    overrides: dict[str, object],
+    field_name: str,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    with pytest.raises(InputBoundaryError, match=field_name):
+        tighten_recall_policy(policy, active, **overrides)  # type: ignore[arg-type]
+
+
+def test_policy_tightening_factory_rejects_public_input_lookalikes() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    with pytest.raises(InputBoundaryError, match="recall policy"):
+        tighten_recall_policy(cast(Any, {"max_records": 1}), active)
+    with pytest.raises(InputBoundaryError, match="active calibration profile"):
+        tighten_recall_policy(policy, cast(Any, {"profile_digest": "0" * 64}))
+
+
+def test_calibrated_policy_tightening_binds_profile_and_effective_policy() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+
+    tightening = tighten_recall_policy(
+        policy,
+        active,
+        max_records=64,
+        top_k=4,
+        max_returned_payload_bytes=8_192,
+        minimum_score_q32=active.minimum_score_q32 + 1,
+        minimum_margin_q32=active.minimum_margin_q32 + 1,
+        allow_approximate=False,
+        allow_incomplete=False,
+        force_abstain=True,
+    )
+
+    assert type(tightening) is RecallPolicyTighteningV1
+    assert tightening.active_profile_digest == active.profile_digest
+    assert tightening.active_scorer_id == active.scorer_id
+    assert tightening.active_normalizer_id == active.normalizer_id
+    assert tightening.active_feature_spec_id == active.feature_spec_id
+    assert tightening.max_records == 64
+    assert tightening.top_k == 4
+    assert tightening.max_returned_payload_bytes == 8_192
+    assert tightening.minimum_score_q32 == active.minimum_score_q32 + 1
+    assert tightening.minimum_margin_q32 == active.minimum_margin_q32 + 1
+    assert tightening.allow_approximate is False
+    assert tightening.allow_incomplete is False
+    assert tightening.force_abstain is True
+    assert not hasattr(tightening, "__dict__")
+    with pytest.raises(TypeError):
+        RecallPolicyTighteningV1()
+
+    expected_base_digest = _domain_digest_for_test(
+        b"aluclu.task2.recall-policy.v1",
+        {
+            "active_feature_spec_id": policy.active_feature_spec_id,
+            "active_normalizer_id": policy.active_normalizer_id,
+            "allow_approximate": policy.allow_approximate,
+            "allow_incomplete": policy.allow_incomplete,
+            "max_records": policy.max_records,
+            "max_returned_payload_bytes": policy.max_returned_payload_bytes,
+            "minimum_margin_q32": policy.minimum_margin_q32,
+            "minimum_score_q32": policy.minimum_score_q32,
+            "top_k": policy.top_k,
+        },
+    )
+    assert tightening.base_policy_digest == expected_base_digest
+    assert tightening.effective_policy_digest == _domain_digest_for_test(
+        b"aluclu.task2.effective-recall-policy.v1",
+        {
+            "active_feature_spec_id": tightening.active_feature_spec_id,
+            "active_normalizer_id": tightening.active_normalizer_id,
+            "active_profile_digest": tightening.active_profile_digest,
+            "active_scorer_id": tightening.active_scorer_id,
+            "allow_approximate": tightening.allow_approximate,
+            "allow_incomplete": tightening.allow_incomplete,
+            "base_policy_digest": tightening.base_policy_digest,
+            "force_abstain": tightening.force_abstain,
+            "max_records": tightening.max_records,
+            "max_returned_payload_bytes": tightening.max_returned_payload_bytes,
+            "minimum_margin_q32": tightening.minimum_margin_q32,
+            "minimum_score_q32": tightening.minimum_score_q32,
+            "top_k": tightening.top_k,
+        },
+    )
+
+
+@pytest.mark.parametrize(
+    ("policy_overrides", "tightening_overrides", "field_name"),
+    (
+        ({}, {"max_records": 129}, "max_records"),
+        ({}, {"top_k": 9}, "top_k"),
+        ({}, {"top_k": 1}, "top_k"),
+        ({}, {"max_returned_payload_bytes": 16_385}, "max_returned_payload_bytes"),
+        ({}, {"minimum_score_q32": 2**31 - 1}, "minimum_score_q32"),
+        ({}, {"minimum_margin_q32": 2**24 - 1}, "minimum_margin_q32"),
+        (
+            {"allow_approximate": False},
+            {"allow_approximate": True},
+            "allow_approximate",
+        ),
+        (
+            {"allow_incomplete": False},
+            {"allow_incomplete": True},
+            "allow_incomplete",
+        ),
+    ),
+)
+def test_policy_tightening_rejects_every_authority_expansion(
+    policy_overrides: dict[str, object],
+    tightening_overrides: dict[str, object],
+    field_name: str,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active, **policy_overrides)
+
+    with pytest.raises(InputBoundaryError, match=field_name):
+        tighten_recall_policy(policy, active, **tightening_overrides)  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value_delta"),
+    (("minimum_score_q32", -1), ("minimum_margin_q32", -1)),
+)
+def test_policy_tightening_rejects_a_base_below_calibration_floor(
+    field_name: str,
+    value_delta: int,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    floor = cast(int, getattr(active, field_name))
+    policy = _calibrated_policy(active, **{field_name: floor + value_delta})
+
+    with pytest.raises(InputBoundaryError, match=f"{field_name}.*calibration"):
+        tighten_recall_policy(policy, active)
+
+
+def test_policy_tightening_rejects_a_base_below_text_recall_margin_floor() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active, top_k=1)
+
+    with pytest.raises(InputBoundaryError, match="top_k"):
+        tighten_recall_policy(policy, active)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "replacement"),
+    (
+        ("scorer_id", "aluclu.similarity.other-q32.v1"),
+        ("normalizer_id", "aluclu.search-view.other.v1"),
+        ("feature_spec_id", "aluclu.feature.other.v1"),
+    ),
+)
+def test_policy_tightening_rejects_runtime_algorithm_mismatch(
+    field_name: str,
+    replacement: str,
+) -> None:
+    manifest = _label_manifest()
+    spec_overrides: dict[str, object] = {
+        "scorer_id": active_scorer_id(),
+        "normalizer_id": active_normalizer_id(),
+        "feature_spec_id": active_feature_spec_id(),
+        "alpha_decimal": "1",
+        "minimum_selected": 1,
+        "minimum_coverage_decimal": "0",
+    }
+    spec_overrides[field_name] = replacement
+    spec = replace(_calibration_spec(manifest), **spec_overrides)  # type: ignore[arg-type]
+    examples = (
+        _example_for(
+            example_id="example:calibration-1",
+            score_q32=2**32,
+            target_observation_id="obs:gold-1",
+            predicted_observation_id="obs:gold-1",
+            spec=spec,
+            manifest=manifest,
+        ),
+        _example_for(
+            example_id="example:calibration-2",
+            score_q32=2**31,
+            target_observation_id="obs:gold-2",
+            predicted_observation_id="obs:gold-2",
+            spec=spec,
+            manifest=manifest,
+        ),
+    )
+    active = activate_calibration_profile(
+        CalibrationProfileV1(
+            spec=spec,
+            artifact=build_calibration_artifact(spec, manifest, examples),
+        ),
+        _compatibility_requirements(spec),
+        test_harness=explicit_calibration_test_harness(),
+    )
+    assert type(active) is ActiveCalibrationProfileV1
+    policy = RecallExecutionPolicyV1(
+        max_records=128,
+        top_k=8,
+        max_returned_payload_bytes=16_384,
+        active_normalizer_id=active_normalizer_id(),
+        active_feature_spec_id=active_feature_spec_id(),
+        minimum_score_q32=active.minimum_score_q32,
+        minimum_margin_q32=active.minimum_margin_q32,
+        allow_approximate=True,
+        allow_incomplete=True,
+    )
+
+    with pytest.raises(InputBoundaryError, match=field_name):
+        tighten_recall_policy(policy, active)
+
+
+def test_policy_tightening_rejects_lookalike_clone_and_mutation() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    recollection_module._validate_recall_policy_tightening(
+        tightening,
+        policy=policy,
+        active_profile=active,
+    )
+
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            {"effective_policy_digest": tightening.effective_policy_digest},
+            policy=policy,
+            active_profile=active,
+        )
+
+    clone = object.__new__(RecallPolicyTighteningV1)
+    for item in fields(tightening):
+        object.__setattr__(clone, item.name, getattr(tightening, item.name))
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            clone,
+            policy=policy,
+            active_profile=active,
+        )
+
+    object.__setattr__(tightening, "top_k", tightening.top_k + 1)
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=policy,
+            active_profile=active,
+        )
+
+
+def test_policy_tightening_cannot_be_rebound_to_another_policy_or_profile() -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    another_policy = replace(policy, max_records=policy.max_records - 1)
+
+    with pytest.raises(InputBoundaryError, match="different base policy"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=another_policy,
+            active_profile=active,
+        )
+
+    another_active = _active_runtime_calibration_profile(
+        query_stratum_id="personal-memory.alternate.v1"
+    )
+    with pytest.raises(InputBoundaryError, match="different profile"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=policy,
+            active_profile=another_active,
+        )
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    (
+        ("force_abstain", 1),
+        ("allow_approximate", 0),
+        ("top_k", True),
+        ("effective_policy_digest", "not-a-digest"),
+        ("_authenticator", "not-bytes"),
+    ),
+)
+def test_policy_tightening_normalizes_malformed_handle_fields(
+    field_name: str,
+    invalid_value: object,
+) -> None:
+    active = _active_runtime_calibration_profile()
+    policy = _calibrated_policy(active)
+    tightening = tighten_recall_policy(policy, active)
+    object.__setattr__(tightening, field_name, invalid_value)
+
+    with pytest.raises(InputBoundaryError, match="policy tightening"):
+        recollection_module._validate_recall_policy_tightening(
+            tightening,
+            policy=policy,
+            active_profile=active,
+        )
+
+
+def test_policy_tightening_surface_is_explicitly_exported() -> None:
+    expected_names = (
+        "RecallPolicyTighteningV1",
+        "active_scorer_id",
+        "tighten_recall_policy",
+    )
+
+    for name in expected_names:
+        assert hasattr(cognition_api, name)
+        assert name in cognition_api.__all__

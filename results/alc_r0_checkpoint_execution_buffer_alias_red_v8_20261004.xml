@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.007" timestamp="2026-10-04T01:45:50.150974+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_factors_cannot_alias_frozen_base_buffer" time="0.002"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">def test_factors_cannot_alias_frozen_base_buffer():
+        owner = Owner()
+        owner.base.register_buffer("alias", owner.factors[0].detach())
+&gt;       with pytest.raises(CheckpointExecutionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointExecutionError
+
+tests\test_alc_r0_checkpoint_execution.py:524: Failed</failure></testcase></testsuite></testsuites>

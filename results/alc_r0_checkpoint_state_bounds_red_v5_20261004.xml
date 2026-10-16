@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="9.690" timestamp="2026-10-04T02:40:07.685266+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_inventory_preallocation_and_serialization_bounds[string]" time="0.004"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_checkpoint_state.py:237: in test_inventory_preallocation_and_serialization_bounds
+    with pytest.raises(CheckpointExecutionError, match="bound"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_inventory_preallocation_and_serialization_bounds[integer]" time="0.004"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_checkpoint_state.py:237: in test_inventory_preallocation_and_serialization_bounds
+    with pytest.raises(CheckpointExecutionError, match="bound"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_inventory_preallocation_and_serialization_bounds[serialized]" time="0.097"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_checkpoint_state.py:237: in test_inventory_preallocation_and_serialization_bounds
+    with pytest.raises(CheckpointExecutionError, match="bound"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_inventory_preallocation_and_serialization_bounds[modules]" time="0.558"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_checkpoint_state.py:237: in test_inventory_preallocation_and_serialization_bounds
+    with pytest.raises(CheckpointExecutionError, match="bound"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_state" name="test_inventory_preallocation_and_serialization_bounds[depth]" time="0.010"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_checkpoint_state.py:237: in test_inventory_preallocation_and_serialization_bounds
+    with pytest.raises(CheckpointExecutionError, match="bound"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase></testsuite></testsuites>

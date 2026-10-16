@@ -1,0 +1,104 @@
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.422 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.7463 AMD64
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+
+Loading Dump File [C:\Users\kaann\AppData\Local\CrashDumps\python.exe.25056.dmp]
+User Mini Dump File: Only registers, stack and portions of memory are available
+
+Network paths are disallowed, symbol server is not available.
+Set your symbol path to a symbol tree on the local machine.
+WARNING: Network paths disallowed 'C:\Windows\System32'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       C:\Windows\System32
+Network paths are disallowed, symbol server is not available.
+Set your symbol path to a symbol tree on the local machine.
+WARNING: Network paths disallowed 'C:\Windows\System32'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       C:\Windows\System32
+Symbol search path is: C:\Windows\System32
+Executable search path is: C:\Windows\System32
+Windows 10 Version 26200 MP (16 procs) Free x64
+Product: WinNt, suite: SingleUserTS
+Edition build lab: 26100.1.amd64fre.ge_release.240331-1435
+Debug session time: Mon Oct  5 04:57:53.000 2026 (UTC + 3:00)
+System Uptime: 0 days 2:37:51.234
+Process Uptime: 0 days 0:04:00.000
+................................................................
+................................................................
+...........................
+Loading unloaded module list
+......
+This dump file has an exception of interest stored in it.
+The stored exception information can be accessed via .ecxr.
+(61e0.bb0): Unknown exception - code c000070a (first/second chance not available)
+
++------------------------------------------------------------------------+
+| This target supports Hardware-enforced Stack Protection. A HW based    |
+| "Shadow Stack" may be available to assist in debugging and analysis.   |
+| See aka.ms/userhsp for more info.                                      |
+|                                                                        |
+| dps @ssp                                                               |
+|                                                                        |
++------------------------------------------------------------------------+
+
+For analysis of this file, run !analyze -v
+ntdll!NtWaitForMultipleObjects+0x14:
+00007ff9`ea701914 c3              ret
+0:019> cdb: Reading initial command '.ecxr; k 16; q'
+rax=0000000000000000 rbx=000001ec17751cf0 rcx=000000007ffe0385
+rdx=00000000000003c8 rsi=ffffffffc0000008 rdi=000000000000002c
+rip=00007ff9ea6687a4 rsp=00000036bdd9f6b0 rbp=00000036bdd9f729
+ r8=00007ff9ea5c670b  r9=0000000000000002 r10=0000000000000000
+r11=000000007ffe0385 r12=000000007ffe0301 r13=000000000000002c
+r14=000001ec17751de0 r15=000001ec17751a80
+iopl=0         nv up ei pl nz na po nc
+cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+ntdll!TpReleaseIoCompletion+0x494:
+00007ff9`ea6687a4 488b4d47        mov     rcx,qword ptr [rbp+47h] ss:00000036`bdd9f770=000081fd4f863961
+Child-SP          RetAddr               Call Site
+00000036`bdd9f6b0 00007ff9`ea622901     ntdll!TpReleaseIoCompletion+0x494
+00000036`bdd9f790 00007ff9`ea621b16     ntdll!TpSetWaitEx+0x321
+00000036`bdd9f810 00007ff9`ea621420     ntdll!TpStartAsyncIoOperation+0x996
+00000036`bdd9f870 00007ff9`ea5ba879     ntdll!TpStartAsyncIoOperation+0x2a0
+00000036`bdd9f990 00007ff9`e8eccd87     ntdll!TpCallbackMayRunLong+0x1c29
+00000036`bdd9fcf0 00007ff9`ea64caec     kernel32!BaseThreadInitThunk+0x17
+00000036`bdd9fd20 00000000`00000000     ntdll!RtlUserThreadStart+0x2c
+quit:
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\atlmfc.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\ObjectiveC.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\concurrency.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\cpp_rest.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\stl.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\Windows.Data.Json.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\Windows.Media.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\windows.natvis'
+NatVis script unloaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\Visualizers\winrt.natvis'

@@ -1,0 +1,492 @@
+FFFFFFFF................................................................ [ 60%]
+................................................                         [100%]
+================================== FAILURES ===================================
+_ test_late_reference_failure_rejects_extra_row_fields[tensor-before_cache-False] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1A349B0>
+interrupt = False, timing = 'before_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[tensor-before_cache-True] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1B6B740>
+interrupt = True, timing = 'before_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[tensor-after_cache-False] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1C4FE60>
+interrupt = False, timing = 'after_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[tensor-after_cache-True] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1C4E450>
+interrupt = True, timing = 'after_cache', extra = 'tensor'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[object-before_cache-False] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B12788F0>
+interrupt = False, timing = 'before_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[object-before_cache-True] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296AB602240>
+interrupt = True, timing = 'before_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[object-after_cache-False] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1E4EED0>
+interrupt = False, timing = 'after_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityError('terminal q/v parity failure at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+_ test_late_reference_failure_rejects_extra_row_fields[object-after_cache-True] _
+
+reference_wiring = (<module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000296B1F354C0>
+interrupt = True, timing = 'after_cache', extra = 'object'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("timing", ["before_cache", "after_cache"])
+    @pytest.mark.parametrize("extra", ["tensor", "object"])
+    def test_late_reference_failure_rejects_extra_row_fields(
+        reference_wiring, monkeypatch, interrupt, timing, extra
+    ):
+        """Stubbed cell framing; reject graph/object retention, not numerical proof."""
+        module, _, created = reference_wiring
+        original_cell = module.run_parity_cell
+        original_unchanged = module._ReferenceFactory.unchanged
+        primary = (
+            KeyboardInterrupt("late framing") if interrupt else RuntimeError("late framing")
+        )
+        injected = torch.ones(2, requires_grad=True) * 2 if extra == "tensor" else object()
+        returned = []
+    
+        def complete(*args, **kwargs):
+            result = original_cell(*args, **kwargs)
+            if timing == "before_cache":
+                object.__setattr__(result.cases[5], "extra", injected)
+            returned.append(result)
+            return result
+    
+        def fail_after_cell(factory):
+            if returned:
+                if timing == "after_cache":
+                    object.__setattr__(returned[0].cases[5], "extra", injected)
+                for wrapper in created:
+                    for parameter in wrapper.reference.parameters():
+                        parameter.grad = torch.ones_like(parameter)
+                raise primary
+            return original_unchanged(factory)
+    
+        monkeypatch.setattr(module, "run_parity_cell", complete)
+        monkeypatch.setattr(module._ReferenceFactory, "unchanged", fail_after_cell)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        assert error.__cause__ is primary
+>       assert error.journal_fault
+E       AssertionError: assert False
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at final_base').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:80: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[tensor-before_cache-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[tensor-before_cache-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[tensor-after_cache-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[tensor-after_cache-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[object-before_cache-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[object-before_cache-True]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[object-after_cache-False]
+FAILED tests/test_alc_r0_accumulation_journal_integration.py::test_late_reference_failure_rejects_extra_row_fields[object-after_cache-True]

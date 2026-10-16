@@ -1,0 +1,31 @@
+Checkpoint174: bounded historical resource discovery, not scientific acceptance
+Parent: 8d4f7a23629437b8638704d6e530ce71ffb2bc8f
+Report: docs/superpowers/reviews/2026-10-05-alc-r0-historical-resource-expansion.md
+Reviewed report SHA256: bcea4317490089b6931ef81d3a9f1dadea4686e19c683afb1681286c5ff1fc54
+
+Parent and independent code lane verified 21 exact XML hashes and matching
+non-skipped successful testcases. Case duration fields sum 828.979 seconds;
+containing suite duration fields sum 5712.584 seconds. Neither is GPU time.
+Parent and independent code lane joined three original CommandExecution records:
+capsule 69.155747700 seconds, q_lora 70.201327300 seconds,
+remount 60.941178100 seconds, all terminal exit_code=0.
+Sum 200.298253100 seconds is command wall duration, not GPU consumption.
+Tool handles are not authenticated operating-system process IDs.
+
+Independent code/spec/security lane resource_code_61: APPROVE for evidence
+accuracy only; independently confirmed XML/source and private terminal joins.
+Independent architecture lane resource_arch_61: CLEAR for scoped discovery
+distinctions; WATCH for independent private-session joins. Its final attempt to
+read the private session was denied while another process held the file, so it
+verified document/arithmetic rather than independently confirming those events.
+No missing review is represented as an independently inspected primary source.
+Synthesis: scoped discovery accepted, with the stated verification limitation.
+Global historical reconciliation and scientific launch remain UNKNOWN/BLOCK.
+
+No historical jobs rerun; no new pytest, model, tokenizer, corpus, GPU or training
+invocation. Existing source/tests/result XML bytes unchanged. No private session
+history exported or staged. This documentation-only evidence validation does not
+require or imply a fresh regression suite.
+Original first development instant, complete measured GPU consumption and full
+attempt inventory remain unknown. No allowance reset, threshold change, permit,
+learning PASS, portability PASS or full-program completion follows.

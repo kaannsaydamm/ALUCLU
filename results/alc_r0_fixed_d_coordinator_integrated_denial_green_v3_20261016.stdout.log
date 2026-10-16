@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 40 items / 37 deselected / 3 selected
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] PASSED [ 33%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-terminate-denied] PASSED [ 66%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure _
+tests\test_alc_r0_fixed_d_coordinator.py:474: in test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure
+    assert OwnedStopSignal._requested(actor.signal) and actor.thread.ident is None
+E   AssertionError: assert (False)
+E    +  where False = <function OwnedStopSignal._requested at 0x000001FB9F2C9620>(<aluclu.alc_r0.reserved_owned_process.OwnedStopSignal object at 0x000001FB9B7830D0>)
+E    +    where <function OwnedStopSignal._requested at 0x000001FB9F2C9620> = <class 'aluclu.alc_r0.reserved_owned_process.OwnedStopSignal'>._requested
+E    +    and   <aluclu.alc_r0.reserved_owned_process.OwnedStopSignal object at 0x000001FB9B7830D0> = <aluclu.alc_r0.fixed_d_coordinator._NativeActuator object at 0x000001FB9BD44200>.signal
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_integrated_denial_green_v3_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+================= 1 failed, 2 passed, 37 deselected in 5.67s ==================

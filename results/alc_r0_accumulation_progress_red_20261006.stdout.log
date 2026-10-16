@@ -1,0 +1,573 @@
+FFFFFFFFFFFFFFFFFF                                                       [100%]
+================================== FAILURES ===================================
+_________ test_complete_trace_has_bounded_immutable_primitive_records _________
+
+    def test_complete_trace_has_bounded_immutable_primitive_records():
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_before_backward_counts_do_not_claim_observation_return[0-off] ______
+
+arm = 'off', index = 0
+
+    @pytest.mark.parametrize("arm", ["off", "on"])
+    @pytest.mark.parametrize("index", [0, 7, 15])
+    def test_before_backward_counts_do_not_claim_observation_return(arm, index):
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_before_backward_counts_do_not_claim_observation_return[0-on] ______
+
+arm = 'on', index = 0
+
+    @pytest.mark.parametrize("arm", ["off", "on"])
+    @pytest.mark.parametrize("index", [0, 7, 15])
+    def test_before_backward_counts_do_not_claim_observation_return(arm, index):
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_before_backward_counts_do_not_claim_observation_return[7-off] ______
+
+arm = 'off', index = 7
+
+    @pytest.mark.parametrize("arm", ["off", "on"])
+    @pytest.mark.parametrize("index", [0, 7, 15])
+    def test_before_backward_counts_do_not_claim_observation_return(arm, index):
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_before_backward_counts_do_not_claim_observation_return[7-on] ______
+
+arm = 'on', index = 7
+
+    @pytest.mark.parametrize("arm", ["off", "on"])
+    @pytest.mark.parametrize("index", [0, 7, 15])
+    def test_before_backward_counts_do_not_claim_observation_return(arm, index):
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_before_backward_counts_do_not_claim_observation_return[15-off] _____
+
+arm = 'off', index = 15
+
+    @pytest.mark.parametrize("arm", ["off", "on"])
+    @pytest.mark.parametrize("index", [0, 7, 15])
+    def test_before_backward_counts_do_not_claim_observation_return(arm, index):
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_before_backward_counts_do_not_claim_observation_return[15-on] ______
+
+arm = 'on', index = 15
+
+    @pytest.mark.parametrize("arm", ["off", "on"])
+    @pytest.mark.parametrize("index", [0, 7, 15])
+    def test_before_backward_counts_do_not_claim_observation_return(arm, index):
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_______ test_optimizer_return_does_not_claim_step_record_or_pair_return _______
+
+    def test_optimizer_return_does_not_claim_step_record_or_pair_return():
+>       owner = module()._AccumulationOwner()
+                ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+________ test_skipped_return_and_foreign_or_forged_ticket_are_rejected ________
+
+    def test_skipped_return_and_foreign_or_forged_ticket_are_rejected():
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes0] ___________
+
+changes = {'completed_pair': True}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes1] ___________
+
+changes = {'completed_pair': 12}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes2] ___________
+
+changes = {'phase': 'unknown'}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes3] ___________
+
+changes = {'arm': 'on'}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes4] ___________
+
+changes = {'index': 0}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes5] ___________
+
+changes = {'journal_fault': 1}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+__________ test_forged_snapshot_cannot_overstate_progress[changes6] ___________
+
+changes = {'cleanup_fault': None}
+
+    @pytest.mark.parametrize("changes", [
+        {"completed_pair": True}, {"completed_pair": 12}, {"phase": "unknown"},
+        {"arm": "on"}, {"index": 0}, {"journal_fault": 1}, {"cleanup_fault": None},
+    ])
+    def test_forged_snapshot_cannot_overstate_progress(changes):
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_______ test_bad_nested_counts_subclasses_and_extra_fields_are_rejected _______
+
+    def test_bad_nested_counts_subclasses_and_extra_fields_are_rejected():
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___________ test_closed_owner_retains_snapshot_but_cannot_continue ____________
+
+    def test_closed_owner_retains_snapshot_but_cannot_continue():
+>       journal = module()
+                  ^^^^^^^^
+
+tests\test_alc_r0_accumulation_progress.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_accumulation_progress.py:10: in module
+    return importlib.import_module("aluclu.alc_r0.checkpoint_accumulation_progress")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.checkpoint_accumulation_progress'
+import_ = <function _gcd_import at 0x0000019438CB80E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.checkpoint_accumulation_progress'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_accumulation_progress.py::test_complete_trace_has_bounded_immutable_primitive_records
+FAILED tests/test_alc_r0_accumulation_progress.py::test_before_backward_counts_do_not_claim_observation_return[0-off]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_before_backward_counts_do_not_claim_observation_return[0-on]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_before_backward_counts_do_not_claim_observation_return[7-off]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_before_backward_counts_do_not_claim_observation_return[7-on]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_before_backward_counts_do_not_claim_observation_return[15-off]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_before_backward_counts_do_not_claim_observation_return[15-on]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_optimizer_return_does_not_claim_step_record_or_pair_return
+FAILED tests/test_alc_r0_accumulation_progress.py::test_skipped_return_and_foreign_or_forged_ticket_are_rejected
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes0]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes1]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes2]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes3]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes4]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes5]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_forged_snapshot_cannot_overstate_progress[changes6]
+FAILED tests/test_alc_r0_accumulation_progress.py::test_bad_nested_counts_subclasses_and_extra_fields_are_rejected
+FAILED tests/test_alc_r0_accumulation_progress.py::test_closed_owner_retains_snapshot_but_cannot_continue

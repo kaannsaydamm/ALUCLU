@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="55" skipped="0" tests="55" time="6.862" timestamp="2026-10-04T05:32:40.925451+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-find_packed_sequence_indices-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-find_packed_sequence_indices-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-packed_sequence_mask_function-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-packed_sequence_mask_function-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-or_masks-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-or_masks-sdpa]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-blockwise_overlay-eager]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-blockwise_overlay-sdpa]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-maybe_pad_block_sequence_ids-eager]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-maybe_pad_block_sequence_ids-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-_can_skip_bidirectional_mask_xpu-eager]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-_can_skip_bidirectional_mask_xpu-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-bidirectional_mask_function-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-bidirectional_mask_function-sdpa]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-create_bidirectional_mask-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-create_bidirectional_mask-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-_vmap_expansion_sdpa-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-transformers.masking_utils-_vmap_expansion_sdpa-sdpa]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch-arange-eager]" time="0.006"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch-arange-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch-diff-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch-diff-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch-where-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch-where-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch.nn.functional-pad-eager]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[preparation-torch.nn.functional-pad-sdpa]" time="0.007"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_mask_subdependencies.py:44: in test_mask_subdependency_drift_denied
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-find_packed_sequence_indices-eager]" time="0.048"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-find_packed_sequence_indices-sdpa]" time="0.021"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-packed_sequence_mask_function-eager]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-packed_sequence_mask_function-sdpa]" time="0.024"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-or_masks-eager]" time="0.022"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-or_masks-sdpa]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-blockwise_overlay-eager]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-blockwise_overlay-sdpa]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-maybe_pad_block_sequence_ids-eager]" time="0.022"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-maybe_pad_block_sequence_ids-sdpa]" time="0.109"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-_can_skip_bidirectional_mask_xpu-eager]" time="0.022"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-_can_skip_bidirectional_mask_xpu-sdpa]" time="0.021"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-bidirectional_mask_function-eager]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-bidirectional_mask_function-sdpa]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-create_bidirectional_mask-eager]" time="0.024"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-create_bidirectional_mask-sdpa]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-_vmap_expansion_sdpa-eager]" time="0.026"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-transformers.masking_utils-_vmap_expansion_sdpa-sdpa]" time="0.024"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch-arange-eager]" time="0.024"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch-arange-sdpa]" time="0.024"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch-diff-eager]" time="0.024"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch-diff-sdpa]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch-where-eager]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch-where-sdpa]" time="0.021"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch.nn.functional-pad-eager]" time="0.022"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_mask_subdependency_drift_denied[replay-torch.nn.functional-pad-sdpa]" time="0.021"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_subdependencies.py:25: in test_mask_subdependency_drift_denied
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_actual_packed_mask_change_changes_binding[eager]" time="0.031"><failure message="AssertionError: assert '57042e607696df46fc8112fb9485f519c282f8cf970be4a8dc92778d10570df9' != '57042e607696df46fc8112fb9485f519c282f8cf970be4a8dc92778d10570df9'&#10; +  where '57042e607696df46fc8112fb9485f519c282f8cf970be4a8dc92778d10570df9' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001B7BFDD40E0&gt;()">tests\test_alc_r0_mask_subdependencies.py:63: in test_actual_packed_mask_change_changes_binding
+    assert getter() != before
+E   AssertionError: assert '57042e607696df46fc8112fb9485f519c282f8cf970be4a8dc92778d10570df9' != '57042e607696df46fc8112fb9485f519c282f8cf970be4a8dc92778d10570df9'
+E    +  where '57042e607696df46fc8112fb9485f519c282f8cf970be4a8dc92778d10570df9' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001B7BFDD40E0&gt;()</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_actual_packed_mask_change_changes_binding[sdpa]" time="0.005"><failure message="AssertionError: assert 'fbecf98babf83389573bc511b0a7d149b900d8cd63b8f0b251e2396b87f22e9f' != 'fbecf98babf83389573bc511b0a7d149b900d8cd63b8f0b251e2396b87f22e9f'&#10; +  where 'fbecf98babf83389573bc511b0a7d149b900d8cd63b8f0b251e2396b87f22e9f' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001B7BFDD4220&gt;()">tests\test_alc_r0_mask_subdependencies.py:63: in test_actual_packed_mask_change_changes_binding
+    assert getter() != before
+E   AssertionError: assert 'fbecf98babf83389573bc511b0a7d149b900d8cd63b8f0b251e2396b87f22e9f' != 'fbecf98babf83389573bc511b0a7d149b900d8cd63b8f0b251e2396b87f22e9f'
+E    +  where 'fbecf98babf83389573bc511b0a7d149b900d8cd63b8f0b251e2396b87f22e9f' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001B7BFDD4220&gt;()</failure></testcase><testcase classname="tests.test_alc_r0_mask_subdependencies" name="test_actual_block_padding_endpoint_change_changes_binding" time="0.004"><failure message="AssertionError: assert '6e6dbfe322e9f9e4639d6a7121ca5790740c77ecb343489cd3c91bfdcec06221' != '6e6dbfe322e9f9e4639d6a7121ca5790740c77ecb343489cd3c91bfdcec06221'&#10; +  where '6e6dbfe322e9f9e4639d6a7121ca5790740c77ecb343489cd3c91bfdcec06221' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001B7BFDD40E0&gt;()">tests\test_alc_r0_mask_subdependencies.py:77: in test_actual_block_padding_endpoint_change_changes_binding
+    assert getter() != before
+E   AssertionError: assert '6e6dbfe322e9f9e4639d6a7121ca5790740c77ecb343489cd3c91bfdcec06221' != '6e6dbfe322e9f9e4639d6a7121ca5790740c77ecb343489cd3c91bfdcec06221'
+E    +  where '6e6dbfe322e9f9e4639d6a7121ca5790740c77ecb343489cd3c91bfdcec06221' = &lt;function make_owner.&lt;locals&gt;.getter at 0x000001B7BFDD40E0&gt;()</failure></testcase></testsuite></testsuites>

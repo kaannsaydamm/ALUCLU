@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="2.309" timestamp="2026-10-02T20:29:36.664166+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_impossible_distance_is_rejected" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">def test_data_only_impossible_distance_is_rejected():
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        reference = audit_banded_edit_token_visibility((), (), **args)
+        private = _private_response_backend(reference, {19: 2})
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:74: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_preflight_status_and_reason_bound[False-endpoint]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">kind = 'endpoint', forge_exact = False
+
+    @pytest.mark.parametrize("kind", ["endpoint", "cells", "scratch"])
+    @pytest.mark.parametrize("forge_exact", [False, True])
+    def test_data_only_preflight_status_and_reason_bound(kind, forge_exact):
+        first, second = (1, 2), (2, 1)
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        base = audit_banded_edit_token_visibility(first, second, **args)
+        limits = {
+            "endpoint": BandedEditVisibilityLimits(max_endpoint_tokens=1),
+            "cells": BandedEditVisibilityLimits(max_band_cells=base.scheduled_band_cells-1),
+            "scratch": BandedEditVisibilityLimits(max_scratch_bytes=base.estimated_scratch_bytes-1),
+        }[kind]
+        reference = audit_banded_edit_token_visibility(first, second, limits=limits, **args)
+        overrides = {2: 2}
+        if forge_exact:
+            overrides = {1: 0, 2: 0, 7: reference_geometry_presence(reference) | 32, 26: 1}
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:94: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_preflight_status_and_reason_bound[False-cells]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">kind = 'cells', forge_exact = False
+
+    @pytest.mark.parametrize("kind", ["endpoint", "cells", "scratch"])
+    @pytest.mark.parametrize("forge_exact", [False, True])
+    def test_data_only_preflight_status_and_reason_bound(kind, forge_exact):
+        first, second = (1, 2), (2, 1)
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        base = audit_banded_edit_token_visibility(first, second, **args)
+        limits = {
+            "endpoint": BandedEditVisibilityLimits(max_endpoint_tokens=1),
+            "cells": BandedEditVisibilityLimits(max_band_cells=base.scheduled_band_cells-1),
+            "scratch": BandedEditVisibilityLimits(max_scratch_bytes=base.estimated_scratch_bytes-1),
+        }[kind]
+        reference = audit_banded_edit_token_visibility(first, second, limits=limits, **args)
+        overrides = {2: 2}
+        if forge_exact:
+            overrides = {1: 0, 2: 0, 7: reference_geometry_presence(reference) | 32, 26: 1}
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:94: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_preflight_status_and_reason_bound[False-scratch]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">kind = 'scratch', forge_exact = False
+
+    @pytest.mark.parametrize("kind", ["endpoint", "cells", "scratch"])
+    @pytest.mark.parametrize("forge_exact", [False, True])
+    def test_data_only_preflight_status_and_reason_bound(kind, forge_exact):
+        first, second = (1, 2), (2, 1)
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        base = audit_banded_edit_token_visibility(first, second, **args)
+        limits = {
+            "endpoint": BandedEditVisibilityLimits(max_endpoint_tokens=1),
+            "cells": BandedEditVisibilityLimits(max_band_cells=base.scheduled_band_cells-1),
+            "scratch": BandedEditVisibilityLimits(max_scratch_bytes=base.estimated_scratch_bytes-1),
+        }[kind]
+        reference = audit_banded_edit_token_visibility(first, second, limits=limits, **args)
+        overrides = {2: 2}
+        if forge_exact:
+            overrides = {1: 0, 2: 0, 7: reference_geometry_presence(reference) | 32, 26: 1}
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:94: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_preflight_status_and_reason_bound[True-endpoint]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">kind = 'endpoint', forge_exact = True
+
+    @pytest.mark.parametrize("kind", ["endpoint", "cells", "scratch"])
+    @pytest.mark.parametrize("forge_exact", [False, True])
+    def test_data_only_preflight_status_and_reason_bound(kind, forge_exact):
+        first, second = (1, 2), (2, 1)
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        base = audit_banded_edit_token_visibility(first, second, **args)
+        limits = {
+            "endpoint": BandedEditVisibilityLimits(max_endpoint_tokens=1),
+            "cells": BandedEditVisibilityLimits(max_band_cells=base.scheduled_band_cells-1),
+            "scratch": BandedEditVisibilityLimits(max_scratch_bytes=base.estimated_scratch_bytes-1),
+        }[kind]
+        reference = audit_banded_edit_token_visibility(first, second, limits=limits, **args)
+        overrides = {2: 2}
+        if forge_exact:
+            overrides = {1: 0, 2: 0, 7: reference_geometry_presence(reference) | 32, 26: 1}
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:94: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_preflight_status_and_reason_bound[True-cells]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">kind = 'cells', forge_exact = True
+
+    @pytest.mark.parametrize("kind", ["endpoint", "cells", "scratch"])
+    @pytest.mark.parametrize("forge_exact", [False, True])
+    def test_data_only_preflight_status_and_reason_bound(kind, forge_exact):
+        first, second = (1, 2), (2, 1)
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        base = audit_banded_edit_token_visibility(first, second, **args)
+        limits = {
+            "endpoint": BandedEditVisibilityLimits(max_endpoint_tokens=1),
+            "cells": BandedEditVisibilityLimits(max_band_cells=base.scheduled_band_cells-1),
+            "scratch": BandedEditVisibilityLimits(max_scratch_bytes=base.estimated_scratch_bytes-1),
+        }[kind]
+        reference = audit_banded_edit_token_visibility(first, second, limits=limits, **args)
+        overrides = {2: 2}
+        if forge_exact:
+            overrides = {1: 0, 2: 0, 7: reference_geometry_presence(reference) | 32, 26: 1}
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:94: Failed</failure></testcase><testcase classname="tests.test_alc_r0_banded_native" name="test_data_only_preflight_status_and_reason_bound[True-scratch]" time="0.001"><failure message="Failed: DID NOT RAISE NativeBandedInfrastructureError">kind = 'scratch', forge_exact = True
+
+    @pytest.mark.parametrize("kind", ["endpoint", "cells", "scratch"])
+    @pytest.mark.parametrize("forge_exact", [False, True])
+    def test_data_only_preflight_status_and_reason_bound(kind, forge_exact):
+        first, second = (1, 2), (2, 1)
+        args = dict(code_budgets=(1,), distance_threshold=2)
+        base = audit_banded_edit_token_visibility(first, second, **args)
+        limits = {
+            "endpoint": BandedEditVisibilityLimits(max_endpoint_tokens=1),
+            "cells": BandedEditVisibilityLimits(max_band_cells=base.scheduled_band_cells-1),
+            "scratch": BandedEditVisibilityLimits(max_scratch_bytes=base.estimated_scratch_bytes-1),
+        }[kind]
+        reference = audit_banded_edit_token_visibility(first, second, limits=limits, **args)
+        overrides = {2: 2}
+        if forge_exact:
+            overrides = {1: 0, 2: 0, 7: reference_geometry_presence(reference) | 32, 26: 1}
+        private = _private_response_backend(reference, overrides)
+&gt;       with pytest.raises(NativeBandedInfrastructureError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE NativeBandedInfrastructureError
+
+tests\test_alc_r0_banded_native.py:94: Failed</failure></testcase></testsuite></testsuites>

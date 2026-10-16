@@ -1,0 +1,115 @@
+{
+  "schema": "alc-r0-busy-revocation-evidence-v1",
+  "scientific_execution": false,
+  "scope": "causal cancellation RED; full regression timed out/incomplete",
+  "base_commit": "923447c98ce95369b272e8b91162375294df7b07",
+  "dirty": true,
+  "final_runner_pin_applies_to": "regression_busy_red",
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "sha256": "c57bd875951cf9f61ff1c9231b587e03b2c03c8f12da5bc1c3f869821e26de72"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reservation_state.py",
+      "sha256": "37e21b07ef1b12a72ccd785fd8ec2117d5fc0e4d3ae930eb8b7dd1f070f35da2"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reserved_owned_process.py",
+      "sha256": "cb3c33873c34abcc6af0b828a1fbc38e713e198677d8796a20404374429a787d"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "sha256": "0ce9b62863aa77e08745562162faa1977b44ec026399868feb5185abce130fb2"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "sha256": "1bf01336bb479c474cdc718037e875821cb55918b319c15c6eab817e8cf11f93"
+    }
+  ],
+  "runs": [
+    {
+      "mode": "busy_red",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 527515000000,
+        "kernel_time_100ns": 57343750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 23780,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 517890000000,
+        "timed_out": false,
+        "total_processes": 10,
+        "user_time_100ns": 12968750
+      },
+      "junit_present": true,
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "2.997"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_busy_red_20261015.stdout.log",
+          "bytes": 2219,
+          "sha256": "7dc8a4c9a12d6defc8d711c97c0690dbe62612f08703aca0ba30735a4abf58ac"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_busy_red_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_busy_red_20261015.xml",
+          "bytes": 2238,
+          "sha256": "67fb5cfd53c45f97d1d34977285e4bb92d460a98bb6ebb1f2d9d3fd3f4c98f6c"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_busy_red_20261015.exit.json",
+          "bytes": 310,
+          "sha256": "3d80b394dc36f987621af0e88b749fd1d437228688501d68d3c26230261c5d0d"
+        }
+      ]
+    },
+    {
+      "mode": "regression_busy_red",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 124,
+        "finished_ns": 710140000000,
+        "kernel_time_100ns": 352812500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 124,
+        "root_pid": 7864,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 590125000000,
+        "timed_out": true,
+        "total_processes": 109,
+        "user_time_100ns": 155000000
+      },
+      "junit_present": false,
+      "junit": null,
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_busy_red_20261015.stdout.log",
+          "bytes": 129,
+          "sha256": "b3ac3478f7d708311ce39447cc239be57b3694617d2caa7b4e57c203cf2dff62"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_busy_red_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_busy_red_20261015.exit.json",
+          "bytes": 315,
+          "sha256": "629aec2772f868abbd3d0dc04899df21d6240e6a81feea45f2b373028b26096f"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 1 item
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization FAILED [100%]
+
+================================== FAILURES ===================================
+____ test_request_only_growth_root_cannot_support_verified_materialization ____
+tests\test_alc_r0_coordinator_growth_acceptance.py:26: in test_request_only_growth_root_cannot_support_verified_materialization
+    assert reconcile['growth_observation_root']!=request_only, (
+E   AssertionError: request-only digest contains no inventory/capacity/tail facts; it cannot verify observed physical materialization
+E   assert '515c17a95cdd889988cc7d127e1f24a40c01c6cde2f1a6e0b99a8936aa7b1843' != '515c17a95cdd889988cc7d127e1f24a40c01c6cde2f1a6e0b99a8936aa7b1843'
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_growth_acceptance_red_v2_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+============================== 1 failed in 3.18s ==============================

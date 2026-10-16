@@ -1,0 +1,47 @@
+checkpoint=162
+parent_commit=fe01e2e7c04b9d22064a6daddf67005aacd81b24
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_final_sha256=2629b8494977f6e22e216bd56e28110b5fb407a6e515b0df3400def566775543
+tests_final_sha256=9980e212911079e68aebf6cf349b204128379513935d6b2fa71552991ae83eda
+source_initial_review_sha256=996981c0062268086483aeecc0baf7d63593559236d123651e9025b7294653fb
+tests_initial_review_sha256=bcfdb37549cf02123eff7dd80b28184a87866ca3b1cb7c887fffc108f6682469
+red_v1_actual_pytest_exit_code=2
+red_v1_junit=1 test;0 failures;1 error;0 skipped;4.535s; missing module
+red_v1_xml_sha256=12ef1b58af9459283ffdeb690ffa01bc08ca90b4ec9c706454e86350cc661b7a
+focused_v2_actual_pytest_exit_code=0
+focused_v2_junit=22 tests;0 failures;0 errors;0 skipped;12.544s
+focused_v2_xml_sha256=9ac58543691156bb3f1d20f3d112fef0a429eb0f1a9a1b661c238da9ef69650a
+focused_v3_actual_pytest_exit_code=1
+focused_v3_junit=42 tests;1 failure;0 errors;0 skipped;19.047s; Windows drive-relative filename fixture exception-class mismatch
+focused_v3_xml_sha256=7664264e5b60e52673f1f2c0aa9dacfc015fc17a927c8fab636d879ac24c5577
+focused_v4_actual_pytest_exit_code=0
+focused_v4_junit=42 tests;0 failures;0 errors;0 skipped;16.258s
+focused_v4_xml_sha256=e28dee07301c316b2481efbd60b30a5028451181de20aaeed0de3d9be189b295
+regression_v5_actual_pytest_exit_code=0
+regression_v5_original_exec_session=22100; terminal personally consumed, not restarted
+regression_v5_junit=1546 tests;0 failures;0 errors;0 skipped;150.717s; pre-review-repair code only
+regression_v5_xml_sha256=cb3dec28b6a76a41a7e18b6b1a1ce3b364d07afe49dd55bd707eecdaa61cd12f
+nonregular_red_v6_actual_pytest_exit_code=1
+nonregular_red_v6_junit=1 test;1 failure;0 errors;0 skipped;5.842s; directory reached open PermissionError instead of explicit rejection
+nonregular_red_v6_xml_sha256=8765788953ad5bd12a4f0a9617349980bf24d197b786dceb80075df064312222
+focused_v7_actual_pytest_exit_code=0
+focused_v7_original_exec_session=43953; terminal personally consumed
+focused_v7_junit=46 tests;0 failures;0 errors;1 skipped;19.107s
+focused_v7_xml_sha256=51cc26e60c7636e4a0eb7d37e97e39f4fdba89abe2b324e65e4a74dcfdbe63b7
+skip=POSIX FIFO cannot run natively on Windows; no POSIX/portability PASS
+review=two independent GPT6.1Sol lanes; initial code REQUEST CHANGES P2/P3; repaired final code APPROVE and architecture scoped CLEAR; external witness/semantics/launch blockers remain
+ruff_check=passed
+regression_v8_original_exec_session=92288
+regression_v8_status=terminal personally consumed; original92288 not restarted
+regression_v8_actual_pytest_exit_code=0
+regression_v8_junit=1550 tests;0 failures;0 errors;1 skipped;123.383s (1549 passed)
+regression_v8_xml_sha256=5d8f3d780e6f09e969610f0686160f44558bebe695e02fe004b348fed661666d
+regression_v8_case_counts=journal46;owned_process33;resource_admission70;cognition_persistence12
+regression_v8_final_source_and_tests=rehashed unchanged from final reviewed bytes
+ruff_format_check=passed
+regression_scope=47 explicit checkpoint159 targets plus attempt_journal, cognition_persistence, resource_admission and owned_process (51 targets)
+reproduction_runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+reproduction_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<newpath>; obtain quoted tests/ targets from tracked checkpoint159 provenance command via regex, do not execute stored command; prepend the four above
+environment=PYTHONPATH=src;PYTHONDONTWRITEBYTECODE=1;ALUCLU_R0_SNAPSHOT unset
+exclusions=--deselect=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors;--deselect=tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present;--deselect=tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+claim=storage component only; no attempt/resume/reservation authority, authenticated historical accounting or actual neural learning

@@ -1,0 +1,79 @@
+..................................................F.EEEEE.               [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_terminal_model_and_clean_checkout_reverification_after_scan[required-model] _
+file C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py, line 429
+  @pytest.mark.parametrize(
+      "change", ["required-model", "extra-model", "tracked-code", "new-commit", "none"]
+  )
+  def test_terminal_model_and_clean_checkout_reverification_after_scan(
+E       fixture 'repository' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py:429
+_ ERROR at setup of test_terminal_model_and_clean_checkout_reverification_after_scan[extra-model] _
+file C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py, line 429
+  @pytest.mark.parametrize(
+      "change", ["required-model", "extra-model", "tracked-code", "new-commit", "none"]
+  )
+  def test_terminal_model_and_clean_checkout_reverification_after_scan(
+E       fixture 'repository' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py:429
+_ ERROR at setup of test_terminal_model_and_clean_checkout_reverification_after_scan[tracked-code] _
+file C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py, line 429
+  @pytest.mark.parametrize(
+      "change", ["required-model", "extra-model", "tracked-code", "new-commit", "none"]
+  )
+  def test_terminal_model_and_clean_checkout_reverification_after_scan(
+E       fixture 'repository' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py:429
+_ ERROR at setup of test_terminal_model_and_clean_checkout_reverification_after_scan[new-commit] _
+file C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py, line 429
+  @pytest.mark.parametrize(
+      "change", ["required-model", "extra-model", "tracked-code", "new-commit", "none"]
+  )
+  def test_terminal_model_and_clean_checkout_reverification_after_scan(
+E       fixture 'repository' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py:429
+_ ERROR at setup of test_terminal_model_and_clean_checkout_reverification_after_scan[none] _
+file C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py, line 429
+  @pytest.mark.parametrize(
+      "change", ["required-model", "extra-model", "tracked-code", "new-commit", "none"]
+  )
+  def test_terminal_model_and_clean_checkout_reverification_after_scan(
+E       fixture 'repository' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\alc-r0-edit-visibility-reference\tests\test_alc_r0_retained_pair_resource_census.py:429
+================================== FAILURES ===================================
+______ test_unselected_malformed_author_endpoint_fails_closed[\n\r\n\t] _______
+
+bad_code = '\n\r\n\t'
+
+    @pytest.mark.parametrize("bad_code", ["\n\r\n\t", "\ud800"])
+    def test_unselected_malformed_author_endpoint_fails_closed(bad_code) -> None:
+>       with pytest.raises(PairResourceCensusError, match="endpoint"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'endpoint'
+E         Actual message: 'invalid ordered author pair'
+
+tests\test_alc_r0_retained_pair_resource_census.py:425: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_retained_pair_resource_census.py::test_unselected_malformed_author_endpoint_fails_closed[\n\r\n\t]
+ERROR tests/test_alc_r0_retained_pair_resource_census.py::test_terminal_model_and_clean_checkout_reverification_after_scan[required-model]
+ERROR tests/test_alc_r0_retained_pair_resource_census.py::test_terminal_model_and_clean_checkout_reverification_after_scan[extra-model]
+ERROR tests/test_alc_r0_retained_pair_resource_census.py::test_terminal_model_and_clean_checkout_reverification_after_scan[tracked-code]
+ERROR tests/test_alc_r0_retained_pair_resource_census.py::test_terminal_model_and_clean_checkout_reverification_after_scan[new-commit]
+ERROR tests/test_alc_r0_retained_pair_resource_census.py::test_terminal_model_and_clean_checkout_reverification_after_scan[none]
+1 failed, 52 passed, 5 errors in 105.39s (0:01:45)

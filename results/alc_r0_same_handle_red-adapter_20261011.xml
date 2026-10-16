@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="46" time="1.242" timestamp="2026-10-11T21:10:34.010648+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_complete_exact_mapping_and_raw_retention" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_read_only_mode_and_valid_zero_sizes" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[short-0]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[short-1]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[short-2]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[long-0]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[long-1]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[long-2]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[bytearray-0]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[bytearray-1]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_exact_raw_records_required[bytearray-2]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes0]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes1]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes2]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes3]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes4]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes5]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes6]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes7]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_malformed_directory_denied[changes8]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_zero_128_identity_denied" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_return_success_authoritative_and_raw_status_retained" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[0-71]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[0-73]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[-1073741822-72]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_nt_failed_or_nonexact_completion_denied[1-72]" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_pending_never_decodes_or_returns" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_real_pending_fatal_isolated_child_exit" time="0.215" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_pending_fatal_with_closed_stderr_does_not_unwind_buffers" time="0.186" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_sample_query_order_and_retention" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_sample_mutation_denied_without_normalization" time="0.001" /><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_handle_exact_flags_and_close_even_on_failure" time="0.012"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'body failure'&#10;  Actual message: 'native handle lifecycle pending'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_handle_exact_flags_and_cl0')
+
+    def test_handle_exact_flags_and_close_even_on_failure(tmp_path):
+        api = fake_adapter()
+&gt;       with pytest.raises(RuntimeError, match='body failure'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'body failure'
+E         Actual message: 'native handle lifecycle pending'
+
+tests\test_alc_r0_same_handle_directory.py:184: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_invalid_handle_never_used_or_closed[None]" time="0.003"><failure message="NotImplementedError: native handle lifecycle pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_invalid_handle_never_used0')
+handle = None
+
+    @pytest.mark.parametrize('handle', [None, 0, ctypes.c_void_p(-1).value])
+    def test_invalid_handle_never_used_or_closed(tmp_path, handle):
+        api = fake_adapter(handle=handle)
+        with pytest.raises(OSError):
+&gt;           with api.open(tmp_path):
+                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D97A40&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_invalid_handle_never_used0')
+
+    @contextmanager
+    def open(self, path):
+&gt;       raise NotImplementedError('native handle lifecycle pending')
+E       NotImplementedError: native handle lifecycle pending
+
+tests\alc_r0_same_handle_directory.py:98: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_invalid_handle_never_used_or_closed[0]" time="0.003"><failure message="NotImplementedError: native handle lifecycle pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_invalid_handle_never_used1')
+handle = 0
+
+    @pytest.mark.parametrize('handle', [None, 0, ctypes.c_void_p(-1).value])
+    def test_invalid_handle_never_used_or_closed(tmp_path, handle):
+        api = fake_adapter(handle=handle)
+        with pytest.raises(OSError):
+&gt;           with api.open(tmp_path):
+                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D95A30&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_invalid_handle_never_used1')
+
+    @contextmanager
+    def open(self, path):
+&gt;       raise NotImplementedError('native handle lifecycle pending')
+E       NotImplementedError: native handle lifecycle pending
+
+tests\alc_r0_same_handle_directory.py:98: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_invalid_handle_never_used_or_closed[18446744073709551615]" time="0.003"><failure message="NotImplementedError: native handle lifecycle pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_invalid_handle_never_used2')
+handle = 18446744073709551615
+
+    @pytest.mark.parametrize('handle', [None, 0, ctypes.c_void_p(-1).value])
+    def test_invalid_handle_never_used_or_closed(tmp_path, handle):
+        api = fake_adapter(handle=handle)
+        with pytest.raises(OSError):
+&gt;           with api.open(tmp_path):
+                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D962A0&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_invalid_handle_never_used2')
+
+    @contextmanager
+    def open(self, path):
+&gt;       raise NotImplementedError('native handle lifecycle pending')
+E       NotImplementedError: native handle lifecycle pending
+
+tests\alc_r0_same_handle_directory.py:98: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_close_failure_not_hidden" time="0.002"><failure message="NotImplementedError: native handle lifecycle pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_close_failure_not_hidden0')
+
+    def test_close_failure_not_hidden(tmp_path):
+        api = fake_adapter(close=0)
+        with pytest.raises(OSError):
+&gt;           with api.open(tmp_path):
+                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D96EA0&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_close_failure_not_hidden0')
+
+    @contextmanager
+    def open(self, path):
+&gt;       raise NotImplementedError('native handle lifecycle pending')
+E       NotImplementedError: native handle lifecycle pending
+
+tests\alc_r0_same_handle_directory.py:98: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_native_methods_fixed_query_classes_and_fatal_binding" time="0.001"><failure message="NotImplementedError: native stat pending">def test_native_methods_fixed_query_classes_and_fatal_binding():
+        api = fake_adapter()
+        api.query_stat = FakeNt()
+        api.query_device = FakeNt(length=8)
+&gt;       assert api.stat(19)['record'] == b'z' * 72
+               ^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:213: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D96420&gt;
+handle = 19
+
+    def stat(self, handle):
+&gt;       raise NotImplementedError('native stat pending')
+E       NotImplementedError: native stat pending
+
+tests\alc_r0_same_handle_directory.py:102: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_identity_win32_failure_denied" time="0.001"><failure message="NotImplementedError: native identity pending">def test_identity_win32_failure_denied():
+        api = fake_adapter()
+        api.extended.result = 0
+        with pytest.raises(OSError):
+&gt;           api.identity(19)
+
+tests\test_alc_r0_same_handle_directory.py:226: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D978F0&gt;
+handle = 19
+
+    def identity(self, handle):
+&gt;       raise NotImplementedError('native identity pending')
+E       NotImplementedError: native identity pending
+
+tests\alc_r0_same_handle_directory.py:108: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_named_full_mapping_retains_original104_bytes" time="0.003"><failure message="NotImplementedError: native by-name pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_named_full_mapping_retain0')
+
+    def test_named_full_mapping_retains_original104_bytes(tmp_path):
+        api = fake_adapter()
+        base, identity, device = records()
+        raw = base[:68] + device + bytes(4) + identity
+        assert len(raw) == 104
+        api.query_named = FakeFunction(payload=raw)
+&gt;       result = api.named(tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D94D40&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_named_full_mapping_retain0')
+
+    def named(self, path):
+&gt;       raise NotImplementedError('native by-name pending')
+E       NotImplementedError: native by-name pending
+
+tests\alc_r0_same_handle_directory.py:111: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_named_failure_denied" time="0.003"><failure message="NotImplementedError: native by-name pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_named_failure_denied0')
+
+    def test_named_failure_denied(tmp_path):
+        api = fake_adapter()
+        api.query_named = FakeFunction(result=0)
+        with pytest.raises(OSError):
+&gt;           api.named(tmp_path)
+
+tests\test_alc_r0_same_handle_directory.py:246: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D9B980&gt;
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_named_failure_denied0')
+
+    def named(self, path):
+&gt;       raise NotImplementedError('native by-name pending')
+E       NotImplementedError: native by-name pending
+
+tests\alc_r0_same_handle_directory.py:111: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_loader_system32_prototypes_and_reverse_cleanup" time="0.001"><failure message="NotImplementedError: native adapter pending">def test_loader_system32_prototypes_and_reverse_cleanup():
+        events, loader, release = fake_libraries()
+&gt;       with NativeAPI(loader, release) as api:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:269: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D9A270&gt;
+
+    def __enter__(self):
+&gt;       raise NotImplementedError('native adapter pending')
+E       NotImplementedError: native adapter pending
+
+tests\alc_r0_same_handle_directory.py:91: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_partial_library_load_unwinds" time="0.001"><failure message="NotImplementedError: native adapter pending">def test_partial_library_load_unwinds():
+        events, loader, release = fake_libraries(fail='ntdll.dll')
+        with pytest.raises(OSError, match='injected'):
+&gt;           with NativeAPI(loader, release):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:284: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;alc_r0_same_handle_directory.NativeAPI object at 0x0000022A17D95C10&gt;
+
+    def __enter__(self):
+&gt;       raise NotImplementedError('native adapter pending')
+E       NotImplementedError: native adapter pending
+
+tests\alc_r0_same_handle_directory.py:91: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_inspection_exact_sequence_and_cross_route_differences" time="0.002"><failure message="NotImplementedError: native sequence pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_inspection_exact_sequence0')
+
+    def test_inspection_exact_sequence_and_cross_route_differences(tmp_path):
+        api = FakeInspection(different=True)
+        def enumeration(path):
+            api.events.append(('enumerate', path))
+            return dict(count=0, names_sha256='a' * 64)
+&gt;       result = inspect(tmp_path, api, enumeration)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:313: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_inspection_exact_sequence0')
+api = &lt;test_alc_r0_same_handle_directory.FakeInspection object at 0x0000022A17D96450&gt;
+enumerate_fn = &lt;function test_inspection_exact_sequence_and_cross_route_differences.&lt;locals&gt;.enumeration at 0x0000022A187CC2C0&gt;
+
+    def inspect(path, api, enumerate_fn=bounded_names):
+&gt;       raise NotImplementedError('native sequence pending')
+E       NotImplementedError: native sequence pending
+
+tests\alc_r0_same_handle_directory.py:119: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_inspection_enumeration_failure_closes_handle" time="0.003"><failure message="NotImplementedError: native sequence pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_inspection_enumeration_fa0')
+
+    def test_inspection_enumeration_failure_closes_handle(tmp_path):
+        api = FakeInspection()
+        def enumeration(path):
+            raise ValueError('enumeration failed')
+        with pytest.raises(ValueError, match='enumeration failed'):
+&gt;           inspect(tmp_path, api, enumeration)
+
+tests\test_alc_r0_same_handle_directory.py:330: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_inspection_enumeration_fa0')
+api = &lt;test_alc_r0_same_handle_directory.FakeInspection object at 0x0000022A17D9A960&gt;
+enumerate_fn = &lt;function test_inspection_enumeration_failure_closes_handle.&lt;locals&gt;.enumeration at 0x0000022A187CC4A0&gt;
+
+    def inspect(path, api, enumerate_fn=bounded_names):
+&gt;       raise NotImplementedError('native sequence pending')
+E       NotImplementedError: native sequence pending
+
+tests\alc_r0_same_handle_directory.py:119: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_inspection_regular_file_refused_before_native" time="0.003"><failure message="NotImplementedError: native sequence pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_inspection_regular_file_r0')
+
+    def test_inspection_regular_file_refused_before_native(tmp_path):
+        path = tmp_path / 'not-directory'
+        path.write_bytes(b'not-dir')
+        api = FakeInspection()
+        with pytest.raises(ValueError, match='directory'):
+&gt;           inspect(path, api)
+
+tests\test_alc_r0_same_handle_directory.py:339: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_inspection_regular_file_r0/not-directory')
+api = &lt;test_alc_r0_same_handle_directory.FakeInspection object at 0x0000022A15B25010&gt;
+enumerate_fn = &lt;function bounded_names at 0x0000022A15C82CA0&gt;
+
+    def inspect(path, api, enumerate_fn=bounded_names):
+&gt;       raise NotImplementedError('native sequence pending')
+E       NotImplementedError: native sequence pending
+
+tests\alc_r0_same_handle_directory.py:119: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_same_handle_directory" name="test_enumeration_exact_count_and_bound" time="0.105"><failure message="NotImplementedError: bounded enumeration pending">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_enumeration_exact_count_a0')
+
+    def test_enumeration_exact_count_and_bound(tmp_path):
+        for index in range(256):
+            (tmp_path / str(index)).touch()
+&gt;       result = bounded_names(tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_same_handle_directory.py:346: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-93/test_enumeration_exact_count_a0')
+
+    def bounded_names(path):
+&gt;       raise NotImplementedError('bounded enumeration pending')
+E       NotImplementedError: bounded enumeration pending
+
+tests\alc_r0_same_handle_directory.py:115: NotImplementedError</failure></testcase></testsuite></testsuites>

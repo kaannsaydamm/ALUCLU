@@ -1,0 +1,167 @@
+{
+  "scope": "Selected decoded original early_green_v2 records, not raw copies; deliberate owner delay not blocked filesystem or native API fault",
+  "origin": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-202\\test_early_tree_validation_can0\\diagnostic",
+  "records": [
+    {
+      "relative_path": "early.cleanup.observed.json",
+      "original_bytes": 437,
+      "original_sha256": "2a7f084d0563eb7220930c88555c4f0b46fbc74afdefdd184a4e3c11d81b6e9f",
+      "decoded": {
+        "after_active": 0,
+        "before_active": 3,
+        "before_sampled_monotonic_ns": "3005328000000",
+        "cleanup_deadline_monotonic_ns": "3015328000000",
+        "descendant_before_wait": 258,
+        "domain": "diagnostic-only",
+        "request_root": "2a9b682f472eb79968e9331d2c09e13a06db1257e1a418244c1c3c705553e353",
+        "root_after_wait": 0,
+        "root_before_wait": 258,
+        "sampled_monotonic_ns": "3005937000000",
+        "started_monotonic_ns": "3005328000000",
+        "stop_requested": true,
+        "validation_result": false
+      }
+    },
+    {
+      "relative_path": "descendant.handle.closed.json",
+      "original_bytes": 232,
+      "original_sha256": "4422fc6a4fa9bfec2346d0c72f435df4895cfa4792053a33bd51af3727e4c9b5",
+      "decoded": {
+        "cleanup_deadline_monotonic_ns": "3015328000000",
+        "domain": "diagnostic-only",
+        "finished_monotonic_ns": "3005937000000",
+        "handle_closed": true,
+        "pid": "8744",
+        "request_root": "2a9b682f472eb79968e9331d2c09e13a06db1257e1a418244c1c3c705553e353"
+      }
+    },
+    {
+      "relative_path": "actuator.native.json",
+      "original_bytes": 216,
+      "original_sha256": "5387850ac1477244a1f219156fce244694ea850fe42d7560a087ce21d41e6bc9",
+      "decoded": {
+        "cleanup_deadline_monotonic_ns": "3015328000000",
+        "domain": "diagnostic-only",
+        "drained": true,
+        "duplicate_handles_closed": true,
+        "finished_monotonic_ns": "3005359000000",
+        "pid": "17216",
+        "terminated": true,
+        "thread_alive": false
+      }
+    },
+    {
+      "relative_path": "descendant.started.json",
+      "original_bytes": 191,
+      "original_sha256": "41bd801d3149a97e536feead70313a044bc2a471210f43227901e4adb2a78bfe",
+      "decoded": {
+        "creation_filetime_100ns": "134365563704836488",
+        "domain": "diagnostic-only",
+        "parent_pid": "17216",
+        "pid": "8744",
+        "request_root": "2a9b682f472eb79968e9331d2c09e13a06db1257e1a418244c1c3c705553e353"
+      }
+    },
+    {
+      "relative_path": "child.started.json",
+      "original_bytes": 171,
+      "original_sha256": "015cb8ea9e976e292fdf7758dbf9168a4935119da67d2c5b2b77463a21f3819d",
+      "decoded": {
+        "creation_filetime_100ns": "134365563692768063",
+        "domain": "diagnostic-only",
+        "pid": "17216",
+        "request_root": "2a9b682f472eb79968e9331d2c09e13a06db1257e1a418244c1c3c705553e353"
+      }
+    },
+    {
+      "relative_path": "work.cleanup.native.json",
+      "original_bytes": 303,
+      "original_sha256": "df5ac0e51e73773f85099d1f40450bc012f6fd8762dbb7b8df348b5a035b5121",
+      "decoded": {
+        "cleanup_deadline_monotonic_ns": "3015328000000",
+        "domain": "diagnostic-only",
+        "forced": true,
+        "receipt": {
+          "active_processes": 0,
+          "exit_code": 124,
+          "finished_ns": 3005953000000,
+          "kernel_time_100ns": 2968750,
+          "root_pid": 17216,
+          "started_ns": 3003828000000,
+          "timed_out": false,
+          "total_processes": 3,
+          "user_time_100ns": 2500000
+        }
+      }
+    },
+    {
+      "relative_path": "observer.cleanup.native.json",
+      "original_bytes": 360,
+      "original_sha256": "fe8677efefaea6af205db3b1e9072d79474d30a2b5420b30fd7eab803a79bf22",
+      "decoded": {
+        "cleanup_deadline_monotonic_ns": "3015328000000",
+        "domain": "diagnostic-only",
+        "forced": true,
+        "parent_socket_closed": true,
+        "receipt": {
+          "active_processes": 0,
+          "exit_code": 124,
+          "finished_ns": 3005984000000,
+          "kernel_time_100ns": 1250000,
+          "root_pid": 26028,
+          "started_ns": 3004296000000,
+          "timed_out": false,
+          "total_processes": 2,
+          "user_time_100ns": 1406250
+        },
+        "surplus_socket_closed": true
+      }
+    },
+    {
+      "relative_path": "observer.bridge.json",
+      "original_bytes": 594,
+      "original_sha256": "951ee9f6ff936b7d3d7d910329240172a0948fc39e3d70d17e2a1bae3dcc78e3",
+      "decoded": {
+        "closed": true,
+        "domain": "diagnostic-only",
+        "finished_monotonic_ns": "3005343000000",
+        "observations": [
+          {
+            "observed_monotonic_ns": "3004640000000",
+            "sequence": "1",
+            "started_monotonic_ns": "3004625000000",
+            "submitted_monotonic_ns": "3004640000000"
+          },
+          {
+            "observed_monotonic_ns": "3004890000000",
+            "sequence": "2",
+            "started_monotonic_ns": "3004890000000",
+            "submitted_monotonic_ns": "3004890000000"
+          },
+          {
+            "observed_monotonic_ns": "3005140000000",
+            "sequence": "3",
+            "started_monotonic_ns": "3005140000000",
+            "submitted_monotonic_ns": "3005156000000"
+          }
+        ],
+        "operational_error": "StatusConsumerError",
+        "socket_closed": true,
+        "thread_alive": false
+      }
+    },
+    {
+      "relative_path": "operator/status.json",
+      "original_bytes": 280,
+      "original_sha256": "33cee0a4708863f837b27f9bafb7fb69b272c0f41f53621fa5c66e516ecd760e",
+      "decoded": {
+        "expires_utc_ns": "1792082829003845300",
+        "generation_root": "e1396d6ec70e0b9d8733f2699a348ee7ae23e7d36c493e7f3160c563cd8c82c0",
+        "installation_root": "6471c71d5ed90168a74155c82af60b5692c73a8c671002bbbe8ee453820d6277",
+        "revoked": false,
+        "schema": "alc-r0-operator-status-v1",
+        "sequence": "1"
+      }
+    }
+  ]
+}

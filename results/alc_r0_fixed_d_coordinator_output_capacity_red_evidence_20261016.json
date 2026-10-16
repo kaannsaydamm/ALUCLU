@@ -1,0 +1,157 @@
+{
+  "scope": "INITIAL incomplete integrated output-preallocation TDD RED. Missing native capacity receipts/private sink implementation, NOT native OS or model failure. Stage/native action order and retained identity assertions strengthened before any GREEN.",
+  "git_head": "89d9d9d31cc40dad832442c74e01a6e66641ea83",
+  "dirty": true,
+  "source_pin_modes": [
+    "output_capacity_red_v2"
+  ],
+  "historical_note": "Initial output_capacity_red had earlier test/runner bytes. Source pins apply only tightened REDv2. Earlier249 passing identities belong to pushed89d9d9d and do not cover these three additions.",
+  "runs": [
+    {
+      "artifacts": [
+        {
+          "byte_length": 3640,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_20261016.stdout.log",
+          "sha256": "c49cdcb8fbda43a8f896d4b23d0aa16148c45541ad98c418703e3a964933a44f"
+        },
+        {
+          "byte_length": 0,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_20261016.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "byte_length": 3183,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_20261016.xml",
+          "sha256": "c629ac3778b399c861ce492592ffd3b3290ab4587851860616a2b50cf40a1a27"
+        },
+        {
+          "byte_length": 313,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_20261016.exit.json",
+          "sha256": "ab4d776191dd8b7432e5515db330c3b3dc6f0ffa24936417b698536d2b6a213c"
+        }
+      ],
+      "mode": "output_capacity_red",
+      "junit": {
+        "skipped": 0,
+        "tests": 3,
+        "failures": 3,
+        "seconds": 4.383,
+        "errors": 0
+      },
+      "cases": [
+        {
+          "failure_type": null,
+          "nodeid": "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_output_capacity_precedes_owned_actions"
+        },
+        {
+          "failure_type": null,
+          "nodeid": "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False]"
+        },
+        {
+          "failure_type": null,
+          "nodeid": "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True]"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 66474781000000,
+        "kernel_time_100ns": 30000000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 2816,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 66469062000000,
+        "timed_out": false,
+        "total_processes": 10,
+        "user_time_100ns": 16718750
+      }
+    },
+    {
+      "artifacts": [
+        {
+          "byte_length": 3643,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_v2_20261016.stdout.log",
+          "sha256": "8a5ecf873d65080d9fccfcfe5d21b3daa649be71b42356d03824f7f531141872"
+        },
+        {
+          "byte_length": 0,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_v2_20261016.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "byte_length": 3183,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_v2_20261016.xml",
+          "sha256": "22f09d01d98bf53b999f64837bb95494db81599ec1a12155dacaf4be03eaf13f"
+        },
+        {
+          "byte_length": 314,
+          "path": "results/alc_r0_fixed_d_coordinator_output_capacity_red_v2_20261016.exit.json",
+          "sha256": "844e2d6414ceaa6dc3f99db911616839e7f59b044693c5238e696cfb5c21e136"
+        }
+      ],
+      "mode": "output_capacity_red_v2",
+      "junit": {
+        "skipped": 0,
+        "tests": 3,
+        "failures": 3,
+        "seconds": 5.898,
+        "errors": 0
+      },
+      "cases": [
+        {
+          "failure_type": null,
+          "nodeid": "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_output_capacity_precedes_owned_actions"
+        },
+        {
+          "failure_type": null,
+          "nodeid": "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False]"
+        },
+        {
+          "failure_type": null,
+          "nodeid": "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True]"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 66697593000000,
+        "kernel_time_100ns": 45625000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 19256,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 66689171000000,
+        "timed_out": false,
+        "total_processes": 10,
+        "user_time_100ns": 20937500
+      }
+    }
+  ],
+  "source_pins": [
+    {
+      "byte_length": 70792,
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "sha256": "79a1ee742601605fa75874bbc3e2870e6a8398025c58b4ce2e3d6c87076b6371"
+    },
+    {
+      "byte_length": 9932,
+      "path": "tests/test_alc_r0_coordinator_growth_acceptance.py",
+      "sha256": "9f57fc2c47fd26ad5a2bbdcc435fb52727293691f6a31f430753e4705bb1a011"
+    },
+    {
+      "byte_length": 9462,
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "sha256": "25699ec5c055579baa8c6794b7da885c2dffe371361c1b019a0c385971427cef"
+    }
+  ],
+  "remaining_acceptance": [
+    "Implement actual same-handle native allocation/query and exact private output integration",
+    "Native action bracket instrumentation without renewed deadlines or injected backend",
+    "Actual API refusal/unsupported attributes/sibling setup/preresume capacity-identity loss negatives",
+    "Relevant generic output/lease and complete integrated regressions",
+    "Broader physical peak/metadata/publications/native caches/admission/science remain open"
+  ],
+  "scientific_execution": false,
+  "implementation_pass": false
+}

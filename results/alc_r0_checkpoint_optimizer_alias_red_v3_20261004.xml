@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="8" time="3.425" timestamp="2026-10-04T01:23:06.221323+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[factor-0]" time="1.296"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 0, field = 'factor'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[factor-1]" time="0.004"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 1, field = 'factor'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg-0]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 0, field = 'exp_avg'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg-1]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 1, field = 'exp_avg'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg_sq-0]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 0, field = 'exp_avg_sq'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[exp_avg_sq-1]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 1, field = 'exp_avg_sq'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[step-0]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 0, field = 'step'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase><testcase classname="tests.test_alc_r0_checkpoint_optimizer" name="test_cross_arm_base_storage_must_remain_frozen[step-1]" time="0.003"><failure message="Failed: DID NOT RAISE CheckpointFidelityError">side = 1, field = 'step'
+
+    @pytest.mark.parametrize("side", [0, 1])
+    @pytest.mark.parametrize("field", ["factor", "exp_avg", "exp_avg_sq", "step"])
+    def test_cross_arm_base_storage_must_remain_frozen(side, field):
+        arms = [fixture(), fixture()]
+        optimizer, factors, _ = arms[side]
+        parameter = factors["port.29.B"]
+        value = parameter if field == "factor" else optimizer.state[parameter][field]
+        arms[1 - side][2][0].data = value.detach()
+&gt;       with pytest.raises(CheckpointFidelityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CheckpointFidelityError
+
+tests\test_alc_r0_checkpoint_optimizer.py:322: Failed</failure></testcase></testsuite></testsuites>

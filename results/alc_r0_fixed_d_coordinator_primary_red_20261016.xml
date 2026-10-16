@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.662" timestamp="2026-10-16T05:17:11.177150+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reserved_owned_process" name="test_primary_failure_survives_secondary_cleanup_error_with_owned_child[creation]" time="0.208"><failure message="RuntimeError: controlled secondary cleanup failure">tests\test_alc_r0_reserved_owned_process.py:504: in _observe_creation_time
+    if phase=='creation': raise primary
+                          ^^^^^^^^^^^^^
+E   ValueError: controlled primary lifecycle/body failure
+
+During handling of the above exception, another exception occurred:
+tests\test_alc_r0_reserved_owned_process.py:529: in test_primary_failure_survives_secondary_cleanup_error_with_owned_child
+    with lease:
+         ^^^^^
+src\aluclu\alc_r0\reserved_owned_process.py:259: in __enter__
+    self._close()
+tests\test_alc_r0_reserved_owned_process.py:521: in _close
+    raise secondary
+E   RuntimeError: controlled secondary cleanup failure</failure></testcase></testsuite></testsuites>

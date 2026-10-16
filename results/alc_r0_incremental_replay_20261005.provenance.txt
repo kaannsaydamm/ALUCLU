@@ -1,0 +1,40 @@
+checkpoint=164
+parent_commit=158fd31cb6a6f7ed17495e81d1991409140aa20d
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_sha256=1d329ca60e65fde7b125b1f37275891a7d5fb1db03d3597b18418bf029e74f66
+tests_sha256=0701f68961909c9b09aeae3415792f2a7eea55ba31a25bec8a2bc614e581ce49
+benchmark_initial_sha256=4ed502da398a76ef8eaf132f4328f899424e148890cb0bef8c50b74983d1aec3
+benchmark_final_sha256=b4d9267cb21ba0d7ef8c613020c4c95113b52f436d7134560b98e62e63a6ca34
+red_v1_actual_pytest_exit_code=2
+red_v1_junit=1tests;0failures;1error;0skipped;6.453s;missing AttemptReplay API
+red_v1_xml_sha256=d345eb81694dd9ab11cf15a016ac3c556d23669f16da98c561386da6a838a176
+focused_v2_actual_pytest_exit_code=2
+focused_v2_junit=1tests;0failures;1error;0skipped;4.059s;eager parameter helper NameError
+focused_v2_xml_sha256=e074dc52ccbcb46a5f9963617a2e9d050e5187e3e09c3d296b77bfbcd6c44bfa
+focused_v3_original_session=96906; terminal personally consumed
+focused_v3_actual_pytest_exit_code=0
+focused_v3_junit=66tests;0failures;0errors;0skipped;27.010s
+focused_v3_xml_sha256=7764a5383e93820ee0ded8a6819d32736a904ce645841ccbd9632578898d4a82
+regression_v4_original_session=88303; terminal personally consumed
+regression_v4_actual_pytest_exit_code=0
+regression_v4_junit=1616tests;0failures;0errors;1skipped;148.313s
+regression_v4_xml_sha256=535212a5ff0908a79641a3b76c20589b7811354549158182b2c8bd0a69b5a1ce
+regression_v4_skip=tests.test_alc_r0_attempt_journal::test_posix_fifo_rejected_without_opening_other_end;native POSIX FIFO unavailable
+regression_scope=52targets; five attempt_state/journal/persistence/resource_admission/owned_process plus47quoted tests/targets extracted from tracked checkpoint159 provenance; never execute saved command
+regression_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<newpath> <52targets>
+exclusions=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors;tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present;tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+environment=PYTHONPATH=src;PYTHONDONTWRITEBYTECODE=1;ALUCLU_R0_SNAPSHOT unset
+benchmark_initial_session=33471; terminal personally consumed actualexit0; all nine samples parity true; retained superseded informational v1 (no imported-origin assertion)
+benchmark_origin_control=actualexit0; runpy verified_source(Path('unrelated-checkout')) raises exact RuntimeError; correct checkout path returned
+benchmark_final_session=89859; terminal personally consumed actual benchmark_exit_code=0; nine parity samples true
+benchmark_final_median_ratios=8192:1.763854543336018;16384:2.3668122679590384;33243:5.646146024728102
+benchmark_final_origin=actual imported source equals authoritative checkout; source/script hashes equal independently reviewed finalbytes
+benchmark_final_json_sha256=b11a2ff81e7efd42611f83fee76b608d3c5e603a9a82a2a9df3e5c9ee767147c
+benchmark_initial_json_sha256=0012d9ad2ae82838eddff1bcfbec96829dbbf4a9f64112fd147e98543b2875d6
+final_checks=Ruff format/check passed; git diff --check passed; final JSON shape/count/ratios/imported source/script hashes personally validated
+benchmark_command=python.exe -B scripts/benchmark_alc_r0_attempt_replay.py
+benchmark_scope=synthetic in-memory append plus single snapshot, three samples8192/16384/33243, alternating path order, exact output parity; local Python repr output digest; no timing threshold
+benchmark_environment_caveat=local shared Windows machine; initial and revised timing overlap regression; observations not isolated throughput/hardware qualification
+review=independent GPT6.1Sol code APPROVE/corearchitecture CLEAR; initial imported-origin WATCH closed; integration WATCH/launch BLOCK open
+claim=incremental semantic replay only; no storage throughput, original-budget reconciliation, authority/reservation/launch or scientific learning PASS

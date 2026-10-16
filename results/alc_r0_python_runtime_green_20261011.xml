@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="20" time="41.331" timestamp="2026-10-11T15:54:47.933780+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_exact_current_runtime_binding" time="0.944"><failure message="AssertionError: assert {'ok': False,...tity differs'} == {'ok': True, ...ca38b5089ade'}&#10;  &#10;  Differing items:&#10;  {'ok': False} != {'ok': True}&#10;  Left contains 1 more item:&#10;  {'error': 'runtime open-file identity differs'}&#10;  Right contains 2 more items:&#10;  {'payload': {'components': [{'absolute_root': 'C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_exact_current_runtime_bin0/base',...&#10;  &#10;  ...Full output truncated (55 lines hidden), use '-vv' to show">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_exact_current_runtime_bin0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_exact_current_runtime_bin0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_exact_current_runtime_bin0/venv'))
+
+    def test_exact_current_runtime_binding(tmp_path,layout):
+        base,venv=layout
+        result=inspect_owned(tmp_path,layout)
+        observed=dict(executable=str(venv/'Scripts'/'python.exe'),base_executable=str(base/'python.exe'),
+            prefix=str(venv),exec_prefix=str(venv),base_prefix=str(base),base_exec_prefix=str(base),
+            version='3.12.12 fixture',implementation='cpython',cache_tag='cpython-312',
+            platform='win32',pointer_bits='64',byteorder=sys.byteorder,flags=FLAGS,
+            path=[str(base/'Lib'),str(base/'missing.zip')],
+            environment={key:'1' if key=='PYTHONDONTWRITEBYTECODE' else None for key in ENV_KEYS})
+        special=[]
+        for role,path in [('venv-executable',venv/'Scripts'/'python.exe'),
+                          ('base-executable',base/'python.exe'),('venv-config',venv/'pyvenv.cfg')]:
+            data=path.read_bytes()
+            special.append(dict(role=role,absolute_path=path.as_posix(),byte_length=str(len(data)),
+                                sha256=hashlib.sha256(data).hexdigest()))
+        payload=dict(schema='alc-r0-current-python-runtime-v1',observed=observed,
+            components=[tree_row(base,'python-base'),tree_row(venv,'python-venv')],special_files=special)
+&gt;       assert result==dict(ok=True,payload=payload,sha256=hashlib.sha256(canonical_json_bytes(payload)).hexdigest())
+E       AssertionError: assert {'ok': False,...tity differs'} == {'ok': True, ...ca38b5089ade'}
+E         
+E         Differing items:
+E         {'ok': False} != {'ok': True}
+E         Left contains 1 more item:
+E         {'error': 'runtime open-file identity differs'}
+E         Right contains 2 more items:
+E         {'payload': {'components': [{'absolute_root': 'C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_exact_current_runtime_bin0/base',...
+E         
+E         ...Full output truncated (55 lines hidden), use '-vv' to show
+
+tests\test_alc_r0_python_runtime_binding.py:122: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.prefix=&quot;relative&quot;]" time="0.939" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.exec_prefix=sys.base_prefix]" time="1.466" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.base_prefix=sys.base_exec_prefix=sys.prefix]" time="1.400" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.executable=sys._base_executable]" time="1.506" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.path=[None]]" time="1.462" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.path=[&quot;x&quot;]*257]" time="1.547" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.path=[&quot;x&quot;*32769]]" time="1.385" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.flags.safe_path=0]" time="1.872" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.flags.optimize=True]" time="2.200" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.implementation.name=&quot;pypy&quot;]" time="2.261" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[sys.version=&quot;x&quot;*32769]" time="2.505" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[os.environ[&quot;PYTHONHOME&quot;]=&quot;x&quot;*32769]" time="2.161"><failure message="AssertionError: assert 1 == 0&#10; +  where 1 = &lt;built-in function GetExitCodeProcess&gt;(632)&#10; +    where &lt;built-in function GetExitCodeProcess&gt; = &lt;module '_winapi' (built-in)&gt;.GetExitCodeProcess">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_invalid_current_observati11')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_invalid_current_observati11/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_invalid_current_observati11/venv'))
+alter = 'os.environ["PYTHONHOME"]="x"*32769'
+
+    @pytest.mark.parametrize('alter',[
+        'sys.prefix="relative"', 'sys.exec_prefix=sys.base_prefix',
+        'sys.base_prefix=sys.base_exec_prefix=sys.prefix', 'sys.executable=sys._base_executable',
+        'sys.path=[None]', 'sys.path=["x"]*257', 'sys.path=["x"*32769]',
+        'sys.flags.safe_path=0', 'sys.flags.optimize=True', 'sys.implementation.name="pypy"',
+        'sys.version="x"*32769', 'os.environ["PYTHONHOME"]="x"*32769',
+        'Path(sys.prefix,"pyvenv.cfg").unlink()',
+        'Path(sys.executable).unlink()',
+    ])
+    def test_invalid_current_observation_denied(tmp_path,layout,alter):
+&gt;       assert not inspect_owned(tmp_path,layout,alter=alter)['ok']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_python_runtime_binding.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_python_runtime_binding.py:82: in inspect_owned
+    handles.drained(exit_code=0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;test_alc_r0_owned_stop.RetainedHandles object at 0x000001965D4D7800&gt;
+exit_code = 0, total = 1
+
+    def drained(self, *, exit_code=124, total=1):
+        import _winapi
+        from aluclu.alc_r0.checkpoint_owned_process import _Accounting, _checked
+        assert _winapi.WaitForSingleObject(self.handles[0], 5000) == 0
+&gt;       assert _winapi.GetExitCodeProcess(self.handles[0]) == exit_code
+E       AssertionError: assert 1 == 0
+E        +  where 1 = &lt;built-in function GetExitCodeProcess&gt;(632)
+E        +    where &lt;built-in function GetExitCodeProcess&gt; = &lt;module '_winapi' (built-in)&gt;.GetExitCodeProcess
+
+tests\test_alc_r0_owned_stop.py:117: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[Path(sys.prefix,&quot;pyvenv.cfg&quot;).unlink()]" time="1.628" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_invalid_current_observation_denied[Path(sys.executable).unlink()]" time="1.756" /><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_layout_and_bytes_participate_in_binding[Path(sys.prefix,&quot;pyvenv.cfg&quot;).write_bytes(b&quot;changed&quot;)]" time="3.434"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip0/venv'))
+alter = 'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+&gt;       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:148: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_layout_and_bytes_participate_in_binding[Path(sys.executable).write_bytes(b&quot;changed&quot;)]" time="3.386"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip1')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip1/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip1/venv'))
+alter = 'Path(sys.executable).write_bytes(b"changed")'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+&gt;       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:148: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_layout_and_bytes_participate_in_binding[sys.path.append(&quot;literal-import-label&quot;)]" time="3.896"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip2')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip2/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip2/venv'))
+alter = 'sys.path.append("literal-import-label")'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+&gt;       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:148: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_layout_and_bytes_participate_in_binding[os.environ[&quot;PYTHONHOME&quot;]=&quot;&quot;]" time="3.657"><failure message="assert (False)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip3')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip3/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-53/test_layout_and_bytes_particip3/venv'))
+alter = 'os.environ["PYTHONHOME"]=""'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+&gt;       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:148: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_component_bounds_remain_enforced" time="1.419" /></testsuite></testsuites>

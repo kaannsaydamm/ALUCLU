@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="22" skipped="0" tests="30" time="22.728" timestamp="2026-10-04T23:16:56.206983+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_exact_wrapper_inventory_stable_without_enabling_callback[PinnedLlamaCapsuleWrapper]" time="0.049"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:36: in test_exact_wrapper_inventory_stable_without_enabling_callback
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_exact_wrapper_inventory_stable_without_enabling_callback[PinnedLlamaLoRAWrapper]" time="0.003"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:36: in test_exact_wrapper_inventory_stable_without_enabling_callback
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-forward-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-forward-PinnedLlamaLoRAWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_checkpoint_forward-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_checkpoint_forward-PinnedLlamaLoRAWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_checkpoint_factors-PinnedLlamaCapsuleWrapper]" time="0.003"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_checkpoint_factors-PinnedLlamaLoRAWrapper]" time="0.003"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_bind_checkpoint_block-PinnedLlamaCapsuleWrapper]" time="0.005"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_bind_checkpoint_block-PinnedLlamaLoRAWrapper]" time="0.005"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_run_decoder_layer-PinnedLlamaCapsuleWrapper]" time="0.005"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[code-_run_decoder_layer-PinnedLlamaLoRAWrapper]" time="0.005"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-forward-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-forward-PinnedLlamaLoRAWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_checkpoint_forward-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_checkpoint_forward-PinnedLlamaLoRAWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_checkpoint_factors-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_checkpoint_factors-PinnedLlamaLoRAWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_bind_checkpoint_block-PinnedLlamaCapsuleWrapper]" time="0.005"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_bind_checkpoint_block-PinnedLlamaLoRAWrapper]" time="0.005"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_run_decoder_layer-PinnedLlamaCapsuleWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_method_state_drift_changes_fingerprint[defaults-_run_decoder_layer-PinnedLlamaLoRAWrapper]" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController">tests\test_alc_r0_wrapper_method_inventory.py:46: in test_wrapper_method_state_drift_changes_fingerprint
+    first = computational_state_fingerprint({"wrapper": wrapper})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:471: in computational_state_fingerprint
+    state = [(key, freeze(attributes[key])) for key in sorted(attributes)]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:425: in freeze
+    raise CheckpointExecutionError(
+E   aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: CheckpointController</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_unreviewed_state_rejected[override-PinnedLlamaCapsuleWrapper]" time="0.003" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_unreviewed_state_rejected[override-PinnedLlamaLoRAWrapper]" time="0.004" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_unreviewed_state_rejected[unknown-PinnedLlamaCapsuleWrapper]" time="0.003" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_unreviewed_state_rejected[unknown-PinnedLlamaLoRAWrapper]" time="0.004" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_unreviewed_state_rejected[foreign_controller-PinnedLlamaCapsuleWrapper]" time="0.004" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_unreviewed_state_rejected[foreign_controller-PinnedLlamaLoRAWrapper]" time="0.005" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_subclass_rejected[PinnedLlamaCapsuleWrapper]" time="0.003" /><testcase classname="tests.test_alc_r0_wrapper_method_inventory" name="test_wrapper_subclass_rejected[PinnedLlamaLoRAWrapper]" time="0.004" /></testsuite></testsuites>

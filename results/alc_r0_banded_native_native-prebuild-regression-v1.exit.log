@@ -1,0 +1,3 @@
+pytest_exit_code=0
+Observed by root from terminal session94507 completion and explicit shell output.
+This is a post-run witnessed record, not an independent exit watcher.

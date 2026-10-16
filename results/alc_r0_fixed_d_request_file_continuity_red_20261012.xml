@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="0.316" timestamp="2026-10-12T23:40:20.966474+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_request_file" name="test_owned_file_refusal_closes_real_handle[mutate]" time="0.024"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_refusal_closes0')
+action = 'mutate'
+
+    @pytest.mark.parametrize('action', ['mutate', 'hardlink', 'expire_after_open'])
+    def test_owned_file_refusal_closes_real_handle(tmp_path, action):
+        path, _ = fixture(tmp_path)
+        owned = OwnedFilePath(path, action)
+        duration = 20_000_000 if action == 'expire_after_open' else 10**9
+        with pytest.raises(reader().DRequestFileError):
+&gt;           reader()._read_file(owned, time.monotonic_ns() + duration)
+            ^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:205: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_request_file" name="test_owned_file_refusal_closes_real_handle[hardlink]" time="0.003"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_refusal_closes1')
+action = 'hardlink'
+
+    @pytest.mark.parametrize('action', ['mutate', 'hardlink', 'expire_after_open'])
+    def test_owned_file_refusal_closes_real_handle(tmp_path, action):
+        path, _ = fixture(tmp_path)
+        owned = OwnedFilePath(path, action)
+        duration = 20_000_000 if action == 'expire_after_open' else 10**9
+        with pytest.raises(reader().DRequestFileError):
+&gt;           reader()._read_file(owned, time.monotonic_ns() + duration)
+            ^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:205: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_request_file" name="test_owned_file_refusal_closes_real_handle[expire_after_open]" time="0.003"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_refusal_closes2')
+action = 'expire_after_open'
+
+    @pytest.mark.parametrize('action', ['mutate', 'hardlink', 'expire_after_open'])
+    def test_owned_file_refusal_closes_real_handle(tmp_path, action):
+        path, _ = fixture(tmp_path)
+        owned = OwnedFilePath(path, action)
+        duration = 20_000_000 if action == 'expire_after_open' else 10**9
+        with pytest.raises(reader().DRequestFileError):
+&gt;           reader()._read_file(owned, time.monotonic_ns() + duration)
+            ^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:205: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_request_file" name="test_owned_file_success_single_open_closes_real_handle" time="0.002"><failure message="AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-123/test_owned_file_success_single0')
+
+    def test_owned_file_success_single_open_closes_real_handle(tmp_path):
+        path, data = fixture(tmp_path)
+        owned = OwnedFilePath(path, 'none')
+&gt;       assert reader()._read_file(owned, time.monotonic_ns() + 10**9) == data
+               ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.fixed_d_request_file' has no attribute '_read_file'. Did you mean: '_read_bytes'?
+
+tests\test_alc_r0_fixed_d_request_file.py:213: AttributeError</failure></testcase></testsuite></testsuites>

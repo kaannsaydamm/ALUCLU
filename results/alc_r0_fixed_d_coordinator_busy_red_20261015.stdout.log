@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_busy_revocation_terminates_actual_work_before_main_returns _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-187/test_busy_revocation_terminate0')
+
+    def test_busy_revocation_terminates_actual_work_before_main_returns(tmp_path):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic','busy-revocation',str(namespace)))
+        assert receipt.exit_code==2 and receipt.active_processes==0 and not receipt.timed_out
+        observed=bounded_json(namespace/'busy.revocation.observed.json')
+        published=bounded_json(namespace/'revocation.published.json')
+        child=bounded_json(namespace/'child.started.json')
+        assert observed['pid']==child['pid'] and observed['request_root']==published['request_root']
+        begin=int(observed['busy_started_monotonic_ns']); end=int(observed['busy_finished_monotonic_ns'])
+        sampled=int(observed['sampled_monotonic_ns'])
+        assert end-begin>=600_000_000
+        assert begin<=int(published['published_monotonic_ns'])<=sampled<=end
+        assert observed['before_active']>0 and observed['stop_requested'] is True
+        assert not (namespace/'diagnostic.result.json').exists() and not (namespace/'diagnostic.charge.json').exists()
+        for filename in ('work.cleanup.native.json','observer.cleanup.native.json'):
+            cleanup=bounded_json(namespace/filename)
+            assert cleanup['receipt']['active_processes']==0
+            assert cleanup['receipt']['finished_ns']<=int(cleanup['cleanup_deadline_monotonic_ns'])
+        # An Event or later exception cleanup is not prompt native cancellation.
+>       assert observed['after_active']==0 and observed['root_wait']==0
+E       assert (2 == 0)
+
+tests\test_alc_r0_fixed_d_coordinator.py:202: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_busy_revocation_terminates_actual_work_before_main_returns

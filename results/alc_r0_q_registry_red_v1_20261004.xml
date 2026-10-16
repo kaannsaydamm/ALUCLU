@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="10" time="20.435" timestamp="2026-10-04T15:38:54.339363+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[registry-preparation-eager]" time="0.060"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_q_registry_dependencies.py:40: in test_q_alias_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[registry-preparation-sdpa]" time="0.009"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_q_registry_dependencies.py:40: in test_q_alias_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[registry-replay-eager]" time="0.697"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:18: in test_q_alias_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[registry-replay-sdpa]" time="0.038"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:18: in test_q_alias_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[fallback-preparation-eager]" time="0.017"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_q_registry_dependencies.py:40: in test_q_alias_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[fallback-preparation-sdpa]" time="0.013"><failure message="assert [1] == []&#10;  &#10;  Left contains one more item: 1&#10;  Use -v to get more diff">tests\test_alc_r0_q_registry_dependencies.py:40: in test_q_alias_drift_denied_before_side_effects
+    assert calls == ([] if phase == "preparation" else [1])
+E   assert [1] == []
+E     
+E     Left contains one more item: 1
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[fallback-replay-eager]" time="0.040"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:18: in test_q_alias_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_q_alias_drift_denied_before_side_effects[fallback-replay-sdpa]" time="0.050"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:18: in test_q_alias_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_foreign_q_registry_rejected_without_calling_resolver[eager]" time="0.006"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:56: in test_foreign_q_registry_rejected_without_calling_resolver
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_q_registry_dependencies" name="test_foreign_q_registry_rejected_without_calling_resolver[sdpa]" time="0.008"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_q_registry_dependencies.py:56: in test_foreign_q_registry_rejected_without_calling_resolver
+    with pytest.raises(CheckpointExecutionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase></testsuite></testsuites>

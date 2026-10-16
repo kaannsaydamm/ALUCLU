@@ -1,0 +1,27 @@
+checkpoint=169
+parent_commit=49873d38fc813eea6095d2435eb2f72155d1b88a
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_sha256=d8b7ea865ef697ee02c2db5f0b9b9f7aa68de07e84dd5d81accd81b055a45ef5
+tests_sha256=4ddc72119bd27f1c5b9cad62007191edeee0cb385b93ad5582a874b68e778673
+red_v1_original_session=88679; terminal personally consumed
+red_v1_actual_pytest_exit_code=2
+red_v1_junit=1tests;0failures;1error;0skipped;13.506s;missingAPI
+red_v1_xml_sha256=c96caaec7b2682a040a2e1a5376d522107bb886d1feb71d8c8aa43897541c281
+focused_v2_original_session=63423; terminal personally consumed
+focused_v2_actual_pytest_exit_code=0
+focused_v2_junit=56totaltests;0failures;0errors;1skipped;12.184s;55passed
+focused_v2_xml_sha256=254e837ac6707f61714e6e76e8e946475a621ae69b6131279a6fa01bf49d7d4c
+focused_v2_skip=nativePOSIXFIFO unavailable on Windows
+regression_v3_original_session=51244; terminal personally consumed
+regression_v3_actual_pytest_exit_code=0
+regression_v3_junit=1708totaltests;0failures;0errors;1skipped;205.050s;1707passed
+regression_v3_xml_sha256=eae4447a469787232dfd20358e86a5e17a9e6e1c99e93b41fa63d937ffd43840
+regression_v3_skip=tests.test_alc_r0_attempt_journal::test_posix_fifo_rejected_without_opening_other_end;nativePOSIXFIFO unavailable
+final_bytes=source/tests personally rehashed unchanged after terminal;Ruffformat/check and gitdiffcheck passed
+regression_scope=55targets; newjournal_plan plus unchanged16854targets; eight explicit plus47quoted tests/targets from checkpoint159provenance; never execute saved command
+regression_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=results/alc_r0_journal_plan_regression_v3_20261005.xml <55targets>
+exclusions=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors;tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present;tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+environment=PYTHONPATH=src;PYTHONDONTWRITEBYTECODE=1;ALUCLU_R0_SNAPSHOT unset
+review=independent GPT6.1Sol codeAPPROVE/componentarchitectureCLEAR; futurecoordinator/uncertainfsync/formatcoupling WATCH; integratedwriter/launch BLOCK
+claim=exact intended record/head plan shared by realappend encoding/bounds; not receipt/head authentication/semanticstate/durableintent/integratedwriter/recovery/launch/learningPASS

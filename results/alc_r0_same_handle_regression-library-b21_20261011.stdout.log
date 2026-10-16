@@ -1,0 +1,12 @@
+..........                                                               [100%]
+============================ slowest 10 durations =============================
+6.21s call     tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[path_bytes-9]
+5.96s call     tests/test_alc_r0_runtime_tree_inventory.py::test_empty_directories_are_counted_and_hashed
+5.48s call     tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[total_file_bytes-6]
+5.07s call     tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[file_bytes-6]
+3.49s call     tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[entry_count-1]
+1.19s call     tests/test_alc_r0_runtime_tree_inventory.py::test_exact_all_bounds
+0.01s setup    tests/test_alc_r0_runtime_tree_inventory.py::test_empty_directories_are_counted_and_hashed
+0.01s setup    tests/test_alc_r0_runtime_tree_inventory.py::test_exact_all_bounds
+0.01s setup    tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[path_bytes-9]
+0.01s setup    tests/test_alc_r0_runtime_tree_inventory.py::test_one_byte_or_node_over_bound_denies[file_bytes-6]

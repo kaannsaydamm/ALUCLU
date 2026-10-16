@@ -1,0 +1,311 @@
+{
+  "schema": "alc-r0-tree-isolation-evidence-v1",
+  "scientific_execution": false,
+  "scope": "ordinary worker-created descendant and controlled separate observer job, not all-host/native-fault/integrated acceptance",
+  "base_commit": "923447c98ce95369b272e8b91162375294df7b07",
+  "dirty": true,
+  "final_pins_apply_to": [
+    "tree_green_v4",
+    "regression_tree"
+  ],
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "sha256": "62ef34137f7758ed64e187be0dc6397196fb48a6fa503730ebb47a75b5135e0b"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reservation_state.py",
+      "sha256": "37e21b07ef1b12a72ccd785fd8ec2117d5fc0e4d3ae930eb8b7dd1f070f35da2"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reserved_owned_process.py",
+      "sha256": "cb3c33873c34abcc6af0b828a1fbc38e713e198677d8796a20404374429a787d"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "sha256": "7ab229dbd880cb6059e409be455c5c20347f6b5a6a1da349260f5cc28ea04556"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "sha256": "c820b7cab37f6cbd1ee6301c953649c3612a1b848fd79092633500e5bc608d30"
+    }
+  ],
+  "runs": [
+    {
+      "mode": "tree_red",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 1889859000000,
+        "kernel_time_100ns": 7656250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 8732,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1888031000000,
+        "timed_out": false,
+        "total_processes": 6,
+        "user_time_100ns": 4531250
+      },
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "0.814"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_red_20261015.stdout.log",
+          "bytes": 2586,
+          "sha256": "fa5a954e04b48b5b443c4b547164f43da0f35efcde0a380d4357c755a38dc3ff"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_red_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_red_20261015.xml",
+          "bytes": 2766,
+          "sha256": "449bd68d4fe90d64dd55f3dc8ebc127e22574f489df536217da5d542923ce424"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_red_20261015.exit.json",
+          "bytes": 308,
+          "sha256": "aac4f11f1e381e0b4531e9ed84f9411f0ca4baa48303331e0e1da0f32b89818e"
+        }
+      ]
+    },
+    {
+      "mode": "tree_green",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 1991281000000,
+        "kernel_time_100ns": 112343750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 26212,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1967953000000,
+        "timed_out": false,
+        "total_processes": 78,
+        "user_time_100ns": 58906250
+      },
+      "junit": {
+        "tests": 32,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "22.274"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_20261015.stdout.log",
+          "bytes": 81,
+          "sha256": "3833adcbec29e6fc3ba05401d9ffa921159c26e2b47365a157b6aa9c189f0be2"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_20261015.xml",
+          "bytes": 5509,
+          "sha256": "c0720858fc234a128b8bd98fcd94779ed6986550ef34ea64a01d1c4e6c83926a"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_20261015.exit.json",
+          "bytes": 313,
+          "sha256": "e043a20f55ef259ab9c7c316f8a73c00e2c8afb2b7735d362acf56c408713cd4"
+        }
+      ]
+    },
+    {
+      "mode": "tree_green_v2",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 2089796000000,
+        "kernel_time_100ns": 137656250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 2572,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 2060671000000,
+        "timed_out": false,
+        "total_processes": 78,
+        "user_time_100ns": 79843750
+      },
+      "junit": {
+        "tests": 32,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "27.435"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v2_20261015.stdout.log",
+          "bytes": 81,
+          "sha256": "3833adcbec29e6fc3ba05401d9ffa921159c26e2b47365a157b6aa9c189f0be2"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v2_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v2_20261015.xml",
+          "bytes": 5509,
+          "sha256": "b4c5da4f9ae90552af7975617245bbef63d8987fdef1f3574ddf43a49821e399"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v2_20261015.exit.json",
+          "bytes": 312,
+          "sha256": "85745f52ed25a35d4d537dc80440126c5215a0cc4157c25022a0d638c2aa2d76"
+        }
+      ]
+    },
+    {
+      "mode": "tree_green_v3",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 2220109000000,
+        "kernel_time_100ns": 120312500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 29284,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 2194781000000,
+        "timed_out": false,
+        "total_processes": 78,
+        "user_time_100ns": 67656250
+      },
+      "junit": {
+        "tests": 32,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "24.410"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v3_20261015.stdout.log",
+          "bytes": 81,
+          "sha256": "3833adcbec29e6fc3ba05401d9ffa921159c26e2b47365a157b6aa9c189f0be2"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v3_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v3_20261015.xml",
+          "bytes": 5509,
+          "sha256": "2a04db0820829143b056b32f0538de2cd9b55d42b3afcf5d6935acb67266c883"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v3_20261015.exit.json",
+          "bytes": 313,
+          "sha256": "e9cbbbd5ad775212038d8e1aa732ad256e70404443709122b415ebc537a0513c"
+        }
+      ]
+    },
+    {
+      "mode": "tree_green_v4",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 2407078000000,
+        "kernel_time_100ns": 111718750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 18156,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 2383171000000,
+        "timed_out": false,
+        "total_processes": 78,
+        "user_time_100ns": 67187500
+      },
+      "junit": {
+        "tests": 32,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "22.831"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v4_20261015.stdout.log",
+          "bytes": 81,
+          "sha256": "3833adcbec29e6fc3ba05401d9ffa921159c26e2b47365a157b6aa9c189f0be2"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v4_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v4_20261015.xml",
+          "bytes": 5509,
+          "sha256": "33d815be10b078204f9ed3906f2fdfc8e21493e51d00545221f6037927cdce39"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_tree_green_v4_20261015.exit.json",
+          "bytes": 313,
+          "sha256": "0d150127408ff46f72f75491e3e9a9523d81382b216314b05beb491858521695"
+        }
+      ]
+    },
+    {
+      "mode": "regression_tree",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 2563468000000,
+        "kernel_time_100ns": 398906250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 29388,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 2489187000000,
+        "timed_out": false,
+        "total_processes": 198,
+        "user_time_100ns": 163906250
+      },
+      "junit": {
+        "tests": 217,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "73.216"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_tree_20261015.stdout.log",
+          "bytes": 324,
+          "sha256": "4562935f4adfebd127b8cf39f72ef3462d5c8f41cffad3279323ffce89e0ab08"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_tree_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_tree_20261015.xml",
+          "bytes": 31255,
+          "sha256": "efa84062d2484021a4a4b7c21fcbb7c1cf7e65f0b6954eff296b177f7465e543"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_tree_20261015.exit.json",
+          "bytes": 315,
+          "sha256": "c63c82e3081b5ae3e3c32b90bcd3a917baa08cf830996febd2d4204de0ae157b"
+        }
+      ]
+    }
+  ]
+}

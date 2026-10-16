@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.897" timestamp="2026-10-05T13:47:42.051927+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_qv_lora" name="test_initialization_ignores_ambient_meta_device" time="0.074"><failure message="AssertionError: assert 'meta' == 'cpu'&#10;  &#10;  - cpu&#10;  + meta">def test_initialization_ignores_ambient_meta_device():
+        expected = ReferenceQVLoRA(seed=17)
+        with torch.device("meta"):
+            actual = ReferenceQVLoRA(seed=17)
+        for key, tensor in actual.state_dict().items():
+&gt;           assert tensor.device.type == "cpu"
+E           AssertionError: assert 'meta' == 'cpu'
+E             
+E             - cpu
+E             + meta
+
+tests\test_alc_r0_reference_qv_lora.py:38: AssertionError</failure></testcase></testsuite></testsuites>

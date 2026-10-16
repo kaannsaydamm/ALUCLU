@@ -1,0 +1,22 @@
+{
+    "suite":  "Regression",
+    "python":  "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+    "worktree":  "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local",
+    "arguments":  [
+                      "-m",
+                      "pytest",
+                      "tests/test_alc_r0_reference_stress_execution.py",
+                      "tests/test_alc_r0_reference_stress_start.py",
+                      "tests/test_alc_r0_reference_stress_inputs.py",
+                      "tests/test_alc_r0_reference_qv_artifact.py",
+                      "tests/test_alc_r0_reference_qv_optimizer.py",
+                      "tests/test_alc_r0_parity_factory.py",
+                      "tests/test_alc_r0_checkpoint_optimizer.py",
+                      "-q",
+                      "--junitxml=results/alc_r0_reference_stress_full_factors_regression_v3_20261005.xml"
+                  ],
+    "started_at":  "2026-10-05T23:50:37.3028969+03:00",
+    "free_physical_kib":  1807368,
+    "free_virtual_kib":  7930124,
+    "scope":  "FAKE_PURE_CPU_ONLY_NOT_HOST_RESOURCE_OR_LEARNING_ACCEPTANCE"
+}

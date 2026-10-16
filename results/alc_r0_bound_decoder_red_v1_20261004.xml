@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="16" skipped="0" tests="16" time="7.691" timestamp="2026-10-04T02:54:02.215406+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_capsule_block_places_bound_factor_after_exact_layer[0]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:45: in test_capsule_block_places_bound_factor_after_exact_layer
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_capsule_block_places_bound_factor_after_exact_layer[14]" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:45: in test_capsule_block_places_bound_factor_after_exact_layer
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_capsule_block_places_bound_factor_after_exact_layer[29]" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:45: in test_capsule_block_places_bound_factor_after_exact_layer
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_capsule_blocks_bind_each_layer_and_survive_mount_replacement" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:56: in test_capsule_blocks_bind_each_layer_and_survive_mount_replacement
+    blocks = [wrapper._bind_checkpoint_block(i, FakeDecoder(float(i + 1)))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_capsule_block_replay_retains_original_factors_and_gradients[14]" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:69: in test_capsule_block_replay_retains_original_factors_and_gradients
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_capsule_block_replay_retains_original_factors_and_gradients[29]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:69: in test_capsule_block_replay_retains_original_factors_and_gradients
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_lora_bound_block_equals_live_path_without_reading_mount_on_replay[14]" time="0.052"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:124: in test_lora_bound_block_equals_live_path_without_reading_mount_on_replay
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_lora_bound_block_equals_live_path_without_reading_mount_on_replay[29]" time="0.011"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:124: in test_lora_bound_block_equals_live_path_without_reading_mount_on_replay
+    block = wrapper._bind_checkpoint_block(index, layer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[-1-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[-1-PinnedLlamaLoRAWrapper]" time="0.001"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[30-PinnedLlamaCapsuleWrapper]" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[30-PinnedLlamaLoRAWrapper]" time="0.001"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[True-PinnedLlamaCapsuleWrapper]" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[True-PinnedLlamaLoRAWrapper]" time="0.001"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[1.5-PinnedLlamaCapsuleWrapper]" time="0.001"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase><testcase classname="tests.test_alc_r0_bound_decoder_blocks" name="test_invalid_bound_layer_index_denied[1.5-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'">tests\test_alc_r0_bound_decoder_blocks.py:141: in test_invalid_bound_layer_index_denied
+    wrapper._bind_checkpoint_block(index, FakeDecoder(1.0))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_bind_checkpoint_block'</failure></testcase></testsuite></testsuites>

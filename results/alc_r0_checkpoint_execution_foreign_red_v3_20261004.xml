@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.681" timestamp="2026-10-04T01:38:33.704243+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_checkpoint_execution" name="test_foreign_raw_backward_cannot_invalidate_owner_lease" time="1.393"><failure message="assert 0 == 1&#10; +  where 0 = &lt;aluclu.alc_r0.checkpoint_execution.CheckpointSession object at 0x000001C6D76DFC80&gt;.pending_count">def test_foreign_raw_backward_cannot_invalidate_owner_lease():
+        owner = Owner()
+        with owner.controller.session() as session:
+            output = forward(owner, session)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                with pytest.raises(CheckpointExecutionError):
+                    pool.submit(lambda: output.sum().backward()).result()
+&gt;           assert session.pending_count == 1
+E           assert 0 == 1
+E            +  where 0 = &lt;aluclu.alc_r0.checkpoint_execution.CheckpointSession object at 0x000001C6D76DFC80&gt;.pending_count
+
+tests\test_alc_r0_checkpoint_execution.py:225: AssertionError</failure></testcase></testsuite></testsuites>

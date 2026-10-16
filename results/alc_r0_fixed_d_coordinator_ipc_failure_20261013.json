@@ -1,0 +1,50 @@
+{
+  "schema": "alc-r0-diagnostic-causal-selection-v1",
+  "scope": "work-in-progress-not-scientific",
+  "run": "alc_r0_fixed_d_coordinator_regression_20261013",
+  "source": "bounded original temporary artifacts; decoded text not a raw file copy",
+  "files": [
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\entry.stderr",
+      "bytes": 86,
+      "sha256": "3c19f9cef8071cdd150d8df73261696b10af33d442b6e10450a590b7c9864476",
+      "utf8_text": "alc-r0 coordinator denied: DRequestFileError: original request read deadline expired\r\n"
+    },
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\diagnostic\\observer.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8_text": ""
+    },
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\diagnostic\\work.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8_text": ""
+    },
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\diagnostic\\observer.request.2.json",
+      "bytes": 139,
+      "sha256": "25781e6e08c59c59d875f80f49a51e801332bc24301866e0fad19bfb5eec9b89",
+      "utf8_text": "{\"request_root\":\"6fc6e97b72a19964e463caaa89889994dc43c55ba08c04a2ccb91a2dacad4745\",\"sequence\":\"2\",\"started_monotonic_ns\":\"161753578000000\"}"
+    },
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\diagnostic\\observer.response.2.json",
+      "bytes": 619,
+      "sha256": "80185b6789a04eb86e253c1a9a1029377d49690d80bb295ae5e5c08699951c1d",
+      "utf8_text": "{\"observed_monotonic_ns\":\"161753812000000\",\"observer_creation_filetime_100ns\":\"134363914391090419\",\"observer_pid\":\"32740\",\"request_root\":\"6fc6e97b72a19964e463caaa89889994dc43c55ba08c04a2ccb91a2dacad4745\",\"request_started_monotonic_ns\":\"161753578000000\",\"sequence\":\"2\",\"status\":\"{\\\"expires_utc_ns\\\":\\\"1791917898355792000\\\",\\\"generation_root\\\":\\\"5a098de7f525b59d35d590d5d666c9d4557c0ce5d1df48e48ec1ace59325881c\\\",\\\"installation_root\\\":\\\"5f13e6cee9864398b43f04f1ec342b771331baa5c8e317522d646457c4830061\\\",\\\"revoked\\\":false,\\\"schema\\\":\\\"alc-r0-operator-status-v1\\\",\\\"sequence\\\":\\\"1\\\"}\",\"utc_upper_ns\":\"1791917839900588900\"}"
+    },
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\diagnostic\\work.cleanup.native.json",
+      "bytes": 309,
+      "sha256": "9123869e14628ae3b93083d915a1ae741e7ccbf62a029c54c010e982e8a25e41",
+      "utf8_text": "{\"cleanup_deadline_monotonic_ns\":\"161763828000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":161753828000000,\"kernel_time_100ns\":2187500,\"root_pid\":16644,\"started_ns\":161752546000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1406250}}"
+    },
+    {
+      "path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-176\\test_actual_diagnostic_entrypo0\\diagnostic\\observer.cleanup.native.json",
+      "bytes": 309,
+      "sha256": "d591d3ae812dba27eea857f384f284fa0ccc8afe376daf5552a6bf4586279d5c",
+      "utf8_text": "{\"cleanup_deadline_monotonic_ns\":\"161763828000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":161753843000000,\"kernel_time_100ns\":1250000,\"root_pid\":32740,\"started_ns\":161753000000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1718750}}"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="32" skipped="0" tests="33" time="52.441" timestamp="2026-10-04T23:53:31.481483+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[alias-preparation-eager]" time="0.109"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mask|fingerprint'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'mask|fingerprint'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[alias-preparation-sdpa]" time="0.028"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mask|fingerprint'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'mask|fingerprint'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[alias-replay-eager]" time="1.277"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[alias-replay-sdpa]" time="0.110"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[dispatch-preparation-eager]" time="0.028"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mask|fingerprint'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'mask|fingerprint'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[dispatch-preparation-sdpa]" time="0.024"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mask|fingerprint'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'mask|fingerprint'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[dispatch-replay-eager]" time="0.067"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[dispatch-replay-sdpa]" time="0.080"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[local_entry-preparation-eager]" time="0.027"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mask|fingerprint'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'mask|fingerprint'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[local_entry-preparation-sdpa]" time="0.031"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mask|fingerprint'&#10;  Actual message: 'unconsumed forward graphs remain'">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'mask|fingerprint'
+E     Actual message: 'unconsumed forward graphs remain'</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[local_entry-replay-eager]" time="0.111"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_drift_denied_before_side_effects[local_entry-replay-sdpa]" time="0.140"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:20: in test_mask_registry_drift_denied_before_side_effects
+    with pytest.raises(CheckpointExecutionError, match="mask|fingerprint"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_foreign_mask_registry_rejected_without_resolver_execution[state-eager]" time="0.016"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:75: in test_foreign_mask_registry_rejected_without_resolver_execution
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_foreign_mask_registry_rejected_without_resolver_execution[state-sdpa]" time="0.012"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:75: in test_foreign_mask_registry_rejected_without_resolver_execution
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_foreign_mask_registry_rejected_without_resolver_execution[producer-eager]" time="0.018"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:75: in test_foreign_mask_registry_rejected_without_resolver_execution
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_foreign_mask_registry_rejected_without_resolver_execution[producer-sdpa]" time="0.015"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:75: in test_foreign_mask_registry_rejected_without_resolver_execution
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[unknown-eager]" time="0.016"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[unknown-sdpa]" time="0.015"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[mapping-eager]" time="0.015"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[mapping-sdpa]" time="0.015"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[entry-eager]" time="0.016"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[entry-sdpa]" time="0.012"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[bound-eager]" time="0.012"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[bound-sdpa]" time="0.014"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[key-eager]" time="0.016"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_schema_rejected[key-sdpa]" time="0.018"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:97: in test_mask_registry_schema_rejected
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_descriptor_rejected_without_access[_local_mapping-eager]" time="0.013"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:112: in test_mask_registry_descriptor_rejected_without_access
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_descriptor_rejected_without_access[_local_mapping-sdpa]" time="0.022"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:112: in test_mask_registry_descriptor_rejected_without_access
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_descriptor_rejected_without_access[_global_mapping-eager]" time="0.020"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:112: in test_mask_registry_descriptor_rejected_without_access
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_descriptor_rejected_without_access[_global_mapping-sdpa]" time="0.322"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:112: in test_mask_registry_descriptor_rejected_without_access
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_global_route_presence_required[eager]" time="0.019"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:127: in test_mask_registry_global_route_presence_required
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_mask_registry_global_route_presence_required[sdpa]" time="0.023"><failure message="Failed: DID NOT RAISE CheckpointExecutionError">tests\test_alc_r0_mask_registry_dependencies.py:127: in test_mask_registry_global_route_presence_required
+    with pytest.raises(CheckpointExecutionError, match="mask registry"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_mask_registry_dependencies" name="test_negative_controls_leave_registry_schema_unchanged" time="0.012" /></testsuite></testsuites>

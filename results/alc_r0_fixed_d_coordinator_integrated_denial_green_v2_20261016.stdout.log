@@ -1,0 +1,11 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 39 items / 37 deselected / 2 selected
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] PASSED [ 50%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-terminate-denied] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_integrated_denial_green_v2_20261016.xml -
+====================== 2 passed, 37 deselected in 4.55s =======================

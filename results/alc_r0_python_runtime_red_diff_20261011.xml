@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="13" time="0.580" timestamp="2026-10-11T16:20:50.913953+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[0-mode]" time="0.006"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 0, field = 'mode'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[1-device]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 1, field = 'device'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[2-inode]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 2, field = 'inode'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[3-size]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 3, field = 'size'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[4-mtime_ns]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 4, field = 'mtime_ns'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[5-ctime_ns]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 5, field = 'ctime_ns'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[6-nlink]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 6, field = 'nlink'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_identifies_exact_field[7-attributes]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">position = 7, field = 'attributes'
+
+    @pytest.mark.parametrize('position,field', list(enumerate(
+        ('mode','device','inode','size','mtime_ns','ctime_ns','nlink','attributes'))))
+    def test_change_diagnostic_identifies_exact_field(position,field):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=list(fp); changed[position]+=1
+        before={'python.dll':('file',fp)}
+        after={'python.dll':('file',tuple(changed))}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:98: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_membership_and_kind[added]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">case = 'added'
+
+    @pytest.mark.parametrize('case', ['added','removed','kind'])
+    def test_change_diagnostic_membership_and_kind(case):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        before={'':('directory',fp),'z':('file',fp)}
+        after=dict(before)
+        if case=='added': after['a']=('file',fp)
+        elif case=='removed': del after['z']
+        else: after['z']=('directory',fp)
+&gt;       detail=json.loads(api()._tree_change_message('python-venv',before,after,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:115: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_membership_and_kind[removed]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">case = 'removed'
+
+    @pytest.mark.parametrize('case', ['added','removed','kind'])
+    def test_change_diagnostic_membership_and_kind(case):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        before={'':('directory',fp),'z':('file',fp)}
+        after=dict(before)
+        if case=='added': after['a']=('file',fp)
+        elif case=='removed': del after['z']
+        else: after['z']=('directory',fp)
+&gt;       detail=json.loads(api()._tree_change_message('python-venv',before,after,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:115: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_membership_and_kind[kind]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">case = 'kind'
+
+    @pytest.mark.parametrize('case', ['added','removed','kind'])
+    def test_change_diagnostic_membership_and_kind(case):
+        fp=(0o100666,17,23,7,101,103,1,32)
+        before={'':('directory',fp),'z':('file',fp)}
+        after=dict(before)
+        if case=='added': after['a']=('file',fp)
+        elif case=='removed': del after['z']
+        else: after['z']=('directory',fp)
+&gt;       detail=json.loads(api()._tree_change_message('python-venv',before,after,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+            time.monotonic_ns()+10**9).split(': ',1)[1])
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:115: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_bounded_path_and_deterministic_first" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">def test_change_diagnostic_bounded_path_and_deterministic_first():
+        fp=(0o100666,17,23,7,101,103,1,32)
+        changed=fp[:3]+(8,)+fp[4:]
+        path='a'+chr(0x1f600)*300
+        before={'z':('file',fp),path:('file',fp)}
+        after={path:('file',changed),'z':('file',changed)}
+&gt;       message=api()._tree_change_message('python-base',before,after,time.monotonic_ns()+10**9)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:130: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_runtime_tree_inventory" name="test_change_diagnostic_original_deadline" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'">def test_change_diagnostic_original_deadline():
+        with pytest.raises(ValueError,match='original runtime inventory deadline expired'):
+&gt;           api()._tree_change_message('python-base',{}, {'a':('file',(1,)*8)},1)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'aluclu.alc_r0.runtime_tree_inventory' has no attribute '_tree_change_message'
+
+tests\test_alc_r0_runtime_tree_inventory.py:140: AttributeError</failure></testcase></testsuite></testsuites>
