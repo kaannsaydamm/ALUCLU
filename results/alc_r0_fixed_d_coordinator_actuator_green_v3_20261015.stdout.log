@@ -1,0 +1,18 @@
+...........F...................                                          [100%]
+================================== FAILURES ===================================
+_ test_actuator_retained_cleanup_error_does_not_skip_remaining_native_handles _
+
+    def test_actuator_retained_cleanup_error_does_not_skip_remaining_native_handles():
+        # Local bookkeeping fixture, NOT a native termination/acquisition fault run.
+        import _winapi
+        import threading
+        from aluclu.alc_r0.fixed_d_coordinator import _NativeActuator,_SharedTail,CoordinatorError
+        from aluclu.alc_r0.reserved_owned_process import OwnedStopSignal
+        actor=object.__new__(_NativeActuator)
+>       actor.process=_winapi.CreateEvent(None,True,False,None)
+                      ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module '_winapi' has no attribute 'CreateEvent'
+
+tests\test_alc_r0_fixed_d_coordinator.py:231: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actuator_retained_cleanup_error_does_not_skip_remaining_native_handles

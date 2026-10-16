@@ -14978,3 +14978,1026 @@ No model, CUDA job, pytest, source edit, commit or push performed for this note.
   IndependentarchitecturedocCLEAR corroborates4pilotjobs and sameentrypoint/
   ownership/verifier/cleanup for diagnostic andscientificcomposition. Finaldoc
   records bothpreservationverdicts, actualscienceBLOCK; no sourceactivation.
+
+  Resume923447c clean. Twoindependent GPT6.1 designreviews admit fixed default
+  scientificentrypoint plus closeddiagnosticCLI temporaryorigin, sharedactual
+  lifecycle andstrictdomainseparation. Add actualentrypoint acceptanceRED for
+  missinginstallation denialbeforechild and positiveowned+reconciledcycle.
+  Positive requires actualworker/observer, childidentitycorrespondence, durable
+  RELEASED reservation/zero pending, boundedcanonicalreports/charge/consumption;
+  diagnosticCPUzero isnot historicalzero/science. No productionmodule yet;
+  runRED beforeimplementation, preserve failures notcheckpointPASS.
+
+  RED original2b6936 terminalnative1/root17444/total9/active0/notimeout;
+  JUnit2/2/0/0 0.635s personallyparsed100aa7. Bothnestedentry stderr confirm
+  missingmodule, notsciencefailure. Windowsvenv invocation reports3runtime
+  members evenwithoutcoordinator; correct testno-childcount via separatefixed
+  python-pass baseline ratherthan invalidsingleprocessassumption. Acceptance
+  remainsRED/unimplemented; no productionguardreplacement or scienceclaim.
+
+  RevisedREDv2 terminal643415 native1/root26384/total12/active0/notimeout;
+  JUnit2/2/0/0 0.728s verified5eaf0c. IndependentcodeAPPROVEpreserveRED /
+  architectureCLEARpreserveRED, notfullacceptance. Apply contractrefinements:
+  distinct actualwork/observer nativeidentities/terminalreceipts, exactjournal
+  seveneventsequence, request/reservation/clock/entry/owned-finish chargebinding,
+  declaration-bound diagnosticconsumption. No processcount-onlyobserverproof.
+  Defaulttmpdirectoryabsence claim islocalonly; futurefixednamespace inventory
+  andnamespaceoverlap/duplicate/stale/pending/blocked/uncertainty negatives OPEN.
+  Windowsvenv forwarding also requires actualworkerPID/root-handle correspondence
+  verification beforepositivehandoff, not assumedfromsys.executable. FullRED
+  integration remainsunimplemented and unaccepted; keepcheckpoint, notfakeGREEN.
+
+  Add immutableREDv3 runmode for revisedtestcontract; no overwrite ofv1/v2.
+
+  REDv3 terminalb7df46 native1/root19032/total12/active0/notimeout;
+  JUnit2/2/0/0 0.801s personallyverifiedbb1222. Append14SHAmanifest toexisting
+  integratedplan; currentworkis unfinishedentrypointRED, noGREEN/regression or
+  sourceactivation. Keep originalfailures/acceptedcomponents. Real implementation
+  and remaining integratednegativecases are next; fullgoal remainsactive.
+
+  Bothindependent terminalREDpreservation reviews verified14SHA/threeactual
+  JUnitnative sets codeAPPROVE/architectureCLEAR, notimplementationapproval.
+  WIPuncommitted bydesign; lastpushedHEAD923447c unchanged. Readonlynvidia-smi
+  115a12 reportsRTX4050 6141MiBtotal/5920free/used0/driver610.78; OSavailable
+  RAM1324504KiB~1.26GiB, not16GiB free. No model/CUDAallocation/userprocesskill.
+  Thiscurrentpointobservationisnotpeakadmission/history; completecoordinator
+  productionmodulestillabsent, nextimplementactualengine notdenial-onlystub.
+
+  Beginactualsharedlifecycle implementation: fixedcoordinator diagnostic-only
+  origin/request/claim/reserve, privateconcrete beforecreate/resumeverification,
+  actualREADY/workeridentity, ownedkillableobserver/committedrequest-response,
+  terminalnative/outputclosure, charge/journalrelease. No scientificguardchange.
+  Twoindependentdesignreviews admit privatefixedleasehooks/no publiccallback and
+  ONEclosed CPU15s diagnosticID (oldgrammar rejected acceptanceID); scientific
+  IDs/ceilings unchanged. Directbaseinterpreter diagnosticpath requires realPID/
+  FILETIMEcorrespondence, no guessedvenvPID. SourceWIP; testandreview beforeclaims.
+
+  Add immutable firstGREEN runner selection, not a predetermined PASS; native
+  failures willremain evidence. Source/test edits stopped during execution.
+
+  FirstGREEN terminalde4d8b native1/active0/notimeout, JUnit2/1/0/0 2.392s.
+  Defaultrealentry denialpasses; positive failedRFC8785 FILETIME unsafeinteger
+  (nestedstderr c4a4c1), beforeobservercreation. Fixexactdecimalidentity encoding,
+  inspectactualoutputresourceclosure ratherthan expecting retainedobjectNone.
+  Add immutableGREENv2; no acceptance/thresholdchange, productionguardunchanged.
+
+  GREENv2 terminalf6fc34 native0/active0/no timeout, twoentrypointtestspass but
+  independentcodeREQUESTCHANGES/architectureBLOCK actualcleanup/denial/growth/
+  publicationdefects. Repairobserverpartialacquisition anddrainbeforehandleclose;
+  nestedfinally ensuresobservercleanup evenwatchclosefailure/sameoriginaltail.
+  Bindcommittedsource+absorbingstop aroundwholeIPCservice; exactresponsefields/
+  types/nativeobservercorrespondence/liveness. Workerrevalidatesconsumption/
+  declaration/status/fullPIDFILETIME/nonce/READY. Moveconsumptionafterdurablereserve.
+  Growthafterpublication/physicalupperbound andpostreleaseuncertainty stillOPEN;
+  notaccepted ascompleteaccounting. NewGREENv3 diagnosticrun needed.
+
+  GREENv3 terminalf448e4 native0/active0/notimeout initialtwo pathsstillpass.
+  Add actualclosed stale-create/requestmutation, stale-resume/childbindingmutation,
+  blocked-observer/nativeinfiniteeventwait AFTERactualworkerstarted. Nativecleanup
+  receipts retained forbothwork/observer; forcedcancel isnot misnamedusefultimeout.
+  Testsrequirepending RESERVED/READY/RUNNING+stickyclaim andconfirmedowneddrain,
+  no terminalcharge/release onthese failures. NewGREENv4 finalexpandedselection.
+  Growth/publicationblockers remainOPEN; no checkpointacceptance/scienceactivation.
+
+  ExpandedGREENv4 original20471 terminal51f10d native0/root16044/total32/
+  active0/notimeout;5/0/0/0 8.909s personallyparsed95226f. Actualblockedobserver
+  nativewait afterworkstarted terminatesbothownedtrees, leavesRUNNINGpending.
+  Add closeddiagnosticdeclaration/gpu-attempt-envelope-negative cases, duplicate
+  namespace refusal andTEMP-rootrefusal viaactualentrypoint. Sourceunchanged;
+  nextGREENv5 +baselease/reservation/watch/consumer regression. No fullPASSclaim.
+
+  GREENv5 original1643 terminalc72905 native1/active0/notimeout;15/1/0/0
+  12.497s verifiedc99d6e. Positivehit original250ms IPCwindow; observerstderr
+  _deadlineexpired underrequest2 verified459bd9, notscienceregession. Remove
+  durabilityfsync/replacement races from EPHEMERAL ONLY IPC: <=64unique sequence
+  files, <=8192bytes, exclusive tempclosed thenWindowsnonoverwrite rename. Durable
+  authority/claims/journals unchanged; no threshold/timebudgetrelaxation.
+  Also ownerbindbefore sourcemutation andlatchALLobserverclose/evidencefailures.
+  GREENv6 required; sourcegrowth/publicationblockers remainOPEN.
+
+  GREENv6 original74379 terminalb4bc4e native0/active0;15/0/0/0 12.311s.
+  Regressionoriginal39377 terminal1a348d native1/root19708/total165/active0/
+  notimeout;200/1/0/0 70.851s. Causalevidence9146b7: request2start161753578000000,
+  capture161753812000000234mslater, originaldeadline161753828000000. Parentbusy
+  resume/RUNNINGdurability starves synchronousIPCbridge; genuinecompositionbug,
+  notinfraexcuse. Preserveboundedselectednestedartifacts+SHA beforeTEMProtation.
+  Twoindependentreviews REQUIREindependent monitor transport; choose bounded
+  cancelable nativeIPCbridge owningconsumer besidekillableobserver, no filesystem
+  operations inbridge, preserveexactrequest and250ms. Autonomousobserver/shared
+  nativeevent isalternative; notselectedbecausebroaderstop-signalchange. No
+  uninterruptiblefileclientthread or thresholdrelaxation. Growth/publicationkind
+  reconciliation stillBLOCK. SourceWIPuncommitted, no accepting science/goalPASS.
+
+  Existingintegratedplan nowdistinguishes historicalabsent-moduleRED fromcurrent
+  actualcodeWIP; fivecurrentsourcepins and honest15focusedPASS/200regression1fail
+  recorded. No finalsourceapproval, no commit/push. NextboundedcancelablenativeIPC
+  bridge mustreplace synchronousparentservice, thenkind-preservinggrowth and
+  completionpublication; no unreviewedscientificactivation. Fullgoalactive.
+
+### 2026-10-13 — Owner clarification: historical GPU hardware scope
+
+The owner answered the outstanding hardware-scope question for 2026-09-20
+through the present: "Yalnızca bu bilgisayarın RTX 4050’si kullanıldı."
+Record this as owner testimony that ALUCLU model/CUDA work in that interval
+used only this computer's RTX 4050, with no other/external NVIDIA GPU.
+This narrows historical accounting to one GPU; it is not measured utilization,
+an exact first-use timestamp, zero historical usage, or a numeric GPU-hour charge.
+Existing local-training authorization remains unchanged; no new permission is
+requested or inferred. No model/CUDA run was launched for this clarification.
+The diagnostic coordinator's monitor starvation and growth/publication blockers
+remain open; this factual clarification does not clear those engineering gates.
+
+### 2026-10-13 — Deterministic monitor-starvation reproducer before native IPC
+
+Previous goal turn: progress (owner hardware scope recorded, not an engineering
+gate). Preserve current WIP and all immutable prior results. Add closed harmless
+slow-parent scenario: actual main waits 600 ms after resume, before worker-start
+publication, while original watch observation bound remains 250 ms. Integration
+test requires native cleanup, continued observations during that interval, and
+bridge-thread closure. Run native_red before replacing synchronous transport.
+Proposed variant: private local socket pair, Windows actual-PID socket sharing
+before observer resume; bounded nonblocking framed messages, consumer-owned
+bridge thread with cancellation and original cleanup join. Filesystem reads stay
+in killable owned observer. Two independent GPT-6.1 Sol design reviews requested.
+No scientific activation, growth/release gate or full-program completion claimed.
+
+Native_red terminal: pytest exit1, 1 test/1 failure/0 errors/0 skips, 3.028s;
+outer owned tree root30540 total10 active0, no timeout. Actual slow-parent child
+denied on permanently stopped consumer, reproducing starvation with no relaxed
+deadline. Both design reviewers admit bounded private socket bridge in principle,
+not source acceptance. Implement actual-PID sharing/bootstrap, nonblocking bounded
+framing and consumer-owned bridge, retaining all file reads in owned observer.
+First native_green terminal: exit1, 16 tests/2 failures, active0/no timeout;
+success and slow-parent reach shutdown but observer sees EOF while already in
+receive after main's stop publication. Preserve failure; distinguish explicit
+EOF from malformed frames and accept only exact durable stop marker on EOF.
+Native_green_v2 required. Growth/publication and full independent source review
+remain open; no commit/push or model/CUDA launch.
+
+Native_green_v2 terminal: exit1, 16/1/0/0, 16.599s, owned root17256 total52
+active0/no timeout. Normal cycle succeeds; slow-parent cycle also completes but
+the test measures 594ms from sleep(.6), below declared 600ms reproducer duration.
+Do not relax assertion: wait against absolute monotonic start+600ms, accounting
+for sleep granularity. Require >=2 successful observations during main delay.
+Add bounded native frame oversize/truncation/malformed/pipeline, fragmented-I/O,
+and receive/backpressured-send cancellation negatives. Record bridge/socket
+closure on blocked-observer denial through nested finally. Native_green_v3 next.
+
+Native_green_v3 terminal exit1, 25 tests/1 failure, root8892 total49 active0/no
+timeout. Slow-parent multiple observations and all new framing/cancel negatives
+pass; duplicate-namespace setup's initial normal run fails a real shutdown race:
+observer sees stop and exits before live bridge cancels, yielding _ChannelClosed.
+Native bridge receipt records two on-time observations and joined/closed socket.
+Fix order: quiesce/join consumer under original tail with 20ms bounded select,
+then publish observer stop, then shutdown/close channel and finish observer.
+Exception cleanup still uses immediate cancellation+shutdown+join+owned drain.
+No acceptance threshold changed; native_green_v4 and regression remain required.
+
+Native_green_v4 terminal exit1,25/1/0/0,15.901s,root22436 total49 active0/no
+timeout. Failure is observer ConnectionResetError during normal post-quiesce
+socket shutdown, not renewed parent starvation. Independent reviews identify
+cancel-set blanket exception suppression (would erase racing real errors) and
+malformed tests that could pass by EOF alone. Introduce distinct local cancellation
+exception; retain every non-cancellation error even when quiesce races it. Keep
+malformed peers open and assert rejection categories. Observer-only stop checker
+validates exact durable marker during bounded frame waits, so abandoned partial
+requests can stop without completing a frame. EOF/reset normal only with validated
+stop marker; malformed data still fails. Add partial-frame stop-checker test.
+Both reviewers retain whole-WIP REQUEST CHANGES/BLOCK. Native_green_v5 required.
+
+Native_green_v5 terminal exit0,26/0/0/0,17.150s,root26604 total52 active0/no
+timeout; raw stdout26dots, stderr empty. Personally parsed native receipt+JUnit.
+No retry overwrites: all failed artifacts retained. Current5source pins and scoped
+native transport behavior added to integrated plan, old source pins relabeled
+historical. Full relevant regression_v2 launched on unchanged source via original
+session handle; final acceptance, missing integration negatives, growth/publication
+and scientific installed facts remain open. No model/CUDA or heldout run.
+
+Regression_v2 original53493 terminal854928: native0/root30192/total172/active0/
+notimeout. Personally parsed211/0/0/0 80.201s; stderr empty, source unchanged.
+XML SHA256 cc127eceb8752f1f4abcbb5d0a8c083edbe3f15d9ff5cfc81e06c0222f8db27d;
+focused V5 XML33f7dd73019fce2916e350bd9bcd00804b59050d994af5b5c0d2ee5f79443bfd.
+Create bounded evidence manifest from actual native/JUnit results for7runs,
+28 artifact hashes/sizes and5 source pins, explicitly dirty base923447c,
+diagnostic-only/not integrated acceptance. Rehash manifest references against
+actual disk; independent terminal-evidence rereviews requested. Source-specific
+codeAPPROVE/architectureCLEAR for continued testing, wholeWIP stillBLOCK on
+missing integration negatives and growth/release. No commit/push or model launch.
+
+Both final independent GPT-6.1 Sol evidence lanes returned: codeAPPROVE and
+architectureCLEAR for preserving scoped monitor repair only; wholeWIP REQUEST
+CHANGES/BLOCK unchanged. Each independently rehashed all28 raw artifacts and5
+sources, matched all7native/JUnit records, and verified focused26 identities equal
+regression's26 coordinator cases. Regression breakdown26+29watch+47state+33store+
+34lease+42consumer=211unique cases. Main also verified no current coordinator/
+runner Python processes. Manifest SHA256
+9a81e95e4ac3196ae1c42f34a55070b42efa97c4f32a3202781cba929aafc408.
+Next integrated work: actual observer-midframe/bootstrap-failure and revocation
+during busy-main negative coverage, then factual growth-kind reconciliation and
+pre/post-release outcome ordering. Existing scientific guard remains denied;
+no final task/goal completion, commit/push or new training authorization inferred.
+
+### 2026-10-13 — Actual observer bootstrap acquisition failures
+
+Previous goal turn PROGRESS: native transport repaired with26focused/211regression
+passing exact-source evidence and two independent scoped approvals; wholeWIP
+remains uncommitted. Reinspect currentDesktop source/trajectory before continuing.
+Add actual-entrypoint RED for exclusive bootstrap-publication conflict AFTER
+socket sharing/observer creation, and wrong role bootstrap rejected BEFORE
+fromshare/readiness. Require READY/pending, consumed claim, no worker activation,
+native worker/observer drain and no accepting charge/result. bootstrap_red next;
+scientific guard, frozen grid and original timing/resource bounds unchanged.
+
+bootstrap_red terminal native1/root21520/total9/active0/no timeout: both new cases
+fail because closed scenarios are not yet implemented (no declaration/reservation
+created); this is missing-path RED, not observed native cleanup. Implement only
+closed diagnostic faults AFTER actual observer/socket creation and share, before
+resume/readiness. Observe early observer exit rather than wait until readiness
+timeout; retain original2s upper bound. Cleanup native evidence now records both
+parent and surplus socket closure. bootstrap_green next; no scientific execution.
+
+bootstrap_red JUnit personally parsed2/2/0/0 in1.182s. bootstrap_green original
+40763 terminale63a28: native0/root20184/total63/active0/notimeout; stdout28dots,
+full JUnit counts/time still to reparse with final evidence. Actual acquisition
+negatives now pass with originalnativeworkers/observers drained, both sockets
+closed,READYpending and no accepting output. Code lane scopedsourceAPPROVE,
+architecture lane pending. Launch regression_v3 on unchangedcurrentbytes, preserve
+originalhandle. No model/CUDA/assets/heldout run, no commit/push; fullgoalactive.
+
+bootstrap_green JUnit verified28/0/0/0 in22.217s. Both independent source lanes
+scopedAPPROVE/CLEAR for these two real faults only; preserve residual acquisition
+failure coverage. Read-only currentJob/lease inspection plus independent architect
+confirms next important gap: stopEvent latches denial but native cancellation
+still depends on main-thread _check_stop/cleanup. Positive600ms observations are
+NOT proof of worker termination during main unavailability. Record candidate
+same-job duplicate-handle private actuator with shared only-tightening cleanup
+deadline, no cross-thread lease/publication/filesystem access; not yet implemented.
+Next actualbusy-revocation RED must require root/descendant terminal beforebusyend,
+unrelatedprocesssurvival andjoined/closedactuator. Currentregression_v3 stilllive.
+
+Regression_v3 original71325 terminal6af4d3: native0/root33428/total183/active0/
+notimeout; personallyparsed213/0/0/0 in81.972s, stderr empty. Source unchanged.
+XML38bb6afcd6c50e4a4c3b9801de921185dbcb401b8541292ce0b610c3aed724ab.
+Record3runs/12rawhashes+5finalsourcepins in new bootstrap evidence manifest;
+finalpins applyonlyGREEN/regression, notmissing-pathRED. Rehash actualartifacts
+and sources, inspect currentprocesses, and requestbothindependent terminalreviews.
+No source/fullgoalPASS, no commit/push or model launch. Next critical work remains
+busyrevocation actualnativecancellation RED plus shared-tail private actuator,
+then remainingintegrationnegatives and truthfulgrowth/releasecompletion.
+
+### 2026-10-15 — Actual busy-main revocation RED, not learning evidence
+
+Previous goal turn PROGRESS: two bootstrap faults28focused/213regression passing,
+both independent evidence lanesAPPROVE/CLEAR scoped preservation, wholeWIPBLOCK.
+No coordinator/runner Python process live at current reinspection; HEAD923447c.
+Add closed busy-revocation diagnostic: actual started worker remains live, main
+arms observer then does NO lease/watch/bridge servicing for measured>=600ms.
+Owned observer publishes real sequence2 revoked committed status in that interval.
+Main samples actual same-job accounting and root process handle BEFORE stop check
+or exception cleanup; test requires active0/rootterminal at that sample, not merely
+stopEvent. Keep original250ms/15s/10s bounds; no actuator yet, expect genuine RED.
+This first reproducer covers root process only; descendant/unrelated-survival and
+actuator failure/join/duplicate-closure coverage remain required, not silently waived.
+New immutable busy_red artifacts dated20261015; scientific/model/CUDA guard unchanged.
+
+busy_red original41442 terminal0c7912 native1/root23780/total10/active0/notimeout.
+Exact intended failure at native-cancellation assertion: sampled after_active2
+while stop_requested=True; rootterminal assertion not yet reached due conjunct.
+All preceding actualrevocation/timeordering/noacceptance/finalcleanup assertions
+pass. Preserve original nested sample/revocation/cleanup records before TEMP
+rotation. Run full regression_busy_red without removing/redeselecting failing case;
+expect one real pending test, not a CLEAN claim. No actuator implemented yet.
+
+Personally inspect/preserve8bounded nested original records with bytecounts+SHA
+beforeTEMP rotation. Actual sample: before2/after2, PID9244 root_wait258, stopTrue;
+busy520656000000..521265000000 (609ms), committed revocation520718000000 (62ms
+afterbegin), sample547ms afterrevocation. So root nonterminal is directly observed,
+not inferred from short-circuited assertion. Full regression stillrunning original
+60245; do not restart or change source. Prior scoped213PASS is historical, not
+current broadPASS. Realmodel/scientificactivation remains denied; fullgoalactive.
+
+Full regression_busy_red original60245 terminalda92df reaches ORIGINAL120s bound:
+native124/root7864/total109/active0/timed_out=True. Stdout stops after120 cases,
+contains knownbusyRED; no XML produced. This is incomplete regression, NOT214/1
+or previously213PASS. Cause of extra runtime not established; no infrastructure
+excuse, no timeout extension, no blind retry. Preserve available3rawfiles+focused
+4rawfiles in busy evidence manifest with honest absent-JUnit fields and final
+source pins (finalrunner applies only regression, changed after focusedRED).
+Both independent source lanes validate causalRED; wholeintegrated acceptanceBLOCK.
+No coordinator/runner process should remain; verify actualprocess inventory next.
+
+Main verification db3692/34d526:7raw+5source+8nested actualfile/hash/content
+matches; no livecoordinator/runner Python processes, diffcheck exit0 (CRLF warnings
+only). Both independent final lanes agree scoped preservationAPPROVE/CLEAR for
+causalRED and SEPARATEincompleteRegression, not source/integrated acceptance.
+No finaltestcount can be inferred for interruptedregression. Manifest SHA256
+601ecdbc706e845bc8ef0c99116d428987bbaf135f8d636ee9b55c2e7f9aff64.
+This goal turn PROGRESS: actual nativecancellationgap reproducible and retained;
+notblockedimpasse. Next implementprivate same-job actuator/sharedtighteningtail,
+extend actual descendant/unrelated-survival/failure coverage, then rerun focused
+and relevant regressions on final source. Keep growth/release and scientific
+prerequisites open. No commit/push or model launch; fullgoal remains active.
+
+### 2026-10-15 — Private native same-job actuator implementation WIP
+
+Previous goal turn PROGRESS: actualbusyrevocationRED preserved, regressiontimeout
+explicitly incomplete. Implement private actuator holding noninheritable duplicates
+of actualsamejob androotprocess handles, acquired before resume. Separate non-daemon
+thread observesonewaysignal/originalusefuldeadline and invokes native jobtermination,
+then verifies jobactive0+rootterminal; no filesystem/journal/lease mutation inthread.
+Fixed lease andactuator share synchronized only-tightening earlycleanup clock.
+Main joins/closesduplicates before its own nativecleanup, avoiding concurrent
+termination/handleclosure. Test now also requires actuator nativefact/join/closed
+duplicates andsamecleanuptail, beforemain sample. Review/negativecoverage pending;
+actuator_green next. Scientificguard/growth/release remainsBLOCK, no model launch.
+
+actuator_green original35733 terminal5d3671 native0/root25496/total70/active0/
+notimeout; stdout29dots, JUnit parsing belowpending. Actualbusy root/jobRED now
+passesincluding actuatorfinished<=main sample and closedduplicates/sharedtail.
+Independent reviewers REQUESTCHANGES/WATCH: cleanup errors mustremainsticky,
+partialduplicateacquisition mustretainactor, allcleanupconsumersmustreadshared
+earlytail. Moveacquisitionintostart AFTERactorassignedtolease; retainprimaryerror,
+stickyclose_error, actualthreadident ratherthanstartedflag forclosurevalidation.
+Apply_shared_tail.current tobridge/watch/observer exception+normalcleanupbounds.
+Add earlytailconsumerunit test. actuator_green_v2 next;nofullacceptance claim.
+
+FirstGREEN JUnit29/0/0/0 in27.157s personallyparsed. V2 original19169 terminal
+2d16da native0/root22068/total70/active0/notimeout; stdout30dots (JUnitpending).
+Code reviewer requests sticky failure REPORTING mustnotdisable remaining cleanup
+attempts; architectureCLEARscoped butnotessame residual. Repairclose toattempt
+boundedjoin/remaininghandles onrepeat whilealwaysraisingretained firsterror; never
+renewtail oracceptlatersuccess. Addlocalbookkeepingfixture withtwo realnativeevent
+handles+retainederror; NOTclaimed actual termination/acquisitionfault coverage.
+actuator_green_v3 then relevantfinalregression; realdescendant/isolation/fault
+negativecoverage, growth/release andscience remainopen. No commit/push/modelrun.
+
+V3 original88832 terminal9e97bd native1/root7040/total70/active0/notimeout:
+newbookkeepingfixturefails because _winapi.CreateEvent doesnotexist on thisruntime,
+not nativeactuatorfailure; other30casespass. Preservefailedartifact, useexisting
+ctypes CreateEventW signature fromownedobserver diagnostic instead, protectpartial
+fixturehandleacquisition withfinally. Actuator sourceunchanged; V4 required.
+IndependentfinalsourcecodeAPPROVE/architectureCLEAR scopedcorrection only, not
+fullfault/tree/isolation/accounting/scientificapproval.
+
+V2 JUnitverified30/0/0/0 26.138s. V4 original38933 terminalea05f4 native0/root3192/
+total70/active0/notimeout, stdout31dots; finalJUnit/timepending. Sourceunchanged
+after scopedcodereviewAPPROVE/architectureCLEAR; testfixtureonly corrected.
+Launch regression_actuator onfinal31cases+185baseline unchangedsource/original120s,
+notretryofoldtimeout. Updateintegratedplan explicitnativeactuatormechanics/current
+sourcepins andmissingfault/tree/isolationcoverage. No scientific/wholeWIPPASS.
+
+V4 personallyparsed31/0/0/0 20.945s. Preserve7bounded decodedoriginalrecords
+(notrawcopies) frompytest192 focusedV4 beforeTEMP rotation. Exactnativefacts:
+before2/after0/rootwait0;revocation1481765000000;actuatorfinish1481812000000
+(47mslater,500msbeforemain sample1482312000000);sharedtail1491812000000,
+drainedTrue/dupsclosedTrue/threadaliveFalse. Currentroot/jobcausalGREEN isreal,
+notlatemaincleanup; deliberate descendants/isolation/faultcoverage remainsopen.
+Fullregression_actuator stilllive24973; preserveoriginalhandle/sourcefrozen.
+
+Regression_actuator original24973 terminal07ce99 native0/root9500/total190/active0/
+notimeout; personallyparsed216/0/0/0 74.648s. XML SHA256
+ab848e9ad80632f80b01722968bc358a3b0cdeb97550adb9f200c109e328f80d;
+stderr empty. Sourceunchangedfinalpins. New5run/20rawhash+size/5source manifest
+explicitfinalpinsV4/regression only, earlierfailure snapshotsretained. Verifyactual
+rawsourcehashes/processinventory; finalindependent evidence reviewsrequested.
+This is testedroot/job independentcancellation GREEN, notcompletefault/tree/
+isolation or integratedaccounting/scientificPASS. No commit/push/model/CUDA.
+
+Main8262a4 verifies20raw+5source actualhash/size matches, no currentcoordinator/
+runner Python process, diffcheckexit0. Actuator evidence manifest SHA256
+5eb1bce14b4bd5ce9b8e1746100e5035d5e0836e3ca61aca67876f6268745c9c.
+Both independent final lanes personallyverify25files/all5nativeJUnitpairs,
+focused31identityparity and216unique regression cases. ScopedcodeAPPROVE/
+architectureCLEAR for testedroot/jobrepair; wholeintegrationBLOCK unchanged.
+CurrentgoalturnPROGRESS: causalnativecancellationRED->GREEN implementedandtested,
+sharedtail/ownershipcleanupcorrected withindependentreview. Nextrealdescendant+
+unrelatedsurvival andnativefault/racecoverage, thenfactualgrowth/releasepublication;
+actualmodel/science/clock/history/resourcefacts remainopen. Fullgoalactive;
+no commit/push or paidexternalcompute/model/CUDA/heldout launch.
+
+### 2026-10-15 — Deliberate descendant and separate-job survival integration
+
+Previous goal turnPROGRESS nativeactuator31focused/216regressionPASS withscoped
+two-lane evidence; fullWIP remainsopen. ReinspectDesktopHEAD923447c/currentfiles.
+Addtree RED requiring worker-created deliberate descendant PID/FILETIME/parent
+identity and actual native SAME-job membership, then retained-handle terminal
+observation beforemainbusyend. Separate control is existing owned observer in
+its ownjob, not a new unrelated user application: prove it isNOTinworkerjob and
+remainsalive while worker+descendantdrain. This is explicit separate-job survival,
+notall-host isolation. Actuator targeting/thresholds untouched. tree_red next.
+
+tree_red terminalnative1/root8732/total6/active0/notimeout: newclosedscenario
+notimplemented, missing-pathRED not nativefailure. Addactual fixedworker Popen
+descendant underinheritedjob (no breakaway), actualparent/PID/FILETIME readiness.
+Main retains QUERY+SYNCHRONIZE-only descendant handle and verifiescreationtime+
+IsProcessInJob againstactualworkerjob BEFORErevocation. Same retainedobserver
+handle proves separatejob membership/live survival; nonew arbitrary executable
+or actuator PIDtargetselection. Recordpre/post nativewaits duringexistingbusy
+interval, ownerExitStack closesfixturehandle. tree_green next; broadclaimstillopen.
+
+tree_green original56919 terminal1d2c8d native0/root26212/total78/active0/notimeout,
+stdout32dots. Inspectsampleordering beforefinalreview: sampletimestamp initially
+preceded descendant/observer nativewaits. Move timestamp AFTERall nativewaits,
+capturebusyend BEFOREdiskreceiptpublication, so metadata accurately brackets
+actualobservation ratherthanprior timestamp. No outcome/timingthreshold changes.
+tree_green_v2 required onthese finalbytes; missingnativefault/growth/release/science
+stillopen, prior sourcePASSnotreused asfinalevidence.
+
+tree_green firstJUnit32/0/0/0 22.274s; V2original38612 terminal13778a native0/
+root2572/total78/active0/notimeout,stdout32dots. Bothindependentsource lanes scoped
+APPROVE/CLEAR forordinarydeliberatedescendant/separate-ownedobserver control;
+notarbitraryexternalapplication orhostileescape guarantee. Strengthenbusytests
+explicitRUNNING/pending/consumedstate. ReplacebarefixtureCloseHandlecallback with
+fixedowner-side close+boundedreceipt under sharedtail; successfulhandleclosure now
+observable, notinferredfromprocessdrain. tree_green_v3+finalregression required.
+
+V3original64208 terminalea7d3e native0/root29284/total78/active0/notimeout,
+stdout32dots. Bothreviewers flagfailureordering: LIFOdescendantcallbackwrites
+receipt BEFOREleaseclose; earlyvalidationfailuremightblock cancellation. Fix
+callbackentry torequestownedstop+pinsharedtail beforeANYreceiptI/O, nativehandle
+closealwaysattempted viafinally evenifsetupfails, firsterrorretained andnoclosure
+successreceiptunlessnativeclose+setup succeeds. Initialpatchfailedatomicverification,
+nochange; correctedpatchapplied. FinalV4 required; actualearlyvalidation/delayed
+receipt faultcut remainsOPEN, notprovenbyselectedrevocationpath. Fullgoalactive.
+
+FinaltreeV4 original8458 terminal1894d4 native0/root18156/total78/active0/notimeout,
+stdout32dots; V2JUnit32/0/0/0 27.435s,V3JUnit32/0/0/0 24.410s verified.
+Bothindependentsource lanes APPROVE/CLEAR callbackorderingcorrection only, actual
+earlyvalidation/delayedreceipt fault stillOPEN. Launchregression_tree with32+185
+cases finalbytes/original120s bound. Integratedplanrecords precise ordinarytree+
+separateownedobservercontrol claim, actualnativequeries, pending/closurefacts and
+current sourcepins. Sourcefrozenwhilelive, no model/science or commit/push.
+
+V4JUnitverified32/0/0/0 22.831s;treeRED1/1/0/0 .814s. Preserve10bounded
+decodedoriginalV4records+hash/bytecounts (notrawcopies) frompytest198. Actual
+workerPID4260, deliberate descendant29400 (parent4260, nativecreationmatched),
+separateobserver28340. Native membershipsdescworkTrue/obsworkFalse/obsownTrue;
+beforeactive3->0/rootwait0,descwait258->0,obswait258->258 atsample2403015000000.
+Actuatorfinish2402593000000 beforemain sample; ownobservationhandleclosure and
+pendingRUNNING asserted. This is testedordinaryinheritedtree/separate-jobcontrol,
+notprivilegedescape/arbitraryhostprocess claim. Finalindependentevidencereviews
+requestedwhileunchangedsource regression_tree stilllive41903.
+
+Finalregression_tree original41903 terminal58485d native0/root29388/total198/
+active0/notimeout; personallyparsed217/0/0/0 73.216s,stderr empty. XMLSHA256
+efa84062d2484021a4a4b7c21fcbb7c1cf7e65f0b6954eff296b177f7465e543.
+Create6run/24rawhash+size/5sourcepins tree evidence manifest, finalpinsONLYV4/
+regression,10decodednestedrecords separate. Mainrehash/processcheckperformed;
+codefinalreviewAPPROVE scoped preservation29files/217uniquecases/focused32parity,
+architecturefinalevidencepending. No all-host/fault/science/wholeWIPPASS.
+
+Main46d89c verifies24raw+5source actualhashes/sizes, no currentcoordinator/runner
+Python processes,stderr0/diffcheckexit0. Tree evidence manifestSHA256
+b226f24dcd3439e2ea8c7f298cd837ae49d23622691f9365a325796e51e667c2.
+Architecturefinalreviewindependentlyverifies29files/6pairs/217unique/focused32
+and scopedCLEAR, matchingcodescopedAPPROVE. GoalturnPROGRESS: deliberateordinary
+descendant+separatejobcontrol andsuccessfulobservationhandleclosure nowtested;
+callbackcancellationorderingcorrected. Nextactualearlyvalidation/delayedreceipt
+andnativefaultcuts,thenfactualgrowthkind/releasecompletion; wholeprogramactive,
+no merge/commit/push or model/CUDA/heldout/paidcompute launch.
+
+### 2026-10-15 — Early validation plus delayed cleanup publication
+
+Previous goal turnPROGRESS: deliberateordinarytree/separate-jobcontrol32focused/
+217regression andindependent scopedAPPROVE/CLEAR. ReinspectDesktopHEAD923447c,
+preservecurrentWIP. Addactual-entrypoint RED for wrong-job validation BEFORE
+revocation arm, withfixed600ms cleanup-publication pause aftercallbackcancellation.
+Require initialliveworker/descendant, nativeactive0/rootterminal beforeleaseclose,
+actuatorfinishedbeforepause sample, closedhandle/sharedtail, statusstillseq1/
+notrevoked andRUNNINGpending/noacceptance. Pause is deliberate owner delay BEFORE
+receipt write, NOT claimed an actualblockedfilesystem or nativeAPI failure.
+early_red next; scientific/model/CUDA/heldout guard remainsunchanged.
+
+early_red terminalnative1/root26196/total6/active0/notimeout: missingclosedroute,
+notnativecleanupfailure. Addclosed tree-validation-delay using sameactualworker/
+descendantfixture, actualIsProcessInJob(descendant,observerjob)==False BEFOREarm;
+storefalse diagnosticfact inowner memory thenrefuse. Cleanupcallback latchesstop+
+sharedpin/closesqueryhandle, pauses600ms BEFOREreceiptpublication, samplesactual
+samejob/rootpriorleaseclose, thenboundedreceipts. Productionactuatorunchanged.
+No predicate patch, arbitrarycallback/executable or thresholdrelaxation. early_green
+required; actualOS/nativefaults andgrowth/release/scientificfacts remainOPEN.
+
+early_green original14555 terminale0c6c0 native0/root8648/total86/active0/notimeout,
+stdout33dots. Beforefinalreview, movepre-denialnativefacts to mainowner memory
+BEFORErequire(False), so cleanupcallbackentry hasonlymonotoniccapture thenimmediate
+stop/pin, no native-query operation postponing cancellation. Callback usesstored
+facts afterpin; testrequiresbefore_sample<=callbackstart. No acceptingthreshold
+change. early_green_v2 required; sourcefrozenwhiletestlive, no scienceactivation.
+
+FirstGREENJUnitverified33/0/0/0 26.134s. FinalV2original65092 terminal8f96c8 native0/
+root13708/total86/active0/notimeout, stdout33dots;JUnittimepending. Bothindependent
+source lanes scopedAPPROVE/CLEAR withprecise delay/notOSfailure limitation.
+Launchregression_early unchangedfinalbytes/original120s; updateintegratedplan
+sourcepins/scope/timing/closurefacts. NativeactualAPI faultbranches,growth/release,
+science remainOPEN. No commit/push/model/CUDA/heldout/paidcompute launch.
+
+Final early-validation regression terminal verified 2026-10-15: session39839,
+native/pytest exit0, root16008, total206, active0, timed_out=false under original
+120s bound. JUnit218 tests/0failures/0errors/0skips,78.229s; stderr0bytes.
+XML SHA256 7719f03cfda4f187528a33f854b2b6fc34809b1433e202501186f699d7a24c16.
+Final focusedV2 verified33/0/0/0,26.587s; XML SHA256
+2034c74513e02e9e4510383442b00926b267a3802ffb2f2d580f486f810792ce.
+All five frozen source hashes rechecked unchanged after terminal. Scoped source
+reviews APPROVE/CLEAR are not final whole-WIP or scientific acceptance. Raw
+RED/firstGREEN/V2/regression artifacts preserved; no source commit/push.
+Owner explicitly confirms all historical model/CUDA work used only this PC's
+RTX4050, no other/external NVIDIA GPU. This is scope testimony, NOT measured GPU
+hours, zero historical usage, or a precise first-use UTC timestamp. Actual native
+failure branches, factual growth/release accounting and scientific installation
+remain open. No model training/CUDA/heldout run was launched in this stage.
+
+Continuation: previous turn PROGRESS (terminal218 regression + owner GPU scope
+record). Preserve four early runs/16 raw hashes/sizes and five frozen source pins
+in early_evidence_20261015.json. Add isolated actual Windows partial-acquisition
+test: actual private Job handle duplicates first; second DuplicateHandle uses
+NULL process handle and must return native ERROR_INVALID_HANDLE6. No API patch,
+mocked error or external target. Assert sticky failure, stop request, never-started
+thread, closed partial duplicate and still-valid original owned Job. This extends
+native failure coverage, not full coordinator/native termination fault acceptance.
+Existing correct behavior may pass first; no artificial RED or bug claim.
+Add immutable partial_acquire/regression_partial_acquire runner modes; source
+remains diagnostic-only and no model/GPU/heldout run is authorized by this test.
+
+Partial_acquire terminal native0/root6748/total3/active0/no timeout, JUnit1/0/0/0
+0.796s. Strengthen fixture before final regression: parameterize actual _acquire
+and start. Direct acquisition observes retained non-NULL valid Job duplicate via
+actual native query BEFORE cleanup, with NULL process duplicate and error6. Start
+case covers cancellation/cleanup wrapper. Both use finally to retry bounded actor
+cleanup and close remaining private handles even if a test assertion fails.
+No mocked API or product changes. New immutable partial_acquire_v2 terminalnative0/
+root23448/total3/active0/no timeout; parseJUnit next. Earlier1case preserved.
+Two independent reviews requested; source/tests/runner frozen for finalregression.
+
+regression_partial_acquire original26972 terminal14e014: native/pytest124,
+timed_out=true at original120s, root32340/total174/active0. Stdout includes one F
+before cutoff; XML absent, so no invented220-case summary or PASS. Failure identity
+and cause not yet established; preserve raw stdout/stderr/exit. No bound increase
+or immediate identical retry. Independent lanes first reported usage-limit errors;
+one retry dispatched and architecture now scopedCLEAR for two-case focusedbytes,
+not full regression. Disk observation~35.13GB free. Next isolate failing selected
+test path with terminal traceback, keep all thresholds/timing contracts unchanged.
+
+Both independent lanes now return scopedAPPROVE/CLEAR for final two-case fixture
+and prior early evidence preservation, NOT fullregression. Preserve three partial
+runs/11available rawfiles/sourcepins in partial_evidence_20261015.json; incomplete
+fullregression has no XML. Progress position maps stdout149th F to existing abrupt
+lease-parent running fixture; this is inference from previous orderedJUnit +two
+addedcases, not terminal traceback. Retained pytest205 abrupt-running owner is
+generation2/READY, sentinelabsent, outer stdout/stderr empty. Add closed immutable
+abrupt_diagnose mode: exact existing running test only, verbose/shorttraceback,
+stopfirstfailure/no pytestcache. Same original120s parent and12s fixturedeadline.
+No identical fullsuite retry or deadline increase. Product/test bytes unchanged.
+
+abrupt_diagnose terminalnative0/root16276/total11/active0/no timeout. Exact
+suspected existing abrupt-running test passes standalone; failure NOT reproduced
+and rootcause remainsUNKNOWN. Do not claim a repair or flaky-by-proof. Next new
+fullselection diagnostic keeps120s original bound, but verbose per-case names and
+stop-on-first-failure/shorttraceback/no cache give failing identity before cutoff.
+This is changed observability to investigate observed F, not a timeout-only retry.
+
+2026-10-16 terminal diagnostic: original18977->5e4084 native/pytest0/root31788/
+total206/active0/notimeout under original120s. JUnit personally parsed220/0/0/0,
+87.257s; XML3389706332815683a0cb48b80eb696bd41e58e95963517541daa50cb85f49482.
+220unique identities contain every earlier218 plus exactly two realpartial
+acquire/start cases: coordinator35/state47/store33/lease34/watch29/consumer42.
+Earlier stdoutF/120stimeout remains unexplained, NOT reproduced here, not called
+fixed/infrastructurefailure or erased. This latest regression passes; separate
+earlier incomplete regression remains failed/incomplete. No threshold changes.
+
+Preserve standalone+finaldiagnostic8rawhash/size+7sourcepins in
+partial_diagnosis_evidence_20261015.json. Filename20261015 is frozenrunnerfamily
+stamp, actual XMLtimestamps20261016. Pins applyONLYfinaldiagnostic; standalone
+historicalrunner70fdb057... is explicitly recorded. Current product6235c549...,
+testd4856eea...,runner41fb2996... unchangedthroughterminal. Existing config-q
+cancels -vv to fileprogress, not per-case names; -x would still reportfirstfailure.
+Independent terminal evidence reviews requested. No merge/commit/push, model/GPU,
+heldout or paidcompute execution. Next nativequery/action/close/thread-startfaults,
+factualgrowth/releasecompletion and scientificadmission remain required.
+
+Finalindependent terminalreviews: codeAPPROVE scopedpreservation afteractual
+inspection8finalraw+7currentpins+11earlierraw; architectureCLEAR independently
+same15currentrefs/220unique/all218retained/exact2added. Both explicitly retain
+priorfailure UNKNOWN/notreproduced, no wholeintegration/sciencePASS. Main rehash
+all35rawreferences across three manifests +7currentsourcepins yields0mismatches;
+no currentcoordinator/runnerPythonprocess, stderr empty, diffcheckexit0.
+Finaldiagnosismanifest SHA25628858ca854647d411ffa99a51c9fbcbbc150f1056c355789adaedcecf592ca30.
+Goalturn PROGRESS: realpartialnativeacquisition two-case coverage, confirmed220
+regression, immutable failedprecursor/evidence andindependentverdicts. Goalactive;
+no commit/push or scientificclaim. Next realquery/action/nativeclose/startcuts,
+then truthfulboundedgrowth/releasecompletion; do not reset previouscheckpoints.
+
+### 2026-10-16 — Actual query/termination access denial
+
+Previous turn PROGRESS: nativepartialacquisition2cases+220regression, independent
+scopedAPPROVE/CLEAR, earlierF/timeout preservedUNKNOWN. ReinspectDesktopHEAD/WIP;
+read fullobjective. Add two actual restricted-rights Job duplicate tests with
+same actual owned suspended harmless child. TERMINATE-only(0x8) denies native
+query; QUERY-only(0x4) allows counts but denies actual TerminateJobObject.
+Microsoft QueryInformationJobObject requires JOB_OBJECT_QUERY; rights documented
+at https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-queryinformationjobobject
+and https://learn.microsoft.com/en-us/windows/win32/procthread/job-object-security-and-access-rights.
+No mocks/API patch/arbitrary existing process target. Assert realWin5, stopsticky,
+threadterminal/duplicatesclosed but NOT drained/terminated, rootstilllive before
+independent primaryowner cleanup; resume denied and reservation remainsREADYpending.
+Retain synchronize-only root observation through primaryclose to prove terminal.
+Finallycleanup every acquired privatehandle, no closurewhileactorthreadalive.
+Add immutable query_fault/regression_query_fault modes stamp20261016, original120s;
+new modes override pytestaddopts only for verbosefirstfailure diagnostics, no
+threshold/deadline change. Extend -textartifactrule. First focusedrun next; existing
+behavior maypass immediately, no fabricatedRED/bugclaim. Scienceguard unchanged.
+
+Focused query_fault verified2/0/0/0 2.189s, native0/root8416/total5/active0/
+notimeout. Actual222collected/220deselected/2executed, not222passed. Frozen
+coordinator6235c549... unchanged; test9348a8a8...,runner14ea3f6f.... Launch
+regression_query_fault original97513 under120s, stilllive/noPASSinferred.
+Independent code sourceAPPROVE and architecture scopedCLEAR; architect recommends
+independent restrictedsourcehandle cleanup via outerfinally so failedactorjoin
+assertion doesnot skip it. Fix only AFTERcurrentrunterminal, neverclose actor's
+in-use duplicates. Isolated view has separatetail; no productionsharedtailclaim.
+
+First regression_query_fault terminalf18a82 native0/root23428/total208/active0/
+notimeout. Afterterminal harden testcleanup: separate restrictedsourcehandle closes
+in outerfinally even if stop/actorjoin/assertion/residualcleanup fails; actor'sown
+distinct duplicates remain untouched ifthreadlive. Sourcecontrol-flowhardening,
+not newobservedjoinfailure. Add immutable query_fault_v2/regression_query_fault_v2
+modes; V2focused next. Existingquery_fault historically sixfiles222filtered2;
+new V2focused exactcoordinatorfile37filtered2, same twoactualtests. Do notreuse
+firstregression as finalsource proof. Product/scienceunchanged.
+
+FirstregressionJUnit personally222/0/0/0 85.450s. FinalfocusedV2 verified2/0/0/0
+1.633s/native0/root23088/total5/active0/notimeout;37collected35deselected2executed.
+Launchfinalregression_query_fault_v2 original6986, frozen product6235c549...,
+testb89ddf2b...,runner5d0293ff.... Codesource rereview verifiesfinalpins and
+scopedAPPROVE; architecture in-principleCLEAR has NOT yet inspectedchangedbytes,
+so nofinalindependentarchitecturalapprovalinferred. Finalterminalreviewneeded.
+Updateintegratedplan full scope/firsthistory/currentpins; source/test/runner
+unchangedwhilelive. No scientific/model/GPU/heldout execution or commit/push.
+
+Final6986 terminal4c98b0 native/pytest0/root34292/total208/active0/notimeout,
+original120s. Personally parsed finalregression222/0/0/0 89.474s; XML SHA256
+0abb198e911014ddd8fcf70405ca1b00a07a5c2182343e583e4fd0c768aac7d4.
+222unique includeeveryprior220+exact2rightsdenial tests, groups37coordinator/
+47state/33store/34lease/29watch/42consumer. Finalsourcepins unchangedthroughterminal.
+Preservefourruns16rawhashes/sizes+7sourcepins in query_evidence_20261016.json;
+currentpinsONLYV2/finalreg; historicalfirsttest9348/runner14ea explicit. Focused
+collectionvs execution distinction explicit. Independent final terminalreviews
+requested includingactualarchitectfinalsourceinspection, noapprovalinferredyet.
+Broadernativefault/integratedadmission/sharedtail/growth-release/science remainOPEN.
+
+Final independentcodeAPPROVE +architectureCLEAR after actual16raw+7currentpins/
+222unique/all220retained+exact2added verification and finalcleanupinspection.
+Main rehash23refs0mismatches, no currentcoordinator/runnerPython, diffcheckexit0.
+QuerymanifestSHA256062b0eac1e21e14f81ddfee1a11c8b311d7d01b3482ece6fb138f3e5da2410a9.
+Goalturn PROGRESS: two realrightsdenial paths, independent primaryownerterminal
+proof, fixturecleanuphardening,222finalregression andindependent evidenceclosure.
+No wholeprogram or sciencePASS/commit/push. Next remainingnativeclose/wait/start
+cuts and actualintegratedfaultpublication, thenboundedtruthfulgrowth/release and
+installedscientificfacts. Goalactive; previousnegative/incompletecheckpoints kept.
+
+### 2026-10-16 — Integrated native-denial cleanup publication
+
+Previous turnPROGRESS twoisolatedrightsdenials/222regression/independentclosure.
+Readfullobjective andDesktopWIP, preserveallcheckpoints. Next requirementactual
+entrypoint with running harmlesswork plusreal restrictedactorjobdenial; prove
+nativeerror5 retains failure, primaryfullrightsownerdrain receipt, same sharedtail,
+no acceptingresult/charge and RUNNINGpending consumption. Add two scenario tests
+beforeimplementation; immutable integrated_denial_red first. MissingrouteRED is
+not itself observedcleanupdefect. Existing _FixedLease._close skips native receipt
+generation whenactor.close raises, though superfinally attempts physicalcleanup;
+newgate requires honest cleanup evidence while retaining firsterror, not success.
+No scientificactivation/model/GPU/heldout/paidcompute or commit/push.
+
+MissingrouteRED terminal native1/root6300/total6/active0/notimeout, firstselected
+casefails under-x. Addclosed diagnostic actualrestricted sameJob actuator scenarios,
+runningfixedharmlessworker loopsoriginaldeadline. After childstarted, signalstop/
+pinsharedtail/joinactualactorthread; observe actualWin5/stilllivework/non-drained
+actuator BEFOREleasecleanup, thenraise. Originalfullrightsleaseunchanged. Retain
+restrictedsourcehandle intry/finally; no callerselectabletarget/APIoverride.
+NativeintegratedRED next on existingclosecode, toidentifyactualreceiptgap rather
+than assumeoriginal missingrouteRED provesit. No deadline/thresholdchange.
+
+ActualintegratednativeRED terminalnative1/root22648/total10/active0/notimeout,
+JUnit1/1/0/0 2.426s. RealWin5/stilllivework/non-drainedactor observations pass;
+fails specificallymissingwork.cleanup.native.json afteractorcloseerror. Preserve
+negativeproof. Fix _FixedLease._close: firstactorfailure retained, independent
+fullrightsowner native drain/rootwait/counts stillattempted; superhandle/output
+cleanup alwaysattempted; receipts onlyafterconfirmednativefacts andsuperreturn.
+Publicationfailure cannotreplace earliernativeerror; cached firstcloseerror is
+reraised on repeatedclosedcalls. Nativephysicalcleanup NEVERclearsfailedexecution.
+Same_sharedtail/minoriginaldeadline, no success/reconcile/release onnegativepath.
+integrated_denial_green next, thenregression andindependentreview.
+
+First GREEN attempt is RED: native1/root8844/total11/active0/no timeout,
+JUnit1/1/0/0 2.663s. Workownercleanup receipt nowconfirmed, but finalstderr says
+observerbridgefailed instead of originalnativeactuator denial. Actual secondary
+finallyerror masks originalfailure. Preserve this negative result and keepassertion.
+Fix _coordinate finally: capture sys.exception() originalactiveerror, attempt
+bridge/watch/observer/evidencecleanup independently underexistingtail, retainfirst
+failure and reraiseit afterallattempts. Do notreplace nativecause withsecondary
+bridgeerror. No deadlinechange/mockedAPI. Newimmutableintegrated_denial_green_v2.
+
+V2 focusedactual2/0/0/0 4.458s/native0/root4020/total17/active0. Firstintegrated
+regression terminal1541->15e89d native0/root16972/total222/active0/notimeout,
+stdout224passed; JUnitparsepending. ReviewREQUESTCHANGES: CLOSEDstate is set by
+base BEFOREallcleanup completes, so immediatecachedrethrow skips retryableactor
+resources. Add explicit closedlease bookkeepingRED withrealprivateeventhandles,
+manufacturedretainedfailure clearlyNOTactualnativeAPI/threadstartfault. Require
+actorhandlesclosed onretry whilecachedfirstfailure remainsidentical/no tailrenewal.
+Also Python>=3.10 requires sys.exc_info()[1] instead ofnew3.11sys.exception().
+Waitedforfirstregressionterminal before anysource/test/runnerchanges. RetryREDnext.
+
+RetryRED actualnative1/root12800/total3/active0/notimeout; realeventhandles remain
+open becauseclosedlease skipsactorcleanup. Fix explicitclosedretry attempts ONLY
+actuator'sseparatelyownedcleanup underoriginaltail, retains originalcachederror,
+neverblindlyrepublishesexclusive_receipts orqueriesalreadyclosedbasehandles.
+This fixes enclosingretrygate; notallbasecleanupfailure recovery. Replaces
+sys.exception with sys.exc_info()[1] fordeclaredPy3.10 APIcompatibility; notactual
+3.10runtimePASS. Architectalso notesfirstBODY/lifecycleexception maybereplaced
+atbase__exit__/method-boundarybeforeouterfinally; scopecurrently ONLYpreserves
+incomingouterdenial vs laterbridge/watch/observererrors, notuniversalfirsterror.
+Keep residualboundaryOPEN, no inflatedclaim. NewfinalfocusedV3 includes2actual
+nativeentrypointscases+1bookkeepingretrycase; finalregressionV2 mustrerun225cases.
+
+V3 focused native1/root32932/total17/active0/no timeout:2actualnativecasesPASS,
+bookkeepingretry nowcloseshandles butstopassertionFalse. Manufacturedretained
+priorcloseerror path _NativeActuator.close rethrows outside its cleanup-except
+without reasserting stop. Hardenabsorbingfailure branch to requeststop before
+every cached-errorrethrow; no fabricatednativefaultclaim. Keeporiginaltestassertion
+andnegativeV3, newimmutableGREENV4; sharedtail/deadline notrenewed.
+
+FinalV4 focusedverified3/0/0/0 4.563s/native0/root27816/total17/active0; twoactual
+nativeentrypointcases+oneclearlylabelledbookkeepingretry. Final78442 terminal79e0ce
+native0/root8872/total222/active0/notimeout120s. JUnit225/0/0/0 100.097s personally
+parsed;225unique/allprior222retained+exact3added, groups40/47/33/34/29/42.
+XML822adb11d0392d59e2a3d3908bdd3e9557cdbeec4683a9a0a8a3687ee7e8b4d7.
+Nine runs36raw+7currentpins in integrated_denial_evidence_20261016.json; ONLYV4/
+finalregressioncurrentpins; everyfailedprecursor retainedwithhonestclassification.
+Preserve16decodedV4native/ownerrecords+2stderr originalhash/bytes (NOTrawcopies)
+in integrated_denial_nested_20261016.json. Actualrunningroots18268/31168 remain
+active2/rootwait258 afteractorWin5; subsequentprimaryowneractive0/exit124 under
+samepinnedtail. Terminate sample/ownerfinish equalclocktick, notpositive_latencyclaim.
+Both finalsource reviews now inspectedAPPROVE/CLEAR; terminalevidenceinspection
+requested. Basecleanupretry/universalfirstBODY/lifecycleboundary/nativejoinclose/
+waitstart/concurrency/secondaryerroraggregate/growth-release/science remainOPEN.
+No scientific/model/GPU/heldout/paidcompute, commit/push or wholegoalcompletion.
+
+Finalindependent terminalreviews actualinspection: codeAPPROVE/architectureCLEAR
+for THISscope; bothverify36raw+7currentpins/nineJUnit-nativepairs/225unique/
+all222retained+exact3added; nested16records+2stderr originalschecked. Main43refs
+rehash0mismatches/diffcheckexit0/no currentcoordinatoror runnerPythonprocess.
+ManifestSHA2567b4aab16a1b053537733382edad11225b6e801a0d78ddb1526bca55c1b275d7d.
+GoalturnPROGRESS: actualRUNNINGnativefault integration fixes cleanupreceiptdrop
+andsecondaryerrormasking; explicitactuatorretry/cache-stop/APIcompatibility
+corrections,225finalregression/independentclosure. Goalactive, broadergatesOPEN.
+Next firstBODY/lifecycleboundary andactualnativeclose/wait/start/basecleanupretry
+cuts, then boundedtruthfulgrowth/release and scientificinstallation. No reset of
+validpreviouswork, no task/programcompletion claim or model/heldout launch.
+
+### 2026-10-16 — Primary failure across owned-lease lifecycle/body cleanup
+
+PreviousgoalturnPROGRESS actualintegratednative2+retry1/225regression/independent
+closure. Readfullobjective/DesktopWIP, preserveallchanges. Base lease __enter__,
+publish_identity,resume_verified,wait_terminal exceptblocks and __exit__ can mask
+primaryerror with _close error BEFOREoutercoordinatorfinally. Add six focused
+controlled Python-failure cases withactualprivateWindowschild/job cleanup:
+creation,publish,resume,wait,body,cleanup-only. Retain query-onlyJob/SYNCroot
+duplicates to proveactive0/rootterminal afteractualbasecleanup; assert exactoriginal
+exceptionidentity, retainedsecondaryslot, resourceclosed and RESERVED/READY/RUNNING
+pending. Cleanup-only MUSTpropagateits error, never suppress a solefailure.
+No APIpatch/monkeypatch; subclassprivatefixtureseams only, controlledexceptions
+are NOTactualOSfaultinjection. Immutableprimary_red next underoriginal120s.
+No scientific/model/GPU/heldout/paidcompute or commit/push.
+
+primary_red terminalnative1/root12800/total4/active0/notimeout; firstcreationcase
+propagates secondaryRuntimeError instead oforiginalValueError, confirmingboundary
+masking. Add private _close_after_failure used byfourbase lifecycleexcepts and
+exceptional__exit__; attemptactualcleanup, retainfirstsecondaryexception inone
+slot, thenouterbare raise resumesoriginalexceptionidentity. Normal__exit__ still
+propagatessolecleanupfailure. Coordinator'sexplicit lifecycleexcept also uses
+helper, preventing subsequentclosedretry fromremasking an alreadyprimaryfailure.
+No success/charge/release/deadlinechange. This is in-memoryfirstsecondaryretention,
+not durableaggregate/allnestedfinally/universalOSfaultproof. primary_green next.
+
+FocusedGREEN verified6/0/0/0 4.941s/native0/root29204/total11/active0/notimeout.
+Firstregression_primary terminal40008->f94a2b native0/root24452/total230/active0/
+notimeout120s, stdout231PASS/JUnitparsepending. Independent scopedsourceAPPROVE/
+CLEAR; code reviewer recommendsnestedfixturefinally sofallback/firstobservedhandle
+closeerrors cannot skipsecondobserverhandleclose. AppliedONLYafterterminal.
+Newimmutableprimary_green_v2/regression_primary_v2 forfinalbytes, plus separate
+primary_dependents coversowned_stop/ready_child_publication/committed_watch direct
+baseusers underits ownoriginal120s. Sourcehelper/coordinator unchanged; onlytest
+cleanuphardening/runnerclosedmodes, no fakeOSfaultproof/deadlinerenewal/science.
+
+FinalfocusedV2 personally6/0/0/0 4.710s/native0/root28704/total11/active0/no timeout.
+Dependent93039 terminal45c81b native0/root15224/total62/active0/no timeout, stdout62
+PASS/JUnitparsednext. Source/fixture finalrereview codeAPPROVE andarchitectureCLEAR
+actualinspected25ccf29f/runner2870a237 pins; nativeclosefailure NOTclaimed from
+structuralfinally. Launchregression_primary_v2 onlyafterdependentterminal, original
+120s bound/unchangedfinalsource, no competingnative testload. No model/science.
+
+Final65711 terminal42a7e0 native0/root8968/total230/active0/notimeout120s;
+JUnit231/0/0/0 97.131s personallyverified. FinalXML SHA256
+192129bcf05d344bd25441024dd5b854cd0f5047e4a714faecb06cec9d42e5c1.
+Allprior225retained+exact6controlledPythonboundarycases; focus6included; groups
+40coordinator/47state/33store/40lease/29watch/42consumer. Supplement62/0/0/0
+43.900s:23committedwatch/24ownedstop/15readypublication. Nooverlap,293unique
+across TWOseparatefinalruns, NOTonefullrepo suite. Initial231pass104.066s and
+RED1/1 .662s/firstGREEN6/0 4.941s retainedhistorical. Sixruns24raw+10currentpins
+in primary_evidence_20261016.json; pinsONLYfinalfocusV2/dependent/finalmainV2.
+Both independent codeAPPROVE/architectureCLEAR actualverify34refs/allnative-JUnit
+pairs/identitiesandfinalfixturehardening. Goalstageproof remainsbounded; native
+failure recovery/basepartialcleanupretry/universalnestedfinally/durableaggregate/
+growth-release/science remainOPEN. Mainfinalrehash/processcheck next.
+
+Main34refsrehash0mismatches/no currentcoordinatoror runnerPython/diffcheckexit0.
+PrimarymanifestSHA256f10bae5c6539e682a245a9e70c469786bc918425fd9b874825a41029cf2c51dd.
+GoalturnPROGRESS: reproduced andfixed primarymasking atfourlease lifecycleexcepts
+andexceptionalbodyexit; solecleanupfailurenever suppressed; sixnativeownership
+fixtures/231main+62dependents/finalindependentclosure; previousvalidWIP preserved.
+Goalactive, no wholegoalcompletion/commit/push or modeltraining/heldout/GPU run.
+Remainingnativefault/basecleanupretry/nestedfinally/durableerroraggregate and
+boundedtruthfulgrowth-release/scientificinstallation gates still required.
+
+### 2026-10-16 — Growth/release accounting investigation and completion semantics
+
+PreviousturnPROGRESS primaryboundary/231main+62dependent/independentclosure.
+Readfullobjective/DesktopWIP and originalresource/reservation/allocationcontracts.
+Audit actualpositivepath: request-onlygrowthhash, unboundedos.walk, logicalst_size
+labelledphysical, scanbeforefuturejournal/resultwrites and RELEASEDbeforefinalreport.
+PrimaryMicrosoft docs FileStandardInfo, GetDiskFreeSpaceEx, FileStreams distinguish
+streamallocation/currentvolumeavailable/metadata+ADS; none proves wholeC attribution.
+Both independent reviews BLOCK fullgrowth/release, no inventedNTFSmetadataallowance
+or silent1MiB thresholdchange. Architect proposes explicit residualstoragehold
+contract amendment vs justifiedboundedpublicationfootprint; not silentlyadopted.
+Prelaunchphysicalprojection remainsOPEN evenwithhold, scienceguardstilldenies.
+
+Add actualentrypoint growthacceptanceRED for request-onlyroot falsely supporting
+materialization. This is pending integratedacceptance, not standalonepermitPASS.
+Also add closed completion-conflict test: afterdurableexistingdiagnosticrelease,
+finalreportcollision mustreport committedrelease/unconfirmedcompletion distinctly
+(exit3), neverpretendpending orrerunworker/clearconsumption. Current diagnostic
+physicalgrowthcontract stillinvalid; completiontest expresslydoesNOTcertifyit.
+Newimmutablegrowth_acceptance_red/completion_red/GREEN/regression modes, original
+120s. No scientific/model/GPU/heldout/paidcompute or commit/push.
+
+growth_acceptance_red terminalnative1/root25244/total10/active0/notimeout;
+actualsuccessfulworker reachesRELEASED butgrowthroot exactlyrequest-onlyhash, test
+rejectsunsupportedmaterializationproof. Keep thisRED OPEN, neverexcludeitfrom
+wholeaccountingacceptance orclaimregression/fullrepoCLEAN. completion_red missing
+closedroute native1/root31568/total6/active0. Implement fixedharmlessworker-created
+completioncollision; afterconfirmedrelease finalreportfresh-write exception yields
+distinct _ReleasedCompletionUnconfirmed(ownerroot)/CLIexit3, retainingcause. Outer
+cleanup preservesclassification; no rollback/reopen/rerun/consumptionclear. Existing
+diagnosticrelease accounting stillBLOCKED bygrowthRED. Usecanonicalparser innew
+growthtest (styleonly, preservefirstRED artifacts). completion_green next.
+
+CompletionGREEN terminalnative0/root25120/total13/active0/notimeout; focus1actual
+afterreleasecollision andsecondinvocationconsumptionrefusal, JUnitparsepending.
+Freezefinalsource withnewgrowth_acceptance_red_v2 mode to rerun knownOPENgrowth
+failure aftercanonicalparser change/currentcompletionfix. Separate regression_
+completion selects existingcoordinator/reservation/watch sixmodules, NOTnewgrowth
+acceptancefile. Itsresult cannotcloseaccountingorwhole-repo gate; finalcombined
+evidence MUSTexplicitlyshow currentgrowthRED alongside scopedcompletionregression.
+No hiding/excludingfailedgate fromacceptance claim; scopedindependentreviews next.
+
+### 2026-10-16 — Explicit execution settlement with retained storage (WIP)
+
+Prior completion regression personally verified:232/0/0/0 103.994s, native0,
+root33020/total240/active0/no timeout; XML SHA256
+c79898608a22efdc6fda2b6f0a5979a2444d686c18ec3c3c6062ef7e5f51988d.
+Current growth RED1/1/0/0 3.118s/native1; neither overall accounting nor scientific
+installation passes. Owner confirms all historical model/CUDA work only this
+PC RTX4050; testimony fixes device scope, not measured hours or historical UTC.
+
+Both GPT6.1 independent lanes returned quota errors on this continuation. Earlier
+scoped completion verdicts do not approve this new contract/source. Independent
+review UNAVAILABLE; no self-approval, commit/push or scientific launch.
+
+Explicit WIP amendment: new settle_storage_held event at TERMINAL_PENDING transfers
+verified execution charge once to consumed GPU and retains FULL declared research
+and physical bytes in EXECUTION_RELEASED_STORAGE_HELD. Legacy reconcile/release
+fields, views, roots and semantics unchanged. New state has no release/refund or
+repeat-settlement successor; it remains subject to existing512-held/history caps.
+Conservatively still blocks same-attempt resume until separately reviewed policy.
+Not a claim that the declared1MiB covers physical peak; science projection remains
+OPEN. New tests RED native1/root34540/active0/no timeout before implementation.
+Finite actual inventory/capacity binding and actual coordinator integration next.
+
+State focus GREEN9/0 (CPU/GPU transfer, no refunds or duplicate settlement,
+invalid fields/charge, terminal prerequisite/overrun, retained holds across next
+independent reservation). Added stronger integrated tests before coordinator change:
+storage_growth_red native1/root18012/total31/active0/no timeout, JUnit pending parse.
+Tests now demand durable explicit-held state, complete original1MiB holds, actual
+manifest root, prefix file hashes, caller capacity, explicit unknown physical cost
+and future publication tail. This is an explicit conservative contract amendment,
+NOT replacement of the still-required scientific physical-peak gate with weaker
+inequality. Legacy request-only RED and all prior artifacts retained.
+
+Coordinator now uses existing bounded runtime inventory walker/hash machinery
+(128entries/8192pathbytes/1MiB file+aggregate), two stable default-stream prefix
+walks, single-link rejection and original deadline. Windows GetDiskFreeSpaceExW
+caller capacity before/after (not attributed volume delta); retain full declared
+space and original20GiB floor. Prefix manifest explicitly excludes subsequent
+growth-record/reservation-publication/result tail, physical materialization UNKNOWN.
+Publish terminal -> actual manifest -> settle_storage_held, never fake reconcile
+or zero-pending release. Derivative report carries storage_held and manifest root;
+publication conflict preserves committed settlement/root/full storage holds.
+Still NO proof1MiB covers all physical peaks, ADS/metadata or global research audit;
+full science installation gate remains denied. New tests/regression next; no
+independent review available, no approval/commit/push or GPU/model/heldout run.
+
+First storage_growth_green is NOT GREEN:8tests/4fail/4pass 13.330s/native1/
+root32892/total31/active0/no timeout. Actual nestedstderr PermissionError when
+hashing the operator/global lock byte through a second handle while Windows
+byte-range locks are held. Do not unlock exclusion for an inventory. Explicit
+fixed2lock rows are metadata-only, never invented content hashes; all remaining
+ordinary files still hashed, tree continuity still checked. Added actual native
+held-lock test. Preserve failed artifacts; new immutable V2 run required.
+
+storage_growth_green_v2 terminalnative0/root22816/total34/active0/no timeout,
+9selected tests PASS (JUnit time pending parse). This integrated result includes
+positive/slow-parent/full-held settlement and postsettlement publication conflict,
+four bounded-prefix negatives, actual held-native-lock observation. Subsequent
+final hardening adds actual floor refusal using an impossible pending amount
+(no filling disk/mocked capacity), and pure same-attempt-resume refusal. Require
+C-volume root for original Cfree scope. Final relevant regression will include
+ALL growth tests, no excluded known-RED acceptance file. Earlier RED was invalid
+fake-materialization behavior; alternative full hold doesn't claim physical peak
+or complete global research accounting. Independent review still unavailable.
+
+storage_growth_regression terminalTIMEOUT124 at original120s/root17892/total193/
+active0, no finalXML. stdout reached68% with no emitted test failure; it does NOT
+prove remaining cases or assign a culprit to host contention. No source/product
+change inferred from timeout. Preserve it, do not extend deadline or repeat same
+command. Expanded seven-module scope will be scheduled as two explicit disjoint
+module batches, each original120s and sequential to avoid competing timing load:
+A=growth/coordinator/state/store; B=lease/watch/consumer. Compare exact collected
+identities/union to expanded scope; report TWO runs, not singlefullrepoPASS.
+Runner-only change gives final snapshot; pins must not retroactively apply to
+earlier focused/regression runner bytes. Independent review remains unavailable.
+
+Final disjoint runs personally verified on identical finalsource/test/runner:
+A138/0/0/0 70.803s/native0/root20736/total135/active0/notimeout120s;
+B111/0/0/0 67.486s/native0/root30356/total115/active0/notimeout120s.
+A XMLf13f2f44f71b92cd46bf871388cc578d895df97a72a5faa3a7cf067ad9b64e09;
+B XML1624fedad12b5d4eb7d701bf2426f8ec607c035819e6e674b4d4511f06ebf677.
+Fresh collect-only249identities exactlyequal disjoint A+B union; everyprevious232
+identityretained plus17new (7growth/10state). Groups7growth/41coordinator/57state/
+33store/40lease/29watch/42consumer. TWOseparateruns, notfullrepositorysuite or
+singlecombinedPASS. Allgrowthtests included in finalA. Runtime CPython3.12.13/
+pytest9.1.1/WindowsAMD64, CUDA=-1/offline diagnostic. No source edits during runs.
+
+Thirteen checkpoints (earlier growth/completion, state RED/GREEN, integrated
+RED/failedGREEN/V2GREEN, timedoutcombined, finalA/B) retain51rawartifact hashes+
+sizes and14source pins in storage_growth_evidence_20261016.json. Pins apply ONLY
+finalA/B; priorproduct/test/runner snapshots historical. Mainrehash65refs0mismatch.
+36 selected original rawUTF8 nested records fromfinalA preserved in storage_growth_
+nested_20261016.json; reencodedbytes allmatch originalSHA+size, not complete
+reservationstore export. NestedSHA35dbe3005aff7622567e3e9f32ac81448761bb23598782dc76e531b2a6aa4ff5.
+Actual report/manifest/declaration/charge/owner/journal/consumption/collisionstderr
+support retainedfullholds and exactsettlementroot; notphysicalpeak proof.
+
+Progress: replaced unsupported diagnostic physical-materialization/zero-pending
+release with explicit execution-settled/storage-held state and finite factual
+prefix/caller-capacity evidence. No scientific threshold reduction; original
+physicalpeak/globalresearch/admission requirements remain OPEN, not substituted
+by the hold. Independent review UNAVAILABLE after two actualGPT6.1 quotaerrors,
+therefore no approval/merge-ready claim, commit/push or scientificactivation.
+Next: obtain independent review of this amendment, implement/verify justified
+physical prelaunch footprint + remaining integrated scientific admission facts.
+Goal remainsactive; no model/CUDA/heldout/paidcompute run in this checkpoint.
+
+Final manifestSHAc10d17b4bc83d8e72511d2a04991451f31b0711f38422fc930850a3da0c343da.
+Finaldiffcheckexit0; currentcoordinator/runner Pythonprocess inventoryempty. WIP
+preserved in authoritativeDesktopcheckout; no OneDrive writes or deletions.
+
+### 2026-10-16 — Independent storage-hold closure and actual footprint investigation
+
+Prior goalturn PROGRESS: explicit settlement/fullstorageholds, actual finite
+prefix/caller capacity, disjoint249cases, failed/timeout evidence retained.
+Fullobjective and code-review skill reread; authoritativeDesktopdirtyWIP preserved.
+Both existingGPT6.1 reviewers retried successfully: codeAPPROVE/architectureCLEAR
+for SCOPED amendment/evidence preservation. Originalc10d17b4 manifest remains
+immutable including capture-time review-unavailable fields; later verdict record
+storage_growth_review_20261016.md supersedes status, not historical bytes.
+Both independently verify65raw/source refs and249union/allprior232/terminalpairs;
+code also36nested originalrecords, architecture onlynestedfileSHA, not36rebuilds.
+No allocation-size evidence claimed: logicaldefaultstreams+callerfree only.
+Fullholds/doublecount/deletionnotrefunded are explicit; science/physicalpeakOPEN.
+
+Read actual dormant fixedDworker/qualifier/officialforward/matrix/host/acquisition/
+tokenizer paths and original resource/allocation/owner contracts. Qualifier itself
+returns receipts and performs no file publication; fixed scientific result wire
+cap4MiB. This establishes only source-owned logical outputs, not dependency/native
+caches, NTFS metadata, temp coexistence or physical peak. Original20GiBfloor/
+25GiBcap/600GPUh/45days unchanged. Asked architecture for integrated finite-write/
+footprint design, no accepting helper or new enterprise/container infrastructure.
+No Torch/model/CUDA/heldout or historical jobs executed by this investigation.
+
+Preservation checkpoint next: exact current integrated diagnostic source,
+previous reviewed lease-error fixes, tests, plan/trajectory and coordinator
+evidence family only. Index inspected empty; no unrelated dirty/untracked files.
+Existing research branch codex/unified-lifelong-cognition-desktop/origin research
+branch, no main merge/release. This preserves unfinished reviewed work; original
+scientific activation and remaining gates stay denied. Will verify commit/push
+outcome separately; this intent is not a claim of remote durability.

@@ -19,6 +19,7 @@ _D_RESOURCE_IDS = (
     "alc-r0-qualification-v1-d-gpu-fresh1-s20260916",
     "alc-r0-qualification-v1-d-gpu-fresh2-s20260916",
 )
+_DIAGNOSTIC_ID = "alc-r0-diagnostic-coordinator-success"
 _ROOT = re.compile(r"[0-9a-f]{64}\Z")
 _NONCE = re.compile(r"[0-9a-f]{32}\Z")
 _DECIMAL = re.compile(r"(?:0|[1-9][0-9]{0,19})\Z")
@@ -38,6 +39,10 @@ _FIELDS = {
     "uncertain": {"reason", "prior_state"},
     "reconcile": {"resource_charge_root", "wall_kind", "effective_wall_ns", "effective_gpu_ns", "growth_observation_root", "materialized_research_bytes", "materialized_physical_bytes"},
     "release": {"global_publication_root"},
+    # Explicit alternative to materialization/release: settle execution only.
+    # No materialized-byte fields, no storage refund, and no later auto-release.
+    "settle_storage_held": {"resource_charge_root", "wall_kind", "effective_wall_ns",
+        "effective_gpu_ns", "growth_observation_root"},
 }
 
 
@@ -113,7 +118,8 @@ def _declaration(data: bytes) -> dict:
         raise ReservationStateError("exact declaration fields required")
     if (item["experiment_id"] != "alc-r0-smollm2-135m-v1"
             or not _matches(item["reservation_id"], _ID)
-            or not (_matches(item["run_id"], _RUN) or item["run_id"] in _D_RESOURCE_IDS)
+            or not (_matches(item["run_id"], _RUN) or item["run_id"] in _D_RESOURCE_IDS
+                    or item["run_id"] == _DIAGNOSTIC_ID)
             or len(item["run_id"]) > 128
             or item["attempt_id"] not in ("a001", "a002", "a003")
             or item["segment"] not in ("initial", "resume")
@@ -139,6 +145,11 @@ def _declaration(data: bytes) -> dict:
                 or item["charge_envelope_ns"] != charge
                 or item["gpu_reservation_ns"] != (charge if expected_device == "gpu" else 0)):
             raise ReservationStateError("fixed original D resource binding required")
+    if item["run_id"] == _DIAGNOSTIC_ID:
+        if (item["device"] != "cpu" or item["attempt_id"] != "a001"
+                or item["segment"] != "initial" or item["useful_wall_ceiling_ns"] != 15000000000
+                or item["charge_envelope_ns"] != 25000000000 or item["gpu_reservation_ns"] != 0):
+            raise ReservationStateError("closed CPU diagnostic resource binding required")
     return item
 
 
@@ -173,7 +184,8 @@ class ReservationReplay:
 
     def _snapshot(self, views, root, count, byte_count, observation_root=None):
         held = [v for v in views.values() if v.state not in ("ABSENT", "RELEASED")]
-        released = [v for v in views.values() if v.state == "RELEASED"]
+        execution_held = [v for v in held if v.state != "EXECUTION_RELEASED_STORAGE_HELD"]
+        released = [v for v in views.values() if v.state in ("RELEASED", "EXECUTION_RELEASED_STORAGE_HELD")]
         if len(held) > 512:
             raise ReservationStateError("live reservation cap exceeded")
         pending = []
@@ -184,7 +196,7 @@ class ReservationReplay:
                 v.growth_observation_root == observation_root else 0) for v in held))
         return ReservationSnapshot(root, count, byte_count,
             tuple(views[key] for key in sorted(views)),
-            _sum(self._decls[v.reservation_id]["gpu_reservation_ns"] for v in held),
+            _sum(self._decls[v.reservation_id]["gpu_reservation_ns"] for v in execution_held),
             _sum(v.effective_gpu_ns for v in released), *pending,
             any(v.effective_gpu_ns is not None and v.effective_gpu_ns >
                 self._decls[v.reservation_id]["gpu_reservation_ns"] for v in views.values()))
@@ -235,7 +247,8 @@ class ReservationReplay:
             "identity_published": ("CREATED",), "running": ("READY",),
             "terminal": ("RESERVED", "CREATED", "READY", "RUNNING", "UNCERTAIN"),
             "uncertain": ("RESERVED", "CREATED", "READY", "RUNNING"),
-            "reconcile": ("TERMINAL_PENDING",), "release": ("RECONCILED",)}
+            "reconcile": ("TERMINAL_PENDING",), "release": ("RECONCILED",),
+            "settle_storage_held": ("TERMINAL_PENDING",)}
         if state not in successors[kind]:
             raise ReservationStateError("illegal predecessor")
         if kind == "reserve":
@@ -284,6 +297,13 @@ class ReservationReplay:
             else:
                 raise ReservationStateError("verified terminal fact kind required")
             return replace(view, state="TERMINAL_PENDING", exit_code=None if code is None else _number(code, (1 << 32) - 1))
+        if kind == "settle_storage_held":
+            wall, gpu = _number(item["effective_wall_ns"]), _number(item["effective_gpu_ns"])
+            if (item["wall_kind"] not in ("observed", "allocation_upper_bound")
+                    or gpu != (wall if declaration["device"] == "gpu" else 0)):
+                raise ReservationStateError("charge mismatch")
+            return replace(view, state="EXECUTION_RELEASED_STORAGE_HELD", effective_gpu_ns=gpu,
+                growth_observation_root=item["growth_observation_root"])
         if kind == "reconcile":
             wall, gpu = _number(item["effective_wall_ns"]), _number(item["effective_gpu_ns"])
             research, physical = _number(item["materialized_research_bytes"]), _number(item["materialized_physical_bytes"])

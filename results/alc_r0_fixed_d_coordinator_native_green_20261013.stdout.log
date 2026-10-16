@@ -1,0 +1,33 @@
+.FF.............                                                         [100%]
+================================== FAILURES ===================================
+_ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-178/test_actual_diagnostic_entrypo0')
+scenario = 'success'
+
+    @pytest.mark.parametrize('scenario',['success','slow-parent'])
+    def test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle(tmp_path,scenario):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+>       assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E       assert (2 == 0)
+E        +  where 2 = OwnedProcessReceipt(root_pid=19708, exit_code=2, timed_out=False, started_ns=162873750000000, finished_ns=162875890000000, total_processes=7, active_processes=0, user_time_100ns=6406250, kernel_time_100ns=13593750).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:55: AssertionError
+_ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-178/test_actual_diagnostic_entrypo1')
+scenario = 'slow-parent'
+
+    @pytest.mark.parametrize('scenario',['success','slow-parent'])
+    def test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle(tmp_path,scenario):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+>       assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E       assert (2 == 0)
+E        +  where 2 = OwnedProcessReceipt(root_pid=29320, exit_code=2, timed_out=False, started_ns=162876156000000, finished_ns=162878859000000, total_processes=7, active_processes=0, user_time_100ns=9218750, kernel_time_100ns=10312500).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]

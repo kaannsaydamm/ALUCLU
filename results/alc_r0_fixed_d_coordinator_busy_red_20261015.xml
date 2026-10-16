@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.997" timestamp="2026-10-15T19:04:44.017475+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_busy_revocation_terminates_actual_work_before_main_returns" time="2.489"><failure message="assert (2 == 0)">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-187/test_busy_revocation_terminate0')
+
+    def test_busy_revocation_terminates_actual_work_before_main_returns(tmp_path):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic','busy-revocation',str(namespace)))
+        assert receipt.exit_code==2 and receipt.active_processes==0 and not receipt.timed_out
+        observed=bounded_json(namespace/'busy.revocation.observed.json')
+        published=bounded_json(namespace/'revocation.published.json')
+        child=bounded_json(namespace/'child.started.json')
+        assert observed['pid']==child['pid'] and observed['request_root']==published['request_root']
+        begin=int(observed['busy_started_monotonic_ns']); end=int(observed['busy_finished_monotonic_ns'])
+        sampled=int(observed['sampled_monotonic_ns'])
+        assert end-begin&gt;=600_000_000
+        assert begin&lt;=int(published['published_monotonic_ns'])&lt;=sampled&lt;=end
+        assert observed['before_active']&gt;0 and observed['stop_requested'] is True
+        assert not (namespace/'diagnostic.result.json').exists() and not (namespace/'diagnostic.charge.json').exists()
+        for filename in ('work.cleanup.native.json','observer.cleanup.native.json'):
+            cleanup=bounded_json(namespace/filename)
+            assert cleanup['receipt']['active_processes']==0
+            assert cleanup['receipt']['finished_ns']&lt;=int(cleanup['cleanup_deadline_monotonic_ns'])
+        # An Event or later exception cleanup is not prompt native cancellation.
+&gt;       assert observed['after_active']==0 and observed['root_wait']==0
+E       assert (2 == 0)
+
+tests\test_alc_r0_fixed_d_coordinator.py:202: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,68 @@
+{
+  "schema": "alc-r0-tree-isolation-selection-v1",
+  "scope": "bounded decoded focused V4 originals, NOT raw copies or all-host isolation proof",
+  "scientific_execution": false,
+  "original_namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-198\\test_busy_revocation_terminate1\\diagnostic",
+  "files": [
+    {
+      "name": "tree.isolation.observed.json",
+      "bytes": 449,
+      "sha256": "cd7951744f15ff2bbe6d216d688741b2fedce63a04642d0dce0e87d30574d719",
+      "utf8": "{\"descendant_after_wait\":0,\"descendant_before_wait\":258,\"descendant_creation_filetime_100ns\":\"134365557675861774\",\"descendant_in_work_job\":true,\"descendant_pid\":\"29400\",\"domain\":\"diagnostic-only\",\"observer_after_wait\":258,\"observer_before_wait\":258,\"observer_in_own_job\":true,\"observer_in_work_job\":false,\"observer_pid\":\"28340\",\"request_root\":\"08cb09d2a9c7621c6fa39b2ee3a1f389e315f9aa0ac4eccf0a693ddd1ed5a2e1\",\"sampled_monotonic_ns\":\"2403015000000\"}"
+    },
+    {
+      "name": "busy.revocation.observed.json",
+      "bytes": 322,
+      "sha256": "74ade911d9ad8c9b06a3cf88df083fcf15a9d8dd885da2a60ce986a6ccc24ea4",
+      "utf8": "{\"after_active\":0,\"before_active\":3,\"busy_finished_monotonic_ns\":\"2403015000000\",\"busy_started_monotonic_ns\":\"2402406000000\",\"domain\":\"diagnostic-only\",\"pid\":\"4260\",\"request_root\":\"08cb09d2a9c7621c6fa39b2ee3a1f389e315f9aa0ac4eccf0a693ddd1ed5a2e1\",\"root_wait\":0,\"sampled_monotonic_ns\":\"2403015000000\",\"stop_requested\":true}"
+    },
+    {
+      "name": "descendant.started.json",
+      "bytes": 191,
+      "sha256": "374240f94844dcb546f844b477c4784c36706bcfbc4a8e2137d33d75554becf4",
+      "utf8": "{\"creation_filetime_100ns\":\"134365557675861774\",\"domain\":\"diagnostic-only\",\"parent_pid\":\"4260\",\"pid\":\"29400\",\"request_root\":\"08cb09d2a9c7621c6fa39b2ee3a1f389e315f9aa0ac4eccf0a693ddd1ed5a2e1\"}"
+    },
+    {
+      "name": "descendant.handle.closed.json",
+      "bytes": 233,
+      "sha256": "9025f51392bcc4d954270f2ca4e748eaa7ea385a4a818e60717daa58bcb4fe87",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"2412593000000\",\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"2403031000000\",\"handle_closed\":true,\"pid\":\"29400\",\"request_root\":\"08cb09d2a9c7621c6fa39b2ee3a1f389e315f9aa0ac4eccf0a693ddd1ed5a2e1\"}"
+    },
+    {
+      "name": "child.started.json",
+      "bytes": 170,
+      "sha256": "5010da63a72e6c373353cac2e6cf897195acdfba06e49c1f8e740f7b18f34fd7",
+      "utf8": "{\"creation_filetime_100ns\":\"134365557665249848\",\"domain\":\"diagnostic-only\",\"pid\":\"4260\",\"request_root\":\"08cb09d2a9c7621c6fa39b2ee3a1f389e315f9aa0ac4eccf0a693ddd1ed5a2e1\"}"
+    },
+    {
+      "name": "actuator.native.json",
+      "bytes": 215,
+      "sha256": "830916e4f1b2acb673cf5280a916f4ab2b07ba061e844ed5122f6003c867f1c0",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"2412593000000\",\"domain\":\"diagnostic-only\",\"drained\":true,\"duplicate_handles_closed\":true,\"finished_monotonic_ns\":\"2402593000000\",\"pid\":\"4260\",\"terminated\":true,\"thread_alive\":false}"
+    },
+    {
+      "name": "work.cleanup.native.json",
+      "bytes": 302,
+      "sha256": "48c827372d1519ad5675125bd9153e8cc90629f744636dc562f71767d5a52fe7",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"2412593000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":2403046000000,\"kernel_time_100ns\":2500000,\"root_pid\":4260,\"started_ns\":2401078000000,\"timed_out\":false,\"total_processes\":3,\"user_time_100ns\":2187500}}"
+    },
+    {
+      "name": "observer.cleanup.native.json",
+      "bytes": 360,
+      "sha256": "326513e8237550da5fccc56341173539c650aad2e826fa84f4b01424914364b0",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"2412593000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":2403062000000,\"kernel_time_100ns\":1562500,\"root_pid\":28340,\"started_ns\":2401484000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1406250},\"surplus_socket_closed\":true}"
+    },
+    {
+      "name": "observer.bridge.json",
+      "bytes": 594,
+      "sha256": "9dd2c711df622cfbf38088ad66d8293ab1c39991479035f008af6fabe24a44b4",
+      "utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"2402593000000\",\"observations\":[{\"observed_monotonic_ns\":\"2401781000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"2401765000000\",\"submitted_monotonic_ns\":\"2401781000000\"},{\"observed_monotonic_ns\":\"2402046000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"2402031000000\",\"submitted_monotonic_ns\":\"2402046000000\"},{\"observed_monotonic_ns\":\"2402312000000\",\"sequence\":\"3\",\"started_monotonic_ns\":\"2402296000000\",\"submitted_monotonic_ns\":\"2402312000000\"}],\"operational_error\":\"StatusConsumerError\",\"socket_closed\":true,\"thread_alive\":false}"
+    },
+    {
+      "name": "revocation.published.json",
+      "bytes": 232,
+      "sha256": "7bdeea134bd2be02178bd73bac1dcae360f0496adcb1c9d3cb9dec20f96e838a",
+      "utf8": "{\"domain\":\"diagnostic-only\",\"published_monotonic_ns\":\"2402468000000\",\"request_root\":\"08cb09d2a9c7621c6fa39b2ee3a1f389e315f9aa0ac4eccf0a693ddd1ed5a2e1\",\"status_root\":\"9e1772701cc1f6613362efe65722c5a9262529e6bcfcc54d998467c12ea33345\"}"
+    }
+  ]
+}

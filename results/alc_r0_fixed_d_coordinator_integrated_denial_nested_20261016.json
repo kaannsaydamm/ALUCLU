@@ -1,0 +1,343 @@
+{
+  "scope": "Selected decoded originals from integrated_denial_green_v4, not raw copies. Two actual running-job native-denial paths; no actual join/close fault proof from separate bookkeeping case.",
+  "cases": [
+    {
+      "origin": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-218\\test_actual_coordinator_native0\\diagnostic",
+      "records": [
+        {
+          "relative_path": "actuator.failure.observed.json",
+          "original_bytes": 432,
+          "original_sha256": "74c6c75f358a01a332eab4c6ce7e4a50b98e3cd34e58b2be3421d013441d18e7",
+          "decoded": {
+            "after_active": 2,
+            "before_active": 2,
+            "cleanup_deadline_monotonic_ns": "36755406000000",
+            "domain": "diagnostic-only",
+            "drained": false,
+            "native_error_winerror": 5,
+            "pid": "18268",
+            "request_root": "ad9ee2a2b78dff7f0ac26231402d232ec8f6bdb8835a45b1c92e352327fa0eec",
+            "root_after_wait": 258,
+            "root_before_wait": 258,
+            "sampled_monotonic_ns": "36745421000000",
+            "scenario": "actuator-query-denied",
+            "stop_requested": true,
+            "terminated": false,
+            "thread_alive": false
+          }
+        },
+        {
+          "relative_path": "work.cleanup.native.json",
+          "original_bytes": 306,
+          "original_sha256": "b4c0006d47d4624fba71b82df82b0c6c8e35da29fc7706637d10713d74b80369",
+          "decoded": {
+            "cleanup_deadline_monotonic_ns": "36755406000000",
+            "domain": "diagnostic-only",
+            "forced": true,
+            "receipt": {
+              "active_processes": 0,
+              "exit_code": 124,
+              "finished_ns": 36745437000000,
+              "kernel_time_100ns": 1875000,
+              "root_pid": 18268,
+              "started_ns": 36744125000000,
+              "timed_out": false,
+              "total_processes": 2,
+              "user_time_100ns": 1718750
+            }
+          }
+        },
+        {
+          "relative_path": "actuator.native.json",
+          "original_bytes": 220,
+          "original_sha256": "ab91d087efaea5181888f1f894203fe442baff4c19db32315bb8f4e020041261",
+          "decoded": {
+            "cleanup_deadline_monotonic_ns": "36755406000000",
+            "domain": "diagnostic-only",
+            "drained": false,
+            "duplicate_handles_closed": true,
+            "finished_monotonic_ns": "36745421000000",
+            "pid": "18268",
+            "terminated": false,
+            "thread_alive": false
+          }
+        },
+        {
+          "relative_path": "observer.cleanup.native.json",
+          "original_bytes": 363,
+          "original_sha256": "5e165f20b0ffd2252bee95d214a305b1586242f2b4b05d6d7389274c8bcc8f23",
+          "decoded": {
+            "cleanup_deadline_monotonic_ns": "36755406000000",
+            "domain": "diagnostic-only",
+            "forced": true,
+            "parent_socket_closed": true,
+            "receipt": {
+              "active_processes": 0,
+              "exit_code": 124,
+              "finished_ns": 36745484000000,
+              "kernel_time_100ns": 1250000,
+              "root_pid": 27712,
+              "started_ns": 36744656000000,
+              "timed_out": false,
+              "total_processes": 2,
+              "user_time_100ns": 1093750
+            },
+            "surplus_socket_closed": true
+          }
+        },
+        {
+          "relative_path": "observer.bridge.json",
+          "original_bytes": 464,
+          "original_sha256": "08cb146f5c79ac2f4d37eb450f126173ec9ce1f6f4f9ff8b2e3cf5fb9a6b71d5",
+          "decoded": {
+            "closed": true,
+            "domain": "diagnostic-only",
+            "finished_monotonic_ns": "36745437000000",
+            "observations": [
+              {
+                "observed_monotonic_ns": "36744968000000",
+                "sequence": "1",
+                "started_monotonic_ns": "36744953000000",
+                "submitted_monotonic_ns": "36744968000000"
+              },
+              {
+                "observed_monotonic_ns": "36745218000000",
+                "sequence": "2",
+                "started_monotonic_ns": "36745218000000",
+                "submitted_monotonic_ns": "36745218000000"
+              }
+            ],
+            "operational_error": "StatusConsumerError",
+            "socket_closed": true,
+            "thread_alive": false
+          }
+        },
+        {
+          "relative_path": "child.started.json",
+          "original_bytes": 171,
+          "original_sha256": "a9361feeac8869f83d2e5058abc09f5f8753916b97be505f2dcf417895303eec",
+          "decoded": {
+            "creation_filetime_100ns": "134365901087637975",
+            "domain": "diagnostic-only",
+            "pid": "18268",
+            "request_root": "ad9ee2a2b78dff7f0ac26231402d232ec8f6bdb8835a45b1c92e352327fa0eec"
+          }
+        },
+        {
+          "relative_path": "declaration.json",
+          "original_bytes": 527,
+          "original_sha256": "5fcd71770dce6df9553a41464ddaa6cd8e381987fccab45a5d8106b508c774a2",
+          "decoded": {
+            "attempt_id": "a001",
+            "charge_envelope_ns": "25000000000",
+            "cleanup_ceiling_ns": "10000000000",
+            "declaration_root": "ad9ee2a2b78dff7f0ac26231402d232ec8f6bdb8835a45b1c92e352327fa0eec",
+            "device": "cpu",
+            "experiment_id": "alc-r0-smollm2-135m-v1",
+            "gpu_reservation_ns": "0",
+            "physical_growth_bytes": "1048576",
+            "research_growth_bytes": "1048576",
+            "reservation_id": "diagnostic-work",
+            "run_id": "alc-r0-diagnostic-coordinator-success",
+            "segment": "initial",
+            "stderr_limit_bytes": "16384",
+            "stdout_limit_bytes": "16384",
+            "useful_wall_ceiling_ns": "15000000000"
+          }
+        },
+        {
+          "relative_path": "reservations/owner.json",
+          "original_bytes": 529,
+          "original_sha256": "d67a480dfc672dbfc2fbe3f4fecfefa327d070b4e1d9d6c3c6ed6fe139737a74",
+          "decoded": {
+            "declaration_genesis_root": "bfca61d36b4509cca2743dd914f56944ea6aa58cffb232cdfcba718ea6d97061",
+            "generation": "4",
+            "journal_head": {
+              "byte_length": 2492,
+              "count": 4,
+              "digest": "8196c3d3dd5bdb2b8cfe3707cb519045ed8076f65125121e27760de35e41b171"
+            },
+            "previous_owner_root": "59fbdc72cd91ae29ad6ff7a553f5f9b97d7ae6e7fef6857470b82d257841e31f",
+            "reservation_root": "46e5a4ffadf1d411f57a2ba25fc6deb423649b079e05272c2c91b94f5c95f280",
+            "review_root": "ad9ee2a2b78dff7f0ac26231402d232ec8f6bdb8835a45b1c92e352327fa0eec",
+            "schema": "alc-r0-reservation-owner-v1"
+          }
+        }
+      ],
+      "entry_stderr": {
+        "bytes": 88,
+        "sha256": "78e806898a9666ca9e4b540f431a6fc27c821507aa0329c49f3f714742cbe7ac",
+        "decoded_utf8": "alc-r0 coordinator denied: CoordinatorError: native actuator cleanup previously failed\r\n"
+      }
+    },
+    {
+      "origin": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-218\\test_actual_coordinator_native1\\diagnostic",
+      "records": [
+        {
+          "relative_path": "actuator.failure.observed.json",
+          "original_bytes": 436,
+          "original_sha256": "6361d0f78017e8f13901ffc652b95718ed75fdc58967bf271ab6d6be8fd15b2a",
+          "decoded": {
+            "after_active": 2,
+            "before_active": 2,
+            "cleanup_deadline_monotonic_ns": "36757437000000",
+            "domain": "diagnostic-only",
+            "drained": false,
+            "native_error_winerror": 5,
+            "pid": "31168",
+            "request_root": "5413ec4356011017e160c97a1a7ca220e9981c229146461badb94bd165d883b9",
+            "root_after_wait": 258,
+            "root_before_wait": 258,
+            "sampled_monotonic_ns": "36747453000000",
+            "scenario": "actuator-terminate-denied",
+            "stop_requested": true,
+            "terminated": false,
+            "thread_alive": false
+          }
+        },
+        {
+          "relative_path": "work.cleanup.native.json",
+          "original_bytes": 306,
+          "original_sha256": "f8eadbdbdb2fda8228568d67e13862f66e2736b2984d56a86184483cf14cb8ca",
+          "decoded": {
+            "cleanup_deadline_monotonic_ns": "36757437000000",
+            "domain": "diagnostic-only",
+            "forced": true,
+            "receipt": {
+              "active_processes": 0,
+              "exit_code": 124,
+              "finished_ns": 36747453000000,
+              "kernel_time_100ns": 1093750,
+              "root_pid": 31168,
+              "started_ns": 36746218000000,
+              "timed_out": false,
+              "total_processes": 2,
+              "user_time_100ns": 1718750
+            }
+          }
+        },
+        {
+          "relative_path": "actuator.native.json",
+          "original_bytes": 220,
+          "original_sha256": "67263eca096ba2a43c6e0aabe053d837e41c2c8e0ba476600ae541b2e437c437",
+          "decoded": {
+            "cleanup_deadline_monotonic_ns": "36757437000000",
+            "domain": "diagnostic-only",
+            "drained": false,
+            "duplicate_handles_closed": true,
+            "finished_monotonic_ns": "36747453000000",
+            "pid": "31168",
+            "terminated": false,
+            "thread_alive": false
+          }
+        },
+        {
+          "relative_path": "observer.cleanup.native.json",
+          "original_bytes": 361,
+          "original_sha256": "5997ead9c08206bf882003c29b9e9c37c115c819afdef9d1bb2105be6e6938cd",
+          "decoded": {
+            "cleanup_deadline_monotonic_ns": "36757437000000",
+            "domain": "diagnostic-only",
+            "forced": true,
+            "parent_socket_closed": true,
+            "receipt": {
+              "active_processes": 0,
+              "exit_code": 124,
+              "finished_ns": 36747484000000,
+              "kernel_time_100ns": 781250,
+              "root_pid": 8416,
+              "started_ns": 36746703000000,
+              "timed_out": false,
+              "total_processes": 2,
+              "user_time_100ns": 1250000
+            },
+            "surplus_socket_closed": true
+          }
+        },
+        {
+          "relative_path": "observer.bridge.json",
+          "original_bytes": 464,
+          "original_sha256": "fa29975cae948a1084176bcb7a709b5586017386cffd339e4c37e574ca1cfb6a",
+          "decoded": {
+            "closed": true,
+            "domain": "diagnostic-only",
+            "finished_monotonic_ns": "36747453000000",
+            "observations": [
+              {
+                "observed_monotonic_ns": "36747015000000",
+                "sequence": "1",
+                "started_monotonic_ns": "36747015000000",
+                "submitted_monotonic_ns": "36747015000000"
+              },
+              {
+                "observed_monotonic_ns": "36747265000000",
+                "sequence": "2",
+                "started_monotonic_ns": "36747265000000",
+                "submitted_monotonic_ns": "36747265000000"
+              }
+            ],
+            "operational_error": "StatusConsumerError",
+            "socket_closed": true,
+            "thread_alive": false
+          }
+        },
+        {
+          "relative_path": "child.started.json",
+          "original_bytes": 171,
+          "original_sha256": "3e2e897071914e8bb300a6d9e11533f033e6b47c757dd2bd69bbf571a3330409",
+          "decoded": {
+            "creation_filetime_100ns": "134365901108551639",
+            "domain": "diagnostic-only",
+            "pid": "31168",
+            "request_root": "5413ec4356011017e160c97a1a7ca220e9981c229146461badb94bd165d883b9"
+          }
+        },
+        {
+          "relative_path": "declaration.json",
+          "original_bytes": 527,
+          "original_sha256": "088472edf891991c711787482722f1ea4636e9d0eb77976e75bda303141ca2cf",
+          "decoded": {
+            "attempt_id": "a001",
+            "charge_envelope_ns": "25000000000",
+            "cleanup_ceiling_ns": "10000000000",
+            "declaration_root": "5413ec4356011017e160c97a1a7ca220e9981c229146461badb94bd165d883b9",
+            "device": "cpu",
+            "experiment_id": "alc-r0-smollm2-135m-v1",
+            "gpu_reservation_ns": "0",
+            "physical_growth_bytes": "1048576",
+            "research_growth_bytes": "1048576",
+            "reservation_id": "diagnostic-work",
+            "run_id": "alc-r0-diagnostic-coordinator-success",
+            "segment": "initial",
+            "stderr_limit_bytes": "16384",
+            "stdout_limit_bytes": "16384",
+            "useful_wall_ceiling_ns": "15000000000"
+          }
+        },
+        {
+          "relative_path": "reservations/owner.json",
+          "original_bytes": 529,
+          "original_sha256": "4259d7704d90436233c148bf26a0c31918473747bf2bcaba06cbb6d79886e901",
+          "decoded": {
+            "declaration_genesis_root": "67e98aaec81ebb47cff6402843a30ed53d1975e40bcd341480fca9928c168c08",
+            "generation": "4",
+            "journal_head": {
+              "byte_length": 2492,
+              "count": 4,
+              "digest": "d82b0c1e248aee4f237ee72814d9fa92c96d0b14f29bd95a382969baa4e5d6ab"
+            },
+            "previous_owner_root": "b9516de75b0a5ec243ba1bcf2c98059e5b7fc5ce2bae5e0aeab292667be3dfb3",
+            "reservation_root": "d4285d5c80b07c165a180b301ba865e611d7e204a5290e63042eac5fddcf3fbb",
+            "review_root": "5413ec4356011017e160c97a1a7ca220e9981c229146461badb94bd165d883b9",
+            "schema": "alc-r0-reservation-owner-v1"
+          }
+        }
+      ],
+      "entry_stderr": {
+        "bytes": 88,
+        "sha256": "78e806898a9666ca9e4b540f431a6fc27c821507aa0329c49f3f714742cbe7ac",
+        "decoded_utf8": "alc-r0 coordinator denied: CoordinatorError: native actuator cleanup previously failed\r\n"
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="9" time="0.504" timestamp="2026-10-16T12:52:06.164171+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_settlement_transfers_charge_but_never_refunds_space[cpu]" time="0.013"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required">tests\test_alc_r0_reservation_state.py:320: in test_storage_held_settlement_transfers_charge_but_never_refunds_space
+    settle_storage_held(replay, effective_gpu_ns="0" if device == "cpu" else "100")
+tests\test_alc_r0_reservation_state.py:312: in settle_storage_held
+    append(replay, "settle_storage_held", **fields)
+tests\test_alc_r0_reservation_state.py:27: in append
+    replay.append(canonical_json_bytes(value))
+src\aluclu\alc_r0\reservation_state.py:216: in append
+    raise ReservationStateError("exact known event fields required")
+E   aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required</failure></testcase><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_settlement_transfers_charge_but_never_refunds_space[gpu]" time="0.001"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required">tests\test_alc_r0_reservation_state.py:320: in test_storage_held_settlement_transfers_charge_but_never_refunds_space
+    settle_storage_held(replay, effective_gpu_ns="0" if device == "cpu" else "100")
+tests\test_alc_r0_reservation_state.py:312: in settle_storage_held
+    append(replay, "settle_storage_held", **fields)
+tests\test_alc_r0_reservation_state.py:27: in append
+    replay.append(canonical_json_bytes(value))
+src\aluclu\alc_r0\reservation_state.py:216: in append
+    raise ReservationStateError("exact known event fields required")
+E   aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required</failure></testcase><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_invalid_charge_or_refund_rejected_atomically[changes0]" time="0.001" /><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_invalid_charge_or_refund_rejected_atomically[changes1]" time="0.001" /><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_invalid_charge_or_refund_rejected_atomically[changes2]" time="0.001" /><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_invalid_charge_or_refund_rejected_atomically[changes3]" time="0.001" /><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_invalid_charge_or_refund_rejected_atomically[changes4]" time="0.001" /><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_requires_terminal_and_preserves_gpu_overrun" time="0.001"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required">tests\test_alc_r0_reservation_state.py:356: in test_storage_held_requires_terminal_and_preserves_gpu_overrun
+    settle_storage_held(replay, effective_wall_ns="10000000101", effective_gpu_ns="10000000101")
+tests\test_alc_r0_reservation_state.py:312: in settle_storage_held
+    append(replay, "settle_storage_held", **fields)
+tests\test_alc_r0_reservation_state.py:27: in append
+    replay.append(canonical_json_bytes(value))
+src\aluclu\alc_r0\reservation_state.py:216: in append
+    raise ReservationStateError("exact known event fields required")
+E   aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required</failure></testcase><testcase classname="tests.test_alc_r0_reservation_state" name="test_storage_held_remains_in_aggregate_across_next_independent_reservation" time="0.001"><failure message="aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required">tests\test_alc_r0_reservation_state.py:365: in test_storage_held_remains_in_aggregate_across_next_independent_reservation
+    reserve(replay); terminal(replay, no_child=True); settle_storage_held(replay)
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_reservation_state.py:312: in settle_storage_held
+    append(replay, "settle_storage_held", **fields)
+tests\test_alc_r0_reservation_state.py:27: in append
+    replay.append(canonical_json_bytes(value))
+src\aluclu\alc_r0\reservation_state.py:216: in append
+    raise ReservationStateError("exact known event fields required")
+E   aluclu.alc_r0.reservation_state.ReservationStateError: exact known event fields required</failure></testcase></testsuite></testsuites>

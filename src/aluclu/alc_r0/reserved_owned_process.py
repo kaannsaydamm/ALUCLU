@@ -157,6 +157,7 @@ class ReservedOwnedLease:
         self._evidence = self._review = None
         self._resume_attempted = self._wait_attempted = False
         self._stop_signal, self._stop_observed = stop_signal, False
+        self._retained_cleanup_error = None
 
     def _check_stop(self):
         if self._stop_observed:
@@ -239,6 +240,9 @@ class ReservedOwnedLease:
             self._started = time.monotonic_ns()
             try:
                 self._check_stop()
+                self._before_create()
+                self._check_stop()
+                self._unexpired()
                 _create_suspended(self._command, self._cwd, self._environment, stdin,
                     self._output.stdout, self._output.stderr, self._deadline,
                     self._job, self._information)
@@ -253,12 +257,18 @@ class ReservedOwnedLease:
             self._state = "SUSPENDED"
             return self
         except BaseException:
-            self._close()
+            self._close_after_failure()
             raise
 
     def _observe_creation_time(self):
         """Narrow owned-handle observation boundary, also usable by diagnostics."""
         return _creation_time(self._information.process)
+
+    def _before_create(self):
+        """Private concrete coordinator seam; base remains trusted low-level API."""
+
+    def _before_resume(self):
+        """Private concrete coordinator seam; no public verifier is accepted."""
 
     def _new_output(self, **arguments):
         """Fixed integration acquisition boundary; diagnostics may specialize it."""
@@ -316,7 +326,7 @@ class ReservedOwnedLease:
             self._state = "READY"
             return ready
         except BaseException:
-            self._close()
+            self._close_after_failure()
             raise
 
     def resume_verified(self, expected_ready_owner_root):
@@ -332,6 +342,9 @@ class ReservedOwnedLease:
             self._check_output()
             self._resume_attempted = True
             self._check_stop()
+            self._before_resume()
+            self._check_stop()
+            self._unexpired()
             _resume(self._information.thread)
             resumed = time.monotonic_ns()
             root = sha256_bytes(canonical_json_bytes(dict(schema="alc-r0-owned-resume-v1",
@@ -345,7 +358,7 @@ class ReservedOwnedLease:
             self._state = "RUNNING"
             return running
         except BaseException:
-            self._close()
+            self._close_after_failure()
             raise
 
     def wait_terminal(self):
@@ -385,8 +398,21 @@ class ReservedOwnedLease:
             self._state = "TERMINAL"
             return ReservedTerminalReceipt(receipt, self._identity, self._owner_root, output)
         except BaseException:
-            self._close()
+            self._close_after_failure()
             raise
+
+    def _close_after_failure(self):
+        """Attempt cleanup without replacing an already propagating failure.
+
+        Called only from failed lifecycle operations or exceptional __exit__.
+        One retained secondary slot avoids an unbounded collection and does not
+        claim durable error publication or recovery of partially closed handles.
+        """
+        try:
+            self._close()
+        except BaseException as error:
+            if self._retained_cleanup_error is None:
+                self._retained_cleanup_error = error
 
     def _unlock(self):
         if self._lock is not None:
@@ -438,4 +464,7 @@ class ReservedOwnedLease:
         if threading.get_ident() != self._thread:
             raise RuntimeError("lease coordinator thread mismatch")
         if self._state != "CLOSED":
-            self._close()
+            if exception[1] is None:
+                self._close()
+            else:
+                self._close_after_failure()

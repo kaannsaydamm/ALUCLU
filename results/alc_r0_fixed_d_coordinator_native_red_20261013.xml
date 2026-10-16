@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.028" timestamp="2026-10-13T22:13:13.979731+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]" time="2.495"><failure message="assert (2 == 0)&#10; +  where 2 = OwnedProcessReceipt(root_pid=6784, exit_code=2, timed_out=False, started_ns=162708218000000, finished_ns=162710687000000, total_processes=7, active_processes=0, user_time_100ns=5468750, kernel_time_100ns=12343750).exit_code">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-177/test_actual_diagnostic_entrypo0')
+scenario = 'slow-parent'
+
+    @pytest.mark.parametrize('scenario',['success','slow-parent'])
+    def test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle(tmp_path,scenario):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+&gt;       assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E       assert (2 == 0)
+E        +  where 2 = OwnedProcessReceipt(root_pid=6784, exit_code=2, timed_out=False, started_ns=162708218000000, finished_ns=162710687000000, total_processes=7, active_processes=0, user_time_100ns=5468750, kernel_time_100ns=12343750).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:55: AssertionError</failure></testcase></testsuite></testsuites>

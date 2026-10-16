@@ -303,3 +303,78 @@ def test_malformed_canonical_events_rejected_without_mutation(data):
     with pytest.raises(ReservationStateError):
         replay.append(data)
     assert replay.snapshot() == before
+
+
+def settle_storage_held(replay, **changes):
+    fields = dict(resource_charge_root=ROOT, wall_kind="observed", effective_wall_ns="100",
+        effective_gpu_ns="100", growth_observation_root=OTHER)
+    fields.update(changes)
+    append(replay, "settle_storage_held", **fields)
+
+
+@pytest.mark.parametrize("device", ["cpu", "gpu"])
+def test_storage_held_settlement_transfers_charge_but_never_refunds_space(device):
+    replay = ReservationReplay((declaration(device=device,
+        gpu_reservation_ns="0" if device == "cpu" else "10000000100"),))
+    reserve(replay); terminal(replay, no_child=True)
+    settle_storage_held(replay, effective_gpu_ns="0" if device == "cpu" else "100")
+    result = replay.snapshot(OTHER)
+    assert result.reservations[0].state == "EXECUTION_RELEASED_STORAGE_HELD"
+    assert result.outstanding_gpu_ns == 0
+    assert result.consumed_gpu_ns == (0 if device == "cpu" else 100)
+    assert (result.pending_research_bytes, result.pending_physical_bytes) == (50, 100)
+    assert result.reservations[0].materialized_physical_bytes == 0
+    assert replay.snapshot(ROOT) == result == replay.snapshot()
+    assert replay_reservations(tuple(v.declaration for v in result.reservations),
+        replay.events, result.root) == result
+    for kind, fields in (("settle_storage_held", {}), ("release", {"global_publication_root": ROOT}),
+                         ("reconcile", {})):
+        before = replay.snapshot()
+        with pytest.raises(ReservationStateError):
+            if kind == "settle_storage_held": settle_storage_held(replay)
+            elif kind == "reconcile": reconcile(replay)
+            else: append(replay, kind, **fields)
+        assert replay.snapshot() == before
+
+
+@pytest.mark.parametrize("changes", [dict(effective_gpu_ns=None), dict(effective_gpu_ns="99"),
+    dict(wall_kind="estimate"), dict(materialized_physical_bytes="1"),
+    dict(growth_observation_root="bad")])
+def test_storage_held_invalid_charge_or_refund_rejected_atomically(changes):
+    replay = ReservationReplay((declaration(),)); reserve(replay); terminal(replay, no_child=True)
+    before = replay.snapshot()
+    with pytest.raises(ReservationStateError): settle_storage_held(replay, **changes)
+    assert replay.snapshot() == before
+
+
+def test_storage_held_requires_terminal_and_preserves_gpu_overrun():
+    replay = ReservationReplay((declaration(),)); reserve(replay)
+    before = replay.snapshot()
+    with pytest.raises(ReservationStateError): settle_storage_held(replay)
+    assert replay.snapshot() == before
+    terminal(replay, no_child=True)
+    settle_storage_held(replay, effective_wall_ns="10000000101", effective_gpu_ns="10000000101")
+    result = replay.snapshot()
+    assert result.overrun and result.consumed_gpu_ns == 10000000101
+    assert result.pending_physical_bytes == 100 and result.outstanding_gpu_ns == 0
+
+
+def test_storage_held_remains_in_aggregate_across_next_independent_reservation():
+    replay = ReservationReplay((declaration(), declaration(reservation_id="r2",
+        run_id="alc-r0-v1-pilot-other-s20260916")))
+    reserve(replay); terminal(replay, no_child=True); settle_storage_held(replay)
+    append(replay, "reserve", reservation_id="r2", declaration_root=ROOT, entry_utc_ns="1",
+        clock_domain_root=ROOT, entry_monotonic_ns="1", useful_deadline_monotonic_ns="101")
+    result = replay.snapshot(OTHER)
+    assert (result.pending_research_bytes, result.pending_physical_bytes) == (100, 200)
+    assert result.consumed_gpu_ns == 100 and result.outstanding_gpu_ns == 10000000100
+
+
+def test_storage_held_is_not_permission_to_resume_or_reuse_same_attempt():
+    replay = ReservationReplay((declaration(), declaration(reservation_id="r2", segment="resume")))
+    reserve(replay); terminal(replay, no_child=True); settle_storage_held(replay)
+    before = replay.snapshot()
+    with pytest.raises(ReservationStateError, match="overlapping"):
+        append(replay, "reserve", reservation_id="r2", declaration_root=ROOT, entry_utc_ns="1",
+            clock_domain_root=ROOT, entry_monotonic_ns="1", useful_deadline_monotonic_ns="101")
+    assert replay.snapshot() == before

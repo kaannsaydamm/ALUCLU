@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 41 items / 40 deselected / 1 selected
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_completion_conflict_after_release_reports_committed_state_not_pending __
+tests\test_alc_r0_fixed_d_coordinator.py:214: in test_completion_conflict_after_release_reports_committed_state_not_pending
+    assert receipt.exit_code==3 and not receipt.timed_out and receipt.active_processes==0
+E   assert (2 == 3)
+E    +  where 2 = OwnedProcessReceipt(root_pid=22776, exit_code=2, timed_out=False, started_ns=38516015000000, finished_ns=38516375000000, total_processes=3, active_processes=0, user_time_100ns=781250, kernel_time_100ns=2187500).exit_code
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_completion_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+====================== 1 failed, 40 deselected in 1.04s =======================

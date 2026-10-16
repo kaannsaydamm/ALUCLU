@@ -1,0 +1,353 @@
+{
+  "schema": "alc-r0-native-monitor-evidence-v1",
+  "scientific_execution": false,
+  "scope": "diagnostic coordinator transport repair, not integrated acceptance",
+  "base_commit": "923447c98ce95369b272e8b91162375294df7b07",
+  "dirty": true,
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "sha256": "8b445fc141e710f69555d4e7854f227e9c2cdf525f02712d31b041d3368f4894"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reservation_state.py",
+      "sha256": "37e21b07ef1b12a72ccd785fd8ec2117d5fc0e4d3ae930eb8b7dd1f070f35da2"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reserved_owned_process.py",
+      "sha256": "cb3c33873c34abcc6af0b828a1fbc38e713e198677d8796a20404374429a787d"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "sha256": "cc28990a303090314d767bb43cdcba87e394cef99035e918b7f9179f823c0621"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "sha256": "83c413a222e1df6119c29e24c32c37a0fe0cda83329cc184fa6712d20a3e5aae"
+    }
+  ],
+  "runs": [
+    {
+      "mode": "native_red",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 162711328000000,
+        "kernel_time_100ns": 20625000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 30540,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 162707062000000,
+        "timed_out": false,
+        "total_processes": 10,
+        "user_time_100ns": 11093750
+      },
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "3.028"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_red_20261013.stdout.log",
+          "bytes": 1347,
+          "sha256": "35f4d46504764f42ec736cb5de5582302ffde8bad71b5fc4e0d755411a28b740"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_red_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_red_20261013.xml",
+          "bytes": 1582,
+          "sha256": "6c0470623e7ee948fb27016778960b9b3eafafaa9c9d7ebcb3a40fe4de55e94a"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_red_20261013.exit.json",
+          "bytes": 316,
+          "sha256": "35159bda5a76f8aca9d1cbdeb36d42e1bb750ce73e6a92239d37d434afe49390"
+        }
+      ]
+    },
+    {
+      "mode": "native_green",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 162888281000000,
+        "kernel_time_100ns": 83593750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 30016,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 162872437000000,
+        "timed_out": false,
+        "total_processes": 52,
+        "user_time_100ns": 47656250
+      },
+      "junit": {
+        "tests": 16,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "14.805"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_20261013.stdout.log",
+          "bytes": 2441,
+          "sha256": "d917d7d6deced95fbcf9feae57f47af10c69c461b9a5e5f2d40420299edb26fb"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_20261013.xml",
+          "bytes": 5091,
+          "sha256": "0621a6826f33ea5d7cb508717c9f255bf4106ca0137e679a13ffc8ec9a2ea9c2"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_20261013.exit.json",
+          "bytes": 316,
+          "sha256": "bde15665cef5a74ea4c968a7791afdb129c14c3045c5c28fd87a0bb0c179afd7"
+        }
+      ]
+    },
+    {
+      "mode": "native_green_v2",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 162954437000000,
+        "kernel_time_100ns": 103281250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 17256,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 162936375000000,
+        "timed_out": false,
+        "total_processes": 52,
+        "user_time_100ns": 47656250
+      },
+      "junit": {
+        "tests": 16,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "16.599"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v2_20261013.stdout.log",
+          "bytes": 5816,
+          "sha256": "ca7650d6e09ca4fa2b7a8b936688c5a9c16565e94531ad0c260b132342eff79d"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v2_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v2_20261013.xml",
+          "bytes": 8224,
+          "sha256": "9fb3e3bbaa2c0d98ca7683784e480039ac197aa1d6acd7086c5d0572b8f8db5e"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v2_20261013.exit.json",
+          "bytes": 317,
+          "sha256": "9f210ef446392ee5fec26e490a679d594a57c3830ad71e50c2edf9fdcc216d4d"
+        }
+      ]
+    },
+    {
+      "mode": "native_green_v3",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 163060125000000,
+        "kernel_time_100ns": 95625000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 8892,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 163042968000000,
+        "timed_out": false,
+        "total_processes": 49,
+        "user_time_100ns": 46093750
+      },
+      "junit": {
+        "tests": 25,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "16.180"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v3_20261013.stdout.log",
+          "bytes": 1174,
+          "sha256": "496a03a00a2bb1e4c51a3fc9a1c8ccbc8e6350f8a21642fd6b79175d4106db39"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v3_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v3_20261013.xml",
+          "bytes": 5259,
+          "sha256": "c9cc68ab25524504ac5b10782dce40ef3a5c0577b19cb7f504ae9e55bf119dd9"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v3_20261013.exit.json",
+          "bytes": 315,
+          "sha256": "f3c497f3cfb9c8f631948582267ace09e426c76ae5d071389fcc6f160783f216"
+        }
+      ]
+    },
+    {
+      "mode": "native_green_v4",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 163134265000000,
+        "kernel_time_100ns": 93281250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 22436,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 163117281000000,
+        "timed_out": false,
+        "total_processes": 49,
+        "user_time_100ns": 47343750
+      },
+      "junit": {
+        "tests": 25,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "15.901"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v4_20261013.stdout.log",
+          "bytes": 1174,
+          "sha256": "7b651152b089ad93e2dae17463fe4a2c070be6407307df18b776b6cfef70016c"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v4_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v4_20261013.xml",
+          "bytes": 5259,
+          "sha256": "afb7ee0c5e65810178a66dd74715be32f503507851dc34b30168f41397a6d093"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v4_20261013.exit.json",
+          "bytes": 316,
+          "sha256": "8ab985d2d797dac5e05a417f946336605c3bf2f77e7a5ddf3184300b882de722"
+        }
+      ]
+    },
+    {
+      "mode": "native_green_v5",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 163323031000000,
+        "kernel_time_100ns": 107343750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 26604,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 163304765000000,
+        "timed_out": false,
+        "total_processes": 52,
+        "user_time_100ns": 43750000
+      },
+      "junit": {
+        "tests": 26,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "17.150"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v5_20261013.stdout.log",
+          "bytes": 81,
+          "sha256": "f7e4ad4ed6eadbcec67657213fec22042823489962bbfdfa48122921f037ce8b"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v5_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v5_20261013.xml",
+          "bytes": 4521,
+          "sha256": "33f7dd73019fce2916e350bd9bcd00804b59050d994af5b5c0d2ee5f79443bfd"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_native_green_v5_20261013.exit.json",
+          "bytes": 317,
+          "sha256": "9f3a1898e2e4800226301d7ab35eec1e6ceaa7f41431a9ee88a9108d1110ea13"
+        }
+      ]
+    },
+    {
+      "mode": "regression_v2",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 163458703000000,
+        "kernel_time_100ns": 494375000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 30192,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 163377406000000,
+        "timed_out": false,
+        "total_processes": 172,
+        "user_time_100ns": 178593750
+      },
+      "junit": {
+        "tests": 211,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": "80.201"
+      },
+      "artifacts": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_v2_20261013.stdout.log",
+          "bytes": 243,
+          "sha256": "73b9bb7c0a514c21b30fa583c303cbe464ec6adddcc74af0d1760d05e20d92e6"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_v2_20261013.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_v2_20261013.xml",
+          "bytes": 30267,
+          "sha256": "cc127eceb8752f1f4abcbb5d0a8c083edbe3f15d9ff5cfc81e06c0222f8db27d"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_v2_20261013.exit.json",
+          "bytes": 319,
+          "sha256": "63f146067d4a38349b664d61d47b2fcefe531a17b347428e54d92e6a6bc47bc7"
+        }
+      ]
+    }
+  ]
+}

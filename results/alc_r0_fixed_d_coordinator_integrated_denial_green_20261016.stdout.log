@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 39 items / 37 deselected / 2 selected
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] FAILED [ 50%]
+
+================================== FAILURES ===================================
+_ test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] _
+tests\test_alc_r0_fixed_d_coordinator.py:199: in test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup
+    assert b'native actuator' in (tmp_path/'entry.stderr').read_bytes()
+E   AssertionError: assert b'native actuator' in b'alc-r0 coordinator denied: CoordinatorError: observer bridge failed\r\n'
+E    +  where b'alc-r0 coordinator denied: CoordinatorError: observer bridge failed\r\n' = read_bytes()
+E    +    where read_bytes = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-214/test_actual_coordinator_native0') / 'entry.stderr').read_bytes
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_integrated_denial_green_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+====================== 1 failed, 37 deselected in 3.84s =======================

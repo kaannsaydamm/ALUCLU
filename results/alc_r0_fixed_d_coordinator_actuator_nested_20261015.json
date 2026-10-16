@@ -1,0 +1,50 @@
+{
+  "schema": "alc-r0-actuator-selection-v1",
+  "scope": "bounded decoded focused V4 originals, NOT raw copies or tree-isolation proof",
+  "scientific_execution": false,
+  "original_namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-192\\test_busy_revocation_terminate0\\diagnostic",
+  "files": [
+    {
+      "name": "busy.revocation.observed.json",
+      "bytes": 323,
+      "sha256": "c63c9ee6475c57e60b8b1a283acb51bf71706f48b3f3ab59fab0a6057a01f74d",
+      "utf8": "{\"after_active\":0,\"before_active\":2,\"busy_finished_monotonic_ns\":\"1482312000000\",\"busy_started_monotonic_ns\":\"1481703000000\",\"domain\":\"diagnostic-only\",\"pid\":\"16480\",\"request_root\":\"84acbdff358b7da34aabe0f13af15a245cce2aa9e363a29ddbc1525fc1024724\",\"root_wait\":0,\"sampled_monotonic_ns\":\"1482312000000\",\"stop_requested\":true}"
+    },
+    {
+      "name": "revocation.published.json",
+      "bytes": 232,
+      "sha256": "3d1bc14110a2a2551de26f38815248ba39ea3f96ee067462e025d4888d3fc9b7",
+      "utf8": "{\"domain\":\"diagnostic-only\",\"published_monotonic_ns\":\"1481765000000\",\"request_root\":\"84acbdff358b7da34aabe0f13af15a245cce2aa9e363a29ddbc1525fc1024724\",\"status_root\":\"80c0716fb595555ddfcb03952d75a09a52c8ee2fdc2c899683bb71132e4d8104\"}"
+    },
+    {
+      "name": "child.started.json",
+      "bytes": 171,
+      "sha256": "449c8567b748e89a68d5723a0ca202f9bcdf36a698bb6d6418d536c8c0a71815",
+      "utf8": "{\"creation_filetime_100ns\":\"134365548458627546\",\"domain\":\"diagnostic-only\",\"pid\":\"16480\",\"request_root\":\"84acbdff358b7da34aabe0f13af15a245cce2aa9e363a29ddbc1525fc1024724\"}"
+    },
+    {
+      "name": "actuator.native.json",
+      "bytes": 216,
+      "sha256": "6f6f7205c2af5457d8bef81dd623bbeeef9363bbb67734d569d1174b30a9dd61",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"1491812000000\",\"domain\":\"diagnostic-only\",\"drained\":true,\"duplicate_handles_closed\":true,\"finished_monotonic_ns\":\"1481812000000\",\"pid\":\"16480\",\"terminated\":true,\"thread_alive\":false}"
+    },
+    {
+      "name": "work.cleanup.native.json",
+      "bytes": 303,
+      "sha256": "12ca03cb5c1b08b9117f4aa2c7d93f776f4cb82eaab134b443adf580dab5fb0c",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"1491812000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":1482312000000,\"kernel_time_100ns\":1718750,\"root_pid\":16480,\"started_ns\":1480421000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1718750}}"
+    },
+    {
+      "name": "observer.cleanup.native.json",
+      "bytes": 359,
+      "sha256": "3bc31e37e262e40a61b706b8825afe77a715017ede703257b80c2a2789d25504",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"1491812000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":1482343000000,\"kernel_time_100ns\":1562500,\"root_pid\":9500,\"started_ns\":1480953000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1718750},\"surplus_socket_closed\":true}"
+    },
+    {
+      "name": "observer.bridge.json",
+      "bytes": 457,
+      "sha256": "1ef38f4800eb6a77b8b6e9bc3315037e89096ffa8eec5607874a237aa7dc0b09",
+      "utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"1481796000000\",\"observations\":[{\"observed_monotonic_ns\":\"1481281000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"1481265000000\",\"submitted_monotonic_ns\":\"1481281000000\"},{\"observed_monotonic_ns\":\"1481546000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"1481531000000\",\"submitted_monotonic_ns\":\"1481546000000\"}],\"operational_error\":\"StatusConsumerError\",\"socket_closed\":true,\"thread_alive\":false}"
+    }
+  ]
+}

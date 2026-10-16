@@ -1,0 +1,25 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 39 items / 37 deselected / 2 selected
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] FAILED [ 50%]
+
+================================== FAILURES ===================================
+_ test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] _
+tests\test_alc_r0_fixed_d_coordinator.py:186: in test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup
+    cleanup=bounded_json(namespace/'work.cleanup.native.json')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-213\\test_actual_coordinator_native0\\diagnostic\\work.cleanup.native.json'
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_integrated_denial_native_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+====================== 1 failed, 37 deselected in 2.48s =======================

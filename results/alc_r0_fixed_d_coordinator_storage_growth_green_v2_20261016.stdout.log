@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 47 items / 38 deselected / 9 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization PASSED [ 11%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries] PASSED [ 22%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink] PASSED [ 33%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes] PASSED [ 44%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline] PASSED [ 55%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_observes_held_native_lock_without_unlock_or_false_hash PASSED [ 66%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] PASSED [ 77%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] PASSED [ 88%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_storage_growth_green_v2_20261016.xml -
+====================== 9 passed, 38 deselected in 21.07s ======================

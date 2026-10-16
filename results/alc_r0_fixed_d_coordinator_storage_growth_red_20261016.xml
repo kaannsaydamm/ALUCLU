@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="8" time="16.451" timestamp="2026-10-16T12:53:58.684970+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_request_only_growth_root_cannot_support_verified_materialization" time="3.645"><failure message="StopIteration">tests\test_alc_r0_coordinator_growth_acceptance.py:24: in test_request_only_growth_root_cannot_support_verified_materialization
+    settlement=next(item for item in events if item['kind']=='settle_storage_held')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration</failure></testcase><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries]" time="0.085"><failure message="ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)">tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)</failure></testcase><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink]" time="0.002"><failure message="ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)">tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)</failure></testcase><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes]" time="0.004"><failure message="ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)">tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)</failure></testcase><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline]" time="0.004"><failure message="ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)">tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success]" time="3.726"><failure message="AssertionError: assert ['reserve', '...concile', ...] == ['reserve', '...storage_held']&#10;  &#10;  At index 5 diff: 'reconcile' != 'settle_storage_held'&#10;  Left contains one more item: 'release'&#10;  &#10;  Full diff:&#10;    [&#10;        'reserve',...&#10;  &#10;  ...Full output truncated (8 lines hidden), use '-vv' to show">tests\test_alc_r0_fixed_d_coordinator.py:93: in test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle
+    assert [event['kind'] for event in events]==[
+E   AssertionError: assert ['reserve', '...concile', ...] == ['reserve', '...storage_held']
+E     
+E     At index 5 diff: 'reconcile' != 'settle_storage_held'
+E     Left contains one more item: 'release'
+E     
+E     Full diff:
+E       [
+E           'reserve',...
+E     
+E     ...Full output truncated (8 lines hidden), use '-vv' to show</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]" time="4.893"><failure message="AssertionError: assert ['reserve', '...concile', ...] == ['reserve', '...storage_held']&#10;  &#10;  At index 5 diff: 'reconcile' != 'settle_storage_held'&#10;  Left contains one more item: 'release'&#10;  &#10;  Full diff:&#10;    [&#10;        'reserve',...&#10;  &#10;  ...Full output truncated (8 lines hidden), use '-vv' to show">tests\test_alc_r0_fixed_d_coordinator.py:93: in test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle
+    assert [event['kind'] for event in events]==[
+E   AssertionError: assert ['reserve', '...concile', ...] == ['reserve', '...storage_held']
+E     
+E     At index 5 diff: 'reconcile' != 'settle_storage_held'
+E     Left contains one more item: 'release'
+E     
+E     Full diff:
+E       [
+E           'reserve',...
+E     
+E     ...Full output truncated (8 lines hidden), use '-vv' to show</failure></testcase><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_completion_conflict_after_release_reports_committed_state_not_pending" time="3.289"><failure message="AssertionError: assert 'RELEASED' == 'EXECUTION_RE..._STORAGE_HELD'&#10;  &#10;  - EXECUTION_RELEASED_STORAGE_HELD&#10;  + RELEASED">tests\test_alc_r0_fixed_d_coordinator.py:221: in test_completion_conflict_after_release_reports_committed_state_not_pending
+    assert snapshot.reservations[0].state=='EXECUTION_RELEASED_STORAGE_HELD'
+E   AssertionError: assert 'RELEASED' == 'EXECUTION_RE..._STORAGE_HELD'
+E     
+E     - EXECUTION_RELEASED_STORAGE_HELD
+E     + RELEASED</failure></testcase></testsuite></testsuites>

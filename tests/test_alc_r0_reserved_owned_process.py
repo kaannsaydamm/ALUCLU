@@ -485,6 +485,80 @@ def test_caller_receipt_dataclass_is_not_resume_authority(tmp_path):
         assert lease.wait_terminal().process.exit_code == 0
 
 
+@pytest.mark.parametrize('phase',['creation','publish','resume','wait','body','cleanup-only'])
+def test_primary_failure_survives_secondary_cleanup_error_with_owned_child(tmp_path,phase):
+    # Real owned children/handles and actual cleanup, controlled Python failures.
+    # This is NOT injected native API/join/CloseHandle failure coverage.
+    import _winapi
+    import ctypes
+    from aluclu.alc_r0.checkpoint_owned_process import _Accounting,_checked
+    primary=ValueError('controlled primary lifecycle/body failure')
+    secondary=RuntimeError('controlled secondary cleanup failure')
+    current=_winapi.GetCurrentProcess()
+    class FailedCleanupLease(ReservedOwnedLease):
+        def _observe_creation_time(self):
+            result=super()._observe_creation_time()
+            self.retained_process=_winapi.DuplicateHandle(current,self._information.process,
+                current,0x00100000,False,0)
+            self.retained_job=_winapi.DuplicateHandle(current,self._job.handle,current,0x0004,False,0)
+            if phase=='creation': raise primary
+            return result
+
+        def _check_output(self):
+            if phase=='publish': raise primary
+            return super()._check_output()
+
+        def _before_resume(self):
+            if phase=='resume': raise primary
+            return super()._before_resume()
+
+        def _check_stop(self):
+            if phase=='wait' and self._wait_attempted: raise primary
+            return super()._check_stop()
+
+        def _close(self):
+            super()._close()
+            raise secondary
+
+    arguments,store,_,_=fixture(tmp_path)
+    lease=FailedCleanupLease(**arguments)
+    lease.retained_process=lease.retained_job=None
+    expected=secondary if phase=='cleanup-only' else primary
+    try:
+        with pytest.raises(type(expected)) as denied:
+            with lease:
+                ready=lease.publish_identity(ROOT,ROOT)
+                if phase in ('body','cleanup-only'):
+                    if phase=='body': raise primary
+                else:
+                    lease.resume_verified(ready.sha256)
+                    lease.wait_terminal()
+        assert denied.value is expected
+        assert lease._retained_cleanup_error is (None if phase=='cleanup-only' else secondary)
+        assert _winapi.WaitForSingleObject(lease.retained_process,0)==0
+        counts=_Accounting()
+        _checked(lease._job.kernel.QueryInformationJobObject(lease.retained_job,1,
+            ctypes.byref(counts),ctypes.sizeof(counts),None))
+        assert counts.active_processes==0
+        assert lease._information.process is None and lease._information.thread is None
+        assert all(item.resources_closed for item in lease._output.observations())
+        snapshot=store.read(lease._owner_root).snapshot
+        assert snapshot.reservations[0].state=={
+            'creation':'RESERVED','publish':'RESERVED','resume':'READY',
+            'wait':'RUNNING','body':'READY','cleanup-only':'READY'}[phase]
+        assert snapshot.pending_physical_bytes>0 and snapshot.pending_research_bytes>0
+    finally:
+        try:
+            if lease._state!='CLOSED':
+                try: lease._close()
+                except RuntimeError: pass
+        finally:
+            try:
+                if lease.retained_process is not None: _winapi.CloseHandle(lease.retained_process)
+            finally:
+                if lease.retained_job is not None: _winapi.CloseHandle(lease.retained_job)
+
+
 @pytest.mark.parametrize("phase", ["creation", "ready", "running"])
 def test_abrupt_lease_parent_exit_leaves_no_owned_orphan(tmp_path, phase):
     import json
