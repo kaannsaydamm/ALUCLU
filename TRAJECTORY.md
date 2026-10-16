@@ -16001,3 +16001,51 @@ Existing research branch codex/unified-lifelong-cognition-desktop/origin researc
 branch, no main merge/release. This preserves unfinished reviewed work; original
 scientific activation and remaining gates stay denied. Will verify commit/push
 outcome separately; this intent is not a claim of remote durability.
+
+Preservation committed89d9d9d31cc40dad832442c74e01a6e66641ea83 (324files,
+12868insertions/9deletions, coordinator evidence family only); push successful,
+git ls-remote independentlyreturns SAMEsha on codex/unified-lifelong-cognition.
+Workingtree wasclean immediatelyafter; no mainmerge/release/scientificclaim.
+
+Architecture actualwritepath investigation: smallestcredible footprint uses
+fixedpreallocated controllablecapacity plus explicit residualfilesystem/cache
+profile, not empiricalmaximum times arbitrarymargin, preallocationalone or
+whole-volume attribution/containerinfrastructure. Read primaryMicrosoft
+FILE_ALLOCATION_INFO, FILE_STANDARD_INFO, SetFileInformationByHandle and enum
+docs. Fouroutputdestinations next integrated increment; exact design independently
+codeAPPROVE/architectureCLEAR for implementation only. Preserve generic sink APIs,
+sameheldhandle, existing16KiB caps/noEOFpadding/reopen; verify nativeallocation
+beforecreate/resume andbeforeclose. Capacity notquota; cappedpumpstillenforces.
+Physicalmetadata/journal/result/dependencycaches remainOPEN. Add initial actual
+entrypoint/allfourcapacities and exactlimit/overflowpipe tests beforeimplementation.
+No model/CUDA/heldout/science launch or destructive storagepreparation.
+
+Initial output_capacity_red personallyverified3fail/0error/0skip 4.383s, native1/
+root2816/total10/active0/no timeout120s, stderr0. XMLSHA
+c629ac3778b399c861ce492592ffd3b3290ab4587851860616a2b50cf40a1a27.
+Missing actualcapacity-stage record after successful prior diagnostic and missing
+private_AllocatedOutputPair2cases; not model/NTFSfalsification. Independentcode
+APPROVE/architectureCLEAR for initialREDpreservationonly. Both require stronger
+nativeactionorder and samefileidentitycontinuity beforeGREEN. Add assertions for
+fixed actualnativeaction brackets/request/retainedPID+FILETIME and beforecreate/
+resume/finaldevice-inode continuity. Initial3REDs are notallrequirednegativecuts;
+nativeAPIrefusal/siblingcleanup/unsupportedattributes/preresumechange stillrequired.
+New immutableREDv2 on tightenedtests next; prior249PASS belongs pushed89d9d9d,
+not this expanded unfinished acceptance. Scientific guard unchanged/denied.
+
+Tightened output_capacity_red_v2 terminal3fail/0error/0skip5.898s/native1/
+root19256/total10/active0/no timeout120s. XMLSHA
+22f09d01d98bf53b999f64837bb95494db81599ec1a12155dacaf4be03eaf13f.
+Same missingreceipt/privateclass failures; deeper chronology/identity assertions
+notyetexecuted, no nativeallocationfact inferred. Two runs8rawhash+size refs and
+3source pins ONLYv2 in output_capacity_red_evidence_20261016.json; manifestSHA
+b354e52a81200fc138bb1cd26ea93a2aca61980c7bc20e883b21001009cee5bd.
+Main verified11refs0mismatch. Both independentGPT6.1 lanes verifiedactual11refs,
+native/JUnitpairs and strengthenedsourceassertions: codeAPPROVE/architectureCLEAR
+for INITIAL REDv2 preservationONLY. Separate reviewrecord retains this scope.
+Completeimplementation/negativecuts/GREEN/regression/fullphysical/scienceOPEN.
+Next implement nativeallocated sink on sameownedhandle and actualaction-bracket
+instrumentation through sharedentrypoint, without changing originallimits or
+guard. This turn PROGRESS: priorcheckpointreviewed+remotelypreserved, actualwrite
+paths audited, integratedfootprintdesign reviewed, faithfulTDDRED strengthened
+and independentlyclosed forpreservation. No scientific job/heldout/GPU executed.

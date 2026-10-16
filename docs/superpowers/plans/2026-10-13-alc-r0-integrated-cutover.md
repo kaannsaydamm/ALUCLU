@@ -826,3 +826,55 @@ proof or implicit deletion/recovery refund. New1MiB physicalpeak/globalresearch/
 scientific origin/resource/history/nativefault gates remain OPEN. Next inspect
 actual fixed-D write paths and finite publication footprint; do not invent NTFS
 metadata overhead or treat a merely bounded output length as a physical bound.
+
+## Next integrated footprint increment — four retained output destinations
+
+Design code APPROVE / architecture CLEAR for implementation direction only.
+Not another launcher/permit, no VHD/container framework, no scientific activation.
+Use private coordinator-owned output classes over existing BoundedOutputPair and
+lease-specific _LeaseOutputPair. Keep generic interfaces/semantics unchanged.
+
+At fresh destination acquisition, request actual native default-stream capacity
+on the SAME handle that the existing bounded pipe pump retains: Win32
+SetFileInformationByHandle(FileAllocationInfo=5), then GetFileInformationByHandleEx
+(FileStandardInfo=1, FileAttributeTagInfo=9). Explicit ctypes structures/prototypes,
+checked results, observed AllocationSize >= existing16384 cap and initial EOF0,
+ordinary single-link identity, reject sparse/compressed/reparse. Do not pad EOF,
+truncate/reopen/replace, use invented physical numbers or conflate Win32/native
+information-class numbering. Record actual allocation granularity, not cap as a
+pretend observed allocation. No threshold or diagnostic declaration change.
+
+Private _FixedLease._new_output installs the fixed lease-aware implementation;
+observer installs its fixed output implementation too. Recheck retained handles
+immediately before their OWN create/resume actions; worker and observer lifecycle
+are distinct. Stage-specific EOF: initially/still-suspended0; later observations
+must allow actual bytes <=cap. Native final allocation/EOF queried before closing
+the destination, never pretend a reopened/post-close query is continuous ownership.
+Receipt binds request/role/stream/path/limit/actual allocation/EOF/native identity/
+observation stage/time. Its own file, journals, caches and metadata remain outside
+this narrow allocation proof. Original complete1MiB physical envelope still OPEN.
+
+Acquisition/query/unsupported-attribute failures deny action and close already
+opened sibling destinations/pipes under original cleanup; preserve incoming
+failure and uncertain ownership. Capacity is mutable and NOT a write quota:
+existing capped sink must enforce exact written-byte limit, preserve overflow as
+INVALID and retain full charge/storage. Required negatives also cover actual API
+refusal, second-output failure and before-resume allocation/identity loss.
+
+TDD starts through actual coordinator plus actual anonymous pipe exact-cap and
+overflow tests, not mocked scientific functions. Additional required negative
+cuts and generic output/lease regression follow implementation. A harmless
+profile/preallocation does not prove native CUDA-cache behavior. Broader fixed
+publication slots, crash-safe staging, residual metadata policy and dependency
+write classes must still be addressed explicitly before scientific peak admission.
+
+Initial3case RED independently preservationAPPROVE/CLEAR: missing actualcapacity
+record, missing privateimplementation twice; not host/OS/model failure. Both lanes
+require stage-order strengthening beforeGREEN. Refine acceptance to bind each
+before-create/resume observation to an actual native action bracket (monotonic
+start/finish plus retained PID/creationFILETIME), not merely a named stage or
+overall execution interval. Compare device/inode identities across initial,
+preresume and final-beforeclose observations, including actualpipe tests. Actual
+action-bracket instrumentation must wrap fixed OS actions without injectable
+backend, renewed deadline, skipped stop checks or claiming success after uncertain
+publication. This is required prospective integration, not implemented evidence.
