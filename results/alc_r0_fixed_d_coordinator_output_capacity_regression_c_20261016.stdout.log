@@ -1,0 +1,49 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 40 items
+
+tests/test_alc_r0_bounded_process_output.py::test_exact_persisted_cap_and_honest_received_counts[empty-zero] PASSED [  2%]
+tests/test_alc_r0_bounded_process_output.py::test_exact_persisted_cap_and_honest_received_counts[nonempty-zero] PASSED [  5%]
+tests/test_alc_r0_bounded_process_output.py::test_exact_persisted_cap_and_honest_received_counts[exact] PASSED [  7%]
+tests/test_alc_r0_bounded_process_output.py::test_exact_persisted_cap_and_honest_received_counts[cap-plus-one] PASSED [ 10%]
+tests/test_alc_r0_bounded_process_output.py::test_exact_persisted_cap_and_honest_received_counts[binary] PASSED [ 12%]
+tests/test_alc_r0_bounded_process_output.py::test_exact_persisted_cap_and_honest_received_counts[large-excess] PASSED [ 15%]
+tests/test_alc_r0_bounded_process_output.py::test_independent_stderr_excess_invalidates_pair PASSED [ 17%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[True-stdout_limit_bytes] PASSED [ 20%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[True-stderr_limit_bytes] PASSED [ 22%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[-1-stdout_limit_bytes] PASSED [ 25%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[-1-stderr_limit_bytes] PASSED [ 27%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[1.5-stdout_limit_bytes] PASSED [ 30%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[1.5-stderr_limit_bytes] PASSED [ 32%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[9223372036854775808-stdout_limit_bytes] PASSED [ 35%]
+tests/test_alc_r0_bounded_process_output.py::test_cap_validation_has_no_output_side_effects[9223372036854775808-stderr_limit_bytes] PASSED [ 37%]
+tests/test_alc_r0_bounded_process_output.py::test_cleanup_deadline_structural_validation_before_io[True] PASSED [ 40%]
+tests/test_alc_r0_bounded_process_output.py::test_cleanup_deadline_structural_validation_before_io[0] PASSED [ 42%]
+tests/test_alc_r0_bounded_process_output.py::test_cleanup_deadline_structural_validation_before_io[-1] PASSED [ 45%]
+tests/test_alc_r0_bounded_process_output.py::test_cleanup_deadline_structural_validation_before_io[1.5] PASSED [ 47%]
+tests/test_alc_r0_bounded_process_output.py::test_cleanup_deadline_structural_validation_before_io[9223372036854775808] PASSED [ 50%]
+tests/test_alc_r0_bounded_process_output.py::test_expired_cleanup_bound_denied_before_artifacts PASSED [ 52%]
+tests/test_alc_r0_bounded_process_output.py::test_exclusive_destination_collision_preserves_existing_bytes[stdout] PASSED [ 55%]
+tests/test_alc_r0_bounded_process_output.py::test_exclusive_destination_collision_preserves_existing_bytes[stderr] PASSED [ 57%]
+tests/test_alc_r0_bounded_process_output.py::test_finish_can_tighten_but_never_extend_or_repeat PASSED [ 60%]
+tests/test_alc_r0_bounded_process_output.py::test_context_exit_observes_eof_and_reentry_rejected PASSED [ 62%]
+tests/test_alc_r0_bounded_process_output.py::test_confirmed_short_writes_do_not_drop_bytes_or_corrupt_digest PASSED [ 65%]
+tests/test_alc_r0_bounded_process_output.py::test_terminal_read_error_without_eof_is_invalid_not_fake_complete PASSED [ 67%]
+tests/test_alc_r0_bounded_process_output.py::test_unconfirmed_partial_write_is_not_a_confirmed_full_file_digest PASSED [ 70%]
+tests/test_alc_r0_bounded_process_output.py::test_partial_acquisition_closes_only_parent_owned_resources PASSED [ 72%]
+tests/test_alc_r0_bounded_process_output.py::test_entry_error_after_actual_thread_start_observes_owned_cleanup PASSED [ 75%]
+tests/test_alc_r0_bounded_process_output.py::test_cleanup_deadline_retains_unobserved_io_and_does_not_renew PASSED [ 77%]
+tests/test_alc_r0_bounded_process_output.py::test_unconfirmed_close_cannot_return_complete_receipt PASSED [ 80%]
+tests/test_alc_r0_bounded_process_output.py::test_invalid_output_paths_denied_without_acquisition[paths0] PASSED [ 82%]
+tests/test_alc_r0_bounded_process_output.py::test_invalid_output_paths_denied_without_acquisition[paths1] PASSED [ 85%]
+tests/test_alc_r0_bounded_process_output.py::test_exit_writer_close_fault_still_observes_pumps_without_new_allowance PASSED [ 87%]
+tests/test_alc_r0_bounded_process_output.py::test_partial_entry_writer_fault_still_closes_proven_parent_resources PASSED [ 90%]
+tests/test_alc_r0_bounded_process_output.py::test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound PASSED [ 92%]
+tests/test_alc_r0_bounded_process_output.py::test_late_observation_accepts_all_actual_closures_within_bound PASSED [ 95%]
+tests/test_alc_r0_bounded_process_output.py::test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises PASSED [ 97%]
+tests/test_alc_r0_bounded_process_output.py::test_pipe_rollback_uncertainty_is_not_complete_public_entry_cleanup PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_output_capacity_regression_c_20261016.xml -
+============================= 40 passed in 0.63s ==============================

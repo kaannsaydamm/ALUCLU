@@ -153,3 +153,124 @@ def test_preallocated_output_actual_pipe_exact_limit_and_overflow(tmp_path,exces
         (row['stream'],row['device'],row['inode']) for row in pair.final_capacity_observations}
     assert all(int(row['allocation_bytes'])>=limit for row in pair.final_capacity_observations)
     assert sorted(int(row['eof_bytes']) for row in pair.final_capacity_observations)==[0,limit]
+
+
+def _mark_output_native(stream,kind):
+    """Actual filesystem mutation of this test's own fresh destination only."""
+    import ctypes
+    import msvcrt
+    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+    ioctl=kernel.DeviceIoControl
+    ioctl.argtypes=[ctypes.c_void_p,ctypes.c_uint32,ctypes.c_void_p,ctypes.c_uint32,
+        ctypes.c_void_p,ctypes.c_uint32,ctypes.POINTER(ctypes.c_uint32),ctypes.c_void_p]
+    ioctl.restype=ctypes.c_int
+    returned=ctypes.c_uint32(); compression=ctypes.c_ushort(1)
+    data=ctypes.byref(compression) if kind=='compressed' else None
+    size=ctypes.sizeof(compression) if kind=='compressed' else 0
+    code=0x9c040 if kind=='compressed' else 0x900c4
+    if not ioctl(msvcrt.get_osfhandle(stream.fileno()),code,data,size,None,0,ctypes.byref(returned),None):
+        raise ctypes.WinError(ctypes.get_last_error())
+
+
+def _output_pair(tmp_path,pair_type):
+    return pair_type(stdout_path=tmp_path/'stdout',stderr_path=tmp_path/'stderr',
+        stdout_limit_bytes=16384,stderr_limit_bytes=16384,
+        cleanup_deadline_ns=time.monotonic_ns()+5_000_000_000)
+
+
+def test_preallocated_output_rejected_final_identity_not_recorded(tmp_path):
+    # Controlled retained-bookkeeping mismatch, NOT an OS file-identity mutation.
+    from aluclu.alc_r0.fixed_d_coordinator import _AllocatedOutputPair
+    from aluclu.alc_r0.bounded_process_output import OutputCleanupError
+    pair=_output_pair(tmp_path,_AllocatedOutputPair)
+    with pytest.raises(OutputCleanupError):
+        with pair:
+            destination=pair._streams[0].destination
+            path,limit,_=pair._allocations[destination]
+            pair._allocations[destination]=(path,limit,('wrong','wrong'))
+            pair.close_parent_writers(); pair.finish()
+    assert all(item.destination.closed for item in pair._streams)
+    assert all(row['stream']!='stdout' for row in pair.final_capacity_observations)
+
+
+def test_preallocated_output_allocation_refusal_closes_second_destination(tmp_path):
+    from aluclu.alc_r0.fixed_d_coordinator import _AllocatedOutputPair
+    class DeniedSecond(_AllocatedOutputPair):
+        def _allocate_destination(self,stream,path,limit):
+            if path.name=='stderr':
+                from aluclu.alc_r0.fixed_d_coordinator import _set_output_allocation
+                with path.open('rb') as readonly:
+                    _set_output_allocation(readonly,limit)  # actual native access denial
+            return super()._allocate_destination(stream,path,limit)
+    pair=_output_pair(tmp_path,DeniedSecond)
+    with pytest.raises(OSError) as denied:
+        with pair: pytest.fail('native allocation refusal must not enter output context')
+    assert denied.value.winerror==5
+    assert all(item.destination is not None and item.destination.closed for item in pair._streams)
+    assert all(item.reader is None or item.reader.closed for item in pair._streams)
+    assert all(item.writer is None or item.writer.closed for item in pair._streams)
+
+
+@pytest.mark.parametrize('kind',['sparse','compressed'])
+def test_preallocated_output_unsupported_native_attributes_close_acquisition(tmp_path,kind):
+    from aluclu.alc_r0.fixed_d_coordinator import _AllocatedOutputPair,CoordinatorError
+    class Unsupported(_AllocatedOutputPair):
+        def _allocate_destination(self,stream,path,limit):
+            if kind=='compressed':
+                # FSCTL_SET_COMPRESSION requires GENERIC_READ and GENERIC_WRITE.
+                # This owned second handle changes attributes of the SAME fresh
+                # test file; the production write-only destination is retained.
+                with path.open('r+b',buffering=0) as mutator:
+                    _mark_output_native(mutator,kind)
+            else: _mark_output_native(stream,kind)
+            return super()._allocate_destination(stream,path,limit)
+    pair=_output_pair(tmp_path,Unsupported)
+    with pytest.raises(CoordinatorError,match='sparse compressed or reparse'):
+        with pair: pytest.fail('unsupported native attributes must deny acquisition')
+    assert pair._streams[0].destination.closed
+    assert pair._streams[1].destination is None
+    assert pair.final_capacity_observations==()
+
+
+def test_preallocated_output_final_native_attribute_failure_still_closes(tmp_path):
+    from aluclu.alc_r0.fixed_d_coordinator import _AllocatedOutputPair
+    from aluclu.alc_r0.bounded_process_output import OutputCleanupError
+    pair=_output_pair(tmp_path,_AllocatedOutputPair)
+    with pytest.raises(OutputCleanupError):
+        with pair:
+            _mark_output_native(pair._streams[0].destination,'sparse')
+            pair.close_parent_writers(); pair.finish()
+    assert all(item.destination.closed for item in pair._streams)
+    assert all(row['stream']!='stdout' for row in pair.final_capacity_observations)
+    assert 'close' in pair.observations()[0].failure_kinds
+
+
+def test_actual_output_capacity_loss_before_resume_retains_consumption(tmp_path):
+    namespace=tmp_path/'diagnostic'; namespace.mkdir()
+    receipt=invoke(tmp_path,('diagnostic','output-capacity-lost',str(namespace)))
+    assert receipt.exit_code==2 and not receipt.timed_out and receipt.active_processes==0
+    declaration=bounded_json(namespace/'declaration.json')
+    owner=bounded_json(namespace/'reservations'/'owner.json')
+    snapshot=ReservationStore(namespace/'reservations',(canonical_json_bytes(declaration),)).read(
+        sha256_bytes(canonical_json_bytes(owner))).snapshot
+    assert snapshot.reservations[0].state=='READY'
+    assert snapshot.pending_physical_bytes==snapshot.pending_research_bytes==1<<20
+    assert (namespace/'diagnostic.consumed.json').exists()
+    assert (namespace/'work.action.create.json').exists()
+    assert not (namespace/'work.action.resume.json').exists()
+    assert not (namespace/'child.started.json').exists()
+    loss=bounded_json(namespace/'work.output.capacity-lost.json')
+    assert int(loss['before_allocation_bytes'])>=16384 and loss['after_allocation_bytes']=='0'
+
+
+def test_preallocated_output_reparse_ancestor_denied_before_file_creation(tmp_path):
+    from aluclu.alc_r0.fixed_d_coordinator import _AllocatedOutputPair
+    from aluclu.alc_r0.fixed_d_request_file import DRequestFileError
+    from aluclu.alc_r0.runtime_tree_inventory import RuntimeInventoryError
+    target=tmp_path/'target'; target.mkdir()
+    alias=tmp_path/'alias'; alias.symlink_to(target,target_is_directory=True)
+    assert alias.lstat().st_file_attributes & 0x400
+    pair=_output_pair(alias,_AllocatedOutputPair)
+    with pytest.raises((DRequestFileError,RuntimeInventoryError)):
+        with pair: pytest.fail('reparse ancestor must deny before creating output')
+    assert not (target/'stdout').exists() and not (target/'stderr').exists()

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.626" timestamp="2026-10-16T13:44:57.390357+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_reparse_ancestor_denied_before_file_creation" time="0.092"><failure message="AssertionError: assert (not True)&#10; +  where True = exists()&#10; +    where exists = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-243/test_preallocated_output_repar0/target') / 'stdout').exists">tests\test_alc_r0_coordinator_growth_acceptance.py:276: in test_preallocated_output_reparse_ancestor_denied_before_file_creation
+    assert not (target/'stdout').exists() and not (target/'stderr').exists()
+E   AssertionError: assert (not True)
+E    +  where True = exists()
+E    +    where exists = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-243/test_preallocated_output_repar0/target') / 'stdout').exists</failure></testcase></testsuite></testsuites>

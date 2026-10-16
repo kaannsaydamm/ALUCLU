@@ -878,3 +878,54 @@ preresume and final-beforeclose observations, including actualpipe tests. Actual
 action-bracket instrumentation must wrap fixed OS actions without injectable
 backend, renewed deadline, skipped stop checks or claiming success after uncertain
 publication. This is required prospective integration, not implemented evidence.
+
+## Retained output-capacity implementation and terminal evidence (2026-10-16)
+
+The prospective increment above is now implemented in the private fixed
+coordinator classes. Same continuously owned destination handles receive native
+allocation, attribute/EOF/identity checks and before-create/resume observations;
+actual fixed native actions are bracketed with PID/creation-time receipts.
+Acquisition assigns cleanup ownership before allocation can fail. Ordinary
+ancestor checks now precede destination creation and are repeated after opening.
+Final valid rows are published only after retained-identity validation.
+
+RED evidence preserved two product failures: rejected final identity rows could
+be published, and a reparse ancestor was denied only after creating target stdout.
+Both are corrected and exercised in final focused tests. The first negative
+GREEN attempt instead failed in the compression fixture (Win5 on write-only
+handle); a separately owned read/write mutator corrected that fixture without
+changing production xb handles or thresholds. This failed run remains evidence.
+
+Terminal final focused run: 10 tests, 0 failures/errors/skips, 5.552 seconds.
+Three separate bounded regression runs, NOT one full repository suite:
+A 148/0/0/0 (92.392s), B 111/0/0/0 (47.724s), C 40/0/0/0 (0.467s).
+Each has native pytest exit0, active processes0 and no timeout within its original
+120-second parent bound. Exact final union299 matches current fresh collection;
+all prior249 identities are retained. Ten capacity cases are new; forty generic
+output cases are existing tests newly included in this regression coverage.
+
+Evidence: results/alc_r0_fixed_d_coordinator_output_capacity_evidence_20261016.json
+pins 44 raw artifacts and 14 source/test files. Source pins apply only to final
+focus and regression A/B/C, not historical RED/intermediate versions. Nested
+evidence captures36 selected original UTF8 diagnostic records with byte counts
+and hashes, not a complete store/physical-footprint export. Empty original stderr
+is represented by an empty string. All58 refs and36 reconstructed raw records
+were verified by the author; independent closing verdicts remain a separate gate.
+
+Scope: actual default-stream allocation observations plus bounded sink writes.
+No continuous capacity guarantee, compound atomic snapshot, quota, post-close
+capacity claim, adversarial ancestor ABA guarantee, complete physical footprint,
+CUDA/cache/import write closure, journal/atomic-staging/result bound or scientific
+admission. Actual anonymous-pipe overflow does not prove shared running worker
+and observer overflow settlement; that integrated lifecycle cut remains OPEN.
+Scientific default guard remains denied. No model/CUDA launch or learning PASS.
+
+Next dependency work remains integrated live overflow settlement and finite
+publication/cache/metadata footprint admission. Preserve original declarations,
+holds, scientific grid, thresholds, seeds, held-out hygiene and resource limits.
+
+Independent terminal closure: code/spec/security APPROVE, architecture CLEAR.
+Both independently verified58 refs,36 reconstructed raw records and exact299
+disjoint regression coverage with prior249 retained. Full verdict/scope recorded
+in results/alc_r0_fixed_d_coordinator_output_capacity_review_20261016.md.
+This closes only the retained-output increment; larger gates above remain OPEN.

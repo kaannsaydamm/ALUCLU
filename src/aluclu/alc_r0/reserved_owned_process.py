@@ -243,9 +243,7 @@ class ReservedOwnedLease:
                 self._before_create()
                 self._check_stop()
                 self._unexpired()
-                _create_suspended(self._command, self._cwd, self._environment, stdin,
-                    self._output.stdout, self._output.stderr, self._deadline,
-                    self._job, self._information)
+                self._create_owned_process(stdin)
             finally:
                 self._output.close_parent_writers()
             created = self._observe_creation_time()
@@ -263,6 +261,16 @@ class ReservedOwnedLease:
     def _observe_creation_time(self):
         """Narrow owned-handle observation boundary, also usable by diagnostics."""
         return _creation_time(self._information.process)
+
+    def _create_owned_process(self, stdin):
+        """Fixed native action; private coordinator observation boundary."""
+        _create_suspended(self._command, self._cwd, self._environment, stdin,
+            self._output.stdout, self._output.stderr, self._deadline,
+            self._job, self._information)
+
+    def _resume_owned_process(self):
+        """Fixed native action; no public backend or callback selection."""
+        _resume(self._information.thread)
 
     def _before_create(self):
         """Private concrete coordinator seam; base remains trusted low-level API."""
@@ -345,7 +353,7 @@ class ReservedOwnedLease:
             self._before_resume()
             self._check_stop()
             self._unexpired()
-            _resume(self._information.thread)
+            self._resume_owned_process()
             resumed = time.monotonic_ns()
             root = sha256_bytes(canonical_json_bytes(dict(schema="alc-r0-owned-resume-v1",
                 identity_receipt_root=self._identity.receipt_root, ready_owner_root=self._ready_root,

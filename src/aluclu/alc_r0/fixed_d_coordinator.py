@@ -25,8 +25,8 @@ from .fixed_d_wire import _bounded_json
 from .deadline_file_lock import deadline_file_lock
 from .reservation_store import ReservationStore
 from .reservation_state import _DIAGNOSTIC_ID
-from .runtime_tree_inventory import RuntimeTreeBounds,_walk,_hash_file
-from .reserved_owned_process import ReservedOwnedLease,OwnedStopSignal,_creation_time
+from .runtime_tree_inventory import RuntimeTreeBounds,_walk,_hash_file,_fingerprint,_kind,_same_open_identity
+from .reserved_owned_process import ReservedOwnedLease,OwnedStopSignal,_creation_time,_LeaseOutputPair
 from .checkpoint_owned_process import _Job,_ProcessInformation,_create_suspended,_resume,OwnedProcessReceipt,_Accounting,_checked
 from .bounded_process_output import BoundedOutputPair
 from .operator_status import decode_operator_status
@@ -40,7 +40,7 @@ _MODULE='aluclu.alc_r0.fixed_d_coordinator'
 _NS=1_000_000_000
 _SCENARIOS=('success','slow-parent','stale-before-create','stale-before-resume','blocked-observer',
     'bootstrap-conflict','bootstrap-wrong-role','busy-revocation','busy-tree-revocation','tree-validation-delay',
-    'actuator-query-denied','actuator-terminate-denied','completion-conflict')
+    'actuator-query-denied','actuator-terminate-denied','completion-conflict','output-capacity-lost')
 
 
 class CoordinatorError(ValueError):
@@ -104,6 +104,157 @@ def _replace(path,value,deadline):
     atomic_write_bytes(path,data)
     _check_deadline(deadline)
     _require(_ancestors(path,deadline)==before,'message namespace changed')
+
+
+class _FileStandardInfo(ctypes.Structure):
+    _fields_=[('allocation',ctypes.c_longlong),('eof',ctypes.c_longlong),
+        ('links',ctypes.c_uint32),('delete_pending',ctypes.c_ubyte),('directory',ctypes.c_ubyte)]
+
+
+class _FileAttributes(ctypes.Structure):
+    _fields_=[('attributes',ctypes.c_uint32),('tag',ctypes.c_uint32)]
+
+
+def _output_native(stream):
+    import msvcrt
+    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+    query=kernel.GetFileInformationByHandleEx
+    query.argtypes=[ctypes.c_void_p,ctypes.c_int,ctypes.c_void_p,ctypes.c_uint32]
+    query.restype=ctypes.c_int
+    handle=msvcrt.get_osfhandle(stream.fileno())
+    standard=_FileStandardInfo(); attributes=_FileAttributes()
+    for kind,value in ((1,standard),(9,attributes)):
+        if not query(handle,kind,ctypes.byref(value),ctypes.sizeof(value)):
+            raise ctypes.WinError(ctypes.get_last_error())
+    _require(not standard.directory and not standard.delete_pending and standard.links==1,
+        'ordinary single-link live output required')
+    _require(not attributes.attributes & (0x200|0x400|0x800),
+        'sparse compressed or reparse output refused')
+    return standard,attributes
+
+
+def _observe_output(stream,path,limit,stage,deadline):
+    _check_deadline(deadline)
+    path=_local_path(path); ancestors=_ancestors(path,deadline)
+    before=_fingerprint(path.lstat()); opened=_fingerprint(os.fstat(stream.fileno()))
+    _require(_kind(path.lstat())=='file' and _same_open_identity(before,opened),
+        'output path/open identity differs')
+    native,attributes=_output_native(stream)
+    _require(limit<=native.allocation<1<<63 and 0<=native.eof<=limit,
+        'output allocation or EOF differs from bounded capacity')
+    if stage in ('before-create','before-resume'):
+        _require(native.eof==0,'suspended output EOF must be zero')
+    _require(_fingerprint(path.lstat())==before and _fingerprint(os.fstat(stream.fileno()))==opened
+        and _ancestors(path,deadline)==ancestors,'output identity changed during observation')
+    _check_deadline(deadline)
+    return dict(stream='stdout' if path.name.endswith('stdout') else 'stderr',path=path.name,
+        limit_bytes=str(limit),allocation_bytes=str(native.allocation),eof_bytes=str(native.eof),
+        links=str(native.links),device=str(opened[1]),inode=str(opened[2]),
+        attributes=str(attributes.attributes),stage=stage,observed_monotonic_ns=str(time.monotonic_ns()))
+
+
+def _allocate_output(stream,path,limit,deadline):
+    _check_deadline(deadline)
+    _require(limit==16384,'fixed diagnostic output capacity required')
+    native,_=_output_native(stream)
+    _require(native.eof==0,'fresh output required before allocation')
+    _set_output_allocation(stream,limit)
+    os.fsync(stream.fileno())
+    return _observe_output(stream,path,limit,'before-create',deadline)
+
+
+def _set_output_allocation(stream,amount):
+    """Fixed native operation on an already owned diagnostic destination."""
+    import msvcrt
+    _require(type(amount) is int and amount in (0,16384),'closed allocation amount required')
+    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+    allocate=kernel.SetFileInformationByHandle
+    allocate.argtypes=[ctypes.c_void_p,ctypes.c_int,ctypes.c_void_p,ctypes.c_uint32]
+    allocate.restype=ctypes.c_int
+    size=ctypes.c_longlong(amount)
+    if not allocate(msvcrt.get_osfhandle(stream.fileno()),5,ctypes.byref(size),ctypes.sizeof(size)):
+        raise ctypes.WinError(ctypes.get_last_error())
+
+
+class _AllocatedOutputs:
+    """Fixed same-destination capacity evidence; existing pump enforces writes."""
+    def __init__(self,*arguments,**keywords):
+        self._allocations={}; self._final_capacity=[]; self._capacity_lock=threading.Lock()
+        self._capacity_secondary=None
+        super().__init__(*arguments,**keywords)
+
+    def _open_destination(self,path):
+        path=_local_path(path)
+        ancestors=_ancestors(path,self._deadline)  # Reject aliases BEFORE file creation/allocation.
+        target=next(item for item in self._streams if item.path==path)
+        stream=super()._open_destination(path)
+        # Retain ownership BEFORE the native allocation can fail. Base partial
+        # acquisition cleanup now owns this destination even on a raised call.
+        target.destination=stream
+        _require(_ancestors(path,self._deadline)==ancestors,'output ancestor changed during creation')
+        row=self._allocate_destination(stream,path,target.limit)
+        self._allocations[stream]=(path,target.limit,(row['device'],row['inode']))
+        return stream
+
+    def _allocate_destination(self,stream,path,limit):
+        """Fixed private acquisition boundary; never a public selected backend."""
+        return _allocate_output(stream,path,limit,self._deadline)
+
+    def capacity_observations(self,stage,deadline):
+        self._owner()
+        _require(stage in ('before-create','before-resume'),'fixed output stage required')
+        rows=[]
+        for item in self._streams:
+            path,limit,identity=self._allocations[item.destination]
+            row=_observe_output(item.destination,path,limit,stage,min(deadline,self._deadline))
+            _require((row['device'],row['inode'])==identity,'retained output identity differs')
+            rows.append(row)
+        return rows
+
+    @property
+    def final_capacity_observations(self):
+        with self._capacity_lock: return tuple(dict(row) for row in self._final_capacity)
+
+    def _close_resource(self,resource):
+        if resource not in self._allocations or resource.closed:
+            return super()._close_resource(resource)
+        path,limit,identity=self._allocations[resource]; failure=None; row=None
+        try:
+            os.fsync(resource.fileno())
+            candidate=_observe_output(resource,path,limit,'before-close',self._deadline)
+            _require((candidate['device'],candidate['inode'])==identity,'final output identity differs')
+            row=candidate  # Publish only after ALL observation checks succeed.
+        except BaseException as error: failure=error
+        try: super()._close_resource(resource)
+        except BaseException as error:
+            if failure is None: failure=error
+            else:
+                with self._capacity_lock:
+                    if self._capacity_secondary is None: self._capacity_secondary=error
+        if row is not None:
+            with self._capacity_lock: self._final_capacity.append(row)
+        if failure is not None: raise failure
+
+
+class _AllocatedOutputPair(_AllocatedOutputs,BoundedOutputPair):
+    """Fixed private observer/diagnostic sink, not a caller-selected backend."""
+
+
+class _AllocatedLeaseOutput(_AllocatedOutputs,_LeaseOutputPair):
+    """Preserves the existing lease-specific partial cleanup deadline."""
+
+
+def _capacity_stage(spec,role,output,stage):
+    rows=output.capacity_observations(stage,spec.useful)
+    _fresh(spec.namespace/f'{role}.output.{stage}.json',dict(domain=_DOMAIN,
+        request_root=spec.request_root,role=role,stage=stage,streams=rows),spec.useful)
+
+
+def _action_observed(spec,role,action,information,started,finished):
+    _fresh(spec.namespace/f'{role}.action.{action}.json',dict(domain=_DOMAIN,
+        request_root=spec.request_root,role=role,action=action,
+        pid=str(information.pid),creation_filetime_100ns=str(_creation_time(information.process)),
+        started_monotonic_ns=str(started),finished_monotonic_ns=str(finished)),spec.useful)
 
 
 def _caller_capacity(root,deadline):
@@ -523,11 +674,28 @@ class _FixedLease(ReservedOwnedLease):
 
     def _before_create(self):
         _verify(self._execution,self)
+        _capacity_stage(self._execution,'work',self._output,'before-create')
 
     def _before_resume(self):
         _verify(self._execution,self)
         _require(self._actuator is not None,'native actuator required before resume')
         self._actuator.check()
+        _capacity_stage(self._execution,'work',self._output,'before-resume')
+
+    def _new_output(self,**arguments):
+        return _AllocatedLeaseOutput(self,**arguments)
+
+    def _create_owned_process(self,stdin):
+        started=time.monotonic_ns()
+        super()._create_owned_process(stdin)
+        finished=time.monotonic_ns()
+        _action_observed(self._execution,'work','create',self._information,started,finished)
+
+    def _resume_owned_process(self):
+        started=time.monotonic_ns()
+        super()._resume_owned_process()
+        finished=time.monotonic_ns()
+        _action_observed(self._execution,'work','resume',self._information,started,finished)
 
     def _close(self):
         import _winapi
@@ -626,14 +794,18 @@ class _Observer:
             self.stack.callback(self.child_channel.close)
             self.channel.setblocking(False)
             self.job=self.stack.enter_context(_Job()); self.job.cleanup_deadline_ns=self.spec.cleanup
-            self.output=self.stack.enter_context(BoundedOutputPair(
+            self.output=self.stack.enter_context(_AllocatedOutputPair(
                 stdout_path=self.spec.namespace/'observer.stdout',stderr_path=self.spec.namespace/'observer.stderr',
                 stdout_limit_bytes=16384,stderr_limit_bytes=16384,cleanup_deadline_ns=self.spec.cleanup))
             stdin=self.stack.enter_context(open(os.devnull,'rb'))
             self.started=time.monotonic_ns(); _verify(self.spec)
+            _capacity_stage(self.spec,'observer',self.output,'before-create')
             try:
+                action_started=time.monotonic_ns()
                 _create_suspended(_command('observer',self.spec),self.spec.namespace,_environment(),stdin,
                     self.output.stdout,self.output.stderr,self.spec.useful,self.job,self.information)
+                action_finished=time.monotonic_ns()
+                _action_observed(self.spec,'observer','create',self.information,action_started,action_finished)
             finally: self.output.close_parent_writers()
             self.creation=_creation_time(self.information.process)
             bootstrap=dict(schema='diagnostic-socket-share-v1',
@@ -646,7 +818,11 @@ class _Observer:
                     diagnostic_fault='exclusive-bootstrap-conflict'),self.spec.useful)
             elif scenario=='bootstrap-wrong-role': bootstrap['role']='worker'
             _fresh(self.spec.namespace/'observer.channel.json',bootstrap,self.spec.useful)
-            _resume(self.information.thread)
+            _capacity_stage(self.spec,'observer',self.output,'before-resume')
+            _check_deadline(self.spec.useful)
+            action_started=time.monotonic_ns(); _resume(self.information.thread)
+            action_finished=time.monotonic_ns()
+            _action_observed(self.spec,'observer','resume',self.information,action_started,action_finished)
             until=min(self.spec.useful,time.monotonic_ns()+2*_NS)
             while not (self.spec.namespace/'observer.ready.json').exists():
                 _require(_winapi.WaitForSingleObject(self.information.process,0)==258,
@@ -1016,6 +1192,14 @@ def _coordinate(namespace,entry,scenario):
                             changed=_read(root/'diagnostic.child.json',spec.useful)
                             changed['request_root']='b'*64
                             _replace(root/'diagnostic.child.json',changed,spec.useful)
+                        if scenario=='output-capacity-lost':
+                            destination=lease._output._streams[0].destination
+                            before,_=_output_native(destination)
+                            _set_output_allocation(destination,0)  # Actual owned native loss, not forged evidence.
+                            after,_=_output_native(destination)
+                            _fresh(root/'work.output.capacity-lost.json',dict(domain=_DOMAIN,
+                                request_root=spec.request_root,before_allocation_bytes=str(before.allocation),
+                                after_allocation_bytes=str(after.allocation)),spec.useful)
                         running=lease.resume_verified(ready.sha256)
                     except BaseException:
                         lease._close_after_failure(); raise
@@ -1135,6 +1319,9 @@ def _coordinate(namespace,entry,scenario):
         _require(work['outputs_closed'],'work outputs still owned')
         _fresh(root/'work.native.json',asdict(terminal.process),spec.cleanup)
         _fresh(root/'observer.native.json',asdict(observer_native),spec.cleanup)
+        _fresh(root/'outputs.capacity.final.json',dict(domain=_DOMAIN,request_root=spec.request_root,
+            streams=[dict(row,role=role) for role,pair in (('work',lease._output),('observer',observer.output))
+                for row in pair.final_capacity_observations]),spec.cleanup)
         charge=dict(domain=_DOMAIN,request_root=spec.request_root,reservation_id='diagnostic-work',
             clock_domain_root=spec.clock,entry_monotonic_ns=str(entry),owned_finished_monotonic_ns=str(finished),
             effective_wall_ns=str(finished-entry),effective_gpu_ns='0')

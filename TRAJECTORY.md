@@ -16049,3 +16049,110 @@ instrumentation through sharedentrypoint, without changing originallimits or
 guard. This turn PROGRESS: priorcheckpointreviewed+remotelypreserved, actualwrite
 paths audited, integratedfootprintdesign reviewed, faithfulTDDRED strengthened
 and independentlyclosed forpreservation. No scientific job/heldout/GPU executed.
+
+REDpreservation committed18e3f65aca68dd115441ce2dc98671bf91692841 and pushed
+existingresearchbranch; git ls-remote independentlymatches exactsha. Productsrc
+unchangedfrom89d9d9d; newtests intentionallyRED/missingimplementation, no expanded
+regressionPASS. Final processinventory shows no currentdiagnostic/runnerPython;
+diffcheckexit0. This postpush outcome note will be included in next checkpoint.
+
+### 2026-10-16 — Actual owned output preallocation implementation (WIP)
+
+Prior goalturn PROGRESS: reviewed/pushed18e3f65 initialRED and accepted design.
+Fullobjective/skill/liveDesktopstate reread, existingtrajectorynote preserved.
+Implement fixed coordinator output mixin over unchanged generic BoundedOutputPair
+and lease-aware _LeaseOutputPair. Fresh destination assigned to existing stream
+ownership BEFORE nativeallocation so basepartialcleanup owns it on failures.
+Win32 FileAllocationInfo5 requests original16KiB capacity on SAMEopenhandle,
+fsync, StandardInfo1/AttributeTagInfo9 readback/EOF0/singlelink/identity checks;
+reject sparse/compressed/reparse. No pad/reopen/truncate or arbitrarybackends.
+Samehandle capacity/identity queried before own create/resume and beforeclose;
+actual cappedpump remains writeenforcement. First observation failure retained
+while destination closure still attempted; secondaryclosure slot bounded.
+Private base nativeaction methods preserve existing fixedcalls/stop/deadline
+checks, enabling coordinator brackets of actualcreate/resume PID+FILETIME.
+Observer equivalent fixed instrumentation; finalfouroutput facts persisted
+before existing charge/held-storage settlement. Generic API behavior unchanged.
+No claims of completephysicalpeak/metadata/cache/journal/resultbound or scientific
+activation. Original1MiB holds/16KiB limits unchanged. Initialfocused run next;
+nativeAPI/partialsetup/preresume-loss negatives still required, no new PASS yet.
+
+Initial3case GREEN personallyverified3/0/0/0 4.713s/native0/root3188/total10/
+active0/no timeout120s. Actualwork+observer fourstreams nativeallocated16KiB,
+sameidentity acrossstages/nativeactionbrackets, realpipeexactlimit+overflow.
+Sourcecode lane approves direction; architectWATCH finds rejected finalrow could
+stillappendafterretainedidentitycheckfails. Add controlledretainedbookkeeping
+mismatch RED (notOSidentitymutation) beforefix. Additionalactualread-onlynative
+allocationdenial/secondsiblingcleanup, sparse+compressedflagsacquisition,
+finalnativeattributechangeclosure and actualpre-resumeallocation-loss path tests
+before connecting privatefixed test seam/closedscenario. InitialGREEN notfinal
+acceptance, fullfootprint/science stillOPEN. Preserve failed artifacts next.
+
+NegativeRED native1/root15116/total13/active0/no timeout,9tests5fail4pass (timeparse
+pending). Finalretainedidentity bookkeeping actuallyreproduced invalidrowpublish;
+othermissingprivatehook/closedroute fail as expected. Correct rowassignment only
+AFTER identityvalidation; nativefinalattribute failure stillcloses ownedhandle.
+Privatefixed allocation boundary permits actualtest-subclass read-only Win32
+denial and actualFSCTL sparse/compressed flags; no publicbackend selection added.
+Closed output-capacity-lost scenario reduces actualsameheldoutput allocation
+16384->0 while work remains suspended; existing before-resume query mustdeny,
+retain READY/consumption/storage anddrainownedprocesses. Nativeamount helper only
+0/16384; no scientificfeature/limit change. Nine-case negativeGREEN next.
+
+FirstnegativeGREEN NOTGREEN:9tests8pass1fail6.110s/native1/root22008/total16/
+active0/no timeout. Actual compressed fixture FSCTL_SET_COMPRESSION failed Win5
+before production rejection: documented read+write handle required; production
+sink intentionallywriteonly xb is sufficient forallocation/query. Fix TEST
+fixture using short-lived owned r+b mutator of samefreshfile, retaining original
+destination/queryhandle. No permissionescalation/skip/thresholdchange orproduct
+bug claim. Preservefailed artifacts; fresh immutableV2 afterfixturechange.
+
+NegativeGREENv2 native0/root12984/total16/active0/no timeout,9selectedPASS
+(timeparsepending). Add actualdirectorysymlink/reparse-ancestor rejection before
+creating any output in target. Existing pathcheck currentlyoccurs afternative
+allocation; newREDmustcatch sideeffectbeforedenial. This is actualownedTEMP
+reparse fixture, no arbitrarycallerbackend. Immutable reparseRED next.
+
+ReparseRED actuallyreproduces undesiredtarget stdoutcreation beforedenial, not
+fixtureprivilegefailure: native1/root28768/total3/active0/no timeout; JUnit1fail.
+Move ordinary-local/ancestor checks BEFORE freshopen/allocation, thenrecheck
+ancestoridentity afteropen whiledestination alreadyownedbyexistingcleanup.
+NegativeGREENv2 personallyparsed9/0/0/0 6.552s. Finalfocusnow10cases including
+actualreparse fixture; fresh finalsource regression required. Native allocation
+facts are point-in-time observations of continuouslyowned destination handles,
+not proof allocation neverchanged between samples or whole-volumephysicalbound.
+Productionxb retained; only compressedtestfixture uses ownedr+b mutator.
+
+2026-10-16 continuation: previous turn was a status refresh, not implementation
+progress. Re-read full objective and code-review skill; exact Desktop checkout
+revalidated, no OneDrive writes. Owner confirms all historical model/CUDA work
+used only this machine RTX4050; testimony establishes scope, NOT measured GPU
+hours/UTC origin or proof of training. No new training permission requested.
+
+Final source unchanged across focused10 and separate regressionA148/B111/C40;
+all failures/errors/skips0, times5.552/92.392/47.724/0.467s. All nativepytest0,
+active0/no timeout/original120s. Fresh collection299 exactdisjoint finalunion299;
+all prior249 retained,10newcapacity cases and40existinggeneric output cases.
+Created immutable output_capacity_evidence manifest:44raw artifacts+14sourcepins,
+currentpins ONLY finalfocus+A/B/C, earlier RED/intermediate versions historical.
+Personally rehashed all58refs and reconstructed all36selected nestedraw UTF8
+records. Initial verifier exposed empty-stderr raw_utf8:null from shell capture;
+normalized that single0-byte record to emptystring, preserved originalemptySHA
+and updated nestedfileSHA to f0a845b1712e9d6ba2fdaac10f6b3aed7864e2f0d26d5c1abf7fcd96a094f4d3.
+No product/test/source change, rerun not required for this capture representation.
+
+Two independent existingGPT6.1 lanes requested terminalclosure on actualdiff+
+finalmanifest/nestedrecords; verdicts pending, no selfapproval. Plan updated with
+actualresults and limits. Nativequery facts are point observations/beforeclose,
+not continuouscapacity/wholephysicalproof. Anonymouspipeoverflow is not proof of
+shared running-worker/observer overflowsettlement: integratedcut OPEN. Global
+researchhistory, finitepublication/staging/cache/metadata/nativeCUDA footprint,
+scientificadmission and actualneurallearning remain OPEN. NoCUDA/model/heldout run.
+
+Independent terminalclosure returned: code/spec/security APPROVE and architecture
+CLEAR for this scoped checkpoint only. Both personallyverified58raw/source refs,
+all36nested reconstructedbytehashes, finalfocus+A/B/C and exactdisjoint299/prior249
+retention; architecture alsoexplicitlychecked11JUnit summaries/native receipt
+representations. Preserved verdicts and strongestresidualcounterargument in
+output_capacity_review_20261016.md. No scientificadmission/wholeprogramPASS.
+Prepare scopedcommit/push, then actual RUNNING overflow lifecycle RED next.
