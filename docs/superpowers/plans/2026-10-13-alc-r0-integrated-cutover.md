@@ -929,3 +929,40 @@ Both independently verified58 refs,36 reconstructed raw records and exact299
 disjoint regression coverage with prior249 retained. Full verdict/scope recorded
 in results/alc_r0_fixed_d_coordinator_output_capacity_review_20261016.md.
 This closes only the retained-output increment; larger gates above remain OPEN.
+
+## RUNNING worker output-overflow integration (WIP, 2026-10-16)
+
+Actual stdout/stderr cap+1 closed CPU fixtures reproduce delayed rejection:
+coordinator active-job polling omitted sink validity while the worker remained
+busy and observer live. RED2fail/0errors/skips (JUnit31.941s) reports original
+deadline timeout despite actual bounded prefixes. Preserve this negative result.
+Minimal fix adds existing lease output check after bridge/stop/original-deadline
+checks, using existing exception cleanup rather than inventing durable settlement.
+Focused GREEN2/0/0/0 (JUnit5.048s) validates actual native role liveness before
+arming, PID/FILETIME/request bindings, exact16KiB prefixes, output-specific early
+denial, both-role cleanup under the same original shared tail, consumed RUNNING
+and full storage holds, and no accepted result. Fresh regressions and independent
+terminal closure remain required. Observer-own-output overflow, durable failed
+execution settlement and broader physical/scientific admission remain OPEN.
+
+Frozen final regressions: separate A150/0/0/0 (84.380s), B111/0/0/0 (55.400s),
+C40/0/0/0 (0.474s), native0/active0/no timeout/original120s. Exact disjoint301
+matches fresh collection301 and retains prior299. Current evidence/source pins
+apply to A/B/C only; focused runner predates added regression modes. Twenty raw
+run artifacts, five source pins and26 selected nested original records retained.
+
+New source-level terminal acceptance gap, independently confirmed but NOT yet
+runtime reproduced: coordinator omits terminal.output.valid acceptance after
+wait_terminal; generic finish can return invalid excess receipt without throwing.
+Quick-exit0 worker with valid child result could bypass active polling. Broad
+output acceptance remains BLOCKED. Next actual terminal-edge stdout/stderr RED
+must force terminal validation rather than live-poll rejection and require denial
+before charge/settlement/accepted result. Observer final output receipt acceptance
+requires a separate check. This does not invalidate narrow RUNNING poll progress.
+
+Independent terminal preservation verdict: code APPROVE / architecture CLEAR
+for demonstrated busy-worker main-poll repair and evidence; architecture BLOCK
+for broad output acceptance until terminal receipt validity is exercised/fixed.
+Both verified25 raw/source references,26 nested byte/hash captures and301 prior299
+retained regression union. See running_output_review_20261016.md. No full gate
+closure, scientific authority or completion inferred from checkpoint preservation.

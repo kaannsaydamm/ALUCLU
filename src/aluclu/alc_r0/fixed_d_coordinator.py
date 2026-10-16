@@ -40,7 +40,8 @@ _MODULE='aluclu.alc_r0.fixed_d_coordinator'
 _NS=1_000_000_000
 _SCENARIOS=('success','slow-parent','stale-before-create','stale-before-resume','blocked-observer',
     'bootstrap-conflict','bootstrap-wrong-role','busy-revocation','busy-tree-revocation','tree-validation-delay',
-    'actuator-query-denied','actuator-terminate-denied','completion-conflict','output-capacity-lost')
+    'actuator-query-denied','actuator-terminate-denied','completion-conflict','output-capacity-lost',
+    'output-overflow-stdout','output-overflow-stderr')
 
 
 class CoordinatorError(ValueError):
@@ -1143,6 +1144,18 @@ def _roles(role,namespace,installation):
             and child_identity['creation_filetime_100ns']==str(_creation_time(descendant._handle)),
             'spawned descendant native identity differs')
     _fresh(root/'child.started.json',dict(domain=_DOMAIN,request_root=request_root,**identity),deadline)
+    if descriptor['scenario'] in ('output-overflow-stdout','output-overflow-stderr'):
+        while not (root/'output.overflow.arm.json').exists():
+            _check_deadline(deadline); time.sleep(.005)
+        # Closed CPU-only fault fixture: real inherited pipe, original cap+1.
+        fd=1 if descriptor['scenario']=='output-overflow-stdout' else 2
+        remaining=b'x'*16384+b'!'
+        while remaining:
+            written=os.write(fd,remaining)
+            _require(written>0,'diagnostic pipe made no write progress')
+            remaining=remaining[written:]
+        while True:
+            _check_deadline(deadline); time.sleep(.01)
     if descriptor['scenario'] in ('blocked-observer','busy-revocation','busy-tree-revocation','tree-validation-delay',
                                 'actuator-query-denied','actuator-terminate-denied'):
         while True:
@@ -1291,8 +1304,22 @@ def _coordinate(namespace,entry,scenario):
                 while not (root/'child.started.json').exists():
                     bridge.check(); _check_deadline(spec.useful); time.sleep(.005)
                 _fresh(root/'observer.block.json',dict(domain=_DOMAIN),spec.useful)
+            if scenario in ('output-overflow-stdout','output-overflow-stderr'):
+                import _winapi
+                while not (root/'child.started.json').exists():
+                    bridge.check(); _check_deadline(spec.useful); time.sleep(.005)
+                work_wait=_winapi.WaitForSingleObject(lease._information.process,0)
+                observer_wait=_winapi.WaitForSingleObject(observer.information.process,0)
+                _require(work_wait==observer_wait==258,'overflow fixture requires both actual roles live')
+                _fresh(root/'output.overflow.arm.json',dict(domain=_DOMAIN,request_root=spec.request_root,
+                    stream=scenario.removeprefix('output-overflow-'),bytes_to_write='16385',
+                    work_pid=str(lease.identity.pid),observer_pid=str(observer.information.pid),
+                    work_creation_filetime_100ns=str(lease.identity.creation_filetime_100ns),
+                    observer_creation_filetime_100ns=str(observer.creation),
+                    work_wait=work_wait,observer_wait=observer_wait,
+                    armed_monotonic_ns=str(time.monotonic_ns())),spec.useful)
             while lease._job.accounting().active_processes:
-                bridge.check(); lease._check_stop(); lease._unexpired(); time.sleep(.005)
+                bridge.check(); lease._check_stop(); lease._unexpired(); lease._check_output(); time.sleep(.005)
             terminal=lease.wait_terminal()
             _require(terminal.process.exit_code==0 and not terminal.process.timed_out,'work terminal failure')
             child=_read(root/'child.result.json',spec.useful)

@@ -11,13 +11,15 @@ from aluclu.alc_r0.checkpoint_owned_process import run_owned_process
 
 def main():
     entry=time.monotonic_ns()
-    if len(sys.argv)!=2 or sys.argv[1] not in ('red','red_v2','red_v3','green','green_v2','green_v3','green_v4','green_v5','green_v6','regression','native_red','native_green','native_green_v2','native_green_v3','native_green_v4','native_green_v5','regression_v2','bootstrap_red','bootstrap_green','regression_v3','busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion','storage_hold_red','storage_hold_green','storage_growth_green','storage_growth_regression','storage_growth_red','storage_growth_green_v2','storage_growth_regression_a','storage_growth_regression_b','output_capacity_red','output_capacity_red_v2','output_capacity_green','output_capacity_negative_red','output_capacity_negative_green','output_capacity_negative_green_v2','output_capacity_reparse_red','output_capacity_final_focus','output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c'): raise ValueError('closed checkpoint only')
+    if len(sys.argv)!=2 or sys.argv[1] not in ('red','red_v2','red_v3','green','green_v2','green_v3','green_v4','green_v5','green_v6','regression','native_red','native_green','native_green_v2','native_green_v3','native_green_v4','native_green_v5','regression_v2','bootstrap_red','bootstrap_green','regression_v3','busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion','storage_hold_red','storage_hold_green','storage_growth_green','storage_growth_regression','storage_growth_red','storage_growth_green_v2','storage_growth_regression_a','storage_growth_regression_b','output_capacity_red','output_capacity_red_v2','output_capacity_green','output_capacity_negative_red','output_capacity_negative_green','output_capacity_negative_green_v2','output_capacity_reparse_red','output_capacity_final_focus','output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c','running_output_red','running_output_green','running_output_regression_a','running_output_regression_b','running_output_regression_c'): raise ValueError('closed checkpoint only')
     cwd=Path(__file__).resolve().parents[1]
     stamp='20261015' if sys.argv[1] in ('busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose') else '20261013'
     if sys.argv[1] in ('query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion'): stamp='20261016'
     if sys.argv[1].startswith('storage_'): stamp='20261016'
     if sys.argv[1].startswith('output_capacity_'): stamp='20261016'
     stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_{stamp}'
+    if sys.argv[1].startswith('running_output_'):
+        stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_20261016'
     paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
     if any(path.exists() for path in paths.values()): raise FileExistsError('immutable evidence exists')
     environment=os.environ.copy()
@@ -87,6 +89,19 @@ def main():
         if sys.argv[1]=='output_capacity_regression_c':
             cases=['tests/test_alc_r0_bounded_process_output.py']
         if sys.argv[1] in ('output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c'):
+            cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('running_output_'):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k','actual_running_output_overflow',
+            '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+        if sys.argv[1]=='running_output_regression_a':
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','tests/test_alc_r0_fixed_d_coordinator.py',
+                'tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py']
+        if sys.argv[1]=='running_output_regression_b':
+            cases=['tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+                'tests/test_alc_r0_status_watch_consumer.py']
+        if sys.argv[1]=='running_output_regression_c':
+            cases=['tests/test_alc_r0_bounded_process_output.py']
+        if sys.argv[1].startswith('running_output_regression_'):
             cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
     result=run_owned_process((sys.executable,'-B','-m','pytest','-q',*cases,'--junitxml='+str(paths['.xml'])),
         cwd=cwd,environment=environment,stdout_path=paths['.stdout.log'],

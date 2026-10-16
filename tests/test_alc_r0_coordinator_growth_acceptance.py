@@ -274,3 +274,42 @@ def test_preallocated_output_reparse_ancestor_denied_before_file_creation(tmp_pa
     with pytest.raises((DRequestFileError,RuntimeInventoryError)):
         with pair: pytest.fail('reparse ancestor must deny before creating output')
     assert not (target/'stdout').exists() and not (target/'stderr').exists()
+
+
+@pytest.mark.parametrize('stream',['stdout','stderr'])
+def test_actual_running_output_overflow_denies_before_timeout_and_retains_holds(tmp_path,stream):
+    namespace=tmp_path/'diagnostic'; namespace.mkdir()
+    receipt=invoke(tmp_path,('diagnostic','output-overflow-'+stream,str(namespace)))
+    assert receipt.exit_code==2 and not receipt.timed_out and receipt.active_processes==0
+    arm=bounded_json(namespace/'output.overflow.arm.json')
+    assert arm['stream']==stream and arm['bytes_to_write']=='16385'
+    assert arm['work_wait']==arm['observer_wait']==258
+    assert (namespace/f'work.{stream}').read_bytes()==b'x'*16384
+    assert (namespace/('work.stderr' if stream=='stdout' else 'work.stdout')).read_bytes()==b''
+    error=(tmp_path/'entry.stderr').read_bytes()
+    assert b'owned output invalid' in error and b'TimeoutError' not in error
+    declaration=bounded_json(namespace/'declaration.json')
+    owner=bounded_json(namespace/'reservations'/'owner.json')
+    snapshot=ReservationStore(namespace/'reservations',(canonical_json_bytes(declaration),)).read(
+        sha256_bytes(canonical_json_bytes(owner))).snapshot
+    # Physical cleanup is not durable execution settlement or permission to retry.
+    assert snapshot.reservations[0].state=='RUNNING'
+    assert snapshot.pending_physical_bytes==snapshot.pending_research_bytes==1<<20
+    assert (namespace/'diagnostic.consumed.json').exists()
+    assert not (namespace/'diagnostic.result.json').exists()
+    assert not (namespace/'child.result.json').exists()
+    request=bounded_json(namespace/'diagnostic.request.json')
+    installation=bounded_json(namespace/'diagnostic.installation.json')
+    cleanup_bounds=[]
+    for role in ('work','observer'):
+        cleanup=bounded_json(namespace/f'{role}.cleanup.native.json')
+        action=bounded_json(namespace/f'{role}.action.resume.json')
+        assert arm[f'{role}_pid']==str(cleanup['receipt']['root_pid'])==action['pid']
+        assert arm[f'{role}_creation_filetime_100ns']==action['creation_filetime_100ns']
+        assert action['request_root']==arm['request_root']==sha256_bytes(canonical_json_bytes(request))
+        assert cleanup['receipt']['active_processes']==0
+        assert int(cleanup['receipt']['finished_ns'])<=int(cleanup['cleanup_deadline_monotonic_ns'])
+        cleanup_bounds.append(int(cleanup['cleanup_deadline_monotonic_ns']))
+    assert cleanup_bounds[0]==cleanup_bounds[1]<=int(installation['cleanup_deadline_monotonic_ns'])
+    work_cleanup=bounded_json(namespace/'work.cleanup.native.json')
+    assert int(work_cleanup['receipt']['finished_ns'])<int(request['useful_deadline_monotonic_ns'])

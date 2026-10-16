@@ -1,0 +1,214 @@
+{
+  "records": [
+    {
+      "raw_utf8": "alc-r0 coordinator denied: RuntimeError: owned output invalid before launch acknowledgment\r\n",
+      "byte_length": 92,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "382c2edeac49bfa983da58f7d808147c3d7cd006e89a308c0deebb1794f38396",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\entry.stderr",
+      "relative_path": "entry.stderr"
+    },
+    {
+      "raw_utf8": "{\"armed_monotonic_ns\":\"69051843000000\",\"bytes_to_write\":\"16385\",\"domain\":\"diagnostic-only\",\"observer_creation_filetime_100ns\":\"134366224143811315\",\"observer_pid\":\"20532\",\"observer_wait\":258,\"request_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"stream\":\"stdout\",\"work_creation_filetime_100ns\":\"134366224137467988\",\"work_pid\":\"33232\",\"work_wait\":258}",
+      "byte_length": 377,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "da23c178d9b4ea024feddc45f69f43553d8fae47dd3031554c83f9505563d93c",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\output.overflow.arm.json",
+      "relative_path": "diagnostic/output.overflow.arm.json"
+    },
+    {
+      "raw_utf8": "{\"clock_domain_root\":\"8304893ebee850f95815534422259b40ae9f13e42632d489c41f92c2bfc35c00\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69049796000000\",\"generation_root\":\"8c14add02c2541c656a58fe569152656ba52bc4d20e213f3a80c1267084a111d\",\"installation_root\":\"0ff803f2d0f14ec4a5df60c56ca303e71874755285ca4505422a848801e75b53\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-250\\\\test_actual_running_output_ove0\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"69064796000000\"}",
+      "byte_length": 624,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\diagnostic.request.json",
+      "relative_path": "diagnostic/diagnostic.request.json"
+    },
+    {
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69074796000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69049796000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-250\\\\test_actual_running_output_ove0\\\\diagnostic\",\"scenario\":\"output-overflow-stdout\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"69064796000000\"}",
+      "byte_length": 371,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "0ff803f2d0f14ec4a5df60c56ca303e71874755285ca4505422a848801e75b53",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\diagnostic.installation.json",
+      "relative_path": "diagnostic/diagnostic.installation.json"
+    },
+    {
+      "raw_utf8": "{\"action\":\"resume\",\"creation_filetime_100ns\":\"134366224137467988\",\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"69051453000000\",\"pid\":\"33232\",\"request_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"role\":\"work\",\"started_monotonic_ns\":\"69051453000000\"}",
+      "byte_length": 284,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "6c6ddd2cac64b703220f599ea50451efbb8e83e05bfd24aa267bf96f50c008dc",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\work.action.resume.json",
+      "relative_path": "diagnostic/work.action.resume.json"
+    },
+    {
+      "raw_utf8": "{\"action\":\"resume\",\"creation_filetime_100ns\":\"134366224143811315\",\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"69050984000000\",\"pid\":\"20532\",\"request_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"role\":\"observer\",\"started_monotonic_ns\":\"69050984000000\"}",
+      "byte_length": 288,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "d1d1cad65a1eb93806330a68b8f42767522d962d2c9d0f8afe1fa242933f8164",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\observer.action.resume.json",
+      "relative_path": "diagnostic/observer.action.resume.json"
+    },
+    {
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69061875000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":69051875000000,\"kernel_time_100ns\":2031250,\"root_pid\":33232,\"started_ns\":69050265000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1250000}}",
+      "byte_length": 306,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "f6cc7675bdec48e8f251574850c8289456e73af990e41a5059d55947eb393867",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\work.cleanup.native.json",
+      "relative_path": "diagnostic/work.cleanup.native.json"
+    },
+    {
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69061875000000\",\"domain\":\"diagnostic-only\",\"forced\":false,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":2,\"finished_ns\":69051968000000,\"kernel_time_100ns\":1562500,\"root_pid\":20532,\"started_ns\":69050890000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1718750},\"surplus_socket_closed\":true}",
+      "byte_length": 362,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "8749f6fdd7e989b3e31541048a7ec4738b6a7b8c8a3f0e7516668db75713dfef",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\observer.cleanup.native.json",
+      "relative_path": "diagnostic/observer.cleanup.native.json"
+    },
+    {
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"declaration_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"domain\":\"diagnostic-only\",\"request_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\"}",
+      "byte_length": 320,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "de6e5eae300ee5112c1692098d6d43ad0b5377d600499180d59029d4d6b07a4f",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\diagnostic.consumed.json",
+      "relative_path": "diagnostic/diagnostic.consumed.json"
+    },
+    {
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"charge_envelope_ns\":\"25000000000\",\"cleanup_ceiling_ns\":\"10000000000\",\"declaration_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"device\":\"cpu\",\"experiment_id\":\"alc-r0-smollm2-135m-v1\",\"gpu_reservation_ns\":\"0\",\"physical_growth_bytes\":\"1048576\",\"research_growth_bytes\":\"1048576\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\",\"stderr_limit_bytes\":\"16384\",\"stdout_limit_bytes\":\"16384\",\"useful_wall_ceiling_ns\":\"15000000000\"}",
+      "byte_length": 527,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "c26e76add9e413a35bb6ed73f9a1c8499ee3bdfaf9d95074ef68569ec00bb759",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\declaration.json",
+      "relative_path": "diagnostic/declaration.json"
+    },
+    {
+      "raw_utf8": "{\"declaration_genesis_root\":\"f13545dc3e805add9ed9bc3f1fa5e6c4cc2bde0f42c8dd5b252b5644207f5996\",\"generation\":\"4\",\"journal_head\":{\"byte_length\":2492,\"count\":4,\"digest\":\"113d6d7a355f6165b6a8c8351229ec3672eee4fd2de268328e93c2a5472d719d\"},\"previous_owner_root\":\"66419fa1647f2fd9b1646de87379a51523f9b7a6cb068d43fb05ab6009d47360\",\"reservation_root\":\"ad2d47b51eb1a302f798130120c8cb80ed211197c4ea2695fd473de8ea9acfab\",\"review_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"schema\":\"alc-r0-reservation-owner-v1\"}",
+      "byte_length": 529,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "fcc5bf032e876cf42c45cbe6979386f7c922e8b6418c0cd346503b7defb4e8c5",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\reservations\\owner.json",
+      "relative_path": "diagnostic/reservations/owner.json"
+    },
+    {
+      "raw_utf8": "{\"event\":{\"clock_domain_root\":\"8304893ebee850f95815534422259b40ae9f13e42632d489c41f92c2bfc35c00\",\"declaration_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"entry_monotonic_ns\":\"69049796000000\",\"entry_utc_ns\":\"1792148813490316900\",\"evidence_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"kind\":\"reserve\",\"previous_root\":\"f13545dc3e805add9ed9bc3f1fa5e6c4cc2bde0f42c8dd5b252b5644207f5996\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"1\",\"useful_deadline_monotonic_ns\":\"69064796000000\"},\"journal_id\":\"f13545dc3e805add9ed9bc3f1fa5e6c4cc2bde0f42c8dd5b252b5644207f5996\",\"previous\":\"922a9e87664217db92f483480ff5df865961c22c868abc714f336022a1a25402\",\"sequence\":1,\"version\":1}\n{\"event\":{\"creation_filetime_100ns\":\"134366224137467988\",\"evidence_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"identity_receipt_root\":\"3c50d7660fc991fef2217819329505c780904b2e39d2298e38571c4f07eb6f86\",\"kind\":\"child_created\",\"owner_nonce\":\"3302819a0bfe938b650970c2dd9b4a4e\",\"pid\":\"33232\",\"previous_root\":\"6b6d4aeb9a29f8d0b383d953195b1c0c2fac0761c541225efa11b43bbc9ffd10\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"2\"},\"journal_id\":\"f13545dc3e805add9ed9bc3f1fa5e6c4cc2bde0f42c8dd5b252b5644207f5996\",\"previous\":\"5d7120eb6a9f11f307b9982103a19ec4909c44b81043cb5a1f85376f308ee30a\",\"sequence\":2,\"version\":1}\n{\"event\":{\"evidence_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"identity_receipt_root\":\"3c50d7660fc991fef2217819329505c780904b2e39d2298e38571c4f07eb6f86\",\"kind\":\"identity_published\",\"previous_root\":\"5c73d31ca994e3712770fdae9e42f271c6b45f6ff6ce65bc719d01ff627a9b4b\",\"publication_root\":\"47ef09f3242b722e6b63cb6c8f03d3c2ecea3b2b164db2c2c1be9f0433c8ab1c\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"3\"},\"journal_id\":\"f13545dc3e805add9ed9bc3f1fa5e6c4cc2bde0f42c8dd5b252b5644207f5996\",\"previous\":\"0a0730cc66d653816dd2f5b8d2c754c5d35150c59bcf486b9ca63054566dd1fc\",\"sequence\":3,\"version\":1}\n{\"event\":{\"evidence_root\":\"32c34317e91dfe9fea40826c052df4a4aa24135d2ea7d915586b38a5e16a02c1\",\"kind\":\"running\",\"previous_root\":\"dee5d2b9f231441690a2f6e6b7aa92a81d968daa4901fdb57c5ff16cfd1c0a24\",\"reservation_id\":\"diagnostic-work\",\"resume_receipt_root\":\"cf6f42314a8805809d318f62d14b91a1f2936512f4608cf6323207e79f5aa841\",\"sequence\":\"4\"},\"journal_id\":\"f13545dc3e805add9ed9bc3f1fa5e6c4cc2bde0f42c8dd5b252b5644207f5996\",\"previous\":\"a675742f4d13bb647fd4fca24dab833fc05d78bfc1979c167d32d9b1b3701698\",\"sequence\":4,\"version\":1}\n",
+      "byte_length": 2492,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "5872f390756c6b0f20a7eda9d538ce758e57785bc87444be6dc1eb7676e715f0",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\reservations\\journal.jsonl",
+      "relative_path": "diagnostic/reservations/journal.jsonl"
+    },
+    {
+      "raw_utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"69051968000000\",\"observations\":[{\"observed_monotonic_ns\":\"69051359000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"69051359000000\",\"submitted_monotonic_ns\":\"69051359000000\"},{\"observed_monotonic_ns\":\"69051625000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"69051609000000\",\"submitted_monotonic_ns\":\"69051625000000\"},{\"observed_monotonic_ns\":\"69051875000000\",\"sequence\":\"3\",\"started_monotonic_ns\":\"69051875000000\",\"submitted_monotonic_ns\":\"69051875000000\"}],\"operational_error\":null,\"socket_closed\":true,\"thread_alive\":false}",
+      "byte_length": 587,
+      "test": "test_actual_running_output_ove0",
+      "sha256": "0c04c1874b4b9044b58fc3b2441e4e5ede7526b5be6c7bb177758f92ae650d9c",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove0\\diagnostic\\observer.bridge.json",
+      "relative_path": "diagnostic/observer.bridge.json"
+    },
+    {
+      "raw_utf8": "alc-r0 coordinator denied: RuntimeError: owned output invalid before launch acknowledgment\r\n",
+      "byte_length": 92,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "382c2edeac49bfa983da58f7d808147c3d7cd006e89a308c0deebb1794f38396",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\entry.stderr",
+      "relative_path": "entry.stderr"
+    },
+    {
+      "raw_utf8": "{\"armed_monotonic_ns\":\"69054453000000\",\"bytes_to_write\":\"16385\",\"domain\":\"diagnostic-only\",\"observer_creation_filetime_100ns\":\"134366224170523941\",\"observer_pid\":\"22256\",\"observer_wait\":258,\"request_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"stream\":\"stderr\",\"work_creation_filetime_100ns\":\"134366224164462340\",\"work_pid\":\"7384\",\"work_wait\":258}",
+      "byte_length": 376,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "ab3342af8ee65ef6d9e2f343c18fb7149a91ec13b614e338ec4a4eb2c7d2fe7f",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\output.overflow.arm.json",
+      "relative_path": "diagnostic/output.overflow.arm.json"
+    },
+    {
+      "raw_utf8": "{\"clock_domain_root\":\"135f1508f78e47db1b3e7d32b4eeeb36ca42de6ecc90a82a11170f5b9034e92f\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69052515000000\",\"generation_root\":\"1d3711cfb9fa1f7cf833247f5d7f52eb211a1c612f9cf0532cb5309ae441bb89\",\"installation_root\":\"62c9e0f2f4d85de0bcc64888b77316d84dbda7380f2d4f2be0f21955633aebfa\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-250\\\\test_actual_running_output_ove1\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"69067515000000\"}",
+      "byte_length": 624,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\diagnostic.request.json",
+      "relative_path": "diagnostic/diagnostic.request.json"
+    },
+    {
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69077515000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69052515000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-250\\\\test_actual_running_output_ove1\\\\diagnostic\",\"scenario\":\"output-overflow-stderr\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"69067515000000\"}",
+      "byte_length": 371,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "62c9e0f2f4d85de0bcc64888b77316d84dbda7380f2d4f2be0f21955633aebfa",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\diagnostic.installation.json",
+      "relative_path": "diagnostic/diagnostic.installation.json"
+    },
+    {
+      "raw_utf8": "{\"action\":\"resume\",\"creation_filetime_100ns\":\"134366224164462340\",\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"69054046000000\",\"pid\":\"7384\",\"request_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"role\":\"work\",\"started_monotonic_ns\":\"69054046000000\"}",
+      "byte_length": 283,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "32b79a7b66c00c29b0b8c3117c8feb143f201f6fe0fcc9a76395d2fac74ff352",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\work.action.resume.json",
+      "relative_path": "diagnostic/work.action.resume.json"
+    },
+    {
+      "raw_utf8": "{\"action\":\"resume\",\"creation_filetime_100ns\":\"134366224170523941\",\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"69053640000000\",\"pid\":\"22256\",\"request_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"role\":\"observer\",\"started_monotonic_ns\":\"69053640000000\"}",
+      "byte_length": 288,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "c7d3c975a7771449d4ed722b82f4a31af202acf90ce8f0d9ceaed631b25caa93",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\observer.action.resume.json",
+      "relative_path": "diagnostic/observer.action.resume.json"
+    },
+    {
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69064453000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":69054468000000,\"kernel_time_100ns\":2031250,\"root_pid\":7384,\"started_ns\":69052968000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":937500}}",
+      "byte_length": 304,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "b04fe4a9f60bbb3f6bc326d1ca7f3da0a11e5213fccc49695440c6d100362f7f",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\work.cleanup.native.json",
+      "relative_path": "diagnostic/work.cleanup.native.json"
+    },
+    {
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69064453000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":69054531000000,\"kernel_time_100ns\":1875000,\"root_pid\":22256,\"started_ns\":69053578000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1562500},\"surplus_socket_closed\":true}",
+      "byte_length": 363,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "2a1b8b53b2b66aaf5b89f15f5c38deb5c4445b22f14d41668a8d47612185cf5c",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\observer.cleanup.native.json",
+      "relative_path": "diagnostic/observer.cleanup.native.json"
+    },
+    {
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"declaration_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"domain\":\"diagnostic-only\",\"request_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\"}",
+      "byte_length": 320,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "09516492bf6cf08d9c2f43407eaf40a730f675998a3d3570fb5334df604c3b6e",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\diagnostic.consumed.json",
+      "relative_path": "diagnostic/diagnostic.consumed.json"
+    },
+    {
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"charge_envelope_ns\":\"25000000000\",\"cleanup_ceiling_ns\":\"10000000000\",\"declaration_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"device\":\"cpu\",\"experiment_id\":\"alc-r0-smollm2-135m-v1\",\"gpu_reservation_ns\":\"0\",\"physical_growth_bytes\":\"1048576\",\"research_growth_bytes\":\"1048576\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\",\"stderr_limit_bytes\":\"16384\",\"stdout_limit_bytes\":\"16384\",\"useful_wall_ceiling_ns\":\"15000000000\"}",
+      "byte_length": 527,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "b236f6b67f40a13f69fcb06c6f296792217eb6540c3f31724e33799b1b115290",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\declaration.json",
+      "relative_path": "diagnostic/declaration.json"
+    },
+    {
+      "raw_utf8": "{\"declaration_genesis_root\":\"4091a8c93d86624bdfbdaf3bba847aa421ed467d8b9bb5bbce956716bf17a62d\",\"generation\":\"4\",\"journal_head\":{\"byte_length\":2491,\"count\":4,\"digest\":\"fa0cabc188f3a0fa33abcdc7ffb7a68ffe879be5673022593b69487d05a02d1a\"},\"previous_owner_root\":\"6fa6b57ffc7fe078ea8b2e737048e26d25f7d7cfe3f9771f013e3a9618d82c1c\",\"reservation_root\":\"f97067ba5ea0a65e6d16fce97860ab6d95d2ce1d8f79f61d61a4e5f4ddc25a8a\",\"review_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"schema\":\"alc-r0-reservation-owner-v1\"}",
+      "byte_length": 529,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "ea2f8e7ad78d87e78a50c37efffe29f689ef0f556b194fdda84de1d14d4bf9f7",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\reservations\\owner.json",
+      "relative_path": "diagnostic/reservations/owner.json"
+    },
+    {
+      "raw_utf8": "{\"event\":{\"clock_domain_root\":\"135f1508f78e47db1b3e7d32b4eeeb36ca42de6ecc90a82a11170f5b9034e92f\",\"declaration_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"entry_monotonic_ns\":\"69052515000000\",\"entry_utc_ns\":\"1792148816163773200\",\"evidence_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"kind\":\"reserve\",\"previous_root\":\"4091a8c93d86624bdfbdaf3bba847aa421ed467d8b9bb5bbce956716bf17a62d\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"1\",\"useful_deadline_monotonic_ns\":\"69067515000000\"},\"journal_id\":\"4091a8c93d86624bdfbdaf3bba847aa421ed467d8b9bb5bbce956716bf17a62d\",\"previous\":\"2621259b3489fe223d23d5685e1f74f32253e2c3780882a7e95d30ceec37ff45\",\"sequence\":1,\"version\":1}\n{\"event\":{\"creation_filetime_100ns\":\"134366224164462340\",\"evidence_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"identity_receipt_root\":\"c044921f2ec7b36f50b8a9ea996621a0eba9337f3667ec8c6c53713db99dd9d8\",\"kind\":\"child_created\",\"owner_nonce\":\"a74a0b52cdbec53efeba40d7fe0227c3\",\"pid\":\"7384\",\"previous_root\":\"1892cc4110064cd91966dd0d1528d7fa6fc150104c7f2417996fe587d752b20f\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"2\"},\"journal_id\":\"4091a8c93d86624bdfbdaf3bba847aa421ed467d8b9bb5bbce956716bf17a62d\",\"previous\":\"12f719bf4b5de7b670a8e7a36ac1b97ccd243da7966c14394acbb21059ee81f7\",\"sequence\":2,\"version\":1}\n{\"event\":{\"evidence_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"identity_receipt_root\":\"c044921f2ec7b36f50b8a9ea996621a0eba9337f3667ec8c6c53713db99dd9d8\",\"kind\":\"identity_published\",\"previous_root\":\"5e3a1aa5ab5587ef7a840f96c9d0e898fccbd41b9bdf294829b0e1c76d6da0d3\",\"publication_root\":\"8f72d31ddd3ed0610033cea8f488d0e153bf89bf457b07fc205a0ab9dfc8a278\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"3\"},\"journal_id\":\"4091a8c93d86624bdfbdaf3bba847aa421ed467d8b9bb5bbce956716bf17a62d\",\"previous\":\"fcd33d10712ea6a8f8dea2263cf96a123edbb7cad1d27eb38739b10482e4dfbf\",\"sequence\":3,\"version\":1}\n{\"event\":{\"evidence_root\":\"4129e0f29ce9d9ab1bf2453225a599dfcd51c9491f45c2abe84f0e993f6240a3\",\"kind\":\"running\",\"previous_root\":\"b963d1d49c7ea018216a7da6c74e483e0d4824a0b79713d183e4a3288b56f830\",\"reservation_id\":\"diagnostic-work\",\"resume_receipt_root\":\"be439c86be11fa22e5c0adae3d430642d9363800def412f9ae3a2d241ea76b9d\",\"sequence\":\"4\"},\"journal_id\":\"4091a8c93d86624bdfbdaf3bba847aa421ed467d8b9bb5bbce956716bf17a62d\",\"previous\":\"439a1900ebec2179504cc34762bfa940708c10902ce6d198ef6283cb311c745c\",\"sequence\":4,\"version\":1}\n",
+      "byte_length": 2491,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "2469424c5e971aab15bece4c68deef8ec780459f3d415aa44864e911d4ec997e",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\reservations\\journal.jsonl",
+      "relative_path": "diagnostic/reservations/journal.jsonl"
+    },
+    {
+      "raw_utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"69054531000000\",\"observations\":[{\"observed_monotonic_ns\":\"69053953000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"69053953000000\",\"submitted_monotonic_ns\":\"69053968000000\"},{\"observed_monotonic_ns\":\"69054218000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"69054203000000\",\"submitted_monotonic_ns\":\"69054218000000\"},{\"observed_monotonic_ns\":\"69054468000000\",\"sequence\":\"3\",\"started_monotonic_ns\":\"69054468000000\",\"submitted_monotonic_ns\":\"69054468000000\"}],\"operational_error\":null,\"socket_closed\":true,\"thread_alive\":false}",
+      "byte_length": 587,
+      "test": "test_actual_running_output_ove1",
+      "sha256": "b90fe7b738d3615aaf2a01464ccbe4cd1324ad311ff62222b41bb527155bfbb2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-250\\test_actual_running_output_ove1\\diagnostic\\observer.bridge.json",
+      "relative_path": "diagnostic/observer.bridge.json"
+    }
+  ],
+  "source_mode": "running_output_regression_a",
+  "schema": "alc-r0-running-output-nested-v1"
+}

@@ -16156,3 +16156,65 @@ retention; architecture alsoexplicitlychecked11JUnit summaries/native receipt
 representations. Preserved verdicts and strongestresidualcounterargument in
 output_capacity_review_20261016.md. No scientificadmission/wholeprogramPASS.
 Prepare scopedcommit/push, then actual RUNNING overflow lifecycle RED next.
+
+Scoped retainedoutput checkpoint committed50337498295c19ce10c6304f487f5acd4d8c3f67;
+push succeeded and remote ref independentlymatches. Nextactual RUNNING overflow
+fixture added as two CLOSED CPUdiagnostic scenarios stdout/stderr: realworker
+waitsforparentarm, parentrecords actualbothrolesnative live waits258, thenworker
+writes original16384cap+1 to actualinheritedpipe andremainsbusy. No scientific
+backend/callback/limitschange. Twoacceptancecases require output-specific early
+denial beforeoriginalusefuldeadline, boundedexactprefix, actualbothrolecleanup,
+RUNNING/consumption/full1MiBholds retained and noacceptedresult. This does NOT
+claim durablefailedexecution settlement. Currentcoordinatorpollstillignoresoutput;
+RED runnext, nofixorPASS yet. Newimmutablerunner modes retainoriginal120s bound.
+
+ActualrunningoverflowRED terminal:2tests2fail/0errors/0skips, JUnit31.941s;
+stdout32.61s is sessionwallsummary notJUnit. Nativeexit1/root21408/total17/
+active0/no timeout120s. Both exact16KiBprefixes andbothroleslivearm verified
+beforeassertionfailed: coordinatorreported TimeoutError originalreservation
+deadlineexpired instead ofoutputinvalid. XMLSHA502df8b5f863557ee6e1799da073ee203da6714995a7e57a2cc38eb910e6143f.
+ArchitectureCLEAR for scopeddesign/minimalfix: activejobpollmissesoutputchecks;
+existingterminalwaitcannotserviceoverflowwhilechildremainsbusy. Preservebridge,
+stop, originaldeadlineprecedence; addlease._check_output afterthosechecks, letting
+existingexceptioncleanupdrain withoutfake durable settlement. Strengthenarm
+PID/creationFILETIME/nativeaction/request correspondence andbothroles same
+originalsharedcleanuptail. Observer-own-outputoverflow remainsseparateOPEN.
+Appliedminimalpollfix andstrongeracceptance; immutableGREEN next, noPASSyet.
+
+ActualrunningoverflowGREEN terminal2/0/0/0 JUnit5.048s (stdoutsession5.31s),
+nativeexit0/root20124/total17/active0/no timeout120s; XMLSHAae05f25549622d9319c439c9ae0bd9758197758b3fde5f931fc34ef02373471c.
+Bothactualpipeprefixes exactly16KiB; specificoutputinvalidratherthantimeout;
+armPID+FILETIME/nativeactions/requestrootmatch; bothrolecleanupobservedunder
+sameoriginalsharedtail andworkfinishbeforeoriginalusefuldeadline; fullholds/
+consumption/RUNNINGretained/noacceptedresult. Runneronlymodifiedafterfocus toadd
+disjointregressionA/B/C modes; product+testsunchanged. FreshregressionA currently
+owned session71003, B/Cpending. Existingcode/securitylane reviewingread-only;
+nofinalclosureclaim, noobserver-outputcoverage/failedsettlement/sciencePASS.
+
+Fresh frozenregressions terminal A150/0/0/0 84.380s/root25632/total162,
+B111/0/0/0 55.400s/root13588/total115,C40/0/0/0 .474s/root27344/total3;
+allnativeexit0/active0/no timeout/original120s. Exactdisjoint301 retainsprior299;
+freshcollectonly301/exit0 alsoexactmatches. Created running_output_evidence
+manifest20rawrefs+5sourcepins+1nestedpackage,26actualAoriginalrawUTF8captures
+personallyreconstructedhashed. CurrentpinsA/B/C ONLY; focusrunnerpredatesnewmodes.
+
+Duringinspection found additionalterminaledge, independentlyconfirmed bycode
+lane: coordinatorchecks nativeexit/timeout butnot terminal.output.valid;
+genericfinishreturnsinvalidreceipt forexcesswithoutthrow, contextclose doesnot
+rejectthatvalidityflag. Quick-exit0withchildresult maybypasslivepollcheck.
+This is source-controlflowpossibility NOTruntimeproofyet. Broadoutputacceptance
+BLOCKED; nextactualquick-exitstdout/stderr RED mustforce terminalvalidation (not
+merelyrediscoveractivepoll), preservezeroexit/childresult andassertdenialbefore
+charge/settlement/acceptedresult. ObserverfinaloutputvalidityseparateOPEN.
+Existingbusyworkerfixis scopedprogress, notthisedgefix orwholegatePASS.
+Bothindependentlanes requestedfinalmanifestpreservationreview withthislimitation.
+
+Independent finalpreservationcodeAPPROVE/architectureCLEAR scopedbusyworkerfix;
+bothverify25raw/source refs and26nestedrawrecords, finaldisjoint301/prior299.
+Architecture explicitlyBLOCKS broaderoutputgate terminalvalidityomission, not
+this demonstratedincrement. Savedexactscope/verdict/nextRED inrunning_output_review.
+Authorfresh301collectionaddition afterreview is separatelyattributed, notclaiming
+bothreviewersrerancollection. Preservecurrentcheckpointcommit/push withoutclosing
+broadgate. Nextactualquickterminaloverflowfixture+RED thenminimalterminalreceipt
+acceptancefix; observer-output/busyparentindependentcancel/failedsettlement/whole
+physicalprojection/scientificactivation remainOPEN. NoCUDA/model/heldoutwork.
