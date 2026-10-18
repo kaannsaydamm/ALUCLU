@@ -1,0 +1,16 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 34 items / 27 deselected / 7 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_reader_rejects_partially_visible_final PASSED [ 14%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_native_rename_cannot_overwrite PASSED [ 28%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_atomic_marker_is_complete_and_stage_consumed PASSED [ 42%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_existing_final[] PASSED [ 57%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_existing_final[corrupt] PASSED [ 71%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_existing_final[{"domain":"diagnostic-only"}] PASSED [ 85%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_conflicting_stage PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_stop_publication_green_20261018.xml -
+====================== 7 passed, 27 deselected in 6.55s =======================

@@ -966,3 +966,44 @@ for broad output acceptance until terminal receipt validity is exercised/fixed.
 Both verified25 raw/source references,26 nested byte/hash captures and301 prior299
 retained regression union. See running_output_review_20261016.md. No full gate
 closure, scientific authority or completion inferred from checkpoint preservation.
+
+## Terminal-output acceptance and stop publication — incomplete checkpoint, 2026-10-18
+
+Actual worker quick-terminal RED v2 reproduced both stdout/stderr excess being
+accepted despite real closed EOF output receipt valid=False and native exit0.
+First RED was a diagnostic tuple/list JSON readback failure, not causal evidence.
+Worker guard now requires terminal.output.valid before child acceptance/charge/
+settlement. Historical four-case GREEN:4/0/0/0, JUnit10.520s.
+
+Observer has the symmetric terminal receipt guard after actual sink finish and
+before returning successful native completion. Initial observer RED has one
+causal stderr-overflow acceptance; first3 failures were earlier deadline denials.
+First observer GREEN:2pass2fail59.946s, earlier paths rather than terminal guard.
+Strict stop reader plus directly exposed xb final marker admitted a source-level
+partial-publication race. Historical failure attribution remains unproven.
+Fixed private same-directory stage is fully written/fsynced/read back before
+native Windows no-overwrite rename, with original deadline, ancestor/identity/
+canonical readback checks. No overwrite/delete/retry/reuse; malformed reader
+still denies. Actual seven protocol cases GREEN7/0/0/0 4.925s; subsequent observer
+exact/overflow stdout/stderr GREEN4/0/0/0 33.564s. These are focused results only.
+
+Final regression remains NOT PASS. Twelve smaller closed batches planned with
+original120s ownership bound; exact AST function selectors retain all parameters.
+First13-case growth batch timed out124/active0 after120s, no JUnit. Console shows
+8pass/3fail/1begun/1notbegun, not terminal JUnit counts. Three completed failures
+did not reach intended terminal gates: two original deadline/owned-stop paths and
+one observer bridge/EOF path. Remaining11 batches did not run. Smaller batching
+alone cannot address these earlier failures; diagnose cause before rerunning.
+
+Fresh full eight-module collection316/exit0 retains all prior301 plus15 new cases;
+this is collection, NOT316 passing regressions or a full repository suite.
+results/alc_r0_fixed_d_coordinator_terminal_checkpoint_evidence_20261018.json
+preserves35 run artifacts,3 final source pins,3 nested packages/46 selected raw
+records. Current pins apply only to final failed batch, not historical focused
+snapshots. Original scientific grid/limits/seeds/held-out hygiene unchanged.
+
+Source/design lanes found no new blocker in the two final receipt guards or
+stop-only publication contract, but test/evidence closure remains incomplete.
+No general output admission, crash durability, adversarial namespace proof,
+busy-parent independent output cancellation, failed settlement, complete physical
+cache/journal/staging footprint or scientific/learning PASS follows.

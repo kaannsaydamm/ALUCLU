@@ -16218,3 +16218,131 @@ bothreviewersrerancollection. Preservecurrentcheckpointcommit/push withoutclosin
 broadgate. Nextactualquickterminaloverflowfixture+RED thenminimalterminalreceipt
 acceptancefix; observer-output/busyparentindependentcancel/failedsettlement/whole
 physicalprojection/scientificactivation remainOPEN. NoCUDA/model/heldoutwork.
+
+2026-10-16 nextgoalturn: prior progress5033749+6eb88e0 confirmedcleanDesktopHEAD,
+fullobjective/code-reviewskill reread. ActualquickterminalTDD design architectCLEAR
+withcausalsafeguards. AddfourclosedCPUfixturesexact/overflow stdout/stderr. Parent
+armsafterbothrolesactualnative live, waitsrealjobempty/rootwait0/exit0 while
+servicingbridge/stop/originaldeadline, deliberatelynooutputcheck ONLYnamedclosed
+schedulingfixture. Normalactivepoll+realwait_terminal follow; captureactualsink
+receipt afterfinish. Assertactualarm/gate/action/child/terminalrequest+PID+FILETIME,
+EOF/received/persisted/excess/valid/closure; overflowmustdenybeforecharge/settle/
+acceptedresult but validchildresult legitimatelyexists. Exactcontrols mustaccept.
+No productvalidityfixyet; initialimmutableterminal_output_RED next. NoGPU/science.
+
+FirstterminalRED NOTcausalproductreproducer:4fail, native1/root6072/total31/
+active0/notimeout120s. Actualterminalrecordswriteoccurred, but `_fresh` readback
+comparesoriginalobject; asdictoutputfailure_kinds tuples become JSONlists and
+cause publicationreadbackdiffers beforeproductacceptance. This is diagnostic
+capturefixturebug, notproofofterminalacceptance. Normalize capturedreceipt through
+canonicalJSONroundtrip (unchangedbyte/receiptsemantics), preservefailedartifacts;
+immutableREDv2 next withproductvaliditystillunchecked. No thresholdchange/skip.
+
+REDv2 actualcausalbug reproduced:4cases2exactPASS/2overflowFAIL, nativeexit1/
+root32208/total31/active0/no timeout120s. Overflowactualrootexit0/jobempty;
+realterminalreceipt EOF/closed/received16385/persisted16384/excessTrue/validFalse,
+yet coordinatorreturned0 andwrote success+charge/settlement. Notmerelysource
+possibilityanymore. Captured16selected originalREDv2rawrecords beforeTEMPexpiry.
+Applyminimalproductcheck terminal.output.valid afternativeexit/timeoutcheck and
+beforechildacceptance/charge/settlement. Existingvalidsemantics unchanged, no
+thresholds/deadlinesrenewed; invalidflows existingownedcleanup/fullholds. GREENnext.
+
+WorkerGREEN4/0/0/0 JUnit10.520s, stdoutsession10.63s separately; native0/root23272/
+total31/active0/no timeout120s. Date10/18 continuation rereadfullobjective,
+sameHEAD6eb88e0/WIP liveconfirmed, noremainingrelevantprocess; previousagentlanes
+gone so reopenedindependentGPT6.1 code/architecture percode-reviewskill.
+Workeractualfix correctlyprecedeschildaccept/charge/settlement; observerfinish
+independentdiscard confirmedbothlanes. Addobserverexact/overflow stdout/stderr
+fouractualCPUfixtures: successfulstop exitswriteactualpipe then0; original
+quiesce/stop/bridgeclose/watchclose sequence unchanged; closedparentterminalgate
+waits actualobserverJobempty/rootwait0/exit0 underoriginalsharedcleanupbound,
+then realoutput.finish capturesfinalreceipt. Noobservervalidityfixyet, actualRED
+next. ExistingworkerGREENis historicalsnapshot, freshcombinedfinalregrequired.
+Originalresearchgrid/limits/hold/heldout/scientificguard unchanged. NoGPU/science.
+
+ObserverRED terminal4fail/0errors/skips JUnit86.512s/nativeexit1/root20044/total26/
+active0/no timeout120s. Preciseclassification: first3cases deniedbeforeintended
+terminalgate (originalrequestread/observationdeadline, notterminalbugproof);
+fourthstderr-overflow DIDreachactualjobempty/rootexit0, realEOF/closedreceipt
+received16385/persisted16384/excessTrue/validFalse, yetsuccess+charge/settlement.
+Thusactualobserverbugreproducedforstderr ONLY inthisrun; donotclaimall4causalRED.
+Selectedcausalrawrecords capturedobserver_terminal_red_nested. Firstcapture
+readtoolyieldedwithoutJSON; nottestfailure or permissiontorestarttest. Smaller
+selectedcapture withbounded30s observation used, no file/model/source mutation
+occurred onfailedparse. Hostread/startuplatency changed; exactcauseunproven,
+donotattributeDefender/indexer withoutmeasurement. Nootherprocesscleanup or
+threshold/deadlinechange. Applyminimalobserveroutput.valid afteractualfinish/
+capture beforecompletionacceptance. GREENnewsource next, nofreshPASSyet.
+
+ObserverGREENnotfullyGREEN:4cases2pass2fail JUnit59.946s/stdoutsession67.55s,
+native1/root25944/total30/active0/no timeout120s. Exactstderr+overflowstdout pass;
+exactstdoutobserverexited2 with DRequestFileError requestbyte sizeexceedsbound,
+overflowstderr readdeadlineexpiry beforegate. Sourcecandidate `_fresh` exposes
+empty finalstop path viaxb beforewrite whileObserverStop immediatelyparses.
+This is confirmedsourcevisibilityrace, NOThistoricalfailurecausalityproof.
+Bothlanes approvesmallfixedsame-dirstage+nativeWindowsnooverwrite rename,
+fullfreshwrite/fsync/readback/ancestor+finalverification, collisionharddenial,
+strictreaderunchanged/originaldeadline. Add7actualfilesystemprotocolcases,
+includingemptyvisiblefinalreaderrejection andnativeexistingtargetrenamecontrol;
+publishercasesmissingimplementationRED next. Keepterminalguardsunchanged;
+stagingmetadata/physicalpeak/crashdurability remainOPEN. No systemcleanup.
+
+StopprotocolRED7cases5missingpublisherFAIL/2actualcontrolsPASS; native1/root23632/
+total3/active0/no timeout120s. Actualemptyvisiblefinal rejected andWindowsnative
+rename deniedexistingdestination preservingbothbytepayloads. This establishes
+readerbehavior+nativecollisionsemantics, NOTcausalinterceptionofthehistorical
+failure. Implementfixedprivatepublisher: _fresh exclusivesame-dirstage complete
+write/fsync/readback; originaldeadline/ancestorchecks; nativeWindowsrename(no
+overwrite), retainedfingerprint/finalcanonicalvalidation. Bothstoppublishsites
+switch, strictreaderunchanged; collisionstage/finalneverdeleted/reused/retried.
+Publicationvisibilityonly, notcrashdurability/metadataquota/namespaceABAproof.
+StopprotocolGREEN next; originalterminalguardsremain. Freshobserverafterchanged
+publisher is justifiednewsource test, notblindtimeoutrestart.
+
+StopprotocolGREEN7/0/0/0 JUnit4.925s/stdout6.55s native0/root21800/total4/active0/
+no timeout120s. ObserverGREENv2all4PASS native0/root22400/total31/active0/notimeout,
+stdout37.37s (JUnitparsedwithfinalmanifest). No historicalcauseproofinferred.
+Finalregorganizationchanged BEFOREruns forcurrenthostlatency:12closedbatches,
+growth3/fixed4/lease2 deterministicroundrobin top-levelASTtestfunctionnames,
+state+store/watch+consumer/bounded3. Allparams staywithfunction; noarbitrary
+callerselector/backend/plugin. ExactfreshcollectionvsdisjointJUnitunion MUST
+proveallcases retained (includinganyASTselectionmiss); missingidentity=noPASS.
+Original120s perownedbatch unchanged; this is12separateruns notonefullsuite.
+Product/tests nowfreeze; runnerpartitioncodefinalreviewrequired. Sourcehelpers
+remain boundedCPUdiagnostic; no scientificactivation/GPU/heldout/evaluation.
+
+FinalregNOTPASS: firstbatchgrowth0 original120s reached; nativeexit124/root7996/
+total69/active0/timed_outTrue. NoJUnitproduced. Partialconsole13collected,
+8completedPASS/3completedFAIL/1startedwithoutresult/1notstarted; neverfabricate
+JUnitcounts. Orchestratorstopped afterfirstnonsuccess, remaining11batches NOT run.
+Personallyinspectedthreefailureoriginals: workerquickoverflowstdoutOwnedStopRequested
+withobserveroriginalreaddeadlineexpiry; workerquickoverflowstderroriginalreservation
+deadlineexpiry; observerexactstderrbridgefailure withobservernativechannelEOF.
+Allthreefailed BEFOREintendedterminalgate, notobservedvalidityguardregression.
+Selected21rawfailure-records retained. Exactlatency/bridgeprimarycause notproven;
+no blame toDefender/indexer orchange tooriginaldeadline/window/threshold.
+
+Fresh8modulecollectonlyexit0:316exactunique identities, allprior301retained,
+15new (8terminalmatrix+7stopprotocol). Collection56.26s oncurrenthost versus
+earlier1.93s snapshot, evidenceofchangedelapsedlatency NOT causal attribution.
+No fullregressionunion, no316PASS. Created terminal_checkpoint_evidence manifest
+35rawrunrefs+3sourcepins+3nestedpackages=41refs; authorrehashedall41 and rebuilt46
+rawUTF8recordhashes. OneemptyobserverRED stderr capture normalizednull->empty
+string preservingoriginal0-byteSHA; updatedpackagehash/size, no productchange.
+Currentpins applyONLY finalgrowth0batch; focused historicalrunner/source versions
+explicitlyexcluded. Code/designreviewCOMMENT/CLEAR conditionaltests, NOTfinal
+mergeapproval. Requestindependentpreservationaudit of honestlyfailedcheckpoint.
+Nextlatency/observerbridge causaldiagnosis before newregression (no blindrestart);
+smallergroupsalone cannotfix observedearlyfailures. Goalremainsactive, noGPU/science.
+
+Independentfailedcheckpointpreservationaudit codeACCEPTonly/sourceCOMMENT,
+architectureCLEARpreservation/finalgateOPEN: bothverify41refs+46rawrecords,
+allnative/availableJUnitattribution andfailedgrowth0XMLabsence/partialcounts.
+Reviewrecordsaved terminal_checkpoint_review_20261018.md; no mergeapproval.
+Read-onlyhostsnapshot: freeRAM1194672KiBof16471200KiB (~1.14GiBfree), diskqueue39,
+diskread1954796B/s/write23389394B/s. RawaggregatePercentDiskTime4123 NOThumanbusy
+percentage, notcausalproof. SuccessiveWMIqueriesnotatomictrace; noapp/service
+stopped/cachedeleted/securitychanged. Samplepreservedhost_observation_20261018.
+Nextboundedcausalprofilemustseparate namespace/read/flush/startup/bridge timings
+and CPU vswallwait before rerun; original15suseful/10stail/watchwindow untouched.
+Preserve/pushresearchWIP+negativeevidence, explicitINCOMPLETEnotCLEAN/learningPASS.

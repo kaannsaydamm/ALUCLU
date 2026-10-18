@@ -1,0 +1,79 @@
+{
+  "scope": "selected actual stderr overflow causal case only; first3 early denials remain in raw run artifacts",
+  "records": [
+    {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\entry.stderr",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "",
+      "byte_length": 0,
+      "relative_path": "entry.stderr"
+    },
+    {
+      "sha256": "7f2312d2dc2640efff91918a45bab452a971e41d8e12713473bbcc51dcebd7fb",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\output.terminal.observer.gate.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"active_processes\":0,\"cleanup_deadline_monotonic_ns\":\"1233203000000\",\"creation_filetime_100ns\":\"134368028106859208\",\"domain\":\"diagnostic-only\",\"exit_code\":0,\"observed_monotonic_ns\":\"1223328000000\",\"pid\":\"24440\",\"request_root\":\"60f89c20a459e06d19cce2fe41bdc4fbf46ca96f39780f93547c3028fb428728\",\"root_wait\":0}",
+      "byte_length": 308,
+      "relative_path": "diagnostic/output.terminal.observer.gate.json"
+    },
+    {
+      "sha256": "c80e7a61fb508c8a71cacc315704a3ed37ac69b3eed1b5dee92925b2cd6df0ab",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\output.terminal.observer.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"creation_filetime_100ns\":\"134368028106859208\",\"domain\":\"diagnostic-only\",\"output\":{\"cleanup_deadline_ns\":1233203000000,\"stderr\":{\"confirmed_prefix_sha256\":\"1536c422c31cc98834759d7085cda394a3510a03d78188248986a6b1a7207d03\",\"confirmed_written_bytes\":16384,\"eof\":true,\"excess\":true,\"failure_kinds\":[],\"file_sha256\":\"1536c422c31cc98834759d7085cda394a3510a03d78188248986a6b1a7207d03\",\"finished_monotonic_ns\":1223375000000,\"limit_bytes\":16384,\"persisted_bytes\":16384,\"received_bytes\":16385,\"received_complete\":true,\"resources_closed\":true,\"terminal\":true},\"stdout\":{\"confirmed_prefix_sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"confirmed_written_bytes\":0,\"eof\":true,\"excess\":false,\"failure_kinds\":[],\"file_sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"finished_monotonic_ns\":1223375000000,\"limit_bytes\":16384,\"persisted_bytes\":0,\"received_bytes\":0,\"received_complete\":true,\"resources_closed\":true,\"terminal\":true},\"valid\":false},\"pid\":\"24440\",\"request_root\":\"60f89c20a459e06d19cce2fe41bdc4fbf46ca96f39780f93547c3028fb428728\"}",
+      "byte_length": 1083,
+      "relative_path": "diagnostic/output.terminal.observer.json"
+    },
+    {
+      "sha256": "f5243e37f380a5a77ae1fe05716e4a4ae906dcd9bd80212cc9d978d40b8ce11f",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\diagnostic.result.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1237593000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1212593000000\",\"final_owner_root\":\"e787de419166280a66e068c33c06bd10ddec1c744e8ca8e0e297e45520b1d60d\",\"finished_monotonic_ns\":\"1223984000000\",\"growth_observation_root\":\"3292a1273f97af642882e8711b8a90b7e08eabedfec784b529b154234278c917\",\"observer\":{\"active_processes\":0,\"creation_filetime_100ns\":\"134368028106859208\",\"pid\":\"24440\",\"terminal\":true},\"outcome\":\"success\",\"request_root\":\"60f89c20a459e06d19cce2fe41bdc4fbf46ca96f39780f93547c3028fb428728\",\"scenario\":\"observer-terminal-overflow-stderr\",\"schema\":\"alc-r0-coordinator-diagnostic-v1\",\"scientific_execution\":false,\"storage_held\":true,\"useful_deadline_monotonic_ns\":\"1227593000000\",\"work\":{\"active_processes\":0,\"creation_filetime_100ns\":\"134368028069913583\",\"exit_code\":0,\"identity_receipt_root\":\"47a0ac69d5b52c7b1ef07eaca1b61ed68eae5a33db374c3cb36ec6894cb6f18f\",\"outputs_closed\":true,\"pid\":\"23828\"}}",
+      "byte_length": 950,
+      "relative_path": "diagnostic/diagnostic.result.json"
+    },
+    {
+      "sha256": "2cf5246624dec9bbc961cfc0d12b0152a4f9587c25983497df5406e85fc00abe",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\diagnostic.charge.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"clock_domain_root\":\"c620281ee5373e1e41f2eb58dd3002fa6b5a2b9ea918242df8db73c677e066fb\",\"domain\":\"diagnostic-only\",\"effective_gpu_ns\":\"0\",\"effective_wall_ns\":\"11391000000\",\"entry_monotonic_ns\":\"1212593000000\",\"owned_finished_monotonic_ns\":\"1223984000000\",\"request_root\":\"60f89c20a459e06d19cce2fe41bdc4fbf46ca96f39780f93547c3028fb428728\",\"reservation_id\":\"diagnostic-work\"}",
+      "byte_length": 372,
+      "relative_path": "diagnostic/diagnostic.charge.json"
+    },
+    {
+      "sha256": "60f89c20a459e06d19cce2fe41bdc4fbf46ca96f39780f93547c3028fb428728",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\diagnostic.request.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"clock_domain_root\":\"c620281ee5373e1e41f2eb58dd3002fa6b5a2b9ea918242df8db73c677e066fb\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1212593000000\",\"generation_root\":\"f1b3fac27adc2cb060af347520f2a8a91f8fd38c61bdc303e502dddddf4af27f\",\"installation_root\":\"7446216dd716fbda5b117ab9f4acb348b57a5f2e7e1423dff69457eec62a01bd\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-256\\\\test_actual_observer_terminal_3\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"1227593000000\"}",
+      "byte_length": 622,
+      "relative_path": "diagnostic/diagnostic.request.json"
+    },
+    {
+      "sha256": "7446216dd716fbda5b117ab9f4acb348b57a5f2e7e1423dff69457eec62a01bd",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\diagnostic.installation.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1237593000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1212593000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-256\\\\test_actual_observer_terminal_3\\\\diagnostic\",\"scenario\":\"observer-terminal-overflow-stderr\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"1227593000000\"}",
+      "byte_length": 379,
+      "relative_path": "diagnostic/diagnostic.installation.json"
+    },
+    {
+      "sha256": "359e172415cab37e52128bcc6414b3fd4d924b731f93c059b6ac166bd7971670",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\work.cleanup.native.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1233203000000\",\"domain\":\"diagnostic-only\",\"forced\":false,\"receipt\":{\"active_processes\":0,\"exit_code\":0,\"finished_ns\":1223687000000,\"kernel_time_100ns\":1250000,\"root_pid\":23828,\"started_ns\":1215031000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":2812500}}",
+      "byte_length": 302,
+      "relative_path": "diagnostic/work.cleanup.native.json"
+    },
+    {
+      "sha256": "584829adc6cb58543b32dbe315860a8775090b866ffc59678f243b70e9d8d4af",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-256\\test_actual_observer_terminal_3\\diagnostic\\observer.cleanup.native.json",
+      "test": "test_actual_observer_terminal_3",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1233203000000\",\"domain\":\"diagnostic-only\",\"forced\":false,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":0,\"finished_ns\":1223484000000,\"kernel_time_100ns\":2343750,\"root_pid\":24440,\"started_ns\":1218765000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":2656250},\"surplus_socket_closed\":true}",
+      "byte_length": 359,
+      "relative_path": "diagnostic/observer.cleanup.native.json"
+    }
+  ],
+  "source_mode": "observer_terminal_red",
+  "schema": "alc-r0-observer-terminal-red-nested-v1"
+}

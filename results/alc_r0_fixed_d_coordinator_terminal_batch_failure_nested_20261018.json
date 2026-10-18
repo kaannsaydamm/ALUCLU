@@ -1,0 +1,175 @@
+{
+  "schema": "alc-r0-terminal-batch-failure-nested-v1",
+  "records": [
+    {
+      "relative_path": "entry.stderr",
+      "raw_utf8": "alc-r0 coordinator denied: OwnedStopRequested: owned stop requested\r\n",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\entry.stderr",
+      "sha256": "29b4e3fdb721940e7e42055d832b832389db074369122c1ee4c2e263f1148a3a",
+      "byte_length": 69
+    },
+    {
+      "relative_path": "diagnostic/observer.stderr",
+      "raw_utf8": "alc-r0 coordinator denied: DRequestFileError: original request read deadline expired\r\n",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\diagnostic\\observer.stderr",
+      "sha256": "3c19f9cef8071cdd150d8df73261696b10af33d442b6e10450a590b7c9864476",
+      "byte_length": 86
+    },
+    {
+      "relative_path": "diagnostic/observer.bridge.json",
+      "raw_utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"1813375000000\",\"observations\":[{\"observed_monotonic_ns\":\"1812312000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"1812296000000\",\"submitted_monotonic_ns\":\"1812312000000\"},{\"observed_monotonic_ns\":\"1812593000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"1812578000000\",\"submitted_monotonic_ns\":\"1812593000000\"},{\"observed_monotonic_ns\":\"1812859000000\",\"sequence\":\"3\",\"started_monotonic_ns\":\"1812843000000\",\"submitted_monotonic_ns\":\"1812859000000\"}],\"operational_error\":\"DRequestFileError\",\"socket_closed\":true,\"thread_alive\":false}",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\diagnostic\\observer.bridge.json",
+      "sha256": "548057974da4b360aa97836218bdbd063d9324e159e2c36aaa710fd935a33feb",
+      "byte_length": 592
+    },
+    {
+      "relative_path": "diagnostic/diagnostic.request.json",
+      "raw_utf8": "{\"clock_domain_root\":\"e94dd587bec2261c8eeb1b77e4bc58b2103ba0c017334dbba4bdb37213c36fcf\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1800187000000\",\"generation_root\":\"d8e17f57f5e003ea2dc4bf0707915ea55f0f3b3aaf8b0b5c1ff65e2fa9cf2bf7\",\"installation_root\":\"59ac45b58db37538eeda4bf92e50823347b7d978306fd95ec424687cfbaaa282\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-261\\\\test_actual_quick_terminal_out2\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"1815187000000\"}",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\diagnostic\\diagnostic.request.json",
+      "sha256": "9dc69d6e6d1cc359fa593ec37b1df6096ff4c1e313796bc86adf678929dabffb",
+      "byte_length": 622
+    },
+    {
+      "relative_path": "diagnostic/diagnostic.installation.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1825187000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1800187000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-261\\\\test_actual_quick_terminal_out2\\\\diagnostic\",\"scenario\":\"terminal-overflow-stdout\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"1815187000000\"}",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\diagnostic\\diagnostic.installation.json",
+      "sha256": "59ac45b58db37538eeda4bf92e50823347b7d978306fd95ec424687cfbaaa282",
+      "byte_length": 370
+    },
+    {
+      "relative_path": "diagnostic/work.cleanup.native.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1823375000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":1814781000000,\"kernel_time_100ns\":1093750,\"root_pid\":25512,\"started_ns\":1803234000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1250000}}",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\diagnostic\\work.cleanup.native.json",
+      "sha256": "6e694421de1094ee5c89678764083f18564c9c653dd9f693e93b85a31b90e4aa",
+      "byte_length": 303
+    },
+    {
+      "relative_path": "diagnostic/observer.cleanup.native.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1823375000000\",\"domain\":\"diagnostic-only\",\"forced\":false,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":2,\"finished_ns\":1815187000000,\"kernel_time_100ns\":2187500,\"root_pid\":1860,\"started_ns\":1811062000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1406250},\"surplus_socket_closed\":true}",
+      "test": "test_actual_quick_terminal_out2",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out2\\diagnostic\\observer.cleanup.native.json",
+      "sha256": "34b0380267f40cc620abf5cb055872031c090569068020eda4c9ee49efbcd5a3",
+      "byte_length": 358
+    },
+    {
+      "relative_path": "entry.stderr",
+      "raw_utf8": "alc-r0 coordinator denied: TimeoutError: original reservation deadline expired\r\n",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\entry.stderr",
+      "sha256": "1354118839780ce10b3c061e70bfa2f0bc723a669cbb65e49b61d5c1f57f6295",
+      "byte_length": 80
+    },
+    {
+      "relative_path": "diagnostic/observer.stderr",
+      "raw_utf8": "alc-r0 coordinator denied: DRequestFileError: original request read deadline expired\r\n",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\diagnostic\\observer.stderr",
+      "sha256": "3c19f9cef8071cdd150d8df73261696b10af33d442b6e10450a590b7c9864476",
+      "byte_length": 86
+    },
+    {
+      "relative_path": "diagnostic/observer.bridge.json",
+      "raw_utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"1834421000000\",\"observations\":[{\"observed_monotonic_ns\":\"1833515000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"1833500000000\",\"submitted_monotonic_ns\":\"1833515000000\"},{\"observed_monotonic_ns\":\"1833812000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"1833765000000\",\"submitted_monotonic_ns\":\"1833812000000\"},{\"observed_monotonic_ns\":\"1834078000000\",\"sequence\":\"3\",\"started_monotonic_ns\":\"1834062000000\",\"submitted_monotonic_ns\":\"1834078000000\"},{\"observed_monotonic_ns\":\"1834328000000\",\"sequence\":\"4\",\"started_monotonic_ns\":\"1834328000000\",\"submitted_monotonic_ns\":\"1834328000000\"}],\"operational_error\":\"ValueError\",\"socket_closed\":true,\"thread_alive\":false}",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\diagnostic\\observer.bridge.json",
+      "sha256": "785b875d131e63065d66ac2585ce6618a590442b03e12bb9400c3d09b4c88092",
+      "byte_length": 722
+    },
+    {
+      "relative_path": "diagnostic/diagnostic.request.json",
+      "raw_utf8": "{\"clock_domain_root\":\"b230396d3f9b89cc23bc5479ef96abef2baae1f828fd6d45663f184b181add44\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1819421000000\",\"generation_root\":\"c5dafd922e6fec98cde054775ddf0a82454b1319ba08723844e780fed79ccfed\",\"installation_root\":\"cd22cdba0e865a303d730422e7926bed6774b4a0354d062af25d19c174baffe9\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-261\\\\test_actual_quick_terminal_out3\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"1834421000000\"}",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\diagnostic\\diagnostic.request.json",
+      "sha256": "3c4dca16f24472af905764ec5ad9b49e4edc169c1e5ea1948727f062f5090080",
+      "byte_length": 622
+    },
+    {
+      "relative_path": "diagnostic/diagnostic.installation.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1844421000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1819421000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-261\\\\test_actual_quick_terminal_out3\\\\diagnostic\",\"scenario\":\"terminal-overflow-stderr\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"1834421000000\"}",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\diagnostic\\diagnostic.installation.json",
+      "sha256": "cd22cdba0e865a303d730422e7926bed6774b4a0354d062af25d19c174baffe9",
+      "byte_length": 370
+    },
+    {
+      "relative_path": "diagnostic/work.cleanup.native.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1844421000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":1834421000000,\"kernel_time_100ns\":2031250,\"root_pid\":22688,\"started_ns\":1822703000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1250000}}",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\diagnostic\\work.cleanup.native.json",
+      "sha256": "16561c70c3cf6f10ddbf6f1a048fedf6c49acc95fe2ec90a5e5f4cd7bdd19750",
+      "byte_length": 303
+    },
+    {
+      "relative_path": "diagnostic/observer.cleanup.native.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1844421000000\",\"domain\":\"diagnostic-only\",\"forced\":false,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":2,\"finished_ns\":1834531000000,\"kernel_time_100ns\":2187500,\"root_pid\":19016,\"started_ns\":1830359000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":2343750},\"surplus_socket_closed\":true}",
+      "test": "test_actual_quick_terminal_out3",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_quick_terminal_out3\\diagnostic\\observer.cleanup.native.json",
+      "sha256": "00ea763e009ef66cd64162641a2123a51b858da45db2c9bf8a927c536277fbe5",
+      "byte_length": 359
+    },
+    {
+      "relative_path": "entry.stderr",
+      "raw_utf8": "alc-r0 coordinator denied: CoordinatorError: observer bridge failed\r\n",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\entry.stderr",
+      "sha256": "aa9eb51734ec3d5abaeaeb739b447b62f10f8e6c8dcac4aa2e0fdb5865273579",
+      "byte_length": 69
+    },
+    {
+      "relative_path": "diagnostic/observer.stderr",
+      "raw_utf8": "alc-r0 coordinator denied: _ChannelClosed: native channel peer EOF\r\n",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\diagnostic\\observer.stderr",
+      "sha256": "087f7ea6413124fc4e73141b88f168b79a60b5b68ede35a2b5ca056e5779bc3b",
+      "byte_length": 68
+    },
+    {
+      "relative_path": "diagnostic/observer.bridge.json",
+      "raw_utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"1860984000000\",\"observations\":[],\"operational_error\":\"DRequestFileError\",\"socket_closed\":true,\"thread_alive\":false}",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\diagnostic\\observer.bridge.json",
+      "sha256": "3b605f1d13a809ecd654ca1daaec2e7bf9e22f92bbbf6bc5d2a2cc8a120baa44",
+      "byte_length": 182
+    },
+    {
+      "relative_path": "diagnostic/diagnostic.request.json",
+      "raw_utf8": "{\"clock_domain_root\":\"8d8055613d4c933d0004dd2dc0c33d0c53a74582c9c43e6853a450daa3b24a47\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1855531000000\",\"generation_root\":\"3825ca49fa0268847355e105876b456e404ff40205c9b2000cbfa46cb86e0464\",\"installation_root\":\"1ec5a8e612232ea34865019141d9073b697b015e7f69dd883b1bd1328f18f756\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-261\\\\test_actual_observer_terminal_1\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"1870531000000\"}",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\diagnostic\\diagnostic.request.json",
+      "sha256": "8a4f313a44f4aabf04094a01bf02a15fae70b6aca1fc8df8531ef8c79fe45f87",
+      "byte_length": 622
+    },
+    {
+      "relative_path": "diagnostic/diagnostic.installation.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1880531000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"1855531000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-261\\\\test_actual_observer_terminal_1\\\\diagnostic\",\"scenario\":\"observer-terminal-exact-stderr\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"1870531000000\"}",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\diagnostic\\diagnostic.installation.json",
+      "sha256": "1ec5a8e612232ea34865019141d9073b697b015e7f69dd883b1bd1328f18f756",
+      "byte_length": 376
+    },
+    {
+      "relative_path": "diagnostic/work.cleanup.native.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1870984000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":1861000000000,\"kernel_time_100ns\":0,\"root_pid\":3108,\"started_ns\":1857531000000,\"timed_out\":false,\"total_processes\":1,\"user_time_100ns\":0}}",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\diagnostic\\work.cleanup.native.json",
+      "sha256": "844aaa8d69980be0c6abd2d81fc60510acba72c59fc389998342b92f4b3cb8ce",
+      "byte_length": 290
+    },
+    {
+      "relative_path": "diagnostic/observer.cleanup.native.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"1870984000000\",\"domain\":\"diagnostic-only\",\"forced\":false,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":2,\"finished_ns\":1864218000000,\"kernel_time_100ns\":1406250,\"root_pid\":16524,\"started_ns\":1858812000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1718750},\"surplus_socket_closed\":true}",
+      "test": "test_actual_observer_terminal_1",
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-261\\test_actual_observer_terminal_1\\diagnostic\\observer.cleanup.native.json",
+      "sha256": "07306c61e0fc954c7b7cc92f3645deef36b129dc15c0a0ba4e7622b657a80c6c",
+      "byte_length": 359
+    }
+  ],
+  "source_mode": "terminal_batch_growth_0",
+  "scope": "selected3 failed-before-terminal-gate cases, not last interrupted case or complete store"
+}

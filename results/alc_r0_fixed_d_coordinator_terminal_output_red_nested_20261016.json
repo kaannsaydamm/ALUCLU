@@ -1,0 +1,134 @@
+{
+  "source_mode": "terminal_output_red_v2",
+  "schema": "alc-r0-terminal-output-red-nested-v1",
+  "records": [
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 209,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\output.terminal.arm.json",
+      "sha256": "5d3442df35ef968397e07f99626efc5c5e8af4d49c2736af732fe789d175d0c1",
+      "relative_path": "diagnostic/output.terminal.arm.json",
+      "raw_utf8": "{\"armed_monotonic_ns\":\"69606078000000\",\"creation_filetime_100ns\":\"134366229681652650\",\"domain\":\"diagnostic-only\",\"pid\":\"25896\",\"request_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 261,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\output.terminal.gate.json",
+      "sha256": "36ec92b89ebfbe937e4f192b4e0190ef7d023d3b36cdb40964baac8ff172b400",
+      "relative_path": "diagnostic/output.terminal.gate.json",
+      "raw_utf8": "{\"active_processes\":0,\"creation_filetime_100ns\":\"134366229681652650\",\"domain\":\"diagnostic-only\",\"exit_code\":0,\"observed_monotonic_ns\":\"69606109000000\",\"pid\":\"25896\",\"request_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\",\"root_wait\":0}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 1299,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\output.terminal.work.json",
+      "sha256": "fa740b4b05f59a303a514ee2401af8f1c3d464906134f752e33d5d6a0a1fd1de",
+      "relative_path": "diagnostic/output.terminal.work.json",
+      "raw_utf8": "{\"creation_filetime_100ns\":\"134366229681652650\",\"domain\":\"diagnostic-only\",\"output\":{\"cleanup_deadline_ns\":69616125000000,\"stderr\":{\"confirmed_prefix_sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"confirmed_written_bytes\":0,\"eof\":true,\"excess\":false,\"failure_kinds\":[],\"file_sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"finished_monotonic_ns\":69606109000000,\"limit_bytes\":16384,\"persisted_bytes\":0,\"received_bytes\":0,\"received_complete\":true,\"resources_closed\":true,\"terminal\":true},\"stdout\":{\"confirmed_prefix_sha256\":\"1536c422c31cc98834759d7085cda394a3510a03d78188248986a6b1a7207d03\",\"confirmed_written_bytes\":16384,\"eof\":true,\"excess\":true,\"failure_kinds\":[],\"file_sha256\":\"1536c422c31cc98834759d7085cda394a3510a03d78188248986a6b1a7207d03\",\"finished_monotonic_ns\":69606109000000,\"limit_bytes\":16384,\"persisted_bytes\":16384,\"received_bytes\":16385,\"received_complete\":true,\"resources_closed\":true,\"terminal\":true},\"valid\":false},\"pid\":\"25896\",\"process\":{\"active_processes\":0,\"exit_code\":0,\"finished_ns\":69606125000000,\"kernel_time_100ns\":2187500,\"root_pid\":25896,\"started_ns\":69604718000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1406250},\"request_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 298,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\child.result.json",
+      "sha256": "5519d2ad706c82cd9d8b37d4a9ba61085978f751097135153001c1cbc07204a8",
+      "relative_path": "diagnostic/child.result.json",
+      "raw_utf8": "{\"creation_filetime_100ns\":\"134366229681652650\",\"domain\":\"diagnostic-only\",\"identity_receipt_root\":\"20087fd09d2ff5909a674cdc4036917c04920cbdd36548156dd1efe8e2d044a7\",\"pid\":\"25896\",\"request_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\",\"schema\":\"alc-r0-harmless-child-v1\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 945,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\diagnostic.result.json",
+      "sha256": "e069aedbb0e4ae16277027ea06ff62970b78bebd1d8c385f158ae94aa456e6b3",
+      "relative_path": "diagnostic/diagnostic.result.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69629390000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69604390000000\",\"final_owner_root\":\"8c75fd204d059a2dd5995bf53bbd67be7a3a66c599c643aca26ab970f8657f0b\",\"finished_monotonic_ns\":\"69606203000000\",\"growth_observation_root\":\"16d2892de41ea2c3e7fc7ecd910e44798c16f622c6db600f63e00075d19bee34\",\"observer\":{\"active_processes\":0,\"creation_filetime_100ns\":\"134366229686793670\",\"pid\":\"23100\",\"terminal\":true},\"outcome\":\"success\",\"request_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\",\"scenario\":\"terminal-overflow-stdout\",\"schema\":\"alc-r0-coordinator-diagnostic-v1\",\"scientific_execution\":false,\"storage_held\":true,\"useful_deadline_monotonic_ns\":\"69619390000000\",\"work\":{\"active_processes\":0,\"creation_filetime_100ns\":\"134366229681652650\",\"exit_code\":0,\"identity_receipt_root\":\"20087fd09d2ff5909a674cdc4036917c04920cbdd36548156dd1efe8e2d044a7\",\"outputs_closed\":true,\"pid\":\"25896\"}}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 373,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\diagnostic.charge.json",
+      "sha256": "e6ef8a07b0e1c769be47112acf6c91fce1f4f8fd78fc72af59324aa9be60784d",
+      "relative_path": "diagnostic/diagnostic.charge.json",
+      "raw_utf8": "{\"clock_domain_root\":\"faf02edf0e75e10af79aa9884701351b30a060ea8d524a9ab2d8c9195c72bd9a\",\"domain\":\"diagnostic-only\",\"effective_gpu_ns\":\"0\",\"effective_wall_ns\":\"1813000000\",\"entry_monotonic_ns\":\"69604390000000\",\"owned_finished_monotonic_ns\":\"69606203000000\",\"request_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\",\"reservation_id\":\"diagnostic-work\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 529,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\reservations\\owner.json",
+      "sha256": "8c75fd204d059a2dd5995bf53bbd67be7a3a66c599c643aca26ab970f8657f0b",
+      "relative_path": "diagnostic/reservations/owner.json",
+      "raw_utf8": "{\"declaration_genesis_root\":\"d71905c67fb34ab924130fed53164730ca609b45c11ef0c3342331492868ecdb\",\"generation\":\"6\",\"journal_head\":{\"byte_length\":3861,\"count\":6,\"digest\":\"61c951c850a44da03fe039ec84f3d472a245d04d9920a72496eab03ed62fe8fd\"},\"previous_owner_root\":\"d1e1661bc77040db0475e7ad61162cd35eda453eb53ba46ee0bc754dd514d93c\",\"reservation_root\":\"170856a3274056eaf1b45ae4912aacaf29b5dbfbf23d0e1768dd1bec8c0adece\",\"review_root\":\"4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77\",\"schema\":\"alc-r0-reservation-owner-v1\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out2",
+      "byte_length": 624,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out2\\diagnostic\\diagnostic.request.json",
+      "sha256": "4754a036125d158b53ceb37a86b3a528872c5977d80481fe7410918a670b8c77",
+      "relative_path": "diagnostic/diagnostic.request.json",
+      "raw_utf8": "{\"clock_domain_root\":\"faf02edf0e75e10af79aa9884701351b30a060ea8d524a9ab2d8c9195c72bd9a\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69604390000000\",\"generation_root\":\"ed6765931320788093716fbcbd72c118dbfdc563391fa20c5ff266ed05205654\",\"installation_root\":\"60133dbe50b99b5619f744898006e3578e7e10c3cb964c8b692c13884ac5c666\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-254\\\\test_actual_quick_terminal_out2\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"69619390000000\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 209,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\output.terminal.arm.json",
+      "sha256": "c43e6e8d63007c3b8aa6b6092cb95ae722b65972e09c2430a26c960e3b3881a0",
+      "relative_path": "diagnostic/output.terminal.arm.json",
+      "raw_utf8": "{\"armed_monotonic_ns\":\"69609796000000\",\"creation_filetime_100ns\":\"134366229715669033\",\"domain\":\"diagnostic-only\",\"pid\":\"31616\",\"request_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 261,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\output.terminal.gate.json",
+      "sha256": "a3a2992396435768f4b38893d047fa2e3ba9120d0f57818c46f642cc2a74b175",
+      "relative_path": "diagnostic/output.terminal.gate.json",
+      "raw_utf8": "{\"active_processes\":0,\"creation_filetime_100ns\":\"134366229715669033\",\"domain\":\"diagnostic-only\",\"exit_code\":0,\"observed_monotonic_ns\":\"69609843000000\",\"pid\":\"31616\",\"request_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\",\"root_wait\":0}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 1299,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\output.terminal.work.json",
+      "sha256": "084935ac141694420a51e42c3e370e540952757aa1ceaf1c5d732f356b5b38fe",
+      "relative_path": "diagnostic/output.terminal.work.json",
+      "raw_utf8": "{\"creation_filetime_100ns\":\"134366229715669033\",\"domain\":\"diagnostic-only\",\"output\":{\"cleanup_deadline_ns\":69619859000000,\"stderr\":{\"confirmed_prefix_sha256\":\"1536c422c31cc98834759d7085cda394a3510a03d78188248986a6b1a7207d03\",\"confirmed_written_bytes\":16384,\"eof\":true,\"excess\":true,\"failure_kinds\":[],\"file_sha256\":\"1536c422c31cc98834759d7085cda394a3510a03d78188248986a6b1a7207d03\",\"finished_monotonic_ns\":69609843000000,\"limit_bytes\":16384,\"persisted_bytes\":16384,\"received_bytes\":16385,\"received_complete\":true,\"resources_closed\":true,\"terminal\":true},\"stdout\":{\"confirmed_prefix_sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"confirmed_written_bytes\":0,\"eof\":true,\"excess\":false,\"failure_kinds\":[],\"file_sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"finished_monotonic_ns\":69609843000000,\"limit_bytes\":16384,\"persisted_bytes\":0,\"received_bytes\":0,\"received_complete\":true,\"resources_closed\":true,\"terminal\":true},\"valid\":false},\"pid\":\"31616\",\"process\":{\"active_processes\":0,\"exit_code\":0,\"finished_ns\":69609859000000,\"kernel_time_100ns\":2500000,\"root_pid\":31616,\"started_ns\":69608109000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":2500000},\"request_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 298,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\child.result.json",
+      "sha256": "a411317325258ae094196d66f14a8c84b6c83c98f015439fcd8c878dd432df95",
+      "relative_path": "diagnostic/child.result.json",
+      "raw_utf8": "{\"creation_filetime_100ns\":\"134366229715669033\",\"domain\":\"diagnostic-only\",\"identity_receipt_root\":\"2aa45b7a4a0d35f633c2cd9f3c9515ecc870f841f7003919ba1b2989c58cc25d\",\"pid\":\"31616\",\"request_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\",\"schema\":\"alc-r0-harmless-child-v1\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 945,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\diagnostic.result.json",
+      "sha256": "97163228b6386bd8361dda325d954277ef6c0a1c2ef744d9012ab812b81f429b",
+      "relative_path": "diagnostic/diagnostic.result.json",
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"69632765000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69607765000000\",\"final_owner_root\":\"1e550549b75cf7b07aa27ecd4e473c88dd70d3fd5bfcc0d62ae6ee43380e713c\",\"finished_monotonic_ns\":\"69609953000000\",\"growth_observation_root\":\"dea111b97a5638b62b0a4d2555d5cebbed1ebc1aa4bf4a41d0d964153cc419ce\",\"observer\":{\"active_processes\":0,\"creation_filetime_100ns\":\"134366229721932006\",\"pid\":\"29512\",\"terminal\":true},\"outcome\":\"success\",\"request_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\",\"scenario\":\"terminal-overflow-stderr\",\"schema\":\"alc-r0-coordinator-diagnostic-v1\",\"scientific_execution\":false,\"storage_held\":true,\"useful_deadline_monotonic_ns\":\"69622765000000\",\"work\":{\"active_processes\":0,\"creation_filetime_100ns\":\"134366229715669033\",\"exit_code\":0,\"identity_receipt_root\":\"2aa45b7a4a0d35f633c2cd9f3c9515ecc870f841f7003919ba1b2989c58cc25d\",\"outputs_closed\":true,\"pid\":\"31616\"}}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 373,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\diagnostic.charge.json",
+      "sha256": "c4cfc75a2c7948f31c0c467e5b1a98160f3f81da52df0fb99b8dced8493c6347",
+      "relative_path": "diagnostic/diagnostic.charge.json",
+      "raw_utf8": "{\"clock_domain_root\":\"5cd25db47a9a5de8c7fc11622a36f9425131943ba3ed4f6254b90e4a2e63d349\",\"domain\":\"diagnostic-only\",\"effective_gpu_ns\":\"0\",\"effective_wall_ns\":\"2188000000\",\"entry_monotonic_ns\":\"69607765000000\",\"owned_finished_monotonic_ns\":\"69609953000000\",\"request_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\",\"reservation_id\":\"diagnostic-work\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 529,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\reservations\\owner.json",
+      "sha256": "1e550549b75cf7b07aa27ecd4e473c88dd70d3fd5bfcc0d62ae6ee43380e713c",
+      "relative_path": "diagnostic/reservations/owner.json",
+      "raw_utf8": "{\"declaration_genesis_root\":\"b9341546ec59e82996db5432745964cf26c2b46db3a68e0aaa9c5df70f819698\",\"generation\":\"6\",\"journal_head\":{\"byte_length\":3861,\"count\":6,\"digest\":\"1bea93d877c3581babf646e8f2f9211551117c98e08d95860a46840e9a76ecf6\"},\"previous_owner_root\":\"dca06ec9d6af255d87825caf51a00aae248dcc32c8be69afbfc5c2641ba509e6\",\"reservation_root\":\"b9ab052280e3e82b415de6656fbb8372b9677c5d97977f6f97e87218ae4d0ba6\",\"review_root\":\"fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088\",\"schema\":\"alc-r0-reservation-owner-v1\"}"
+    },
+    {
+      "test": "test_actual_quick_terminal_out3",
+      "byte_length": 624,
+      "original_path": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-254\\test_actual_quick_terminal_out3\\diagnostic\\diagnostic.request.json",
+      "sha256": "fce109c661f24ce6508a5b9f80259d276ae87371111d7124cef44465a72eb088",
+      "relative_path": "diagnostic/diagnostic.request.json",
+      "raw_utf8": "{\"clock_domain_root\":\"5cd25db47a9a5de8c7fc11622a36f9425131943ba3ed4f6254b90e4a2e63d349\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"69607765000000\",\"generation_root\":\"921f42a7a4cd8cdd5caa8376081a064aaf3b24736fe0751fd44293d9d42cb7a2\",\"installation_root\":\"63f4fb5f12cde6f93476e7da82431626b333b36611beabb29041d1941f8e58ef\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-kaann\\\\pytest-254\\\\test_actual_quick_terminal_out3\\\\diagnostic\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"69622765000000\"}"
+    }
+  ]
+}

@@ -41,7 +41,10 @@ _NS=1_000_000_000
 _SCENARIOS=('success','slow-parent','stale-before-create','stale-before-resume','blocked-observer',
     'bootstrap-conflict','bootstrap-wrong-role','busy-revocation','busy-tree-revocation','tree-validation-delay',
     'actuator-query-denied','actuator-terminate-denied','completion-conflict','output-capacity-lost',
-    'output-overflow-stdout','output-overflow-stderr')
+    'output-overflow-stdout','output-overflow-stderr',
+    'terminal-overflow-stdout','terminal-overflow-stderr','terminal-exact-stdout','terminal-exact-stderr',
+    'observer-terminal-overflow-stdout','observer-terminal-overflow-stderr',
+    'observer-terminal-exact-stdout','observer-terminal-exact-stderr')
 
 
 class CoordinatorError(ValueError):
@@ -95,6 +98,24 @@ def _fresh(path,value,deadline):
     _require(_ancestors(path,deadline)==before,'publication namespace changed')
     _require(_read(path,deadline)==value,'publication readback differs')
     return sha256_bytes(data)
+
+
+def _publish_observer_stop(root,deadline):
+    """Publish a complete fixed marker using Windows no-overwrite rename."""
+    _require(os.name=='nt','native Windows stop publication required')
+    path=_local_path(root/'observer.stop.json')
+    stage=_local_path(root/'observer.stop.stage.json')
+    before=_ancestors(path,deadline)
+    value=dict(domain=_DOMAIN)
+    _fresh(stage,value,deadline)
+    identity=_fingerprint(stage.stat())
+    _check_deadline(deadline)
+    _require(_ancestors(path,deadline)==before,'stop publication namespace changed')
+    stage.rename(path)  # Windows rename denies an existing destination; never replace.
+    _check_deadline(deadline)
+    _require(_ancestors(path,deadline)==before,'stop publication namespace changed')
+    _require(_same_open_identity(identity,_fingerprint(path.stat())),'stop publication identity changed')
+    _require(_read(path,deadline)==value,'stop publication readback differs')
 
 
 def _replace(path,value,deadline):
@@ -841,14 +862,22 @@ class _Observer:
         import _winapi
         self.job.cleanup_deadline_ns=min(self.spec.cleanup,deadline)
         if not (self.spec.namespace/'observer.stop.json').exists():
-            _fresh(self.spec.namespace/'observer.stop.json',dict(domain=_DOMAIN),deadline)
+            _publish_observer_stop(self.spec.namespace,deadline)
         while self.job.accounting().active_processes:
             _check_deadline(deadline)
             _require(not self.output.violated,'observer output overflow')
             time.sleep(.005)
         _require(_winapi.WaitForSingleObject(self.information.process,0)==0,'observer root not terminal')
         counts=self.job.accounting()
-        self.output.finish(deadline)
+        output=self.output.finish(deadline)
+        scenario=_read(self.spec.namespace/'diagnostic.installation.json',deadline)['scenario']
+        if scenario in ('observer-terminal-overflow-stdout','observer-terminal-overflow-stderr',
+                        'observer-terminal-exact-stdout','observer-terminal-exact-stderr'):
+            _fresh(self.spec.namespace/'output.terminal.observer.json',dict(domain=_DOMAIN,
+                request_root=self.spec.request_root,pid=str(self.information.pid),
+                creation_filetime_100ns=str(self.creation),
+                output=parse_canonical_json(canonical_json_bytes(asdict(output)))),deadline)
+        _require(output.valid,'observer terminal output invalid')
         result=OwnedProcessReceipt(self.information.pid,_winapi.GetExitCodeProcess(self.information.process),
             False,self.started,time.monotonic_ns(),counts.total_processes,counts.active_processes,
             counts.user_time,counts.kernel_time)
@@ -1029,6 +1058,16 @@ def _roles(role,namespace,installation):
     _require(request['domain']==_DOMAIN and request['installation_root']==installation,'role request differs')
     identity=dict(pid=str(os.getpid()),creation_filetime_100ns=str(_creation_time(ctypes.c_void_p(-1))))
     if role=='observer':
+        def finish_role():
+            if descriptor['scenario'] in ('observer-terminal-overflow-stdout','observer-terminal-overflow-stderr',
+                                          'observer-terminal-exact-stdout','observer-terminal-exact-stderr'):
+                remaining=b'x'*16384+(b'!' if '-overflow-' in descriptor['scenario'] else b'')
+                fd=1 if descriptor['scenario'].endswith('-stdout') else 2
+                while remaining:
+                    written=os.write(fd,remaining)
+                    _require(written>0,'diagnostic observer terminal pipe made no write progress')
+                    remaining=remaining[written:]
+            return 0
         bootstrap=_read(root/'observer.channel.json',deadline)
         _require(type(bootstrap) is dict and set(bootstrap)=={'schema','domain','role','request_root',
             'pid','creation_filetime_100ns','share'},'exact native bootstrap fields required')
@@ -1071,13 +1110,13 @@ def _roles(role,namespace,installation):
                     finally: kernel.CloseHandle(handle)
                 try:
                     available=_channel_ready(channel,deadline,cancellation)
-                except _ChannelCancelled: return 0
+                except _ChannelCancelled: return finish_role()
                 if not available: continue
                 _require(last<64,'fixed observer request count exceeded')
                 try: message=_receive_frame(channel,min(deadline,time.monotonic_ns()+OBSERVATION_NS),cancellation)
-                except _ChannelCancelled: return 0
+                except _ChannelCancelled: return finish_role()
                 except (_ChannelClosed,ConnectionResetError):
-                    if cancellation.is_set(): return 0
+                    if cancellation.is_set(): return finish_role()
                     raise
                 _require(type(message) is dict and set(message)=={'sequence','started_monotonic_ns','request_root'}
                     and all(type(value) is str for value in message.values()),'exact observer request required')
@@ -1094,12 +1133,12 @@ def _roles(role,namespace,installation):
                         request_started_monotonic_ns=started,observer_pid=identity['pid'],
                         observer_creation_filetime_100ns=identity['creation_filetime_100ns'],
                         observed_monotonic_ns=str(captured),utc_upper_ns=str(time.time_ns()),status=status.data.decode()),bound,cancellation)
-                except _ChannelCancelled: return 0
+                except _ChannelCancelled: return finish_role()
                 except ConnectionResetError:
-                    if cancellation.is_set(): return 0
+                    if cancellation.is_set(): return finish_role()
                     raise
                 last+=1
-        return 0
+        return finish_role()
     if role=='descendant':
         _require(descriptor['scenario'] in ('busy-tree-revocation','tree-validation-delay'),
             'closed descendant scenario required')
@@ -1144,6 +1183,16 @@ def _roles(role,namespace,installation):
             and child_identity['creation_filetime_100ns']==str(_creation_time(descendant._handle)),
             'spawned descendant native identity differs')
     _fresh(root/'child.started.json',dict(domain=_DOMAIN,request_root=request_root,**identity),deadline)
+    if descriptor['scenario'] in ('terminal-overflow-stdout','terminal-overflow-stderr',
+                                  'terminal-exact-stdout','terminal-exact-stderr'):
+        while not (root/'output.terminal.arm.json').exists():
+            _check_deadline(deadline); time.sleep(.005)
+        remaining=b'x'*16384+(b'!' if '-overflow-' in descriptor['scenario'] else b'')
+        fd=1 if descriptor['scenario'].endswith('-stdout') else 2
+        while remaining:
+            written=os.write(fd,remaining)
+            _require(written>0,'diagnostic terminal pipe made no write progress')
+            remaining=remaining[written:]
     if descriptor['scenario'] in ('output-overflow-stdout','output-overflow-stderr'):
         while not (root/'output.overflow.arm.json').exists():
             _check_deadline(deadline); time.sleep(.005)
@@ -1318,19 +1367,63 @@ def _coordinate(namespace,entry,scenario):
                     observer_creation_filetime_100ns=str(observer.creation),
                     work_wait=work_wait,observer_wait=observer_wait,
                     armed_monotonic_ns=str(time.monotonic_ns())),spec.useful)
+            if scenario in ('terminal-overflow-stdout','terminal-overflow-stderr',
+                            'terminal-exact-stdout','terminal-exact-stderr'):
+                import _winapi
+                while not (root/'child.started.json').exists():
+                    bridge.check(); lease._check_stop(); lease._unexpired(); time.sleep(.005)
+                _require(_winapi.WaitForSingleObject(lease._information.process,0)==258
+                    and _winapi.WaitForSingleObject(observer.information.process,0)==258,
+                    'terminal fixture requires actual live roles before arming')
+                _fresh(root/'output.terminal.arm.json',dict(domain=_DOMAIN,request_root=spec.request_root,
+                    pid=str(lease.identity.pid),creation_filetime_100ns=str(lease.identity.creation_filetime_100ns),
+                    armed_monotonic_ns=str(time.monotonic_ns())),spec.useful)
+                # Closed scheduling fixture: force the real quick-terminal edge,
+                # preserving bridge/stop/deadline service, not a general bypass.
+                while lease._job.accounting().active_processes:
+                    bridge.check(); lease._check_stop(); lease._unexpired(); time.sleep(.005)
+                wait=_winapi.WaitForSingleObject(lease._information.process,0)
+                exit_code=_winapi.GetExitCodeProcess(lease._information.process)
+                _require(wait==0 and exit_code==0,'terminal fixture did not exit successfully')
+                _fresh(root/'output.terminal.gate.json',dict(domain=_DOMAIN,request_root=spec.request_root,
+                    pid=str(lease.identity.pid),creation_filetime_100ns=str(lease.identity.creation_filetime_100ns),
+                    active_processes=lease._job.accounting().active_processes,root_wait=wait,exit_code=exit_code,
+                    observed_monotonic_ns=str(time.monotonic_ns())),spec.useful)
             while lease._job.accounting().active_processes:
                 bridge.check(); lease._check_stop(); lease._unexpired(); lease._check_output(); time.sleep(.005)
             terminal=lease.wait_terminal()
+            if scenario in ('terminal-overflow-stdout','terminal-overflow-stderr',
+                            'terminal-exact-stdout','terminal-exact-stderr'):
+                _fresh(root/'output.terminal.work.json',dict(domain=_DOMAIN,request_root=spec.request_root,
+                    pid=str(terminal.identity.pid),creation_filetime_100ns=str(terminal.identity.creation_filetime_100ns),
+                    process=asdict(terminal.process),
+                    output=parse_canonical_json(canonical_json_bytes(asdict(terminal.output)))),_cleanup_bound(spec,lease))
             _require(terminal.process.exit_code==0 and not terminal.process.timed_out,'work terminal failure')
+            _require(terminal.output.valid,'work terminal output invalid')
             child=_read(root/'child.result.json',spec.useful)
             _require(child['request_root']==spec.request_root and child['identity_receipt_root']==lease.identity.receipt_root,
                      'child result correspondence failed')
             # Stop/join consumer first without closing its socket. Otherwise the
             # observer can see stop, exit, and race a still-live bridge's next read.
             bridge.quiesce(_cleanup_bound(spec,lease))
-            _fresh(root/'observer.stop.json',dict(domain=_DOMAIN),_cleanup_bound(spec,lease))
+            _publish_observer_stop(root,_cleanup_bound(spec,lease))
             bridge.close(_cleanup_bound(spec,lease))
             watch.close(_cleanup_bound(spec,lease))
+            if scenario in ('observer-terminal-overflow-stdout','observer-terminal-overflow-stderr',
+                            'observer-terminal-exact-stdout','observer-terminal-exact-stderr'):
+                import _winapi
+                bound=_cleanup_bound(spec,lease)
+                # Closed scheduling fixture forces terminal receipt validation;
+                # generic observer active-output polling is deliberately not used.
+                while observer.job.accounting().active_processes:
+                    _check_deadline(bound); time.sleep(.005)
+                wait=_winapi.WaitForSingleObject(observer.information.process,0)
+                exit_code=_winapi.GetExitCodeProcess(observer.information.process)
+                _require(wait==0 and exit_code==0,'observer terminal fixture did not exit successfully')
+                _fresh(root/'output.terminal.observer.gate.json',dict(domain=_DOMAIN,request_root=spec.request_root,
+                    pid=str(observer.information.pid),creation_filetime_100ns=str(observer.creation),
+                    root_wait=wait,exit_code=exit_code,active_processes=observer.job.accounting().active_processes,
+                    observed_monotonic_ns=str(time.monotonic_ns()),cleanup_deadline_monotonic_ns=str(bound)),bound)
             observer_native=observer.finish(_cleanup_bound(spec,lease))
             _require(observer_native.exit_code==0,'observer terminal failure')
             work=dict(pid=str(lease.identity.pid),creation_filetime_100ns=str(lease.identity.creation_filetime_100ns),

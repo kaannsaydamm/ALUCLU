@@ -313,3 +313,141 @@ def test_actual_running_output_overflow_denies_before_timeout_and_retains_holds(
     assert cleanup_bounds[0]==cleanup_bounds[1]<=int(installation['cleanup_deadline_monotonic_ns'])
     work_cleanup=bounded_json(namespace/'work.cleanup.native.json')
     assert int(work_cleanup['receipt']['finished_ns'])<int(request['useful_deadline_monotonic_ns'])
+
+
+@pytest.mark.parametrize('stream',['stdout','stderr'])
+@pytest.mark.parametrize('excess',[False,True])
+def test_actual_quick_terminal_output_requires_valid_receipt_before_settlement(tmp_path,stream,excess):
+    namespace=tmp_path/'diagnostic'; namespace.mkdir()
+    scenario='terminal-'+('overflow' if excess else 'exact')+'-'+stream
+    receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+    assert not receipt.timed_out and receipt.active_processes==0
+    arm=bounded_json(namespace/'output.terminal.arm.json')
+    gate=bounded_json(namespace/'output.terminal.gate.json')
+    terminal=bounded_json(namespace/'output.terminal.work.json')
+    action=bounded_json(namespace/'work.action.resume.json')
+    child=bounded_json(namespace/'child.result.json')
+    for key in ('request_root','pid','creation_filetime_100ns'):
+        assert arm[key]==gate[key]==terminal[key]==action[key]==child[key]
+    assert gate['active_processes']==gate['root_wait']==gate['exit_code']==0
+    assert int(arm['armed_monotonic_ns'])<=int(gate['observed_monotonic_ns'])<=terminal['process']['finished_ns']
+    assert terminal['process']['exit_code']==terminal['process']['active_processes']==0
+    output=terminal['output']; selected=output[stream]
+    assert output['valid'] is (not excess)
+    assert selected['excess'] is excess and selected['received_bytes']==16384+int(excess)
+    assert selected['persisted_bytes']==selected['confirmed_written_bytes']==16384
+    assert (namespace/f'work.{stream}').read_bytes()==b'x'*16384
+    for name in ('stdout','stderr'):
+        assert output[name]['eof'] and output[name]['received_complete']
+        assert output[name]['terminal'] and output[name]['resources_closed']
+        assert output[name]['failure_kinds']==[]
+    if excess:
+        assert receipt.exit_code==2
+        assert b'work terminal output invalid' in (tmp_path/'entry.stderr').read_bytes()
+        declaration=bounded_json(namespace/'declaration.json')
+        owner=bounded_json(namespace/'reservations'/'owner.json')
+        snapshot=ReservationStore(namespace/'reservations',(canonical_json_bytes(declaration),)).read(
+            sha256_bytes(canonical_json_bytes(owner))).snapshot
+        assert snapshot.reservations[0].state=='RUNNING'
+        assert snapshot.pending_physical_bytes==snapshot.pending_research_bytes==1<<20
+        assert (namespace/'diagnostic.consumed.json').exists()
+        for name in ('diagnostic.result.json','diagnostic.charge.json','diagnostic.growth.json'):
+            assert not (namespace/name).exists()
+        for role in ('work','observer'):
+            cleanup=bounded_json(namespace/f'{role}.cleanup.native.json')
+            assert cleanup['receipt']['active_processes']==0
+            assert cleanup['receipt']['finished_ns']<=int(cleanup['cleanup_deadline_monotonic_ns'])
+    else:
+        assert receipt.exit_code==0
+        result=bounded_json(namespace/'diagnostic.result.json')
+        assert result['outcome']=='success' and result['scientific_execution'] is False
+
+
+def test_stop_publication_reader_rejects_partially_visible_final(tmp_path):
+    from aluclu.alc_r0.fixed_d_coordinator import _ObserverStop
+    from aluclu.alc_r0.fixed_d_request_file import DRequestFileError
+    path=tmp_path/'observer.stop.json'
+    with path.open('xb'):
+        with pytest.raises(DRequestFileError,match='byte size'):
+            _ObserverStop(tmp_path,time.monotonic_ns()+5_000_000_000).is_set()
+
+
+def test_stop_publication_native_rename_cannot_overwrite(tmp_path):
+    source=tmp_path/'stage'; destination=tmp_path/'final'
+    source.write_bytes(b'stage'); destination.write_bytes(b'keep')
+    with pytest.raises(FileExistsError): source.rename(destination)
+    assert source.read_bytes()==b'stage' and destination.read_bytes()==b'keep'
+
+
+def test_stop_publication_atomic_marker_is_complete_and_stage_consumed(tmp_path):
+    from aluclu.alc_r0.fixed_d_coordinator import _publish_observer_stop,_ObserverStop
+    deadline=time.monotonic_ns()+5_000_000_000
+    _publish_observer_stop(tmp_path,deadline)
+    assert (tmp_path/'observer.stop.json').read_bytes()==canonical_json_bytes(dict(domain='diagnostic-only'))
+    assert not (tmp_path/'observer.stop.stage.json').exists()
+    assert _ObserverStop(tmp_path,deadline).is_set()
+
+
+@pytest.mark.parametrize('existing',[b'',b'corrupt',b'{"domain":"diagnostic-only"}'])
+def test_stop_publication_preserves_existing_final(tmp_path,existing):
+    from aluclu.alc_r0.fixed_d_coordinator import _publish_observer_stop
+    path=tmp_path/'observer.stop.json'; path.write_bytes(existing)
+    with pytest.raises(FileExistsError):
+        _publish_observer_stop(tmp_path,time.monotonic_ns()+5_000_000_000)
+    assert path.read_bytes()==existing
+
+
+def test_stop_publication_preserves_conflicting_stage(tmp_path):
+    from aluclu.alc_r0.fixed_d_coordinator import _publish_observer_stop,_ObserverStop
+    path=tmp_path/'observer.stop.stage.json'; path.write_bytes(b'keep')
+    assert not _ObserverStop(tmp_path,time.monotonic_ns()+5_000_000_000).is_set()
+    with pytest.raises(FileExistsError):
+        _publish_observer_stop(tmp_path,time.monotonic_ns()+5_000_000_000)
+    assert path.read_bytes()==b'keep' and not (tmp_path/'observer.stop.json').exists()
+
+
+@pytest.mark.parametrize('stream',['stdout','stderr'])
+@pytest.mark.parametrize('excess',[False,True])
+def test_actual_observer_terminal_output_requires_valid_receipt_before_settlement(tmp_path,stream,excess):
+    namespace=tmp_path/'diagnostic'; namespace.mkdir()
+    scenario='observer-terminal-'+('overflow' if excess else 'exact')+'-'+stream
+    receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+    assert not receipt.timed_out and receipt.active_processes==0
+    gate=bounded_json(namespace/'output.terminal.observer.gate.json')
+    terminal=bounded_json(namespace/'output.terminal.observer.json')
+    action=bounded_json(namespace/'observer.action.resume.json')
+    request=bounded_json(namespace/'diagnostic.request.json')
+    for key in ('request_root','pid','creation_filetime_100ns'):
+        assert gate[key]==terminal[key]==action[key]
+    assert gate['request_root']==sha256_bytes(canonical_json_bytes(request))
+    assert gate['active_processes']==gate['root_wait']==gate['exit_code']==0
+    output=terminal['output']; selected=output[stream]
+    assert output['valid'] is (not excess)
+    assert selected['excess'] is excess and selected['received_bytes']==16384+int(excess)
+    assert selected['persisted_bytes']==selected['confirmed_written_bytes']==16384
+    assert (namespace/f'observer.{stream}').read_bytes()==b'x'*16384
+    assert int(gate['observed_monotonic_ns'])<=output['cleanup_deadline_ns']<=int(gate['cleanup_deadline_monotonic_ns'])
+    for name in ('stdout','stderr'):
+        assert output[name]['eof'] and output[name]['received_complete']
+        assert output[name]['terminal'] and output[name]['resources_closed']
+        assert output[name]['failure_kinds']==[]
+    if excess:
+        assert receipt.exit_code==2
+        assert b'observer terminal output invalid' in (tmp_path/'entry.stderr').read_bytes()
+        declaration=bounded_json(namespace/'declaration.json')
+        owner=bounded_json(namespace/'reservations'/'owner.json')
+        snapshot=ReservationStore(namespace/'reservations',(canonical_json_bytes(declaration),)).read(
+            sha256_bytes(canonical_json_bytes(owner))).snapshot
+        assert snapshot.reservations[0].state=='RUNNING'
+        assert snapshot.pending_physical_bytes==snapshot.pending_research_bytes==1<<20
+        assert (namespace/'diagnostic.consumed.json').exists()
+        for name in ('diagnostic.result.json','diagnostic.charge.json','diagnostic.growth.json'):
+            assert not (namespace/name).exists()
+        for role in ('work','observer'):
+            cleanup=bounded_json(namespace/f'{role}.cleanup.native.json')
+            assert cleanup['receipt']['active_processes']==0
+            assert cleanup['receipt']['finished_ns']<=int(cleanup['cleanup_deadline_monotonic_ns'])
+    else:
+        assert receipt.exit_code==0
+        result=bounded_json(namespace/'diagnostic.result.json')
+        assert result['outcome']=='success' and result['scientific_execution'] is False

@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 23 items / 19 deselected / 4 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout] PASSED [ 25%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr] PASSED [ 50%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout] PASSED [ 75%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_terminal_output_green_20261016.xml -
+====================== 4 passed, 19 deselected in 10.63s ======================
