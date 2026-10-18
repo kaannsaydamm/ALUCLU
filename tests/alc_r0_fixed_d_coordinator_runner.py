@@ -9,9 +9,55 @@ import time
 from aluclu.alc_r0.checkpoint_owned_process import run_owned_process
 
 
+_LATENCY_PROFILE_CODE='''
+import cProfile, json, pstats, sys, time
+profile=cProfile.Profile()
+started=time.monotonic_ns(); cpu_started=time.process_time_ns()
+main_started=main_finished=None
+code=None
+profile.enable()
+try:
+    from aluclu.alc_r0.fixed_d_coordinator import main
+    main_started=time.monotonic_ns()
+    try:
+        code=main()
+    finally:
+        main_finished=time.monotonic_ns()
+finally:
+    primary=sys.exception()
+    profile.disable()
+    finished=time.monotonic_ns(); cpu_finished=time.process_time_ns()
+    report=dict(scope='coordinator-main-thread-diagnostic-profile',
+        profile_overhead=True,diagnostic_exit_code=code,report_rows=60,
+        profile_wall_ns=finished-started,profile_cpu_ns=cpu_finished-cpu_started,
+        pre_main_wall_ns=None if main_started is None else main_started-started,
+        main_wall_ns=None if main_started is None else main_finished-main_started,
+        cpu_scope='parent process including its threads; child processes excluded',
+        profile_scope='parent main thread only; bridge and child execution excluded',
+        startup_before_wrapper_not_profiled=True,
+        scientific_modules_loaded_in_parent=any(name.split('.')[0] in
+            ('torch','transformers','datasets') for name in sys.modules))
+    try:
+        pstats.Stats(profile).sort_stats('cumulative').print_stats(60)
+        print(json.dumps(report,sort_keys=True,separators=(',',':')),flush=True)
+    except BaseException:
+        if primary is None: raise
+if type(code) is not int:
+    raise RuntimeError('diagnostic main did not return an exact integer exit code')
+raise SystemExit(code)
+'''
+
+
+def _latency_profile_command(namespace):
+    if not isinstance(namespace,Path) or not namespace.is_absolute():
+        raise ValueError('absolute diagnostic namespace required')
+    return (sys.executable,'-B','-c',_LATENCY_PROFILE_CODE,
+        'diagnostic','success',str(namespace))
+
+
 def main():
     entry=time.monotonic_ns()
-    if len(sys.argv)!=2 or sys.argv[1] not in ('red','red_v2','red_v3','green','green_v2','green_v3','green_v4','green_v5','green_v6','regression','native_red','native_green','native_green_v2','native_green_v3','native_green_v4','native_green_v5','regression_v2','bootstrap_red','bootstrap_green','regression_v3','busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion','storage_hold_red','storage_hold_green','storage_growth_green','storage_growth_regression','storage_growth_red','storage_growth_green_v2','storage_growth_regression_a','storage_growth_regression_b','output_capacity_red','output_capacity_red_v2','output_capacity_green','output_capacity_negative_red','output_capacity_negative_green','output_capacity_negative_green_v2','output_capacity_reparse_red','output_capacity_final_focus','output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c','running_output_red','running_output_green','running_output_regression_a','running_output_regression_b','running_output_regression_c','terminal_output_red','terminal_output_green','terminal_output_red_v2','observer_terminal_red','observer_terminal_green','terminal_final_focus','terminal_final_regression_a','terminal_final_regression_b','terminal_final_regression_c','stop_publication_red','stop_publication_green','observer_terminal_green_v2','terminal_batch_growth_0','terminal_batch_growth_1','terminal_batch_growth_2','terminal_batch_fixed_0','terminal_batch_fixed_1','terminal_batch_fixed_2','terminal_batch_fixed_3','terminal_batch_lease_0','terminal_batch_lease_1','terminal_batch_state_store','terminal_batch_watch_consumer','terminal_batch_bounded'): raise ValueError('closed checkpoint only')
+    if len(sys.argv)!=2 or sys.argv[1] not in ('red','red_v2','red_v3','green','green_v2','green_v3','green_v4','green_v5','green_v6','regression','native_red','native_green','native_green_v2','native_green_v3','native_green_v4','native_green_v5','regression_v2','bootstrap_red','bootstrap_green','regression_v3','busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion','storage_hold_red','storage_hold_green','storage_growth_green','storage_growth_regression','storage_growth_red','storage_growth_green_v2','storage_growth_regression_a','storage_growth_regression_b','output_capacity_red','output_capacity_red_v2','output_capacity_green','output_capacity_negative_red','output_capacity_negative_green','output_capacity_negative_green_v2','output_capacity_reparse_red','output_capacity_final_focus','output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c','running_output_red','running_output_green','running_output_regression_a','running_output_regression_b','running_output_regression_c','terminal_output_red','terminal_output_green','terminal_output_red_v2','observer_terminal_red','observer_terminal_green','terminal_final_focus','terminal_final_regression_a','terminal_final_regression_b','terminal_final_regression_c','stop_publication_red','stop_publication_green','observer_terminal_green_v2','terminal_batch_growth_0','terminal_batch_growth_1','terminal_batch_growth_2','terminal_batch_fixed_0','terminal_batch_fixed_1','terminal_batch_fixed_2','terminal_batch_fixed_3','terminal_batch_lease_0','terminal_batch_lease_1','terminal_batch_state_store','terminal_batch_watch_consumer','terminal_batch_bounded','profile_tool_red','profile_tool_green','latency_profile_1'): raise ValueError('closed checkpoint only')
     cwd=Path(__file__).resolve().parents[1]
     stamp='20261015' if sys.argv[1] in ('busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose') else '20261013'
     if sys.argv[1] in ('query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion'): stamp='20261016'
@@ -21,7 +67,7 @@ def main():
     if sys.argv[1].startswith(('running_output_','terminal_output_')):
         stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_20261016'
     paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
-    if sys.argv[1].startswith(('observer_terminal_','terminal_final_','stop_publication_','terminal_batch_')):
+    if sys.argv[1].startswith(('observer_terminal_','terminal_final_','stop_publication_','terminal_batch_','profile_tool_','latency_profile_')):
         stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_20261018'
         paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
     if any(path.exists() for path in paths.values()): raise FileExistsError('immutable evidence exists')
@@ -153,12 +199,29 @@ def main():
             cases=['tests/test_alc_r0_bounded_process_output.py']
         else: raise ValueError('unknown fixed regression partition')
         cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
-    result=run_owned_process((sys.executable,'-B','-m','pytest','-q',*cases,'--junitxml='+str(paths['.xml'])),
+    if sys.argv[1].startswith('profile_tool_'):
+        cases=['tests/test_alc_r0_latency_profile_tool.py','-o','addopts=',
+            '-vv','--tb=short','-p','no:cacheprovider']
+    profiling=sys.argv[1]=='latency_profile_1'
+    namespace=None
+    if profiling:
+        import tempfile
+        namespace=Path(tempfile.mkdtemp(prefix='alc-r0-latency-profile-'))
+        command=_latency_profile_command(namespace)
+        environment.update(HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_DATASETS_OFFLINE='1')
+    else:
+        command=(sys.executable,'-B','-m','pytest','-q',*cases,'--junitxml='+str(paths['.xml']))
+    result=run_owned_process(command,
         cwd=cwd,environment=environment,stdout_path=paths['.stdout.log'],
         stderr_path=paths['.stderr.log'],deadline_ns=entry+120_000_000_000)
-    data=json.dumps(dict(asdict(result),pytest_exit_code=result.exit_code,
-        parent_bound_seconds=120,scope='integrated-coordinator-acceptance-work-in-progress'),
-        sort_keys=True,separators=(',',':')).encode()
+    record=dict(asdict(result),parent_bound_seconds=120)
+    if profiling:
+        record.update(diagnostic_exit_code=result.exit_code,profile_overhead=True,
+            scope='diagnostic-latency-profile-not-acceptance',namespace=str(namespace))
+    else:
+        record.update(pytest_exit_code=result.exit_code,
+            scope='integrated-coordinator-acceptance-work-in-progress')
+    data=json.dumps(record,sort_keys=True,separators=(',',':')).encode()
     with paths['.exit.json'].open('xb') as stream: stream.write(data)
     print(data.decode())
 

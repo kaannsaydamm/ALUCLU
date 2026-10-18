@@ -1007,3 +1007,38 @@ stop-only publication contract, but test/evidence closure remains incomplete.
 No general output admission, crash durability, adversarial namespace proof,
 busy-parent independent output cancellation, failed settlement, complete physical
 cache/journal/staging footprint or scientific/learning PASS follows.
+
+## Latency diagnostic — 2026-10-18, not acceptance
+
+Extend only the existing owned test runner with one closed CPU/offline profiling
+mode, not a launcher/authority framework. Four tool boundary tests followed RED
+4fail16.258s -> GREEN4/0/0/0 13.831s, including actual missing-namespace native
+denial2. Fixed argv, absolute namespace, direct main return code, primary-failure
+preservation and top60 text-only statistics are required; no serialized profile.
+Python profiler documentation: https://docs.python.org/3.12/library/profile.html .
+Profile overhead and parent-main-thread scope make this diagnosis, not benchmark.
+
+One actual profile denied2, native active0/no timeout/original120s. Preparation
+preceded original lock deadline expiry; no consumption or worker/observer action
+records. Main wall18.594s, pre-main2.125s, wrapper20.719s, parent process CPU
+0.359375s. Actual nt.mkdir5calls15.174s dominate; nt.fsync7calls1.992s and nt.stat
+688calls0.867s cumulative also observed. Profile counters and wall clocks have
+different rounded intervals; do not conflate them. Parent CPU includes parent
+threads, while the profile excludes bridge/child execution and pre-wrapper startup.
+
+This identifies elapsed time inside directory creation in this instrumented run,
+not the OS/filter/driver/scheduling cause, nor all prior bridge failures. A separate
+observed venv->base child creation gap115.917s predates wrapper instrumentation;
+a later identical redirector gap0.154s forbids a stable venv-culprit conclusion.
+
+Evidence: results/alc_r0_fixed_d_coordinator_latency_profile_evidence_20261018.json,
+11 raw artifacts/3 source pins/3 embedded preparation records. Product source
+unchanged; focused tool tests do not replace still-failed316-case regression.
+Independent source/diagnostic code APPROVE / architecture CLEAR are narrow only.
+
+Next: finite unprofiled directory creation/existing-directory observations under
+the existing native owner, with explicit own budget and timing/counter limits.
+Do not pre-create product state before its original entry, relax the15s useful
+window/10s tail/watch windows, skip durability or namespace checks, blame an OS
+component, or claim scientific activation from this diagnostic. Corroboration
+must precede product performance changes and renewed regression attempts.

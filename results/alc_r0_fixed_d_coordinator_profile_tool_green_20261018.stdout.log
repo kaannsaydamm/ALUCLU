@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 4 items
+
+tests/test_alc_r0_latency_profile_tool.py::test_latency_profile_command_is_fixed_cpu_diagnostic PASSED [ 25%]
+tests/test_alc_r0_latency_profile_tool.py::test_latency_profile_command_rejects_invalid_namespace[namespace0] PASSED [ 50%]
+tests/test_alc_r0_latency_profile_tool.py::test_latency_profile_command_rejects_invalid_namespace[not-a-path] PASSED [ 75%]
+tests/test_alc_r0_latency_profile_tool.py::test_latency_profile_actual_denial_preserves_nonzero_exit PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_profile_tool_green_20261018.xml -
+============================= 4 passed in 20.39s ==============================

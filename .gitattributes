@@ -620,3 +620,4 @@ results/alc_r0_fixed_d_coordinator_*_20261015.* -text whitespace=-blank-at-eol
 results/alc_r0_fixed_d_coordinator_*_20261016.* -text whitespace=-blank-at-eol
 results/alc_r0_fixed_d_coordinator_*_20261018.* -text whitespace=-blank-at-eol
 tests/test_alc_r0_coordinator_growth_acceptance.py -text
+tests/test_alc_r0_latency_profile_tool.py -text

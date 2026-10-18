@@ -16346,3 +16346,69 @@ stopped/cachedeleted/securitychanged. Samplepreservedhost_observation_20261018.
 Nextboundedcausalprofilemustseparate namespace/read/flush/startup/bridge timings
 and CPU vswallwait before rerun; original15suseful/10stail/watchwindow untouched.
 Preserve/pushresearchWIP+negativeevidence, explicitINCOMPLETEnotCLEAN/learningPASS.
+
+2026-10-18 nextgoalturn PROGRESSaudit priorbe454d2 source+negativeevidence pushed;
+liveDesktopcleanHEADconfirmed/fullobjective+code-reviewskill reread. Existing
+nativefailuretimeline showsobserverstart ~10.9s intooriginal15s foronefailedcase;
+notcausaloperationprofileyet. BothGPT6.1 lanes approveONEclosed existingrunner
+latency_profile_1 diagnostic design: cProfile mainthread beforemoduleimport,
+directmain() preservesactualexit, top60textreport(no serializedprofile), separate
+pre-main/main/CPUwall intervals, sameowned120s. No product/window/thresholdchange.
+OfficialPython3.12 profiler docs consulted: profilingoverhead/notbenchmark;
+https://docs.python.org/3.12/library/profile.html . Child/bridge execution not
+profiled; processCPUallparentthreads vsprofilemainthread explicitlydistinguished.
+TDD4toolcases (fixedtuple,2invalidnamespace,actualmissingnamespaceexit2underowned
+process) addedbeforebuilderimplementation. ToolRED next, no scientificauthority.
+
+ToolREDterminal4missingbuilderFAIL JUnit16.258s/stdout20.36s, native1/root23336/
+total3/active0/no timeout120s. Startupobservation: venvredirectorPID22816created
+16:38:16.293047, actualbasechild17176created16:40:12.210240 (~115.917s gap BEFORE
+runnerownedchildstart); laterpytestredirector23336->19988 gap~0.154s. This is
+oneobservedlaunchinterval, notgeneralvenvculpritproof. Directbase-I-S-B readonly
+baselineeventuallyreturnedCPython3.12.13/exit0; alsoinitiallydelayed. No duplicate
+test/restart, samehandlesmonitored. SystemeventID7returnedHyperVsuccessinit,
+NOTdiskerror; no diskfaultclaimfromambiguousnumericID.
+Implementclosedprofilebuilder/wrapper, exactmainexitpreservation, finallyprofile
+reportwithoutmaskingactiveprimaryexception; fixedtop60text+separatepre/main/wall/
+CPU/scope fields, no serialization. Existingrunnernative120s unchanged andprofile
+receipt usesdiagnostic_exit_code/noJUnit/PASS. Productsrcuntouched. ToolGREENnext.
+
+ToolGREEN4/0/0/0 JUnit13.831s native0/root21592/total7/active0/no timeout120s.
+Actualmissingnamespacecontrol returned2 withvalidscopedreport/no scientific
+parentmodules. ProductSHAstill375a1063150630cf878b15166e46f90b028ef547e715c6254179dfbee212e29a.
+CodeAPPROVE/architectureCLEAR forONEboundeddiagnosticprofile, parent personally
+verifiedconditionalGREEN; no productregressionapproval. Reportingfailureafter
+ordinarymain2 couldreportnative1: interpretincompletereporting, notmainreturned1.
+Top60boundsrowsnotbytes, inheritedouteroutputownership unchanged; no physical
+quota/admissionclaim. Launchlatency_profile_1 once, no rerun/thresholdchange.
+
+Singleactualprofileterminalnative2/diagnostic2/root24264/total3/active0/notimeout
+original120s. StderrTimeoutError originallockdeadlineexpired. Printedwrapper
+wall20.719s/pre-main2.125s/main18.594s/processCPU.359375s; cProfilestatsmain18.581s
+andheader20.626s are distinctroundedprofilerintervals, notcountercontradictions.
+Actualnativecalls: nt.mkdir5calls15.174s; nt.fsync7calls1.992s; nt.stat688calls
+.865exclusive/.867cumulative. This run spent substantialelapsedtimeINSIDE
+directorycreation calls, notCPU-heavyPythoncalculation. Cannotdistinguishdisk,
+filterdriver,scheduler/deschedulingorhostcause fromtheseattributions orretro-
+explainallpriorbridgefailures. Profileoverheadpresent, no benchmark/PASSclaim.
+Namespacehaspreparation/operator/reservationdirs, NOconsumed/workcreated/
+observercreated/acceptedresult; actualexecutionnotbegun. Productbytesunchanged.
+
+Createdlatency_profile_evidence_20261018.json:11rawartifacts+3sourcepins=14refs,
+3selectedpreparedrawrecords embedded; authorrehashed14 andrebuilt3UTF8hashes.
+CurrentpinsGREEN+actualprofileONLY, REDpredatesimplementation. CodeAPPROVE and
+architectureCLEAR narrowdiagnosticinterpretation afterindependentactualprofile
+inspection; codeconfirmsfsync/ns/GREENnative, architectureconfirmsmain/mkdir/
+productSHA/GREENXML butnotclaimingalladditionaldetails independentlychecked.
+Nextunprofiledfinitefresh/existingdirectoryprobe viaexistingownedrunner, original
+bound preserved, no precreatingproductnamespace outside originalentry/no skipping
+fsync/identitychecks/no deadlineextension. CorroborateOS-calllatency beforefix.
+Overall316productregression remainsOPEN; these4tests areprofilingtoolonly.
+
+2026-10-18 continuation: previous status-only turn classified NO PROGRESS;
+revalidated Desktop dirty checkpoint and terminal evidence, no blind restart.
+Both independent GPT-6.1 Sol lanes now rehashed all14 refs/reconstructed3 raw
+records: code APPROVE preservation, architecture CLEAR preservation only.
+Saved review record; pin new profiling test -text to retain exact evidence bytes.
+No product/scientific/threshold change. Owner confirms all historical model/CUDA
+work used only this PC RTX4050; testimony is scope, NOT measured GPU hours.
