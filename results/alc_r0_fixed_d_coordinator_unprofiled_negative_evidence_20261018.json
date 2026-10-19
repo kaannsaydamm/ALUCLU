@@ -1,0 +1,187 @@
+{
+  "refs": [
+    {
+      "byte_length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "results/alc_r0_fixed_d_coordinator_unprofiled_1_20261018.stdout.log"
+    },
+    {
+      "byte_length": 93,
+      "sha256": "b855497d671e1ddb34690d052936e7c789537d6fc4799d4912be89a043b88c18",
+      "path": "results/alc_r0_fixed_d_coordinator_unprofiled_1_20261018.stderr.log"
+    },
+    {
+      "byte_length": 759,
+      "sha256": "dbdf78d4d25fb967cdcb15c2bada2fd411ddd5abede4aa58ce8cbd80a93d3367",
+      "path": "results/alc_r0_fixed_d_coordinator_unprofiled_1_20261018.exit.json"
+    },
+    {
+      "byte_length": 89599,
+      "sha256": "375a1063150630cf878b15166e46f90b028ef547e715c6254179dfbee212e29a",
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py"
+    }
+  ],
+  "schema": "alc-r0-unprofiled-coordinator-negative-v1",
+  "native": {
+    "active_processes": 0,
+    "command": [
+      "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "aluclu.alc_r0.fixed_d_coordinator",
+      "diagnostic",
+      "success",
+      "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-coordinator-unprofiled-xu3anyke"
+    ],
+    "diagnostic_exit_code": 2,
+    "exit_code": 2,
+    "finished_ns": 3760781000000,
+    "kernel_time_100ns": 8906250,
+    "namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-coordinator-unprofiled-xu3anyke",
+    "parent_bound_seconds": 120,
+    "root_pid": 22420,
+    "scope": "one-unprofiled-original-coordinator-diagnostic-not-acceptance",
+    "started_ns": 3691718000000,
+    "timed_out": false,
+    "total_processes": 4,
+    "user_time_100ns": 3281250
+  },
+  "absence": {
+    "accepted_result": true,
+    "worker_resume": true,
+    "observer_stdout": true,
+    "observer_create": true
+  },
+  "baseline_commit": "198c439a7e6a16a27b212f12d7ef8639bed60262",
+  "namespace_records": [
+    {
+      "byte_length": 527,
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"charge_envelope_ns\":\"25000000000\",\"cleanup_ceiling_ns\":\"10000000000\",\"declaration_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"device\":\"cpu\",\"experiment_id\":\"alc-r0-smollm2-135m-v1\",\"gpu_reservation_ns\":\"0\",\"physical_growth_bytes\":\"1048576\",\"research_growth_bytes\":\"1048576\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\",\"stderr_limit_bytes\":\"16384\",\"stdout_limit_bytes\":\"16384\",\"useful_wall_ceiling_ns\":\"15000000000\"}",
+      "sha256": "73edf386a16b4ac5ed56562a9d18e860641c6064392ef828a31961f98b306cd3",
+      "relative_path": "declaration.json"
+    },
+    {
+      "byte_length": 401,
+      "raw_utf8": "{\"domain\":\"diagnostic-only\",\"identity\":{\"creation_filetime_100ns\":\"134368052848290541\",\"owner_nonce\":\"625fc23454054899ae78be5dc554b914\",\"pid\":\"26488\",\"receipt_root\":\"ff0c42266e8ac5b766d390e04443bf9b56d44edddd65ba707259a3a78337fa32\"},\"ready_owner_root\":\"8c0c7ee6abd8701f883d51c1c294c6828bb350083676b06f0b28365552b976ae\",\"request_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\"}",
+      "sha256": "ec5dccee68156ea67b19acde4c42569d5f1ff9e1ab641175d874f6814d3f23e1",
+      "relative_path": "diagnostic.child.json"
+    },
+    {
+      "byte_length": 320,
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"declaration_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"domain\":\"diagnostic-only\",\"request_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\"}",
+      "sha256": "85df6a39dfbb8885077ae39dfddfc805d0711821a9c8f1dc44189c4d486756d8",
+      "relative_path": "diagnostic.consumed.json"
+    },
+    {
+      "byte_length": 319,
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"3717390000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"3692390000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\alc-r0-coordinator-unprofiled-xu3anyke\",\"scenario\":\"success\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"3707390000000\"}",
+      "sha256": "74af3137594dc90da6c528e13316dd653569847b1cbcb8ece1aaf53d759e007e",
+      "relative_path": "diagnostic.installation.json"
+    },
+    {
+      "byte_length": 588,
+      "raw_utf8": "{\"clock_domain_root\":\"c1d15d92b94a17f9641219cacb916287cf63099cb44c7b748dd7e8e64f6ff3d5\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"3692390000000\",\"generation_root\":\"335e25afc2801e78a563b2d455dd5e1345990e3615c5dcce96d40e483566877e\",\"installation_root\":\"74af3137594dc90da6c528e13316dd653569847b1cbcb8ece1aaf53d759e007e\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\alc-r0-coordinator-unprofiled-xu3anyke\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"3707390000000\"}",
+      "sha256": "e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a",
+      "relative_path": "diagnostic.request.json"
+    },
+    {
+      "byte_length": 282,
+      "raw_utf8": "{\"action\":\"create\",\"creation_filetime_100ns\":\"134368052848290541\",\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"3693015000000\",\"pid\":\"26488\",\"request_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"role\":\"work\",\"started_monotonic_ns\":\"3693000000000\"}",
+      "sha256": "d6a3a5ed8862970c39a3554657d3228b773bcc262ee1a2649bb5e04876b245f8",
+      "relative_path": "work.action.create.json"
+    },
+    {
+      "byte_length": 677,
+      "raw_utf8": "{\"domain\":\"diagnostic-only\",\"request_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"role\":\"work\",\"stage\":\"before-create\",\"streams\":[{\"allocation_bytes\":\"16384\",\"attributes\":\"32\",\"device\":\"4343961586895537332\",\"eof_bytes\":\"0\",\"inode\":\"5629499534692837\",\"limit_bytes\":\"16384\",\"links\":\"1\",\"observed_monotonic_ns\":\"3692984000000\",\"path\":\"work.stdout\",\"stage\":\"before-create\",\"stream\":\"stdout\"},{\"allocation_bytes\":\"16384\",\"attributes\":\"32\",\"device\":\"4343961586895537332\",\"eof_bytes\":\"0\",\"inode\":\"10696049115484683\",\"limit_bytes\":\"16384\",\"links\":\"1\",\"observed_monotonic_ns\":\"3692984000000\",\"path\":\"work.stderr\",\"stage\":\"before-create\",\"stream\":\"stderr\"}]}",
+      "sha256": "4cdbfad0886aabe1cd38b310f6a3af3cd9f0329b07b294e1aaf2468667494e7a",
+      "relative_path": "work.output.before-create.json"
+    },
+    {
+      "byte_length": 0,
+      "raw_utf8": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relative_path": "work.stderr"
+    },
+    {
+      "byte_length": 0,
+      "raw_utf8": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relative_path": "work.stdout"
+    },
+    {
+      "byte_length": 1,
+      "raw_utf8": "\u0000",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "relative_path": "operator\\operator.lock"
+    },
+    {
+      "byte_length": 368,
+      "raw_utf8": "{\"candidate_status\":{\"expires_utc_ns\":\"1792331744287161200\",\"generation_root\":\"335e25afc2801e78a563b2d455dd5e1345990e3615c5dcce96d40e483566877e\",\"installation_root\":\"74af3137594dc90da6c528e13316dd653569847b1cbcb8ece1aaf53d759e007e\",\"revoked\":false,\"schema\":\"alc-r0-operator-status-v1\",\"sequence\":\"1\"},\"previous_status\":null,\"schema\":\"alc-r0-operator-status-intent-v1\"}",
+      "sha256": "febf72ec70172262c6bff061d48e2013491ae7785acdfc56ea1751be517f156e",
+      "relative_path": "operator\\status.intent.json"
+    },
+    {
+      "byte_length": 280,
+      "raw_utf8": "{\"expires_utc_ns\":\"1792331744287161200\",\"generation_root\":\"335e25afc2801e78a563b2d455dd5e1345990e3615c5dcce96d40e483566877e\",\"installation_root\":\"74af3137594dc90da6c528e13316dd653569847b1cbcb8ece1aaf53d759e007e\",\"revoked\":false,\"schema\":\"alc-r0-operator-status-v1\",\"sequence\":\"1\"}",
+      "sha256": "d98d00c8f3916f201452e4b7ac890f825b0d330484a40d8cf4106e9b7561c4de",
+      "relative_path": "operator\\status.json"
+    },
+    {
+      "byte_length": 1,
+      "raw_utf8": "\u0000",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "relative_path": "reservations\\global.lock"
+    },
+    {
+      "byte_length": 1973,
+      "raw_utf8": "{\"event\":{\"clock_domain_root\":\"c1d15d92b94a17f9641219cacb916287cf63099cb44c7b748dd7e8e64f6ff3d5\",\"declaration_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"entry_monotonic_ns\":\"3692390000000\",\"entry_utc_ns\":\"1792331684396999800\",\"evidence_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"kind\":\"reserve\",\"previous_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"1\",\"useful_deadline_monotonic_ns\":\"3707390000000\"},\"journal_id\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"previous\":\"6e0bfd984c767277f735a5a9e58b5e0b677455175c5a332d74e3389b85e8bd1f\",\"sequence\":1,\"version\":1}\n{\"event\":{\"creation_filetime_100ns\":\"134368052848290541\",\"evidence_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"identity_receipt_root\":\"ff0c42266e8ac5b766d390e04443bf9b56d44edddd65ba707259a3a78337fa32\",\"kind\":\"child_created\",\"owner_nonce\":\"625fc23454054899ae78be5dc554b914\",\"pid\":\"26488\",\"previous_root\":\"796aeaf7117b020963a8b01953c97283be8c18ea3096ea869ee93b4b40bd6686\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"2\"},\"journal_id\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"previous\":\"343ac7f514ff73bd290d1601daa6c92b6e84c8636e8e352a7d590d1e7cd55bd6\",\"sequence\":2,\"version\":1}\n{\"event\":{\"evidence_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"identity_receipt_root\":\"ff0c42266e8ac5b766d390e04443bf9b56d44edddd65ba707259a3a78337fa32\",\"kind\":\"identity_published\",\"previous_root\":\"3db31ca17cf8008529bb89ca08df741901e42a2274e1671476ff89a699b6f8b4\",\"publication_root\":\"76c80f9dafd2be0831b4a5e37e226979ceefa5e1ef8adcc693061e2e3ef1795a\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"3\"},\"journal_id\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"previous\":\"82052870891a137588b4e394fad2ecc7c93478e3477e682c656e7df51099fb2b\",\"sequence\":3,\"version\":1}\n",
+      "sha256": "b306bcf0489e70ee333ec6dc4c3d6001259d2855c71fec4c713908e4288de3ef",
+      "relative_path": "reservations\\journal.jsonl"
+    },
+    {
+      "byte_length": 1,
+      "raw_utf8": "\u0000",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "relative_path": "reservations\\journal.jsonl.lock"
+    },
+    {
+      "byte_length": 529,
+      "raw_utf8": "{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"3\",\"journal_head\":{\"byte_length\":1973,\"count\":3,\"digest\":\"4c4ce30747a71616d498b846357fc75f5e836542152263427668946955b130f5\"},\"previous_owner_root\":\"76c80f9dafd2be0831b4a5e37e226979ceefa5e1ef8adcc693061e2e3ef1795a\",\"reservation_root\":\"709a3d1829e0c09398f77fd6ce197a548a2aac50f8bd2a85b7f5ce53cce1039b\",\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-owner-v1\"}",
+      "sha256": "8c0c7ee6abd8701f883d51c1c294c6828bb350083676b06f0b28365552b976ae",
+      "relative_path": "reservations\\owner.json"
+    },
+    {
+      "byte_length": 516,
+      "raw_utf8": "{\"candidate_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"0\",\"journal_head\":{\"byte_length\":0,\"count\":0,\"digest\":\"6e0bfd984c767277f735a5a9e58b5e0b677455175c5a332d74e3389b85e8bd1f\"},\"previous_owner_root\":null,\"reservation_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"review_root\":null,\"schema\":\"alc-r0-reservation-owner-v1\"},\"event\":null,\"previous_owner\":null,\"review_root\":null,\"schema\":\"alc-r0-reservation-intent-v1\"}",
+      "sha256": "e79a9af418504716cef6e7e783a4091820d2db60b3a9cc813783b7060ebbd45f",
+      "relative_path": "reservations\\intents\\initialization.json"
+    },
+    {
+      "byte_length": 1626,
+      "raw_utf8": "{\"candidate_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"1\",\"journal_head\":{\"byte_length\":722,\"count\":1,\"digest\":\"343ac7f514ff73bd290d1601daa6c92b6e84c8636e8e352a7d590d1e7cd55bd6\"},\"previous_owner_root\":\"d9b7e0a5872221a3d36ac5248c71aac78365739d90d97ca9aa1eb2cc31d4113c\",\"reservation_root\":\"796aeaf7117b020963a8b01953c97283be8c18ea3096ea869ee93b4b40bd6686\",\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-owner-v1\"},\"event\":{\"clock_domain_root\":\"c1d15d92b94a17f9641219cacb916287cf63099cb44c7b748dd7e8e64f6ff3d5\",\"declaration_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"entry_monotonic_ns\":\"3692390000000\",\"entry_utc_ns\":\"1792331684396999800\",\"evidence_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"kind\":\"reserve\",\"previous_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"1\",\"useful_deadline_monotonic_ns\":\"3707390000000\"},\"previous_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"0\",\"journal_head\":{\"byte_length\":0,\"count\":0,\"digest\":\"6e0bfd984c767277f735a5a9e58b5e0b677455175c5a332d74e3389b85e8bd1f\"},\"previous_owner_root\":null,\"reservation_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"review_root\":null,\"schema\":\"alc-r0-reservation-owner-v1\"},\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-intent-v1\"}",
+      "sha256": "894b2eec202ac93f990226c5375f8a31145e91628f6340cdc13e7c5c6912b7de",
+      "relative_path": "reservations\\intents\\intent-000001.json"
+    },
+    {
+      "byte_length": 1666,
+      "raw_utf8": "{\"candidate_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"2\",\"journal_head\":{\"byte_length\":1357,\"count\":2,\"digest\":\"82052870891a137588b4e394fad2ecc7c93478e3477e682c656e7df51099fb2b\"},\"previous_owner_root\":\"a565fd1a1516ea1a1a3ac89a6d0ccc23083d3733e42d49b778917c1d9e687c64\",\"reservation_root\":\"3db31ca17cf8008529bb89ca08df741901e42a2274e1671476ff89a699b6f8b4\",\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-owner-v1\"},\"event\":{\"creation_filetime_100ns\":\"134368052848290541\",\"evidence_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"identity_receipt_root\":\"ff0c42266e8ac5b766d390e04443bf9b56d44edddd65ba707259a3a78337fa32\",\"kind\":\"child_created\",\"owner_nonce\":\"625fc23454054899ae78be5dc554b914\",\"pid\":\"26488\",\"previous_root\":\"796aeaf7117b020963a8b01953c97283be8c18ea3096ea869ee93b4b40bd6686\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"2\"},\"previous_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"1\",\"journal_head\":{\"byte_length\":722,\"count\":1,\"digest\":\"343ac7f514ff73bd290d1601daa6c92b6e84c8636e8e352a7d590d1e7cd55bd6\"},\"previous_owner_root\":\"d9b7e0a5872221a3d36ac5248c71aac78365739d90d97ca9aa1eb2cc31d4113c\",\"reservation_root\":\"796aeaf7117b020963a8b01953c97283be8c18ea3096ea869ee93b4b40bd6686\",\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-owner-v1\"},\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-intent-v1\"}",
+      "sha256": "c849605859151b91335ec78df6e9a9577037b3d170c6ac0a893632b9aeebc93c",
+      "relative_path": "reservations\\intents\\intent-000002.json"
+    },
+    {
+      "byte_length": 1648,
+      "raw_utf8": "{\"candidate_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"3\",\"journal_head\":{\"byte_length\":1973,\"count\":3,\"digest\":\"4c4ce30747a71616d498b846357fc75f5e836542152263427668946955b130f5\"},\"previous_owner_root\":\"76c80f9dafd2be0831b4a5e37e226979ceefa5e1ef8adcc693061e2e3ef1795a\",\"reservation_root\":\"709a3d1829e0c09398f77fd6ce197a548a2aac50f8bd2a85b7f5ce53cce1039b\",\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-owner-v1\"},\"event\":{\"evidence_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"identity_receipt_root\":\"ff0c42266e8ac5b766d390e04443bf9b56d44edddd65ba707259a3a78337fa32\",\"kind\":\"identity_published\",\"previous_root\":\"3db31ca17cf8008529bb89ca08df741901e42a2274e1671476ff89a699b6f8b4\",\"publication_root\":\"76c80f9dafd2be0831b4a5e37e226979ceefa5e1ef8adcc693061e2e3ef1795a\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"3\"},\"previous_owner\":{\"declaration_genesis_root\":\"0d23175404ba22959ebf28bf9c9da0b0486d163fffa04fa3d4c8f42a64651626\",\"generation\":\"2\",\"journal_head\":{\"byte_length\":1357,\"count\":2,\"digest\":\"82052870891a137588b4e394fad2ecc7c93478e3477e682c656e7df51099fb2b\"},\"previous_owner_root\":\"a565fd1a1516ea1a1a3ac89a6d0ccc23083d3733e42d49b778917c1d9e687c64\",\"reservation_root\":\"3db31ca17cf8008529bb89ca08df741901e42a2274e1671476ff89a699b6f8b4\",\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-owner-v1\"},\"review_root\":\"e497011df2458b458b426f3b5b543416ef33f16edcd998762e942b1669cb280a\",\"schema\":\"alc-r0-reservation-intent-v1\"}",
+      "sha256": "3cc522f0391d141fd6997fa4358bae0d896cb745242bcb261b14705045b459f6",
+      "relative_path": "reservations\\intents\\intent-000003.json"
+    }
+  ],
+  "limitations": [
+    "One unprofiled diagnostic, not scientific execution or full regression.",
+    "Native-owned elapsed69.063s exceeds original15s useful plus10s cleanup (25s); unchanged deadline checks do not establish a25s wall-response guarantee. Responsive acquisition/cleanup remains OPEN.",
+    "Original useful15s/cleanup10s unchanged; terminal exit2 when output acquisition entry check found original cleanup expired, before acquiring observer output resources.",
+    "Worker created and consumed, no observer create/result; durable failed settlement remains unproven.",
+    "Read-only source order narrows interval to after child binding/before observer output acquisition: socketpair/job creation and scheduling not yet separately measured.",
+    "No attribution to OS/filter/driver or claim that earlier mkdir delay explains this failure."
+  ],
+  "stderr": "alc-r0 coordinator denied: TimeoutError: output cleanup deadline expired before acquisition\r\n"
+}

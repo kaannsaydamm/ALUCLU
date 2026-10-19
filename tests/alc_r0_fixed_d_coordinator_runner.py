@@ -55,8 +55,84 @@ def _latency_profile_command(namespace):
         'diagnostic','success',str(namespace))
 
 
+_DIRECTORY_LATENCY_CODE='''
+import json, os, sys, tempfile, time
+from pathlib import Path
+def emit(record):
+    print(json.dumps(record,sort_keys=True,separators=(',',':')),flush=True)
+emit(dict(event='setup-begun'))
+started=time.monotonic_ns(); cpu_started=time.process_time_ns()
+namespace=Path(tempfile.mkdtemp(prefix='alc-r0-directory-latency-'))
+finished=time.monotonic_ns(); cpu_finished=time.process_time_ns()
+emit(dict(event='setup-completed',namespace=str(namespace),
+    wall_ns=finished-started,cpu_ns=cpu_finished-cpu_started))
+emit(dict(event='metadata',schema='alc-r0-directory-latency-v1',
+    scope='finite unprofiled filesystem observation; not acceptance',
+    interpreter=sys.executable,python=sys.version,profile_overhead=False,
+    startup_before_wrapper_not_measured=True,imports_before_setup_not_measured=True,
+    cpu_scope='this process only; output emission excluded from per-operation clocks',
+    file_operation_scope='exclusive open, write, flush, fsync and close combined',
+    cache_state='unknown',namespace_retained=True,payload_bytes_per_file=512))
+completed=0
+for operation in ('fresh-mkdir','existing-mkdir','exclusive-write-flush-fsync'):
+    for index in range(6):
+        path=namespace/('directory-%d'%index if operation!='exclusive-write-flush-fsync'
+            else 'file-%d.bin'%index)
+        emit(dict(event='begun',operation=operation,index=index,path=str(path)))
+        wall_start=time.monotonic_ns(); cpu_start=time.process_time_ns()
+        if operation=='fresh-mkdir':
+            path.mkdir()
+        elif operation=='existing-mkdir':
+            path.mkdir(exist_ok=True)
+        else:
+            with path.open('xb') as stream:
+                if stream.write(b'x'*512)!=512: raise OSError('short diagnostic write')
+                stream.flush()
+                os.fsync(stream.fileno())
+        wall_end=time.monotonic_ns(); cpu_end=time.process_time_ns()
+        completed+=1
+        emit(dict(event='completed',operation=operation,index=index,
+            wall_ns=wall_end-wall_start,cpu_ns=cpu_end-cpu_start))
+directories=sum((namespace/('directory-%d'%i)).is_dir() for i in range(6))
+sizes=[(namespace/('file-%d.bin'%i)).stat().st_size for i in range(6)]
+if directories!=6 or sizes!=[512]*6: raise RuntimeError('diagnostic inventory differs')
+emit(dict(event='inventory',directories=directories,files=len(sizes),payload_bytes=sum(sizes)))
+emit(dict(event='summary',completed_operations=completed,profile_overhead=False,
+    scientific_execution=False,namespace=str(namespace)))
+'''
+
+
+def _directory_latency_command():
+    return (sys.executable,'-B','-c',_DIRECTORY_LATENCY_CODE)
+
+
+def _directory_latency_checkpoint(mode,entry):
+    cwd=Path(__file__).resolve().parents[1]
+    stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{mode}_20261018'
+    paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
+    if any(path.exists() for path in paths.values()): raise FileExistsError('immutable evidence exists')
+    environment=dict(os.environ,PYTHONPATH=str(cwd/'src'),PYTHONDONTWRITEBYTECODE='1',
+        PYTHONNOUSERSITE='1',PYTEST_DISABLE_PLUGIN_AUTOLOAD='1',CUDA_VISIBLE_DEVICES='-1',
+        HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_DATASETS_OFFLINE='1')
+    actual=mode=='directory_latency_1'
+    command=(_directory_latency_command() if actual else
+        (sys.executable,'-B','-m','pytest','tests/test_alc_r0_directory_latency_tool.py',
+         '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider','--junitxml='+str(paths['.xml'])))
+    result=run_owned_process(command,cwd=cwd,environment=environment,
+        stdout_path=paths['.stdout.log'],stderr_path=paths['.stderr.log'],
+        deadline_ns=entry+120_000_000_000)
+    record=dict(asdict(result),parent_bound_seconds=120,
+        scope='filesystem-latency-diagnostic-not-acceptance',profile_overhead=False)
+    record['diagnostic_exit_code' if actual else 'pytest_exit_code']=result.exit_code
+    with paths['.exit.json'].open('xb') as stream:
+        stream.write(json.dumps(record,sort_keys=True,separators=(',',':')).encode())
+    print(json.dumps(record,sort_keys=True))
+
+
 def main():
     entry=time.monotonic_ns()
+    if sys.argv[1:] in (['directory_tool_red'],['directory_tool_green'],['directory_latency_1']):
+        return _directory_latency_checkpoint(sys.argv[1],entry)
     if len(sys.argv)!=2 or sys.argv[1] not in ('red','red_v2','red_v3','green','green_v2','green_v3','green_v4','green_v5','green_v6','regression','native_red','native_green','native_green_v2','native_green_v3','native_green_v4','native_green_v5','regression_v2','bootstrap_red','bootstrap_green','regression_v3','busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion','storage_hold_red','storage_hold_green','storage_growth_green','storage_growth_regression','storage_growth_red','storage_growth_green_v2','storage_growth_regression_a','storage_growth_regression_b','output_capacity_red','output_capacity_red_v2','output_capacity_green','output_capacity_negative_red','output_capacity_negative_green','output_capacity_negative_green_v2','output_capacity_reparse_red','output_capacity_final_focus','output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c','running_output_red','running_output_green','running_output_regression_a','running_output_regression_b','running_output_regression_c','terminal_output_red','terminal_output_green','terminal_output_red_v2','observer_terminal_red','observer_terminal_green','terminal_final_focus','terminal_final_regression_a','terminal_final_regression_b','terminal_final_regression_c','stop_publication_red','stop_publication_green','observer_terminal_green_v2','terminal_batch_growth_0','terminal_batch_growth_1','terminal_batch_growth_2','terminal_batch_fixed_0','terminal_batch_fixed_1','terminal_batch_fixed_2','terminal_batch_fixed_3','terminal_batch_lease_0','terminal_batch_lease_1','terminal_batch_state_store','terminal_batch_watch_consumer','terminal_batch_bounded','profile_tool_red','profile_tool_green','latency_profile_1'): raise ValueError('closed checkpoint only')
     cwd=Path(__file__).resolve().parents[1]
     stamp='20261015' if sys.argv[1] in ('busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose') else '20261013'

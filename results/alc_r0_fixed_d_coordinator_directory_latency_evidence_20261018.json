@@ -1,0 +1,307 @@
+{
+  "source_pins_apply_to": [
+    "directory_tool_green",
+    "directory_latency_1",
+    "latency_tools_regression"
+  ],
+  "setup": {
+    "cpu_ns": 0,
+    "event": "setup-completed",
+    "namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-directory-latency-a8hl46cc",
+    "wall_ns": 0
+  },
+  "inventory": {
+    "directories": 6,
+    "event": "inventory",
+    "files": 6,
+    "payload_bytes": 3072
+  },
+  "summary": {
+    "completed_operations": 18,
+    "event": "summary",
+    "namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-directory-latency-a8hl46cc",
+    "profile_overhead": false,
+    "scientific_execution": false
+  },
+  "timing_summaries": [
+    {
+      "operation": "exclusive-write-flush-fsync",
+      "wall_ns_max": 16000000,
+      "cpu_ns_sum": 15625000,
+      "wall_ns_sum": 32000000,
+      "count": 6
+    },
+    {
+      "operation": "existing-mkdir",
+      "wall_ns_max": 0,
+      "cpu_ns_sum": 0,
+      "wall_ns_sum": 0,
+      "count": 6
+    },
+    {
+      "operation": "fresh-mkdir",
+      "wall_ns_max": 93000000,
+      "cpu_ns_sum": 0,
+      "wall_ns_sum": 93000000,
+      "count": 6
+    }
+  ],
+  "record_count": 41,
+  "metadata": {
+    "cache_state": "unknown",
+    "cpu_scope": "this process only; output emission excluded from per-operation clocks",
+    "event": "metadata",
+    "file_operation_scope": "exclusive open, write, flush, fsync and close combined",
+    "imports_before_setup_not_measured": true,
+    "interpreter": "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+    "namespace_retained": true,
+    "payload_bytes_per_file": 512,
+    "profile_overhead": false,
+    "python": "3.12.13 (main, Jun 11 2026, 04:05:29) [MSC v.1944 64 bit (AMD64)]",
+    "schema": "alc-r0-directory-latency-v1",
+    "scope": "finite unprofiled filesystem observation; not acceptance",
+    "startup_before_wrapper_not_measured": true
+  },
+  "runs": [
+    {
+      "artifacts": [
+        {
+          "sha256": "857c357ca8ec4edc7989a65f4dcb6682962c211788ede684c652c305570d29f1",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_red_20261018.stdout.log",
+          "byte_length": 2548
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_red_20261018.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "2dd24e25eb26b4575fb3c1367dd6627fc1f4bc3123d8968b8027a0468e6829a9",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_red_20261018.exit.json",
+          "byte_length": 328
+        },
+        {
+          "sha256": "82ec3121d9800328335349cf866e46150a031d23a5e47402eb3fbf41c5360e24",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_red_20261018.xml",
+          "byte_length": 1640
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 3539875000000,
+        "kernel_time_100ns": 7968750,
+        "parent_bound_seconds": 120,
+        "profile_overhead": false,
+        "pytest_exit_code": 1,
+        "root_pid": 27480,
+        "scope": "filesystem-latency-diagnostic-not-acceptance",
+        "started_ns": 3533671000000,
+        "timed_out": false,
+        "total_processes": 4,
+        "user_time_100ns": 4375000
+      },
+      "junit": {
+        "tests": 2,
+        "time_seconds": 0.447,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mode": "directory_tool_red"
+    },
+    {
+      "artifacts": [
+        {
+          "sha256": "aaa93979ae5d9b3a246c039eeb9fac55e1715eccbb688237b1c85fb1dbe34417",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_green_20261018.stdout.log",
+          "byte_length": 958
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_green_20261018.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "f40296f35621c6cc538d02eba563b26534c4c631914d56bf2910f47b50f238ad",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_green_20261018.exit.json",
+          "byte_length": 328
+        },
+        {
+          "sha256": "c8d800120179df66ca03d5f6d607fe2fec296a504b54a90c39edc9c14b32c2c2",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_tool_green_20261018.xml",
+          "byte_length": 506
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 3561421000000,
+        "kernel_time_100ns": 5937500,
+        "parent_bound_seconds": 120,
+        "profile_overhead": false,
+        "pytest_exit_code": 0,
+        "root_pid": 27052,
+        "scope": "filesystem-latency-diagnostic-not-acceptance",
+        "started_ns": 3559687000000,
+        "timed_out": false,
+        "total_processes": 6,
+        "user_time_100ns": 4062500
+      },
+      "junit": {
+        "tests": 2,
+        "time_seconds": 0.699,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mode": "directory_tool_green"
+    },
+    {
+      "artifacts": [
+        {
+          "sha256": "a2b17d04f6ca0fd655516d594bc7d9c9dc128f10e6986714defc1a5f595f7430",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_latency_1_20261018.stdout.log",
+          "byte_length": 5619
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_latency_1_20261018.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "8a7e3eb7fbf8e5c381b44e4b9a5b45dc7cf6bfed9d7665b3e50e818a1320b7d6",
+          "path": "results/alc_r0_fixed_d_coordinator_directory_latency_1_20261018.exit.json",
+          "byte_length": 331
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "diagnostic_exit_code": 0,
+        "exit_code": 0,
+        "finished_ns": 3596843000000,
+        "kernel_time_100ns": 1562500,
+        "parent_bound_seconds": 120,
+        "profile_overhead": false,
+        "root_pid": 19896,
+        "scope": "filesystem-latency-diagnostic-not-acceptance",
+        "started_ns": 3596421000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 468750
+      },
+      "junit": null,
+      "mode": "directory_latency_1"
+    },
+    {
+      "artifacts": [
+        {
+          "sha256": "09f0c9cd7db64d453da8263fb0dd99da5ed16202ca962def18eee759342ccf32",
+          "path": "results/alc_r0_fixed_d_coordinator_latency_tools_regression_20261018.stdout.log",
+          "byte_length": 1439
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_latency_tools_regression_20261018.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "87a278baf79db8fbcb8bcd01e2b13ef53a1d3f92476a806fdd0cbbf30089f3e3",
+          "path": "results/alc_r0_fixed_d_coordinator_latency_tools_regression_20261018.exit.json",
+          "byte_length": 856
+        },
+        {
+          "sha256": "43a21dff94c35e20c1587bb5733b19fc1ca66661b70218402ddd2935a3b1d7a9",
+          "path": "results/alc_r0_fixed_d_coordinator_latency_tools_regression_20261018.xml",
+          "byte_length": 1083
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/test_alc_r0_directory_latency_tool.py",
+          "tests/test_alc_r0_latency_profile_tool.py",
+          "-o",
+          "addopts=",
+          "-vv",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "--junitxml=C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\alc_r0_fixed_d_coordinator_latency_tools_regression_20261018.xml"
+        ],
+        "exit_code": 0,
+        "finished_ns": 3627265000000,
+        "kernel_time_100ns": 8593750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 27144,
+        "scope": "diagnostic-tools-regression-not-product-acceptance",
+        "started_ns": 3622187000000,
+        "timed_out": false,
+        "total_processes": 10,
+        "user_time_100ns": 6093750
+      },
+      "junit": {
+        "tests": 6,
+        "time_seconds": 3.158,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "mode": "latency_tools_regression"
+    }
+  ],
+  "historical_attribution": "directory_tool_red predates static probe implementation; earlier profiling runner pin belongs to commit198c439",
+  "schema": "alc-r0-unprofiled-directory-diagnostic-v1",
+  "source_pins": [
+    {
+      "sha256": "dd52bdf4b8efd74b951eab9530be2f97113578d0757cadeb7f169f4b9937509f",
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "byte_length": 23219
+    },
+    {
+      "sha256": "36b90def3e98202eb17f4acbbd72d6d91f14cd982764ec9a60645770edc90135",
+      "path": "tests/test_alc_r0_directory_latency_tool.py",
+      "byte_length": 2374
+    },
+    {
+      "sha256": "dbbc9ecd82be4dc4fa8af8d8ddeda956c04aef33d3c605e1b73f12bb85fc046c",
+      "path": "tests/test_alc_r0_latency_profile_tool.py",
+      "byte_length": 2417
+    },
+    {
+      "sha256": "375a1063150630cf878b15166e46f90b028ef547e715c6254179dfbee212e29a",
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "byte_length": 89599
+    }
+  ],
+  "baseline_commit": "198c439a7e6a16a27b212f12d7ef8639bed60262",
+  "clock_observation": {
+    "interpreter": "same CPython3.12.13 research environment; independent read-only clock query after diagnostic",
+    "monotonic": {
+      "implementation": "GetTickCount64()",
+      "resolution_seconds": 0.015625
+    },
+    "perf_counter": {
+      "implementation": "QueryPerformanceCounter()",
+      "resolution_seconds": 1e-7
+    },
+    "process_time": {
+      "implementation": "GetProcessTimes()",
+      "resolution_seconds": 1e-7
+    }
+  },
+  "limitations": [
+    "Single unprofiled current-host observation, not representative benchmark or OS root-cause proof.",
+    "Prior 15.174-second mkdir profile delay did not recur in this separate probe; does not prove resolution or same workload equivalence.",
+    "Zero wall readings are below coarse monotonic clock observability, not instantaneous operations.",
+    "Per-operation clocks omit output, interpreter/import startup and final inventory; setup measured separately.",
+    "File operations combine exclusive open/write/flush/fsync/close; no isolated fsync attribution or crash-durability proof.",
+    "Six passing regression tests cover two diagnostic tools only; original316-case product regression remains OPEN.",
+    "No product code change or scientific/model/GPU execution; no threshold/deadline relief."
+  ]
+}

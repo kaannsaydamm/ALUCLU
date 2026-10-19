@@ -1042,3 +1042,35 @@ Do not pre-create product state before its original entry, relax the15s useful
 window/10s tail/watch windows, skip durability or namespace checks, blame an OS
 component, or claim scientific activation from this diagnostic. Corroboration
 must precede product performance changes and renewed regression attempts.
+
+### Unprofiled corroboration, 2026-10-18
+
+Fixed18-operation observation completed native0/active0/no timeout: six fresh
+directories observed93ms total; six combined exclusive512B writes/flush/fsync/close
+32ms; six existing-directory calls had zero coarse-clock ticks. Independent
+same-runtime clock query identifies GetTickCount64 monotonic15.625ms resolution;
+zeros are not instantaneous operations. Setup/import/output/inventory limits are
+explicit. Earlier long directory delay did not recur; OS cause remains UNKNOWN.
+Two-tool regression6/0/0/0 JUnit3.158s, NOT original316 product-regression PASS.
+Evidence directory_latency_evidence_20261018.json preserves19 references.
+
+Next fixed diagnostic: ONE original unprofiled coordinator success scenario via
+existing native owner120s and fresh empty temporary namespace. Preserve original
+15s useful/10s tail/watch windows and all product bytes. Inspect terminal result,
+work/observer receipts and settlement if successful, preserve partial negative
+records otherwise. No broad regression, training, resource-admission or learning
+claim follows; further action depends on observed outcome, not success intent.
+
+Observed outcome: original unprofiled coordinator denied2 after69.063s owned
+elapsed, no outer timeout/active0. Worker created/bound and reservation consumed,
+but no resume, observer creation or accepted result. Error was output cleanup
+deadline expired before acquisition. The original25s cleanup deadline did not
+bound this full elapsed interval; do not claim responsive cleanup or settlement.
+Negative package preserves4refs/20 raw namespace records; failedsettlement OPEN.
+
+Source interval before observer output acquisition includes socketpair and Job
+setup. Single isolated actual Windows fallback_socketpair probe completed in
+2.2453455s (perf_counter), import28.6394ms, CPU15.625ms, loopback only, sockets
+closed. This does NOT reproduce the69.063s interval or establish a culprit.
+Next diagnosis must separate these acquisition stages without relaxing original
+deadlines or repeating the full regression blindly. Product bytes still unchanged.

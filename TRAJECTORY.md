@@ -16412,3 +16412,83 @@ records: code APPROVE preservation, architecture CLEAR preservation only.
 Saved review record; pin new profiling test -text to retain exact evidence bytes.
 No product/scientific/threshold change. Owner confirms all historical model/CUDA
 work used only this PC RTX4050; testimony is scope, NOT measured GPU hours.
+
+Preserved reviewed profiling checkpoint commit198c439. Next diagnostic tool TDD:
+two tests for closed command and actual finite18-operation records under native
+ownership; existing runner only gets three closed modes, original outer120s.
+Test-owned60s not scientific deadline; no product change. RED before builder.
+Historical profiling manifest runner pin now refers to commit198c439, not future
+working-tree edits; all historical result bytes remain unchanged.
+
+DirectorytoolRED native1/active0/no timeout: 2 tests fail because command builder
+does not exist (expected TDD, not product regression). Implement fixed18 operations,
+setup/per-operation begun+completed flushedJSON, separate wall/processCPU, exclusive
+6x512byte writes with flush/fsync, retained temp namespace, no product state access.
+
+DirectorytoolGREEN2/0/0/0 JUnit0.699s native0/no timeout/active0. Both independent
+lanes source APPROVE/CLEAR for one fixed directory_latency_1. Actual native0,
+41records/18completed,6directories/6files3072bytes retained. Freshmkdir6 sum93ms
+(one93ms), filecombined6 sum32ms (two16ms), existingmkdir zero readings.
+Same-env readonly clock query: monotonic GetTickCount64 resolution0.015625s,
+perf_counter QPC0.0000001s, process_time GetProcessTimes0.0000001s. Thus zeros
+mean no observed coarse tick, NOT instantaneous; no highresolution microbenchmark.
+Earlier longmkdir delay did not recur in this different finite workload; no
+rootcause/fix/generalhosthealth claim. Relevant two-tool regression6/0/0/0
+JUnit3.158s/native0/active0/no timeout120s; not316productregression closure.
+Manifest19refs(15raw+4pins), author rehashedall19/inspected41records+actualinventory.
+
+Next preregister ONE original unprofiled coordinator diagnostic success scenario,
+fresh empty temporary namespace, exact -B -m aluclu.alc_r0.fixed_d_coordinator argv,
+existing native owner120s. Original15suseful/10stail/watchwindows/source untouched;
+not batchregression/blindrestart: follows completed operation-level measurements.
+Exit0 requires inspect accepted result/work+observer native terminal/settlement;
+exit2/3/timeout preserves negative and partial records. Either outcome is one
+diagnostic, NOT scientific activation or original316regressionPASS. No new GPU use.
+
+Both independent GPT6.1 lanes verified19refs/native/JUnit/41actualrecords/timing
+aggregation; code APPROVE preservation/architecture CLEAR preservation. Recorded
+directory_latency_review_20261018.md. Original coordinator unprofiled1 launched
+once; same native/session handle monitored, no retry on observation expiry.
+
+Original unprofiled coordinator terminal native2/no timeout/active0/root22420/
+total4, started3691718000000 finished3760781000000 (69.063s ownedinterval).
+Stderr output cleanup deadline expired before acquisition. Worker created and
+identity bound, diagnostic consumed; no worker resume/observer create/output or
+accepted result. Original cleanup25s fromentry did NOT bound this full elapsed
+interval; outer120s did not expire. Do not claim innerdeadline responsiveness.
+Preserved4refs+20raw namespace files in unprofiled_negative_evidence_20261018.json.
+Durable failedsettlement remainsOPEN; physical active0 is not accounting success.
+
+Read-only source sequence narrows interval: childbinding -> _Observer.start,
+socket.socketpair -> Jobenter -> outputpairenter whose first deadlinecheck failed.
+No attribution to one call yet. Installed Python socket.py shows Windows
+_fallback_socketpair loopbackTCP path. Single isolated same-runtime owned probe
+native0/active0/no timeout; actual fallback on127.0.0.1 took2.2453455s perf_counter,
+import28.6394ms/processCPU15.625ms. Sockets closed; no remote endpoint or patch.
+This is appreciable latency but NOT reproduction/explanation of69.063s interval.
+Socketpair evidence retains3rawrefs, exact command, stdlibfilehash andlimits.
+Next targeted stage profile must separate socketpair/Job/other observer preparation
+before product changes; no repeated fullregression orblind success-seeking rerun.
+
+Preregister ONE second coordinator cProfile observation using existing reviewed
+_latency_profile_command, fresh namespace and same120s nativeowner. This targeted
+profile follows new binding->observer-acquisition failure interval, not a repeated
+fullregression or acceptance attempt. Directmain/exitpreservation/original15+10
+unchanged. Preserve top60 text even on denial; no OS-cause claim without actual
+call attribution. Existing firstprofile/negative/socket artifacts immutable.
+
+2026-10-19 continuation: prior goalturn PROGRESS (new diagnostic source/TDD and
+actual negative/finite observations), interrupted packaging handle56511 nowmissing;
+reinspect authoritative files, do NOT restart completedprofile. Profile2 terminal2,
+active0/no outertimeout/originalreservationdeadline, main15.765s/pre-main2.5s/
+wrapper18.265s/CPU1.21875s. Did NOT reach observer stage; preserve negative.
+43_io.open7.372s exclusive,2783nt.stat5.108s exclusive/5.322s cumulative,
+16fsync0.696s,93resolve_ledger_path6.221s cumulative. Different dominant OS calls
+than firstmkdirprofile; no singleculprit/fixclaim. Source _is_link_or_reparse does
+lstat followed by is_symlink (anothermetadata lookup); any optimization must first
+review snapshot/secondcheck race semantics, not silently drop trustboundary checks.
+
+Current two new independent GPT6.1 lanes completed preservation audit: directory19,
+unprofiled4/20raw, socket3(+code stdlib verification), profile2six/13raw all exact.
+Code APPROVE preservation/architecture CLEAR preservation; sourceoptimization
+separate COMMENT/WATCH. Preserve/commit this evidence before productsource edits.

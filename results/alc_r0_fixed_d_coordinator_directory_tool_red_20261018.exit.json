@@ -1,0 +1,1 @@
+{"active_processes":0,"exit_code":1,"finished_ns":3539875000000,"kernel_time_100ns":7968750,"parent_bound_seconds":120,"profile_overhead":false,"pytest_exit_code":1,"root_pid":27480,"scope":"filesystem-latency-diagnostic-not-acceptance","started_ns":3533671000000,"timed_out":false,"total_processes":4,"user_time_100ns":4375000}
