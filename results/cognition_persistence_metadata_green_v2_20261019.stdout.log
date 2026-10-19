@@ -1,0 +1,39 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 30 items
+
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-0-False] PASSED [  3%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[16384-0-False] PASSED [  6%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[40960-0-True] PASSED [ 10%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[40960-1024-True] PASSED [ 13%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[16384-1024-True] PASSED [ 16%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-1024-True] PASSED [ 20%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-32-False] PASSED [ 23%]
+tests/test_cognition_persistence_metadata.py::test_posix_snapshot_without_windows_attributes PASSED [ 26%]
+tests/test_cognition_persistence_metadata.py::test_classification_is_first_snapshot_not_mixed_mutation_samples[40960-32768-True] PASSED [ 30%]
+tests/test_cognition_persistence_metadata.py::test_classification_is_first_snapshot_not_mixed_mutation_samples[32768-40960-False] PASSED [ 33%]
+tests/test_cognition_persistence_metadata.py::test_missing_path_preserves_false PASSED [ 36%]
+tests/test_cognition_persistence_metadata.py::test_other_metadata_error_is_not_silently_accepted[error0] PASSED [ 40%]
+tests/test_cognition_persistence_metadata.py::test_other_metadata_error_is_not_silently_accepted[error1] PASSED [ 43%]
+tests/test_cognition_persistence_metadata.py::test_actual_regular_directory_file_and_missing PASSED [ 46%]
+tests/test_cognition_persistence_metadata.py::test_actual_symlink_is_rejected[file] PASSED [ 50%]
+tests/test_cognition_persistence_metadata.py::test_actual_symlink_is_rejected[directory] PASSED [ 53%]
+tests/test_cognition_persistence_metadata.py::test_actual_symlink_is_rejected[dangling] PASSED [ 56%]
+tests/test_cognition_persistence_metadata.py::test_actual_junction_is_rejected PASSED [ 60%]
+tests/test_cognition_persistence.py::test_resolved_relative_path_does_not_follow_later_chdir PASSED [ 63%]
+tests/test_cognition_persistence.py::test_resolve_existing_directory_does_not_duplicate_its_name PASSED [ 66%]
+tests/test_cognition_persistence.py::test_windows_trailing_dot_or_space_path_fails_closed[memory.sqlite3.] PASSED [ 70%]
+tests/test_cognition_persistence.py::test_windows_trailing_dot_or_space_path_fails_closed[memory.sqlite3 ] PASSED [ 73%]
+tests/test_cognition_persistence.py::test_resolve_ledger_path_rejects_existing_symlink PASSED [ 76%]
+tests/test_cognition_persistence.py::test_resolve_ledger_path_rejects_symlink_parent PASSED [ 80%]
+tests/test_cognition_persistence.py::test_resolve_ledger_path_rejects_deep_path_below_symlink_parent PASSED [ 83%]
+tests/test_cognition_persistence.py::test_atomic_write_bytes_rejects_symlink_target PASSED [ 86%]
+tests/test_cognition_persistence.py::test_atomic_write_bytes_replaces_bytes_durably PASSED [ 90%]
+tests/test_cognition_persistence.py::test_exclusive_file_lock_creates_lock_file PASSED [ 93%]
+tests/test_cognition_persistence.py::test_exclusive_file_lock_is_reentrant_for_the_same_thread PASSED [ 96%]
+tests/test_cognition_persistence.py::test_exclusive_file_lock_translates_windows_acquisition_error PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_green_v2_20261019.xml -
+============================= 30 passed in 0.42s ==============================

@@ -1,0 +1,99 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 18 items
+
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-0-False] FAILED [  5%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[16384-0-False] FAILED [ 11%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[40960-0-True] FAILED [ 16%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[40960-1024-True] FAILED [ 22%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[16384-1024-True] FAILED [ 27%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-1024-True] FAILED [ 33%]
+tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-32-False] FAILED [ 38%]
+tests/test_cognition_persistence_metadata.py::test_posix_snapshot_without_windows_attributes FAILED [ 44%]
+tests/test_cognition_persistence_metadata.py::test_classification_is_first_snapshot_not_mixed_mutation_samples[40960-32768-True] FAILED [ 50%]
+tests/test_cognition_persistence_metadata.py::test_classification_is_first_snapshot_not_mixed_mutation_samples[32768-40960-False] FAILED [ 55%]
+tests/test_cognition_persistence_metadata.py::test_missing_path_preserves_false PASSED [ 61%]
+tests/test_cognition_persistence_metadata.py::test_other_metadata_error_is_not_silently_accepted[error0] PASSED [ 66%]
+tests/test_cognition_persistence_metadata.py::test_other_metadata_error_is_not_silently_accepted[error1] PASSED [ 72%]
+tests/test_cognition_persistence_metadata.py::test_actual_regular_directory_file_and_missing PASSED [ 77%]
+tests/test_cognition_persistence_metadata.py::test_actual_symlink_is_rejected[file] PASSED [ 83%]
+tests/test_cognition_persistence_metadata.py::test_actual_symlink_is_rejected[directory] PASSED [ 88%]
+tests/test_cognition_persistence_metadata.py::test_actual_symlink_is_rejected[dangling] PASSED [ 94%]
+tests/test_cognition_persistence_metadata.py::test_actual_junction_is_rejected PASSED [100%]
+
+================================== FAILURES ===================================
+___ test_one_metadata_observation_classifies_both_categories[32768-0-False] ___
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238E1492360>.calls
+___ test_one_metadata_observation_classifies_both_categories[16384-0-False] ___
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE99310>.calls
+___ test_one_metadata_observation_classifies_both_categories[40960-0-True] ____
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE734A0>.calls
+__ test_one_metadata_observation_classifies_both_categories[40960-1024-True] __
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE733B0>.calls
+__ test_one_metadata_observation_classifies_both_categories[16384-1024-True] __
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE71BE0>.calls
+__ test_one_metadata_observation_classifies_both_categories[32768-1024-True] __
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE4B7A0>.calls
+__ test_one_metadata_observation_classifies_both_categories[32768-32-False] ___
+tests\test_cognition_persistence_metadata.py:40: in test_one_metadata_observation_classifies_both_categories
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE4AAB0>.calls
+_______________ test_posix_snapshot_without_windows_attributes ________________
+tests\test_cognition_persistence_metadata.py:46: in test_posix_snapshot_without_windows_attributes
+    assert path.calls==1
+E   assert 2 == 1
+E    +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE4BB60>.calls
+_ test_classification_is_first_snapshot_not_mixed_mutation_samples[40960-32768-True] _
+tests\test_cognition_persistence_metadata.py:54: in test_classification_is_first_snapshot_not_mixed_mutation_samples
+    assert _is_link_or_reparse(path) is expected
+E   assert False is True
+E    +  where False = _is_link_or_reparse(<test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE06660>)
+_ test_classification_is_first_snapshot_not_mixed_mutation_samples[32768-40960-False] _
+tests\test_cognition_persistence_metadata.py:54: in test_classification_is_first_snapshot_not_mixed_mutation_samples
+    assert _is_link_or_reparse(path) is expected
+E   assert True is False
+E    +  where True = _is_link_or_reparse(<test_cognition_persistence_metadata.ObservedPath object at 0x00000238E1493410>)
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_red_20261019.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-0-False] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238E1492360>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[16384-0-False] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE99310>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[40960-0-True] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE734A0>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[40960-1024-True] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE733B0>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[16384-1024-True] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE71BE0>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-1024-True] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE4B7A0>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_one_metadata_observation_classifies_both_categories[32768-32-False] - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE4AAB0>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_posix_snapshot_without_windows_attributes - assert 2 == 1
+ +  where 2 = <test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE4BB60>.calls
+FAILED tests/test_cognition_persistence_metadata.py::test_classification_is_first_snapshot_not_mixed_mutation_samples[40960-32768-True] - assert False is True
+ +  where False = _is_link_or_reparse(<test_cognition_persistence_metadata.ObservedPath object at 0x00000238DFE06660>)
+FAILED tests/test_cognition_persistence_metadata.py::test_classification_is_first_snapshot_not_mixed_mutation_samples[32768-40960-False] - assert True is False
+ +  where True = _is_link_or_reparse(<test_cognition_persistence_metadata.ObservedPath object at 0x00000238E1493410>)
+======================== 10 failed, 8 passed in 1.87s =========================

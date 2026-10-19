@@ -200,12 +200,15 @@ def _reject_windows_aliases(path: Path) -> None:
 
 def _is_link_or_reparse(path: Path) -> bool:
     try:
-        stat = path.lstat()
+        metadata = path.lstat()
     except FileNotFoundError:
         return False
-    if path.is_symlink():
-        return True
-    return bool(getattr(stat, "st_file_attributes", 0) & _WINDOWS_REPARSE_POINT)
+    # Classify one observation consistently, not two potentially different
+    # objects. This is not atomic path binding or hostile-replacement protection;
+    # callers still perform their separate lifecycle and parent validations.
+    return stat.S_ISLNK(metadata.st_mode) or bool(
+        getattr(metadata, "st_file_attributes", 0) & _WINDOWS_REPARSE_POINT
+    )
 
 
 def _windows_replace_write_through(source: Path, target: Path) -> None:

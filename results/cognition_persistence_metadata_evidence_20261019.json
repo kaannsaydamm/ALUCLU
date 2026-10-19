@@ -1,0 +1,425 @@
+{
+  "schema": "cognition-persistence-metadata-evidence-v1",
+  "baseline_commit": "a2981715166c7a39c117e38d89809c1290cba9bb",
+  "source_pins": [
+    {
+      "sha256": "7afcebb6dc7fee8bc441fd81c31b4d8119fc59e6e19ed9ffd21e3629b5256f83",
+      "path": "src/aluclu/cognition/persistence.py",
+      "byte_length": 8147
+    },
+    {
+      "sha256": "dcbc9028fd30ef64838c35d79b4ced5e9d4835e365ebad1c4d5d3808c4060cb6",
+      "path": "tests/test_cognition_persistence_metadata.py",
+      "byte_length": 3773
+    },
+    {
+      "sha256": "fae40b03c81841dbb461c18644a847d31a0ae6f19c6c8cfdfe38a2aa8e6af6a5",
+      "path": "docs/superpowers/plans/2026-10-19-persistence-metadata-snapshot.md",
+      "byte_length": 2939
+    },
+    {
+      "sha256": "375a1063150630cf878b15166e46f90b028ef547e715c6254179dfbee212e29a",
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "byte_length": 89599
+    }
+  ],
+  "native_count_rows": [
+    {
+      "helper_calls": 32,
+      "name": "reconstructed-baseline",
+      "namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-metadata-count-90f6lfzm",
+      "native_stat_calls": 64,
+      "native_stat_entries": [
+        {
+          "calls": 64,
+          "code": "<built-in method nt.stat>"
+        }
+      ],
+      "profile_overhead": true,
+      "scope": "native-stat-count-only-not-walltime-benchmark"
+    },
+    {
+      "helper_calls": 32,
+      "name": "current",
+      "namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-metadata-count-90f6lfzm",
+      "native_stat_calls": 32,
+      "native_stat_entries": [
+        {
+          "calls": 32,
+          "code": "<built-in method nt.stat>"
+        }
+      ],
+      "profile_overhead": true,
+      "scope": "native-stat-count-only-not-walltime-benchmark"
+    }
+  ],
+  "red_source": "Original helper at baseline commit, before product edit; current source pin does not apply",
+  "historical_green_source": {
+    "sha256": "a974301086536eff88110e14210ad0b7a99e255f6b17bc3966e2c4481050200e",
+    "reconstruction": "Replace every LF in current pinned source with CRLF; no BOM; verified exact pre-normalization source bytes",
+    "byte_length": 8381
+  },
+  "runs": [
+    {
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/test_cognition_persistence_metadata.py",
+          "-o",
+          "addopts=",
+          "-vv",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "--junitxml=C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\cognition_persistence_metadata_red_20261019.xml"
+        ],
+        "exit_code": 1,
+        "finished_ns": 13884312000000,
+        "kernel_time_100ns": 13281250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 3148,
+        "scope": "persistence-metadata-focused-tdd",
+        "started_ns": 13881531000000,
+        "timed_out": false,
+        "total_processes": 4,
+        "user_time_100ns": 3906250
+      },
+      "mode": "red",
+      "junit": {
+        "failures": 10,
+        "skipped": 0,
+        "tests": 18,
+        "time_seconds": 0.449,
+        "errors": 0
+      },
+      "artifacts": [
+        {
+          "sha256": "b4c214d60e972475c72d110f8e2d0a3543e4f8aa3af660babac8dee51aaca991",
+          "path": "results/cognition_persistence_metadata_red_20261019.stdout.log",
+          "byte_length": 9084
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/cognition_persistence_metadata_red_20261019.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "00293a7ddc0471809d55a0fc0c849bb6b78e52ac9c7fcf8e1abea2c2b90a16fc",
+          "path": "results/cognition_persistence_metadata_red_20261019.exit.json",
+          "byte_length": 779
+        },
+        {
+          "sha256": "ed9356f91c77814d86c7ca2d69ef9407e5e1ade96cc1e9595029b18bb8598380",
+          "path": "results/cognition_persistence_metadata_red_20261019.xml",
+          "byte_length": 7285
+        }
+      ]
+    },
+    {
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/test_cognition_persistence_metadata.py",
+          "tests/test_cognition_persistence.py",
+          "-o",
+          "addopts=",
+          "-vv",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "--junitxml=C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\cognition_persistence_metadata_green_20261019.xml"
+        ],
+        "exit_code": 0,
+        "finished_ns": 13908000000000,
+        "kernel_time_100ns": 5000000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 11052,
+        "scope": "persistence-metadata-focused-tdd",
+        "started_ns": 13906812000000,
+        "timed_out": false,
+        "total_processes": 4,
+        "user_time_100ns": 3750000
+      },
+      "mode": "green",
+      "junit": {
+        "failures": 0,
+        "skipped": 0,
+        "tests": 30,
+        "time_seconds": 0.354,
+        "errors": 0
+      },
+      "artifacts": [
+        {
+          "sha256": "f0fa2eb2de22e3fd6cd7dc422df02ddb986a88584e8307c059827670e61a80a1",
+          "path": "results/cognition_persistence_metadata_green_20261019.stdout.log",
+          "byte_length": 4208
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/cognition_persistence_metadata_green_20261019.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "55d00784640d95b7ad69c722d5bcc8d8a1a4d26c873890bd4964b1b223ea04e4",
+          "path": "results/cognition_persistence_metadata_green_20261019.exit.json",
+          "byte_length": 819
+        },
+        {
+          "sha256": "3c663658fbf1aa7baaade580fc1ac84d2c87230fd4dbd64c281af71c79fb46c1",
+          "path": "results/cognition_persistence_metadata_green_20261019.xml",
+          "byte_length": 4467
+        }
+      ]
+    },
+    {
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/test_cognition_persistence_metadata.py",
+          "tests/test_cognition_persistence.py",
+          "-o",
+          "addopts=",
+          "-vv",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "--junitxml=C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\cognition_persistence_metadata_green_v2_20261019.xml"
+        ],
+        "exit_code": 0,
+        "finished_ns": 13954218000000,
+        "kernel_time_100ns": 5312500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 3592,
+        "scope": "persistence-metadata-focused-tdd",
+        "started_ns": 13953109000000,
+        "timed_out": false,
+        "total_processes": 4,
+        "user_time_100ns": 3281250
+      },
+      "mode": "green_v2",
+      "junit": {
+        "failures": 0,
+        "skipped": 0,
+        "tests": 30,
+        "time_seconds": 0.353,
+        "errors": 0
+      },
+      "artifacts": [
+        {
+          "sha256": "63a367d018a83bfd00cd1f945d43ec9d6e92c0da8321dd027e79fa1328d3ff74",
+          "path": "results/cognition_persistence_metadata_green_v2_20261019.stdout.log",
+          "byte_length": 4211
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/cognition_persistence_metadata_green_v2_20261019.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "b54d0b6f43062c9596ffb74132687415d2788fce161c4d33182c4cf03e266d4b",
+          "path": "results/cognition_persistence_metadata_green_v2_20261019.exit.json",
+          "byte_length": 821
+        },
+        {
+          "sha256": "ce7e89cbb23bd86966ce0e49ca992a2dd3fc24cead04142bf533a0c63784365f",
+          "path": "results/cognition_persistence_metadata_green_v2_20261019.xml",
+          "byte_length": 4467
+        }
+      ]
+    },
+    {
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/test_alc_r0_reservation_store.py",
+          "tests/test_alc_r0_reservation_state.py",
+          "tests/test_alc_r0_attempt_journal.py",
+          "tests/test_alc_r0_deadline_file_lock.py",
+          "tests/test_alc_r0_status_publication.py",
+          "-o",
+          "addopts=",
+          "-vv",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "--junitxml=C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\cognition_persistence_metadata_callers_20261019.xml"
+        ],
+        "exit_code": 0,
+        "finished_ns": 13999718000000,
+        "kernel_time_100ns": 100625000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 11048,
+        "scope": "persistence-metadata-focused-tdd",
+        "started_ns": 13973484000000,
+        "timed_out": false,
+        "total_processes": 74,
+        "user_time_100ns": 72031250
+      },
+      "mode": "callers",
+      "junit": {
+        "failures": 0,
+        "skipped": 1,
+        "tests": 215,
+        "time_seconds": 25.42,
+        "errors": 0
+      },
+      "artifacts": [
+        {
+          "sha256": "4b8f4f84e8f09f8119c7c28c29999bb38fdb38f0db57435513181a3460d6eec4",
+          "path": "results/cognition_persistence_metadata_callers_20261019.stdout.log",
+          "byte_length": 49100
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/cognition_persistence_metadata_callers_20261019.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "97787ba9144983bdd29ec4f2429f8ca8da79218bd61bc5340b917452c9a12819",
+          "path": "results/cognition_persistence_metadata_callers_20261019.exit.json",
+          "byte_length": 945
+        },
+        {
+          "sha256": "3232e99bbdfc45b4afd847f1bd2aa23daa7a9fc9b1e9f69c23eca89e84b7c9c3",
+          "path": "results/cognition_persistence_metadata_callers_20261019.xml",
+          "byte_length": 54361
+        }
+      ]
+    },
+    {
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/test_cognition_ledger.py",
+          "tests/test_cognition_keys.py",
+          "-o",
+          "addopts=",
+          "-vv",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "--junitxml=C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\cognition_persistence_metadata_ledger_keys_20261019.xml"
+        ],
+        "exit_code": 0,
+        "finished_ns": 14134343000000,
+        "kernel_time_100ns": 800000000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 23260,
+        "scope": "persistence-metadata-focused-tdd",
+        "started_ns": 14016000000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 267812500
+      },
+      "mode": "ledger_keys",
+      "junit": {
+        "failures": 0,
+        "skipped": 0,
+        "tests": 100,
+        "time_seconds": 117.519,
+        "errors": 0
+      },
+      "artifacts": [
+        {
+          "sha256": "e5c33f3756e7fdf3eb19724af431a36f7dcb650a20ec9d5dcaf8cae0a9cd6662",
+          "path": "results/cognition_persistence_metadata_ledger_keys_20261019.stdout.log",
+          "byte_length": 12450
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/cognition_persistence_metadata_ledger_keys_20261019.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "abf6fae43613e6f12ca36045a4311220e304649da1472bdb28092e584b516a39",
+          "path": "results/cognition_persistence_metadata_ledger_keys_20261019.exit.json",
+          "byte_length": 808
+        },
+        {
+          "sha256": "c9c5818b62b4827ca63eaa1ade627ed180954db0c4f042e8e3d5d094a5d8035c",
+          "path": "results/cognition_persistence_metadata_ledger_keys_20261019.xml",
+          "byte_length": 14455
+        }
+      ]
+    },
+    {
+      "native": {
+        "active_processes": 0,
+        "command": [
+          "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-c",
+          "import cProfile,json,tempfile\nfrom pathlib import Path\nfrom aluclu.cognition.persistence import _is_link_or_reparse\nroot=Path(tempfile.mkdtemp(prefix=\"alc-r0-metadata-count-\"))\npath=root/\"regular\"\nwith path.open(\"xb\") as stream: stream.write(b\"x\")\ndef baseline(path):\n    try: metadata=path.lstat()\n    except FileNotFoundError: return False\n    if path.is_symlink(): return True\n    return bool(getattr(metadata,\"st_file_attributes\",0)&0x400)\nfor name,helper in ((\"reconstructed-baseline\",baseline),(\"current\",_is_link_or_reparse)):\n    profile=cProfile.Profile()\n    profile.enable()\n    for i in range(32):\n        if helper(path) is not False: raise RuntimeError(\"regular path misclassified\")\n    profile.disable()\n    entries=[dict(code=item.code,calls=item.callcount) for item in profile.getstats() if isinstance(item.code,str) and \"nt.stat\" in item.code]\n    print(json.dumps(dict(scope=\"native-stat-count-only-not-walltime-benchmark\",name=name,helper_calls=32,native_stat_entries=entries,native_stat_calls=sum(item[\"calls\"] for item in entries),namespace=str(root),profile_overhead=True),sort_keys=True),flush=True)\n"
+        ],
+        "diagnostic_exit_code": 0,
+        "exit_code": 0,
+        "finished_ns": 14052906000000,
+        "kernel_time_100ns": 1562500,
+        "parent_bound_seconds": 120,
+        "root_pid": 25684,
+        "scope": "native-stat-count-diagnostic-not-acceptance",
+        "started_ns": 14052515000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 937500
+      },
+      "mode": "native_count",
+      "junit": null,
+      "artifacts": [
+        {
+          "sha256": "05c40cc0f73bb2d94740ece97d21a0def1ae13366057916300ec50112a659942",
+          "path": "results/cognition_persistence_metadata_native_count_20261019.stdout.log",
+          "byte_length": 643
+        },
+        {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/cognition_persistence_metadata_native_count_20261019.stderr.log",
+          "byte_length": 0
+        },
+        {
+          "sha256": "b07a5ae70a452a19d10a05e1b839b0847913149e8b4852e714d00d9c4376ad5d",
+          "path": "results/cognition_persistence_metadata_native_count_20261019.exit.json",
+          "byte_length": 1677
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Stable/cooperating-path classification, not exact behavior equivalence under concurrent replacement or TOCTOU fix.",
+    "All independent lifecycle/parent/pre-replacement checks and durability/deadline behavior retained.",
+    "Actual64-to32 native stat calls establish count reduction for32 stable-file helper invocations, not walltime or end-to-end speedup.",
+    "Final focused30PASS/caller214PASS1skip/ledgerkeys100PASS are not original316 coordinator regression closure.",
+    "Original25s response guarantee, failed settlement, physical resource closure, scientific admission and learning proof remain OPEN."
+  ],
+  "current_source_pins_apply_to": [
+    "green_v2",
+    "callers",
+    "ledger_keys",
+    "native_count"
+  ]
+}

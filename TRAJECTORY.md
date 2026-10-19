@@ -16492,3 +16492,46 @@ Current two new independent GPT6.1 lanes completed preservation audit: directory
 unprofiled4/20raw, socket3(+code stdlib verification), profile2six/13raw all exact.
 Code APPROVE preservation/architecture CLEAR preservation; sourceoptimization
 separate COMMENT/WATCH. Preserve/commit this evidence before productsource edits.
+
+Diagnostic checkpoint a298171 committed. Separate single-snapshot classification
+plan2026-10-19 preregistered: preserve both link/reparse categories, error semantics,
+all lifecycle/parent checks, fsync/deadlines; no unchecked cache. Both independent
+lanes find viable under declared stable-path model, explicit racebehavior WATCH.
+Added18 focused cases before productcode change, actual paths + non-global explicit
+metadata seam. RED next. All18October evidence pins now historical ata298171.
+
+Focused metadata RED terminal native1/active0/no timeout; inspect rawJUnit before
+GREEN, expected doublequery/newcoherentfirstsnapshot failures, not a lostrequired
+category. Implement only helper localmetadata+stat.S_ISLNK+sameWindowsbit;
+FileNotFoundError/othererrors/callsiteguards unchanged. No speedup or coordinator
+PASS claim; measured syscall reduction only after actual focused tests.
+
+Focused RED18/10fail/0error/0skip JUnit0.449s expected doublequery+mixedsnapshot.
+GREEN30/0/0/0 JUnit0.354s. Mechanical sourceCRLF->LF normalization preserves
+7add/4delete semanticdiff and Gitbyte pin; pre-normalizedGREENsourceSHA
+a974301086536eff88110e14210ad0b7a99e255f6b17bc3966e2c4481050200e length8381,
+234CRLF. Re-ran GREENv2 on exactLF source30/0/0/0 JUnit0.353s/native0/active0.
+Caller regression215tests/0fail/0error/1skip JUnit25.420s/native0/active0;
+skip POSIXFIFO test onWindows, not hiddenpassed. Ledger/keys regression next.
+Two lanes source APPROVE/CLEAR conditioncaller/regression; racecaveat retained.
+
+Next preregister finite native-stat count diagnostic: exact oldhelper body vs
+currenthelper,32calls each on same stable actual regularfile, cProfile only to
+count native nt.stat events; no walltime/speedup/representativebenchmarkclaim.
+Originalbaseline scope unchanged, no globalpatch/callback mutation, owned120s.
+
+Native stable-file count probe terminal0/active0/no timeout:32helpercalls oldbody
+64nt.stat versuscurrent32. Count-only, no walltime/speedup/application claim.
+Ledger/keys regression terminal0/no timeout/active0 underoriginal120s:100/0/0/0
+JUnit117.519s/stdout117.61s/nativeelapsed118.343s. Earlier concern about600s
+testfuture vs120s owner did NOT materialize; no rerun/boundchange required.
+Architecture independently inspected caller/count/ledger artifacts CLEAR for
+narrow change; retain mixedsnapshot racecaveat and original316/response gatesOPEN.
+
+Finalmetadata manifest27refs authorverified and both independent GPT6.1 lanes
+rehashedall27/reconstructedhistoricalGREEN8381B; code APPROVE narrowsource+
+preservation, architecture CLEAR narrowsource+preservation within declaredscope.
+Review saved metadata_review_20261019.md. Commit source/test/evidence before
+ONE unchanged coordinator success/slow-parent integration testfunction onnewsource;
+original test-owned30s, coordinator15+10, outer120s preserved. No retried outcomes
+or productPASSclaim until actualresult; broad316 stillrequired independently.
