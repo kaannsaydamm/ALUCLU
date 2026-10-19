@@ -1,0 +1,16 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 7 items
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_observes_held_native_lock_without_unlock_or_false_hash PASSED [ 14%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_rejected_final_identity_not_recorded PASSED [ 28%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_final_native_attribute_failure_still_closes PASSED [ 42%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_running_output_overflow_denies_before_timeout_and_retains_holds[stdout] PASSED [ 57%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_running_output_overflow_denies_before_timeout_and_retains_holds[stderr] PASSED [ 71%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_native_rename_cannot_overwrite PASSED [ 85%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_conflicting_stage PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_growth_2_20261019.xml -
+============================== 7 passed in 4.57s ==============================

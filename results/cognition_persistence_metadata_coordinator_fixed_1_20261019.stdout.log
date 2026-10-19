@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 13 items
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] PASSED [  7%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] PASSED [ 15%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_is_cpu_only_fixed_envelope PASSED [ 23%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actuator_real_partial_duplicate_failure_closes_owned_job_duplicate[acquire] PASSED [ 30%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actuator_real_partial_duplicate_failure_closes_owned_job_duplicate[start] PASSED [ 38%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change0] PASSED [ 46%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change1] PASSED [ 53%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change2] PASSED [ 61%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change3] PASSED [ 69%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change4] PASSED [ 76%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change5] PASSED [ 84%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_diagnostic_declaration_cannot_become_scientific[change6] PASSED [ 92%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_accepts_fragmented_header_and_payload_without_resetting_deadline PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_fixed_1_20261019.xml -
+============================= 13 passed in 6.00s ==============================

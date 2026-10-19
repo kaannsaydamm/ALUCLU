@@ -16535,3 +16535,38 @@ Review saved metadata_review_20261019.md. Commit source/test/evidence before
 ONE unchanged coordinator success/slow-parent integration testfunction onnewsource;
 original test-owned30s, coordinator15+10, outer120s preserved. No retried outcomes
 or productPASSclaim until actualresult; broad316 stillrequired independently.
+
+Sourcecommit5f4ce2f pushed/remoteSHAverified. Original unchanged coordinator
+success+slowparent function now2/0/0/0 JUnit9.798s/native0/active0/no timeout.
+Not a causal walltime comparison to priorhoststate, no allfailurefixclaim.
+Fresh8modulecollect316/exit0, normalized historicalJUnit-style IDs vs current
+pathIDs:316unique exactsame set, zero differences. First comparison mistakenly
+used missing nodeids field; corrected all_nodeids and Stop-on-error verified.
+CollectionJUnit0 is NOT execution; stdout316 identities is collection evidence.
+
+Preregister renewed original12 fixeddisjoint batches growth0..2/fixed0..3/lease0..1/
+state_store/watch_consumer/bounded, same AST topfunctionroundrobin as original,
+original120s perbatch/test-internal limits untouched. No omitted cases or threshold
+relief. Begin growth0; any failedterminal requires inspect before dependentbatch,
+never report316PASS until exact final JUnitunion covers original316 identities.
+
+2026-10-19 original316 regression CLOSED for source5f4ce2f: all12 fixedbatches
+terminalnative0/active0/no timeout; XML316tests/0failure/0error/0skip. Reconstructed
+XMLnodeIDs316unique, zero duplicates/missing/difference vs freshcollection and
+normalized historical316. Same original partitions and120sperbatch; no threshold,
+test/internaldeadline/sourcechange duringrun. SumJUnit138.015s across12suites,
+NOT totalpipelineelapsed. Growth0 includes13PASS25.775s, earlierfailedbatch now
+passes oncurrentcheckpoint, but differinghoststate prevents causal speedup claim.
+
+Regression evidence53refs(48raw/five source+nested),110embeddedbatchsourcepins.
+Parent rehashed53/110 and rebuilt316IDunion. Both independent GPT6.1 lanes verified
+53/110/native/XML/316union: code APPROVE preservation+scopedregression, architecture
+CLEAR same. Both also verified integration12refs/22raw case records; code verified
+nestedmetadata27refs. Saved scopedreview; preserve alloldernegativeevidence.
+
+This closes ONLY original8module316regression, NOT whole repo/ALCR0/scientific
+admission/learning. General25sresponsebound, independentbusyparentoutputstop,
+observerliveoverflow, generalfailedsettlement, completephysicalgrowth/accounting
+and historicalGPU/admission remainOPEN. Next continue these concrete remaining
+integratedcutover requirements; no finalcontainer/enterprise leap or fabricated
+brainclaim. Modeltraining has NOT started. Fullprogram goal remainsACTIVE.

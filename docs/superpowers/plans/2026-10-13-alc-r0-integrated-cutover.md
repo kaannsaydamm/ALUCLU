@@ -1074,3 +1074,31 @@ setup. Single isolated actual Windows fallback_socketpair probe completed in
 closed. This does NOT reproduce the69.063s interval or establish a culprit.
 Next diagnosis must separate these acquisition stages without relaxing original
 deadlines or repeating the full regression blindly. Product bytes still unchanged.
+
+## 2026-10-19 metadata improvement and scoped regression closure
+
+The preceding statements are historical observations. Separate reviewed source
+change5f4ce2f classifies link mode/reparse attributes from one lstat snapshot,
+within documented stable/cooperating-path assumptions. All independent lifecycle,
+parent/pre-replacement checks, durability and deadlines remain. Concurrent
+replacement behavior is deliberately not claimed equivalent; no TOCTOU fix.
+See2026-10-19-persistence-metadata-snapshot.md for preregistration and source tests.
+
+Focused30PASS, caller214PASS/1POSIXFIFO platformskip, ledgerkeys100PASS; measured
+stable-file helper32calls use32 native stat calls versus reconstructedbaseline64.
+No application speedup or OS-cause attribution follows. Original unchanged
+success+slowparent integration2PASS, with selected22 raw records preserved.
+
+Original eight-module316-case regression is now CLOSED at source5f4ce2f:
+12original fixeddisjoint batches,316tests/0failure/0error/0skip,316unique IDs,
+zero difference vs fresh/historical collection, all native0/active0/no timeout,
+original120sperbatch. Both independent GPT6.1 lanes verified53refs,110batchsource
+pins, all native/XML receipts and exact316-ID union. Evidence and scoped review:
+results/cognition_persistence_metadata_coordinator_regression_evidence_20261019.json
+results/cognition_persistence_metadata_coordinator_regression_review_20261019.md
+
+Not full-repository or scientific PASS. General response-bound, busy-parent
+independent output stop, observer live overflow, general failed settlement,
+physical-growth/accounting and historical GPU/admission gates remain OPEN.
+Default scientific entry remains denied; actual model training/learning proof
+has not started. Continue original integrated requirements, not later products.

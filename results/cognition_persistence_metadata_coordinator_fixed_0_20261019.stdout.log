@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 10 items
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_default_entrypoint_denies_missing_scientific_installation PASSED [ 10%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending PASSED [ 20%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_early_tree_validation_cancels_before_delayed_cleanup_publication PASSED [ 30%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actuator_retained_cleanup_error_does_not_skip_remaining_native_handles PASSED [ 40%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\x00\x00\x00\x00-False-length exceeds] PASSED [ 50%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\x00\x00 \x01-False-length exceeds] PASSED [ 60%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\x00\x00-True-EOF/truncation] PASSED [ 70%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\x00\x00\x00\x04{}-True-EOF/truncation] PASSED [ 80%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\x00\x00\x00\x02xx-False-invalid canonical D transport] PASSED [ 90%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\x00\x00\x00\x02{}\x00-False-unexpected pipelined frame] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_fixed_0_20261019.xml -
+============================= 10 passed in 6.85s ==============================

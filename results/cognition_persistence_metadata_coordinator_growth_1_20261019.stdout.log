@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 14 items
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries] PASSED [  7%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink] PASSED [ 14%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes] PASSED [ 21%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline] PASSED [ 28%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[capacity] PASSED [ 35%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False] PASSED [ 42%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True] PASSED [ 50%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse] PASSED [ 57%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed] PASSED [ 64%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_reparse_ancestor_denied_before_file_creation PASSED [ 71%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_reader_rejects_partially_visible_final PASSED [ 78%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_existing_final[] PASSED [ 85%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_existing_final[corrupt] PASSED [ 92%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_preserves_existing_final[{"domain":"diagnostic-only"}] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_growth_1_20261019.xml -
+============================= 14 passed in 1.07s ==============================
