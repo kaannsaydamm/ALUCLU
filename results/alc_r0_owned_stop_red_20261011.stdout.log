@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____________ test_preset_stop_denies_before_outputs_and_creation _____________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-29/test_preset_stop_denies_before0')
+
+    def test_preset_stop_denies_before_outputs_and_creation(tmp_path):
+>       Signal, Stopped, Lease = api()
+                                 ^^^^^
+
+tests\test_alc_r0_owned_stop.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def api():
+        module = importlib.import_module('aluclu.alc_r0.reserved_owned_process')
+>       return module.OwnedStopSignal, module.OwnedStopRequested, module.ReservedOwnedLease
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.reserved_owned_process' has no attribute 'OwnedStopSignal'
+
+tests\test_alc_r0_owned_stop.py:15: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_owned_stop.py::test_preset_stop_denies_before_outputs_and_creation

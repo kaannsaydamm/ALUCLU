@@ -1,0 +1,35 @@
+checkpoint=172
+parent_commit=ea9f1700afc0e732b0a36d450b64241cb65b0ccf
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+final_tests_sha256=6cb6443f6038ce74ba45fc41f54befa98e204f5d3315d5b140801c3c961deba4
+final_helper_sha256=3031fe62e63bfb47bc71ed3a24e02d5880a57a87a35175c9023349175bcc8c77
+production_owned_append_sha256=3314c46315af2398a02320cb69ab6288d9d51f85b24a4e7ebd58fac14a30ebbb
+production_journal_sha256=ef67264099b52b97291088a724fcd07d920c89fe41341db03800bb9d9e57f2dd
+production_publication_sha256=520fa38e01c324423c09393c31e6ff9dd44dc3a8beb99f5e2db30dc11a7bdc10
+production_persistence_sha256=7b50bb056df5e22d475562ee99331d3da7b573c8464d94ae1e385ce7cc050d8d
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+child_runtime=actual sys._base_executable plus already-installed purelib/platlib; exact Popen PID/version/executable/checkout/four source roots/intent/stage/mode/operation=resume required before ownedkill
+environment=PYTHONPATH=src; PYTHONDONTWRITEBYTECODE=1; ALUCLU_R0_SNAPSHOT unset
+pytest_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<specific retained XML>
+red_original_session=16762; terminal personally consumed actual_pytest_exit_code=1; helper lacked optionalresume argument; no expected marker, NOT production transaction failure
+red_selection=tests/test_alc_r0_owned_resume_boundaries.py -k 'fault and absent and intent_ack'
+red_junit=1/1/0/0; time=8.158; sha256=bd8c9dc4107427498d9aef39354edc8c28382625a1646d692dd45d51c693966b
+focused_v1_original_session=68488; terminal personally consumed actual_pytest_exit_code=0
+focused_v1_selection=tests/test_alc_r0_owned_resume_boundaries.py -k 'absent and intent_ack or next and reconcile_presync or candidate and owner_postreplace or prior and append_presync or next and intent_atomic_prereplace or next and intent_atomic_postreplace'
+focused_v1_junit=16/0/0/0; time=75.829; sha256=172ca90edb9b936c532ad0c95e896feb963c1e174dedc596d386af6cb994798d
+case_contract=45 state/stage combinations x2 fault/kill=90; seven initial validstates via actualcoordinator plus explicitfixture cuts; four receiptcases interruptresume SECONDtime
+orphan_case=kill at intentatomicprereplace leaves owned temporary entry; closedinventory rejection/allbytespreserved is expected failclosed, NOT successful unattended recovery
+review=independent GPT6.1Sol code APPROVE/scoped architecture CLEAR; wider WATCH/OPEN and unattended recovery/scientific readiness BLOCK retained
+regression_v2_original_session=72894; terminal personally consumed actual_pytest_exit_code=0; original session retained, not restarted
+regression_v2_junit=1875/0/0/1; time=988.034; passed=1874
+regression_v2_xml_sha256=4b4d40f1fe29ef84dc8a19f272784ec24cb426d7af25f36d6de8cb252d1f2b60
+regression_v2_coverage=all90 exact expected resume testcase names personally compared; prior59 defaultcommit cases present
+regression_v2_skip=tests.test_alc_r0_attempt_journal::test_posix_fifo_rejected_without_opening_other_end; native POSIX FIFO unavailable
+regression_v2_source_freeze=final tests/helper and four production SHA256 roots unchanged; Ruff check/format and git diff check passed
+observed_c_free_bytes=61607620608; point-in-time only, not research-growth reservation or globalresource qualification
+regression_v2_target_count=58; all90resume cases and prior59defaultcommit cases plus existing65536boundary
+regression_v2_explicit_targets=tests/test_alc_r0_owned_resume_boundaries.py tests/test_alc_r0_owned_append_boundaries.py tests/test_alc_r0_owned_append.py tests/test_alc_r0_journal_plan.py tests/test_alc_r0_manifest_publication.py tests/test_alc_r0_paged_history.py tests/test_alc_r0_attempt_state.py tests/test_alc_r0_attempt_journal.py tests/test_cognition_persistence.py tests/test_alc_r0_resource_admission.py tests/test_alc_r0_owned_process.py
+regression_v2_prior_extraction=47 quoted tests/ targets from tracked results/alc_r0_parity_qualification_20261005.provenance.txt command= line using regex 'tests/[^']+' and quotes trimmed; assert47+11=58; saved PowerShell command NEVER executed
+regression_v2_prior_provenance_sha256=dd64ecc1312ddda73d53abcbe4702aecfc0c7829a45547ddb0e422d2cdd9f8be
+regression_v2_deselections=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors; tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present; tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+scope=controlled interruptedresume and exact recovery/failclosed states; NOT unattended orphan resolution/native syscall-interior/powerloss/externalwitness/globalhistory/resource-fit/learning/launch proof

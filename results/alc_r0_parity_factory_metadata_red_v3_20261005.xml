@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="31.597" timestamp="2026-10-05T00:08:04.352929+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_parity_factory" name="test_base_metadata_and_buffer_preflight_rejection[model]" time="0.013"><failure message="AttributeError: 'NoneType' object has no attribute 'parameters'">tests\test_alc_r0_parity_factory.py:150: in test_base_metadata_and_buffer_preflight_rejection
+    make(host, arm="capsule", state="zero", ports=(14,), rank=4, checkpoint=False)
+tests\test_alc_r0_parity_factory.py:36: in make
+    return module.make_parity_wrapper(host, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_factory.py:69: in make_parity_wrapper
+    device = _base_device(host)
+             ^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_parity_factory.py:21: in _base_device
+    parameters = tuple(base.parameters())
+                       ^^^^^^^^^^^^^^^
+E   AttributeError: 'NoneType' object has no attribute 'parameters'</failure></testcase><testcase classname="tests.test_alc_r0_parity_factory" name="test_base_metadata_and_buffer_preflight_rejection[count]" time="0.008" /><testcase classname="tests.test_alc_r0_parity_factory" name="test_base_metadata_and_buffer_preflight_rejection[trainable_count]" time="0.008" /><testcase classname="tests.test_alc_r0_parity_factory" name="test_base_metadata_and_buffer_preflight_rejection[buffer_grad]" time="0.009" /><testcase classname="tests.test_alc_r0_parity_factory" name="test_base_metadata_and_buffer_preflight_rejection[buffer_meta]" time="0.008" /><testcase classname="tests.test_alc_r0_parity_factory" name="test_base_metadata_and_buffer_preflight_rejection[default_device]" time="0.007" /></testsuite></testsuites>

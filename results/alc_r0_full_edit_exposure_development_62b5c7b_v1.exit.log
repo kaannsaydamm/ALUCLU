@@ -1,0 +1,16 @@
+{
+  "actual_exposure_exit_code": 0,
+  "source_commit": "62b5c7b6577078db5aa79fd2822a9b2381286597",
+  "child_pid": 30076,
+  "finished_utc": "2026-10-03T19:59:57.5374821+00:00",
+  "elapsed_seconds": 1893.5970206,
+  "sampled_peak_working_set_bytes": 1476063232,
+  "sampled_peak_private_bytes": 3011993600,
+  "last_observed_cpu_seconds": 1537.796875,
+  "observations_are_sampled_not_guaranteed_os_peaks": true,
+  "observation_scope": "exact-module-worker-not-venv-launcher",
+  "stdout_sha256": "8bc7eb3e96d96a1292181557dd6e44d46de6d00a857c188dafccc48c67b50a46",
+  "stderr_sha256": "c6b8e66951862a6a98da4bcd920130b8d998c2e297f16e56ff88a1d6e0a32b77",
+  "training_authority": false,
+  "held_out_data_present": false
+}

@@ -1,0 +1,31 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+____ test_actual_default_entrypoint_denies_missing_scientific_installation ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-168/test_actual_default_entrypoint0')
+
+    def test_actual_default_entrypoint_denies_missing_scientific_installation(tmp_path):
+        baseline_path=tmp_path/'runtime-baseline'; baseline_path.mkdir()
+        baseline=invoke(baseline_path,(),runtime_baseline=True)
+        assert baseline.exit_code==0 and baseline.active_processes==0 and not baseline.timed_out
+        receipt=invoke(tmp_path,())
+>       assert receipt.exit_code==2 and not receipt.timed_out
+E       assert (1 == 2)
+E        +  where 1 = OwnedProcessReceipt(root_pid=18216, exit_code=1, timed_out=False, started_ns=160008812000000, finished_ns=160008937000000, total_processes=3, active_processes=0, user_time_100ns=312500, kernel_time_100ns=312500).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:42: AssertionError
+___ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle ____
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-168/test_actual_diagnostic_entrypo0')
+
+    def test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle(tmp_path):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic','success',str(namespace)))
+>       assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E       assert (1 == 0)
+E        +  where 1 = OwnedProcessReceipt(root_pid=23436, exit_code=1, timed_out=False, started_ns=160009062000000, finished_ns=160009203000000, total_processes=3, active_processes=0, user_time_100ns=468750, kernel_time_100ns=625000).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:54: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_default_entrypoint_denies_missing_scientific_installation
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle

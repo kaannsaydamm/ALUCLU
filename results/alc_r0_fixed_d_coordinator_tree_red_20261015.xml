@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.814" timestamp="2026-10-15T19:27:34.206092+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_busy_revocation_terminates_actual_work_before_main_returns[busy-tree-revocation]" time="0.407"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-194\\test_busy_revocation_terminate0\\diagnostic\\busy.revocation.observed.json'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-194/test_busy_revocation_terminate0')
+scenario = 'busy-tree-revocation'
+
+    @pytest.mark.parametrize('scenario',['busy-revocation','busy-tree-revocation'])
+    def test_busy_revocation_terminates_actual_work_before_main_returns(tmp_path,scenario):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+        assert receipt.exit_code==2 and receipt.active_processes==0 and not receipt.timed_out
+&gt;       observed=bounded_json(namespace/'busy.revocation.observed.json')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_coordinator.py:188: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-194/test_busy_revocation_terminate0/diagnostic/busy.revocation.observed.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-194\\test_busy_revocation_terminate0\\diagnostic\\busy.revocation.observed.json'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase></testsuite></testsuites>

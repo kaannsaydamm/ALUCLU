@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 12 items
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[stale-before-create-RESERVED] PASSED [  8%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[stale-before-resume-READY] PASSED [ 16%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[blocked-observer-RUNNING] PASSED [ 25%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-conflict-READY] PASSED [ 33%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-wrong-role-READY] PASSED [ 41%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_busy_revocation_terminates_actual_work_before_main_returns[busy-revocation] PASSED [ 50%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_busy_revocation_terminates_actual_work_before_main_returns[busy-tree-revocation] PASSED [ 58%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actuator_real_access_denial_stays_failed_and_owner_drains_child[8-query] PASSED [ 66%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actuator_real_access_denial_stays_failed_and_owner_drains_child[4-terminate] PASSED [ 75%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_refuses_consumed_diagnostic_namespace PASSED [ 83%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_channel_cancellation_interrupts_receive_or_backpressured_send[False] PASSED [ 91%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_native_channel_cancellation_interrupts_receive_or_backpressured_send[True] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_fixed_2_20261019.xml -
+============================= 12 passed in 20.01s =============================

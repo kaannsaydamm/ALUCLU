@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="16" skipped="0" tests="84" time="32.681" timestamp="2026-10-06T17:56:45.599764+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[stage-False]" time="0.329"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4F385010&gt;
+interrupt = False, bad = 'stage'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[stage-True]" time="0.234"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF49F72FF0&gt;
+interrupt = True, bad = 'stage'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[completed_list-False]" time="0.233"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4F3E3050&gt;
+interrupt = False, bad = 'completed_list'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[completed_list-True]" time="0.266"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4F5D37A0&gt;
+interrupt = True, bad = 'completed_list'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[oversized-False]" time="0.198"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4F760EC0&gt;
+interrupt = False, bad = 'oversized'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[oversized-True]" time="0.214"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4F8761B0&gt;
+interrupt = True, bad = 'oversized'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row-False]" time="0.220"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4F953260&gt;
+interrupt = False, bad = 'row'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row-True]" time="0.209"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FA706E0&gt;
+interrupt = True, bad = 'row'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row_metric-False]" time="0.191"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FB75850&gt;
+interrupt = False, bad = 'row_metric'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[row_metric-True]" time="0.211"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FC62300&gt;
+interrupt = True, bad = 'row_metric'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[current-False]" time="0.235"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FD57680&gt;
+interrupt = False, bad = 'current'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[current-True]" time="0.342"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FE89A90&gt;
+interrupt = True, bad = 'current'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[unrun-False]" time="0.209"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FDA5DF0&gt;
+interrupt = False, bad = 'unrun'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[unrun-True]" time="0.114"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FCD0AA0&gt;
+interrupt = True, bad = 'unrun'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[pending-False]" time="0.153"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FB767B0&gt;
+interrupt = False, bad = 'pending'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityError('terminal q/v parity failure at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence[pending-True]" time="0.223"><failure message="AssertionError: assert (False)&#10; +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault">reference_wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002BF4FA70D10&gt;
+interrupt = True, bad = 'pending'
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "stage",
+            "completed_list",
+            "oversized",
+            "row",
+            "row_metric",
+            "current",
+            "unrun",
+            "pending",
+        ],
+    )
+    def test_reference_sanitizes_all_inner_fields_without_losing_valid_evidence(
+        reference_wiring, monkeypatch, interrupt, bad
+    ):
+        """Stubbed reference framing; never numerical parity evidence."""
+        module, _, _ = reference_wiring
+        original = module.run_parity_cell
+        primary = KeyboardInterrupt("framing") if interrupt else RuntimeError("framing")
+        observed = []
+    
+        def corrupt(factory, inputs, *, exact, _accumulation_owner):
+            result = original(factory, inputs, exact=exact)
+            good = module._completed_progress(result)
+            changes = {
+                "stage": {"stage": object()},
+                "completed_list": {"completed": list(good.completed)},
+                "oversized": {"completed": good.completed + good.completed[:1]},
+                "row": {"completed": good.completed[:5] + (object(),) + good.completed[6:]},
+                "row_metric": {
+                    "completed": good.completed[:5]
+                    + (replace(good.completed[5], losses=(float("inf"), 1.0)),)
+                    + good.completed[6:]
+                },
+                "current": {"current": torch.tensor(1)},
+                "unrun": {"unrun": [object()]},
+                "pending": {"pending_losses": (float("nan"), 1.0)},
+            }
+            failure = replace(good, **changes[bad])
+            observed.append(good)
+            kind = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+            raise kind("framing", failure, cleanup_fault=True) from primary
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        expected = (
+            module.ReferenceParityInterrupted if interrupt else module.ReferenceParityError
+        )
+        with pytest.raises(expected) as caught:
+            reference_run(reference_wiring)
+        error = caught.value
+        failure = error.failure.cell_failure
+        assert error.__cause__.__cause__ is primary
+&gt;       assert error.journal_fault and error.cleanup_fault
+E       AssertionError: assert (False)
+E        +  where False = ReferenceParityInterrupted('q/v parity interrupted at cell').journal_fault
+
+tests\test_alc_r0_accumulation_journal_integration.py:92: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_real_tiny_pair_drives_complete_owned_journal_without_receipt_changes" time="0.597" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-False]" time="0.005" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-True]" time="0.006" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-False]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-True]" time="0.009" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-False]" time="0.014" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-True]" time="0.014" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-False]" time="0.017" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-True]" time="0.017" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-False]" time="0.023" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-True]" time="0.022" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-False]" time="0.027" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-True]" time="0.026" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-False]" time="0.071" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-True]" time="0.062" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-False]" time="0.145" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-True]" time="0.155" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-False]" time="0.126" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-True]" time="0.151" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-False]" time="0.170" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-True]" time="0.206" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-False]" time="0.208" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-True]" time="0.203" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-False]" time="0.210" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-True]" time="0.213" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-False]" time="0.208" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-True]" time="0.206" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-False]" time="0.208" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-True]" time="0.208" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-False]" time="0.208" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-True]" time="0.209" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-False]" time="0.230" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-True]" time="0.215" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-False]" time="0.209" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-True]" time="0.207" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-False]" time="0.215" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-True]" time="0.225" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-False]" time="0.223" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-True]" time="0.217" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-False]" time="0.216" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-True]" time="0.216" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_combined_cleanup_and_snapshot_failure_preserves_both_markers[False]" time="0.422" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_combined_cleanup_and_snapshot_failure_preserves_both_markers[True]" time="0.539" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[False]" time="0.412" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_malformed_inner_snapshot_does_not_erase_valid_cleanup_marker[True]" time="0.451" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-False]" time="0.298" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-inner-True]" time="0.274" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-False]" time="0.199" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[snapshot-late-True]" time="0.282" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-False]" time="0.281" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-inner-True]" time="0.293" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-False]" time="0.257" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_stubbed_reference_fault_transport_preserves_primary_and_prefix[cleanup-late-True]" time="0.248" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[False]" time="0.016" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[True]" time="0.015" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_preclip_failure_prevents_either_optimizer_step" time="0.192" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_forward_failure_does_not_increment_completed_forward" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_backward_failure_does_not_increment_completed_backward" time="0.009" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[False]" time="0.679" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[True]" time="0.702" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[snapshot-False]" time="0.636" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[snapshot-True]" time="0.676" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[cleanup-False]" time="0.777" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_pair_secondary_fault_markers[cleanup-True]" time="0.644" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[observation-False]" time="0.020" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[observation-True]" time="0.010" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[step-False]" time="0.211" /><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_secondary_factor_cleanup_does_not_replace_computation_error[step-True]" time="0.245" /></testsuite></testsuites>

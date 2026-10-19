@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="59.946" timestamp="2026-10-18T16:14:49.923780+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stdout]" time="9.827"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-257\\test_actual_observer_terminal_0\\diagnostic\\output.terminal.observer.gate.json'">tests\test_alc_r0_coordinator_growth_acceptance.py:373: in test_actual_observer_terminal_output_requires_valid_receipt_before_settlement
+    gate=bounded_json(namespace/'output.terminal.observer.gate.json')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-257\\test_actual_observer_terminal_0\\diagnostic\\output.terminal.observer.gate.json'</failure></testcase><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stderr]" time="13.736" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stdout]" time="14.501" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stderr]" time="20.397"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-257\\test_actual_observer_terminal_3\\diagnostic\\output.terminal.observer.gate.json'">tests\test_alc_r0_coordinator_growth_acceptance.py:373: in test_actual_observer_terminal_output_requires_valid_receipt_before_settlement
+    gate=bounded_json(namespace/'output.terminal.observer.gate.json')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-257\\test_actual_observer_terminal_3\\diagnostic\\output.terminal.observer.gate.json'</failure></testcase></testsuite></testsuites>

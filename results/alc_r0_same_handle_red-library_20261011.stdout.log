@@ -1,0 +1,315 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                     [100%]
+================================== FAILURES ===================================
+______________ test_standard_library_exact_layout_and_valid_zero ______________
+tests\test_alc_r0_standard_first_observer.py:59: in test_standard_library_exact_layout_and_valid_zero
+    assert api()._decode_standard(standard()) == (4096, 4096, 1)
+           ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+________________ test_standard_library_invalid_records_deny[] _________________
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+______________ test_standard_library_invalid_records_deny[raw3] _______________
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\xff\xff\xff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x01\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x01\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x02\x01\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_ test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x02\x00\x00] _
+tests\test_alc_r0_standard_first_observer.py:68: in test_standard_library_invalid_records_deny
+    api()._decode_standard(raw)
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_decode_standard'
+_____________ test_library_exact_sequence_full14_and_no_mutation ______________
+tests\test_alc_r0_standard_first_observer.py:73: in test_library_exact_sequence_full14_and_no_mutation
+    result = api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+______ test_library_named_fields_changed_deny_even_after_close[FileId-2] ______
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+______ test_library_named_fields_changed_deny_even_after_close[FileId-3] ______
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+___ test_library_named_fields_changed_deny_even_after_close[CreationTime-2] ___
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+___ test_library_named_fields_changed_deny_even_after_close[CreationTime-3] ___
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[LastWriteTime-2] ___
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[LastWriteTime-3] ___
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[ChangeTime-2] ____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[ChangeTime-3] ____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[AllocationSize-2] __
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[AllocationSize-3] __
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[EndOfFile-2] _____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[EndOfFile-3] _____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[FileAttributes-2] __
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[FileAttributes-3] __
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[ReparseTag-2] ____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[ReparseTag-3] ____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[NumberOfLinks-2] ___
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__ test_library_named_fields_changed_deny_even_after_close[NumberOfLinks-3] ___
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[DeviceType-2] ____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[DeviceType-3] ____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_ test_library_named_fields_changed_deny_even_after_close[DeviceCharacteristics-2] _
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_ test_library_named_fields_changed_deny_even_after_close[DeviceCharacteristics-3] _
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_ test_library_named_fields_changed_deny_even_after_close[VolumeSerialNumber-2] _
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_ test_library_named_fields_changed_deny_even_after_close[VolumeSerialNumber-3] _
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[FileId128-2] _____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____ test_library_named_fields_changed_deny_even_after_close[FileId128-3] _____
+tests\test_alc_r0_standard_first_observer.py:87: in test_library_named_fields_changed_deny_even_after_close
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+________ test_library_retained_handle_identity_mismatch_denied[volume] ________
+tests\test_alc_r0_standard_first_observer.py:101: in test_library_retained_handle_identity_mismatch_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__________ test_library_retained_handle_identity_mismatch_denied[id] __________
+tests\test_alc_r0_standard_first_observer.py:101: in test_library_retained_handle_identity_mismatch_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_________ test_library_retained_handle_identity_mismatch_denied[zero] _________
+tests\test_alc_r0_standard_first_observer.py:101: in test_library_retained_handle_identity_mismatch_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+________ test_library_retained_handle_identity_mismatch_denied[short] _________
+tests\test_alc_r0_standard_first_observer.py:101: in test_library_retained_handle_identity_mismatch_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_________ test_library_retained_handle_identity_mismatch_denied[long] _________
+tests\test_alc_r0_standard_first_observer.py:101: in test_library_retained_handle_identity_mismatch_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____________ test_library_standard_disagreement_denied[allocation] ____________
+tests\test_alc_r0_standard_first_observer.py:115: in test_library_standard_disagreement_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_______________ test_library_standard_disagreement_denied[size] _______________
+tests\test_alc_r0_standard_first_observer.py:115: in test_library_standard_disagreement_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+______________ test_library_standard_disagreement_denied[links] _______________
+tests\test_alc_r0_standard_first_observer.py:115: in test_library_standard_disagreement_denied
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__________ test_library_acquisition_failure_closes_handle[standard] ___________
+tests\test_alc_r0_standard_first_observer.py:123: in test_library_acquisition_failure_closes_handle
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__________ test_library_acquisition_failure_closes_handle[identity] ___________
+tests\test_alc_r0_standard_first_observer.py:123: in test_library_acquisition_failure_closes_handle
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+____________ test_library_acquisition_failure_closes_handle[named] ____________
+tests\test_alc_r0_standard_first_observer.py:123: in test_library_acquisition_failure_closes_handle
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+__________________ test_library_expired_deadline_before_open __________________
+tests\test_alc_r0_standard_first_observer.py:130: in test_library_expired_deadline_before_open
+    api()._observe_composite(adapter, 'C:/fixed', 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+_____________ test_library_expiry_during_acquisition_still_closes _____________
+tests\test_alc_r0_standard_first_observer.py:140: in test_library_expiry_during_acquisition_still_closes
+    api()._observe_composite(adapter, 'C:/fixed', time.monotonic_ns()+10**9)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'aluclu.alc_r0.windows_directory_metadata' has no attribute '_observe_composite'
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_exact_layout_and_valid_zero
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[raw3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\xff\xff\xff\xff\xff\xff\xff\xff\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x01\x00\x00\x00\x00\x01\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x01\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x02\x01\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_standard_library_invalid_records_deny[\x00\x10\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x02\x00\x00]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_exact_sequence_full14_and_no_mutation
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[FileId-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[FileId-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[CreationTime-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[CreationTime-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[LastWriteTime-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[LastWriteTime-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[ChangeTime-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[ChangeTime-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[AllocationSize-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[AllocationSize-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[EndOfFile-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[EndOfFile-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[FileAttributes-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[FileAttributes-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[ReparseTag-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[ReparseTag-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[NumberOfLinks-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[NumberOfLinks-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[DeviceType-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[DeviceType-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[DeviceCharacteristics-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[DeviceCharacteristics-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[VolumeSerialNumber-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[VolumeSerialNumber-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[FileId128-2]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_named_fields_changed_deny_even_after_close[FileId128-3]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_retained_handle_identity_mismatch_denied[volume]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_retained_handle_identity_mismatch_denied[id]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_retained_handle_identity_mismatch_denied[zero]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_retained_handle_identity_mismatch_denied[short]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_retained_handle_identity_mismatch_denied[long]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_standard_disagreement_denied[allocation]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_standard_disagreement_denied[size]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_standard_disagreement_denied[links]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_acquisition_failure_closes_handle[standard]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_acquisition_failure_closes_handle[identity]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_acquisition_failure_closes_handle[named]
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_expired_deadline_before_open
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_expiry_during_acquisition_still_closes

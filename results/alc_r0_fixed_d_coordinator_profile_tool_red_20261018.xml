@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="16.258" timestamp="2026-10-18T16:40:53.518417+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_latency_profile_tool" name="test_latency_profile_command_is_fixed_cpu_diagnostic" time="0.300"><failure message="AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'">tests\test_alc_r0_latency_profile_tool.py:15: in test_latency_profile_command_is_fixed_cpu_diagnostic
+    command=runner._latency_profile_command(tmp_path)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'</failure></testcase><testcase classname="tests.test_alc_r0_latency_profile_tool" name="test_latency_profile_command_rejects_invalid_namespace[namespace0]" time="0.058"><failure message="AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'">tests\test_alc_r0_latency_profile_tool.py:24: in test_latency_profile_command_rejects_invalid_namespace
+    with pytest.raises(ValueError): runner._latency_profile_command(namespace)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'</failure></testcase><testcase classname="tests.test_alc_r0_latency_profile_tool" name="test_latency_profile_command_rejects_invalid_namespace[not-a-path]" time="0.001"><failure message="AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'">tests\test_alc_r0_latency_profile_tool.py:24: in test_latency_profile_command_rejects_invalid_namespace
+    with pytest.raises(ValueError): runner._latency_profile_command(namespace)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'</failure></testcase><testcase classname="tests.test_alc_r0_latency_profile_tool" name="test_latency_profile_actual_denial_preserves_nonzero_exit" time="0.003"><failure message="AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'">tests\test_alc_r0_latency_profile_tool.py:34: in test_latency_profile_actual_denial_preserves_nonzero_exit
+    result=run_owned_process(runner._latency_profile_command(missing),cwd=tmp_path,
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_fixed_d_coordinator_runner' has no attribute '_latency_profile_command'</failure></testcase></testsuite></testsuites>

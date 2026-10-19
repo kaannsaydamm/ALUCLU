@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____________ test_late_unlock_never_returns_publication_success ______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-156/test_late_unlock_never_returns0')
+
+    @pytest.mark.skipif(os.name!='nt',reason='Windows isolated unlock scheduling')
+    def test_late_unlock_never_returns_publication_success(tmp_path):
+        from aluclu.alc_r0.checkpoint_owned_process import run_owned_process
+        helper=Path(__file__).with_name('alc_r0_status_publication_child.py')
+        result=run_owned_process((sys.executable,'-B',str(helper),'late-unlock',str(tmp_path)),
+            cwd=tmp_path,environment=dict(os.environ),stdout_path=tmp_path/'late.stdout',
+            stderr_path=tmp_path/'late.stderr',deadline_ns=end())
+>       assert result.exit_code==0 and result.active_processes==0 and not result.timed_out
+E       assert (1 == 0)
+E        +  where 1 = OwnedProcessReceipt(root_pid=24240, exit_code=1, timed_out=False, started_ns=147132250000000, finished_ns=147133656000000, total_processes=3, active_processes=0, user_time_100ns=1406250, kernel_time_100ns=2187500).exit_code
+
+tests\test_alc_r0_status_publication.py:134: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_status_publication.py::test_late_unlock_never_returns_publication_success

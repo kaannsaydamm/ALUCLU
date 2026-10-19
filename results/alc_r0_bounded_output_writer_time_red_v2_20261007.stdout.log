@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-19/test_late_parent_writer_closur0')
+
+    def test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound(tmp_path):
+        pair = ReadError(**arguments(tmp_path))
+        pair.__enter__()
+        try:
+            for stream in pair._streams:
+                stream.thread.join(2)
+                assert not stream.thread.is_alive()
+            assert all(item.terminal for item in pair.observations())
+            earlier = max(item.finished_monotonic_ns for item in pair.observations())
+            # This pinned Windows Python can return the same monotonic clock tick
+            # for successive operations. Observe a later tick, bounded by 1 second,
+            # rather than pretending that subtraction establishes actual ordering.
+            tick_deadline = time.perf_counter() + 1
+            tick_wait = threading.Event()
+            while time.monotonic_ns() <= earlier:
+                assert time.perf_counter() < tick_deadline, "monotonic tick did not advance"
+                tick_wait.wait(0.001)
+            pair.close_parent_writers()  # confirmation occurs AFTER the effective bound
+>           with pytest.raises(OutputCleanupError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OutputCleanupError
+
+tests\test_alc_r0_bounded_process_output.py:352: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_bounded_process_output.py::test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound

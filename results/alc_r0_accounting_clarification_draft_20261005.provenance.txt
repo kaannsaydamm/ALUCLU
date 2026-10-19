@@ -1,0 +1,24 @@
+Checkpoint178: pending accounting clarification draft, NOT ADOPTED
+Parent: d1e027da42d6cf12348b752a0df9e7650f62811a
+Draft: docs/superpowers/plans/2026-10-05-alc-r0-accounting-clarification-draft.md
+Reviewed draft SHA256: 88e9e3136621300ff0f3c17f5faae68afdf9c82327bcaae93efb4730bff1677b
+Original scientific plan SHA256 unchanged:
+0493eeed795dbf089babe54bc14204e30d82c7381c4b819afdf986c0baff6c9b
+
+Independent resource_code_61 APPROVE and resource_arch_61 CLEAR ONLY for
+preserving/presenting the unadopted draft. Neither approves policy adoption,
+implementation, historical charge/clock acceptance or scientific launch.
+Synthesis: draft preservation approved; WATCH concrete evidence/authority;
+adoption and launch BLOCKED, absent explicit user method decision and all gates.
+
+Architecture counterargument retained: avoid endless record-by-record audits
+without a bounded decision. Present method approval/rejection as an actual
+choice. After approval, finite evidence must support a separately reviewed
+charge/clock or admission remains blocked; scanning is not guaranteed to succeed.
+Code lane verified preserved original resource/scientific constraints, no silent
+repurposing of ProgramAccounting.consumed_gpu_ns, no invented finite bounds,
+and no automatic-continuation authorization. No current numeric budget supplied.
+
+Documentation-only preparation. No production/test changes, pytest, model,
+tokenizer/corpus/GPU invocation, private-history export, installation or cleanup.
+No interpretation adopted; no existing gate softened; full goal remains open.

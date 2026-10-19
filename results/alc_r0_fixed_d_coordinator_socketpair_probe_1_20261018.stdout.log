@@ -1,0 +1,5 @@
+{"event": "socket-import-begun"}
+{"event": "socket-import-completed", "socket_module": "C:\\Users\\kaann\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\Lib\\socket.py", "socketpair_name": "_fallback_socketpair", "wall_perf_ns": 28639400}
+{"event": "socketpair-begun"}
+{"a_local": ["127.0.0.1", 52982], "a_peer": ["127.0.0.1", 52983], "b_local": ["127.0.0.1", 52983], "b_peer": ["127.0.0.1", 52982], "cpu_ns": 15625000, "event": "socketpair-completed", "family": 2, "type": 1, "wall_perf_ns": 2245345500}
+{"event": "sockets-closed", "scientific_execution": false}

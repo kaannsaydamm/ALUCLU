@@ -1,0 +1,36 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 16 items / 7 deselected / 9 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_precedes_owned_actions PASSED [ 11%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False] PASSED [ 22%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True] PASSED [ 33%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_rejected_final_identity_not_recorded PASSED [ 44%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_allocation_refusal_closes_second_destination PASSED [ 55%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse] PASSED [ 66%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed] FAILED [ 77%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_final_native_attribute_failure_still_closes PASSED [ 88%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_loss_before_resume_retains_consumption PASSED [100%]
+
+================================== FAILURES ===================================
+_ test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:223: in test_preallocated_output_unsupported_native_attributes_close_acquisition
+    with pair: pytest.fail('unsupported native attributes must deny acquisition')
+         ^^^^
+src\aluclu\alc_r0\bounded_process_output.py:168: in __enter__
+    stream.destination = self._open_destination(stream.path)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\fixed_d_coordinator.py:192: in _open_destination
+    row=self._allocate_destination(stream,path,target.limit)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_coordinator_growth_acceptance.py:219: in _allocate_destination
+    _mark_output_native(stream,kind)
+tests\test_alc_r0_coordinator_growth_acceptance.py:172: in _mark_output_native
+    raise ctypes.WinError(ctypes.get_last_error())
+E   PermissionError: [WinError 5] Eriþim engellendi.
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_output_capacity_negative_green_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed]
+================== 1 failed, 8 passed, 7 deselected in 6.24s ==================

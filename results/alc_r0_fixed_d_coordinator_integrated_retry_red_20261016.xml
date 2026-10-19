@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.502" timestamp="2026-10-16T05:06:43.553483+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_fixed_d_coordinator" name="test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure" time="0.062"><failure message="assert (False)&#10; +  where False = &lt;aluclu.alc_r0.fixed_d_coordinator._NativeActuator object at 0x0000019A8E5D01D0&gt;.closed">tests\test_alc_r0_fixed_d_coordinator.py:470: in test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure
+    assert actor.closed and actor.process is None and actor.job is None
+E   assert (False)
+E    +  where False = &lt;aluclu.alc_r0.fixed_d_coordinator._NativeActuator object at 0x0000019A8E5D01D0&gt;.closed</failure></testcase></testsuite></testsuites>

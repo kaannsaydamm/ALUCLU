@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="23.302" timestamp="2026-10-05T19:24:28.317571+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_qv_resume_process" name="test_fresh_process_rebuild_and_step2_resume_exact" time="1.832"><failure message="aluclu.alc_r0.canonical.CanonicalEvidenceError: value cannot be RFC-8785 canonicalized">obj = {0: 'LABEL_0', 1: 'LABEL_1'}
+sink = &lt;_io.BytesIO object at 0x000002DA59A07FB0&gt;
+
+    def dump(obj: _Value, sink: typing.IO[bytes]) -&gt; None:
+        """
+        Perform JCS serialization of `obj` into `sink`.
+        """
+    
+        if obj is None:
+            sink.write(b"null")
+        elif isinstance(obj, bool):
+            obj = bool(obj)
+            if obj is True:
+                sink.write(b"true")
+            else:
+                sink.write(b"false")
+        elif isinstance(obj, int):
+            obj = int(obj)
+            if obj &lt; _INT_MIN or obj &gt; _INT_MAX:
+                raise IntegerDomainError(obj)
+            sink.write(str(obj).encode("utf-8"))
+        elif isinstance(obj, str):
+            # NOTE: We don't coerce with `str(...)`` here, since that will do
+            # the wrong thing for `(str, Enum)` subtypes where `__str__` is
+            # `Enum.__str__`.
+            _serialize_str(obj, sink)
+        elif isinstance(obj, float):
+            obj = float(obj)
+            _serialize_float(obj, sink)
+        elif isinstance(obj, (list, tuple)):
+            obj = list(obj)
+            if not obj:
+                # Optimization for empty lists.
+                sink.write(b"[]")
+                return
+    
+            sink.write(b"[")
+            for idx, elem in enumerate(obj):
+                if idx &gt; 0:
+                    sink.write(b",")
+                dump(elem, sink)
+            sink.write(b"]")
+        elif isinstance(obj, dict):
+            obj = dict(obj)
+            if not obj:
+                # Optimization for empty dicts.
+                sink.write(b"{}")
+                return
+    
+            # RFC 8785 3.2.3: Objects are sorted by key; keys are ordered
+            # by their UTF-16 encoding. The spec isn't clear about which endianness,
+            # but the examples imply that the big endian encoding is used.
+            try:
+&gt;               obj_sorted = sorted(obj.items(), key=lambda kv: kv[0].encode("utf-16be"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kv = (0, 'LABEL_0')
+
+&gt;   obj_sorted = sorted(obj.items(), key=lambda kv: kv[0].encode("utf-16be"))
+                                                    ^^^^^^^^^^^^
+E   AttributeError: 'int' object has no attribute 'encode'
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:238: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+value = {'transformers_version': '5.17.0', 'architectures': None, 'output_hidden_states': False, 'return_dict': True, ...}
+
+    def canonical_json_bytes(value: Any) -&gt; bytes:
+        """Return RFC 8785 canonical JSON bytes or fail closed."""
+    
+        try:
+&gt;           return rfc8785.dumps(value)
+                   ^^^^^^^^^^^^^^^^^^^^
+
+src\aluclu\alc_r0\canonical.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:184: in dumps
+    dump(obj, sink)
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:250: in dump
+    dump(value, sink)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+obj = {0: 'LABEL_0', 1: 'LABEL_1'}
+sink = &lt;_io.BytesIO object at 0x000002DA59A07FB0&gt;
+
+    def dump(obj: _Value, sink: typing.IO[bytes]) -&gt; None:
+        """
+        Perform JCS serialization of `obj` into `sink`.
+        """
+    
+        if obj is None:
+            sink.write(b"null")
+        elif isinstance(obj, bool):
+            obj = bool(obj)
+            if obj is True:
+                sink.write(b"true")
+            else:
+                sink.write(b"false")
+        elif isinstance(obj, int):
+            obj = int(obj)
+            if obj &lt; _INT_MIN or obj &gt; _INT_MAX:
+                raise IntegerDomainError(obj)
+            sink.write(str(obj).encode("utf-8"))
+        elif isinstance(obj, str):
+            # NOTE: We don't coerce with `str(...)`` here, since that will do
+            # the wrong thing for `(str, Enum)` subtypes where `__str__` is
+            # `Enum.__str__`.
+            _serialize_str(obj, sink)
+        elif isinstance(obj, float):
+            obj = float(obj)
+            _serialize_float(obj, sink)
+        elif isinstance(obj, (list, tuple)):
+            obj = list(obj)
+            if not obj:
+                # Optimization for empty lists.
+                sink.write(b"[]")
+                return
+    
+            sink.write(b"[")
+            for idx, elem in enumerate(obj):
+                if idx &gt; 0:
+                    sink.write(b",")
+                dump(elem, sink)
+            sink.write(b"]")
+        elif isinstance(obj, dict):
+            obj = dict(obj)
+            if not obj:
+                # Optimization for empty dicts.
+                sink.write(b"{}")
+                return
+    
+            # RFC 8785 3.2.3: Objects are sorted by key; keys are ordered
+            # by their UTF-16 encoding. The spec isn't clear about which endianness,
+            # but the examples imply that the big endian encoding is used.
+            try:
+                obj_sorted = sorted(obj.items(), key=lambda kv: kv[0].encode("utf-16be"))
+            except AttributeError:
+                # Failing to call `encode()` indicates that a key isn't a string.
+&gt;               raise CanonicalizationError("object keys must be strings")
+E               rfc8785._impl.CanonicalizationError: object keys must be strings
+
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:241: CanonicalizationError
+
+The above exception was the direct cause of the following exception:
+
+host = VerifiedHost(model=IndependentQVLM(
+  (model): Module(
+    (layers): ModuleList(
+      (0-29): 30 x FakeLoRALayer(
+   ...e_word_embeddings': True, 'bos_token_id': 0, 'eos_token_id': 0}, parameter_count=36504576, trainable_parameter_count=0)
+tmp_path = WindowsPath('C:/Windows/Temp/pytest-of-kaann/pytest-158/test_fresh_process_rebuild_and0')
+
+    def test_fresh_process_rebuild_and_step2_resume_exact(host, tmp_path):
+        wrapper = make_reference_wrapper(host, False, state="zero")
+        optimizer = make_reference_optimizer(wrapper)
+        initial = serialize_reference(wrapper.reference)
+&gt;       fingerprint = identity(host.model)
+                      ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_reference_qv_resume_process.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_reference_qv_resume_process.py:48: in identity
+    "config": sha(canonical_json_bytes(base.config.to_dict())),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'transformers_version': '5.17.0', 'architectures': None, 'output_hidden_states': False, 'return_dict': True, ...}
+
+    def canonical_json_bytes(value: Any) -&gt; bytes:
+        """Return RFC 8785 canonical JSON bytes or fail closed."""
+    
+        try:
+            return rfc8785.dumps(value)
+        except (rfc8785.CanonicalizationError, TypeError, ValueError) as exc:
+&gt;           raise CanonicalEvidenceError("value cannot be RFC-8785 canonicalized") from exc
+E           aluclu.alc_r0.canonical.CanonicalEvidenceError: value cannot be RFC-8785 canonicalized
+
+src\aluclu\alc_r0\canonical.py:67: CanonicalEvidenceError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,31 @@
+$ErrorActionPreference = 'Stop'
+$env:PYTHONPATH = 'src'
+$env:PYTHONDONTWRITEBYTECODE = '1'
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$checkout = 'C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local'
+$python = 'C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe'
+$sourceDir = 'C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\datasets\primevul-original\authors-drive-19iLaNDS0z99N8kB_jBRTmDLehwZBolMY'
+$pairedDir = 'C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\datasets\primevul-original-paired'
+$snapshot = 'C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\model\SmolLM2-135M-93efa2f'
+$stem = 'C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.research-evidence\alc_r0_banded_native_20261002\banded-pair-census-full-f7af513-v1'
+Set-Location -LiteralPath $checkout
+$commit = git rev-parse HEAD
+if ($LASTEXITCODE -ne 0 -or $commit -ne 'f7af51351cd66017a3c438af473b9eb17b0b7839') { throw 'source freeze mismatch' }
+$dirty = @(git status --porcelain --untracked-files=all)
+if ($LASTEXITCODE -ne 0 -or $dirty.Count -ne 0) { throw 'source checkout is not clean' }
+foreach ($extension in @('.stdout.log', '.stderr.log', '.exit.log')) {
+    if (Test-Path -LiteralPath ($stem + $extension)) { throw 'execution artifact already exists; no retry/overwrite' }
+}
+$arguments = @('-B', '-m', 'aluclu.alc_r0.banded_pair_resource_census', $sourceDir, $pairedDir, $snapshot)
+# Deliberately not Start-Process -Wait: wait for this exact child handle, not its job/conhost.
+$child = Start-Process -FilePath $python -ArgumentList $arguments -WorkingDirectory $checkout -WindowStyle Hidden -PassThru -RedirectStandardOutput ($stem + '.stdout.log') -RedirectStandardError ($stem + '.stderr.log')
+Write-Output ('census_child_pid=' + $child.Id)
+$child.WaitForExit()
+$child.Refresh()
+if ($null -eq $child.ExitCode) { throw 'child exit unavailable; no success inference' }
+$actualExit = [int]$child.ExitCode
+$exitText = 'actual_census_exit_code=' + $actualExit + [Environment]::NewLine + 'source_commit=' + $commit + [Environment]::NewLine
+[System.IO.File]::WriteAllText($stem + '.exit.log', $exitText, [System.Text.UTF8Encoding]::new($false))
+Write-Output ('actual_census_exit_code=' + $actualExit)
+exit $actualExit

@@ -1,0 +1,14 @@
+Root-witnessed terminal process evidence; stdout/stderr were captured by the tool, not redirected to raw log files.
+absent-module RED session69944: actual_pytest_exit_code=2 terminal_shell_exit_code=2
+first implementation check session19953: actual_pytest_exit_code=1 terminal_shell_exit_code=1
+corrected focused GREEN session50379: actual_pytest_exit_code=0 terminal_shell_exit_code=0
+relevant regression session74155: actual_pytest_exit_code=0 terminal_shell_exit_code=0
+RED XML: 1 collection error, 8.465s; 585b42631e6351b34e19131d58079c9e0efc53ff38fad45bee468f2e9eb9f37c
+First implementation XML: 33 passed/1 failed, 16.610s; 198cd783bb2754b22637d2ab5493c11868a44b44ef079df53a628434d7321044
+Corrected focused XML: 44 passed, 16.033s; 39c7d1ba6ad3b6acfd7252e34f3be2351dd8d62646ca8d29251bc9ec3d6bbced
+Relevant regression XML: 175 passed/1 skipped, 176 total, 312.257s; 3ab26d6dc0e00ad3e916d10a8f959703e81825e19e8b193796056141417ccfb1
+Only skip: pinned offline model snapshot path not supplied to optional defect candidate scoring control.
+Relevant regression covered 9 explicit modules: new census, rectangular census, banded reference, scalable/full pair graph, paired source, source checkout, acquisition and defect prompt.
+Reviewed/tested module SHA256=4e21e3f544f9e7e7d6a948dc564fe26e4c4b4d0824edb4b57479483c41fce230
+Reviewed/tested tests SHA256=157315b772ffc00c6df1ef1b4587d8aace2341236198b431ba2738270012cece
+These were working-byte tests before the final source commit. They are not represented as execution on an already clean committed checkout, full-project regression, corpus evidence or learning PASS.

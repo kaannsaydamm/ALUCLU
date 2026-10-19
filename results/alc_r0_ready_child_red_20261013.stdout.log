@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_owned_ready_binding_before_explicit_resume _______________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-137/test_owned_ready_binding_befor0')
+
+    def test_owned_ready_binding_before_explicit_resume(tmp_path):
+        directory,gen,req,arguments,sentinel=fixture(tmp_path)
+        with ReservedOwnedLease(**arguments) as lease:
+            assert not sentinel.exists()
+            ready=lease.publish_identity(ROOT,ROOT)
+>           binding=publish(directory,gen,req,lease,ready)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_ready_child_publication.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_ready_child_publication.py:61: in publish
+    return module().publish_ready_child(directory,generation,req,**arguments)
+           ^^^^^^^^
+tests\test_alc_r0_ready_child_publication.py:21: in module
+    def module(): return importlib.import_module('aluclu.alc_r0.ready_child_publication')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.ready_child_publication'
+import_ = <function _gcd_import at 0x000001B3E22380E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.ready_child_publication'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_ready_child_publication.py::test_owned_ready_binding_before_explicit_resume

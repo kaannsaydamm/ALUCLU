@@ -1,0 +1,81 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 46 items / 38 deselected / 8 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization FAILED [ 12%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries] FAILED [ 25%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink] FAILED [ 37%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes] FAILED [ 50%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline] FAILED [ 62%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] FAILED [ 75%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] FAILED [ 87%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending FAILED [100%]
+
+================================== FAILURES ===================================
+____ test_request_only_growth_root_cannot_support_verified_materialization ____
+tests\test_alc_r0_coordinator_growth_acceptance.py:24: in test_request_only_growth_root_cannot_support_verified_materialization
+    settlement=next(item for item in events if item['kind']=='settle_storage_held')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+______ test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries] ______
+tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)
+_____ test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink] ______
+tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)
+_______ test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes] _______
+tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)
+_____ test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline] ______
+tests\test_alc_r0_coordinator_growth_acceptance.py:63: in test_growth_inventory_rejects_unbounded_or_unsafe_prefix
+    from aluclu.alc_r0.fixed_d_coordinator import _observe_growth
+E   ImportError: cannot import name '_observe_growth' from 'aluclu.alc_r0.fixed_d_coordinator' (C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py)
+_ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] _
+tests\test_alc_r0_fixed_d_coordinator.py:93: in test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle
+    assert [event['kind'] for event in events]==[
+E   AssertionError: assert ['reserve', '...concile', ...] == ['reserve', '...storage_held']
+E     
+E     At index 5 diff: 'reconcile' != 'settle_storage_held'
+E     Left contains one more item: 'release'
+E     
+E     Full diff:
+E       [
+E           'reserve',...
+E     
+E     ...Full output truncated (8 lines hidden), use '-vv' to show
+_ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] _
+tests\test_alc_r0_fixed_d_coordinator.py:93: in test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle
+    assert [event['kind'] for event in events]==[
+E   AssertionError: assert ['reserve', '...concile', ...] == ['reserve', '...storage_held']
+E     
+E     At index 5 diff: 'reconcile' != 'settle_storage_held'
+E     Left contains one more item: 'release'
+E     
+E     Full diff:
+E       [
+E           'reserve',...
+E     
+E     ...Full output truncated (8 lines hidden), use '-vv' to show
+_ test_completion_conflict_after_release_reports_committed_state_not_pending __
+tests\test_alc_r0_fixed_d_coordinator.py:221: in test_completion_conflict_after_release_reports_committed_state_not_pending
+    assert snapshot.reservations[0].state=='EXECUTION_RELEASED_STORAGE_HELD'
+E   AssertionError: assert 'RELEASED' == 'EXECUTION_RE..._STORAGE_HELD'
+E     
+E     - EXECUTION_RELEASED_STORAGE_HELD
+E     + RELEASED
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_storage_growth_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending
+====================== 8 failed, 38 deselected in 16.63s ======================

@@ -1,0 +1,45 @@
+Terminal prospective geometry census; no edit DP or learning acceptance.
+Root witnessed session9009 actual process exit0 and persisted actual_census_exit_code=0.
+Frozen source f7af51351cd66017a3c438af473b9eb17b0b7839.
+Source tree cae2990a5ac4c73bc7af7c5351a7b2f27b9298e01536e77a8725bceea629f17e,721 tracked files.
+Runtime launcher began2026-10-03 20:58:44+03:00; stdout last-write21:21:13+03:00.
+Same session retained; no restart, limit change or DP execution.
+Raw stdout SHA2566ffd5f601d2aef5df092307b24dc21a7aefc12b211e849fadd4042d87e28adc7.
+Raw stderr SHA2566d12a8dd6e68ae4d1dd5cb82b55c14ffa2b55a8ca438d97e65c95846ecb2b65e.
+Actual exit receipt SHA256415706199ef32f2e539c0daaaa2d64f9b4c8bdba2d8b929bc69525adfa021473.
+Launcher byte-copy SHA2563913c79eb0bfde83573e1f234f4c5e19b1fa0d1f904b07e3521df99af6a50bea.
+Root terminal read-only verification session57547 actual exit0:
+ROOT_TERMINAL_ACCOUNTING_PROVENANCE_CANONICAL_CHECK=PASS.
+Checked canonical JSON plus LF; same live clean-source commit/tree; dependencies;
+source/pair expectations, source receipt, four graph ledgers, model inventory/revision/
+receipt, template commitments and input/tokenizer/Python paths match old rectangular
+metadata. Checked false authority flags/status and fixed K512/B5/local ceilings/100M cap.
+Checked survival counts, every known/unknown partition, admitted/unresolved sums,
+reason geometry sums, component boundedness, histogram totals, fractions and cap balance.
+Train author4354:both4344,vulnerable-only10,safe-only0,neither0.
+Validation author562:both482,vulnerable-only0,safe-only0,neither80.
+Retained original rows177291train/22772validation.
+Train eligible4160,admitted169,unresolved4175;validation eligible469,admitted0,unresolved482.
+Train local reject184: endpoint7,length-gap34,band-cell143,scratch0.
+Validation local reject13: endpoint0,length-gap3,band-cell10,scratch0.
+Global-cap unresolved3991train/469validation; permanently exhausted at first eligible nonfit.
+Eligible full work2705212284 known band cells over4629pairs.
+Admitted99685082 cells,remaining314918,exact cap100000000.
+Admission fractions169/4344=0.038904235727440145 and0/482=0.
+Seven train endpoint-rejected pairs have unknown geometry; length-gap cases have known C0.
+Unknown costs omitted from known sums, not interpreted as free or resolved.
+Hypothetical scratch maxima531700train/468050validation; not measured RSS/allocation.
+Ordered global digest445736133e9c2c91c0efe34bf362ab704294de539a0d9d986be0691c23e43b52.
+Policy digest6fcb52fd6670583abd0e1a97b133738825e7f2e32861beb32c4b9442a92638eb.
+Stderr has tokenizer overlength warning; full endpoints were tokenized without model forward.
+No truncation, raw corpus/token vectors, held-out read, native load/build or training.
+Two independent existing GPT-6.1 Sol terminal review lanes:
+code APPROVE; architecture CLEAR; scoped synthesis APPROVE for receipt acceptance only.
+Both independently read complete raw evidence and checked provenance/accounting.
+Reviewers did not reopen datasets, regenerate ordered row digests or run DP/tests/model.
+Aggregate-only first-nonfit provenance binds reviewed code/ordered digest, not emitted pair rows.
+Poor admission is observed scope limitation, not an implementation failure or representative sample.
+Previous rectangular negative evidence remains immutable and separate.
+No distance/exposure resolution, prompt sufficiency/freeze, corpus-native performance,
+rights acceptance, research/neural PASS, training authority or full-goal completion.
+Any subsequent corpus edit DP/new cap requires separately explicit preregistration/review.

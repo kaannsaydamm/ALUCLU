@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="48" skipped="0" tests="48" time="8.779" timestamp="2026-10-06T17:27:29.059686+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_real_tiny_pair_drives_complete_owned_journal_without_receipt_changes" time="0.005"><failure message="TypeError: run_accumulation_pair() got an unexpected keyword argument '_accumulation_owner'">def test_real_tiny_pair_drives_complete_owned_journal_without_receipt_changes():
+        owner = _AccumulationOwner()
+        make, created = pair_factory()
+&gt;       result = pair.run_accumulation_pair(
+            make, accumulation_inputs(), exact=True, _accumulation_owner=owner
+        )
+E       TypeError: run_accumulation_pair() got an unexpected keyword argument '_accumulation_owner'
+
+tests\test_alc_r0_accumulation_journal_integration.py:30: TypeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-False]" time="0.002"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92B2F90&gt;
+arm = 'off', phase = 'micro_forward', index = 0, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_forward-0-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92B3260&gt;
+arm = 'off', phase = 'micro_forward', index = 0, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FD5E0&gt;
+arm = 'off', phase = 'micro_backward', index = 7, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_backward-7-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FD550&gt;
+arm = 'off', phase = 'micro_backward', index = 7, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FC320&gt;
+arm = 'off', phase = 'micro_capture', index = 15, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-micro_capture-15-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D926DB20&gt;
+arm = 'off', phase = 'micro_capture', index = 15, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D926E180&gt;
+arm = 'off', phase = 'observe_capture', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_capture-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3DFBFE0&gt;
+arm = 'off', phase = 'observe_capture', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3DFBB60&gt;
+arm = 'off', phase = 'observe_record', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-observe_record-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D926E900&gt;
+arm = 'off', phase = 'observe_record', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D926F050&gt;
+arm = 'on', phase = 'micro_forward', index = 0, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_forward-0-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FD160&gt;
+arm = 'on', phase = 'micro_forward', index = 0, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FD310&gt;
+arm = 'on', phase = 'micro_backward', index = 7, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_backward-7-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92B3A70&gt;
+arm = 'on', phase = 'micro_backward', index = 7, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92B3920&gt;
+arm = 'on', phase = 'micro_capture', index = 15, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-micro_capture-15-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3DFB140&gt;
+arm = 'on', phase = 'micro_capture', index = 15, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D9259AF0&gt;
+arm = 'on', phase = 'observe_record', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-observe_record-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D925A090&gt;
+arm = 'on', phase = 'observe_record', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D925AC00&gt;
+arm = 'off', phase = 'step_admit', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_admit-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D925B770&gt;
+arm = 'off', phase = 'step_admit', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92586B0&gt;
+arm = 'off', phase = 'step_optimizer_create', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_create-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3DFB650&gt;
+arm = 'off', phase = 'step_optimizer_create', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92B2FC0&gt;
+arm = 'off', phase = 'step_clip', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clip-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FC8C0&gt;
+arm = 'off', phase = 'step_clip', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91FDBB0&gt;
+arm = 'off', phase = 'step_clipped_capture', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_clipped_capture-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D926EE10&gt;
+arm = 'off', phase = 'step_clipped_capture', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92598B0&gt;
+arm = 'off', phase = 'step_optimizer_call', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_optimizer_call-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D925B710&gt;
+arm = 'off', phase = 'step_optimizer_call', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D925A1E0&gt;
+arm = 'off', phase = 'step_postconditions', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_postconditions-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D9258650&gt;
+arm = 'off', phase = 'step_postconditions', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92D5FA0&gt;
+arm = 'off', phase = 'step_snapshot', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_snapshot-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92D67B0&gt;
+arm = 'off', phase = 'step_snapshot', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D92D7350&gt;
+arm = 'off', phase = 'step_record', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[off-step_record-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D925B950&gt;
+arm = 'off', phase = 'step_record', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91B9370&gt;
+arm = 'on', phase = 'step_optimizer_call', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_optimizer_call-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91B8E30&gt;
+arm = 'on', phase = 'step_optimizer_call', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-False]" time="0.002"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D91A7800&gt;
+arm = 'on', phase = 'step_postconditions', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_postconditions-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3E8F590&gt;
+arm = 'on', phase = 'step_postconditions', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3E8FB60&gt;
+arm = 'on', phase = 'step_record', index = None, interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_entered_error_or_interrupt_retains_exact_stage_and_cause[on-step_record-None-True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3E8CC20&gt;
+arm = 'on', phase = 'step_record', index = None, interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    @pytest.mark.parametrize("arm,phase,index", BOUNDARIES)
+    def test_entered_error_or_interrupt_retains_exact_stage_and_cause(
+        monkeypatch, arm, phase, index, interrupt
+    ):
+        primary = KeyboardInterrupt("primary") if interrupt else RuntimeError("primary")
+        original = _AccumulationOwner.begin_arm
+        hits = []
+    
+        def inject(owner, ticket, entered, entered_index=None):
+            original(owner, ticket, entered, entered_index)
+            if (ticket.arm, entered, entered_index) == (arm, phase, index):
+                hits.append(1)
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = pair_factory()
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:85: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[False]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3E8E090&gt;
+interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_on_factory_failure_retains_completed_off_observation(monkeypatch, interrupt):
+        make, created = pair_factory()
+        primary = KeyboardInterrupt("factory") if interrupt else RuntimeError("factory")
+    
+        def broken(checkpoint):
+            if checkpoint:
+                raise primary
+            return make(checkpoint)
+    
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:117: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_on_factory_failure_retains_completed_off_observation[True]" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3E7AA80&gt;
+interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_on_factory_failure_retains_completed_off_observation(monkeypatch, interrupt):
+        make, created = pair_factory()
+        primary = KeyboardInterrupt("factory") if interrupt else RuntimeError("factory")
+    
+        def broken(checkpoint):
+            if checkpoint:
+                raise primary
+            return make(checkpoint)
+    
+&gt;       expected = pair.AccumulationInterrupted if interrupt else pair.AccumulationError
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationInterrupted'
+
+tests\test_alc_r0_accumulation_journal_integration.py:117: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_preclip_failure_prevents_either_optimizer_step" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3D3E7A4E0&gt;
+
+    def test_preclip_failure_prevents_either_optimizer_step(monkeypatch):
+        primary = RuntimeError("preclip")
+        steps = []
+    
+        def fail(*args, **kwargs):
+            raise primary
+    
+        monkeypatch.setattr(pair, "compare_accumulations", fail)
+        monkeypatch.setattr(pair, "step_accumulation", lambda *a, **kw: steps.append(1))
+        make, created = pair_factory()
+&gt;       with pytest.raises(pair.AccumulationError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:139: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_forward_failure_does_not_increment_completed_forward" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3A7EE9AF0&gt;
+
+    def test_actual_forward_failure_does_not_increment_completed_forward(monkeypatch):
+        make, created = pair_factory()
+        primary = RuntimeError("forward")
+    
+        def broken(checkpoint):
+            wrapper = make(checkpoint)
+            original = wrapper.forward
+            calls = []
+    
+            def forward(**kwargs):
+                calls.append(1)
+                if not checkpoint and len(calls) == 4:
+                    raise primary
+                return original(**kwargs)
+    
+            monkeypatch.setattr(wrapper, "forward", forward)
+            return wrapper
+    
+&gt;       with pytest.raises(pair.AccumulationError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:167: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_actual_backward_failure_does_not_increment_completed_backward" time="0.001"><failure message="AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3A7EEA360&gt;
+
+    def test_actual_backward_failure_does_not_increment_completed_backward(monkeypatch):
+        make, created = pair_factory()
+        primary = RuntimeError("backward")
+        original = torch.Tensor.backward
+        calls = []
+    
+        def backward(value, *args, **kwargs):
+            calls.append(1)
+            if len(calls) == 4:
+                raise primary
+            return original(value, *args, **kwargs)
+    
+        monkeypatch.setattr(torch.Tensor, "backward", backward)
+&gt;       with pytest.raises(pair.AccumulationError) as caught:
+                           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'aluclu.alc_r0.checkpoint_accumulation_pair' has no attribute 'AccumulationError'. Did you mean: 'AccumulationPair'?
+
+tests\test_alc_r0_accumulation_journal_integration.py:189: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[False]" time="1.047"><failure message="Failed: DID NOT RAISE ParityCellError">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3A7F1C920&gt;
+interrupt = False
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_cell_preserves_singles_pending_and_inner_accumulation_failure(
+        monkeypatch, interrupt
+    ):
+        original = _AccumulationOwner.begin_arm
+        primary = KeyboardInterrupt("cell") if interrupt else RuntimeError("cell")
+    
+        def inject(owner, ticket, phase, index=None):
+            original(owner, ticket, phase, index)
+            if ticket.arm == "on" and phase == "step_record":
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+&gt;       with pytest.raises(expected) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ParityCellError
+
+tests\test_alc_r0_accumulation_journal_integration.py:213: Failed</failure></testcase><testcase classname="tests.test_alc_r0_accumulation_journal_integration" name="test_cell_preserves_singles_pending_and_inner_accumulation_failure[True]" time="0.423"><failure message="Failed: DID NOT RAISE ParityCellInterrupted">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E3A7F1F1A0&gt;
+interrupt = True
+
+    @pytest.mark.parametrize("interrupt", [False, True])
+    def test_cell_preserves_singles_pending_and_inner_accumulation_failure(
+        monkeypatch, interrupt
+    ):
+        original = _AccumulationOwner.begin_arm
+        primary = KeyboardInterrupt("cell") if interrupt else RuntimeError("cell")
+    
+        def inject(owner, ticket, phase, index=None):
+            original(owner, ticket, phase, index)
+            if ticket.arm == "on" and phase == "step_record":
+                raise primary
+    
+        monkeypatch.setattr(_AccumulationOwner, "begin_arm", inject)
+        make, created = cell_factory()
+        expected = cell.ParityCellInterrupted if interrupt else cell.ParityCellError
+&gt;       with pytest.raises(expected) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ParityCellInterrupted
+
+tests\test_alc_r0_accumulation_journal_integration.py:213: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,56 @@
+{
+  "schema": "alc-r0-busy-revocation-selection-v1",
+  "scope": "bounded decoded original diagnostic files, NOT raw copies",
+  "scientific_execution": false,
+  "original_namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-187\\test_busy_revocation_terminate0\\diagnostic",
+  "files": [
+    {
+      "name": "busy.revocation.observed.json",
+      "bytes": 321,
+      "sha256": "de2742fb6ec5190bbc7964a0be806ad39cd7e38c2ea344d7bf530e8c4a9d8097",
+      "utf8": "{\"after_active\":2,\"before_active\":2,\"busy_finished_monotonic_ns\":\"521265000000\",\"busy_started_monotonic_ns\":\"520656000000\",\"domain\":\"diagnostic-only\",\"pid\":\"9244\",\"request_root\":\"9b77b8bb221bc1e1fc6e9c8a30b936e7208446d4e4ee8d80da447486f0f4081e\",\"root_wait\":258,\"sampled_monotonic_ns\":\"521265000000\",\"stop_requested\":true}"
+    },
+    {
+      "name": "revocation.published.json",
+      "bytes": 231,
+      "sha256": "ea03b038c530f98d40ce0ea8f11fd88c76a760fd47de7b0834f312800194e7ed",
+      "utf8": "{\"domain\":\"diagnostic-only\",\"published_monotonic_ns\":\"520718000000\",\"request_root\":\"9b77b8bb221bc1e1fc6e9c8a30b936e7208446d4e4ee8d80da447486f0f4081e\",\"status_root\":\"1fa73ee3708060b6973906576fb8de281a524000495f88724c69a5eaa96e11db\"}"
+    },
+    {
+      "name": "revocation.arm.json",
+      "bytes": 153,
+      "sha256": "1ca647b5b58e77917597d4ae4b3efc2bc57cac645e29950bcab52119cace056b",
+      "utf8": "{\"busy_started_monotonic_ns\":\"520656000000\",\"domain\":\"diagnostic-only\",\"request_root\":\"9b77b8bb221bc1e1fc6e9c8a30b936e7208446d4e4ee8d80da447486f0f4081e\"}"
+    },
+    {
+      "name": "child.started.json",
+      "bytes": 170,
+      "sha256": "2a8a07bd61749259557a8e4cdf9ea479435a62f5a5f2b3d1416de8ed44dcfaca",
+      "utf8": "{\"creation_filetime_100ns\":\"134365538849169109\",\"domain\":\"diagnostic-only\",\"pid\":\"9244\",\"request_root\":\"9b77b8bb221bc1e1fc6e9c8a30b936e7208446d4e4ee8d80da447486f0f4081e\"}"
+    },
+    {
+      "name": "work.cleanup.native.json",
+      "bytes": 299,
+      "sha256": "bb502743e76f22e32c003372606bf4b2da03491587082aca0e7711c09d624ec5",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"531265000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":521281000000,\"kernel_time_100ns\":1875000,\"root_pid\":9244,\"started_ns\":519468000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1093750}}"
+    },
+    {
+      "name": "observer.cleanup.native.json",
+      "bytes": 357,
+      "sha256": "73cf917faf7fa315ee767a90c0e85788012e2c3683ec5f910472377ec0ecc684",
+      "utf8": "{\"cleanup_deadline_monotonic_ns\":\"531265000000\",\"domain\":\"diagnostic-only\",\"forced\":true,\"parent_socket_closed\":true,\"receipt\":{\"active_processes\":0,\"exit_code\":124,\"finished_ns\":521296000000,\"kernel_time_100ns\":2031250,\"root_pid\":19384,\"started_ns\":519921000000,\"timed_out\":false,\"total_processes\":2,\"user_time_100ns\":1718750},\"surplus_socket_closed\":true}"
+    },
+    {
+      "name": "observer.bridge.json",
+      "bytes": 450,
+      "sha256": "888cca05adc6e2563f60cb1dd580b87290e4f2410b41035ca01635123ef18e2a",
+      "utf8": "{\"closed\":true,\"domain\":\"diagnostic-only\",\"finished_monotonic_ns\":\"520781000000\",\"observations\":[{\"observed_monotonic_ns\":\"520250000000\",\"sequence\":\"1\",\"started_monotonic_ns\":\"520250000000\",\"submitted_monotonic_ns\":\"520250000000\"},{\"observed_monotonic_ns\":\"520515000000\",\"sequence\":\"2\",\"started_monotonic_ns\":\"520500000000\",\"submitted_monotonic_ns\":\"520515000000\"}],\"operational_error\":\"StatusConsumerError\",\"socket_closed\":true,\"thread_alive\":false}"
+    },
+    {
+      "name": "operator/status.json",
+      "bytes": 279,
+      "sha256": "1fa73ee3708060b6973906576fb8de281a524000495f88724c69a5eaa96e11db",
+      "utf8": "{\"expires_utc_ns\":\"1792080344670690300\",\"generation_root\":\"b2e88e2323e4b647b6a166521265a24d8c0517271d63891902b705b123eec582\",\"installation_root\":\"4fa6d2959b6210ac0c8c295812216e91ac3e73138fad79de256df8d78fbc635c\",\"revoked\":true,\"schema\":\"alc-r0-operator-status-v1\",\"sequence\":\"2\"}"
+    }
+  ]
+}

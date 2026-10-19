@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 13 items
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization PASSED [  7%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_precedes_owned_actions PASSED [ 15%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_allocation_refusal_closes_second_destination PASSED [ 23%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_loss_before_resume_retains_consumption PASSED [ 30%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout] PASSED [ 38%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr] PASSED [ 46%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout] FAILED [ 53%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr] FAILED [ 61%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_stop_publication_atomic_marker_is_complete_and_stage_consumed PASSED [ 69%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stdout] PASSED [ 76%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stderr] FAILED [ 84%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stdout] 

@@ -1,0 +1,30 @@
+checkpoint=167
+parent_commit=6591de969225a3bf58dd9f2dc11f621902f61a1a
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_sha256=520fa38e01c324423c09393c31e6ff9dd44dc3a8beb99f5e2db30dc11a7bdc10
+tests_sha256=f729c54f80336d07d0191770072538aefcad57ad828f5b498c3349a5bb3dac60
+red_v1_actual_pytest_exit_code=2
+red_v1_junit=1tests;0failures;1error;0skipped;6.508s;missingmodule
+red_v1_xml_sha256=fe990964dcd8243d1b0c6bd05c7eb0f3aa9aac1e04178f8bdd2fa704c5a2ee6a
+focused_v2_actual_pytest_exit_code=0
+focused_v2_junit=14tests;0failures;0errors;0skipped;2.873s
+focused_v2_xml_sha256=b4d0a4a57d242b1b9506adbca81acb6ee82ea8305e256ea8c12fa8d201715f25
+focused_v3_original_session=92245; terminal personally consumed
+focused_v3_actual_pytest_exit_code=0
+focused_v3_junit=20tests;0failures;0errors;0skipped;9.964s
+focused_v3_xml_sha256=a4761e22b08bba082f9840408eb21d5cde0daffb19968d70d281f440ad1ff2d7
+child_restart=actualexit73; immediately BEFORE publish and AFTER publish returns; NOT mid-write/crash-durability qualification
+concurrency=two cooperating contenders;oneack/oneconflict; startbarrier only; serialization mutant sensitivity not yet qualified
+regression_v4_original_session=25240; terminal personally consumed
+regression_v4_actual_pytest_exit_code=0
+regression_v4_junit=1685totaltests;0failures;0errors;1skipped;102.638s;1684passed
+regression_v4_xml_sha256=0049e93bb1595d384c8c08e1bd6fbfcb28923953efa2a4b71bc98fa3ab1a73ce
+regression_v4_skip=tests.test_alc_r0_attempt_journal::test_posix_fifo_rejected_without_opening_other_end;native POSIX FIFO unavailable
+final_bytes=source/tests personally rehashed unchanged after terminal;Ruff format/check and git diff --check passed
+regression_scope=54targets; new manifest_publication plus unchanged16653targets; seven explicit targets plus47quoted tests/targets from tracked checkpoint159provenance; saved command never executed
+regression_args=-B -m pytest -q -p no:cacheprovider --tb=short --junitxml=results/alc_r0_manifest_publication_regression_v4_20261005.xml <54targets>
+exclusions=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors;tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present;tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+environment=PYTHONPATH=src;PYTHONDONTWRITEBYTECODE=1;ALUCLU_R0_SNAPSHOT unset
+review=independent GPT6.1Sol codeAPPROVE/componentarchitectureCLEAR; crash/platform/owner-lock integration WATCH; externalfreshness/launch BLOCK
+claim=local exact predecessor CAS/identical-candidate reconciliation only; full crash/fault and owner-locked writer gates OPEN; no launch/learning PASS

@@ -1,0 +1,34 @@
+........................................................................ [ 30%]
+........................................................................ [ 60%]
+........................................................................ [ 90%]
+....................F...                                                 [100%]
+================================== FAILURES ===================================
+_________ test_join_timeout_then_repeated_close_cannot_renew_deadline _________
+
+    def test_join_timeout_then_repeated_close_cannot_renew_deadline():
+        Watch, _, _ = api()
+        entered, release = threading.Event(), threading.Event()
+        class GatedWatch(Watch):
+            def _run(self):
+                entered.set()
+                assert release.wait(3), 'diagnostic run gate expired'
+                super()._run()
+        signal = OwnedStopSignal()
+        watch = GatedWatch(policy(), signal)
+        try:
+            watch.start()
+            assert entered.wait(2)
+            first = time.monotonic_ns() + 20_000_000
+            with pytest.raises(TimeoutError, match='original bound'):
+                watch.close(first)
+            assert signal._event.is_set() and watch._thread.is_alive()
+            release.set()
+            watch._thread.join(3)
+            assert not watch._thread.is_alive()
+>           with pytest.raises(TimeoutError, match='original bound'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE TimeoutError
+
+tests\test_alc_r0_live_authority_watch.py:270: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_live_authority_watch.py::test_join_timeout_then_repeated_close_cannot_renew_deadline

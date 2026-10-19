@@ -1,0 +1,27 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 23 items / 19 deselected / 4 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout] PASSED [ 25%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr] PASSED [ 50%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout] FAILED [ 75%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr] FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:345: in test_actual_quick_terminal_output_requires_valid_receipt_before_settlement
+    assert receipt.exit_code==2
+E   assert 0 == 2
+E    +  where 0 = OwnedProcessReceipt(root_pid=30320, exit_code=0, timed_out=False, started_ns=69603984000000, finished_ns=69606843000000, total_processes=7, active_processes=0, user_time_100ns=7968750, kernel_time_100ns=16562500).exit_code
+_ test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:345: in test_actual_quick_terminal_output_requires_valid_receipt_before_settlement
+    assert receipt.exit_code==2
+E   assert 0 == 2
+E    +  where 0 = OwnedProcessReceipt(root_pid=27840, exit_code=0, timed_out=False, started_ns=69607343000000, finished_ns=69610531000000, total_processes=7, active_processes=0, user_time_100ns=9687500, kernel_time_100ns=17500000).exit_code
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_terminal_output_red_v2_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr]
+================= 2 failed, 2 passed, 19 deselected in 13.15s =================

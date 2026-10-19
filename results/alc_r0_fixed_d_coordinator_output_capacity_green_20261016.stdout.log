@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 10 items / 7 deselected / 3 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_precedes_owned_actions PASSED [ 33%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False] PASSED [ 66%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_output_capacity_green_20261016.xml -
+======================= 3 passed, 7 deselected in 5.42s =======================

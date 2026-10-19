@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+_______ ERROR collecting tests/test_alc_r0_native_mutation_execution.py _______
+tests\test_alc_r0_native_mutation_execution.py:11: in <module>
+    SPEC.loader.exec_module(EXECUTION)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+<frozen importlib._bootstrap_external>:1190: in get_data
+    ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\scripts\\alc_r0_native_mutation_execution.py'
+=========================== short test summary info ===========================
+ERROR tests/test_alc_r0_native_mutation_execution.py - FileNotFoundError: [Er...
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.30s

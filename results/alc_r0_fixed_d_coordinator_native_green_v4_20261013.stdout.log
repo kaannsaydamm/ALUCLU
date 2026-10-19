@@ -1,0 +1,16 @@
+..............F..........                                                [100%]
+================================== FAILURES ===================================
+________ test_actual_entrypoint_refuses_consumed_diagnostic_namespace _________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-181/test_actual_entrypoint_refuses0')
+
+    def test_actual_entrypoint_refuses_consumed_diagnostic_namespace(tmp_path):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        first=invoke(tmp_path,('diagnostic','success',str(namespace)))
+>       assert first.exit_code==0 and first.active_processes==0
+E       assert (2 == 0)
+E        +  where 2 = OwnedProcessReceipt(root_pid=31344, exit_code=2, timed_out=False, started_ns=163130859000000, finished_ns=163132937000000, total_processes=7, active_processes=0, user_time_100ns=5156250, kernel_time_100ns=13750000).exit_code
+
+tests\test_alc_r0_fixed_d_coordinator.py:188: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_refuses_consumed_diagnostic_namespace

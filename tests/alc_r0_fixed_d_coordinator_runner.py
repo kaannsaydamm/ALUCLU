@@ -1,0 +1,305 @@
+"""Preserve integrated entrypoint RED under native process ownership."""
+from dataclasses import asdict
+import json
+import os
+from pathlib import Path
+import sys
+import time
+
+from aluclu.alc_r0.checkpoint_owned_process import run_owned_process
+
+
+_LATENCY_PROFILE_CODE='''
+import cProfile, json, pstats, sys, time
+profile=cProfile.Profile()
+started=time.monotonic_ns(); cpu_started=time.process_time_ns()
+main_started=main_finished=None
+code=None
+profile.enable()
+try:
+    from aluclu.alc_r0.fixed_d_coordinator import main
+    main_started=time.monotonic_ns()
+    try:
+        code=main()
+    finally:
+        main_finished=time.monotonic_ns()
+finally:
+    primary=sys.exception()
+    profile.disable()
+    finished=time.monotonic_ns(); cpu_finished=time.process_time_ns()
+    report=dict(scope='coordinator-main-thread-diagnostic-profile',
+        profile_overhead=True,diagnostic_exit_code=code,report_rows=60,
+        profile_wall_ns=finished-started,profile_cpu_ns=cpu_finished-cpu_started,
+        pre_main_wall_ns=None if main_started is None else main_started-started,
+        main_wall_ns=None if main_started is None else main_finished-main_started,
+        cpu_scope='parent process including its threads; child processes excluded',
+        profile_scope='parent main thread only; bridge and child execution excluded',
+        startup_before_wrapper_not_profiled=True,
+        scientific_modules_loaded_in_parent=any(name.split('.')[0] in
+            ('torch','transformers','datasets') for name in sys.modules))
+    try:
+        pstats.Stats(profile).sort_stats('cumulative').print_stats(60)
+        print(json.dumps(report,sort_keys=True,separators=(',',':')),flush=True)
+    except BaseException:
+        if primary is None: raise
+if type(code) is not int:
+    raise RuntimeError('diagnostic main did not return an exact integer exit code')
+raise SystemExit(code)
+'''
+
+
+def _latency_profile_command(namespace):
+    if not isinstance(namespace,Path) or not namespace.is_absolute():
+        raise ValueError('absolute diagnostic namespace required')
+    return (sys.executable,'-B','-c',_LATENCY_PROFILE_CODE,
+        'diagnostic','success',str(namespace))
+
+
+_DIRECTORY_LATENCY_CODE='''
+import json, os, sys, tempfile, time
+from pathlib import Path
+def emit(record):
+    print(json.dumps(record,sort_keys=True,separators=(',',':')),flush=True)
+emit(dict(event='setup-begun'))
+started=time.monotonic_ns(); cpu_started=time.process_time_ns()
+namespace=Path(tempfile.mkdtemp(prefix='alc-r0-directory-latency-'))
+finished=time.monotonic_ns(); cpu_finished=time.process_time_ns()
+emit(dict(event='setup-completed',namespace=str(namespace),
+    wall_ns=finished-started,cpu_ns=cpu_finished-cpu_started))
+emit(dict(event='metadata',schema='alc-r0-directory-latency-v1',
+    scope='finite unprofiled filesystem observation; not acceptance',
+    interpreter=sys.executable,python=sys.version,profile_overhead=False,
+    startup_before_wrapper_not_measured=True,imports_before_setup_not_measured=True,
+    cpu_scope='this process only; output emission excluded from per-operation clocks',
+    file_operation_scope='exclusive open, write, flush, fsync and close combined',
+    cache_state='unknown',namespace_retained=True,payload_bytes_per_file=512))
+completed=0
+for operation in ('fresh-mkdir','existing-mkdir','exclusive-write-flush-fsync'):
+    for index in range(6):
+        path=namespace/('directory-%d'%index if operation!='exclusive-write-flush-fsync'
+            else 'file-%d.bin'%index)
+        emit(dict(event='begun',operation=operation,index=index,path=str(path)))
+        wall_start=time.monotonic_ns(); cpu_start=time.process_time_ns()
+        if operation=='fresh-mkdir':
+            path.mkdir()
+        elif operation=='existing-mkdir':
+            path.mkdir(exist_ok=True)
+        else:
+            with path.open('xb') as stream:
+                if stream.write(b'x'*512)!=512: raise OSError('short diagnostic write')
+                stream.flush()
+                os.fsync(stream.fileno())
+        wall_end=time.monotonic_ns(); cpu_end=time.process_time_ns()
+        completed+=1
+        emit(dict(event='completed',operation=operation,index=index,
+            wall_ns=wall_end-wall_start,cpu_ns=cpu_end-cpu_start))
+directories=sum((namespace/('directory-%d'%i)).is_dir() for i in range(6))
+sizes=[(namespace/('file-%d.bin'%i)).stat().st_size for i in range(6)]
+if directories!=6 or sizes!=[512]*6: raise RuntimeError('diagnostic inventory differs')
+emit(dict(event='inventory',directories=directories,files=len(sizes),payload_bytes=sum(sizes)))
+emit(dict(event='summary',completed_operations=completed,profile_overhead=False,
+    scientific_execution=False,namespace=str(namespace)))
+'''
+
+
+def _directory_latency_command():
+    return (sys.executable,'-B','-c',_DIRECTORY_LATENCY_CODE)
+
+
+def _directory_latency_checkpoint(mode,entry):
+    cwd=Path(__file__).resolve().parents[1]
+    stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{mode}_20261018'
+    paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
+    if any(path.exists() for path in paths.values()): raise FileExistsError('immutable evidence exists')
+    environment=dict(os.environ,PYTHONPATH=str(cwd/'src'),PYTHONDONTWRITEBYTECODE='1',
+        PYTHONNOUSERSITE='1',PYTEST_DISABLE_PLUGIN_AUTOLOAD='1',CUDA_VISIBLE_DEVICES='-1',
+        HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_DATASETS_OFFLINE='1')
+    actual=mode=='directory_latency_1'
+    command=(_directory_latency_command() if actual else
+        (sys.executable,'-B','-m','pytest','tests/test_alc_r0_directory_latency_tool.py',
+         '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider','--junitxml='+str(paths['.xml'])))
+    result=run_owned_process(command,cwd=cwd,environment=environment,
+        stdout_path=paths['.stdout.log'],stderr_path=paths['.stderr.log'],
+        deadline_ns=entry+120_000_000_000)
+    record=dict(asdict(result),parent_bound_seconds=120,
+        scope='filesystem-latency-diagnostic-not-acceptance',profile_overhead=False)
+    record['diagnostic_exit_code' if actual else 'pytest_exit_code']=result.exit_code
+    with paths['.exit.json'].open('xb') as stream:
+        stream.write(json.dumps(record,sort_keys=True,separators=(',',':')).encode())
+    print(json.dumps(record,sort_keys=True))
+
+
+def main():
+    entry=time.monotonic_ns()
+    if sys.argv[1:] in (['directory_tool_red'],['directory_tool_green'],['directory_latency_1']):
+        return _directory_latency_checkpoint(sys.argv[1],entry)
+    if len(sys.argv)!=2 or sys.argv[1] not in ('red','red_v2','red_v3','green','green_v2','green_v3','green_v4','green_v5','green_v6','regression','native_red','native_green','native_green_v2','native_green_v3','native_green_v4','native_green_v5','regression_v2','bootstrap_red','bootstrap_green','regression_v3','busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion','storage_hold_red','storage_hold_green','storage_growth_green','storage_growth_regression','storage_growth_red','storage_growth_green_v2','storage_growth_regression_a','storage_growth_regression_b','output_capacity_red','output_capacity_red_v2','output_capacity_green','output_capacity_negative_red','output_capacity_negative_green','output_capacity_negative_green_v2','output_capacity_reparse_red','output_capacity_final_focus','output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c','running_output_red','running_output_green','running_output_regression_a','running_output_regression_b','running_output_regression_c','terminal_output_red','terminal_output_green','terminal_output_red_v2','observer_terminal_red','observer_terminal_green','terminal_final_focus','terminal_final_regression_a','terminal_final_regression_b','terminal_final_regression_c','stop_publication_red','stop_publication_green','observer_terminal_green_v2','terminal_batch_growth_0','terminal_batch_growth_1','terminal_batch_growth_2','terminal_batch_fixed_0','terminal_batch_fixed_1','terminal_batch_fixed_2','terminal_batch_fixed_3','terminal_batch_lease_0','terminal_batch_lease_1','terminal_batch_state_store','terminal_batch_watch_consumer','terminal_batch_bounded','profile_tool_red','profile_tool_green','latency_profile_1'): raise ValueError('closed checkpoint only')
+    cwd=Path(__file__).resolve().parents[1]
+    stamp='20261015' if sys.argv[1] in ('busy_red','regression_busy_red','actuator_green','actuator_green_v2','actuator_green_v3','actuator_green_v4','regression_actuator','tree_red','tree_green','tree_green_v2','tree_green_v3','tree_green_v4','regression_tree','early_red','early_green','early_green_v2','regression_early','partial_acquire','partial_acquire_v2','abrupt_diagnose','regression_partial_acquire','regression_partial_diagnose') else '20261013'
+    if sys.argv[1] in ('query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion'): stamp='20261016'
+    if sys.argv[1].startswith('storage_'): stamp='20261016'
+    if sys.argv[1].startswith('output_capacity_'): stamp='20261016'
+    stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_{stamp}'
+    if sys.argv[1].startswith(('running_output_','terminal_output_')):
+        stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_20261016'
+    paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
+    if sys.argv[1].startswith(('observer_terminal_','terminal_final_','stop_publication_','terminal_batch_','profile_tool_','latency_profile_')):
+        stem=cwd/'results'/f'alc_r0_fixed_d_coordinator_{sys.argv[1]}_20261018'
+        paths={suffix:Path(str(stem)+suffix) for suffix in ('.stdout.log','.stderr.log','.xml','.exit.json')}
+    if any(path.exists() for path in paths.values()): raise FileExistsError('immutable evidence exists')
+    environment=os.environ.copy()
+    environment.update(PYTHONPATH=str(cwd/'src'),PYTHONDONTWRITEBYTECODE='1',
+        PYTHONNOUSERSITE='1',PYTEST_DISABLE_PLUGIN_AUTOLOAD='1',CUDA_VISIBLE_DEVICES='-1')
+    cases=['tests/test_alc_r0_fixed_d_coordinator.py']
+    if sys.argv[1] in ('query_fault','query_fault_v2'): cases+=['-k','real_access_denial']
+    if sys.argv[1] in ('integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4'):
+        cases+=['-k','actual_coordinator_native_denial']
+    if sys.argv[1]=='integrated_retry_red': cases=['tests/test_alc_r0_fixed_d_coordinator.py','-k','closed_fixed_lease']
+    if sys.argv[1] in ('integrated_denial_green_v3','integrated_denial_green_v4'): cases=['tests/test_alc_r0_fixed_d_coordinator.py','-k','actual_coordinator_native_denial or closed_fixed_lease']
+    if sys.argv[1] in ('primary_red','primary_green','primary_green_v2'):
+        cases=['tests/test_alc_r0_reserved_owned_process.py','-k','primary_failure_survives']
+    if sys.argv[1]=='primary_dependents':
+        cases=['tests/test_alc_r0_owned_stop.py','tests/test_alc_r0_ready_child_publication.py',
+            'tests/test_alc_r0_committed_watch.py']
+    if sys.argv[1] in ('growth_acceptance_red','growth_acceptance_red_v2'): cases=['tests/test_alc_r0_coordinator_growth_acceptance.py']
+    if sys.argv[1] in ('completion_red','completion_green'):
+        cases=['tests/test_alc_r0_fixed_d_coordinator.py','-k','completion_conflict_after_release']
+    if sys.argv[1]=='native_red': cases+=['-k','slow-parent']
+    if sys.argv[1]=='bootstrap_red': cases+=['-k','bootstrap']
+    if sys.argv[1]=='busy_red': cases+=['-k','busy_revocation']
+    if sys.argv[1]=='tree_red': cases+=['-k','busy-tree-revocation']
+    if sys.argv[1]=='early_red': cases+=['-k','early_tree_validation']
+    if sys.argv[1] in ('partial_acquire','partial_acquire_v2'): cases+=['-k','real_partial_duplicate_failure']
+    if sys.argv[1]=='abrupt_diagnose':
+        cases=['tests/test_alc_r0_reserved_owned_process.py::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[running]',
+            '-vv','--tb=short','-x','-p','no:cacheprovider']
+    if sys.argv[1] in ('regression','regression_v2','regression_v3','regression_busy_red','regression_actuator','regression_tree','regression_early','partial_acquire','regression_partial_acquire','regression_partial_diagnose','query_fault','regression_query_fault','regression_query_fault_v2','regression_integrated_denial','regression_integrated_denial_v2','regression_primary','regression_primary_v2','regression_completion'):
+        cases+=['tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py',
+            'tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+            'tests/test_alc_r0_status_watch_consumer.py']
+    if sys.argv[1] in ('query_fault','regression_query_fault','query_fault_v2','regression_query_fault_v2','integrated_denial_red','integrated_denial_native_red','integrated_denial_green','integrated_denial_green_v2','integrated_retry_red','integrated_denial_green_v3','integrated_denial_green_v4','regression_integrated_denial','regression_integrated_denial_v2','primary_red','primary_green','regression_primary','primary_green_v2','regression_primary_v2','primary_dependents','growth_acceptance_red','growth_acceptance_red_v2','completion_red','completion_green','regression_completion'):
+        cases+=['-o','addopts=','-vv','--tb=short','-x','-p','no:cacheprovider']
+    if sys.argv[1]=='regression_partial_diagnose':
+        cases+=['-vv','--tb=short','-x','-p','no:cacheprovider']
+    if sys.argv[1] in ('storage_hold_red','storage_hold_green'):
+        cases=['tests/test_alc_r0_reservation_state.py','-k','storage_held']
+    if sys.argv[1] in ('storage_growth_red','storage_growth_green','storage_growth_green_v2'):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py',
+            'tests/test_alc_r0_fixed_d_coordinator.py','-k','growth or completes_owned or completion_conflict']
+    if sys.argv[1]=='storage_growth_regression':
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','tests/test_alc_r0_fixed_d_coordinator.py',
+            'tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py',
+            'tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+            'tests/test_alc_r0_status_watch_consumer.py']
+    if sys.argv[1].startswith('storage_'):
+        if sys.argv[1]=='storage_growth_regression_a':
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','tests/test_alc_r0_fixed_d_coordinator.py',
+                'tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py']
+        if sys.argv[1]=='storage_growth_regression_b':
+            cases=['tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+                'tests/test_alc_r0_status_watch_consumer.py']
+        cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('output_capacity_'):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k',
+            'output_capacity or preallocated_output','-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+        if sys.argv[1]=='output_capacity_reparse_red':
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k','reparse_ancestor',
+                '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+        if sys.argv[1]=='output_capacity_regression_a':
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','tests/test_alc_r0_fixed_d_coordinator.py',
+                'tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py']
+        if sys.argv[1]=='output_capacity_regression_b':
+            cases=['tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+                'tests/test_alc_r0_status_watch_consumer.py']
+        if sys.argv[1]=='output_capacity_regression_c':
+            cases=['tests/test_alc_r0_bounded_process_output.py']
+        if sys.argv[1] in ('output_capacity_regression_a','output_capacity_regression_b','output_capacity_regression_c'):
+            cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('running_output_'):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k','actual_running_output_overflow',
+            '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+        if sys.argv[1]=='running_output_regression_a':
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','tests/test_alc_r0_fixed_d_coordinator.py',
+                'tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py']
+        if sys.argv[1]=='running_output_regression_b':
+            cases=['tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+                'tests/test_alc_r0_status_watch_consumer.py']
+        if sys.argv[1]=='running_output_regression_c':
+            cases=['tests/test_alc_r0_bounded_process_output.py']
+        if sys.argv[1].startswith('running_output_regression_'):
+            cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('terminal_output_'):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k','actual_quick_terminal_output',
+            '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith(('observer_terminal_','terminal_final_')):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k',
+            'actual_quick_terminal_output or actual_observer_terminal_output',
+            '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+        if sys.argv[1].startswith('observer_terminal_'):
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k','actual_observer_terminal_output',
+                '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+        if sys.argv[1]=='terminal_final_regression_a':
+            cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','tests/test_alc_r0_fixed_d_coordinator.py',
+                'tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py']
+        if sys.argv[1]=='terminal_final_regression_b':
+            cases=['tests/test_alc_r0_reserved_owned_process.py','tests/test_alc_r0_live_authority_watch.py',
+                'tests/test_alc_r0_status_watch_consumer.py']
+        if sys.argv[1]=='terminal_final_regression_c':
+            cases=['tests/test_alc_r0_bounded_process_output.py']
+        if sys.argv[1].startswith('terminal_final_regression_'):
+            cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('stop_publication_'):
+        cases=['tests/test_alc_r0_coordinator_growth_acceptance.py','-k','stop_publication',
+            '-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('terminal_batch_'):
+        mode=sys.argv[1].removeprefix('terminal_batch_')
+        groups={
+            'growth':('tests/test_alc_r0_coordinator_growth_acceptance.py',3),
+            'fixed':('tests/test_alc_r0_fixed_d_coordinator.py',4),
+            'lease':('tests/test_alc_r0_reserved_owned_process.py',2)}
+        group,_,index=mode.rpartition('_')
+        if group in groups:
+            import ast
+            path,count=groups[group]
+            tree=ast.parse((cwd/path).read_text(encoding='utf-8'))
+            functions=tuple(node.name for node in tree.body
+                if isinstance(node,ast.FunctionDef) and node.name.startswith('test_'))
+            selected=functions[int(index)::count]
+            if not selected: raise ValueError('empty fixed regression partition')
+            cases=[path+'::'+name for name in selected]
+        elif mode=='state_store':
+            cases=['tests/test_alc_r0_reservation_state.py','tests/test_alc_r0_reservation_store.py']
+        elif mode=='watch_consumer':
+            cases=['tests/test_alc_r0_live_authority_watch.py','tests/test_alc_r0_status_watch_consumer.py']
+        elif mode=='bounded':
+            cases=['tests/test_alc_r0_bounded_process_output.py']
+        else: raise ValueError('unknown fixed regression partition')
+        cases+=['-o','addopts=','-vv','--tb=short','-p','no:cacheprovider']
+    if sys.argv[1].startswith('profile_tool_'):
+        cases=['tests/test_alc_r0_latency_profile_tool.py','-o','addopts=',
+            '-vv','--tb=short','-p','no:cacheprovider']
+    profiling=sys.argv[1]=='latency_profile_1'
+    namespace=None
+    if profiling:
+        import tempfile
+        namespace=Path(tempfile.mkdtemp(prefix='alc-r0-latency-profile-'))
+        command=_latency_profile_command(namespace)
+        environment.update(HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_DATASETS_OFFLINE='1')
+    else:
+        command=(sys.executable,'-B','-m','pytest','-q',*cases,'--junitxml='+str(paths['.xml']))
+    result=run_owned_process(command,
+        cwd=cwd,environment=environment,stdout_path=paths['.stdout.log'],
+        stderr_path=paths['.stderr.log'],deadline_ns=entry+120_000_000_000)
+    record=dict(asdict(result),parent_bound_seconds=120)
+    if profiling:
+        record.update(diagnostic_exit_code=result.exit_code,profile_overhead=True,
+            scope='diagnostic-latency-profile-not-acceptance',namespace=str(namespace))
+    else:
+        record.update(pytest_exit_code=result.exit_code,
+            scope='integrated-coordinator-acceptance-work-in-progress')
+    data=json.dumps(record,sort_keys=True,separators=(',',':')).encode()
+    with paths['.exit.json'].open('xb') as stream: stream.write(data)
+    print(data.decode())
+
+
+if __name__=='__main__': main()

@@ -1,0 +1,32 @@
+checkpoint=161
+parent_commit=0e7190ab2169e5e4e861093f706dd1f330bbe5b5
+workdir=C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+source_sha256=302a8d58c6d08d04e2304e0500e8e4961f60e750067c4fc57c1d7debe540e82e
+tests_sha256=fe3c1eb6147898529461e64e736ee48e1883810916f0ed7105e4274dc46108c3
+red_v1_actual_pytest_exit_code=2
+red_v1_junit=1 test;0 failures;1 error;0 skipped;0.517s; missing source module
+red_v1_xml_sha256=58fed0dbc6755cb1ddacf14c6fed9088d28f4fd29d321cd348209de985f41ba1
+focused_v2_actual_pytest_exit_code=0
+focused_v2_junit=57 tests;0 failures;0 errors;0 skipped;0.242s
+focused_v2_xml_sha256=68645cac2c3d5c31babf609649b0deec472d9a48a53e5e5e68fa3b2209cee1d5
+focused_v2_format_check=failed; two files subsequently Ruff-formatted
+focused_v3_actual_pytest_exit_code=0
+focused_v3_junit=70 tests;0 failures;0 errors;0 skipped;0.224s
+focused_v3_xml_sha256=e9947408b5e9565308ca5f7a102df511262631c5ac74682e4d52dc079b7acb11
+focused_v3_ruff_check=passed
+focused_v3_ruff_format_check=passed
+regression_v4_original_exec_session=57160
+regression_v4_status=terminal personally consumed; original session57160 not restarted
+regression_v4_actual_pytest_exit_code=0
+regression_v4_junit=1492 tests;0 failures;0 errors;0 skipped;154.198s
+regression_v4_xml_sha256=ecfb52c6b3506232e72ff43c42f87ed54b2db8529d0a2361ea1bb5712aa59056
+regression_v4_resource_testcases=70
+regression_v4_owned_process_testcases=33
+regression_v4_source_and_tests_hashes=unchanged final reviewed bytes
+regression_v4_scope=47 explicit targets from checkpoint159 command plus resource admission and owned process (49 targets); same three actual-asset/GPU exclusions
+regression_v4_environment=PYTHONPATH=src;PYTHONDONTWRITEBYTECODE=1;ALUCLU_R0_SNAPSHOT unset
+runtime=C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+claim=pure arithmetic only; no reservation, launch authority, historical reconciliation, runtime qualification or learning PASS
+review=independent GPT6.1Sol code APPROVE; architecture initially WATCH then CLEAR after prospective contract clarification; actual launch readiness BLOCK remains
+reproduction=use runtime below/above with -B -m pytest -q -p no:cacheprovider --tb=short --junitxml=<new path>; obtain 47 quoted tests/ targets from tracked checkpoint159 provenance command line using regex, never execute stored command; prepend tests/test_alc_r0_resource_admission.py and tests/test_alc_r0_owned_process.py
+exclusions=--deselect=tests/test_alc_r0_research_capsule.py::test_capsule_executes_bf16_host_path_on_cuda_with_fp32_factors;--deselect=tests/test_alc_r0_banking_scoring.py::test_pinned_real_tokenizer_candidate_map_root_when_snapshot_is_present;--deselect=tests/test_alc_r0_defect_prompt.py::test_pinned_smolllm2_scores_both_defect_candidates_if_available

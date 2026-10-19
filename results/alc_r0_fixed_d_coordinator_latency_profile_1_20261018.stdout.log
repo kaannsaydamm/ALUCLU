@@ -1,0 +1,69 @@
+         138273 function calls (136334 primitive calls) in 20.626 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1027 to 60 due to restriction <60>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   18.581   18.581 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py:1502(main)
+        1    0.000    0.000   18.581   18.581 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py:1220(_coordinate)
+        5    0.000    0.000   15.174    3.035 C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1306(mkdir)
+        5   15.174    3.035   15.174    3.035 {built-in method nt.mkdir}
+        1    0.000    0.000    3.380    3.380 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py:418(_prepare)
+     76/2    0.001    0.000    2.169    1.085 <frozen importlib._bootstrap>:1349(_find_and_load)
+     76/2    0.000    0.000    2.169    1.085 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+     74/4    0.000    0.000    2.166    0.542 <frozen importlib._bootstrap>:911(_load_unlocked)
+     54/4    0.000    0.000    2.166    0.541 <frozen importlib._bootstrap_external>:993(exec_module)
+    173/7    0.001    0.000    2.044    0.292 <frozen importlib._bootstrap>:480(_call_with_frames_removed)
+    259/4    0.025    0.000    2.012    0.503 {built-in method builtins.exec}
+        1    0.000    0.000    2.012    2.012 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py:1(<module>)
+        3    0.000    0.000    1.996    0.665 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_coordinator.py:90(_fresh)
+        7    1.992    0.285    1.992    0.285 {built-in method nt.fsync}
+        1    0.000    0.000    1.372    1.372 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\status_publication.py:160(publish)
+       54    0.001    0.000    1.205    0.022 <frozen importlib._bootstrap_external>:1066(get_code)
+       65    0.001    0.000    1.134    0.017 <frozen importlib._bootstrap_external>:1187(get_data)
+       55    0.948    0.017    0.948    0.017 {method 'read' of '_io.BufferedReader' objects}
+      688    0.865    0.001    0.867    0.001 {built-in method nt.stat}
+        2    0.000    0.000    0.616    0.308 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\status_publication.py:148(_write)
+        2    0.000    0.000    0.553    0.277 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\persistence.py:43(atomic_write_bytes)
+        1    0.000    0.000    0.530    0.530 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\status_publication.py:155(_persist_intent)
+       76    0.001    0.000    0.475    0.006 <frozen importlib._bootstrap>:1240(_find_spec)
+       64    0.000    0.000    0.472    0.007 <frozen importlib._bootstrap_external>:1524(find_spec)
+       64    0.000    0.000    0.472    0.007 <frozen importlib._bootstrap_external>:1495(_get_spec)
+      174    0.002    0.000    0.469    0.003 <frozen importlib._bootstrap_external>:1597(find_spec)
+      314    0.000    0.000    0.468    0.001 <frozen importlib._bootstrap_external>:140(_path_stat)
+       80    0.000    0.000    0.427    0.005 <frozen importlib._bootstrap_external>:150(_path_is_mode_type)
+       74    0.000    0.000    0.427    0.006 <frozen importlib._bootstrap_external>:159(_path_isfile)
+       74    0.000    0.000    0.411    0.006 <frozen importlib._bootstrap>:806(module_from_spec)
+        8    0.000    0.000    0.408    0.051 <frozen importlib._bootstrap_external>:1291(create_module)
+        8    0.408    0.051    0.408    0.051 {built-in method _imp.create_dynamic}
+      374    0.000    0.000    0.400    0.001 C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:835(stat)
+      9/5    0.000    0.000    0.398    0.080 {built-in method builtins.next}
+        3    0.000    0.000    0.398    0.133 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\deadline_file_lock.py:92(deadline_file_lock)
+      4/2    0.000    0.000    0.398    0.199 C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:132(__enter__)
+      352    0.000    0.000    0.396    0.001 C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:842(lstat)
+       31    0.001    0.000    0.382    0.012 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_request_file.py:48(_ancestors)
+        1    0.000    0.000    0.325    0.325 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\canonical.py:1(<module>)
+       14    0.000    0.000    0.325    0.023 C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1005(open)
+       14    0.325    0.023    0.325    0.023 {built-in method _io.open}
+       28    0.000    0.000    0.276    0.010 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\canonical.py:113(sha256_bytes)
+        1    0.000    0.000    0.222    0.222 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\persistence.py:1(<module>)
+        1    0.000    0.000    0.218    0.218 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_request_file.py:1(<module>)
+      5/4    0.000    0.000    0.212    0.053 {built-in method builtins.__import__}
+        1    0.000    0.000    0.202    0.202 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\fixed_d_wire.py:1(<module>)
+       47    0.000    0.000    0.185    0.004 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\canonical.py:61(canonical_json_bytes)
+       47    0.000    0.000    0.185    0.004 C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:177(dumps)
+   429/47    0.001    0.000    0.185    0.004 C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:188(dump)
+       65    0.183    0.003    0.183    0.003 {built-in method _io.open_code}
+        1    0.000    0.000    0.180    0.180 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\control_consumption.py:61(_claim)
+       61    0.000    0.000    0.180    0.003 {built-in method builtins.sorted}
+     1266    0.056    0.000    0.180    0.000 {method 'encode' of 'str' objects}
+      381    0.000    0.000    0.180    0.000 C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\rfc8785\_impl.py:238(<lambda>)
+        2    0.176    0.088    0.177    0.088 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\cognition\persistence.py:211(_windows_replace_write_through)
+       29    0.160    0.006    0.160    0.006 {built-in method _hashlib.openssl_sha256}
+        1    0.000    0.000    0.155    0.155 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\status_publication.py:132(_committed)
+        1    0.000    0.000    0.142    0.142 C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\src\aluclu\alc_r0\operator_status.py:83(read_operator_status)
+        1    0.000    0.000    0.124    0.124 C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\encodings\__init__.py:71(search_function)
+       28    0.116    0.004    0.116    0.004 {method 'hexdigest' of '_hashlib.HASH' objects}
+
+
+{"cpu_scope":"parent process including its threads; child processes excluded","diagnostic_exit_code":2,"main_wall_ns":18594000000,"pre_main_wall_ns":2125000000,"profile_cpu_ns":359375000,"profile_overhead":true,"profile_scope":"parent main thread only; bridge and child execution excluded","profile_wall_ns":20719000000,"report_rows":60,"scientific_modules_loaded_in_parent":false,"scope":"coordinator-main-thread-diagnostic-profile","startup_before_wrapper_not_profiled":true}

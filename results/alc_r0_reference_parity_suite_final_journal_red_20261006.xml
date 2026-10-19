@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="7.719" timestamp="2026-10-06T15:16:25.660523+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[base]" time="0.126"><failure message="AttributeError: 'NoneType' object has no attribute 'completed'">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018DF2830A40&gt;
+bad = 'base'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+        assert caught.value.failure.stage in ("final_base", "receipt")
+&gt;       assert len(caught.value.failure.cell_failure.completed) == 18
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'completed'
+
+tests\test_alc_r0_reference_parity_suite.py:187: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[config]" time="0.120"><failure message="AttributeError: 'NoneType' object has no attribute 'completed'">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018DF5F0D1F0&gt;
+bad = 'config'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+        assert caught.value.failure.stage in ("final_base", "receipt")
+&gt;       assert len(caught.value.failure.cell_failure.completed) == 18
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'completed'
+
+tests\test_alc_r0_reference_parity_suite.py:187: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[identity]" time="0.205"><failure message="AttributeError: 'NoneType' object has no attribute 'completed'">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018DF600A300&gt;
+bad = 'identity'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+        assert caught.value.failure.stage in ("final_base", "receipt")
+&gt;       assert len(caught.value.failure.cell_failure.completed) == 18
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'completed'
+
+tests\test_alc_r0_reference_parity_suite.py:187: AttributeError</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[receipt]" time="0.126"><failure message="AttributeError: 'NoneType' object has no attribute 'completed'">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018DF0A14470&gt;
+bad = 'receipt'
+
+    @pytest.mark.parametrize("bad", ["base", "config", "identity", "receipt"])
+    def test_final_drift_or_bad_receipt_is_not_admitted(wiring, monkeypatch, bad):
+        module, host, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            if bad == "base":
+                with torch.no_grad():
+                    host.model.weight.add_(1)
+            elif bad == "config":
+                host.model.config.hidden_size += 1
+            elif bad == "identity":
+                host.acquisition_receipt["fake"] = False
+            else:
+                cell = replace(cell, parameter_names=cell.parameter_names[:-1])
+            return cell
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+        with pytest.raises(module.ReferenceParityError) as caught:
+            run(wiring)
+        assert caught.value.failure.stage in ("final_base", "receipt")
+&gt;       assert len(caught.value.failure.cell_failure.completed) == 18
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'completed'
+
+tests\test_alc_r0_reference_parity_suite.py:187: AttributeError</failure></testcase></testsuite></testsuites>

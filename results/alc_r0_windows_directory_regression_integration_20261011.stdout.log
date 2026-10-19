@@ -1,0 +1,143 @@
+..........................................F................FFFF...F..... [ 20%]
+........................................................................ [ 41%]
+........................................................................ [ 62%]
+........................................................................ [ 83%]
+.........................................................                [100%]
+================================== FAILURES ===================================
+_____________________ test_exact_current_runtime_binding ______________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_exact_current_runtime_bin0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_exact_current_runtime_bin0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_exact_current_runtime_bin0/venv'))
+
+    def test_exact_current_runtime_binding(tmp_path,layout):
+        base,venv=layout
+        result=inspect_owned(tmp_path,layout)
+        observed=dict(executable=str(venv/'Scripts'/'python.exe'),base_executable=str(base/'python.exe'),
+            prefix=str(venv),exec_prefix=str(venv),base_prefix=str(base),base_exec_prefix=str(base),
+            version='3.12.12 fixture',implementation='cpython',cache_tag='cpython-312',
+            platform='win32',pointer_bits='64',byteorder=sys.byteorder,flags=FLAGS,
+            path=[str(base/'Lib'),str(base/'missing.zip')],
+            environment={key:'1' if key=='PYTHONDONTWRITEBYTECODE' else None for key in ENV_KEYS})
+        special=[]
+        for role,path in [('venv-executable',venv/'Scripts'/'python.exe'),
+                          ('base-executable',base/'python.exe'),('venv-config',venv/'pyvenv.cfg')]:
+            data=path.read_bytes()
+            special.append(dict(role=role,absolute_path=path.as_posix(),byte_length=str(len(data)),
+                                sha256=hashlib.sha256(data).hexdigest()))
+        payload=dict(schema='alc-r0-current-python-runtime-v1',observed=observed,base_prefix_alias=None,
+            components=[tree_row(base,'python-base'),tree_row(venv,'python-venv')],special_files=special)
+>       assert result==dict(ok=True,payload=payload,sha256=hashlib.sha256(canonical_json_bytes(payload)).hexdigest())
+E       AssertionError: assert {'ok': False,... unavailable'} == {'ok': True, ...ed78ad8a6cf0'}
+E         
+E         Differing items:
+E         {'ok': False} != {'ok': True}
+E         Left contains 1 more item:
+E         {'error': 'current runtime observation unavailable'}
+E         Right contains 2 more items:
+E         {'payload': {'base_prefix_alias': None,...
+E         
+E         ...Full output truncated (56 lines hidden), use '-vv' to show
+
+tests\test_alc_r0_python_runtime_binding.py:135: AssertionError
+_ test_layout_and_bytes_participate_in_binding[Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip0/venv'))
+alter = 'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+>       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:163: AssertionError
+_ test_layout_and_bytes_participate_in_binding[Path(sys.executable).write_bytes(b"changed")] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip1')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip1/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip1/venv'))
+alter = 'Path(sys.executable).write_bytes(b"changed")'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+>       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:163: AssertionError
+_ test_layout_and_bytes_participate_in_binding[sys.path.append("literal-import-label")] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip2')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip2/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip2/venv'))
+alter = 'sys.path.append("literal-import-label")'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+>       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:163: AssertionError
+__ test_layout_and_bytes_participate_in_binding[os.environ["PYTHONHOME"]=""] __
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip3')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip3/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_layout_and_bytes_particip3/venv'))
+alter = 'os.environ["PYTHONHOME"]=""'
+
+    @pytest.mark.parametrize('alter',[
+        'Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")',
+        'Path(sys.executable).write_bytes(b"changed")',
+        'sys.path.append("literal-import-label")', 'os.environ["PYTHONHOME"]=""',
+    ])
+    def test_layout_and_bytes_participate_in_binding(tmp_path,layout,alter):
+        first=tmp_path/'first'; first.mkdir()
+        second=tmp_path/'second'; second.mkdir()
+        before=inspect_owned(first,layout)
+        after=inspect_owned(second,layout,alter=alter)
+>       assert before['ok'] and after['ok'] and before['sha256']!=after['sha256']
+E       assert (False)
+
+tests\test_alc_r0_python_runtime_binding.py:163: AssertionError
+___________________ test_current_base_single_junction_bound ___________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_current_base_single_junct0')
+layout = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_current_base_single_junct0/base'), WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-76/test_current_base_single_junct0/venv'))
+
+    def test_current_base_single_junction_bound(tmp_path,layout):
+        base,venv=layout
+        alias=tmp_path/'base-alias'
+        junction(alias,base)
+        result=inspect_owned(tmp_path,(alias,venv))
+>       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'current runtime observation unavailable'}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:194: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_exact_current_runtime_binding
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_layout_and_bytes_participate_in_binding[Path(sys.prefix,"pyvenv.cfg").write_bytes(b"changed")]
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_layout_and_bytes_participate_in_binding[Path(sys.executable).write_bytes(b"changed")]
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_layout_and_bytes_participate_in_binding[sys.path.append("literal-import-label")]
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_layout_and_bytes_participate_in_binding[os.environ["PYTHONHOME"]=""]
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_current_base_single_junction_bound

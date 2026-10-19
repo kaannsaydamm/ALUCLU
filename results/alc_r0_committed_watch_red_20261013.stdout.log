@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_committed_service_queues_original_request ________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-161/test_committed_service_queues_0')
+
+    def test_committed_service_queues_original_request(tmp_path):
+        _,signal,watch,consumer,deadline=context(tmp_path)
+        try:
+            watch.start()
+>           assert serve(consumer,watch,tmp_path)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_committed_watch.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+consumer = <aluclu.alc_r0.status_watch_consumer.StatusWatchConsumer object at 0x00000289E19DD6D0>
+watch = <aluclu.alc_r0.live_authority_watch.LiveAuthorityWatch object at 0x00000289E1164050>
+path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-161/test_committed_service_queues_0')
+
+    def serve(consumer,watch,path):
+>       return consumer.serve_committed_once(watch,path,time.time_ns(),
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                            utc_anchor_monotonic_ns=time.monotonic_ns())
+E       AttributeError: 'StatusWatchConsumer' object has no attribute 'serve_committed_once'
+
+tests\test_alc_r0_committed_watch.py:30: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_committed_watch.py::test_committed_service_queues_original_request

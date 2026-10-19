@@ -1,0 +1,56 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 16 items / 7 deselected / 9 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_precedes_owned_actions PASSED [ 11%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False] PASSED [ 22%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True] PASSED [ 33%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_rejected_final_identity_not_recorded FAILED [ 44%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_allocation_refusal_closes_second_destination FAILED [ 55%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse] FAILED [ 66%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed] FAILED [ 77%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_final_native_attribute_failure_still_closes PASSED [ 88%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_loss_before_resume_retains_consumption FAILED [100%]
+
+================================== FAILURES ===================================
+________ test_preallocated_output_rejected_final_identity_not_recorded ________
+tests\test_alc_r0_coordinator_growth_acceptance.py:193: in test_preallocated_output_rejected_final_identity_not_recorded
+    assert all(row['stream']!='stdout' for row in pair.final_capacity_observations)
+E   assert False
+E    +  where False = all(<generator object test_preallocated_output_rejected_final_identity_not_recorded.<locals>.<genexpr> at 0x00000279CAD4E5A0>)
+____ test_preallocated_output_allocation_refusal_closes_second_destination ____
+tests\test_alc_r0_coordinator_growth_acceptance.py:207: in test_preallocated_output_allocation_refusal_closes_second_destination
+    with pair: pytest.fail('native allocation refusal must not enter output context')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: native allocation refusal must not enter output context
+_ test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:223: in test_preallocated_output_unsupported_native_attributes_close_acquisition
+    with pair: pytest.fail('unsupported native attributes must deny acquisition')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: unsupported native attributes must deny acquisition
+_ test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:223: in test_preallocated_output_unsupported_native_attributes_close_acquisition
+    with pair: pytest.fail('unsupported native attributes must deny acquisition')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: unsupported native attributes must deny acquisition
+_____ test_actual_output_capacity_loss_before_resume_retains_consumption ______
+tests\test_alc_r0_coordinator_growth_acceptance.py:246: in test_actual_output_capacity_loss_before_resume_retains_consumption
+    declaration=bounded_json(namespace/'declaration.json')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-240\\test_actual_output_capacity_lo0\\diagnostic\\declaration.json'
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_output_capacity_negative_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_rejected_final_identity_not_recorded
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_allocation_refusal_closes_second_destination
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_output_capacity_loss_before_resume_retains_consumption
+================== 5 failed, 4 passed, 7 deselected in 6.40s ==================

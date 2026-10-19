@@ -1,0 +1,41 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 23 items / 19 deselected / 4 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout] FAILED [ 25%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr] FAILED [ 50%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout] FAILED [ 75%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr] FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:361: in test_actual_quick_terminal_output_requires_valid_receipt_before_settlement
+    assert receipt.exit_code==0
+E   assert 2 == 0
+E    +  where 2 = OwnedProcessReceipt(root_pid=4972, exit_code=2, timed_out=False, started_ns=69527218000000, finished_ns=69529578000000, total_processes=7, active_processes=0, user_time_100ns=4843750, kernel_time_100ns=14531250).exit_code
+_ test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:361: in test_actual_quick_terminal_output_requires_valid_receipt_before_settlement
+    assert receipt.exit_code==0
+E   assert 2 == 0
+E    +  where 2 = OwnedProcessReceipt(root_pid=22572, exit_code=2, timed_out=False, started_ns=69529812000000, finished_ns=69532234000000, total_processes=7, active_processes=0, user_time_100ns=5156250, kernel_time_100ns=14375000).exit_code
+_ test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:346: in test_actual_quick_terminal_output_requires_valid_receipt_before_settlement
+    assert b'work terminal output invalid' in (tmp_path/'entry.stderr').read_bytes()
+E   AssertionError: assert b'work terminal output invalid' in b'alc-r0 coordinator denied: CoordinatorError: publication readback differs\r\n'
+E    +  where b'alc-r0 coordinator denied: CoordinatorError: publication readback differs\r\n' = read_bytes()
+E    +    where read_bytes = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-253/test_actual_quick_terminal_out2') / 'entry.stderr').read_bytes
+_ test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr] _
+tests\test_alc_r0_coordinator_growth_acceptance.py:346: in test_actual_quick_terminal_output_requires_valid_receipt_before_settlement
+    assert b'work terminal output invalid' in (tmp_path/'entry.stderr').read_bytes()
+E   AssertionError: assert b'work terminal output invalid' in b'alc-r0 coordinator denied: CoordinatorError: publication readback differs\r\n'
+E    +  where b'alc-r0 coordinator denied: CoordinatorError: publication readback differs\r\n' = read_bytes()
+E    +    where read_bytes = (WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-253/test_actual_quick_terminal_out3') / 'entry.stderr').read_bytes
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_terminal_output_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout]
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr]
+====================== 4 failed, 19 deselected in 11.64s ======================

@@ -1,0 +1,74 @@
+{
+  "benchmark_sha256": "b4d9267cb21ba0d7ef8c613020c4c95113b52f436d7134560b98e62e63a6ca34",
+  "claim": "synthetic in-memory replay only; no latency threshold, storage/model/learning PASS",
+  "counts": [
+    8192,
+    16384,
+    33243
+  ],
+  "imported_source": "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\src\\aluclu\\alc_r0\\attempt_state.py",
+  "imported_source_matches_checkout": true,
+  "python": "3.12.13 (main, Jun 11 2026, 04:05:29) [MSC v.1944 64 bit (AMD64)]",
+  "results": [
+    {
+      "count": 8192,
+      "events": 8196,
+      "incremental_ns": [
+        381053700,
+        425912800,
+        372774300
+      ],
+      "input_length_framed_sha256": "b2ca62677b27347710f56b9c18796d0914610d9f169dbaff84916ba9cc44acbc",
+      "median_reference_over_incremental": 1.763854543336018,
+      "output_local_python_repr_sha256": "215b242eafbbe80c727fa3326707db25dfc8bb60d998c07279f6a95fdf599c70",
+      "parity": true,
+      "reference_ns": [
+        669073200,
+        730383600,
+        672123300
+      ],
+      "samples": 3
+    },
+    {
+      "count": 16384,
+      "events": 16388,
+      "incremental_ns": [
+        981225500,
+        929227100,
+        868707500
+      ],
+      "input_length_framed_sha256": "623b8e7b37236b3ffe42c9c0229df96a27206fde9b308844f5e1faaf8170f47f",
+      "median_reference_over_incremental": 2.3668122679590384,
+      "output_local_python_repr_sha256": "c1a23ce9d6c12ab9620d1acffa782560ead9e50bb6b40be24bd8d56a61afec04",
+      "parity": true,
+      "reference_ns": [
+        2374653600,
+        2199306100,
+        2127573700
+      ],
+      "samples": 3
+    },
+    {
+      "count": 33243,
+      "events": 33247,
+      "incremental_ns": [
+        1633186400,
+        1789208600,
+        1384024200
+      ],
+      "input_length_framed_sha256": "55f8be4e6971aa1b88d6b1f92fc6e2cf2e6d3c60c8b38a953fa07395fe0985cf",
+      "median_reference_over_incremental": 5.646146024728102,
+      "output_local_python_repr_sha256": "4bc02d09004cdc9f16d38618c86f3cb91b4d51a485de13e6e7ef10823db4400f",
+      "parity": true,
+      "reference_ns": [
+        8801891100,
+        9490423900,
+        9221208900
+      ],
+      "samples": 3
+    }
+  ],
+  "samples": 3,
+  "schema": "alc-r0-synthetic-attempt-replay-timing-v1",
+  "source_sha256": "1d329ca60e65fde7b125b1f37275891a7d5fb1db03d3597b18418bf029e74f66"
+}

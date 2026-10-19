@@ -1,0 +1,22 @@
+{
+  "scope": "single read-only host-resource sample after failed regression; not a causal performance profile",
+  "local_observation_date": "2026-10-18",
+  "timezone": "Europe/Istanbul",
+  "operating_system": {
+    "last_boot_local": "2026-10-18T15:53:12.4476+03:00",
+    "free_physical_memory_kib": 1194672,
+    "total_visible_memory_kib": 16471200
+  },
+  "physical_disk_total": {
+    "current_disk_queue_length": 39,
+    "disk_read_bytes_per_second": 1954796,
+    "disk_write_bytes_per_second": 23389394,
+    "raw_percent_disk_time_counter": 4123,
+    "counter_caveat": "Aggregate formatted counter retained raw; do not present as a user-facing busy percentage."
+  },
+  "limitations": [
+    "Samples were returned by successive WMI queries, not an atomic timestamped trace.",
+    "Low free RAM and disk queue support possible resource contention, not attribution to any process or exact test operation.",
+    "No application or service was stopped, no cache deleted, no security setting changed."
+  ]
+}

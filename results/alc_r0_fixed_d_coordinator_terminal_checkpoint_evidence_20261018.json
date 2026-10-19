@@ -1,0 +1,873 @@
+{
+  "schema": "alc-r0-terminal-output-checkpoint-v1",
+  "baseline_commit": "6eb88e06815bb25d9aa47b475d767866d8b4e2de",
+  "status": "INCOMPLETE: scoped terminal guards and stop protocol implemented; final regression failed/timed out",
+  "scientific_execution": false,
+  "nested_artifacts": [
+    {
+      "byte_length": 16637,
+      "sha256": "08cc16cdd30a1616e54754dfecec4cc01fe4006fd2f6fb2cd9d9e4e81573fd10",
+      "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_nested_20261016.json"
+    },
+    {
+      "byte_length": 8772,
+      "sha256": "d262f9f0968cd3c11330a427af979d755d1eb66371d6dd4c0d807f8930f2676a",
+      "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_red_nested_20261018.json"
+    },
+    {
+      "byte_length": 16457,
+      "sha256": "08a4739e4c3fe38d672dde3fd1722acbfa32215d5e17c70c0db3f95bdd055e42",
+      "path": "results/alc_r0_fixed_d_coordinator_terminal_batch_failure_nested_20261018.json"
+    }
+  ],
+  "source_pins": [
+    {
+      "byte_length": 89599,
+      "sha256": "375a1063150630cf878b15166e46f90b028ef547e715c6254179dfbee212e29a",
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py"
+    },
+    {
+      "byte_length": 27547,
+      "sha256": "75839a31cefcfd9b3f4ab20b39ec6d7b20a9429925eabe3754fbcf18e433d05c",
+      "path": "tests/test_alc_r0_coordinator_growth_acceptance.py"
+    },
+    {
+      "byte_length": 16100,
+      "sha256": "a2030cc65d3b9e0fcba36ebdf6d38e547d32dd6f38eab29aae6578a1016c165d",
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py"
+    }
+  ],
+  "runs": [
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr]"
+      ],
+      "junit": {
+        "seconds": 11.173,
+        "failures": 4,
+        "tests": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 4668,
+          "sha256": "992a92c816eeebb52d94968aecde041bde1b7cec611528e09ff6452446b4eba4",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_20261016.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_20261016.stderr.log"
+        },
+        {
+          "byte_length": 4593,
+          "sha256": "7cf2e87dd49f593a3876ce86493b812af396fa431026dc253ae2722c4be978c6",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_20261016.xml"
+        },
+        {
+          "byte_length": 313,
+          "sha256": "7f61b41048f1763f661ad5ba72d25ab1ace5f94dd935bcf83e8125ab23743769",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_20261016.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 69538546000000,
+        "kernel_time_100ns": 69062500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 6072,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 69526203000000,
+        "timed_out": false,
+        "total_processes": 31,
+        "user_time_100ns": 34375000
+      },
+      "mode": "terminal_output_red"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr]"
+      ],
+      "junit": {
+        "seconds": 12.842,
+        "failures": 2,
+        "tests": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 2898,
+          "sha256": "cc07a21bcb9dfac4d560c95b6cd695716f337b0e548c7eadc71046593428bbd2",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_v2_20261016.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_v2_20261016.stderr.log"
+        },
+        {
+          "byte_length": 2403,
+          "sha256": "ed5db649f0d15cf6e6513c37fbcb161fe25af7e3a6b725ef7c7677c1b0c43f90",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_v2_20261016.xml"
+        },
+        {
+          "byte_length": 314,
+          "sha256": "e8e806e9c7bf1c60dc631e32c4e6121e1fd10b483b99decf81263c4e0e95f1ed",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_red_v2_20261016.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 69610906000000,
+        "kernel_time_100ns": 72968750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 32208,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 69597031000000,
+        "timed_out": false,
+        "total_processes": 31,
+        "user_time_100ns": 41406250
+      },
+      "mode": "terminal_output_red_v2"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr]"
+      ],
+      "junit": {
+        "seconds": 10.52,
+        "failures": 0,
+        "tests": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 1395,
+          "sha256": "754835dce3d48423047d982373628159580bea813a33f38aa75ae844ec6d5361",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_green_20261016.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_green_20261016.stderr.log"
+        },
+        {
+          "byte_length": 963,
+          "sha256": "819b768f8b88335fdae37693073bb978f9d1a4c709e2fc97043b6bab107d30ed",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_green_20261016.xml"
+        },
+        {
+          "byte_length": 314,
+          "sha256": "e0bec23b82fe62e62a535d584bd81263da4603c51e9bc44de76ae7c71ae1b1b7",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_output_green_20261016.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 69667328000000,
+        "kernel_time_100ns": 62812500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 23272,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 69656000000000,
+        "timed_out": false,
+        "total_processes": 31,
+        "user_time_100ns": 33281250
+      },
+      "mode": "terminal_output_green"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stderr]"
+      ],
+      "junit": {
+        "seconds": 86.512,
+        "failures": 4,
+        "tests": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 5652,
+          "sha256": "c0a495674301eb0bd64eb2eab326e44a9bbd21c26c0dc05adf4b18153f4f67ca",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_red_20261018.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_red_20261018.stderr.log"
+        },
+        {
+          "byte_length": 5088,
+          "sha256": "9749491867157bd6d7c9bba934c6268fd31154a352f0cebd3d25f032e1694a41",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_red_20261018.xml"
+        },
+        {
+          "byte_length": 312,
+          "sha256": "0246b0f35eeb342269dd3cd741d243d3bd765cc7be5080d5d067c273a5e34b90",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_red_20261018.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 1226968000000,
+        "kernel_time_100ns": 67656250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 20044,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1134000000000,
+        "timed_out": false,
+        "total_processes": 26,
+        "user_time_100ns": 48906250
+      },
+      "mode": "observer_terminal_red"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stderr]"
+      ],
+      "junit": {
+        "seconds": 59.946,
+        "failures": 2,
+        "tests": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 3841,
+          "sha256": "ce2b3a04c181d8f66dc66a5e637ffa982d58970eb6eb8422c9956b396f43e16a",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_20261018.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_20261018.stderr.log"
+        },
+        {
+          "byte_length": 3238,
+          "sha256": "841657304d9990b084ef313098ab6af1f2aa363838706c55f6138c36de0412af",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_20261018.xml"
+        },
+        {
+          "byte_length": 313,
+          "sha256": "287f20aefe27d1d847d1981d3ef843a2fa2551a746cc9d3b725f2e334747d1fc",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_20261018.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 1365890000000,
+        "kernel_time_100ns": 113437500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 25944,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1295765000000,
+        "timed_out": false,
+        "total_processes": 30,
+        "user_time_100ns": 59218750
+      },
+      "mode": "observer_terminal_green"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stderr]"
+      ],
+      "junit": {
+        "seconds": 33.564,
+        "failures": 0,
+        "tests": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 1412,
+          "sha256": "facf212183c5f055f3708868ade9e1c013237a4bafc2192e6fa9498790144a84",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_v2_20261018.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_v2_20261018.stderr.log"
+        },
+        {
+          "byte_length": 975,
+          "sha256": "5c10dcbd0c68901c6e45ce365159a78333b29cced2f6ba9e5e09ee7d71162510",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_v2_20261018.xml"
+        },
+        {
+          "byte_length": 313,
+          "sha256": "836eeefc9370681fac6048b03b5109cce4c11fafbe36754c6eb8793766539b77",
+          "path": "results/alc_r0_fixed_d_coordinator_observer_terminal_green_v2_20261018.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 1584421000000,
+        "kernel_time_100ns": 102656250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 22400,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1543812000000,
+        "timed_out": false,
+        "total_processes": 31,
+        "user_time_100ns": 54218750
+      },
+      "mode": "observer_terminal_green_v2"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_reader_rejects_partially_visible_final",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_native_rename_cannot_overwrite",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_atomic_marker_is_complete_and_stage_consumed",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[corrupt]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[{\"domain\":\"diagnostic-only\"}]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_conflicting_stage"
+      ],
+      "junit": {
+        "seconds": 3.651,
+        "failures": 5,
+        "tests": 7,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 4962,
+          "sha256": "6d4431a87011770c840d44a23dba480bccfd3f87861e1c9253781dd2795ce2a0",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_red_20261018.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_red_20261018.stderr.log"
+        },
+        {
+          "byte_length": 4798,
+          "sha256": "4048be307529e18b4506121d68e66ae29d091f0add83f24f3c5b2b091faea38b",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_red_20261018.xml"
+        },
+        {
+          "byte_length": 310,
+          "sha256": "e87d1e19ce74b1ceddd9eb221acdb5130960d21f47aa99eaf5612c1e86db870b",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_red_20261018.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 1,
+        "finished_ns": 1479484000000,
+        "kernel_time_100ns": 8906250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 1,
+        "root_pid": 23632,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1469296000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 10312500
+      },
+      "mode": "stop_publication_red"
+    },
+    {
+      "nodeids": [
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_reader_rejects_partially_visible_final",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_native_rename_cannot_overwrite",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_atomic_marker_is_complete_and_stage_consumed",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[corrupt]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[{\"domain\":\"diagnostic-only\"}]",
+        "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_conflicting_stage"
+      ],
+      "junit": {
+        "seconds": 4.925,
+        "failures": 0,
+        "tests": 7,
+        "errors": 0,
+        "skipped": 0
+      },
+      "artifacts": [
+        {
+          "byte_length": 1656,
+          "sha256": "d4b4c37d7eef981b9d90d326d1c99acc795fbce6d4fd61b35cadc9e062c9dd82",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_green_20261018.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_green_20261018.stderr.log"
+        },
+        {
+          "byte_length": 1317,
+          "sha256": "a7a9d426b0e8cb813bdb764ae3bdff63cf7d7946af37043103874e9185e27c87",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_green_20261018.xml"
+        },
+        {
+          "byte_length": 310,
+          "sha256": "9dc62842dd39c5373dcfd3eb40b15d79fbc1d96b372afb5e6d304eb58e923330",
+          "path": "results/alc_r0_fixed_d_coordinator_stop_publication_green_20261018.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 1516359000000,
+        "kernel_time_100ns": 9687500,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 21800,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1504265000000,
+        "timed_out": false,
+        "total_processes": 4,
+        "user_time_100ns": 10312500
+      },
+      "mode": "stop_publication_green"
+    },
+    {
+      "nodeids": [],
+      "artifacts": [
+        {
+          "byte_length": 2218,
+          "sha256": "f2c6ec42434f1787e9df266020560dd5c78060bc0e6dc512a10382e6b17a1bc0",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_batch_growth_0_20261018.stdout.log"
+        },
+        {
+          "byte_length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_batch_growth_0_20261018.stderr.log"
+        },
+        {
+          "byte_length": 316,
+          "sha256": "10e2b2330ed4fc180d0a0718dc134ffeee15d0a0fba73d12802b102fd0cef254",
+          "path": "results/alc_r0_fixed_d_coordinator_terminal_batch_growth_0_20261018.exit.json"
+        }
+      ],
+      "native": {
+        "active_processes": 0,
+        "exit_code": 124,
+        "finished_ns": 1870109000000,
+        "kernel_time_100ns": 205156250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 124,
+        "root_pid": 7996,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 1750093000000,
+        "timed_out": true,
+        "total_processes": 69,
+        "user_time_100ns": 103437500
+      },
+      "junit": null,
+      "mode": "terminal_batch_growth_0"
+    }
+  ],
+  "source_pins_apply_to": [
+    "terminal_batch_growth_0"
+  ],
+  "historical_attribution": "All focused and predecessor runs predate final runner partition source; worker GREEN additionally predates observer and stop changes. Do not apply current pins retroactively.",
+  "collection": {
+    "exit_code": 0,
+    "cases": 316,
+    "prior_301_retained": true,
+    "new_cases": 15,
+    "all_nodeids": [
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_request_only_growth_root_cannot_support_verified_materialization",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[capacity]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_growth_observes_held_native_lock_without_unlock_or_false_hash",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_output_capacity_precedes_owned_actions",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_actual_pipe_exact_limit_and_overflow[False]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_actual_pipe_exact_limit_and_overflow[True]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_rejected_final_identity_not_recorded",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_allocation_refusal_closes_second_destination",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_final_native_attribute_failure_still_closes",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_output_capacity_loss_before_resume_retains_consumption",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_preallocated_output_reparse_ancestor_denied_before_file_creation",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_running_output_overflow_denies_before_timeout_and_retains_holds[stdout]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_running_output_overflow_denies_before_timeout_and_retains_holds[stderr]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_quick_terminal_output_requires_valid_receipt_before_settlement[True-stderr]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_reader_rejects_partially_visible_final",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_native_rename_cannot_overwrite",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_atomic_marker_is_complete_and_stage_consumed",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[corrupt]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_existing_final[{\"domain\":\"diagnostic-only\"}]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_stop_publication_preserves_conflicting_stage",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stdout]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[False-stderr]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stdout]",
+      "tests.test_alc_r0_coordinator_growth_acceptance::test_actual_observer_terminal_output_requires_valid_receipt_before_settlement[True-stderr]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_default_entrypoint_denies_missing_scientific_installation",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[stale-before-create-RESERVED]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[stale-before-resume-READY]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[blocked-observer-RUNNING]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-conflict-READY]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-wrong-role-READY]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-terminate-denied]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_completion_conflict_after_release_reports_committed_state_not_pending",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_is_cpu_only_fixed_envelope",
+      "tests.test_alc_r0_fixed_d_coordinator::test_busy_revocation_terminates_actual_work_before_main_returns[busy-revocation]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_busy_revocation_terminates_actual_work_before_main_returns[busy-tree-revocation]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_shared_cleanup_tail_never_renews_and_consumers_read_early_pin",
+      "tests.test_alc_r0_fixed_d_coordinator::test_early_tree_validation_cancels_before_delayed_cleanup_publication",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_partial_duplicate_failure_closes_owned_job_duplicate[acquire]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_partial_duplicate_failure_closes_owned_job_duplicate[start]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_access_denial_stays_failed_and_owner_drains_child[8-query]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_access_denial_stays_failed_and_owner_drains_child[4-terminate]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actuator_retained_cleanup_error_does_not_skip_remaining_native_handles",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change0]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change1]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change2]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change3]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change4]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change5]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_closed_diagnostic_declaration_cannot_become_scientific[change6]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_refuses_consumed_diagnostic_namespace",
+      "tests.test_alc_r0_fixed_d_coordinator::test_actual_entrypoint_refuses_system_temp_root_without_writing",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\\x00\\x00\\x00\\x00-False-length exceeds]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\\x00\\x00 \\x01-False-length exceeds]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\\x00\\x00-True-EOF/truncation]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\\x00\\x00\\x00\\x04{}-True-EOF/truncation]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\\x00\\x00\\x00\\x02xx-False-invalid canonical D transport]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_rejects_oversize_partial_malformed_and_pipeline[\\x00\\x00\\x00\\x02{}\\x00-False-unexpected pipelined frame]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_frame_accepts_fragmented_header_and_payload_without_resetting_deadline",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_channel_cancellation_interrupts_receive_or_backpressured_send[False]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_native_channel_cancellation_interrupts_receive_or_backpressured_send[True]",
+      "tests.test_alc_r0_fixed_d_coordinator::test_observer_stop_cancels_a_partial_frame_without_closing_peer",
+      "tests.test_alc_r0_reservation_state::test_reservation_replay_requires_explicit_complete_declarations",
+      "tests.test_alc_r0_reservation_state::test_owned_lifecycle_preserves_large_identity_and_transfers_charge_once",
+      "tests.test_alc_r0_reservation_state::test_no_child_unknown_charge_can_complete_later_without_forgiveness",
+      "tests.test_alc_r0_reservation_state::test_known_identity_survives_uncertainty_and_blocks_no_child",
+      "tests.test_alc_r0_reservation_state::test_noncreation_uncertainty_cannot_become_no_child[publication]",
+      "tests.test_alc_r0_reservation_state::test_noncreation_uncertainty_cannot_become_no_child[resume]",
+      "tests.test_alc_r0_reservation_state::test_noncreation_uncertainty_cannot_become_no_child[timeout]",
+      "tests.test_alc_r0_reservation_state::test_noncreation_uncertainty_cannot_become_no_child[reboot]",
+      "tests.test_alc_r0_reservation_state::test_noncreation_uncertainty_cannot_become_no_child[terminal]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[True]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[1]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[1.0]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[01]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[+1]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[-1]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[1e3]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[ 1]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[1 ]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[999999999999999999999]",
+      "tests.test_alc_r0_reservation_state::test_noncanonical_numeric_declarations_rejected[9223372036854775808]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes0]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes1]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes2]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes3]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes4]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes5]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes6]",
+      "tests.test_alc_r0_reservation_state::test_reserve_rejection_is_atomic[changes7]",
+      "tests.test_alc_r0_reservation_state::test_identity_mismatch_duplicate_event_and_truncated_history_rejected",
+      "tests.test_alc_r0_reservation_state::test_overrun_retained_not_clamped",
+      "tests.test_alc_r0_reservation_state::test_illegal_predecessors_rejected[running-fields0]",
+      "tests.test_alc_r0_reservation_state::test_illegal_predecessors_rejected[release-fields1]",
+      "tests.test_alc_r0_reservation_state::test_illegal_predecessors_rejected[uncertain-fields2]",
+      "tests.test_alc_r0_reservation_state::test_bad_materialization_and_repeated_uncertainty_hold_reservation",
+      "tests.test_alc_r0_reservation_state::test_record_bomb_and_duplicate_declarations_rejected",
+      "tests.test_alc_r0_reservation_state::test_aggregate_overflow_is_atomic",
+      "tests.test_alc_r0_reservation_state::test_materialization_requires_matching_observation_not_combined_roots",
+      "tests.test_alc_r0_reservation_state::test_lifetime_byte_and_event_batch_caps_checked_before_decode",
+      "tests.test_alc_r0_reservation_state::test_cpu_charge_and_resume_gating_and_released_event_rejection",
+      "tests.test_alc_r0_reservation_state::test_nonce_reuse_across_reservations_rejected_atomically",
+      "tests.test_alc_r0_reservation_state::test_live_reservation_boundary_retains_complete_history",
+      "tests.test_alc_r0_reservation_state::test_malformed_canonical_events_rejected_without_mutation[{]",
+      "tests.test_alc_r0_reservation_state::test_malformed_canonical_events_rejected_without_mutation[{}]",
+      "tests.test_alc_r0_reservation_state::test_malformed_canonical_events_rejected_without_mutation[[]]",
+      "tests.test_alc_r0_reservation_state::test_malformed_canonical_events_rejected_without_mutation[{\"kind\":\"reserve\",\"kind\":\"reserve\"}]",
+      "tests.test_alc_r0_reservation_state::test_malformed_canonical_events_rejected_without_mutation[\\xff]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_settlement_transfers_charge_but_never_refunds_space[cpu]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_settlement_transfers_charge_but_never_refunds_space[gpu]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes0]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes1]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes2]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes3]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_invalid_charge_or_refund_rejected_atomically[changes4]",
+      "tests.test_alc_r0_reservation_state::test_storage_held_requires_terminal_and_preserves_gpu_overrun",
+      "tests.test_alc_r0_reservation_state::test_storage_held_remains_in_aggregate_across_next_independent_reservation",
+      "tests.test_alc_r0_reservation_state::test_storage_held_is_not_permission_to_resume_or_reuse_same_attempt",
+      "tests.test_alc_r0_reservation_store::test_explicit_store_requires_absolute_existing_namespace",
+      "tests.test_alc_r0_reservation_store::test_durable_initialize_commit_fresh_instance_and_reacknowledge",
+      "tests.test_alc_r0_reservation_store::test_explicit_forward_recovery_never_duplicates_or_releases[FailAfterIntent]",
+      "tests.test_alc_r0_reservation_store::test_explicit_forward_recovery_never_duplicates_or_releases[FailBeforePublish]",
+      "tests.test_alc_r0_reservation_store::test_explicit_forward_recovery_never_duplicates_or_releases[FailAfterPublish]",
+      "tests.test_alc_r0_reservation_store::test_explicit_initialization_uncertainty_matrix[InitAfterIntent]",
+      "tests.test_alc_r0_reservation_store::test_explicit_initialization_uncertainty_matrix[InitBeforeOwner]",
+      "tests.test_alc_r0_reservation_store::test_explicit_initialization_uncertainty_matrix[InitAfterOwner]",
+      "tests.test_alc_r0_reservation_store::test_candidate_owner_old_journal_denied_without_repair",
+      "tests.test_alc_r0_reservation_store::test_tampering_or_rollback_cannot_be_adopted[missing-intent]",
+      "tests.test_alc_r0_reservation_store::test_tampering_or_rollback_cannot_be_adopted[changed-review]",
+      "tests.test_alc_r0_reservation_store::test_tampering_or_rollback_cannot_be_adopted[partial-journal]",
+      "tests.test_alc_r0_reservation_store::test_tampering_or_rollback_cannot_be_adopted[missing-owner]",
+      "tests.test_alc_r0_reservation_store::test_exact_old_owner_new_journal_forward_recovery_preserves_new_reservation",
+      "tests.test_alc_r0_reservation_store::test_bad_semantic_event_rejected_before_any_write",
+      "tests.test_alc_r0_reservation_store::test_pending_intent_requires_explicit_resume_not_read_or_commit",
+      "tests.test_alc_r0_reservation_store::test_two_coordinators_one_predecessor_exactly_one_commit",
+      "tests.test_alc_r0_reservation_store::test_modified_self_hashed_intent_not_authority",
+      "tests.test_alc_r0_reservation_store::test_unexpected_inventory_denies_without_reset[unexpected]",
+      "tests.test_alc_r0_reservation_store::test_unexpected_inventory_denies_without_reset[intent-000003.json]",
+      "tests.test_alc_r0_reservation_store::test_missing_initialization_intent_cannot_adopt_empty_storage",
+      "tests.test_alc_r0_reservation_store::test_multiple_link_owner_rejected_before_read",
+      "tests.test_alc_r0_reservation_store::test_hardlinked_empty_journal_lock_rejected_before_alias_mutation[read]",
+      "tests.test_alc_r0_reservation_store::test_hardlinked_empty_journal_lock_rejected_before_alias_mutation[resume]",
+      "tests.test_alc_r0_reservation_store::test_projected_capacity_checks_preserve_predecessor",
+      "tests.test_alc_r0_reservation_store::test_oversized_records_rejected_before_parse_or_repair[owner.json-4096]",
+      "tests.test_alc_r0_reservation_store::test_oversized_records_rejected_before_parse_or_repair[intents/initialization.json-16384]",
+      "tests.test_alc_r0_reservation_store::test_multi_generation_retained_chain_tamper_and_global_aggregate",
+      "tests.test_alc_r0_reservation_store::test_symlink_owner_rejected_where_host_allows_fixture",
+      "tests.test_alc_r0_reservation_store::test_actual_process_exit_and_fresh_process_recovery[intent]",
+      "tests.test_alc_r0_reservation_store::test_actual_process_exit_and_fresh_process_recovery[journal]",
+      "tests.test_alc_r0_reservation_store::test_actual_process_exit_and_fresh_process_recovery[owner]",
+      "tests.test_alc_r0_reservation_store::test_actual_two_process_coordinators_same_head",
+      "tests.test_alc_r0_reserved_owned_process::test_identity_is_durable_before_any_execution",
+      "tests.test_alc_r0_reserved_owned_process::test_close_ready_child_never_executes_or_releases",
+      "tests.test_alc_r0_reserved_owned_process::test_invalid_reservation_denied_before_outputs[override0]",
+      "tests.test_alc_r0_reserved_owned_process::test_invalid_reservation_denied_before_outputs[override1]",
+      "tests.test_alc_r0_reserved_owned_process::test_invalid_reservation_denied_before_outputs[override2]",
+      "tests.test_alc_r0_reserved_owned_process::test_resume_requires_local_exact_ready_root_and_one_call",
+      "tests.test_alc_r0_reserved_owned_process::test_nonzero_exit_retained",
+      "tests.test_alc_r0_reserved_owned_process::test_declared_stdout_cap_enforced_on_real_child",
+      "tests.test_alc_r0_reserved_owned_process::test_real_child_independent_binary_caps_and_digests[empty-zero]",
+      "tests.test_alc_r0_reserved_owned_process::test_real_child_independent_binary_caps_and_digests[binary-exact]",
+      "tests.test_alc_r0_reserved_owned_process::test_real_child_independent_binary_caps_and_digests[under-cap]",
+      "tests.test_alc_r0_reserved_owned_process::test_excess_child_stopped_without_timeout_or_unbounded_file[1]",
+      "tests.test_alc_r0_reserved_owned_process::test_excess_child_stopped_without_timeout_or_unbounded_file[2]",
+      "tests.test_alc_r0_reserved_owned_process::test_partial_output_entry_pins_tail_before_internal_wait[timely]",
+      "tests.test_alc_r0_reserved_owned_process::test_partial_output_entry_pins_tail_before_internal_wait[incomplete]",
+      "tests.test_alc_r0_reserved_owned_process::test_exited_root_with_live_writing_descendant_is_drained",
+      "tests.test_alc_r0_reserved_owned_process::test_timeout_drains_root_and_descendant",
+      "tests.test_alc_r0_reserved_owned_process::test_publication_response_loss_closes_child_without_release[child_created-CREATED]",
+      "tests.test_alc_r0_reserved_owned_process::test_publication_response_loss_closes_child_without_release[identity_published-READY]",
+      "tests.test_alc_r0_reserved_owned_process::test_publication_response_loss_closes_child_without_release[running-RUNNING]",
+      "tests.test_alc_r0_reserved_owned_process::test_global_lock_released_before_wait_and_unrelated_child_survives",
+      "tests.test_alc_r0_reserved_owned_process::test_enter_failure_after_creation_drains_owned_handle_and_unlocks[OSError]",
+      "tests.test_alc_r0_reserved_owned_process::test_enter_failure_after_creation_drains_owned_handle_and_unlocks[KeyboardInterrupt]",
+      "tests.test_alc_r0_reserved_owned_process::test_output_collision_preserves_data_and_releases_global_lock[stdout]",
+      "tests.test_alc_r0_reserved_owned_process::test_output_collision_preserves_data_and_releases_global_lock[stderr]",
+      "tests.test_alc_r0_reserved_owned_process::test_lifecycle_and_foreign_thread_cannot_publish_resume_or_close",
+      "tests.test_alc_r0_reserved_owned_process::test_ready_deadline_expiry_does_not_resume_or_renew",
+      "tests.test_alc_r0_reserved_owned_process::test_identity_receipt_binds_exact_handle_fields_and_reservation",
+      "tests.test_alc_r0_reserved_owned_process::test_nonreserved_current_owner_denied_before_second_child",
+      "tests.test_alc_r0_reserved_owned_process::test_future_but_changed_deadline_is_not_a_renewal",
+      "tests.test_alc_r0_reserved_owned_process::test_caller_receipt_dataclass_is_not_resume_authority",
+      "tests.test_alc_r0_reserved_owned_process::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[creation]",
+      "tests.test_alc_r0_reserved_owned_process::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[publish]",
+      "tests.test_alc_r0_reserved_owned_process::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[resume]",
+      "tests.test_alc_r0_reserved_owned_process::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[wait]",
+      "tests.test_alc_r0_reserved_owned_process::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[body]",
+      "tests.test_alc_r0_reserved_owned_process::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[cleanup-only]",
+      "tests.test_alc_r0_reserved_owned_process::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[creation]",
+      "tests.test_alc_r0_reserved_owned_process::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[ready]",
+      "tests.test_alc_r0_reserved_owned_process::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[running]",
+      "tests.test_alc_r0_live_authority_watch::test_missing_observation_stops_and_joins",
+      "tests.test_alc_r0_live_authority_watch::test_valid_observation_opens_next_sequence_not_new_deadline",
+      "tests.test_alc_r0_live_authority_watch::test_delayed_start_does_not_renew_initial_acquisition",
+      "tests.test_alc_r0_live_authority_watch::test_invalid_observations_stop_permanently[revoked]",
+      "tests.test_alc_r0_live_authority_watch::test_invalid_observations_stop_permanently[generation]",
+      "tests.test_alc_r0_live_authority_watch::test_invalid_observations_stop_permanently[clock]",
+      "tests.test_alc_r0_live_authority_watch::test_invalid_observations_stop_permanently[expiry]",
+      "tests.test_alc_r0_live_authority_watch::test_invalid_observations_stop_permanently[capture-time]",
+      "tests.test_alc_r0_live_authority_watch::test_invalid_observations_stop_permanently[malformed]",
+      "tests.test_alc_r0_live_authority_watch::test_bad_submission_is_bounded_absorbing_denial[stale]",
+      "tests.test_alc_r0_live_authority_watch::test_bad_submission_is_bounded_absorbing_denial[duplicate]",
+      "tests.test_alc_r0_live_authority_watch::test_bad_submission_is_bounded_absorbing_denial[object]",
+      "tests.test_alc_r0_live_authority_watch::test_bad_submission_is_bounded_absorbing_denial[request-field]",
+      "tests.test_alc_r0_live_authority_watch::test_bad_submission_is_bounded_absorbing_denial[subclass]",
+      "tests.test_alc_r0_live_authority_watch::test_wait_timeout_type_and_bound[True]",
+      "tests.test_alc_r0_live_authority_watch::test_wait_timeout_type_and_bound[-1]",
+      "tests.test_alc_r0_live_authority_watch::test_wait_timeout_type_and_bound[2]",
+      "tests.test_alc_r0_live_authority_watch::test_wait_timeout_type_and_bound[nan]",
+      "tests.test_alc_r0_live_authority_watch::test_wait_timeout_type_and_bound[inf]",
+      "tests.test_alc_r0_live_authority_watch::test_wait_timeout_type_and_bound[timeout5]",
+      "tests.test_alc_r0_live_authority_watch::test_close_before_start_single_use_and_first_deadline_retained",
+      "tests.test_alc_r0_live_authority_watch::test_preset_stop_and_invalid_signal_never_start_thread",
+      "tests.test_alc_r0_live_authority_watch::test_wrong_thread_lifecycle_denied_owner_can_close",
+      "tests.test_alc_r0_live_authority_watch::test_closure_failure_is_not_silent_or_renewed",
+      "tests.test_alc_r0_live_authority_watch::test_late_consumption_preserves_timeout_priority",
+      "tests.test_alc_r0_live_authority_watch::test_join_timeout_then_repeated_close_cannot_renew_deadline",
+      "tests.test_alc_r0_live_authority_watch::test_fresh_import_never_loads_scientific_runtime",
+      "tests.test_alc_r0_live_authority_watch::test_live_watch_stops_owned_tree_with_shared_tail[timeout]",
+      "tests.test_alc_r0_live_authority_watch::test_live_watch_stops_owned_tree_with_shared_tail[revoked]",
+      "tests.test_alc_r0_status_watch_consumer::test_first_equal_and_increasing_status",
+      "tests.test_alc_r0_status_watch_consumer::test_state_violation_is_sticky[changes0]",
+      "tests.test_alc_r0_status_watch_consumer::test_state_violation_is_sticky[changes1]",
+      "tests.test_alc_r0_status_watch_consumer::test_state_violation_is_sticky[changes2]",
+      "tests.test_alc_r0_status_watch_consumer::test_state_violation_is_sticky[changes3]",
+      "tests.test_alc_r0_status_watch_consumer::test_state_violation_is_sticky[changes4]",
+      "tests.test_alc_r0_status_watch_consumer::test_state_violation_is_sticky[changes5]",
+      "tests.test_alc_r0_status_watch_consumer::test_forged_dataclass_fields_are_not_observations[changes0]",
+      "tests.test_alc_r0_status_watch_consumer::test_forged_dataclass_fields_are_not_observations[changes1]",
+      "tests.test_alc_r0_status_watch_consumer::test_forged_dataclass_fields_are_not_observations[changes2]",
+      "tests.test_alc_r0_status_watch_consumer::test_forged_dataclass_fields_are_not_observations[changes3]",
+      "tests.test_alc_r0_status_watch_consumer::test_forged_dataclass_fields_are_not_observations[changes4]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[observed_monotonic_ns-True]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[observed_monotonic_ns-0]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[observed_monotonic_ns--1]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[observed_monotonic_ns-9223372036854775808]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[observed_monotonic_ns-1.0]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[observed_monotonic_ns-None]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[utc_upper_ns-True]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[utc_upper_ns-0]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[utc_upper_ns--1]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[utc_upper_ns-9223372036854775808]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[utc_upper_ns-1.0]",
+      "tests.test_alc_r0_status_watch_consumer::test_invalid_clock_transport_denies[utc_upper_ns-None]",
+      "tests.test_alc_r0_status_watch_consumer::test_wrong_thread_denies_owner_too",
+      "tests.test_alc_r0_status_watch_consumer::test_real_slot_watch_updates_stop[revoked]",
+      "tests.test_alc_r0_status_watch_consumer::test_real_slot_watch_updates_stop[generation]",
+      "tests.test_alc_r0_status_watch_consumer::test_real_slot_watch_updates_stop[missing]",
+      "tests.test_alc_r0_status_watch_consumer::test_real_slot_watch_updates_stop[corrupt]",
+      "tests.test_alc_r0_status_watch_consumer::test_wrong_watch_binding_denies[signal]",
+      "tests.test_alc_r0_status_watch_consumer::test_wrong_watch_binding_denies[generation]",
+      "tests.test_alc_r0_status_watch_consumer::test_wrong_watch_binding_denies[clock]",
+      "tests.test_alc_r0_status_watch_consumer::test_wrong_watch_binding_denies[object]",
+      "tests.test_alc_r0_status_watch_consumer::test_known_invalid_observation_stops[expired]",
+      "tests.test_alc_r0_status_watch_consumer::test_known_invalid_observation_stops[monotonic-regression]",
+      "tests.test_alc_r0_status_watch_consumer::test_known_invalid_observation_stops[revoked-first]",
+      "tests.test_alc_r0_status_watch_consumer::test_anchor_and_original_watch_are_enforced[future]",
+      "tests.test_alc_r0_status_watch_consumer::test_anchor_and_original_watch_are_enforced[overflow]",
+      "tests.test_alc_r0_status_watch_consumer::test_anchor_and_original_watch_are_enforced[elapsed-expiry]",
+      "tests.test_alc_r0_status_watch_consumer::test_anchor_and_original_watch_are_enforced[rebind]",
+      "tests.test_alc_r0_status_watch_consumer::test_slot_consumer_stops_actual_owned_tree[revoked]",
+      "tests.test_alc_r0_status_watch_consumer::test_slot_consumer_stops_actual_owned_tree[generation]",
+      "tests.test_alc_r0_bounded_process_output::test_exact_persisted_cap_and_honest_received_counts[empty-zero]",
+      "tests.test_alc_r0_bounded_process_output::test_exact_persisted_cap_and_honest_received_counts[nonempty-zero]",
+      "tests.test_alc_r0_bounded_process_output::test_exact_persisted_cap_and_honest_received_counts[exact]",
+      "tests.test_alc_r0_bounded_process_output::test_exact_persisted_cap_and_honest_received_counts[cap-plus-one]",
+      "tests.test_alc_r0_bounded_process_output::test_exact_persisted_cap_and_honest_received_counts[binary]",
+      "tests.test_alc_r0_bounded_process_output::test_exact_persisted_cap_and_honest_received_counts[large-excess]",
+      "tests.test_alc_r0_bounded_process_output::test_independent_stderr_excess_invalidates_pair",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[True-stdout_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[True-stderr_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[-1-stdout_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[-1-stderr_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[1.5-stdout_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[1.5-stderr_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[9223372036854775808-stdout_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cap_validation_has_no_output_side_effects[9223372036854775808-stderr_limit_bytes]",
+      "tests.test_alc_r0_bounded_process_output::test_cleanup_deadline_structural_validation_before_io[True]",
+      "tests.test_alc_r0_bounded_process_output::test_cleanup_deadline_structural_validation_before_io[0]",
+      "tests.test_alc_r0_bounded_process_output::test_cleanup_deadline_structural_validation_before_io[-1]",
+      "tests.test_alc_r0_bounded_process_output::test_cleanup_deadline_structural_validation_before_io[1.5]",
+      "tests.test_alc_r0_bounded_process_output::test_cleanup_deadline_structural_validation_before_io[9223372036854775808]",
+      "tests.test_alc_r0_bounded_process_output::test_expired_cleanup_bound_denied_before_artifacts",
+      "tests.test_alc_r0_bounded_process_output::test_exclusive_destination_collision_preserves_existing_bytes[stdout]",
+      "tests.test_alc_r0_bounded_process_output::test_exclusive_destination_collision_preserves_existing_bytes[stderr]",
+      "tests.test_alc_r0_bounded_process_output::test_finish_can_tighten_but_never_extend_or_repeat",
+      "tests.test_alc_r0_bounded_process_output::test_context_exit_observes_eof_and_reentry_rejected",
+      "tests.test_alc_r0_bounded_process_output::test_confirmed_short_writes_do_not_drop_bytes_or_corrupt_digest",
+      "tests.test_alc_r0_bounded_process_output::test_terminal_read_error_without_eof_is_invalid_not_fake_complete",
+      "tests.test_alc_r0_bounded_process_output::test_unconfirmed_partial_write_is_not_a_confirmed_full_file_digest",
+      "tests.test_alc_r0_bounded_process_output::test_partial_acquisition_closes_only_parent_owned_resources",
+      "tests.test_alc_r0_bounded_process_output::test_entry_error_after_actual_thread_start_observes_owned_cleanup",
+      "tests.test_alc_r0_bounded_process_output::test_cleanup_deadline_retains_unobserved_io_and_does_not_renew",
+      "tests.test_alc_r0_bounded_process_output::test_unconfirmed_close_cannot_return_complete_receipt",
+      "tests.test_alc_r0_bounded_process_output::test_invalid_output_paths_denied_without_acquisition[paths0]",
+      "tests.test_alc_r0_bounded_process_output::test_invalid_output_paths_denied_without_acquisition[paths1]",
+      "tests.test_alc_r0_bounded_process_output::test_exit_writer_close_fault_still_observes_pumps_without_new_allowance",
+      "tests.test_alc_r0_bounded_process_output::test_partial_entry_writer_fault_still_closes_proven_parent_resources",
+      "tests.test_alc_r0_bounded_process_output::test_late_parent_writer_closure_cannot_fit_earlier_cleanup_bound",
+      "tests.test_alc_r0_bounded_process_output::test_late_observation_accepts_all_actual_closures_within_bound",
+      "tests.test_alc_r0_bounded_process_output::test_pipe_rollback_closes_other_owned_end_even_when_reader_close_raises",
+      "tests.test_alc_r0_bounded_process_output::test_pipe_rollback_uncertainty_is_not_complete_public_entry_cleanup"
+    ]
+  },
+  "regression": {
+    "planned_batches": [
+      "terminal_batch_growth_0",
+      "terminal_batch_growth_1",
+      "terminal_batch_growth_2",
+      "terminal_batch_fixed_0",
+      "terminal_batch_fixed_1",
+      "terminal_batch_fixed_2",
+      "terminal_batch_fixed_3",
+      "terminal_batch_lease_0",
+      "terminal_batch_lease_1",
+      "terminal_batch_state_store",
+      "terminal_batch_watch_consumer",
+      "terminal_batch_bounded"
+    ],
+    "executed_batches": [
+      "terminal_batch_growth_0"
+    ],
+    "halted_after_non_success": true,
+    "complete_union_verified": false,
+    "whole_repository_pass": false,
+    "first_batch": {
+      "collected_cases": 13,
+      "console_completed_passes": 8,
+      "console_completed_failures": 3,
+      "console_started_without_result": 1,
+      "not_started": 1,
+      "junit_missing": true,
+      "outer_pytest_exit_code": 124,
+      "outer_timed_out": true,
+      "active_processes": 0,
+      "interpretation": "Partial console counts only; no fabricated terminal JUnit summary. Three completed failures did not reach their intended terminal fixture gate."
+    }
+  },
+  "open_work": [
+    "Diagnose observer/authority read and original-deadline latency plus bridge EOF before terminal gate; exact performance cause unproven.",
+    "Complete exact disjoint regression union vs fresh316 without relaxing deadlines, skips or original scientific thresholds.",
+    "Independent busy-parent output cancellation, durable failed execution settlement, full physical/cache/journal/staging bounds and scientific activation remain OPEN."
+  ],
+  "causal_limits": [
+    "Worker quick-terminal REDv2 reproduces both streams; first RED is capture fixture tuple/list mismatch.",
+    "Observer RED has one actual causal stderr-overflow invalid-receipt acceptance; first3 are earlier denials.",
+    "Stop reader source race and native no-overwrite protocol tested; historical GREEN failure cause not causally intercepted/proven.",
+    "Atomic publication visibility is not crash durability or complete adversarial namespace protection."
+  ]
+}

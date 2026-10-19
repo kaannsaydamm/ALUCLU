@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="42" skipped="0" tests="42" time="1.744" timestamp="2026-10-11T19:05:56.583521+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_exact_and_full_identity" time="0.003"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">def test_native_decoder_exact_and_full_identity():
+&gt;       value = api()._decode(bytes(record()))
+                ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_readonly_mode_and_access_padding_exclusion" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">def test_native_readonly_mode_and_access_padding_exclusion():
+&gt;       raw=record(); raw.FileAttributes |= 1
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[mode]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'mode'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[volume_serial]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'volume_serial'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[file_id128]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'file_id128'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[size]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'size'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[write_ticks]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'write_ticks'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[creation_ticks]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'creation_ticks'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[link_count]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'link_count'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[attributes]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'attributes'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[change_ticks]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'change_ticks'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[allocation_size]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'allocation_size'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[legacy_file_id]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'legacy_file_id'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[device_type]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'device_type'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[device_characteristics]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'device_characteristics'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_all_retained_fields_exact_equality[reparse_tag]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'reparse_tag'
+
+    @pytest.mark.parametrize('field', (
+        'mode','volume_serial','file_id128','size','write_ticks','creation_ticks',
+        'link_count','attributes','change_ticks','allocation_size','legacy_file_id',
+        'device_type','device_characteristics','reparse_tag'))
+    def test_native_all_retained_fields_exact_equality(field):
+&gt;       value=api()._decode(bytes(record()))
+              ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[EndOfFile--1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'EndOfFile', value = -1
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[AllocationSize--1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'AllocationSize', value = -1
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[CreationTime--1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'CreationTime', value = -1
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[LastWriteTime--1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'LastWriteTime', value = -1
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[ChangeTime--1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'ChangeTime', value = -1
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[NumberOfLinks-0]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'NumberOfLinks', value = 0
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[FileAttributes-0]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'FileAttributes', value = 0
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[FileAttributes-1040]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'FileAttributes', value = 1040
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_invalid_metadata[ReparseTag-1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">field = 'ReparseTag', value = 1
+
+    @pytest.mark.parametrize('field,value', (
+        ('EndOfFile',-1),('AllocationSize',-1),('CreationTime',-1),
+        ('LastWriteTime',-1),('ChangeTime',-1),('NumberOfLinks',0),
+        ('FileAttributes',0),('FileAttributes',16|0x400),('ReparseTag',1)))
+    def test_native_decoder_invalid_metadata(field,value):
+&gt;       raw=record(); setattr(raw,field,value)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_zero_complete_identity" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">def test_native_decoder_zero_complete_identity():
+&gt;       raw=record(); raw.FileId128[:]=bytes(16)
+            ^^^^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:19: in record
+    value = api()._NativeBasic()
+            ^^^^^
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_exact_fixed_bytes[]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">raw = b''
+
+    @pytest.mark.parametrize('raw', (b'',bytes(103),bytes(105),bytearray(104),None))
+    def test_native_decoder_exact_fixed_bytes(raw):
+        with pytest.raises(ValueError,match='native directory'):
+&gt;           api()._decode(raw)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_exact_fixed_bytes[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">raw = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
+    @pytest.mark.parametrize('raw', (b'',bytes(103),bytes(105),bytearray(104),None))
+    def test_native_decoder_exact_fixed_bytes(raw):
+        with pytest.raises(ValueError,match='native directory'):
+&gt;           api()._decode(raw)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_exact_fixed_bytes[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">raw = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00...00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
+    @pytest.mark.parametrize('raw', (b'',bytes(103),bytes(105),bytearray(104),None))
+    def test_native_decoder_exact_fixed_bytes(raw):
+        with pytest.raises(ValueError,match='native directory'):
+&gt;           api()._decode(raw)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_exact_fixed_bytes[raw3]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">raw = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x...0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+
+    @pytest.mark.parametrize('raw', (b'',bytes(103),bytes(105),bytearray(104),None))
+    def test_native_decoder_exact_fixed_bytes(raw):
+        with pytest.raises(ValueError,match='native directory'):
+&gt;           api()._decode(raw)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_decoder_exact_fixed_bytes[None]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">raw = None
+
+    @pytest.mark.parametrize('raw', (b'',bytes(103),bytes(105),bytearray(104),None))
+    def test_native_decoder_exact_fixed_bytes(raw):
+        with pytest.raises(ValueError,match='native directory'):
+&gt;           api()._decode(raw)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[path0]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = WindowsPath('relative')
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[path1]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = WindowsPath('//server/share/directory')
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[path2]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = WindowsPath('//?/C:/directory')
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[path3]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = WindowsPath('//./C:/directory')
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[path4]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = WindowsPath('C:/bad\x00name')
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[path5]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = WindowsPath('C:/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_path_labels_deny_before_os[C:/]" time="0.001"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">path = 'C:/'
+
+    @pytest.mark.parametrize('path', (
+        Path('relative'),Path(r'\\server\share\directory'),Path(r'\\?\C:\directory'),
+        Path(r'\\.\C:\directory'),Path('C:/bad\0name'),Path('C:/'+('x'*32768)), 'C:/'))
+    def test_native_path_labels_deny_before_os(path):
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_original_expired_deadline" time="0.012"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-70/test_native_original_expired_d0')
+
+    def test_native_original_expired_deadline(tmp_path):
+        with pytest.raises(ValueError,match='original runtime inventory deadline expired'):
+&gt;           api().observe_directory(tmp_path,deadline_ns=1)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_exact_repeated_owned_directory" time="0.935"><failure message="AssertionError: assert 1 == 0&#10; +  where 1 = &lt;built-in function GetExitCodeProcess&gt;(472)&#10; +    where &lt;built-in function GetExitCodeProcess&gt; = &lt;module '_winapi' (built-in)&gt;.GetExitCodeProcess">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-70/test_native_exact_repeated_own0')
+
+    def test_native_exact_repeated_owned_directory(tmp_path):
+        # Same native operation twice; no path-stat/native fingerprint equivalence claim.
+        from aluclu.alc_r0.reserved_owned_process import ReservedOwnedLease
+        from test_alc_r0_reserved_owned_process import fixture, ROOT
+        from test_alc_r0_owned_stop import RetainedHandles
+        import json
+        import sys
+        directory=tmp_path/'plain.exe'; directory.mkdir()
+        arguments,store,_,_=fixture(tmp_path,seconds=15,stdout_cap=2048,stderr_cap=4096)
+        command=(sys.executable,'-c',
+            'import json,time\nfrom dataclasses import asdict\nfrom pathlib import Path\n'
+            'from aluclu.alc_r0.windows_directory_metadata import observe_directory\n'
+            f'p=Path({str(directory)!r}); d={arguments["deadline_ns"]}\n'
+            'a=observe_directory(p,deadline_ns=d); b=observe_directory(p,deadline_ns=d)\n'
+            'print(json.dumps(dict(equal=a==b,value=asdict(a))))')
+        arguments.update(command=command,cwd=Path(__file__).resolve().parents[1],
+            environment=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'),
+                PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1',CUDA_VISIBLE_DEVICES='-1'),
+            stdout_path=tmp_path/'native.stdout',stderr_path=tmp_path/'native.stderr')
+        with ReservedOwnedLease(**arguments) as lease:
+            handles=RetainedHandles(lease)
+            try:
+                ready=lease.publish_identity(ROOT,ROOT)
+                running=lease.resume_verified(ready.sha256)
+                terminal=lease.wait_terminal()
+&gt;               handles.drained(exit_code=0)
+
+tests\test_alc_r0_windows_directory_metadata.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;test_alc_r0_owned_stop.RetainedHandles object at 0x000001C7DDAB1580&gt;
+exit_code = 0, total = 1
+
+    def drained(self, *, exit_code=124, total=1):
+        import _winapi
+        from aluclu.alc_r0.checkpoint_owned_process import _Accounting, _checked
+        assert _winapi.WaitForSingleObject(self.handles[0], 5000) == 0
+&gt;       assert _winapi.GetExitCodeProcess(self.handles[0]) == exit_code
+E       AssertionError: assert 1 == 0
+E        +  where 1 = &lt;built-in function GetExitCodeProcess&gt;(472)
+E        +    where &lt;built-in function GetExitCodeProcess&gt; = &lt;module '_winapi' (built-in)&gt;.GetExitCodeProcess
+
+tests\test_alc_r0_owned_stop.py:117: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_regular_file_denied" time="0.003"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-70/test_native_regular_file_denie0')
+
+    def test_native_regular_file_denied(tmp_path):
+        path=tmp_path/'file'; path.write_bytes(b'x')
+        with pytest.raises(ValueError,match='directory path'):
+&gt;           api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+            ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_alc_r0_windows_directory_metadata" name="test_native_junction_and_intermediate_alias_denied" time="0.045"><failure message="ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-70/test_native_junction_and_inter0')
+
+    def test_native_junction_and_intermediate_alias_denied(tmp_path):
+        target=tmp_path/'target'; target.mkdir(); (target/'sub').mkdir()
+        alias=tmp_path/'alias'
+        result=subprocess.run(('cmd','/c','mklink','/J',str(alias),str(target)),
+                              capture_output=True,timeout=10)
+        assert result.returncode==0
+        for path in (alias,alias/'sub'):
+            with pytest.raises(ValueError,match='directory path'):
+&gt;               api().observe_directory(path,deadline_ns=time.monotonic_ns()+10**9)
+                ^^^^^
+
+tests\test_alc_r0_windows_directory_metadata.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_windows_directory_metadata.py:15: in api
+    return importlib.import_module('aluclu.alc_r0.windows_directory_metadata')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.windows_directory_metadata'
+import_ = &lt;function _gcd_import at 0x000001C7D9C180E0&gt;
+
+&gt;   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.windows_directory_metadata'
+
+&lt;frozen importlib._bootstrap&gt;:1324: ModuleNotFoundError</failure></testcase></testsuite></testsuites>

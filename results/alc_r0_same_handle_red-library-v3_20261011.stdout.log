@@ -1,0 +1,9 @@
+...............................................................F.        [100%]
+================================== FAILURES ===================================
+_ test_library_adapter_release_failure_still_releases_remaining_library[false] _
+tests\test_alc_r0_standard_first_observer.py:246: in test_library_adapter_release_failure_still_releases_remaining_library
+    with pytest.raises(ValueError, match='directory library release failed'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_standard_first_observer.py::test_library_adapter_release_failure_still_releases_remaining_library[false]

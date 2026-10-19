@@ -1,0 +1,390 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                              [100%]
+================================== FAILURES ===================================
+______________ test_candidate_sequence_full14_original_deadline _______________
+tests\test_alc_r0_library_candidate_driver.py:28: in test_candidate_sequence_full14_original_deadline
+    result = subject()(tmp_path, observe, enumerate_fn, deadline_ns=deadline)
+             ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_all14_changed_fail_no_retry[mode-2] ______________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_all14_changed_fail_no_retry[mode-3] ______________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_________ test_candidate_all14_changed_fail_no_retry[volume_serial-2] _________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_________ test_candidate_all14_changed_fail_no_retry[volume_serial-3] _________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[file_id128-2] ___________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[file_id128-3] ___________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_all14_changed_fail_no_retry[size-2] ______________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_all14_changed_fail_no_retry[size-3] ______________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[write_ticks-2] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[write_ticks-3] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_all14_changed_fail_no_retry[creation_ticks-2] _________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_all14_changed_fail_no_retry[creation_ticks-3] _________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[link_count-2] ___________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[link_count-3] ___________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[attributes-2] ___________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[attributes-3] ___________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_________ test_candidate_all14_changed_fail_no_retry[change_ticks-2] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_________ test_candidate_all14_changed_fail_no_retry[change_ticks-3] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_all14_changed_fail_no_retry[allocation_size-2] ________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_all14_changed_fail_no_retry[allocation_size-3] ________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_all14_changed_fail_no_retry[legacy_file_id-2] _________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_all14_changed_fail_no_retry[legacy_file_id-3] _________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[device_type-2] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[device_type-3] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+____ test_candidate_all14_changed_fail_no_retry[device_characteristics-2] _____
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+____ test_candidate_all14_changed_fail_no_retry[device_characteristics-3] _____
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[reparse_tag-2] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_all14_changed_fail_no_retry[reparse_tag-3] __________
+tests\test_alc_r0_library_candidate_driver.py:47: in test_candidate_all14_changed_fail_no_retry
+    subject()(tmp_path, observe, lambda p: {}, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_________ test_candidate_acquisition_failure_is_not_retried[observe] __________
+tests\test_alc_r0_library_candidate_driver.py:62: in test_candidate_acquisition_failure_is_not_retried
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+________ test_candidate_acquisition_failure_is_not_retried[enumerate] _________
+tests\test_alc_r0_library_candidate_driver.py:62: in test_candidate_acquisition_failure_is_not_retried
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=time.monotonic_ns()+10**9)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[0] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[1] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[2] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[3] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[4] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[5] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_____________ test_candidate_original_expiry_stops_acquisition[6] _____________
+tests\test_alc_r0_library_candidate_driver.py:76: in test_candidate_original_expiry_stops_acquisition
+    subject()(tmp_path, observe, enumerate_fn, deadline_ns=50, clock=lambda: next(ticks))
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_________ test_candidate_invalid_deadline_denies_before_actions[True] _________
+tests\test_alc_r0_library_candidate_driver.py:84: in test_candidate_invalid_deadline_denies_before_actions
+    subject()(tmp_path, unexpected, unexpected, deadline_ns=deadline)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_invalid_deadline_denies_before_actions[0] ___________
+tests\test_alc_r0_library_candidate_driver.py:84: in test_candidate_invalid_deadline_denies_before_actions
+    subject()(tmp_path, unexpected, unexpected, deadline_ns=deadline)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_invalid_deadline_denies_before_actions[-1] __________
+tests\test_alc_r0_library_candidate_driver.py:84: in test_candidate_invalid_deadline_denies_before_actions
+    subject()(tmp_path, unexpected, unexpected, deadline_ns=deadline)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+__________ test_candidate_invalid_deadline_denies_before_actions[50] __________
+tests\test_alc_r0_library_candidate_driver.py:84: in test_candidate_invalid_deadline_denies_before_actions
+    subject()(tmp_path, unexpected, unexpected, deadline_ns=deadline)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+_ test_candidate_invalid_deadline_denies_before_actions[9223372036854775808] __
+tests\test_alc_r0_library_candidate_driver.py:84: in test_candidate_invalid_deadline_denies_before_actions
+    subject()(tmp_path, unexpected, unexpected, deadline_ns=deadline)
+    ^^^^^^^^^
+tests\test_alc_r0_library_candidate_driver.py:10: in subject
+    return importlib.import_module('alc_r0_same_handle_directory').inspect_library
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'alc_r0_same_handle_directory' has no attribute 'inspect_library'
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_sequence_full14_original_deadline
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[mode-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[mode-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[volume_serial-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[volume_serial-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[file_id128-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[file_id128-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[size-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[size-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[write_ticks-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[write_ticks-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[creation_ticks-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[creation_ticks-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[link_count-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[link_count-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[attributes-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[attributes-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[change_ticks-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[change_ticks-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[allocation_size-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[allocation_size-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[legacy_file_id-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[legacy_file_id-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[device_type-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[device_type-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[device_characteristics-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[device_characteristics-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[reparse_tag-2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_all14_changed_fail_no_retry[reparse_tag-3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_acquisition_failure_is_not_retried[observe]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_acquisition_failure_is_not_retried[enumerate]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[0]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[1]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[2]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[3]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[4]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[5]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_original_expiry_stops_acquisition[6]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_invalid_deadline_denies_before_actions[True]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_invalid_deadline_denies_before_actions[0]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_invalid_deadline_denies_before_actions[-1]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_invalid_deadline_denies_before_actions[50]
+FAILED tests/test_alc_r0_library_candidate_driver.py::test_candidate_invalid_deadline_denies_before_actions[9223372036854775808]

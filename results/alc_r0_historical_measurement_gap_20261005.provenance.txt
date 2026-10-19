@@ -1,0 +1,31 @@
+Checkpoint177: selected historical measurement coverage, not accounting approval
+Parent: 801a6dc2d14cd6c2c4279d3fa47e38c78988f2df
+Report: docs/superpowers/reviews/2026-10-05-alc-r0-historical-measurement-gap.md
+Reviewed SHA256: 57256f393d254605752a6c2ab4d91c704c2819006d700ec06bb3c38acc522066
+
+Independent code lane resource_code_61 APPROVE: exact three private terminal
+records and twelve phase-field/source/scope claims independently verified.
+Independent architecture lane resource_arch_61 CLEAR for scoped coverage report:
+independently inspected phase timing/source/resource limits, but did not perform
+optional three-ID private-session recheck in this pass. This is not a lock failure
+or an independent primary confirmation of those private metadata from that lane.
+Synthesis: scoped report approved; WATCH accounting convention/completeness and
+any proposed amendment; global first-start/consumption UNKNOWN, launch BLOCK.
+
+Architecture counterargument retained: original measured-GPU-hours wording does
+not fully resolve allocation wall time versus GPU-active telemetry. Do not invent
+a perfect active-occupancy measurement requirement. Clarify the original accounting
+definition/evidentiary standard; incomplete all-attempt coverage/first-start remain
+unresolved under either convention. No accounting amendment adopted here.
+
+Parent validated three CPU terminal rows/output roots/six envelope fields and
+67.655216400 command wall seconds. Twelve receipt fields/scope/nested commits
+matched: synchronized gradient+update phases 36166729100 ns, remount fields
+2129054700 ns, all twelve 38295783800 ns. Inner/outer intervals must not be added
+as separate consumption. These remain partial, not a complete historical ledger.
+
+No model/tokenizer/corpus/GPU execution, old command rerun, source/test/XML change,
+installation, cleanup or private-session export. Documentation-only validation,
+not a new pytest/regression/scientific run. Original limits/grid/failures remain.
+Only explicit separately reviewed authority could adopt a conservative historical
+replacement; no budget reset, hidden scientific change or automatic launch permit.

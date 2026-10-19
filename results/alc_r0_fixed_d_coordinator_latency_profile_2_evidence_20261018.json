@@ -1,0 +1,170 @@
+{
+  "refs": [
+    {
+      "byte_length": 9546,
+      "path": "results/alc_r0_fixed_d_coordinator_latency_profile_2_20261018.stdout.log",
+      "sha256": "b2baf8e50e80c199af5dcc5e89129bd0bce27f15883d4bafe565323482252484"
+    },
+    {
+      "byte_length": 80,
+      "path": "results/alc_r0_fixed_d_coordinator_latency_profile_2_20261018.stderr.log",
+      "sha256": "1354118839780ce10b3c061e70bfa2f0bc723a669cbb65e49b61d5c1f57f6295"
+    },
+    {
+      "byte_length": 2371,
+      "path": "results/alc_r0_fixed_d_coordinator_latency_profile_2_20261018.exit.json",
+      "sha256": "448c3c26f99eba551f9fcdc15b561c1f379b357d9e4c48fb7b09dc67101db341"
+    },
+    {
+      "byte_length": 89599,
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "sha256": "375a1063150630cf878b15166e46f90b028ef547e715c6254179dfbee212e29a"
+    },
+    {
+      "byte_length": 23219,
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "sha256": "dd52bdf4b8efd74b951eab9530be2f97113578d0757cadeb7f169f4b9937509f"
+    },
+    {
+      "byte_length": 8134,
+      "path": "src/aluclu/cognition/persistence.py",
+      "sha256": "7b50bb056df5e22d475562ee99331d3da7b573c8464d94ae1e385ce7cc050d8d"
+    }
+  ],
+  "report": {
+    "cpu_scope": "parent process including its threads; child processes excluded",
+    "diagnostic_exit_code": 2,
+    "main_wall_ns": 15765000000,
+    "pre_main_wall_ns": 2500000000,
+    "profile_cpu_ns": 1218750000,
+    "profile_overhead": true,
+    "profile_scope": "parent main thread only; bridge and child execution excluded",
+    "profile_wall_ns": 18265000000,
+    "report_rows": 60,
+    "scientific_modules_loaded_in_parent": false,
+    "scope": "coordinator-main-thread-diagnostic-profile",
+    "startup_before_wrapper_not_profiled": true
+  },
+  "namespace_records": [
+    {
+      "byte_length": 527,
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"charge_envelope_ns\":\"25000000000\",\"cleanup_ceiling_ns\":\"10000000000\",\"declaration_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"device\":\"cpu\",\"experiment_id\":\"alc-r0-smollm2-135m-v1\",\"gpu_reservation_ns\":\"0\",\"physical_growth_bytes\":\"1048576\",\"research_growth_bytes\":\"1048576\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\",\"stderr_limit_bytes\":\"16384\",\"stdout_limit_bytes\":\"16384\",\"useful_wall_ceiling_ns\":\"15000000000\"}",
+      "sha256": "34d24ee9b11ed1df2b78a0c1f730b9c7a60d7a415c6b905fbd1d53229ad0f8f8",
+      "relative_path": "declaration.json"
+    },
+    {
+      "byte_length": 320,
+      "raw_utf8": "{\"attempt_id\":\"a001\",\"declaration_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"domain\":\"diagnostic-only\",\"request_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"segment\":\"initial\"}",
+      "sha256": "bce6ee417743b09c9449352204982182dbddc322b0ca45c7c4001f4d42da90e3",
+      "relative_path": "diagnostic.consumed.json"
+    },
+    {
+      "byte_length": 314,
+      "raw_utf8": "{\"cleanup_deadline_monotonic_ns\":\"4008500000000\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"3983500000000\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\alc-r0-latency-profile-2-fv34khry\",\"scenario\":\"success\",\"schema\":\"alc-r0-diagnostic-installation-v1\",\"useful_deadline_monotonic_ns\":\"3998500000000\"}",
+      "sha256": "950b81e83c8cccd26263779cada54684682d57019cfcd705f3a623923c9f7a32",
+      "relative_path": "diagnostic.installation.json"
+    },
+    {
+      "byte_length": 583,
+      "raw_utf8": "{\"clock_domain_root\":\"5874598d47122fceb52f8ae18138c0cf206dd302fb5adfccab0c6f26dce5a750\",\"domain\":\"diagnostic-only\",\"entry_monotonic_ns\":\"3983500000000\",\"generation_root\":\"ad8abc88cc72d41ecbb7d87a445a19d058e716730a7d1ae74f7f45ea063ea6a2\",\"installation_root\":\"950b81e83c8cccd26263779cada54684682d57019cfcd705f3a623923c9f7a32\",\"namespace\":\"C:\\\\Users\\\\kaann\\\\AppData\\\\Local\\\\Temp\\\\alc-r0-latency-profile-2-fv34khry\",\"reservation_id\":\"diagnostic-work\",\"run_id\":\"alc-r0-diagnostic-coordinator-success\",\"schema\":\"alc-r0-diagnostic-request-v1\",\"useful_deadline_monotonic_ns\":\"3998500000000\"}",
+      "sha256": "49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a",
+      "relative_path": "diagnostic.request.json"
+    },
+    {
+      "byte_length": 1,
+      "raw_utf8": "\u0000",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "relative_path": "operator\\operator.lock"
+    },
+    {
+      "byte_length": 368,
+      "raw_utf8": "{\"candidate_status\":{\"expires_utc_ns\":\"1792332035816651800\",\"generation_root\":\"ad8abc88cc72d41ecbb7d87a445a19d058e716730a7d1ae74f7f45ea063ea6a2\",\"installation_root\":\"950b81e83c8cccd26263779cada54684682d57019cfcd705f3a623923c9f7a32\",\"revoked\":false,\"schema\":\"alc-r0-operator-status-v1\",\"sequence\":\"1\"},\"previous_status\":null,\"schema\":\"alc-r0-operator-status-intent-v1\"}",
+      "sha256": "0d49813c07e220e68cf84cff968086b9c7a43cad966370087c659e8a4bd71577",
+      "relative_path": "operator\\status.intent.json"
+    },
+    {
+      "byte_length": 280,
+      "raw_utf8": "{\"expires_utc_ns\":\"1792332035816651800\",\"generation_root\":\"ad8abc88cc72d41ecbb7d87a445a19d058e716730a7d1ae74f7f45ea063ea6a2\",\"installation_root\":\"950b81e83c8cccd26263779cada54684682d57019cfcd705f3a623923c9f7a32\",\"revoked\":false,\"schema\":\"alc-r0-operator-status-v1\",\"sequence\":\"1\"}",
+      "sha256": "3befeef41a05dafdc577eed279ede500c4c52e5cc65a930b86a78c48d500be64",
+      "relative_path": "operator\\status.json"
+    },
+    {
+      "byte_length": 1,
+      "raw_utf8": "\u0000",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "relative_path": "reservations\\global.lock"
+    },
+    {
+      "byte_length": 722,
+      "raw_utf8": "{\"event\":{\"clock_domain_root\":\"5874598d47122fceb52f8ae18138c0cf206dd302fb5adfccab0c6f26dce5a750\",\"declaration_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"entry_monotonic_ns\":\"3983500000000\",\"entry_utc_ns\":\"1792331983773483000\",\"evidence_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"kind\":\"reserve\",\"previous_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"1\",\"useful_deadline_monotonic_ns\":\"3998500000000\"},\"journal_id\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"previous\":\"2556832f1b53fcba22d8399f3772dc413eebafe597a231344a99e5bed2e78e83\",\"sequence\":1,\"version\":1}\n",
+      "sha256": "aa5cfbf6ffcf4a80125252a6058b55a5fd2cbce9030feec7e22cc83bc3c50362",
+      "relative_path": "reservations\\journal.jsonl"
+    },
+    {
+      "byte_length": 1,
+      "raw_utf8": "\u0000",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "relative_path": "reservations\\journal.jsonl.lock"
+    },
+    {
+      "byte_length": 528,
+      "raw_utf8": "{\"declaration_genesis_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"generation\":\"1\",\"journal_head\":{\"byte_length\":722,\"count\":1,\"digest\":\"78347e862e4db1b493d4b201f6796669903386b81fa1d9073497638909dd1539\"},\"previous_owner_root\":\"f655d8576ff626764fcaf268e4eb28b6283f5f57119f9493dcdbd6ebeb12372d\",\"reservation_root\":\"78dd997eb3e8053a5d62e8b58d047de850400b1f9e8e8ab7eddd5ac44708de58\",\"review_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"schema\":\"alc-r0-reservation-owner-v1\"}",
+      "sha256": "0613fe6513ee623f65ac9681519ef27e220b7066b83090b8a024f5257fedaf0e",
+      "relative_path": "reservations\\owner.json"
+    },
+    {
+      "byte_length": 516,
+      "raw_utf8": "{\"candidate_owner\":{\"declaration_genesis_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"generation\":\"0\",\"journal_head\":{\"byte_length\":0,\"count\":0,\"digest\":\"2556832f1b53fcba22d8399f3772dc413eebafe597a231344a99e5bed2e78e83\"},\"previous_owner_root\":null,\"reservation_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"review_root\":null,\"schema\":\"alc-r0-reservation-owner-v1\"},\"event\":null,\"previous_owner\":null,\"review_root\":null,\"schema\":\"alc-r0-reservation-intent-v1\"}",
+      "sha256": "35950b69fcd8b8959bcf161556860faef8c73363a58db1a06d1aecb8fe7e1934",
+      "relative_path": "reservations\\intents\\initialization.json"
+    },
+    {
+      "byte_length": 1626,
+      "raw_utf8": "{\"candidate_owner\":{\"declaration_genesis_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"generation\":\"1\",\"journal_head\":{\"byte_length\":722,\"count\":1,\"digest\":\"78347e862e4db1b493d4b201f6796669903386b81fa1d9073497638909dd1539\"},\"previous_owner_root\":\"f655d8576ff626764fcaf268e4eb28b6283f5f57119f9493dcdbd6ebeb12372d\",\"reservation_root\":\"78dd997eb3e8053a5d62e8b58d047de850400b1f9e8e8ab7eddd5ac44708de58\",\"review_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"schema\":\"alc-r0-reservation-owner-v1\"},\"event\":{\"clock_domain_root\":\"5874598d47122fceb52f8ae18138c0cf206dd302fb5adfccab0c6f26dce5a750\",\"declaration_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"entry_monotonic_ns\":\"3983500000000\",\"entry_utc_ns\":\"1792331983773483000\",\"evidence_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"kind\":\"reserve\",\"previous_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"reservation_id\":\"diagnostic-work\",\"sequence\":\"1\",\"useful_deadline_monotonic_ns\":\"3998500000000\"},\"previous_owner\":{\"declaration_genesis_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"generation\":\"0\",\"journal_head\":{\"byte_length\":0,\"count\":0,\"digest\":\"2556832f1b53fcba22d8399f3772dc413eebafe597a231344a99e5bed2e78e83\"},\"previous_owner_root\":null,\"reservation_root\":\"b7f1a2eb48c7e4297c1f767a25d314b2ee37aef3c7b0881ac57ac8dc5710b011\",\"review_root\":null,\"schema\":\"alc-r0-reservation-owner-v1\"},\"review_root\":\"49ca7a1495f62c70bee2aefae49e6b012fb2bbb63c1dedd4ac46ba885903962a\",\"schema\":\"alc-r0-reservation-intent-v1\"}",
+      "sha256": "a8c33b4d3601fc52cb395fd6c43b94617c145f24bf866b01f12598daf27cd8eb",
+      "relative_path": "reservations\\intents\\intent-000001.json"
+    }
+  ],
+  "selected_profile_lines": [
+    "        1    0.000    0.000   15.769   15.769 C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\src\\aluclu\\alc_r0\\fixed_d_coordinator.py:1220(_coordinate)",
+    "       43    7.372    0.171    7.381    0.172 {built-in method _io.open}",
+    "       93    0.014    0.000    6.221    0.067 C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\src\\aluclu\\cognition\\persistence.py:33(resolve_ledger_path)",
+    "     2783    5.108    0.002    5.322    0.002 {built-in method nt.stat}",
+    "      889    0.015    0.000    4.137    0.005 C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\src\\aluclu\\cognition\\persistence.py:201(_is_link_or_reparse)",
+    "       16    0.696    0.043    0.696    0.043 {built-in method nt.fsync}"
+  ],
+  "native": {
+    "active_processes": 0,
+    "command": [
+      "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-c",
+      "\nimport cProfile, json, pstats, sys, time\nprofile=cProfile.Profile()\nstarted=time.monotonic_ns(); cpu_started=time.process_time_ns()\nmain_started=main_finished=None\ncode=None\nprofile.enable()\ntry:\n    from aluclu.alc_r0.fixed_d_coordinator import main\n    main_started=time.monotonic_ns()\n    try:\n        code=main()\n    finally:\n        main_finished=time.monotonic_ns()\nfinally:\n    primary=sys.exception()\n    profile.disable()\n    finished=time.monotonic_ns(); cpu_finished=time.process_time_ns()\n    report=dict(scope='coordinator-main-thread-diagnostic-profile',\n        profile_overhead=True,diagnostic_exit_code=code,report_rows=60,\n        profile_wall_ns=finished-started,profile_cpu_ns=cpu_finished-cpu_started,\n        pre_main_wall_ns=None if main_started is None else main_started-started,\n        main_wall_ns=None if main_started is None else main_finished-main_started,\n        cpu_scope='parent process including its threads; child processes excluded',\n        profile_scope='parent main thread only; bridge and child execution excluded',\n        startup_before_wrapper_not_profiled=True,\n        scientific_modules_loaded_in_parent=any(name.split('.')[0] in\n            ('torch','transformers','datasets') for name in sys.modules))\n    try:\n        pstats.Stats(profile).sort_stats('cumulative').print_stats(60)\n        print(json.dumps(report,sort_keys=True,separators=(',',':')),flush=True)\n    except BaseException:\n        if primary is None: raise\nif type(code) is not int:\n    raise RuntimeError('diagnostic main did not return an exact integer exit code')\nraise SystemExit(code)\n",
+      "diagnostic",
+      "success",
+      "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-latency-profile-2-fv34khry"
+    ],
+    "diagnostic_exit_code": 2,
+    "exit_code": 2,
+    "finished_ns": 3999875000000,
+    "kernel_time_100ns": 9375000,
+    "namespace": "C:\\Users\\kaann\\AppData\\Local\\Temp\\alc-r0-latency-profile-2-fv34khry",
+    "parent_bound_seconds": 120,
+    "profile_overhead": true,
+    "root_pid": 30096,
+    "scope": "second-targeted-coordinator-profile-not-acceptance",
+    "started_ns": 3980421000000,
+    "timed_out": false,
+    "total_processes": 3,
+    "user_time_100ns": 5468750
+  },
+  "limitations": [
+    "Instrumented diagnostic denied2 at original reservation deadline; did not reach intended observer-acquisition interval.",
+    "Main15.765s, pre-main2.5s, CPU1.21875s; profiler overhead and parent-thread scope apply.",
+    "Actual open/stat elapsed dominates this run, different from first mkdir-dominated profile.",
+    "2783 stat calls and93 resolve_ledger_path calls warrant checking metadata work without dropping required trust-boundary checks.",
+    "No product change, rootcause/fix/benchmark/admission/scientific or product-regression PASS.",
+    "Any optimization requires security/race review and red-green-regression; no deadline relaxation or unchecked path caching."
+  ],
+  "schema": "alc-r0-second-targeted-profile-negative-v1"
+}

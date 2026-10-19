@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="22" time="3.449" timestamp="2026-10-11T20:47:34.202798+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_closed_creation_is_bounded_and_exclusive[0]" time="0.018" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_closed_creation_is_bounded_and_exclusive[16]" time="0.034" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_closed_creation_is_bounded_and_exclusive[48]" time="0.144" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_foreign_counts_denied_before_writes[-1]" time="0.004" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_foreign_counts_denied_before_writes[1]" time="0.003" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_foreign_counts_denied_before_writes[49]" time="0.004" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_foreign_counts_denied_before_writes[True]" time="0.004" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_foreign_counts_denied_before_writes[16]" time="0.003" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_sequence_preserves_raw_queries_and_payload[0]" time="0.005" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_sequence_preserves_raw_queries_and_payload[16]" time="0.841" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_sequence_preserves_raw_queries_and_payload[48]" time="1.211" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_unexpected_membership_refused" time="0.022" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_corrupted_payload_refused" time="0.179" /><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_population_and_close_sequence[0]" time="0.060"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_population_and_close0')
+count = 0
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_held_population_and_close_sequence(tmp_path, count):
+        api = HeldFakeAPI()
+&gt;       result = inspect_held_case(tmp_path, count, api)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_population_and_close0')
+count = 0
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254EAF637A0&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_population_and_close_sequence[16]" time="0.002"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_population_and_close1')
+count = 16
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_held_population_and_close_sequence(tmp_path, count):
+        api = HeldFakeAPI()
+&gt;       result = inspect_held_case(tmp_path, count, api)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_population_and_close1')
+count = 16
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254EAF63C80&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_population_and_close_sequence[48]" time="0.002"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_population_and_close2')
+count = 48
+
+    @pytest.mark.parametrize('count', COUNTS)
+    def test_held_population_and_close_sequence(tmp_path, count):
+        api = HeldFakeAPI()
+&gt;       result = inspect_held_case(tmp_path, count, api)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_directory_metadata_reproducer.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_population_and_close2')
+count = 48
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254E8EE42C0&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_query_failure_closes_handle" time="0.030"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'query failed'&#10;  Actual message: 'held scratch sequence contract RED'">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_query_failure_closes0')
+
+    def test_held_query_failure_closes_handle(tmp_path):
+        class FailingAPI(HeldFakeAPI):
+            def named(self, path):
+                raise RuntimeError('query failed')
+        api = FailingAPI()
+&gt;       with pytest.raises(RuntimeError, match='query failed'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'query failed'
+E         Actual message: 'held scratch sequence contract RED'
+
+tests\test_alc_r0_directory_metadata_reproducer.py:101: AssertionError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_foreign_counts_denied_before_writes[-1]" time="0.059"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie0')
+count = -1
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_held_foreign_counts_denied_before_writes(tmp_path, count):
+        api = HeldFakeAPI()
+        with pytest.raises(ValueError):
+&gt;           inspect_held_case(tmp_path, count, api)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie0')
+count = -1
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254E8EE7EC0&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_foreign_counts_denied_before_writes[1]" time="0.003"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie1')
+count = 1
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_held_foreign_counts_denied_before_writes(tmp_path, count):
+        api = HeldFakeAPI()
+        with pytest.raises(ValueError):
+&gt;           inspect_held_case(tmp_path, count, api)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie1')
+count = 1
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254E8EE6CC0&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_foreign_counts_denied_before_writes[49]" time="0.003"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie2')
+count = 49
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_held_foreign_counts_denied_before_writes(tmp_path, count):
+        api = HeldFakeAPI()
+        with pytest.raises(ValueError):
+&gt;           inspect_held_case(tmp_path, count, api)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie2')
+count = 49
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254EAF60B60&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_foreign_counts_denied_before_writes[True]" time="0.022"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie3')
+count = True
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_held_foreign_counts_denied_before_writes(tmp_path, count):
+        api = HeldFakeAPI()
+        with pytest.raises(ValueError):
+&gt;           inspect_held_case(tmp_path, count, api)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie3')
+count = True
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254E8EE6390&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase><testcase classname="tests.test_alc_r0_directory_metadata_reproducer" name="test_held_foreign_counts_denied_before_writes[16]" time="0.052"><failure message="NotImplementedError: held scratch sequence contract RED">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie4')
+count = '16'
+
+    @pytest.mark.parametrize('count', [-1, 1, 49, True, '16'])
+    def test_held_foreign_counts_denied_before_writes(tmp_path, count):
+        api = HeldFakeAPI()
+        with pytest.raises(ValueError):
+&gt;           inspect_held_case(tmp_path, count, api)
+
+tests\test_alc_r0_directory_metadata_reproducer.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-88/test_held_foreign_counts_denie4')
+count = '16'
+api = &lt;test_alc_r0_directory_metadata_reproducer.HeldFakeAPI object at 0x00000254E8EE5A30&gt;
+
+    def inspect_held_case(root, count, api):
+&gt;       raise NotImplementedError('held scratch sequence contract RED')
+E       NotImplementedError: held scratch sequence contract RED
+
+tests\alc_r0_directory_metadata_reproducer.py:20: NotImplementedError</failure></testcase></testsuite></testsuites>

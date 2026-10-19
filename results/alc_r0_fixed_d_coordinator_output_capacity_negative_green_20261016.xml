@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="9" time="6.110" timestamp="2026-10-16T13:43:05.872968+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_actual_output_capacity_precedes_owned_actions" time="3.164" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_actual_pipe_exact_limit_and_overflow[False]" time="0.107" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_actual_pipe_exact_limit_and_overflow[True]" time="0.033" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_rejected_final_identity_not_recorded" time="0.013" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_allocation_refusal_closes_second_destination" time="0.009" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_unsupported_native_attributes_close_acquisition[sparse]" time="0.004" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_unsupported_native_attributes_close_acquisition[compressed]" time="0.004"><failure message="PermissionError: [WinError 5] Erişim engellendi.">tests\test_alc_r0_coordinator_growth_acceptance.py:223: in test_preallocated_output_unsupported_native_attributes_close_acquisition
+    with pair: pytest.fail('unsupported native attributes must deny acquisition')
+         ^^^^
+src\aluclu\alc_r0\bounded_process_output.py:168: in __enter__
+    stream.destination = self._open_destination(stream.path)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\fixed_d_coordinator.py:192: in _open_destination
+    row=self._allocate_destination(stream,path,target.limit)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_coordinator_growth_acceptance.py:219: in _allocate_destination
+    _mark_output_native(stream,kind)
+tests\test_alc_r0_coordinator_growth_acceptance.py:172: in _mark_output_native
+    raise ctypes.WinError(ctypes.get_last_error())
+E   PermissionError: [WinError 5] Erişim engellendi.</failure></testcase><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_preallocated_output_final_native_attribute_failure_still_closes" time="0.020" /><testcase classname="tests.test_alc_r0_coordinator_growth_acceptance" name="test_actual_output_capacity_loss_before_resume_retains_consumption" time="2.073" /></testsuite></testsuites>

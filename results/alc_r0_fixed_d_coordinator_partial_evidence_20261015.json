@@ -1,0 +1,150 @@
+{
+  "scope": "isolated actual native partial DuplicateHandle failure; full regression INCOMPLETE with stdout failure marker and 120s timeout, no XML",
+  "source_pin_modes": [
+    "partial_acquire_v2",
+    "regression_partial_acquire"
+  ],
+  "runs": [
+    {
+      "mode": "partial_acquire",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 3532281000000,
+        "kernel_time_100ns": 7343750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 6748,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 3530640000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 6406250
+      },
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.796
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_20261015.stdout.log",
+          "bytes": 81,
+          "sha256": "914192d0b998765b000418f37d07a01536c2ae674628eb5a10b106f2b50ebb92"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_20261015.exit.json",
+          "bytes": 308,
+          "sha256": "78498df57ffd0541274d9980260700fbbf8b06dab16d25076d8e94a0386183bd"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_20261015.xml",
+          "bytes": 394,
+          "sha256": "4510c3500c82c49f3c161c7bb71e156f3f714c7faa2bdff1922375f9e28c9ab1"
+        }
+      ]
+    },
+    {
+      "mode": "partial_acquire_v2",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 35066359000000,
+        "kernel_time_100ns": 4531250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 23448,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35064859000000,
+        "timed_out": false,
+        "total_processes": 3,
+        "user_time_100ns": 4687500
+      },
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.479
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_v2_20261015.stdout.log",
+          "bytes": 81,
+          "sha256": "e39c7c8495c11b3781a4116112e8edaad58e79f9e534b4818722b9eae3cfa6a2"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_v2_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_v2_20261015.exit.json",
+          "bytes": 311,
+          "sha256": "d8b27d14117c103bb2c5f029276941a634e509354bde411aba3ce89375297019"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_partial_acquire_v2_20261015.xml",
+          "bytes": 564,
+          "sha256": "5230326341239d467218ec1f74c353881bb587a4244e1b3552fb32d81d52c36f"
+        }
+      ]
+    },
+    {
+      "mode": "regression_partial_acquire",
+      "native": {
+        "active_processes": 0,
+        "exit_code": 124,
+        "finished_ns": 35201343000000,
+        "kernel_time_100ns": 417656250,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 124,
+        "root_pid": 32340,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35081343000000,
+        "timed_out": true,
+        "total_processes": 174,
+        "user_time_100ns": 162968750
+      },
+      "junit": null,
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_acquire_20261015.stdout.log",
+          "bytes": 194,
+          "sha256": "74d4c0c2a03ab69008756df281f722a069f2cecac6d605e1777713e4b2bedc80"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_acquire_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_acquire_20261015.exit.json",
+          "bytes": 320,
+          "sha256": "b808247f20e05d9012f77668b9629363820edb85252f3b58d3d5fd0f5c5f6833"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "sha256": "6235c5497e76947f1fe5b2ad955d4449f7f81fdf8d0ae90e0b0aa82c4ea0d500"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "sha256": "d4856eea417d46411cc1e86a538ef60b8311cb378c2d7e698b442c7dfba20c6c"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "sha256": "ff3ab9d25a2031e4ba11f34818b629e5f97a758cc49aca79b5c1281405933fca"
+    }
+  ]
+}

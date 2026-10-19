@@ -1,0 +1,36 @@
+........................................................F...             [100%]
+================================== FAILURES ===================================
+______ test_access_exact_intervention_sequence_and_no_early_enumeration _______
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-97/test_access_exact_intervention0')
+
+    def test_access_exact_intervention_sequence_and_no_early_enumeration(tmp_path):
+        api = FakeAccess()
+        def enumeration(path):
+            api.events.append(('enumerate', path))
+            api.changed = True
+            return dict(count=0, name_bytes=0, names_sha256='a' * 64)
+        result = inspect_access(tmp_path, api, enumeration)
+        one = ['stat', 'identity', 'device', 'stat']
+        assert [event[0] for event in api.events] == [
+            'named', 'open', *one, 'named',
+            'open', *one, *one, 'named', 'close', *one, 'named',
+            'open', *one, *one, 'named', 'close', *one, 'named',
+            'enumerate', *one, 'named', 'close', 'named']
+        assert [event for event in api.events if event[0] == 'open'] == [
+            ('open', 19, 0x80), ('open', 20, 0x80), ('open', 21, 0x81)]
+        assert [stage['stage'] for stage in result['stages']] == [
+            'baseline', 'attributes-open', 'attributes-closed',
+            'list-access-open', 'list-access-closed', 'enumerated']
+        assert [stage['second_handle'] is not None for stage in result['stages']] == [
+            False, True, False, True, False, False]
+        assert result['named_adjacent_differences'] == [[], [], [], [], [], ['change_ticks'], []]
+>       assert result['baseline_adjacent_differences'] == [[], [], [], [], []]
+E       AssertionError: assert [[], [], [], [], ['size']] == [[], [], [], [], []]
+E         
+E         At index 4 diff: ['size'] != []
+E         Use -v to get more diff
+
+tests\test_alc_r0_same_handle_directory.py:422: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_same_handle_directory.py::test_access_exact_intervention_sequence_and_no_early_enumeration

@@ -1,0 +1,1551 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="15" time="8.787" timestamp="2026-10-06T15:29:53.687082+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_real_disabled_hf_class_cell_has_stable_binding" time="0.004"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">def test_real_disabled_hf_class_cell_has_stable_binding():
+        module = TinyLayer()
+&gt;       assert fingerprint(module) == fingerprint(module)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_hf_disabled_dispatch.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_only_exact_disabled_boolean_route_is_admitted[True]" time="0.002" /><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_only_exact_disabled_boolean_route_is_admitted[0]" time="0.002" /><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_only_exact_disabled_boolean_route_is_admitted[None]" time="0.001" /><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_only_exact_disabled_boolean_route_is_admitted[false]" time="0.001" /><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_class_is_not_admitted_as_arbitrary_attribute" time="0.001" /><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_disabled_dispatch_mutations_are_rejected[namespace]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">changed = 'namespace'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B409EF30&gt;
+
+    @pytest.mark.parametrize("changed", ["namespace", "super", "code", "closure", "method", "mro"])
+    def test_disabled_dispatch_mutations_are_rejected(changed, monkeypatch):
+        module = TinyLayer()
+&gt;       fingerprint(module)
+
+tests\test_alc_r0_hf_disabled_dispatch.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_disabled_dispatch_mutations_are_rejected[super]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">changed = 'super'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B409E1B0&gt;
+
+    @pytest.mark.parametrize("changed", ["namespace", "super", "code", "closure", "method", "mro"])
+    def test_disabled_dispatch_mutations_are_rejected(changed, monkeypatch):
+        module = TinyLayer()
+&gt;       fingerprint(module)
+
+tests\test_alc_r0_hf_disabled_dispatch.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_disabled_dispatch_mutations_are_rejected[code]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">changed = 'code'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B409E120&gt;
+
+    @pytest.mark.parametrize("changed", ["namespace", "super", "code", "closure", "method", "mro"])
+    def test_disabled_dispatch_mutations_are_rejected(changed, monkeypatch):
+        module = TinyLayer()
+&gt;       fingerprint(module)
+
+tests\test_alc_r0_hf_disabled_dispatch.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_disabled_dispatch_mutations_are_rejected[closure]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">changed = 'closure'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B40CB620&gt;
+
+    @pytest.mark.parametrize("changed", ["namespace", "super", "code", "closure", "method", "mro"])
+    def test_disabled_dispatch_mutations_are_rejected(changed, monkeypatch):
+        module = TinyLayer()
+&gt;       fingerprint(module)
+
+tests\test_alc_r0_hf_disabled_dispatch.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_disabled_dispatch_mutations_are_rejected[method]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">changed = 'method'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B40C96D0&gt;
+
+    @pytest.mark.parametrize("changed", ["namespace", "super", "code", "closure", "method", "mro"])
+    def test_disabled_dispatch_mutations_are_rejected(changed, monkeypatch):
+        module = TinyLayer()
+&gt;       fingerprint(module)
+
+tests\test_alc_r0_hf_disabled_dispatch.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_disabled_dispatch_mutations_are_rejected[mro]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">changed = 'mro'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B40CAEA0&gt;
+
+    @pytest.mark.parametrize("changed", ["namespace", "super", "code", "closure", "method", "mro"])
+    def test_disabled_dispatch_mutations_are_rejected(changed, monkeypatch):
+        module = TinyLayer()
+&gt;       fingerprint(module)
+
+tests\test_alc_r0_hf_disabled_dispatch.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_downstream_module_dispatch_mutation_is_bound[__call__]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">name = '__call__'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B40C3350&gt;
+
+    @pytest.mark.parametrize("name", ["__call__", "_wrapped_call_impl", "_call_impl"])
+    def test_downstream_module_dispatch_mutation_is_bound(name, monkeypatch):
+        module = TinyLayer()
+&gt;       before = fingerprint(module)
+                 ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_hf_disabled_dispatch.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_downstream_module_dispatch_mutation_is_bound[_wrapped_call_impl]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">name = '_wrapped_call_impl'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B40CB7D0&gt;
+
+    @pytest.mark.parametrize("name", ["__call__", "_wrapped_call_impl", "_call_impl"])
+    def test_downstream_module_dispatch_mutation_is_bound(name, monkeypatch):
+        module = TinyLayer()
+&gt;       before = fingerprint(module)
+                 ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_hf_disabled_dispatch.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase><testcase classname="tests.test_alc_r0_hf_disabled_dispatch" name="test_downstream_module_dispatch_mutation_is_bound[_call_impl]" time="0.002"><failure message="aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type">name = '_call_impl'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000155B40CAA20&gt;
+
+    @pytest.mark.parametrize("name", ["__call__", "_wrapped_call_impl", "_call_impl"])
+    def test_downstream_module_dispatch_mutation_is_bound(name, monkeypatch):
+        module = TinyLayer()
+&gt;       before = fingerprint(module)
+                 ^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_hf_disabled_dispatch.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_hf_disabled_dispatch.py:20: in fingerprint
+    return computational_state_fingerprint({"layer": module})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:548: in computational_state_fingerprint
+    _dispatch_dependencies(module, freeze),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:260: in _dispatch_dependencies
+    binding = freeze(operation)
+              ^^^^^^^^^^^^^^^^^
+src\aluclu\alc_r0\checkpoint_state.py:433: in freeze
+    [freeze(item, depth + 1) for item in closure],
+     ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = &lt;class 'transformers.modeling_layers.GradientCheckpointingLayer'&gt;
+depth = 1
+
+    def freeze(value, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if depth &gt; 32 or nodes &gt; 100000:
+            raise CheckpointExecutionError(
+                "computational state resource bound exceeded"
+            )
+        if value is None or type(value) in {bool, int, str}:
+            if type(value) is int and value.bit_length() &gt; 256:
+                raise CheckpointExecutionError("integer state bound exceeded")
+            if type(value) is str:
+                if len(value) &gt; 65536 or len(value.encode("utf-8")) &gt; 65536:
+                    raise CheckpointExecutionError("string state bound exceeded")
+            return [type(value).__name__, value]
+        if type(value) is float:
+            if not math.isfinite(value):
+                raise CheckpointExecutionError("nonfinite computational state")
+            return ["float", value.hex()]
+        if isinstance(value, (torch.dtype, torch.device)):
+            return [type(value).__name__, str(value)]
+        if id(value) in wrapper_ids:
+            # Controller getter closure may capture its separately inventoried
+            # exact owner. This is not arbitrary module reference admission.
+            return ["inventoried_wrapper", id(value)]
+        if any(value is cls for cls in wrapper_classes):
+            # Explicit super() class cells; methods are inventoried separately.
+            return ["wrapper_class", id(value)]
+        if isinstance(value, types.MethodType):
+            if id(value.__self__) not in module_ids:
+                previous, functions, getters, dispatch = no_grad_factory_dependencies(
+                    value
+                )
+                return [
+                    "no_grad_factory",
+                    id(value.__self__),
+                    previous,
+                    [freeze(fn, depth + 1) for fn in functions],
+                    [freeze(fn, depth + 1) for fn in getters],
+                    dispatch,
+                ]
+            # Attribute access constructs ephemeral method objects; never memoize
+            # their recycled IDs. Their stable binding is self plus function.
+            return ["method", id(value.__self__), freeze(value.__func__, depth + 1)]
+        if any(value is cls for cls in CONTEXT_CLASSES):
+            # Only class cells in the separately enumerated context operations.
+            # Method bodies/state are bound above; this is not generic class support.
+            return ["context_class", id(value)]
+        identity = id(value)
+        if identity in active:
+            raise CheckpointExecutionError("computational state cycle")
+        if identity in memo:
+            return ["reference", identity]
+        active.add(identity)
+        try:
+            if isinstance(value, torch.Tensor):
+                if value.requires_grad or value.numel() * value.element_size() &gt; 65536:
+                    raise CheckpointExecutionError(
+                        "unsupported unregistered tensor state"
+                    )
+                stamp = _tensor_stamp(value)
+                result = [
+                    "tensor",
+                    identity,
+                    [str(item) for item in stamp],
+                    _digest((("value", value),)),
+                ]
+            elif type(value) in {dict, OrderedDict}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [
+                    (freeze(key, depth + 1), freeze(item, depth + 1))
+                    for key, item in value.items()
+                ]
+                items.sort(key=lambda pair: pair[0])
+                result = ["mapping", identity, items]
+            elif type(value) in {list, tuple, set, frozenset}:
+                if len(value) &gt; 2048:
+                    raise CheckpointExecutionError(
+                        "computational container bound exceeded"
+                    )
+                items = [freeze(item, depth + 1) for item in value]
+                if isinstance(value, (set, frozenset)):
+                    items.sort()
+                result = [type(value).__name__, identity, items]
+            elif isinstance(value, (PretrainedConfig, GenerationConfig)):
+                result = [
+                    "config",
+                    identity,
+                    id(type(value)),
+                    freeze(vars(value), depth + 1),
+                ]
+            elif isinstance(value, types.FunctionType):
+                closure = tuple(cell.cell_contents for cell in value.__closure__ or ())
+                # Ephemeral closure tuples themselves are not fingerprint identities.
+                result = [
+                    "function",
+                    identity,
+                    id(value.__code__),
+                    freeze(value.__defaults__, depth + 1),
+                    freeze(value.__kwdefaults__, depth + 1),
+                    [freeze(item, depth + 1) for item in closure],
+                ]
+            elif isinstance(value, types.BuiltinFunctionType):
+                # Python cannot expose native implementation state here. This
+                # binds the resolved callable only; runtime qualification is separate.
+                result = ["builtin", identity, id(value.__self__)]
+            elif isinstance(
+                value, (types.WrapperDescriptorType, types.MethodDescriptorType)
+            ):
+                # A reviewed Python dispatch closure can capture its original
+                # native descriptor; bind that endpoint, not native semantics.
+                result = ["native_descriptor", identity, id(value.__objclass__)]
+            elif isinstance(value, functools.partial):
+                result = [
+                    "partial",
+                    identity,
+                    freeze(value.func, depth + 1),
+                    freeze(value.args, depth + 1),
+                    freeze(value.keywords, depth + 1),
+                ]
+            else:
+&gt;               raise CheckpointExecutionError(
+                    f"unsupported computational attribute type: {type(value).__name__}"
+                )
+E               aluclu.alc_r0.checkpoint_execution.CheckpointExecutionError: unsupported computational attribute type: type
+
+src\aluclu\alc_r0\checkpoint_state.py:454: CheckpointExecutionError</failure></testcase></testsuite></testsuites>

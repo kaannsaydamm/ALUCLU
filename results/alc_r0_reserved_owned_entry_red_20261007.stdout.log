@@ -1,0 +1,59 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_enter_failure_after_creation_drains_owned_handle_and_unlocks[OSError] __
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-11/test_enter_failure_after_creat0')
+failure = <class 'OSError'>
+
+    @pytest.mark.parametrize("failure", [OSError, KeyboardInterrupt])
+    def test_enter_failure_after_creation_drains_owned_handle_and_unlocks(tmp_path, failure):
+        import _winapi
+        from concurrent.futures import ThreadPoolExecutor
+        arguments, store, reserved, sentinel = fixture(tmp_path)
+        captured = []
+    
+        class FailIdentity(ReservedOwnedLease):
+            def _observe_creation_time(self):
+                current = _winapi.GetCurrentProcess()
+                captured.append(_winapi.DuplicateHandle(current, self._information.process,
+                    current, 0, False, _winapi.DUPLICATE_SAME_ACCESS))
+                super()._observe_creation_time()
+                raise failure("fixture after actual creation, before identity")
+    
+        lease = FailIdentity(**arguments)
+        try:
+>           with pytest.raises(failure, match="before identity"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests\test_alc_r0_reserved_owned_process.py:202: Failed
+_ test_enter_failure_after_creation_drains_owned_handle_and_unlocks[KeyboardInterrupt] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-11/test_enter_failure_after_creat1')
+failure = <class 'KeyboardInterrupt'>
+
+    @pytest.mark.parametrize("failure", [OSError, KeyboardInterrupt])
+    def test_enter_failure_after_creation_drains_owned_handle_and_unlocks(tmp_path, failure):
+        import _winapi
+        from concurrent.futures import ThreadPoolExecutor
+        arguments, store, reserved, sentinel = fixture(tmp_path)
+        captured = []
+    
+        class FailIdentity(ReservedOwnedLease):
+            def _observe_creation_time(self):
+                current = _winapi.GetCurrentProcess()
+                captured.append(_winapi.DuplicateHandle(current, self._information.process,
+                    current, 0, False, _winapi.DUPLICATE_SAME_ACCESS))
+                super()._observe_creation_time()
+                raise failure("fixture after actual creation, before identity")
+    
+        lease = FailIdentity(**arguments)
+        try:
+>           with pytest.raises(failure, match="before identity"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE KeyboardInterrupt
+
+tests\test_alc_r0_reserved_owned_process.py:202: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_reserved_owned_process.py::test_enter_failure_after_creation_drains_owned_handle_and_unlocks[OSError]
+FAILED tests/test_alc_r0_reserved_owned_process.py::test_enter_failure_after_creation_drains_owned_handle_and_unlocks[KeyboardInterrupt]

@@ -1,0 +1,3 @@
+actual_run_exit_code=0
+root_observed_terminal_session=2548
+stdout=tool-captured aggregate JSON and exit marker, not redirected to a separate file

@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________________ test_actual_current_runtime_read_only ____________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-57/test_actual_current_runtime_re0')
+
+    @pytest.mark.skipif(os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN')!='1',
+                        reason='separately selected read-only runtime diagnostic')
+    def test_actual_current_runtime_read_only(tmp_path):
+        result=inspect_owned(tmp_path,actual=True)
+        target=Path(__file__).resolve().parents[1]/'results'/'alc_r0_python_runtime_actual_20261011.binding.json'
+        with target.open('xb') as out:
+            out.write(canonical_json_bytes(result))
+>       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'resolved regular runtime path required'}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:181: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_python_runtime_binding.py::test_actual_current_runtime_read_only

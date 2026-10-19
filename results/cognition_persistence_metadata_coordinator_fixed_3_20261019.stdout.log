@@ -1,0 +1,15 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 6 items
+
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-query-denied] PASSED [ 16%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_coordinator_native_denial_preserves_failure_and_reports_owner_cleanup[actuator-terminate-denied] PASSED [ 33%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_shared_cleanup_tail_never_renews_and_consumers_read_early_pin PASSED [ 50%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_closed_fixed_lease_retries_actor_cleanup_without_clearing_first_failure PASSED [ 66%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_refuses_system_temp_root_without_writing PASSED [ 83%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_observer_stop_cancels_a_partial_frame_without_closing_peer PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_fixed_3_20261019.xml -
+============================== 6 passed in 5.97s ==============================

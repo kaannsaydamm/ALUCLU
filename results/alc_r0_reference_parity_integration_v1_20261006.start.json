@@ -1,0 +1,18 @@
+{
+    "suite":  "ParityIntegration",
+    "python":  "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+    "worktree":  "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local",
+    "arguments":  [
+                      "-m",
+                      "pytest",
+                      "tests/test_alc_r0_reference_parity_integration.py",
+                      "-q",
+                      "--junitxml=results/alc_r0_reference_parity_integration_v1_20261006.xml"
+                  ],
+    "started_at":  "2026-10-06T15:26:37.0667339+03:00",
+    "free_physical_kib":  3038212,
+    "free_virtual_kib":  15396820,
+    "required_free_physical_kib":  2097152,
+    "required_free_virtual_kib":  6291456,
+    "scope":  "FAKE_PURE_CPU_ONLY_NOT_HOST_RESOURCE_OR_LEARNING_ACCEPTANCE"
+}

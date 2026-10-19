@@ -1,0 +1,71 @@
+FFFFF                                                                    [100%]
+================================== FAILURES ===================================
+__ test_allocation_proof_requires_exact_reference_layout[required_payload-0] __
+
+field = 'required_payload', value = 0
+
+    @pytest.mark.parametrize("field,value", [("required_payload",0),("logical_capacity",0),("allocated_backing_bytes",0),("output_words",63)])
+    def test_allocation_proof_requires_exact_reference_layout(field,value):
+        case=((1,),(1,),0)
+        allocation=dict(required_payload=66,logical_capacity=66,allocated_backing_bytes=76,output_words=64)
+>       EXECUTION.verify_allocation(allocation,case)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'native_mutation_execution' has no attribute 'verify_allocation'
+
+tests\test_alc_r0_native_mutation_execution.py:57: AttributeError
+__ test_allocation_proof_requires_exact_reference_layout[logical_capacity-0] __
+
+field = 'logical_capacity', value = 0
+
+    @pytest.mark.parametrize("field,value", [("required_payload",0),("logical_capacity",0),("allocated_backing_bytes",0),("output_words",63)])
+    def test_allocation_proof_requires_exact_reference_layout(field,value):
+        case=((1,),(1,),0)
+        allocation=dict(required_payload=66,logical_capacity=66,allocated_backing_bytes=76,output_words=64)
+>       EXECUTION.verify_allocation(allocation,case)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'native_mutation_execution' has no attribute 'verify_allocation'
+
+tests\test_alc_r0_native_mutation_execution.py:57: AttributeError
+_ test_allocation_proof_requires_exact_reference_layout[allocated_backing_bytes-0] _
+
+field = 'allocated_backing_bytes', value = 0
+
+    @pytest.mark.parametrize("field,value", [("required_payload",0),("logical_capacity",0),("allocated_backing_bytes",0),("output_words",63)])
+    def test_allocation_proof_requires_exact_reference_layout(field,value):
+        case=((1,),(1,),0)
+        allocation=dict(required_payload=66,logical_capacity=66,allocated_backing_bytes=76,output_words=64)
+>       EXECUTION.verify_allocation(allocation,case)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'native_mutation_execution' has no attribute 'verify_allocation'
+
+tests\test_alc_r0_native_mutation_execution.py:57: AttributeError
+___ test_allocation_proof_requires_exact_reference_layout[output_words-63] ____
+
+field = 'output_words', value = 63
+
+    @pytest.mark.parametrize("field,value", [("required_payload",0),("logical_capacity",0),("allocated_backing_bytes",0),("output_words",63)])
+    def test_allocation_proof_requires_exact_reference_layout(field,value):
+        case=((1,),(1,),0)
+        allocation=dict(required_payload=66,logical_capacity=66,allocated_backing_bytes=76,output_words=64)
+>       EXECUTION.verify_allocation(allocation,case)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'native_mutation_execution' has no attribute 'verify_allocation'
+
+tests\test_alc_r0_native_mutation_execution.py:57: AttributeError
+_______ test_later_kill_cannot_promote_prior_guard_or_no_write_failure ________
+
+    def test_later_kill_cannot_promote_prior_guard_or_no_write_failure():
+        clean=dict(status="invariant-detected",workspace_guards_intact=True,no_write_contract_intact=True)
+        killed=dict(status="semantic-killed",workspace_guards_intact=True,no_write_contract_intact=True)
+>       assert EXECUTION.interpret_completed_prefix([clean,killed])=="semantic-killed"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'native_mutation_execution' has no attribute 'interpret_completed_prefix'
+
+tests\test_alc_r0_native_mutation_execution.py:65: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_native_mutation_execution.py::test_allocation_proof_requires_exact_reference_layout[required_payload-0]
+FAILED tests/test_alc_r0_native_mutation_execution.py::test_allocation_proof_requires_exact_reference_layout[logical_capacity-0]
+FAILED tests/test_alc_r0_native_mutation_execution.py::test_allocation_proof_requires_exact_reference_layout[allocated_backing_bytes-0]
+FAILED tests/test_alc_r0_native_mutation_execution.py::test_allocation_proof_requires_exact_reference_layout[output_words-63]
+FAILED tests/test_alc_r0_native_mutation_execution.py::test_later_kill_cannot_promote_prior_guard_or_no_write_failure
+5 failed, 9 deselected in 0.56s

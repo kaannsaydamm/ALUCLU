@@ -1,0 +1,75 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_____________________ test_valid_canonical_request[False] _____________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-120/test_valid_canonical_request_F0')
+as_string = False
+
+    @pytest.mark.parametrize('as_string', [False, True])
+    def test_valid_canonical_request(tmp_path, as_string):
+        path, data = fixture(tmp_path)
+>       result = read(str(path) if as_string else path, data)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_request_file.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_fixed_d_request_file.py:29: in read
+    return reader().read_d_request_file(path, **options)
+           ^^^^^^^^
+tests\test_alc_r0_fixed_d_request_file.py:15: in reader
+    return importlib.import_module('aluclu.alc_r0.fixed_d_request_file')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.fixed_d_request_file'
+import_ = <function _gcd_import at 0x000001F6F00380E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.fixed_d_request_file'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____________________ test_valid_canonical_request[True] ______________________
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-120/test_valid_canonical_request_T0')
+as_string = True
+
+    @pytest.mark.parametrize('as_string', [False, True])
+    def test_valid_canonical_request(tmp_path, as_string):
+        path, data = fixture(tmp_path)
+>       result = read(str(path) if as_string else path, data)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_request_file.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_fixed_d_request_file.py:29: in read
+    return reader().read_d_request_file(path, **options)
+           ^^^^^^^^
+tests\test_alc_r0_fixed_d_request_file.py:15: in reader
+    return importlib.import_module('aluclu.alc_r0.fixed_d_request_file')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'aluclu.alc_r0.fixed_d_request_file'
+import_ = <function _gcd_import at 0x000001F6F00380E0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'aluclu.alc_r0.fixed_d_request_file'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_request_file.py::test_valid_canonical_request[False]
+FAILED tests/test_alc_r0_fixed_d_request_file.py::test_valid_canonical_request[True]

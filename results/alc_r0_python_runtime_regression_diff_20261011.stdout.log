@@ -1,0 +1,26 @@
+.............................F.......................................... [ 25%]
+........................................................................ [ 50%]
+........................................................................ [ 75%]
+.......................................................................  [100%]
+================================== FAILURES ===================================
+_____________ test_enumerated_identity_matches_path_and_open_file _____________
+
+tree = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-66/test_enumerated_identity_match0/installed')
+
+    def test_enumerated_identity_matches_path_and_open_file(tree):
+        module = api()
+        bounds = module.RuntimeTreeBounds(entry_count=2,path_bytes=10,file_bytes=7,total_file_bytes=7)
+        nodes, files, total = module._walk(tree,bounds,time.monotonic_ns()+1_000_000_000)
+        retained = nodes['python.dll'][1]
+        assert files == 1 and total == 7
+        assert retained == module._fingerprint((tree/'python.dll').lstat())
+        with (tree/'python.dll').open('rb') as stream:
+>           assert retained == module._fingerprint(os.fstat(stream.fileno()))
+E           assert (33206, 43439...35187600, ...) == (33206, 43439...35693200, ...)
+E             
+E             At index 5 diff: 1791725079935187600 != 1791725079935693200
+E             Use -v to get more diff
+
+tests\test_alc_r0_runtime_tree_inventory.py:88: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_runtime_tree_inventory.py::test_enumerated_identity_matches_path_and_open_file

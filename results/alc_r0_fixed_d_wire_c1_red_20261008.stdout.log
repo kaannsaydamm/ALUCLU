@@ -1,0 +1,31 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+____________ test_c1_controls_in_path_deny[/research/\x85snapshot] ____________
+
+path = '/research/\x85snapshot'
+
+    @pytest.mark.parametrize("path", ["/research/\u0085snapshot", "C:/research/\u009fsnapshot"])
+    def test_c1_controls_in_path_deny(path):
+        req = request()
+        req["snapshot_path"] = path
+>       with pytest.raises(wire().DWireError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DWireError
+
+tests\test_alc_r0_fixed_d_wire.py:178: Failed
+___________ test_c1_controls_in_path_deny[C:/research/\x9fsnapshot] ___________
+
+path = 'C:/research/\x9fsnapshot'
+
+    @pytest.mark.parametrize("path", ["/research/\u0085snapshot", "C:/research/\u009fsnapshot"])
+    def test_c1_controls_in_path_deny(path):
+        req = request()
+        req["snapshot_path"] = path
+>       with pytest.raises(wire().DWireError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DWireError
+
+tests\test_alc_r0_fixed_d_wire.py:178: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_wire.py::test_c1_controls_in_path_deny[/research/\x85snapshot]
+FAILED tests/test_alc_r0_fixed_d_wire.py::test_c1_controls_in_path_deny[C:/research/\x9fsnapshot]

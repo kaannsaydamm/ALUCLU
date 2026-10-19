@@ -1,0 +1,81 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-conflict-READY] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-184/test_actual_entrypoint_retains0')
+scenario = 'bootstrap-conflict', state = 'READY'
+
+    @pytest.mark.parametrize('scenario,state',[
+        ('stale-before-create','RESERVED'),('stale-before-resume','READY'),('blocked-observer','RUNNING'),
+        ('bootstrap-conflict','READY'),('bootstrap-wrong-role','READY')])
+    def test_actual_entrypoint_retains_pending_on_stale_or_blocked_source(tmp_path,scenario,state):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+        assert receipt.exit_code==2 and receipt.active_processes==0 and not receipt.timed_out
+>       declaration=bounded_json(namespace/'declaration.json')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_coordinator.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-184/test_actual_entrypoint_retains0/diagnostic/declaration.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-184\\test_actual_entrypoint_retains0\\diagnostic\\declaration.json'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: FileNotFoundError
+_ test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-wrong-role-READY] _
+
+tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-184/test_actual_entrypoint_retains1')
+scenario = 'bootstrap-wrong-role', state = 'READY'
+
+    @pytest.mark.parametrize('scenario,state',[
+        ('stale-before-create','RESERVED'),('stale-before-resume','READY'),('blocked-observer','RUNNING'),
+        ('bootstrap-conflict','READY'),('bootstrap-wrong-role','READY')])
+    def test_actual_entrypoint_retains_pending_on_stale_or_blocked_source(tmp_path,scenario,state):
+        namespace=tmp_path/'diagnostic'; namespace.mkdir()
+        receipt=invoke(tmp_path,('diagnostic',scenario,str(namespace)))
+        assert receipt.exit_code==2 and receipt.active_processes==0 and not receipt.timed_out
+>       declaration=bounded_json(namespace/'declaration.json')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_alc_r0_fixed_d_coordinator.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_alc_r0_fixed_d_coordinator.py:30: in bounded_json
+    with path.open('rb') as stream: data=stream.read(limit+1)
+         ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-184/test_actual_entrypoint_retains1/diagnostic/declaration.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\kaann\\AppData\\Local\\Temp\\pytest-of-kaann\\pytest-184\\test_actual_entrypoint_retains1\\diagnostic\\declaration.json'
+
+C:\Users\kaann\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-conflict-READY]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_entrypoint_retains_pending_on_stale_or_blocked_source[bootstrap-wrong-role-READY]

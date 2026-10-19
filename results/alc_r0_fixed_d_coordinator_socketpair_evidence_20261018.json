@@ -1,0 +1,93 @@
+{
+  "native": {
+    "active_processes": 0,
+    "command": [
+      "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-c",
+      "import json,time\ndef emit(record): print(json.dumps(record,sort_keys=True),flush=True)\nemit(dict(event=\"socket-import-begun\"))\nstart=time.perf_counter_ns()\nimport socket\nemit(dict(event=\"socket-import-completed\",wall_perf_ns=time.perf_counter_ns()-start,socketpair_name=socket.socketpair.__name__,socket_module=socket.__file__))\nemit(dict(event=\"socketpair-begun\"))\nwall=time.perf_counter_ns(); cpu=time.process_time_ns()\na,b=socket.socketpair()\nfinished=time.perf_counter_ns(); cpu_end=time.process_time_ns()\nemit(dict(event=\"socketpair-completed\",wall_perf_ns=finished-wall,cpu_ns=cpu_end-cpu,family=int(a.family),type=int(a.type),a_local=a.getsockname(),a_peer=a.getpeername(),b_local=b.getsockname(),b_peer=b.getpeername()))\na.close(); b.close()\nemit(dict(event=\"sockets-closed\",scientific_execution=False))\n"
+    ],
+    "diagnostic_exit_code": 0,
+    "exit_code": 0,
+    "finished_ns": 3859078000000,
+    "kernel_time_100ns": 1250000,
+    "parent_bound_seconds": 120,
+    "root_pid": 28828,
+    "scope": "one-local-socketpair-diagnostic-not-acceptance",
+    "started_ns": 3856531000000,
+    "timed_out": false,
+    "total_processes": 3,
+    "user_time_100ns": 625000
+  },
+  "records": [
+    {
+      "event": "socket-import-begun"
+    },
+    {
+      "event": "socket-import-completed",
+      "socket_module": "C:\\Users\\kaann\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\Lib\\socket.py",
+      "socketpair_name": "_fallback_socketpair",
+      "wall_perf_ns": 28639400
+    },
+    {
+      "event": "socketpair-begun"
+    },
+    {
+      "a_local": [
+        "127.0.0.1",
+        52982
+      ],
+      "a_peer": [
+        "127.0.0.1",
+        52983
+      ],
+      "b_local": [
+        "127.0.0.1",
+        52983
+      ],
+      "b_peer": [
+        "127.0.0.1",
+        52982
+      ],
+      "cpu_ns": 15625000,
+      "event": "socketpair-completed",
+      "family": 2,
+      "type": 1,
+      "wall_perf_ns": 2245345500
+    },
+    {
+      "event": "sockets-closed",
+      "scientific_execution": false
+    }
+  ],
+  "refs": [
+    {
+      "byte_length": 586,
+      "sha256": "4ce15bea0abd9134308b1ae9410cd6dc3725bfbe6d46b05a4cd106a289c02646",
+      "path": "results/alc_r0_fixed_d_coordinator_socketpair_probe_1_20261018.stdout.log"
+    },
+    {
+      "byte_length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "results/alc_r0_fixed_d_coordinator_socketpair_probe_1_20261018.stderr.log"
+    },
+    {
+      "byte_length": 1348,
+      "sha256": "1bf9e6c8c102cb5d2e6a9d72191e3bd81e56315770e0dadd9d7bd305936dfbc8",
+      "path": "results/alc_r0_fixed_d_coordinator_socketpair_probe_1_20261018.exit.json"
+    }
+  ],
+  "schema": "alc-r0-local-socketpair-diagnostic-v1",
+  "limitations": [
+    "One isolated local loopback socketpair observation, not reproduction of coordinator delay.",
+    "Actual fallback_socketpair call took2.2453455s, not the entire prior69-second failure interval.",
+    "Import separate28.6394ms; perf_counter used for elapsed; process CPU is not GPU time.",
+    "No socket monkeypatch, timeout relaxation, remote endpoint or product modification.",
+    "Earlier source interval also includes Job/resource setup and host scheduling; exact culprit remains unproven."
+  ],
+  "stdlib_socket": {
+    "byte_length": 37815,
+    "sha256": "7d4d4c66e6f4bcc961ab462c4f08002ca97def8713a4be1c7373bdbd970a5274",
+    "absolute_path": "C:\\Users\\kaann\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\Lib\\socket.py"
+  }
+}

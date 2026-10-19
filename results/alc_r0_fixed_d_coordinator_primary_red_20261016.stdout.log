@@ -1,0 +1,29 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 40 items / 34 deselected / 6 selected
+
+tests/test_alc_r0_reserved_owned_process.py::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[creation] FAILED [ 16%]
+
+================================== FAILURES ===================================
+_ test_primary_failure_survives_secondary_cleanup_error_with_owned_child[creation] _
+tests\test_alc_r0_reserved_owned_process.py:504: in _observe_creation_time
+    if phase=='creation': raise primary
+                          ^^^^^^^^^^^^^
+E   ValueError: controlled primary lifecycle/body failure
+
+During handling of the above exception, another exception occurred:
+tests\test_alc_r0_reserved_owned_process.py:529: in test_primary_failure_survives_secondary_cleanup_error_with_owned_child
+    with lease:
+         ^^^^^
+src\aluclu\alc_r0\reserved_owned_process.py:259: in __enter__
+    self._close()
+tests\test_alc_r0_reserved_owned_process.py:521: in _close
+    raise secondary
+E   RuntimeError: controlled secondary cleanup failure
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_primary_red_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_reserved_owned_process.py::test_primary_failure_survives_secondary_cleanup_error_with_owned_child[creation]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+====================== 1 failed, 34 deselected in 0.77s =======================

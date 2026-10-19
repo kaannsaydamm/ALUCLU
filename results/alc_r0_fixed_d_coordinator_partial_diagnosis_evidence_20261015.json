@@ -1,0 +1,171 @@
+{
+  "scope": "Current isolated native partial-acquisition coverage plus relevant regression; not full native-fault/scientific acceptance. Earlier failure NOT reproduced; cause UNKNOWN, not repaired by proof.",
+  "source_pin_modes": [
+    "regression_partial_diagnose"
+  ],
+  "standalone_runner_historical_sha256": "70fdb057389f3e75fdc44e6eaf9f53e1f1f3a9ff257e3b0e7456cad92157eef6",
+  "evidence_filename_stamp_note": "20261015 is frozen runner family stamp; actual run timestamps in XML are 20261016",
+  "runs": [
+    {
+      "mode": "abrupt_diagnose",
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 1.425
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 35358812000000,
+        "kernel_time_100ns": 16250000,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 16276,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35355968000000,
+        "timed_out": false,
+        "total_processes": 11,
+        "user_time_100ns": 7343750
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_abrupt_diagnose_20261015.stdout.log",
+          "bytes": 636,
+          "sha256": "1b4fe22e1a21ad1341961facbd550543e9a6fd3c2836aceab910fac8b1559e8d"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_abrupt_diagnose_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_abrupt_diagnose_20261015.exit.json",
+          "bytes": 313,
+          "sha256": "5f5a276ad99595498e9654f49ee8692b31669cd8d0fafad2aea2ffdd916c4c4e"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_abrupt_diagnose_20261015.xml",
+          "bytes": 387,
+          "sha256": "731315412b316789edc217af199c8ee7ec1bacc3c00535e48009e848b9c0b61a"
+        }
+      ]
+    },
+    {
+      "mode": "regression_partial_diagnose",
+      "junit": {
+        "tests": 220,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 87.257
+      },
+      "native": {
+        "active_processes": 0,
+        "exit_code": 0,
+        "finished_ns": 35486843000000,
+        "kernel_time_100ns": 481093750,
+        "parent_bound_seconds": 120,
+        "pytest_exit_code": 0,
+        "root_pid": 31788,
+        "scope": "integrated-coordinator-acceptance-work-in-progress",
+        "started_ns": 35398781000000,
+        "timed_out": false,
+        "total_processes": 206,
+        "user_time_100ns": 189375000
+      },
+      "files": [
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_diagnose_20261015.stdout.log",
+          "bytes": 1461,
+          "sha256": "633664509f34698bbcf10f30c26c0000b1f50f2807f8240556ceb5baa817b59e"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_diagnose_20261015.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_diagnose_20261015.exit.json",
+          "bytes": 317,
+          "sha256": "58af44ba8cb6c71369aed3730cf955e77c1e2f5eaa93c40bfd3bd68598d520f9"
+        },
+        {
+          "path": "results/alc_r0_fixed_d_coordinator_regression_partial_diagnose_20261015.xml",
+          "bytes": 31731,
+          "sha256": "3389706332815683a0cb48b80eb696bd41e58e95963517541daa50cb85f49482"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/aluclu/alc_r0/fixed_d_coordinator.py",
+      "bytes": 61731,
+      "sha256": "6235c5497e76947f1fe5b2ad955d4449f7f81fdf8d0ae90e0b0aa82c4ea0d500"
+    },
+    {
+      "path": "tests/test_alc_r0_fixed_d_coordinator.py",
+      "bytes": 28344,
+      "sha256": "d4856eea417d46411cc1e86a538ef60b8311cb378c2d7e698b442c7dfba20c6c"
+    },
+    {
+      "path": "tests/alc_r0_fixed_d_coordinator_runner.py",
+      "bytes": 3973,
+      "sha256": "41fb29964744e63490bd9ea3d9745277c52688a7d81726987ebb8f6406027eef"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reservation_state.py",
+      "bytes": 16968,
+      "sha256": "37e21b07ef1b12a72ccd785fd8ec2117d5fc0e4d3ae930eb8b7dd1f070f35da2"
+    },
+    {
+      "path": "src/aluclu/alc_r0/reserved_owned_process.py",
+      "bytes": 19331,
+      "sha256": "cb3c33873c34abcc6af0b828a1fbc38e713e198677d8796a20404374429a787d"
+    },
+    {
+      "path": "tests/test_alc_r0_reserved_owned_process.py",
+      "bytes": 24879,
+      "sha256": "d60edddd395cba472e78959f81d3ac63abf19fd138d237d5da1e029edf5f3d9d"
+    },
+    {
+      "path": "tests/alc_r0_reserved_owned_worker.py",
+      "bytes": 1925,
+      "sha256": "e1a38895395b943f61807b3fc3a67177887660b723789c3377eed2b5611382f2"
+    }
+  ],
+  "regression_unique": 220,
+  "prior_missing": [],
+  "added": [
+    "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_partial_duplicate_failure_closes_owned_job_duplicate[acquire]",
+    "tests.test_alc_r0_fixed_d_coordinator::test_actuator_real_partial_duplicate_failure_closes_owned_job_duplicate[start]"
+  ],
+  "groups": [
+    {
+      "Name": "tests.test_alc_r0_fixed_d_coordinator",
+      "Count": 35
+    },
+    {
+      "Name": "tests.test_alc_r0_live_authority_watch",
+      "Count": 29
+    },
+    {
+      "Name": "tests.test_alc_r0_reservation_state",
+      "Count": 47
+    },
+    {
+      "Name": "tests.test_alc_r0_reservation_store",
+      "Count": 33
+    },
+    {
+      "Name": "tests.test_alc_r0_reserved_owned_process",
+      "Count": 34
+    },
+    {
+      "Name": "tests.test_alc_r0_status_watch_consumer",
+      "Count": 42
+    }
+  ]
+}

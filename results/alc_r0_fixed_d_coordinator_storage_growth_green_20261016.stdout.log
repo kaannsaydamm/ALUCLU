@@ -1,0 +1,43 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 46 items / 38 deselected / 8 selected
+
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization FAILED [ 12%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[entries] PASSED [ 25%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[hardlink] PASSED [ 37%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[bytes] PASSED [ 50%]
+tests/test_alc_r0_coordinator_growth_acceptance.py::test_growth_inventory_rejects_unbounded_or_unsafe_prefix[deadline] PASSED [ 62%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] FAILED [ 75%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] FAILED [ 87%]
+tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending FAILED [100%]
+
+================================== FAILURES ===================================
+____ test_request_only_growth_root_cannot_support_verified_materialization ____
+tests\test_alc_r0_coordinator_growth_acceptance.py:17: in test_request_only_growth_root_cannot_support_verified_materialization
+    assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E   assert (2 == 0)
+E    +  where 2 = OwnedProcessReceipt(root_pid=33348, exit_code=2, timed_out=False, started_ns=64764875000000, finished_ns=64767484000000, total_processes=7, active_processes=0, user_time_100ns=8437500, kernel_time_100ns=13750000).exit_code
+_ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success] _
+tests\test_alc_r0_fixed_d_coordinator.py:55: in test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle
+    assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E   assert (2 == 0)
+E    +  where 2 = OwnedProcessReceipt(root_pid=18184, exit_code=2, timed_out=False, started_ns=64767984000000, finished_ns=64770593000000, total_processes=7, active_processes=0, user_time_100ns=6875000, kernel_time_100ns=15156250).exit_code
+_ test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent] _
+tests\test_alc_r0_fixed_d_coordinator.py:55: in test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle
+    assert receipt.exit_code==0 and not receipt.timed_out and receipt.active_processes==0
+E   assert (2 == 0)
+E    +  where 2 = OwnedProcessReceipt(root_pid=34132, exit_code=2, timed_out=False, started_ns=64770640000000, finished_ns=64774718000000, total_processes=7, active_processes=0, user_time_100ns=10156250, kernel_time_100ns=17500000).exit_code
+_ test_completion_conflict_after_release_reports_committed_state_not_pending __
+tests\test_alc_r0_fixed_d_coordinator.py:215: in test_completion_conflict_after_release_reports_committed_state_not_pending
+    assert receipt.exit_code==3 and not receipt.timed_out and receipt.active_processes==0
+E   assert (2 == 3)
+E    +  where 2 = OwnedProcessReceipt(root_pid=25532, exit_code=2, timed_out=False, started_ns=64774781000000, finished_ns=64777687000000, total_processes=7, active_processes=0, user_time_100ns=9375000, kernel_time_100ns=16093750).exit_code
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\alc_r0_fixed_d_coordinator_storage_growth_green_20261016.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_alc_r0_coordinator_growth_acceptance.py::test_request_only_growth_root_cannot_support_verified_materialization
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[success]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_actual_diagnostic_entrypoint_completes_owned_and_reconciled_cycle[slow-parent]
+FAILED tests/test_alc_r0_fixed_d_coordinator.py::test_completion_conflict_after_release_reports_committed_state_not_pending
+================= 4 failed, 4 passed, 38 deselected in 13.48s =================

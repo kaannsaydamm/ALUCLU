@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="25" skipped="0" tests="25" time="11.837" timestamp="2026-10-04T02:10:50.770438+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_session_factory_uses_one_owner_controller_and_arm[PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:37: in test_session_factory_uses_one_owner_controller_and_arm
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_session_factory_uses_one_owner_controller_and_arm[PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:37: in test_session_factory_uses_one_owner_controller_and_arm
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[train-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[train-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[eval-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[eval-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[to-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[to-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[detach-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[detach-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[mount-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[mount-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[base-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[base-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[factor-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[factor-PinnedLlamaLoRAWrapper]" time="0.003"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[controller-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[controller-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[init-PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_active_lease_denies_wrapper_mutation_before_state_changes[init-PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:60: in test_active_lease_denies_wrapper_mutation_before_state_changes
+    wrapper, factors = make_wrapper(kind)
+                       ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_default_forward_cannot_bypass_active_lease[PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:97: in test_default_forward_cannot_bypass_active_lease
+    wrapper, _ = make_wrapper(kind)
+                 ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_default_forward_cannot_bypass_active_lease[PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:97: in test_default_forward_cannot_bypass_active_lease
+    wrapper, _ = make_wrapper(kind)
+                 ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_closed_lease_releases_mutation_and_unmounted_entry_denied[PinnedLlamaCapsuleWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:105: in test_closed_lease_releases_mutation_and_unmounted_entry_denied
+    wrapper, _ = make_wrapper(kind)
+                 ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_closed_lease_releases_mutation_and_unmounted_entry_denied[PinnedLlamaLoRAWrapper]" time="0.002"><failure message="AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:105: in test_closed_lease_releases_mutation_and_unmounted_entry_denied
+    wrapper, _ = make_wrapper(kind)
+                 ^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaLoRAWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase><testcase classname="tests.test_alc_r0_wrapper_checkpoint_lifecycle" name="test_controller_reinitialization_denied_even_without_lease" time="0.002"><failure message="AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'">tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:117: in test_controller_reinitialization_denied_even_without_lease
+    wrapper, _ = make_wrapper(PinnedLlamaCapsuleWrapper)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_alc_r0_wrapper_checkpoint_lifecycle.py:21: in make_wrapper
+    wrapper._initialize_checkpoint_controller()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Lib\site-packages\torch\nn\modules\module.py:1972: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'PinnedLlamaCapsuleWrapper' object has no attribute '_initialize_checkpoint_controller'</failure></testcase></testsuite></testsuites>

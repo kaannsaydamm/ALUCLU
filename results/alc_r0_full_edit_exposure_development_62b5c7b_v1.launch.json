@@ -1,0 +1,21 @@
+{
+  "source_commit": "62b5c7b6577078db5aa79fd2822a9b2381286597",
+  "wrapper_pid": 32516,
+  "child_pid": 30076,
+  "started_utc": "2026-10-03T19:28:23.9315987+00:00",
+  "python": "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\windows-training\\.venv\\Scripts\\python.exe",
+  "arguments": [
+    "-B",
+    "-m",
+    "aluclu.alc_r0.full_development_banded_edit_exposure",
+    "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\datasets\\primevul-original\\authors-drive-19iLaNDS0z99N8kB_jBRTmDLehwZBolMY",
+    "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\datasets\\primevul-original-paired",
+    "C:\\Users\\kaann\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\ALUCLU\\research\\alc-r0-smollm2-135m-v1\\model\\SmolLM2-135M-93efa2f",
+    "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.research-evidence\\alc_r0_banded_native_20261002\\build-d739a35-v1\\receipt.json",
+    "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local\\results\\alc_r0_banded_pair_resource_census_full_f7af513_20261003.stdout.log"
+  ],
+  "working_directory": "C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\\unified-lifelong-cognition-local",
+  "launcher_sha256": "255d73c3bc5da7a5cf165d935938b6a4fd62bd26fff90caa218b1d68603dd9ad",
+  "training_authority": false,
+  "held_out_data_present": false
+}

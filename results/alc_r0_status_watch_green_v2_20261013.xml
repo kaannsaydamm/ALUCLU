@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="42" time="5.348" timestamp="2026-10-13T17:10:19.797792+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_first_equal_and_increasing_status" time="0.019" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_state_violation_is_sticky[changes0]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_state_violation_is_sticky[changes1]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_state_violation_is_sticky[changes2]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_state_violation_is_sticky[changes3]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_state_violation_is_sticky[changes4]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_state_violation_is_sticky[changes5]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_forged_dataclass_fields_are_not_observations[changes0]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_forged_dataclass_fields_are_not_observations[changes1]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_forged_dataclass_fields_are_not_observations[changes2]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_forged_dataclass_fields_are_not_observations[changes3]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_forged_dataclass_fields_are_not_observations[changes4]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[observed_monotonic_ns-True]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[observed_monotonic_ns-0]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[observed_monotonic_ns--1]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[observed_monotonic_ns-9223372036854775808]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[observed_monotonic_ns-1.0]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[observed_monotonic_ns-None]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[utc_upper_ns-True]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[utc_upper_ns-0]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[utc_upper_ns--1]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[utc_upper_ns-9223372036854775808]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[utc_upper_ns-1.0]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_invalid_clock_transport_denies[utc_upper_ns-None]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_wrong_thread_denies_owner_too" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_real_slot_watch_updates_stop[revoked]" time="0.291" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_real_slot_watch_updates_stop[generation]" time="0.279" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_real_slot_watch_updates_stop[missing]" time="0.252" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_real_slot_watch_updates_stop[corrupt]" time="0.253" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_wrong_watch_binding_denies[signal]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_wrong_watch_binding_denies[generation]" time="0.003" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_wrong_watch_binding_denies[clock]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_wrong_watch_binding_denies[object]" time="0.002" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_known_invalid_observation_stops[expired]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_known_invalid_observation_stops[monotonic-regression]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_known_invalid_observation_stops[revoked-first]" time="0.001" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_anchor_and_original_watch_are_enforced[future]" time="0.004" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_anchor_and_original_watch_are_enforced[overflow]" time="0.007" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_anchor_and_original_watch_are_enforced[elapsed-expiry]" time="0.016" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_anchor_and_original_watch_are_enforced[rebind]" time="0.008" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_slot_consumer_stops_actual_owned_tree[revoked]" time="1.520" /><testcase classname="tests.test_alc_r0_status_watch_consumer" name="test_slot_consumer_stops_actual_owned_tree[generation]" time="1.848"><failure message="aluclu.alc_r0.reserved_owned_process.OwnedStopRequested: owned stop requested">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-143/test_slot_consumer_stops_actua1')
+kind = 'generation'
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Windows owned job integration')
+    @pytest.mark.parametrize('kind', ['revoked', 'generation'])
+    def test_slot_consumer_stops_actual_owned_tree(tmp_path, kind):
+        from test_alc_r0_owned_stop import RetainedHandles, closed, pending
+        from test_alc_r0_reserved_owned_process import fixture as lease_fixture
+        from aluclu.alc_r0.reserved_owned_process import ReservedOwnedLease, OwnedStopRequested
+        source = ("import subprocess,sys,time;"
+            "subprocess.Popen([sys.executable,'-I','-c','import time;time.sleep(60)']);time.sleep(60)")
+        arguments, store, _, _ = lease_fixture(tmp_path, source=source)
+        consumer, signal = fixture()
+        path = tmp_path/'status.json'
+        path.write_bytes(status().data)
+        watch = retained = None
+        unrelated = subprocess.Popen((sys.executable,'-I','-c','import time;time.sleep(60)'))
+        try:
+            with ReservedOwnedLease(**arguments, stop_signal=signal) as lease:
+                retained = RetainedHandles(lease)
+                ready = lease.publish_identity(ROOT, ROOT)
+                deadline = arguments['deadline_ns']
+                watch = LiveAuthorityWatch(WatchPolicy(ROOT,ROOT,deadline,deadline+10_000_000_000),signal)
+                watch.start()
+                assert consumer.serve_once(watch,path,time.time_ns(),
+                                           utc_anchor_monotonic_ns=time.monotonic_ns())
+&gt;               lease.resume_verified(ready.sha256)
+
+tests\test_alc_r0_status_watch_consumer.py:213: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aluclu\alc_r0\reserved_owned_process.py:343: in resume_verified
+    self._check_stop()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;aluclu.alc_r0.reserved_owned_process.ReservedOwnedLease object at 0x0000020C24529940&gt;
+
+    def _check_stop(self):
+        if self._stop_observed:
+            raise OwnedStopRequested("owned stop requested")
+        signal = self._stop_signal
+        if signal is None:
+            return
+        try:
+            if type(signal) is not OwnedStopSignal:
+                raise OwnedStopRequested("owned stop signal invalid")
+            requested = OwnedStopSignal._requested(signal)
+        except OwnedStopRequested:
+            self._stop_observed = True
+            raise
+        if requested:
+            self._stop_observed = True
+&gt;           raise OwnedStopRequested("owned stop requested")
+E           aluclu.alc_r0.reserved_owned_process.OwnedStopRequested: owned stop requested
+
+src\aluclu\alc_r0\reserved_owned_process.py:176: OwnedStopRequested</failure></testcase></testsuite></testsuites>

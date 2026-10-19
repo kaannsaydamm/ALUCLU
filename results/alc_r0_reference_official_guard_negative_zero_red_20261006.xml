@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="15.126" timestamp="2026-10-06T01:21:08.099345+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_official_guard" name="test_exact_declared_arguments[1-0.0]" time="0.012" /><testcase classname="tests.test_alc_r0_reference_official_guard" name="test_exact_declared_arguments[True-0.125]" time="0.008" /><testcase classname="tests.test_alc_r0_reference_official_guard" name="test_exact_declared_arguments[True-True]" time="0.006" /><testcase classname="tests.test_alc_r0_reference_official_guard" name="test_exact_declared_arguments[True--0.0]" time="0.013" /><testcase classname="tests.test_alc_r0_reference_official_guard" name="test_exact_declared_arguments[False--0.0]" time="0.006" /><testcase classname="tests.test_alc_r0_reference_official_guard" name="test_negative_zero_argument_cannot_authorize_negative_zero_masters" time="0.032"><failure message="Failed: DID NOT RAISE ValueError">wrapper = PinnedLlamaQVReferenceWrapper(
+  (base): Linear(in_features=576, out_features=8, bias=False)
+  (reference): ReferenceQ...      )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)
+
+    def test_negative_zero_argument_cannot_authorize_negative_zero_masters(wrapper):
+        with torch.no_grad():
+            for name, parameter in wrapper.reference.named_parameters():
+                if name.endswith(".B"):
+                    parameter.fill_(-0.0)
+&gt;       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_alc_r0_reference_official_guard.py:113: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="42.999" timestamp="2026-10-11T16:10:23.659279+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_python_runtime_binding" name="test_actual_current_runtime_read_only" time="42.346"><failure message="AssertionError: {'ok': False, 'error': 'runtime tree changed during inspection'}&#10;assert False">tmp_path = WindowsPath('C:/Users/kaann/AppData/Local/Temp/pytest-of-kaann/pytest-62/test_actual_current_runtime_re0')
+
+    @pytest.mark.skipif(os.environ.get('ALUCLU_TEST_ONLY_RUNTIME_SCAN')!='1',
+                        reason='separately selected read-only runtime diagnostic')
+    def test_actual_current_runtime_read_only(tmp_path):
+        result=inspect_owned(tmp_path,actual=True)
+        mode=os.environ['ALUCLU_TEST_ONLY_RUNTIME_SCAN_MODE']
+        assert mode in ('actual','actual_v2')
+        target=Path(__file__).resolve().parents[1]/'results'/f'alc_r0_python_runtime_{mode}_20261011.binding.json'
+        with target.open('xb') as out:
+            out.write(canonical_json_bytes(result))
+&gt;       assert result['ok'], result
+E       AssertionError: {'ok': False, 'error': 'runtime tree changed during inspection'}
+E       assert False
+
+tests\test_alc_r0_python_runtime_binding.py:223: AssertionError</failure></testcase></testsuite></testsuites>

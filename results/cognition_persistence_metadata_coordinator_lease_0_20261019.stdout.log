@@ -1,0 +1,29 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\kaann\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\ALUCLU\research\alc-r0-smollm2-135m-v1\windows-training\.venv\Scripts\python.exe
+rootdir: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local
+configfile: pyproject.toml
+collecting ... collected 20 items
+
+tests/test_alc_r0_reserved_owned_process.py::test_identity_is_durable_before_any_execution PASSED [  5%]
+tests/test_alc_r0_reserved_owned_process.py::test_invalid_reservation_denied_before_outputs[override0] PASSED [ 10%]
+tests/test_alc_r0_reserved_owned_process.py::test_invalid_reservation_denied_before_outputs[override1] PASSED [ 15%]
+tests/test_alc_r0_reserved_owned_process.py::test_invalid_reservation_denied_before_outputs[override2] PASSED [ 20%]
+tests/test_alc_r0_reserved_owned_process.py::test_nonzero_exit_retained PASSED [ 25%]
+tests/test_alc_r0_reserved_owned_process.py::test_real_child_independent_binary_caps_and_digests[empty-zero] PASSED [ 30%]
+tests/test_alc_r0_reserved_owned_process.py::test_real_child_independent_binary_caps_and_digests[binary-exact] PASSED [ 35%]
+tests/test_alc_r0_reserved_owned_process.py::test_real_child_independent_binary_caps_and_digests[under-cap] PASSED [ 40%]
+tests/test_alc_r0_reserved_owned_process.py::test_partial_output_entry_pins_tail_before_internal_wait[timely] PASSED [ 45%]
+tests/test_alc_r0_reserved_owned_process.py::test_partial_output_entry_pins_tail_before_internal_wait[incomplete] PASSED [ 50%]
+tests/test_alc_r0_reserved_owned_process.py::test_timeout_drains_root_and_descendant PASSED [ 55%]
+tests/test_alc_r0_reserved_owned_process.py::test_global_lock_released_before_wait_and_unrelated_child_survives PASSED [ 60%]
+tests/test_alc_r0_reserved_owned_process.py::test_output_collision_preserves_data_and_releases_global_lock[stdout] PASSED [ 65%]
+tests/test_alc_r0_reserved_owned_process.py::test_output_collision_preserves_data_and_releases_global_lock[stderr] PASSED [ 70%]
+tests/test_alc_r0_reserved_owned_process.py::test_ready_deadline_expiry_does_not_resume_or_renew PASSED [ 75%]
+tests/test_alc_r0_reserved_owned_process.py::test_nonreserved_current_owner_denied_before_second_child PASSED [ 80%]
+tests/test_alc_r0_reserved_owned_process.py::test_caller_receipt_dataclass_is_not_resume_authority PASSED [ 85%]
+tests/test_alc_r0_reserved_owned_process.py::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[creation] PASSED [ 90%]
+tests/test_alc_r0_reserved_owned_process.py::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[ready] PASSED [ 95%]
+tests/test_alc_r0_reserved_owned_process.py::test_abrupt_lease_parent_exit_leaves_no_owned_orphan[running] PASSED [100%]
+
+- generated xml file: C:\Users\kaann\Desktop\03_Projeler_Arge\ALUCLU\.worktrees\unified-lifelong-cognition-local\results\cognition_persistence_metadata_coordinator_lease_0_20261019.xml -
+============================= 20 passed in 21.20s =============================

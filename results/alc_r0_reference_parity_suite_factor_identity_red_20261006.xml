@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="26" time="8.080" timestamp="2026-10-06T15:13:08.654537+03:00" hostname="Kaan"><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_complete_bound_receipt_and_independent_live_ownership" time="0.121" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[False]" time="0.003" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[1]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_mode_denied_before_factory[None]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[0000000000000000000000000000000000000000000000000000000000000000]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[bad]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_fixture_identity_denied_before_factory[None]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[seed]" time="0.024" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[A]" time="0.031" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[B]" time="0.019" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[shape]" time="0.023" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[grad]" time="0.028" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[mode]" time="0.020" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[controller]" time="0.028" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[co_mount]" time="0.022" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_factory_corruption_terminal_before_success[wrong_type]" time="0.020" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_reused_live_wrapper_rejected" time="0.034" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[base]" time="0.113" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[config]" time="0.193" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[identity]" time="0.114" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_final_drift_or_bad_receipt_is_not_admitted[receipt]" time="0.116" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_inner_failure_journal_preserved_without_retry" time="0.015" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_foreign_consistent_factor_hashes_rejected" time="0.118"><failure message="Failed: DID NOT RAISE ReferenceParityError">wiring = (&lt;module 'aluclu.alc_r0.reference_parity_suite' from 'C:\\Users\\kaann\\Desktop\\03_Projeler_Arge\\ALUCLU\\.worktrees\...    )
+      (29): ModuleDict(
+        (q): _ProjectionFactors()
+        (v): _ProjectionFactors()
+      )
+    )
+  )
+)])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029B1211C6E0&gt;
+
+    def test_foreign_consistent_factor_hashes_rejected(wiring, monkeypatch):
+        module, _, _ = wiring
+        good = module.run_parity_cell
+    
+        def corrupt(*args, **kwargs):
+            cell = good(*args, **kwargs)
+            return replace(cell, cases=tuple(replace(row, factor_digest=("1" if row.state == "zero" else "2") * 64) for row in cell.cases))
+    
+        monkeypatch.setattr(module, "run_parity_cell", corrupt)
+&gt;       with pytest.raises(module.ReferenceParityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ReferenceParityError
+
+tests\test_alc_r0_reference_parity_suite.py:213: Failed</failure></testcase><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_inner_interruption_preserved" time="0.015" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_nonordinary_context_denied_before_factory[no_grad]" time="0.002" /><testcase classname="tests.test_alc_r0_reference_parity_suite" name="test_nonordinary_context_denied_before_factory[inference_mode]" time="0.002" /></testsuite></testsuites>
